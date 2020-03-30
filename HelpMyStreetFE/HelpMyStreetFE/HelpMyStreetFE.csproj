@@ -8,10 +8,4 @@
     <None Remove="webpack.config.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="webpack.config.js" />
-  </ItemGroup>
-
-
-
 </Project>
