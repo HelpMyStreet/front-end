@@ -1,0 +1,22 @@
+﻿.input {
+    label {
+        position: absolute;
+        top: -27px;
+    }
+
+    input {
+        width: 240px;
+        border: 1px solid lightgrey;
+        padding: 11px 10px 10px;
+        border-radius: 5px;
+    }
+
+    a {
+        display: block;
+        line-height: 22px;
+        color: var(--p-color);
+        position: absolute;
+        left: 0;
+        bottom: -22px;
+    }
+}

@@ -1,0 +1,45 @@
+﻿$dark-blue: #001489;
+$blue: #1E91D6;
+$orange: #FF4E00;
+$green: #25AC10;
+$p-color: #51535B;
+
+.white {
+    color: white;
+}
+
+.green {
+    color: $green;
+}
+
+.dark-blue {
+    color: $dark-blue;
+}
+
+.orange {
+    color: $orange;
+}
+
+.black {
+    color: black;
+}
+
+.blue {
+    color: $blue;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.bg-green {
+    background-color: $green;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.transparent {
+    background-color: transparent;
+}
