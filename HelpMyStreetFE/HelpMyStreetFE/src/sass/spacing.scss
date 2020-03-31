@@ -1,43 +1,72 @@
 ﻿.mb0 {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 .mb12 {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 .mb15 {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .mb40 {
-    margin-bottom: 40px;
+  margin-bottom: 40px;
 }
 
 .mb56 {
-    margin-bottom: 56px;
+  margin-bottom: 56px;
 }
 
 .mt16 {
-    margin-top: 16px;
+  margin-top: 16px;
 }
 
 .mt68 {
-    margin-top: 56px;
+  margin-top: 56px;
 }
 
 .mt72 {
-    margin-top: 72px;
+  margin-top: 72px;
 }
 
 .ml32 {
-    margin-left: 32px;
+  margin-left: 32px;
 }
 
 .ma0 {
-    margin: 0;
+  margin: 0;
 }
 
 .pt32 {
-    padding-top: 32px !important;
+  padding-top: 32px !important;
+}
+
+// Proposal: use sass function to generate a batch of spacing utility classes
+// (used non-explicit naming so doesn't clash with existing classes above)
+$props: "padding" "margin";
+$propNames: "p" "m";
+
+$directions: "top" "bottom" "left" "right";
+$dirNames: "t" "b" "l" "r";
+
+$variants: "0" "xs" "sm" "md" "lg" "xl";
+$sizes: 0 0.25rem 0.5rem 1rem 2rem 4rem;
+
+@each $property in $props {
+  $p: index($props, $property);
+
+  @each $variant in $variants {
+    $v: index($variants, $variant);
+    .#{nth($propNames, $p)}-#{$variant} {
+      #{$property}: nth($sizes, $v);
+    }
+
+    @each $direction in $directions {
+      $d: index($directions, $direction);
+      .#{nth($propNames, $p)}#{nth($dirNames,$d)}-#{$variant} {
+        #{$property}-#{$direction}: nth($sizes, $v);
+      }
+    }
+  }
 }
