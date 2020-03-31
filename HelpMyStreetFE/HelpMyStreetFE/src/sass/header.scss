@@ -2,7 +2,15 @@
     padding: 50px 12px;
     margin-bottom: 32px;
 
-    * {
+    & > div {
+        margin: 0 4px;
+    }
+    
+    .logo {
+        margin-right: 68px;
+    }
+
+    .btn {
         margin: 0 4px;
     }
 
@@ -10,6 +18,5 @@
         height: 59px;
         width: 1px;
         background-color: #ccc;
-        margin: 0 8px;
     }
 }

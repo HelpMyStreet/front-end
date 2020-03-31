@@ -26,6 +26,7 @@ namespace HelpMyStreetFE
         {
             services.AddControllersWithViews();
             services.AddSingleton<IAddressService, AddressService>();
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

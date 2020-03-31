@@ -2,10 +2,37 @@
     background-color: #fff;
     border-top: 1px solid #ddd;
     margin-top: 88px;
-    padding-top: 40px;
+    padding-top: 28px;
 
     p {
         font-size: 16px;
         line-height: 24px;
+        margin: 8px 0 32px;
+
+        span {
+            margin-right: 24px;
+        }
+
+        a {
+            color: #9D9D9D;
+        }
+    }
+
+    .partner-logos {
+        ul {
+            list-style-type: none;
+            padding: 0px;
+            display: flex;
+
+            li {
+                flex-grow: 1;
+                display: inline;
+                position: relative;
+
+                img {
+                    height: 50px;
+                }
+            }
+        }
     }
 }
