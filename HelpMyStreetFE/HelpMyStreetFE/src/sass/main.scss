@@ -74,12 +74,21 @@ h6 {
     display: inline-flex;
 }
 
+.dnone {
+    display: none;
+}
+
+
+.logo {
+    width: 280px;
+}
+
 .text {
-    &-right{
+    &-right {
         text-align: right;
     }
 
-    &-center{
+    &-center {
         text-align: center;
     }
 }
@@ -106,6 +115,10 @@ h6 {
     &:hover {
         cursor: pointer;
     }
+
+    .loader {
+        display: none;
+    }
 }
 
 .stats {
@@ -126,7 +139,7 @@ h6 {
 }
 
 .street-check {
-    padding-left: 273px;
+    padding-left: 273px !important;
 
     h3 {
         margin-top: 40px;
@@ -172,6 +185,7 @@ h6 {
     border-radius: 5px;
     border: 1px solid #DDDDDD;
     background-color: white;
+    padding: 24px;
 }
 
 .list-item {
@@ -202,7 +216,7 @@ h6 {
 .list {
     & > span {
         @extend p;
-        display:block;
+        display: block;
         margin: 16px 0;
     }
 }
