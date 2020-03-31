@@ -74,6 +74,10 @@ h6 {
     display: inline-flex;
 }
 
+.dnone {
+    display: none;
+}
+
 
 .logo {
     width: 280px;
@@ -110,6 +114,10 @@ h6 {
 
     &:hover {
         cursor: pointer;
+    }
+
+    .loader {
+        display: none;
     }
 }
 
