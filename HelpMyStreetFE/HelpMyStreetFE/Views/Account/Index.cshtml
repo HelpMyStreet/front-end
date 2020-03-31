@@ -1,0 +1,10 @@
+<article class="user-profile profile-panel">
+  <header class="profile-panel__header">
+    <h3 class="profile-panel__title m-0 pl-lg pr-lg pt-md pb-md">Your Profile</h3>
+  </header>
+  @await Html.PartialAsync("_UserData")
+  <hr class="profile-panel__divider m-0">
+  @await Html.PartialAsync("_ContactPreference")
+
+  <div class="load-status">Saving...</div>
+</article>

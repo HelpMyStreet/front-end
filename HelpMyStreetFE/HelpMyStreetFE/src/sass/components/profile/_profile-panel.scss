@@ -1,0 +1,22 @@
+@import "./components/profile/user-data";
+@import "./components/profile/contact-preference";
+
+.profile-panel {
+  background-color: white;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+
+  &__header {
+    border-bottom: 1px solid $gray-10;
+  }
+
+  &__title {
+    display: block;
+    width: 100%;
+    color: $dark-blue;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid $gray-10;
+  }
+}
