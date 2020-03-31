@@ -1,0 +1,29 @@
+@import "../../mixins/typography/titles";
+@import "../../mixins/forms/checkbox";
+
+.contact-preference {
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    @include section-title--sm;
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+
+      @media screen and (min-width: 600px) {
+        margin: 0 1.5rem;
+      }
+
+      @include option-label--default;
+    }
+  }
+}
