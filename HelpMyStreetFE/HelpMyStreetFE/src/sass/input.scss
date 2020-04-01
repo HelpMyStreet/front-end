@@ -9,9 +9,10 @@
         border: 1px solid lightgrey;
         padding: 11px 10px 10px;
         border-radius: 5px;
+        background-color: #fff;
     }
 
-    a {
+    a.input__link {
         display: block;
         line-height: 22px;
         color: var(--p-color);

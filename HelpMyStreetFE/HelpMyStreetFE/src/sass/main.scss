@@ -4,6 +4,7 @@
 @import './colours.scss';
 @import './spacing.scss';
 @import './input.scss';
+@import './registration.scss';
 
 * {
     font-family: 'Montserrat', sans-serif;
@@ -101,6 +102,7 @@ h6 {
     line-height: 22px;
     letter-spacing: 0.5px;
     padding: 13px 40px;
+    text-decoration: none;
 
     &.border-blue {
         border: 2px solid $blue;

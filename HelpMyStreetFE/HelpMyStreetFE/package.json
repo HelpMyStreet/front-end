@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch --mode development"
   },
   "devDependencies": {
     "css-loader": "^3.4.2",
@@ -15,5 +15,7 @@
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
   },
-  "dependencies": {}
+  "dependencies": {
+    "firebase": "^7.13.1"
+  }
 }

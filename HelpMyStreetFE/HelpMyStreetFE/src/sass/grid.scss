@@ -1,31 +1,4 @@
-﻿/*
-.container {
-    max-width: 1224px;
-    margin: auto;
-
-    .row {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-column-gap: 24px;
-        justify-content: center;
-        justify-items: stretch;
-
-        @for $i from 1 through 12 {
-            .sm#{$i} {
-                grid-column-end: span $i;
-            }
-        }
-
-        @for $i from 1 through 11 {
-            .sm-offset-#{$i} {
-                grid-column-start: $i;
-            }
-        }
-    }
-}
-*/
-
-.container {
+﻿.container {
     max-width: 1224px + 24px;
     margin: auto;
 

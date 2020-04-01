@@ -2,7 +2,10 @@ const path = require('path');
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
-    entry: './js/app.js',
+    entry: {
+        main: './js/app.js',
+        registration: './js/registration.js'
+    },
     output: {
         path: path.resolve(__dirname, 'wwwroot')
     },
