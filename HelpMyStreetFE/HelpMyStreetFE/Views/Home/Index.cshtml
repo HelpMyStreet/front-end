@@ -9,14 +9,15 @@
         <img class="logo" src="~/img/logos/HelpMyStreet_logo.svg" alt="Help My Street Logo" />
     <div class="input">
         <label>Email address</label>
-        <input type="text" placeholder="Email Address" />
+        <input id="email" type="text" placeholder="Email Address" />
+        <div id="login-fail-message" class="login__fail-message"></div>
     </div>
     <div class="input">
         <label>Password</label>
-        <input type="Password" placeholder="Password" />
+        <input id="password" type="Password" placeholder="Password" />
         <a href="#" class="input__link">Forgotten password?</a>
     </div>
-    <button class="btn transparent blue border-blue">Login</button>
+    <button id="login-submit" class="btn transparent blue border-blue">Login</button>
     <div class="spacer"></div>
     <a class="btn cta" href="/registration">Sign Up Now</a>
 </header>
