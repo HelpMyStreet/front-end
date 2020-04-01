@@ -1,45 +1,47 @@
 ﻿$dark-blue: #001489;
-$blue: #1E91D6;
-$orange: #FF4E00;
-$green: #25AC10;
-$p-color: #51535B;
+$blue: #1e91d6;
+$orange: #ff4e00;
+$green: #25ac10;
+$p-color: #51535b;
+$user-circle-background: #1e91d61a;
+$sub-title-blue: #021587;
 
 .white {
-    color: white;
+  color: white;
 }
 
 .green {
-    color: $green;
+  color: $green;
 }
 
 .dark-blue {
-    color: $dark-blue;
+  color: $dark-blue;
 }
 
 .orange {
-    color: $orange;
+  color: $orange;
 }
 
 .black {
-    color: black;
+  color: black;
 }
 
 .blue {
-    color: $blue;
+  color: $blue;
 }
 
 .bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .bg-green {
-    background-color: $green;
+  background-color: $green;
 }
 
 .bg-white {
-    background-color: white;
+  background-color: white;
 }
 
 .transparent {
-    background-color: transparent;
+  background-color: transparent;
 }
