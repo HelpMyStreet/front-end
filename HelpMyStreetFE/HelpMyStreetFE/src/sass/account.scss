@@ -1,0 +1,45 @@
+.account {
+  &__wrapper {
+    display: grid;
+  }
+  &__header {
+    padding: 40px 0 40px 0;
+    &__logo {
+      height: 53px;
+    }
+    &__user {
+      $circle-dimensions: 50px;
+      height: $circle-dimensions;
+      width: $circle-dimensions;
+      border-radius: 64px;
+      background-color: $user-circle-background;
+      font-size: 16px;
+      line-height: $circle-dimensions;
+      text-align: center;
+      cursor: default;
+      &__wrapper {
+        float: right;
+      }
+    }
+    &__bottom-line {
+      height: 1px;
+      background-color: #dddddd;
+      width: 100%;
+      position: absolute;
+      bottom: 0px;
+    }
+    &__wrapper {
+      max-width: $content-max-width;
+      margin: auto;
+      min-width: $content-min-width;
+    }
+  }
+
+  &__notifications {
+    max-width: $content-max-width;
+    &__wrapper {
+      margin: auto;
+      padding: 50px 0px 40px 0px;
+    }
+  }
+}
