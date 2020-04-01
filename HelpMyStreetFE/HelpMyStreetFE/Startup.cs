@@ -57,7 +57,8 @@ namespace HelpMyStreetFE
 
                 endpoints.MapControllerRoute(
                     name: "registration",
-                    pattern: "{controller=registration}/{action=StepOne}"
+                    pattern: "registration/step/{*step}",
+                    defaults: new { controller = "Registration", action = "Index" }
                     );
             });
         }

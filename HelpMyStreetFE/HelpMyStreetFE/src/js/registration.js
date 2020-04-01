@@ -47,7 +47,15 @@ $(() => {
         var auth = firebase.auth();
 
         auth.createUserWithEmailAndPassword(email.val, password.val)
-            .then(() => void 0)
+            .then(user => {
+                fetch('/register/1', {
+                    method: 'post',
+                    body: {
+                        email: email.val,
+                        
+                    }
+                })
+            })
             .catch(err => {
                 console.log(err);
                 switch (err.code) {

@@ -1,4 +1,5 @@
 ﻿using System;
+using HelpMyStreetFE.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -13,9 +14,12 @@ namespace HelpMyStreetFE.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public ActionResult StepOne()
+        public ActionResult Index(int step)
         {
-            return View();
+            return View(new RegistrationViewModel
+            {
+                ActiveStep = step
+            });
         }
     }
 }

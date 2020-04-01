@@ -1,4 +1,4 @@
-﻿@model HomeViewModel;
+﻿@model RegistrationViewModel;
 
 @section Scripts {
     <script src="~/registration.js" asp-append-version="true"></script>
@@ -8,11 +8,11 @@
     ViewData["Title"] = "Registration";
 
     var Steps = new Dictionary<int, string>
-{
+    {
         { 1, "Your account" },
         { 2, "Your details" },
         { 3, "Volunteers" },
-        { 4, "Champions" },
+        { 4, "Street Champions" },
         { 5, "Verification" }
     };
 }
@@ -21,7 +21,7 @@
     <div class="stepper sm8">
         @foreach (var step in Steps)
         {
-            <div class="stepper__step">
+            <div class="stepper__step @(Model.ActiveStep == step.Key ? "stepper__step--active": string.Empty)">
                 <div class="stepper__step__number">
                     @step.Key
                 </div>
@@ -43,7 +43,7 @@
 </div>
 <div class="row justify-center">
     <div class="sm8">
-        <form id="user_creation_form" action="#">
+        <form id="user_creation_form" action="#" method="post">
             <div class="input">
                 <label>Email address</label>
                 <input name="email" type="Email" placeholder="Enter your email address" required />
