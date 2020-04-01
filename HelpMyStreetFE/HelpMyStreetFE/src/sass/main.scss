@@ -5,12 +5,14 @@
 @import "./spacing.scss";
 @import "./input.scss";
 @import "./variables.scss";
-@import "./account.scss";
-@import "./notification.scss";
 
+@import "./views/account";
+
+@import "./mixins/forms/checkbox";
+
+@import "./components/notification-card/notification";
 @import "./components/profile/profile-panel";
 @import "./components/info-popup";
-@import "./forms/checkbox";
 
 * {
   font-family: "Montserrat", sans-serif;

@@ -51,7 +51,7 @@ $directions: "top" "bottom" "left" "right";
 $dirNames: "t" "b" "l" "r";
 
 $variants: "0" "xs" "sm" "md" "lg" "xl";
-$sizes: 0 0.25rem 0.5rem 1rem 2rem 4rem;
+$sizes: 0 0.25rem 0.5rem 1.6666rem 2.2225rem 2.778rem;
 
 @each $property in $props {
   $p: index($props, $property);
