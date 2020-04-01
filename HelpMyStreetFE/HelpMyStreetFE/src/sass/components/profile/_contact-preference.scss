@@ -1,4 +1,5 @@
 @import "../../mixins/typography/titles";
+@import "../../mixins/typography/copy";
 @import "../../mixins/forms/checkbox";
 
 .contact-preference {
@@ -8,7 +9,8 @@
   }
 
   &__title {
-    @include section-title--sm;
+    @include copy-sz-md;
+    color: $black;
   }
 
   &__options {

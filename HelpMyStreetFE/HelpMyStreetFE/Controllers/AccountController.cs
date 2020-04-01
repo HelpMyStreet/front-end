@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Controllers
 
             //TODO: Actually get user details
             var mockDetails = new UserDetails("KG");
-            var mockNotifications = new List<NotificationModel>() { new NotificationModel { Id = Guid.NewGuid(), Title = "Good new John!", Message = "Your account is all set up. From your profile you can claim local streets, search for local volunteers and update your details. Keep checking back and keep an eye on your email inbox for the latest updates to our service. We hope to be distributing requests for help very soon.", Type = NotificationType.Success } };
+            var mockNotifications = new List<NotificationModel>() { new NotificationModel { Id = Guid.NewGuid(), Title = "Good news John!", Message = "Your account is all set up. From your profile you can claim local streets, search for local volunteers and update your details. Keep checking back and keep an eye on your email inbox for the latest updates to our service. We hope to be distributing requests for help very soon.", Type = NotificationType.Success } };
             var viewModel = new AccountViewModel() { UserDetails = mockDetails, Notifications = mockNotifications };
             return View(viewModel);
         }

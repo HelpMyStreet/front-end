@@ -1,8 +1,10 @@
-@import "./components/profile/user-data";
-@import "./components/profile/contact-preference";
+@import "./user-data";
+@import "./contact-preference";
 
 .profile-panel {
   background-color: white;
+  border-radius: 4px;
+  border: 1px solid $gray-10;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.29);
 
   &__header {
@@ -12,6 +14,7 @@
   &__title {
     display: block;
     width: 100%;
+    @include title-sz-5;
     color: $dark-blue;
   }
 

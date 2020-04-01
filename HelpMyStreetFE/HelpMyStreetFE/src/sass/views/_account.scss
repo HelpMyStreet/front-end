@@ -1,9 +1,7 @@
+@import "./account-nav";
+
 .account {
-  &__wrapper {
-    display: grid;
-  }
   &__header {
-    padding: 40px 0 40px 0;
     &__logo {
       height: 53px;
     }
@@ -21,17 +19,9 @@
         float: right;
       }
     }
-    &__bottom-line {
-      height: 1px;
-      background-color: #dddddd;
-      width: 100%;
-      position: absolute;
-      bottom: 0px;
-    }
     &__wrapper {
-      max-width: $content-max-width;
       margin: auto;
-      min-width: $content-min-width;
+      border-bottom: 1px solid $gray-10;
     }
   }
 
@@ -39,7 +29,12 @@
     max-width: $content-max-width;
     &__wrapper {
       margin: auto;
-      padding: 50px 0px 40px 0px;
     }
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: 13rem 1fr;
+    // grid-gap: 1rem;
   }
 }
