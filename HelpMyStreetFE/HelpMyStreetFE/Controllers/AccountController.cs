@@ -6,10 +6,11 @@ using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Enums.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HelpMyStreetFE.Controllers
 {
-    //[Authorize]
+    [Authorize]
     //This controller should eventually use this
     public class AccountController : Controller
     {
