@@ -1,0 +1,20 @@
+@import "../../mixins/typography/titles";
+
+.mini-user-profile {
+  display: flex;
+  align-items: center;
+
+  &__avatar {
+    max-width: 100px;
+  }
+  
+  &__user-name {
+    display: block;
+    @include title-sz-5;
+    color: $blue;
+  }
+
+  &__street-name {
+    font-weight: bold;
+  }
+}

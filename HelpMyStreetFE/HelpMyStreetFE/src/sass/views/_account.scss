@@ -1,9 +1,17 @@
 @import "./account-nav";
+@import "../components/mini-user-profile/mini-user-profile";
+@import "../components/mini-user-profile/user-avatar";
 
 .account {
   &__header {
     &__logo {
-      height: 53px;
+      width: 47vw;
+      height: auto;
+
+      @media screen and (min-width: 600px) {
+        width: auto;
+        height: 53px;
+      }
     }
     &__user {
       $circle-dimensions: 50px;

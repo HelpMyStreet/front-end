@@ -1,0 +1,13 @@
+.user-avatar {
+  max-width: 100px;
+
+  &__background {
+    fill: $user-circle-background;
+  }
+
+  &__label {
+    fill: $black;
+    font: 32px sans-serif;
+    text-anchor: middle;
+  }
+}
