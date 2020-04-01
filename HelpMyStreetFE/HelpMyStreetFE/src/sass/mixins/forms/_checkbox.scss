@@ -1,0 +1,9 @@
+@mixin option-label--default {
+  label {
+    cursor: pointer;
+  }
+
+  input:checked + label {
+    font-weight: bold;
+  }
+}

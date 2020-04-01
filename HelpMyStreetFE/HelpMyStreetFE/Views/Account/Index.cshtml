@@ -1,6 +1,15 @@
-﻿@model HelpMyStreetFE.Models.Account.AccountViewModel;
+﻿﻿@model HelpMyStreetFE.Models.Account.AccountViewModel;
 
-    <div class="account__wrapper">
-        <partial name="_UserHeader" for="UserDetails" />
-        <partial name="_NotificationHandler" for="Notifications" />
-    </div>
+<div class="account__wrapper">
+    <partial name="_UserHeader" for="UserDetails" />
+    <partial name="_NotificationHandler" for="Notifications" />
+    
+    <article class="user-profile profile-panel">
+      <header class="profile-panel__header">
+        <h3 class="profile-panel__title m-0 pl-lg pr-lg pt-md pb-md">Your Profile</h3>
+      </header>
+      @await Html.PartialAsync("_UserData")
+      <hr class="profile-panel__divider mt-0 mb-0 ml-lg mr-lg">
+      @await Html.PartialAsync("_ContactPreference")
+  </article>
+</div>

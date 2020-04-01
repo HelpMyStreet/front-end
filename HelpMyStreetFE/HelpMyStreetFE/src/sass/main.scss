@@ -8,6 +8,10 @@
 @import "./account.scss";
 @import "./notification.scss";
 
+@import "./components/profile/profile-panel";
+@import "./components/info-popup";
+@import "./forms/checkbox";
+
 * {
   font-family: "Montserrat", sans-serif;
   font-size: 18px;
