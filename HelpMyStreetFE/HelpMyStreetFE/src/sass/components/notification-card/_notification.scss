@@ -1,12 +1,16 @@
 @import "../..//mixins/typography/titles";
 @import "../..//mixins/typography/copy";
+@import "../../mixins/effects";
 
 .notification {
   &__card {
+    
+    @include shadow-md;
+    
     padding: 30px 30px 30px 0px;
     width: 100%;
     background-color: white;
-    box-shadow: 0px 0px 10px #00000029;
+    
     border-radius: 4px;
     display: grid;
     grid-template-columns: 170px 1fr;
