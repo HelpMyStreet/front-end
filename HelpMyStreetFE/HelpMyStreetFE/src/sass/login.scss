@@ -1,0 +1,9 @@
+.login {
+  &__fail-message {
+    position: absolute;
+    left: 0;
+    color: red;
+    display: hidden;
+    line-height: 22px;
+  }
+}

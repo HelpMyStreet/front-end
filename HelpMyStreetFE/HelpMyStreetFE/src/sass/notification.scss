@@ -1,0 +1,50 @@
+.notification {
+  &__card {
+    padding: 30px 30px 30px 0px;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 0px 10px #00000029;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    display: -ms-grid;
+    -ms-grid-columns: 170px 1fr;
+  }
+  &__icon {
+    height: 55px;
+    width: 55px;
+    &__wrapper {
+      margin: auto;
+      -ms-grid-column: 1;
+    }
+  }
+  &__content {
+  }
+  &__title {
+    color: $sub-title-blue;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  &__message {
+    color: $p-color;
+    font-size: 24px;
+  }
+  &__close {
+    height: 10px;
+    width: 10px;
+    margin-top: 10px;
+    margin-left: 10px;
+    position: relative;
+    &__wrapper {
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      background-color: #eef5ed;
+      border-radius: 50%;
+      position: absolute;
+      cursor: pointer;
+      margin: auto;
+    }
+  }
+}
