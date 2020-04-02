@@ -1,5 +1,6 @@
 ﻿import "../sass/main.scss";
 import notification from "./account/notification";
+import "./shared/info-popup";
 
 $(function() {
   $("#postcode_button").click(function(evt) {
