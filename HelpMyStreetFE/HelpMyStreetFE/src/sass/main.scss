@@ -5,10 +5,16 @@
 @import "./spacing.scss";
 @import "./input.scss";
 @import "./variables.scss";
-@import "./account.scss";
-@import "./notification.scss";
 @import "./registration.scss";
 @import "./login.scss";
+
+@import "./views/account";
+
+@import "./mixins/forms/checkbox";
+
+@import "./components/notification-card/notification";
+@import "./components/profile/profile-panel";
+@import "./components/info-popup";
 
 * {
   font-family: "Montserrat", sans-serif;
@@ -225,4 +231,10 @@ h6 {
     display: block;
     margin: 16px 0;
   }
+}
+
+dl,
+dt,
+dd {
+  margin: 0;
 }

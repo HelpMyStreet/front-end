@@ -54,6 +54,7 @@ namespace HelpMyStreetFE
                 });
             services.AddControllersWithViews();
             services.AddSingleton<IAddressService, AddressService>();
+            services.AddSingleton<IUserService, UserService>();
             services.AddControllers();
         }
 

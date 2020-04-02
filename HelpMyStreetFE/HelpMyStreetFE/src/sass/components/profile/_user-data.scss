@@ -1,0 +1,15 @@
+.profile {
+  &__user-data {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    grid-gap: 1rem;
+
+    &__item {
+      min-width: 10rem;
+
+      dd {
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -1,6 +1,22 @@
 ﻿@model HelpMyStreetFE.Models.Account.AccountViewModel;
 
-    <div class="account__wrapper">
-        <partial name="_UserHeader" for="UserDetails" />
-        <partial name="_NotificationHandler" for="Notifications" />
+<partial name="_UserHeader" for="UserDetails" />
+
+<main class="account__wrapper container">
+    <partial name="_NotificationHandler" for="Notifications" />
+    
+    <div class="mb-md">
+        <partial name="_MiniUserProfile" for="UserDetails" />
     </div>
+    <div class="account__body">
+        <partial name="_AccountNavigation" />
+        <article class="user-profile profile-panel">
+            <header class="profile-panel__header">
+                <h3 class="profile-panel__title m-0 pl-md pr-md pt-sm pb-sm">My Profile</h3>
+            </header>
+            <partial name="_UserData" />
+            <hr class="profile-panel__divider mt-0 mb-0 ml-md mr-md">
+            <partial name="_ContactPreference" />
+        </article>
+    </div>
+</main>

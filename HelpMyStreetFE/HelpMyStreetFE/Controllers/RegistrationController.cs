@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.Controllers
             return Ok();
         }
 
-        [HttpGet("[controller]/stepone")]
+        [HttpGet("[controller]/steptwo")]
         public ActionResult StepTwo()
         {
             return View(new RegistrationViewModel

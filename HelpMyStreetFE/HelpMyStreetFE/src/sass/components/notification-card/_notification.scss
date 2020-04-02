@@ -1,9 +1,16 @@
+@import "../..//mixins/typography/titles";
+@import "../..//mixins/typography/copy";
+@import "../../mixins/effects";
+
 .notification {
   &__card {
+    
+    @include shadow-md;
+    
     padding: 30px 30px 30px 0px;
     width: 100%;
     background-color: white;
-    box-shadow: 0px 0px 10px #00000029;
+    
     border-radius: 4px;
     display: grid;
     grid-template-columns: 170px 1fr;
@@ -15,19 +22,17 @@
     width: 55px;
     &__wrapper {
       margin: auto;
+      grid-column: 1;
       -ms-grid-column: 1;
     }
   }
-  &__content {
-  }
   &__title {
     color: $sub-title-blue;
-    font-size: 24px;
-    font-weight: 600;
+    @include title-sz-6;  
   }
   &__message {
     color: $p-color;
-    font-size: 24px;
+    @include copy-sz-lg;
   }
   &__close {
     height: 10px;
