@@ -36,15 +36,21 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
+
 - task: Npm@1
   inputs:
     command: 'install'
     workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
 
-- task: DotNetCoreCLI@2
+- task: Npm@1
   inputs:
-    command: 'build'
-    projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
+    command: 'custom'
+    workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
+    customCommand: 'run build'
 
 - task: DotNetCoreCLI@2
   inputs:
