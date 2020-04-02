@@ -41,15 +41,15 @@ steps:
     command: 'build'
     projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-
 - task: Npm@1
   inputs:
     command: 'install'
     workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
 
 - task: PublishBuildArtifacts@1
   inputs:
