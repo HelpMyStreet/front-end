@@ -46,6 +46,9 @@ steps:
     command: 'publish'
     publishWebProjects: true
 
+- task: Npm@1
+  inputs:
+    command: 'install'
 
 - task: PublishBuildArtifacts@1
   inputs:
