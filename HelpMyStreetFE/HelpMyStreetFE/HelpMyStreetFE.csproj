@@ -11,5 +11,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
+   
+  <Target Condition="'$(DEPLOYMENT_TEMP)' != ''" Name="NpmInstall" AfterTargets="Publish">
+    <Exec Command="npm install --production" WorkingDirectory="$(DEPLOYMENT_TEMP)"></Exec>
+  </Target>
 
 </Project>
