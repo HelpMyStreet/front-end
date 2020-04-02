@@ -50,7 +50,7 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
-    customCommand: 'run build'
+    customCommand: 'run build --production'
 
 - task: DotNetCoreCLI@2
   inputs:
