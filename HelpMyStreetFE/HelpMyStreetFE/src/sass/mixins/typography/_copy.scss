@@ -1,0 +1,22 @@
+/*
+Regular 400
+font size: 24px / line height: 36px --- 
+font size: 18px / line height: 27px --- 
+font size: 166px / line height: 24px --- smaller copy*/
+
+@mixin copy-sz-sm {
+  font-size: 0.889rem;
+  line-height: 1.333;
+}
+
+// for most paragraphs
+@mixin copy-sz-md {
+  font-size: 1rem;
+  line-height: 1.333;
+}
+
+// for exposition copy paragraph under the main Header title
+@mixin copy-sz-lg {
+  font-size: 1.333rem;
+  line-height: 1.333;
+}

@@ -1,0 +1,14 @@
+.user-avatar {
+  max-width: 100px;
+  width: 100%;
+
+  &__background {
+    fill: $light-blue;
+  }
+
+  &__label {
+    fill: $black;
+    font: 32px sans-serif;
+    text-anchor: middle;
+  }
+}

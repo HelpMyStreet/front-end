@@ -1,0 +1,47 @@
+@import "../mixins/typography/copy";
+@import "../mixins//effects";
+
+.info-popup {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  cursor: pointer;
+  margin: 0 0.5rem;
+
+  &__icon {
+    width: 100%;
+    height: auto;
+  }
+
+  &__label {
+    fill: $blue;
+    font: 72px serif;
+    font-weight: bold;
+    text-anchor: middle;
+  }
+
+  &__body {
+    pointer-events: none;
+    opacity: 0;
+
+    background-color: $light-blue;
+    color: $black;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 15rem;
+    z-index: 10;
+    transform: translate(-50%,-50%);
+    transition: opacity 0.2s;
+
+    @include copy-sz-sm;
+    
+    &.open {
+      pointer-events: initial;
+      cursor: pointer;
+      opacity: 1;
+
+      @include shadow-xs;
+    }
+  }
+}

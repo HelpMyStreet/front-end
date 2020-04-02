@@ -1,0 +1,35 @@
+@mixin title-sz-1 {
+  font-size: 3.111rem;
+  line-height: 1.286;
+  font-weight: 700;
+}
+
+@mixin title-sz-2 {
+  font-size: 2.444rem;
+  line-height: 1.273;
+  font-weight: 700;
+}
+
+@mixin title-sz-3 {
+  font-size: 2rem;
+  font-weight: 1.333;
+  font-weight: 700;
+}
+
+@mixin title-sz-4 {
+  font-size: 1.778rem;
+  line-height: 1.375;
+  font-weight: 700;
+}
+
+@mixin title-sz-5 {
+  font-size: 1.5rem;
+  line-height: 1.333;
+  font-weight: 700;
+}
+
+@mixin title-sz-6 {
+  font-size: 1.333rem;
+  line-height: 1.333;
+  font-weight: 700;
+}

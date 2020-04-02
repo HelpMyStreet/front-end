@@ -1,0 +1,31 @@
+@import "../../mixins/typography/titles";
+@import "../../mixins/typography/copy";
+@import "../../mixins/forms/checkbox";
+
+.contact-preference {
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    @include copy-sz-md;
+    color: $black;
+  }
+
+  &__options {
+    display: flex;
+    flex-wrap: wrap;
+
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+
+      @media screen and (min-width: 600px) {
+        margin: 0 1.5rem;
+      }
+
+      @include option-label--default;
+    }
+  }
+}

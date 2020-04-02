@@ -1,0 +1,22 @@
+.account__nav {
+    &__item {
+        list-style: none;
+        a {
+            display: block; 
+            
+            border: 1px solid $gray-10;
+            border-radius: 4px;
+
+            margin-bottom: 0.5rem;   
+            padding: 0.5rem 1rem;
+
+            color: $black;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        a.selected {
+            background-color: white;            
+        }
+    } 
+}

@@ -1,0 +1,18 @@
+﻿@model List<HelpMyStreetFE.Models.Account.NotificationModel>;
+@using HelpMyStreetFE.Enums.Account;
+
+<div class="account__notifications__wrapper pt-xl pb-lg">
+    <div class="account__notifications">
+        @{
+            foreach (var Notification in Model)
+            {
+                switch (Notification.Type)
+                {
+                    case NotificationType.Success:
+                        <partial name="_Success" for="@Notification" />
+                        break;
+                }
+            }
+        }
+    </div>
+</div>

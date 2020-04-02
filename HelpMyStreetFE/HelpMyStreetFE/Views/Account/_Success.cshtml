@@ -1,0 +1,14 @@
+﻿@model HelpMyStreetFE.Models.Account.NotificationModel;
+
+<div class="notification__card" data-notificationId="@Model.Id">
+    <div class="notification__icon__wrapper">
+        <img class="notification__icon" src="~/img/icons/thumbs-up.svg" />
+    </div>
+    <div class="notification__content">
+        <div class="notification__title">@Model.Title</div>
+        <div class="notification__message">@Model.Message</div>
+    </div>
+    <div class="notification__close__wrapper" onclick="notification.closeNotification('@Model.Id')">
+        <img class="notification__close" src="~/img/icons/close.svg" />
+    </div>
+</div>
