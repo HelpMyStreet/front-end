@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreetFE.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +29,7 @@ namespace HelpMyStreetFE
         public void ConfigureServices(IServiceCollection services)
         {
             //TODO: Abstract the authentication setup and get auth settings from config
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+          /*  services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
                     options.IncludeErrorDetails = true;
@@ -41,6 +43,14 @@ namespace HelpMyStreetFE
                         ValidateLifetime = true
                     };
 
+                });*/
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.SameSite = SameSiteMode.Strict;
                 });
             services.AddControllersWithViews();
             services.AddSingleton<IAddressService, AddressService>();
@@ -64,6 +74,7 @@ namespace HelpMyStreetFE
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -72,12 +83,6 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                endpoints.MapControllerRoute(
-                    name: "registration",
-                    pattern: "registration/step/{*step}",
-                    defaults: new { controller = "Registration", action = "Index" }
-                    );
             });
         }
     }

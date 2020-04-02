@@ -29,6 +29,16 @@ export const login = async (email, password) => {
   if (validationResponse.success) {
     try {
       const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
+      const token = await credentials.user.getIdToken();
+      const authResp = await fetch('/api/auth', {
+        method: 'post',
+        headers: {
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({ token })
+      });
+
       //TODO: Actually decide where the user should go after logging in
       window.location.href = "/account";
     } catch (e) {

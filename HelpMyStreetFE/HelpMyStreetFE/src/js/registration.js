@@ -33,9 +33,18 @@ $(() => {
 
         clientFirebase.auth
             .createUserWithEmailAndPassword(email.val, password.val)
-            .then(() => void 0)
+            .then(async credentials => {
+                const token = await credentials.user.getIdToken();
+                const authResp = await fetch('/api/auth', {
+                    method: 'post',
+                    headers: {
+                        authorization: `Bearer ${token}`,
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({ token })
+                });
+            })
             .catch(err => {
-                console.log(err);
                 switch (err.code) {
                 case "auth/email-already-in-use":
                     setError(email.el, err.message);

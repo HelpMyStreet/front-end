@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace HelpMyStreetFE.Controllers
 {
     [Authorize]
-    //This controller should eventually use this
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
