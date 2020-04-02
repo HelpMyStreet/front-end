@@ -14,56 +14,86 @@
 
     <div class="row justify-center mt72">
         <div class="sm8">
-            <h1>Sign up to help</h1>
+            <h1>Your details</h1>
         </div>
     </div>
-    <div class="row justify-center">
-        <div class="sm8">
-            <form id="registration_form" method="post">
+    <form id="registration_form" method="post">
+        <div class="row justify-center">
+            <div class="input sm4">
+                <label>First name</label>
+                <input name="first_name" type="text" placeholder="e.g. John" />
+                <span class="error"></span>
+            </div>
+            <div class="input sm4">
+                <label>Last name</label>
+                <input name="last_name" type="text" placeholder="e.g. Smith" />
+                <span class="error"></span>
+            </div>
+            <div class="input sm5">
+                <label>Postcode</label>
+                <input name="postcode_search" type="text" placeholder="e.g. NG1 1PS" />
+                <span class="error"></span>
+            </div>
+            <div class="input sm3">
+                <button class="btn border-blue blue btn--full-width" id="address_finder">
+                    <span class="text">Find address</span>
+                    <span class="loader">Searching&hellip;</span>
+                </button>
+                <a id="manual_address" href="#" class="input__link">Or enter your address manually</a>
+            </div>
+            <div class="input sm8 dnone" id="address_selector">
+                <label>Select address</label>
+                <select name="address_selector">
+
+                </select>
+            </div>
+            <div class="expander sm8">
+                <h5>Please enter your address</h5>
                 <div class="input">
-                    <label>Email address</label>
-                    <input name="email" type="Email" placeholder="Enter your email address" required />
+                    <label>Address line 1</label>
+                    <input name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
                     <span class="error"></span>
                 </div>
                 <div class="input">
-                    <label>Password <span class="input__hint">(6 characters with a mix of letters and numbers)</span></label>
-                    <input name="password" type="Password" placeholder="Password" required />
+                    <label>Address line 2</label>
+                    <input name="address_line_2" type="text" placeholder="e.g. Hockley" />
                     <span class="error"></span>
                 </div>
                 <div class="input">
-                    <label>Confirm password</label>
-                    <input name="confirm_password" type="Password" placeholder="Password" required />
+                    <label>Town / City</label>
+                    <input name="city" type="text" placeholder="e.g. Nottingham" />
                     <span class="error"></span>
                 </div>
-                <p>
-                    The information you provide will be shared with Street Champions in your local area to help organise volunteers.
-                    You can read more in out <a href="#">Privacy Notice</a>
-                </p>
-                <div class="input input--checkbox">
-                    <label>
-                        <input name="privacy_notice" type="checkbox" hidden required />
-                        <span class="input--checkbox__checkbox">
-                            <span class="mdi mdi-check"></span>
-                        </span>
-                        I acknowledge the Help My Street <a href="#">Privacy Notice</a>
-                    </label>
+                <div class="input">
+                    <label>County</label>
+                    <input name="county" type="text" placeholder="e.g. Nottingham" />
+                    <span class="error"></span>
                 </div>
-                <div class="input input--checkbox">
-                    <label>
-                        <input name="terms_and_conditions" type="checkbox" hidden required />
-                        <span class="input--checkbox__checkbox">
-                            <span class="mdi mdi-check"></span>
-                        </span>
-                        I addree to the Help My Street <a href="#">Terms and Conditions</a>
-                    </label>
+                <div class="input">
+                    <label>Postcode</label>
+                    <input name="postcode" type="text" placeholder="e.g. NG1 1PS" />
+                    <span class="error"></span>
                 </div>
+            </div>
+            <div class="input sm8">
+                <label>Mobile number</label>
+                <input name="mobile_number" type="number" placeholder="e.g. 0770112233" />
+                <span class="error"></span>
+            </div>
+            <div class="input sm8">
+                <label>Alternative phone number</label>
+                <input name="alt_number" type="number" placeholder="e.g. 0115 12312312" />
+                <span class="error"></span>
+            </div>
+
+            <div class="sm8">
                 <div class="controls">
                     <button class="btn cta" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>

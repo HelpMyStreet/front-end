@@ -53,7 +53,7 @@ form {
 
     .input {
         width: 100%;
-        margin: 64px 0 32px;
+        margin: 64px 0 0;
 
         label {
             font-weight: bold;
@@ -73,8 +73,9 @@ form {
             color: $p-color;
         }
 
-        input {
+        input, select {
             width: 100%;
+            height: 64px;
         }
 
         &--checkbox {
@@ -120,5 +121,28 @@ form {
 
     .controls {
         text-align: right;
+        margin-top: 40px;
+    }
+
+    .btn {
+        height: 64px;
+        border-radius: 32px;
+
+        &--full-width {
+            width: 100%;
+        }
+    }
+
+    .expander {
+        background-color: #EEEBE5;
+        margin-top: 86px;
+        padding: 48px 0 56px;
+        display: none;
+
+        h5 {
+            font-size: 27px;
+            line-height: 36px;
+            margin: 0;
+        }
     }
 }

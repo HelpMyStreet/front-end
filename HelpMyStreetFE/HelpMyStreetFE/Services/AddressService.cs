@@ -14,14 +14,25 @@ namespace HelpMyStreetFE.Services
 {
     public class Address
     {
-        public string houseName { get; set; }
+        public string addressLine1 { get; set; }
+        public string addressLine2 { get; set; }
+        public string addressLine3 { get; set; }
+        public string locality { get; set; }
+        public string postcode { get; set; }
         public int? houseNumber { get; set; }
+    }
+
+    public class PostCodeResponseContent
+    {
+        public List<Address> addressDetails { get; set; }
     }
 
     public class PostCodeResponse
     {
+        public bool hasContent { get; set; }
+        public bool isSuccessful { get; set; }
         public string postCode { get; set; }
-        public List<Address> addresses { get; set; }
+        public PostCodeResponseContent content { get; set; }
     }
 
     public class AddressService : IAddressService
@@ -74,10 +85,10 @@ namespace HelpMyStreetFE.Services
             };
 
             var response = await client.SendAsync(request);
-            _logger.LogInformation($"Status Code: {response.StatusCode}");
             var str = await response.Content.ReadAsStringAsync();
-            _logger.LogInformation($"Received: {str}");
-            return JsonSerializer.Deserialize<PostCodeResponse>(str); ;
+            var obj = JsonSerializer.Deserialize<PostCodeResponse>(str);
+
+            return obj;
         }
     }
 }
