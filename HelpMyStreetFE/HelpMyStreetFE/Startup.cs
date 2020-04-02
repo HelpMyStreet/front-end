@@ -28,23 +28,6 @@ namespace HelpMyStreetFE
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //TODO: Abstract the authentication setup and get auth settings from config
-          /*  services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.IncludeErrorDetails = true;
-                    options.Authority = "https://securetoken.google.com/factor50-test";
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidIssuer = "https://securetoken.google.com/factor50-test",
-                        ValidateAudience = true,
-                        ValidAudience = "factor50-test",
-                        ValidateLifetime = true
-                    };
-
-                });*/
-
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -55,6 +38,7 @@ namespace HelpMyStreetFE
             services.AddControllersWithViews();
             services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAuthService, AuthService>();
             services.AddControllers();
         }
 
