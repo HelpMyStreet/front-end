@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="src\sass\components\NewFolder1\**" />
+    <Content Remove="src\sass\components\NewFolder1\**" />
+    <EmbeddedResource Remove="src\sass\components\NewFolder1\**" />
+    <None Remove="src\sass\components\NewFolder1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="src\sass\components\home\StyleSheet.scss" />
     <None Remove="webpack.config.js" />
   </ItemGroup>
 
