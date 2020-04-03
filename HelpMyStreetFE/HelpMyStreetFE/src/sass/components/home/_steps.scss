@@ -1,0 +1,13 @@
+﻿@media screen and (max-width: $med-screen){
+    .step{
+        display: flex;
+    }
+    .step h4{
+        margin-top: 0;
+    }
+
+    .step > div:first-of-type{
+        margin-right: $sm-margin;
+        margin-top: 8px;
+    }
+}
