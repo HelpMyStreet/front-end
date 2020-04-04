@@ -29,9 +29,9 @@ steps:
     command: 'build'
     projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'test'
 
 - task: Npm@1
   inputs:
