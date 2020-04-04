@@ -24,22 +24,14 @@ steps:
     feedsToUse: 'select'
     vstsFeed: 'e5c08e0c-1c28-42ca-815f-5ca90021fd46/9ff815b0-abc7-442a-98cb-d2879666c3bb'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
 
 - task: Npm@1
   inputs:
