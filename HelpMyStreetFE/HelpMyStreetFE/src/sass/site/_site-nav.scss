@@ -1,0 +1,28 @@
+.site-nav {
+  &__wrapper {
+
+  }
+
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  &__item {
+    padding: 0.5rem 1rem;
+    list-style: none;
+  }
+
+  &__link {
+    color: $black;
+    text-decoration: none;
+    transition: color 0.5s;
+
+    &:hover {
+      text-decoration: underline;
+      color: $blue;
+      transition: color 0.1s;
+    }
+  }
+}

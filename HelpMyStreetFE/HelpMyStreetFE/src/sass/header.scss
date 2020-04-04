@@ -1,4 +1,26 @@
-﻿header.page-header {
+﻿.page-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+    "auth auth"
+    "logo nav";
+
+    &__logo {
+        grid-area: logo; 
+    }
+    &__nav {
+        grid-area: nav;
+    }
+    &__sign-in {
+        grid-area: auth;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    // This is the original page header CSS, just commented out to
+    // get the navigation in place but reinstate if necessary
+    /*
     padding: 50px 12px;
     margin-bottom: 32px;
 
@@ -19,4 +41,5 @@
         width: 1px;
         background-color: #ccc;
     }
+    */
 }

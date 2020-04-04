@@ -5,20 +5,16 @@
 }
 
 <div class="container">
-    <header class="page-header flex align-center">
+    <header class="page-header align-center">
+        <div class="page-header__sign-in">
+            <partial name="_HeaderLogin" />           
+        </div>
+        <div class="page-header__logo">
             <img class="logo" src="~/img/logos/HelpMyStreet_logo.svg" alt="Help My Street Logo" />
-        <div class="input">
-            <label>Email address</label>
-            <input type="text" placeholder="Email Address" />
         </div>
-        <div class="input">
-            <label>Password</label>
-            <input type="Password" placeholder="Password" />
-            <a href="#">Forgotten password?</a>
+        <div class="page-header__nav">
+            <partial name="_SiteNavigation" />
         </div>
-        <button class="btn transparent blue border-blue">Login</button>
-        <div class="spacer"></div>
-        <button class="btn cta">Sign Up Now</button>
     </header>
 
     <div class="row mb56 flex justify-center">
