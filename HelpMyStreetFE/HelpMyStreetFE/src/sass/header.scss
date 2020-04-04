@@ -1,10 +1,20 @@
-﻿.page-header {
+﻿$breakpointSm: 1150px;
+
+.page-header {
     display: grid;
     grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto auto auto;
     grid-template-areas: 
-    "auth auth"
-    "logo nav";
+    "logo toggle"
+    "nav nav"
+    "auth auth";
+
+    @media screen and (min-width: $breakpointSm) {
+        grid-template-rows: auto auto auto;
+        grid-template-areas: 
+        "auth auth"
+        "logo nav";
+    }
 
     &__logo {
         grid-area: logo; 
@@ -16,6 +26,14 @@
         grid-area: auth;
         display: flex;
         justify-content: flex-end;
+    }
+    &__toggle {
+        grid-area: toggle;
+        text-align: right;
+
+        @media screen and (min-width: $breakpointSm) {
+            display: none;
+        }
     }
 
     // This is the original page header CSS, just commented out to

@@ -38,8 +38,9 @@
 
   .btn {
     @include copy-sz-md;
+    padding: 0.25rem 1rem;
   }
-  
+
   .btn--sign-up {
     white-space: nowrap;
   }
