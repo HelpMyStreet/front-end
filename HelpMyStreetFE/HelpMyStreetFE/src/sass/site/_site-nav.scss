@@ -1,8 +1,10 @@
 $breakpointSm: 1150px;
 
 .site-nav {
+
   &__items {
     background-color: #f0ede8;
+    padding-top: 1rem;
   }
 
   &__item {
@@ -35,6 +37,7 @@ $breakpointSm: 1150px;
       display: flex;
       flex-wrap: wrap;
       background-color: transparent;
+      padding-top: 0;
     }
     
     &__item {
@@ -52,33 +55,4 @@ $breakpointSm: 1150px;
     }
 
   } 
-}
-
-
-
-.site-navx {
-
-  &__menu-toggle {
-    display: block;
-
-    @media screen and (min-width: $breakpointSm) {
-      display: none;
-    }
-  }
-
-  &__items {
-    height: 0;
-    overflow: hidden;
-
-    @media screen and (min-width: $breakpointSm) {
-      height: auto;
-    }
-    
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &.collapsed {
-    background-color: #fea;
-  }
 }

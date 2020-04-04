@@ -29,35 +29,47 @@
     }
     &__toggle {
         grid-area: toggle;
-        text-align: right;
+        display: flex;
+        justify-content: flex-end;
 
         @media screen and (min-width: $breakpointSm) {
             display: none;
         }
     }
 
-    // This is the original page header CSS, just commented out to
-    // get the navigation in place but reinstate if necessary
-    /*
-    padding: 50px 12px;
-    margin-bottom: 32px;
+    &__btn--menu-toggle {
+        max-width: 64px;
+        height: auto;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        background-color: transparent;
 
-    & > div {
-        margin: 0 4px;
-    }
+        &.collapsed {
+            background-color: #f0ede8;
 
-    .logo {
-        margin-right: 68px;
-    }
+            .toggle-icon {
+                path.cross {
+                    display: block;
+                }
+                path.burger {
+                    display: none;
+                }
+            }
+        }
 
-    .btn {
-        margin: 0 4px;
+        .toggle-icon {
+            path {
+                stroke: #131614;
+                stroke-width: 12px;
+            }
+            path.burger {
+                display: block;
+            }
+            path.cross {
+                display: none;
+            }
+        }
     }
-
-    .spacer {
-        height: 59px;
-        width: 1px;
-        background-color: #ccc;
-    }
-    */
 }
