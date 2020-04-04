@@ -1,14 +1,13 @@
-﻿.input {
+﻿@import "./mixins/forms/inputs";
+
+.input {
     label {
         position: absolute;
         top: -27px;
     }
 
     input {
-        width: 240px;
-        border: 1px solid lightgrey;
-        padding: 11px 10px 10px;
-        border-radius: 5px;
+        @include input-default;
     }
 
     a {
