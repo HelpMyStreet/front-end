@@ -14,6 +14,13 @@ Website to be hosted at helpmystreet.org
 | `Services__User__Location`    | URL of the User service                     |
 | `Services__User__Key`         | Auth key for the User service               |
 
+For development you will require:
+
+- The Firebase Credential Key file, ask a maintainer
+- The Service API Keys, ask a maintainer
+
+These can be configured using the above enviroment variables or by overriding the default configuration using an `appsettings.Development.json` file. This file has been gitignored to prevent keys/secrets ending up in the repository.
+
 ## HTML Build
 
 The frontend uses Webpack to build static sources in to minified version and places them in the `wwwroot` folder of the MVC application
