@@ -1,17 +1,23 @@
 @import "../../mixins/forms/inputs";
 @import "../../mixins/typography/copy";
 
-$breakpointSm: 850px;
+$breakpointSm: 900px;
 
 /* Collapsed states */
 .collapsed {
-  .header-login {
+  &.header-login {
+    background-color: $background-main;
+  }
+  .header-login {    
     &__collapsed-nav {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
     }
     &__form {    
       display: none;
+    }
+    &__form-header {      
+      justify-content: space-between;
     }
 
     @media screen and (min-width: $breakpointSm) {
@@ -27,6 +33,9 @@ $breakpointSm: 850px;
 }
 
 .header-login {    
+  background-color: $background-darker-1;
+  width: 100%;
+
   &__collapsed-nav {
     display: none;
   }
@@ -65,7 +74,7 @@ $breakpointSm: 850px;
 
   &__form-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;    
   }
   
   &__input {
@@ -107,10 +116,11 @@ $breakpointSm: 850px;
   .btn--sign-up {
     white-space: nowrap;
   }
-      
+  
   @media screen and (min-width: $breakpointSm) {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-end;
 
     &__form-header {
       display: none;
