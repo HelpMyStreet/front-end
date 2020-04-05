@@ -1,39 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Registration;
+using HelpMyStreetFE.Models.Reponses;
+using HelpMyStreetFE.Repositories;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Mime;
-using System.Text;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace HelpMyStreetFE.Services
 {
-    public class Address
+    public class AddressService : BaseHttpService, IAddressService
     {
-        public string houseName { get; set; }
-        public int? houseNumber { get; set; }
-    }
-
-    public class PostCodeResponse
-    {
-        public string postCode { get; set; }
-        public List<Address> addresses { get; set; }
-    }
-
-    public class AddressService : IAddressService
-    {
-        private readonly HttpClient client = new HttpClient();
         private readonly ILogger<AddressService> _logger;
+        private readonly IAddressRepository _addressRepository;
+        private readonly IUserRepository _userRepository;
 
-        public AddressService(ILogger<AddressService> logger)
+        public AddressService(
+            ILogger<AddressService> logger,
+            IConfiguration configuration,
+            IAddressRepository addressRepository,
+            IUserRepository userRepository) : base(configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            client.DefaultRequestHeaders.Add("x-functions-key", "xjof6oogVYjn2MHYTWHUDXhvm4NGa1Vk8NhbJ3pouiehPAiqTM6MlA==");
+            _addressRepository = addressRepository;
+            _userRepository = userRepository;
         }
 
         public int GetVolunteerCount()
@@ -61,23 +55,27 @@ namespace HelpMyStreetFE.Services
             return Task.Factory.StartNew(() => 15);
         }
 
-        public async Task<PostCodeResponse> CheckPostCode(string postCode)
+        public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
         {
-            _logger.LogInformation($"Checking postcode {postCode}");
-            var reqJson = JsonSerializer.Serialize(new { postCode });
-            _logger.LogInformation($"Sending {reqJson}");
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://helpmystreet-address-service-dev.azurewebsites.net/api/GetPostCode"),
-                Content = new StringContent(reqJson, Encoding.UTF8, "application/json"),
-            };
-
-            var response = await client.SendAsync(request);
-            _logger.LogInformation($"Status Code: {response.StatusCode}");
+            var response = await Client.GetAsync($"/api/getpostcode?postcode={postcode}");
             var str = await response.Content.ReadAsStringAsync();
-            _logger.LogInformation($"Received: {str}");
-            return JsonSerializer.Deserialize<PostCodeResponse>(str); ;
+            return JsonConvert.DeserializeObject<GetPostCodeResponse>(str);
+        }
+
+        public async Task<List<PostCodeDetail>> GetPostcodeDetailsNearUser(User user)
+        {
+            var postCodes = await _addressRepository.GetNearbyPostcodes(user.PostalCode);
+
+            var nearby = new List<PostCodeDetail>();
+
+            foreach (var postcode in postCodes.Content.Postcodes)
+            {
+                var street = string.Concat(postcode.AddressDetails[0].AddressLine1.Where(c => !char.IsNumber(c)));
+                var champs = await _userRepository.GetChampionCountByPostcode(postcode.Postcode);
+                nearby.Add(new PostCodeDetail { StreetName = street, ChampionCount = champs, Postcode = postcode.Postcode });
+            }
+
+            return nearby;
         }
     }
 }

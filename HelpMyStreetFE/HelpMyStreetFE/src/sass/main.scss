@@ -5,6 +5,8 @@
 @import "./spacing.scss";
 @import "./input.scss";
 @import "./variables.scss";
+@import "./registration.scss";
+@import "./login.scss";
 
 @import "./site/site-nav";
 @import "./components/authentication/header-login";
@@ -15,6 +17,7 @@
 @import "./components/notification-card/notification";
 @import "./components/profile/profile-panel";
 @import "./components/info-popup";
+@import "./components/list";
 
 * {
   font-family: "Montserrat", sans-serif;
@@ -112,6 +115,7 @@ h6 {
   line-height: 22px;
   letter-spacing: 0.5px;
   padding: 13px 40px;
+  text-decoration: none;
 
   &.border-blue {
     border: 2px solid $blue;
@@ -220,7 +224,6 @@ h6 {
 }
 
 .mdi-check {
-  color: $blue;
   font-weight: bold;
 }
 

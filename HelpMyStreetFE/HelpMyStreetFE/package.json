@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch --mode development"
   },
   "browserslist": [
     "last 2 version",
@@ -13,6 +13,7 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.4.2",
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
-    "core-js": "^3.6.4"
+    "core-js": "^3.6.4",
+    "firebase": "^7.13.1"
   }
 }
