@@ -16,8 +16,10 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: NuGet install
 
 - task: NuGetCommand@2
+  displayName: NuGet restore
   inputs:
     command: 'restore'
     restoreSolution: '$(solution)'
@@ -25,26 +27,31 @@ steps:
     vstsFeed: 'e5c08e0c-1c28-42ca-815f-5ca90021fd46/9ff815b0-abc7-442a-98cb-d2879666c3bb'
 
 - task: DotNetCoreCLI@2
+  displayName: DotNetCore build
   inputs:
     command: 'build'
     projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
 
 #- task: DotNetCoreCLI@2
+#  displayName: DotNetCore test
 #  inputs:
 #    command: 'test'
 
 - task: Npm@1
+  displayName: npm install
   inputs:
     command: 'install'
     workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
 
 - task: Npm@1
+  displayName: npm run build
   inputs:
     command: 'custom'
     workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
     customCommand: 'run build --production'
 
 - task: DotNetCoreCLI@2
+  displayName: DotNetCore publish
   inputs:
     command: publish
     publishWebProjects: True
@@ -52,6 +59,7 @@ steps:
     zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
+  displayName: Publish Build Artefacts
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'drop'
