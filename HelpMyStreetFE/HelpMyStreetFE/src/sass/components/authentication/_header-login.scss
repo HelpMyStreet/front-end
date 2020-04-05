@@ -1,0 +1,47 @@
+@import "../../mixins/forms/inputs";
+@import "../../mixins/typography/copy";
+
+.header-login {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      @include copy-sz-sm;
+      font-weight: bold;
+    }
+    input {
+      @include input-default;
+    }
+
+    .link--forgot-pw {
+      @include copy-sz-sm;
+      color: $black;
+      text-decoration: none;
+      transition: color 0.5s;
+
+      &:hover {
+        text-decoration: underline;
+        color: $blue;
+        transition: color 0.1s;
+      }
+    }
+  }
+  
+  /* button container */
+  &__btn  {
+    align-self: center;
+  }
+
+  .btn {
+    @include copy-sz-md;
+    padding: 0.25rem 1rem;
+  }
+
+  .btn--sign-up {
+    white-space: nowrap;
+  }
+}

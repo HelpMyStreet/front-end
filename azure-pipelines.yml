@@ -16,48 +16,50 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: NuGet install
 
 - task: NuGetCommand@2
+  displayName: NuGet restore
   inputs:
     command: 'restore'
     restoreSolution: '$(solution)'
     feedsToUse: 'select'
     vstsFeed: 'e5c08e0c-1c28-42ca-815f-5ca90021fd46/9ff815b0-abc7-442a-98cb-d2879666c3bb'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
 - task: DotNetCoreCLI@2
+  displayName: DotNetCore build
   inputs:
     command: 'build'
     projects: 'HelpMyStreetFE/HelpMyStreetFE/HelpMyStreetFE.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
+#- task: DotNetCoreCLI@2
+#  displayName: DotNetCore test
+#  inputs:
+#    command: 'test'
 
+- task: Npm@1
+  displayName: npm install
+  inputs:
+    command: 'install'
+    workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
+
+- task: Npm@1
+  displayName: npm run build
+  inputs:
+    command: 'custom'
+    workingDir: 'HelpMyStreetFE/HelpMyStreetFE/'
+    customCommand: 'run build --production'
+
+- task: DotNetCoreCLI@2
+  displayName: DotNetCore publish
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
+  displayName: Publish Build Artefacts
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
-
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(cf4b5ad9-1aa8-4960-af9c-01030b3a2662)'
-    appType: 'webApp'
-    WebAppName: 'helpmystreet-dev'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'drop'

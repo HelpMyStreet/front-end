@@ -3,6 +3,7 @@ import firebase from "./firebase/index";
 import account from "./account";
 import notification from "./account/notification";
 import "./shared/info-popup";
+import "./shared/site-nav";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBcXGTnRXhFGq3fb6-ulyo-7qL8P0RIbqA",

@@ -1,22 +1,75 @@
-﻿header.page-header {
-    padding: 50px 12px;
-    margin-bottom: 32px;
+﻿$breakpointSm: 1150px;
 
-    & > div {
-        margin: 0 4px;
+.page-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+    "logo toggle"
+    "nav nav"
+    "auth auth";
+
+    @media screen and (min-width: $breakpointSm) {
+        grid-template-rows: auto auto auto;
+        grid-template-areas: 
+        "auth auth"
+        "logo nav";
     }
 
-    .logo {
-        margin-right: 68px;
+    &__logo {
+        grid-area: logo; 
+    }
+    &__nav {
+        grid-area: nav;
+    }
+    &__sign-in {
+        grid-area: auth;
+        display: flex;
+        justify-content: flex-end;
+    }
+    &__toggle {
+        grid-area: toggle;
+        display: flex;
+        justify-content: flex-end;
+
+        @media screen and (min-width: $breakpointSm) {
+            display: none;
+        }
     }
 
-    .btn {
-        margin: 0 4px;
-    }
+    &__btn--menu-toggle {
+        max-width: 64px;
+        height: auto;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        border: none;
+        background-color: transparent;
 
-    .spacer {
-        height: 59px;
-        width: 1px;
-        background-color: #ccc;
+        &.collapsed {
+            background-color: #f0ede8;
+
+            .toggle-icon {
+                path.cross {
+                    display: block;
+                }
+                path.burger {
+                    display: none;
+                }
+            }
+        }
+
+        .toggle-icon {
+            path {
+                stroke: #131614;
+                stroke-width: 12px;
+            }
+            path.burger {
+                display: block;
+            }
+            path.cross {
+                display: none;
+            }
+        }
     }
 }
