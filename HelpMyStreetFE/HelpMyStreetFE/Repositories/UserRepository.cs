@@ -1,8 +1,10 @@
 ﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
@@ -14,7 +16,14 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<User> GetUserByAuthId(string authId)
         {
-            var resp = await GetAsync<GetUserResponse>($"/api/getuserbyfirebaseuserid?firebaseuid{authId}");
+            var resp = await GetAsync<GetUserResponse>($"/api/getuserbyfirebaseuserid?firebaseuid={authId}");
+
+            return resp.User;
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            var resp = await GetAsync<GetUserResponse>($"/api/getuserbyid?id={id}");
 
             return resp.User;
         }
@@ -23,8 +32,42 @@ namespace HelpMyStreetFE.Repositories
         {
             var response = await PostAsync<ModifyUserResponse>("/api/postcreateuser", new
             {
-                EmailAddress = email,
-                FirebaseUID = authId
+                RegistrationStepOne = new RegistrationStepOne
+                {
+                    EmailAddress = email,
+                    FirebaseUID = authId,
+                    DateCreated = DateTime.Now
+                }
+            });
+
+            return response.Id;
+        }
+
+        public async Task<int> CreateUserStepTwo(RegistrationStepTwo data)
+        {
+            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageTwo", new
+            {
+                RegistrationStepTwo = data
+            });
+
+            return response.Id;
+        }
+
+        public async Task<int> CreateUserStepThree(RegistrationStepThree data)
+        {
+            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageThree", new
+            {
+                RegistrationStepThree = data
+            });
+
+            return response.Id;
+        }
+
+        public async Task<int> CreateUserStepFour(RegistrationStepFour data)
+        {
+            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageFour", new
+            {
+                RegistrationStepFour = data
             });
 
             return response.Id;
@@ -35,6 +78,13 @@ namespace HelpMyStreetFE.Repositories
             var response = await PutAsync<ModifyUserResponse>("/api/putmodifyuser", new { user });
 
             return response.Id;
+        }
+
+        public async Task<int> GetChampionCountByPostcode(string postcode)
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/getchampioncountbypostcode?postcode={postcode}");
+
+            return response.Count;
         }
     }
 }

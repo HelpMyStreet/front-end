@@ -1,5 +1,6 @@
 ﻿using HelpMyStreet.Utils.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace HelpMyStreetFE.Models.Registration
 {
@@ -31,5 +32,8 @@ namespace HelpMyStreetFE.Models.Registration
 
         [BindProperty(Name = "alt_number")]
         public string OtherPhone { get; set; }
+
+        [BindProperty(Name = "dob")]
+        public DateTime DateOfBirth { get; set; }
     }
 }

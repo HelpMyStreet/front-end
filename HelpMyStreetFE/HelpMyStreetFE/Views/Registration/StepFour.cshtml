@@ -1,4 +1,6 @@
-﻿@model RegistrationViewModel;
+﻿@using HelpMyStreetFE.Models.Registration;
+
+@model StepFourRegistrationViewModel;
 
 @section Scripts {
     <script>
@@ -7,9 +9,9 @@
     <script src="~/registration.js" asp-append-version="true"></script>
 }
 
-@{ 
+@{
     var responsibilities = new Dictionary<char, string>
-    {
+{
         { 'a', "Be able to contact and be contacted by everyone on the street. You could drop postcards through doors with your contact details or make use of an existing group." },
         { 'b', "Be able to co-ordinate the response to requests for help, either by offering help themselves or finding someone to help." },
         { 'c', "Be respectful towards people's needs and their confidentiality." }
@@ -41,16 +43,59 @@
                     </div>
                 }
             </div>
-            <div class="sm8 list">
+            <div class="sm8">
                 <div class="input input--checkbox">
                     <label>
-                        <input name="terms_and_conditions" type="checkbox" hidden required />
+                        <input name="street_champion" type="checkbox" hidden />
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
                         I understand and agree to undertake the role of a Street Champion
                     </label>
                 </div>
+            </div>
+            <div class="expander sm8">
+                <h5>Please choose your streets below (3 max)</h5>
+                @foreach (var pc in Model.NearbyPostCodes)
+                {
+                    <div class="input input--checkbox">
+                        <label class="postcode_checkbox">
+                            <input name="postcodes[]" type="checkbox" value="@pc.Postcode" hidden />
+                            <span class="input--checkbox__checkbox">
+                                <span class="mdi mdi-check"></span>
+                            </span>
+                            @pc.StreetName @pc.Postcode
+                        <span class="message">
+                            @if (Model.UsersPostCode.ChampionCount < 2)
+                            {
+                                if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                {
+                                    @("Your street needs a Street Champion, can you help?")
+                                }
+                                else
+                                {
+                                    @("Your local neighbours might also need help here.")
+                                }
+                            }
+                            else if (Model.LocalAvailability)
+                            {
+                                if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                {
+                                    @("We already have Street Champions here. Can you help others nearby?")
+                                }
+                                else
+                                {
+                                    @("Your local neighbours need help here.")
+                                }
+                            } else
+                            {
+                                @("Coverage is good in your area, but you can still add yourself as an additional street champion")
+                            }
+                        </span>
+                        </label>
+                    </div>
+                    <hr class="input--separator" />
+                }
             </div>
 
             <div class="sm8">

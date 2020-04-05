@@ -1,19 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 
 namespace HelpMyStreetFE
 {
@@ -38,6 +31,7 @@ namespace HelpMyStreetFE
                 });
             services.AddControllersWithViews();
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IAddressRepository, AddressRepository>();
             services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();

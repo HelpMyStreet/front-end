@@ -57,6 +57,14 @@ form {
     margin: 40px 0 0;
   }
 
+  .error {
+    display: none;
+    color: red;
+    position: absolute;
+    left: 0;
+    bottom: -25px;
+  }
+
   .input {
     width: 100%;
     margin: 64px 0 0;
@@ -65,13 +73,6 @@ form {
       font-weight: bold;
       font-size: 18px;
       line-height: 27px;
-    }
-
-    .error {
-      color: red;
-      position: absolute;
-      left: 0;
-      bottom: -25px;
     }
 
     &__hint {
@@ -153,6 +154,11 @@ form {
         font-weight: normal;
         color: $p-color;
         top: 0;
+
+        span.message {
+          float: right;
+          color: $blue;
+        }
 
         &:hover {
           cursor: pointer;

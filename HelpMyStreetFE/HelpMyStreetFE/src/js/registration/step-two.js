@@ -1,31 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-
-function validateFormData(form, validation) {
-  return form
-    .find(".input")
-    .get()
-    .reduce((acc, cur) => {
-      const inp = $(cur).find("input");
-      if (inp.length) {
-        const { name, value } = inp[0];
-
-        const errDisplay = $(cur).find(".error");
-        errDisplay && errDisplay.text("").hide();
-
-        const validator = validation[name];
-
-        if (validator) {
-          const valid = validator(value);
-          if (valid !== true) {
-            acc = false;
-            errDisplay.text(valid).show();
-          }
-        }
-      }
-
-      return acc;
-    }, true);
-}
+import { validateFormData } from "../shared/validator";
 
 export function initialiseStepTwo() {
   $("#manual_address").on("click", function (evt) {

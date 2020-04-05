@@ -2,7 +2,6 @@
 using HelpMyStreetFE.Services.Options;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;

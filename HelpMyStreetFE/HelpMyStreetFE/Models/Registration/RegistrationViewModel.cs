@@ -1,4 +1,4 @@
-﻿namespace HelpMyStreetFE.Models
+﻿namespace HelpMyStreetFE.Models.Registration
 {
     public class RegistrationViewModel
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
@@ -17,12 +18,18 @@ namespace HelpMyStreetFE.Controllers
         private readonly ILogger<RegistrationController> _logger;
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
+        private readonly IAddressService _addressService;
 
-        public RegistrationController(ILogger<RegistrationController> logger, IUserService userService, IAuthService authService)
+        public RegistrationController(
+            ILogger<RegistrationController> logger,
+            IUserService userService,
+            IAuthService authService,
+            IAddressService addressService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService;
             _authService = authService;
+            _addressService = addressService;
         }
 
         [AllowAnonymous]
@@ -39,13 +46,20 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/stepone")]
         public async Task<ActionResult> StepOnePost([FromBody] NewUserModel userData)
         {
-            _logger.LogInformation("Posting new user");
-            var uid = await _authService.VerifyIdTokenAsync(userData.Token);
-            await _userService.CreateUser(userData.Email, uid);
+            try
+            {
+                _logger.LogInformation("Posting new user");
+                var uid = await _authService.VerifyIdTokenAsync(userData.Token);
+                await _userService.CreateUserAsync(userData.Email, uid);
+                await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
 
-            await _authService.LoginWithTokenAsync(uid, HttpContext);
-
-            return Ok();
+                return Ok();
+            } catch (Exception ex)
+            {
+                _logger.LogError("Error executing step 1");
+                _logger.LogError(ex.ToString());
+                return StatusCode(500);
+            }
         }
 
         [HttpGet("[controller]/steptwo")]
@@ -60,23 +74,18 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/steptwo")]
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form)
         {
-            var personalDetails = FormToUserDetails(form);
-            personalDetails.EmailAddress = HttpContext.User.FindFirstValue(ClaimTypes.Email);
-            var user = new User
-            {
-                ID = int.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier)),
-                FirebaseUID = HttpContext.User.FindFirstValue(ClaimTypes.Name),
-                UserPersonalDetails = personalDetails
-            };
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             try
             {
-                var resp = await _userService.UpdateUser(user);
-                return Redirect("/registration/steptwo?failure=error");
-            }
-            catch
-            {
+                await _userService.CreateUserStepTwoAsync(id, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth);
                 return Redirect("/registration/stepthree");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error executing step 2");
+                _logger.LogError(ex.ToString());
+                return Redirect("/registration/steptwo?failure=error");
             }
         }
 
@@ -89,31 +98,84 @@ namespace HelpMyStreetFE.Controllers
             });
         }
 
-        [HttpGet("[controller]/stepfour")]
-        public ActionResult StepFour()
+        [HttpPost("[controller]/stepthree")]
+        public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form)
         {
-            return View(new RegistrationViewModel
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            try
             {
-                ActiveStep = 4
+                _logger.LogInformation($"Step 3 submission for {id}");
+
+                await _userService.CreateUserStepThreeAsync(
+                    id,
+                    form.VolunteerOptions,
+                    form.VolunteerDistance,
+                    form.VolunteerPhoneContact,
+                    form.VolunteerMedicalCondition);
+
+                return Redirect("/registration/stepfour");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error executing step 3");
+                _logger.LogError(ex.ToString());
+                return Redirect("/registration/stepthree?failure=error");
+            }
+        }
+
+        [HttpGet("[controller]/stepfour")]
+        public async Task<ActionResult> StepFour()
+        {
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var user = await _userService.GetUserAsync(id);
+            var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
+
+            var nearbyWithoutUser = nearby.Where(p => p.Postcode != user.PostalCode).OrderBy(c => c.ChampionCount).ToList();
+            var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
+            var localAvailability = !nearby.Aggregate(false, (acc, next) => acc || next.ChampionCount < 2);
+
+            // If the user's postcode is available or no other postcodes are available, lead with the user's post code
+            if (userPostcode.ChampionCount < 2 || localAvailability)
+            {
+                nearbyWithoutUser.Insert(0, userPostcode);
+            } else
+            {
+                nearbyWithoutUser.Insert(0, userPostcode);
+            }
+
+            return View(new StepFourRegistrationViewModel
+            {
+                ActiveStep = 4,
+                NearbyPostCodes = nearby,
+                UsersPostCode = userPostcode,
+                LocalAvailability = localAvailability
             });
         }
 
-        private UserPersonalDetails FormToUserDetails(StepTwoFormModel form)
+        [HttpPost("[controller]/stepfour")]
+        public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
         {
-            return new UserPersonalDetails
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            try
             {
-                FirstName = form.FirstName,
-                LastName = form.LastName,
-                Address = new Address
-                {
-                    AddressLine1 = form.AddressLine1,
-                    AddressLine2 = form.AddressLine2,
-                    Locality = form.City,
-                    Postcode = form.Postcode,
-                },
-                MobilePhone = form.MobilePhone,
-                OtherPhone = form.OtherPhone
-            };
+                _logger.LogInformation($"Step 4 submission for {id}");
+
+                await _userService.CreateUserStepFourAsync(
+                    id,
+                    form.ChampionRoleUnderstood,
+                    form.ChampionPostcodes);
+
+                return Redirect("/registration/stepfive");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error executing step 4");
+                _logger.LogError(ex.ToString());
+                return Redirect("/registration/stepfour?failure=error");
+            }
         }
     }
 }
