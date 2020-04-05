@@ -18,6 +18,16 @@
 
     &__logo {
         grid-area: logo; 
+        padding: .5rem .5rem;
+
+        @media screen and (min-width: $breakpointSm) {
+            padding: 0 1rem;
+        }
+
+        .logo {
+            width: 64vw;
+            max-width: 280px;
+        }
     }
     &__nav {
         grid-area: nav;
@@ -25,7 +35,11 @@
     &__sign-in {
         grid-area: auth;
         display: flex;
-        justify-content: flex-end;
+        justify-content: center;
+
+        @media screen and (min-width: $breakpointSm) {
+            justify-content: flex-end;
+        }
     }
     &__toggle {
         grid-area: toggle;
