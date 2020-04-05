@@ -1,0 +1,66 @@
+﻿@model RegistrationViewModel;
+
+@section Scripts {
+    <script>
+        const activeStep = @Model.ActiveStep;
+    </script>
+    <script src="~/registration.js" asp-append-version="true"></script>
+}
+
+@{ 
+    var responsibilities = new Dictionary<char, string>
+    {
+        { 'a', "Be able to contact and be contacted by everyone on the street. You could drop postcards through doors with your contact details or make use of an existing group." },
+        { 'b', "Be able to co-ordinate the response to requests for help, either by offering help themselves or finding someone to help." },
+        { 'c', "Be respectful towards people's needs and their confidentiality." }
+    };
+}
+
+
+<div class="container">
+
+    <partial name="_Stepper" for="ActiveStep" />
+
+    <div class="row justify-center mt72">
+        <div class="sm8">
+            <h2>Street Champions</h2>
+            @if (Context.Request.Query["failure"] == "error")
+            {
+                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+            }
+        </div>
+    </div>
+    <form id="registration_form" method="post">
+        <div class="row justify-center">
+            <div class="sm8 list">
+                @foreach (var responsibility in responsibilities)
+                {
+                    <div class="list__item">
+                        <span class="list__item__point">@responsibility.Key</span>
+                        <span class="list__item__text">@responsibility.Value</span>
+                    </div>
+                }
+            </div>
+            <div class="sm8 list">
+                <div class="input input--checkbox">
+                    <label>
+                        <input name="terms_and_conditions" type="checkbox" hidden required />
+                        <span class="input--checkbox__checkbox">
+                            <span class="mdi mdi-check"></span>
+                        </span>
+                        I understand and agree to undertake the role of a Street Champion
+                    </label>
+                </div>
+            </div>
+
+            <div class="sm8">
+                <div class="controls">
+                    <button class="btn cta" id="submit_button" type="submit">
+                        <span class="text">Continue to next page &gt;</span>
+                        <span class="loader">Creating account&hellip;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

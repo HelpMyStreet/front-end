@@ -1,5 +1,18 @@
 # front-end
+
 Website to be hosted at helpmystreet.org
+
+## Configuration
+
+`appsettings.json` has default local configurations. To override set the following environment variables:
+
+| Env var                       | Description                                 |
+| ----------------------------- | ------------------------------------------- |
+| `Firebase__CredentialKeyFile` | Absolute location of the firebase cred file |
+| `Services__Address__Location` | URL of the Address service                  |
+| `Services__Address__Key`      | Auth key for the Address service            |
+| `Services__User__Location`    | URL of the User service                     |
+| `Services__User__Key`         | Auth key for the User service               |
 
 ## HTML Build
 

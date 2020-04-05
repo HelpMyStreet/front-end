@@ -42,13 +42,6 @@ export function initialiseStepOne() {
       .createUserWithEmailAndPassword(email.val, password.val)
       .then(async (credentials) => {
         const token = await credentials.user.getIdToken();
-        await fetch("/api/auth", {
-          method: "post",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ token }),
-        });
 
         await fetch("/registration/stepone", {
           method: "post",
@@ -57,6 +50,7 @@ export function initialiseStepOne() {
           },
           body: JSON.stringify({
             email: email.val,
+            token,
           }),
         });
 

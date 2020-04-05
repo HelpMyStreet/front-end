@@ -1,148 +1,213 @@
 ﻿.stepper {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
+  display: flex;
+  width: 100%;
+  align-items: stretch;
 
-    &__step {
-        text-align: center;
-        flex-basis: 20%;
-        opacity: 0.3;
+  &__step {
+    text-align: center;
+    flex-basis: 20%;
+    opacity: 0.3;
 
-        &--active {
-            opacity: 1;
-        }
-
-        &__number {
-            margin: 8px auto;
-            display: block;
-            background-color: $dark-blue;
-            color: white;
-            font-size: 32px;
-            line-height: 39px;
-            font-weight: bold;
-            height: 64px;
-            width: 64px;
-            padding: 12.8px 0 12.2px;
-            border-radius: 40px;
-            z-index: 1;
-        }
-
-        &__text {
-            color: $dark-blue;
-            font-size: 18px;
-            line-height: 22px;
-            letter-spacing: 0.38px;
-            font-weight: bold;
-        }
+    &--active {
+      opacity: 1;
     }
 
-    &__link {
-        content: "";
-        border-top: 1px dashed #979797;
-        height: 0px;
-        z-index: 0;
-        margin: 40px -40px;
-        flex: 1 1 0px;
+    &__number {
+      margin: 8px auto;
+      display: block;
+      background-color: $dark-blue;
+      color: white;
+      font-size: 32px;
+      line-height: 39px;
+      font-weight: bold;
+      height: 64px;
+      width: 64px;
+      padding: 12.8px 0 12.2px;
+      border-radius: 40px;
+      z-index: 1;
     }
+
+    &__text {
+      color: $dark-blue;
+      font-size: 18px;
+      line-height: 22px;
+      letter-spacing: 0.38px;
+      font-weight: bold;
+    }
+  }
+
+  &__link {
+    content: "";
+    border-top: 1px dashed #979797;
+    height: 0px;
+    z-index: 0;
+    margin: 40px -40px;
+    flex: 1 1 0px;
+  }
 }
 
 form {
-    a {
+  a {
+    color: $p-color;
+  }
+
+  h5 {
+    font-size: 27px;
+    line-height: 36px;
+    margin: 40px 0 0;
+  }
+
+  .input {
+    width: 100%;
+    margin: 64px 0 0;
+
+    label {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 27px;
+    }
+
+    .error {
+      color: red;
+      position: absolute;
+      left: 0;
+      bottom: -25px;
+    }
+
+    &__hint {
+      font-weight: normal;
+      color: $p-color;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 64px;
+    }
+
+    &--separator {
+      border: none;
+      border-top: 1px dashed #ddd;
+      margin: 0;
+    }
+
+    &--radio {
+      margin: 20px 0;
+
+      label {
+        position: relative;
+        margin: 0;
+        padding-left: 40px;
+        font-weight: normal;
         color: $p-color;
+        top: 0;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      input:checked {
+        & ~ .input--radio__radio {
+          border: 1px solid $blue;
+
+          span {
+            display: block;
+            color: white;
+            line-height: 23px;
+            background-color: $blue;
+          }
+        }
+      }
+
+      &__radio {
+        background-color: #fff;
+        border: 1px solid lightgrey;
+        background-color: white;
+        width: 25px;
+        height: 25px;
+        left: 0px;
+        top: 0px;
+        border-radius: 13px;
+        position: absolute;
+        padding-top: 5px;
+        padding-left: 5px;
+
+        span {
+          display: none;
+          text-align: center;
+          width: 13px;
+          height: 13px;
+          border-radius: 10px;
+        }
+      }
     }
 
-    .input {
-        width: 100%;
-        margin: 64px 0 0;
+    &--checkbox {
+      margin: 20px 0;
 
-        label {
-            font-weight: bold;
-            font-size: 18px;
-            line-height: 27px;
+      label {
+        position: relative;
+        margin: 0;
+        padding-left: 40px;
+        font-weight: normal;
+        color: $p-color;
+        top: 0;
+
+        &:hover {
+          cursor: pointer;
         }
+      }
 
-        .error {
-            color: red;
-            position: absolute;
-            left: 0;
-            bottom: -25px;
+      input:checked {
+        & ~ .input--checkbox__checkbox {
+          background-color: $blue;
+
+          span {
+            display: block;
+            color: white;
+            line-height: 23px;
+          }
         }
+      }
 
-        &__hint {
-            font-weight: normal;
-            color: $p-color;
+      &__checkbox {
+        background-color: #fff;
+        border: 1px solid lightgrey;
+        background-color: white;
+        width: 25px;
+        height: 25px;
+        left: 0px;
+        top: 0px;
+        border-radius: 2px;
+        position: absolute;
+
+        span {
+          display: none;
+          text-align: center;
         }
-
-        input, select {
-            width: 100%;
-            height: 64px;
-        }
-
-        &--checkbox {
-            margin: 32px 0;
-
-            label {
-                position: relative;
-                margin: 0;
-                padding-left: 40px;
-                font-weight: normal;
-                color: $p-color;
-                top: 0;
-
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-
-            input:checked {
-                & ~ .input--checkbox__checkbox span {
-                    display: block;
-                }
-            }
-
-            &__checkbox {
-                background-color: #fff;
-                border: 1px solid lightgrey;
-                background-color: white;
-                width: 25px;
-                height: 25px;
-                left: 0px;
-                top: 0px;
-                border-radius: 2px;
-                position: absolute;
-
-                span {
-                    display: none;
-                    text-align: center;
-                }
-            }
-        }
+      }
     }
+  }
 
-    .controls {
-        text-align: right;
-        margin-top: 40px;
+  .controls {
+    text-align: right;
+    margin-top: 40px;
+  }
+
+  .btn {
+    height: 64px;
+    border-radius: 32px;
+
+    &--full-width {
+      width: 100%;
     }
+  }
 
-    .btn {
-        height: 64px;
-        border-radius: 32px;
-
-        &--full-width {
-            width: 100%;
-        }
-    }
-
-    .expander {
-        background-color: #EEEBE5;
-        margin-top: 86px;
-        padding: 48px 0 56px;
-        display: none;
-
-        h5 {
-            font-size: 27px;
-            line-height: 36px;
-            margin: 0;
-        }
-    }
+  .expander {
+    background-color: #eeebe5;
+    margin-top: 86px;
+    padding: 48px 0 56px;
+    display: none;
+  }
 }

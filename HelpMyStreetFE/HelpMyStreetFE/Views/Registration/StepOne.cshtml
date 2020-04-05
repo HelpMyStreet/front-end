@@ -12,6 +12,10 @@
     <div class="row justify-center mt72">
         <div class="sm8">
             <h1>Sign up to help</h1>
+            @if (Context.Request.Query["failure"] == "error")
+            {
+                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+            }
         </div>
     </div>
     <div class="row justify-center">

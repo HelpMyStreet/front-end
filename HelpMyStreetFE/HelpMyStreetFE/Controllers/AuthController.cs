@@ -25,7 +25,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            await _authService.LoginViaToken(loginRequest.token, HttpContext);
+            await _authService.LoginWithTokenAsync(loginRequest.token, HttpContext);
 
             return Ok();
         }

@@ -1,0 +1,139 @@
+﻿@model RegistrationViewModel;
+
+@section Scripts {
+    <script>
+        const activeStep = @Model.ActiveStep;
+    </script>
+    <script src="~/registration.js" asp-append-version="true"></script>
+}
+
+@{ 
+    var volunteerOptions = new List<string>
+    {
+        "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.",
+        "Collecting prescriptions from a local pharmacy",
+        "Running essential local errands (e.g. posting mail)",
+        "Walking the dog",
+        "Providing transport for essential medical appointments (where it is safe to do so)",
+        "Delivery a hot / pre-prepared meal",
+        "Making / receiving phone calls to those in need of a friendly chat",
+        "Making / receiving phone calls for those who are especially anxious or distressed",
+        "Homework support for children being home-schooled",
+        "Reacing out to people in my area to check-in"
+    };
+
+    var distanceOptions = new Dictionary<double, string>
+    {
+        { 0, "My street only" },
+        { 0.5, "Within 1/2 mile" },
+        { 1, "Within 1 mile" },
+        { 3, "Within 3 miles" }
+    };
+}
+
+
+<div class="container">
+
+    <partial name="_Stepper" for="ActiveStep" />
+
+    <div class="row justify-center mt72">
+        <div class="sm8">
+            <h2>Volunteers</h2>
+            @if (Context.Request.Query["failure"] == "error")
+            {
+                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+            }
+        </div>
+    </div>
+    <form id="registration_form" method="post">
+        <div class="row justify-center">
+            <div class="sm8">
+                <h5>I can help with the following:</h5>
+                @foreach (var option in volunteerOptions)
+                {
+                    <div class="input input--checkbox">
+                        <label>
+                            <input name="volunteer[]" type="checkbox" hidden required />
+                            <span class="input--checkbox__checkbox">
+                                <span class="mdi mdi-check"></span>
+                            </span>
+                            @option
+                        </label>
+                    </div>
+                    <hr class="input--separator" />
+                }
+            </div>
+            <div class="sm8 mt40">
+                <h5>Within what distance are you able to help?</h5>
+                @foreach (var option in distanceOptions)
+                {
+                    <div class="input input--radio">
+                        <label>
+                            <input name="volunteer_distance" type="radio" value="@option.Key" hidden required />
+                            <span class="input--radio__radio">
+                                <span class="input--radio__radio__inner"></span>
+                            </span>
+                            @option.Value
+                        </label>
+                    </div>
+                    <hr class="input--separator" />
+                }
+            </div>
+            <div class="sm8 mt40">
+                <h5>Are you happy to support other volunteers over the phone?</h5>
+                <div class="input input--radio">
+                    <label>
+                        <input name="volunteer_phone_contact" type="radio" value="true" hidden required />
+                        <span class="input--radio__radio">
+                            <span class="input--radio__radio__inner"></span>
+                        </span>
+                        Yes
+                    </label>
+                </div>
+                <hr class="input--separator" />
+                <div class="input input--radio">
+                    <label>
+                        <input name="volunteer_phone_contact" type="radio" value="false" hidden required />
+                        <span class="input--radio__radio">
+                            <span class="input--radio__radio__inner"></span>
+                        </span>
+                        No
+                    </label>
+                </div>
+                <hr class="input--separator" />
+            </div>
+            <div class="sm8 mt40">
+                <h5>Do you have an underlying medical condition?</h5>
+                <div class="input input--radio">
+                    <label>
+                        <input name="volunteer_medical_condition" type="radio" value="true" hidden required />
+                        <span class="input--radio__radio">
+                            <span class="input--radio__radio__inner"></span>
+                        </span>
+                        Yes
+                    </label>
+                </div>
+                <hr class="input--separator" />
+                <div class="input input--radio">
+                    <label>
+                        <input name="volunteer_medical_condition" type="radio" value="false" hidden required />
+                        <span class="input--radio__radio">
+                            <span class="input--radio__radio__inner"></span>
+                        </span>
+                        No
+                    </label>
+                </div>
+                <hr class="input--separator" />
+            </div>
+
+            <div class="sm8">
+                <div class="controls">
+                    <button class="btn cta" id="submit_button" type="submit">
+                        <span class="text">Continue to next page &gt;</span>
+                        <span class="loader">Creating account&hellip;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

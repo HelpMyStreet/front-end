@@ -2,11 +2,12 @@
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Repositories
 {
-    public interface IUserService
+    public interface IUserRepository
     {
         Task<int> CreateUser(string email, string authId);
+        Task<User> GetUserByAuthId(string authId);
         Task<int> UpdateUser(User user);
     }
 }

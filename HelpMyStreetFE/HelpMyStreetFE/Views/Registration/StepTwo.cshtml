@@ -14,8 +14,12 @@
 
     <div class="row justify-center mt72">
         <div class="sm8">
-            <h1>Your details</h1>
-        </div>
+            <h2>Your details</h2>
+            @if (Context.Request.Query["failure"] == "error")
+            {
+                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+            }
+         </div>
     </div>
     <form id="registration_form" method="post">
         <div class="row justify-center">
@@ -44,7 +48,6 @@
             <div class="input sm8 dnone" id="address_selector">
                 <label>Select address</label>
                 <select name="address_selector">
-
                 </select>
             </div>
             <div class="expander sm8">

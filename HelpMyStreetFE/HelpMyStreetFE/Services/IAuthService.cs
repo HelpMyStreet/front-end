@@ -5,6 +5,7 @@ namespace HelpMyStreetFE.Services
 {
     public interface IAuthService
     {
-        Task LoginViaToken(string token, HttpContext httpContext);
+        Task LoginWithTokenAsync(string token, HttpContext httpContext);
+        Task<string> VerifyIdTokenAsync(string token);
     }
 }

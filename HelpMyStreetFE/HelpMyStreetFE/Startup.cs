@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,6 +37,7 @@ namespace HelpMyStreetFE
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 });
             services.AddControllersWithViews();
+            services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();
