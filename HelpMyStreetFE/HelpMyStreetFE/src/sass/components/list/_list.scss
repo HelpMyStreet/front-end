@@ -1,0 +1,24 @@
+﻿.list {
+    & > span {
+        @extend p;
+        display: block;
+        margin: 16px 0;
+    }
+}
+
+.list-item {
+    margin: 16px 0;
+}
+
+@media screen and (max-width: $med-screen){
+    .list{
+        text-align: left;
+    }
+    .list > span{
+        display: flex;
+
+        > span{
+            margin-right: $xs-margin;
+        }
+    }
+}
