@@ -1,0 +1,33 @@
+﻿@model int;
+
+@{
+    ViewData["Title"] = "Registration";
+
+    var Steps = new Dictionary<int, string>
+{
+        { 1, "Your account" },
+        { 2, "Your details" },
+        { 3, "Volunteers" },
+        { 4, "Street Champions" },
+        { 5, "Verification" }
+    };
+}
+<div class="row justify-center">
+    <div class="stepper sm8">
+        @foreach (var step in Steps)
+        {
+            <div class="stepper__step @(Model == step.Key ? "stepper__step--active": string.Empty)">
+                <div class="stepper__step__number">
+                    @step.Key
+                </div>
+                <div class="stepper__step__text">
+                    @step.Value
+                </div>
+            </div>
+            @if (step.Key != Steps.Count())
+            {
+                <hr class="stepper__link" />
+            }
+        }
+    </div>
+</div>

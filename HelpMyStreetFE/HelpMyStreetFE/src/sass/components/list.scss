@@ -1,0 +1,26 @@
+﻿.list {
+    padding-left: 66px !important;
+
+    &__item {
+        margin: 56px 0;
+
+        &__point {
+            position: absolute;
+            left: -60px;
+            padding-top: 8px;
+            text-align: center;
+            background-color: $dark-blue;
+            color: white;
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: bold;
+            border-radius: 40px;
+            height: 40px;
+            width: 40px;
+        }
+
+        &__text {
+            display: inline;
+        }
+    }
+}

@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Services;
+﻿using HelpMyStreetFE.Models.Reponses;
+using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,7 +21,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("{postCode}")]
-        public async Task<ActionResult<PostCodeResponse>> Get(string postCode)
+        public async Task<ActionResult<GetPostCodeResponse>> Get(string postCode)
         {
             _logger.LogInformation($"PostCode {postCode}");
             return await _addressService.CheckPostCode(postCode);

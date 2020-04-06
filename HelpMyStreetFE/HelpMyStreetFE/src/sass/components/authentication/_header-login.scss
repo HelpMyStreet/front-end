@@ -1,0 +1,129 @@
+@import "../../mixins/forms/inputs";
+@import "../../mixins/typography/copy";
+
+$breakpointSm: 900px;
+
+/* Collapsed states */
+.collapsed {
+  &.header-login {
+    background-color: $background-main;
+  }
+  .header-login {    
+    &__collapsed-nav {
+      display: flex;
+      justify-content: center;
+    }
+    &__form {    
+      display: none;
+    }
+    &__form-header {      
+      justify-content: space-between;
+    }
+
+    @media screen and (min-width: $breakpointSm) {
+      &__collapsed-nav {
+        display: none;
+      }
+      
+      &__form {
+        display: flex; 
+      }
+    }
+  }
+}
+
+.header-login {    
+  background-color: $background-darker-1;
+  width: 100%;
+
+  &__collapsed-nav {
+    display: none;
+  }
+
+  .btn--close {
+    &:before {
+      @include copy-sz-xs;
+      color: $gray-8;
+      margin-right: 0.5rem;
+      content: "Close";
+    }
+  }
+
+  &__btn--toggle {
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+  
+    .icon--close {
+      .bg {
+        fill: $gray-8;
+      }
+      .cross {
+        stroke: white;
+        stroke-width: 12px;
+      }
+    }
+
+    @media screen and (min-width: $breakpointSm) {
+      .icon--close {
+        display: none;
+      }
+    }
+  }
+
+  &__form-header {
+    display: flex;
+    justify-content: space-between;    
+  }
+  
+  &__input {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      @include copy-sz-sm;
+      font-weight: bold;
+    }
+    input {
+      @include input-default;
+    }
+
+    .link--forgot-pw {
+      @include copy-sz-sm;
+      color: $black;
+      text-decoration: none;
+      transition: color 0.5s;
+
+      &:hover {
+        text-decoration: underline;
+        color: $blue;
+        transition: color 0.1s;
+      }
+    }
+  }
+
+  /* button container */
+  &__btn  {
+    align-self: center;
+  }
+
+  .btn {
+    @include copy-sz-md;
+    padding: 0.25rem 1rem;
+  }
+
+  .btn--sign-up {
+    white-space: nowrap;
+  }
+  
+  @media screen and (min-width: $breakpointSm) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+    &__form-header {
+      display: none;
+    }
+  }
+}
