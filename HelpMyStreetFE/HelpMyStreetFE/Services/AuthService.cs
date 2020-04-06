@@ -23,16 +23,16 @@ namespace HelpMyStreetFE.Services
             _configuration = configuration;
             _userRepository = userRepository;
 
-            var credFileLocation = _configuration["Firebase:CredentialKeyFile"];
+            var firebaseCredentials = _configuration["Firebase:Credentials"];
 
-            if (credFileLocation == string.Empty)
+            if (firebaseCredentials == string.Empty)
             {
-                throw new Exception("Credential file missing");
+                throw new Exception("Firebase cedentials missing");
             }
 
             var fb = FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile(credFileLocation)
+                Credential = GoogleCredential.FromJson(firebaseCredentials)
             });
 
             _firebase = FirebaseAuth.GetAuth(fb);
