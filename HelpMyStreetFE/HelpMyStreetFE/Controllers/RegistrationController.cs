@@ -54,7 +54,8 @@ namespace HelpMyStreetFE.Controllers
                 await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
 
                 return Ok();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError("Error executing step 1");
                 _logger.LogError(ex.ToString());
@@ -140,7 +141,8 @@ namespace HelpMyStreetFE.Controllers
             if (userPostcode.ChampionCount < 2 || localAvailability)
             {
                 nearbyWithoutUser.Insert(0, userPostcode);
-            } else
+            }
+            else
             {
                 nearbyWithoutUser.Insert(0, userPostcode);
             }
@@ -176,6 +178,13 @@ namespace HelpMyStreetFE.Controllers
                 _logger.LogError(ex.ToString());
                 return Redirect("/registration/stepfour?failure=error");
             }
+        }
+
+        [HttpGet("[controller]/stepfive")]
+        public IActionResult StepFive()
+        {
+            var viewModel = new RegistrationViewModel { ActiveStep = 5 };
+            return View(viewModel);
         }
     }
 }
