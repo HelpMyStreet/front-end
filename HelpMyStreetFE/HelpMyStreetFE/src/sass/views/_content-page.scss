@@ -1,0 +1,18 @@
+.content-page {
+  ul,
+  ol {
+    margin-bottom: $xs-margin;
+    li {
+      @extend p;
+      margin-bottom: $xxs-margin;
+    }
+  }
+}
+
+.content-page--community {
+  .content-page {
+    &__header {
+      margin-top: $med-margin;
+    }
+  }
+}
