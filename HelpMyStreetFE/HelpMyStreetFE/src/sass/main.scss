@@ -188,7 +188,9 @@ h6 {
 }
 
 .fill {
-  width: 100%;
+    @media screen and (max-width: $sm-screen) {
+        width: 100%;
+    }
 }
 
 .mdi-check {
