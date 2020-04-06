@@ -1,22 +1,60 @@
-﻿.container {
-    max-width: 1224px + 24px;
+﻿/*
+.container {
+    max-width: 1224px;
     margin: auto;
 
     .row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-column-gap: 24px;
+        justify-content: center;
+        justify-items: stretch;
 
         @for $i from 1 through 12 {
             .sm#{$i} {
-                flex-basis: 100% * ($i / 12);
-                padding-right: 12px;
-                padding-left: 12px;
+                grid-column-end: span $i;
             }
         }
 
-        &.justify-center {
-            justify-content: center;
+        @for $i from 1 through 11 {
+            .sm-offset-#{$i} {
+                grid-column-start: $i;
+            }
         }
     }
 }
+*/
+
+@media screen and (min-width: 1000px){
+    .container {
+        max-width: 1224px + 24px;
+        margin: auto;
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            @for $i from 1 through 12 {
+                .sm#{$i} {
+                    flex-basis: 100% * ($i / 12);
+                    padding-right: 12px;
+                    padding-left: 12px;
+                }
+            }
+
+            &.justify-center {
+                justify-content: center;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1000px){
+    .container{
+        width: calc(100vw - 32px);
+        margin: auto;
+    }
+}
+
+

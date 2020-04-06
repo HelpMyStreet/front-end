@@ -1,0 +1,25 @@
+﻿@media screen and (max-width: $med-screen) {
+    .hero {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero > * {
+        width: 100%;
+    }
+
+    .hero__img {
+        width: 100%;
+    }
+
+    .hero > div:first-of-type {
+        margin-bottom: 32px;
+    }
+}
+
+
+@media screen and (min-width: $med-screen) {
+    .hero > * {
+        width: 50%;
+    }
+}
