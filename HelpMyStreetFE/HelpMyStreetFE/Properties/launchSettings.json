@@ -1,7 +1,7 @@
-﻿{
+{
   "iisSettings": {
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:62889",
       "sslPort": 44323
@@ -12,16 +12,17 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "Firebase__Credentials": "{   \"type\": \"service_account\",   \"project_id\": \"factor50-test\",   \"private_key_id\": \"450bc8e44a52f47e2ce9a614abdf618f18645ace\",   \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDc1GKycjUN7B54\\nBWR044TRKmDDVKF4NnAIhhVLwqg6Iqlc0kLLvSinJ4Cjcg468vrKs/JDvdmsWDPk\\niCJMT0KBf/wyw/heRRgNCUPsZnzpMdO5zsb6i6FslzdDbVCew6R4pYqsx7X9FjGn\\nmnkeJmBGMw4G9Bgz7AIsxtZvN9Nz8/pF1FlKt2VX74E6Q2+OEErCNCsPffKa3b9e\\n63GxB7Ypx3yc/iL4+EQKxX8aT3X3s34rLIxmNGae6WO5U8KJPWVte0mbI+rOEJLg\\nKRTYGJR5l1CekENM01XKe0n2DZ0Pz6RpeLdV4/fXLCQYwxHtaYTBCXR22L+wjjqk\\nynh6AMghAgMBAAECggEAAVIxsjW30qjPxJnrKD4bc30iea6sHd4NAOcM8fBk3V6r\\nVtVg7gs4VtooFUo7kq+VD6EAlTZJuuPG8TI9islzWVcauxLELcux5XORjQSusP4x\\n4R/fHbz3uvCjZW9OKvn6hhh+7jJOaNiA9OrKGFOkUi0wY3siuS5Lc8k/e4g45w3a\\n8FkChBj7ihofQJRc+IdUGMmZ9xzi+XRahKwE7Ek/yFw5BfSurIktkOL3eiU85cfr\\n5tLA5ILF9hdizbWI4FuylvxXTD2AUDiIxhAUdBIXMbOqVG4TOKZ5mZtANPW0IHDh\\nml2OGIUI65ZkCgQcgPJg6ajwlPICcHQenrPZ0T1UAQKBgQDueVM/70kQ8o8StFy+\\nYCXFeTcNMHxQbCzNyB5wOlVLUUePZjnPCvFSi35snq2eiyw+8N6+M1KRkwzib9Zl\\nS5RHry0+Rhe+Cpct6ud3xYUE7P5l2f4+5i39SxfRZiU/LZdVYdbsMZgoLvoMDZku\\n5pyswTkWxitucfqja2LTfDC+IQKBgQDtDxk+1QEdXrNpXy3Kbf8BwsyNGej33UP1\\nXiHedBhbL1boPbFZIigDsm6K68zol7NoCn72d/y+fDqZd01lzJwhvtb66hgD+NSb\\nnuA7Ek2Fe3ei689WUoVZwBaAymfhujibQ8Ob/5q8WxDqHJ0Ufaynp8LSkBeJ/oHp\\nsdAayorKAQKBgQCfmKrSWv33TZ3a0sJO1mHw6tKhDRXlbL//aDKWwTNcGKVfnvaJ\\nTbV7nMebQgbH2DRgWyt29zoHGvbAhEBjwlUWNHJ+/sHc+ZF7tX37dkEzrrgCygWR\\natLUdXEXPtkmkwh4p+YCZJ6EJgxKDL+717J7G0VtrGpcnAM1YyTcjHzCgQKBgAEE\\nNI6BaUzP8CL+hnq8uAAw7qGYP9h4OWde7PRAOS6C6HN8eDsym0tQw4qS8kD5DYrf\\nqKWz5ACJFdM8oLdUBkNaxx8yS8IQmhDEwJ9gN7bfzaaELlJnbizxVudcds+P9dgs\\nlTUhBm/SUCNA1ieVVl0tqfcvKPqtfa8b1RGYVroBAoGBAMDyVeFscQYaDIMI/GI5\\nHw+D+3msSyGKnqUsAGRwTEOAvRg3/AwhPzB94x6BieZGZXybr4snal/88ShysjLH\\nq1o1A0gOJaImCSgrrdjA5BmLJfyiGp6X1MzsRycTcLFmEI7xzb/CiQLRRieFe/b2\\nb+LFyK+uKHAy4sCfs2UXiI/F\\n-----END PRIVATE KEY-----\\n\",   \"client_email\": \"firebase-adminsdk-54f9y@factor50-test.iam.gserviceaccount.com\",   \"client_id\": \"105050764957838608182\",   \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",   \"token_uri\": \"https://oauth2.googleapis.com/token\",   \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",   \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-54f9y%40factor50-test.iam.gserviceaccount.com\" }",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "HelpMyStreetFE": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000"
     }
   }
 }
