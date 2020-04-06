@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using HelpMyStreetFE.Services;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -55,11 +56,11 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //TODO: Check that the user is authenticated
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            HelpMyStreet.Utils.Models.User user = _userService.GetUserAsync(id).Result;
+            User user = await _userService.GetUserAsync(id);
 
             AccountViewModel viewModel = new AccountViewModel();
 
