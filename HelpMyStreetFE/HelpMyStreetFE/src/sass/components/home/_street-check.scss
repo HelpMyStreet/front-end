@@ -16,7 +16,7 @@
         }
     }
 
-    @media screen and (max-width: $sm-screen) {
+    @media screen and (max-width: $med-screen) {
         span {
             width: 100%;
         }
@@ -85,6 +85,9 @@
 
         @media screen and (max-width: $sm-screen) {
             width: 100%;
+        }
+
+        @media screen and (max-width: $med-screen) {
             margin-top: $sm-margin;
         }
     }
