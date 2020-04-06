@@ -25,17 +25,18 @@
             <form id="registration_form" method="post">
                 <div class="input">
                     <label>Email address</label>
-                    <input name="email" type="Email" placeholder="Enter your email address" required />
+                    <input name="email" type="Email" placeholder="Enter your email address" />
                     <span class="error"></span>
                 </div>
                 <div class="input">
-                    <label>Password <span class="input__hint">(6 characters with a mix of letters and numbers)</span></label>
-                    <input name="password" type="Password" placeholder="Password" required />
+                    <label>Password</label>
+                    <input name="password" type="Password" placeholder="Password" />
                     <span class="error"></span>
+                    <span class="input__hint">(10 characters with at least 1 Uppercase letter, 1 lowercase letter and a number)</span>
                 </div>
                 <div class="input">
                     <label>Confirm password</label>
-                    <input name="confirm_password" type="Password" placeholder="Password" required />
+                    <input name="confirm_password" type="Password" placeholder="Password" />
                     <span class="error"></span>
                 </div>
                 <p>
@@ -45,6 +46,7 @@
                 <div class="input input--checkbox">
                     <label>
                         <input name="privacy_notice" type="checkbox" hidden required />
+                        <span class="error"></span>
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
@@ -54,6 +56,7 @@
                 <div class="input input--checkbox">
                     <label>
                         <input name="terms_and_conditions" type="checkbox" hidden required />
+                        <span class="error"></span>
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
