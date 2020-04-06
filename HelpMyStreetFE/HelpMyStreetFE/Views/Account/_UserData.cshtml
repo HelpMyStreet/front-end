@@ -1,52 +1,54 @@
+@model HelpMyStreetFE.Models.Account.UserDetails;
+
 <article class="profile p-md">
-  <dl class="profile__user-data">
-    <div class="profile__user-data__item">
-      <dt class="flex">Display name <partial name="_InfoPopup" /></dt>
-      <dd>xxx</dd>
-    </div>
+    <dl class="profile__user-data">
+        <div class="profile__user-data__item">
+            <dt class="flex">Display name <partial name="_InfoPopup" /></dt>
+            <dd>@Model.DisplayName</dd>
+        </div>
 
-    <div class="profile__user-data__item">
-      <dt>Email address</dt>
-      <dd>xxx</dd>
-    </div>
-    <div class="profile__user-data__item">
-      <dt>First name</dt>
-      <dd>xxx</dd>
-    </div>
-    <div class="profile__user-data__item">
-      <dt>Last name</dt>
-      <dd>xxx</dd>
-    </div>
-  </dl>
+        <div class="profile__user-data__item">
+            <dt>Email address</dt>
+            <dd>@Model.EmailAddress</dd>
+        </div>
+        <div class="profile__user-data__item">
+            <dt>First name</dt>
+            <dd>@Model.FirstName</dd>
+        </div>
+        <div class="profile__user-data__item">
+            <dt>Last name</dt>
+            <dd>@Model.LastName</dd>
+        </div>
+    </dl>
 
-  <dl class="profile__user-data__item">
-      <dt>Address</dt>
-      <dd>9 Glasgow Street, Glasgow, G1 1AG, United Kingdom</dd>
-  </dl>
+    <dl class="profile__user-data__item">
+        <dt>Address</dt>
+        <dd>@Model.Address</dd>
+    </dl>
 
-  <dl class="profile__user-data">
-    <div class="profile__user-data__item">
-      <dt>Mobile number</dt>
-      <dd>xxx</dd>
-    </div>
-    <div class="profile__user-data__item">
-      <dt>Other number</dt>
-      <dd>xxx</dd>
-    </div>
+    <dl class="profile__user-data">
+        <div class="profile__user-data__item">
+            <dt>Mobile number</dt>
+            <dd>@Model.MobileNumber</dd>
+        </div>
+        <div class="profile__user-data__item">
+            <dt>Other number</dt>
+            <dd>@Model.OtherNumber</dd>
+        </div>
 
-    <div class="profile__user-data__item">
-      <dt>Date of birth</dt>
-      <dd>XX/XX/XXXX</dd>
-    </div>
+        <div class="profile__user-data__item">
+            <dt>Date of birth</dt>
+            <dd>@Model.DateOfBirth</dd>
+        </div>
 
-    <div class="profile__user-data__item">
-      <dt>Gender</dt>
-      <dd>XXX</dd>
-    </div>
-  </dl>
+        <div class="profile__user-data__item">
+            <dt>Gender</dt>
+            <dd>@Model.Gender</dd>
+        </div>
+    </dl>
 
-  <dl class="profile__user-data__item">
-    <dt class="flex"><div>Do you have any underlying medical conditions which put you at high risk from coronavirus?</div> <partial name="_InfoPopup" /></dt>
-    <dd>No</dd>
-  </dl>
+    <dl class="profile__user-data__item">
+        <dt class="flex"><div>Do you have any underlying medical conditions which put you at high risk from coronavirus?</div> <partial name="_InfoPopup" /></dt>
+        <dd>@Model.UnderlyingMedicalConditions</dd>
+    </dl>
 </article>
