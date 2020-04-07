@@ -1,5 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData } from "../shared/validator";
+import { datepickerLoad } from "../shared/date-picker";
 
 export function initialiseStepTwo() {
   $("#manual_address").on("click", function (evt) {
@@ -7,6 +8,7 @@ export function initialiseStepTwo() {
     $(".expander").slideDown();
   });
 
+    datepickerLoad('datepicker');
   $("#address_finder").on("click", async function (evt) {
     evt.preventDefault();
     buttonLoad($(this));
