@@ -1,7 +1,9 @@
 ﻿.street-check {
     @media screen and (min-width: $med-screen) {
-        padding-left: 273px !important;
-
+        > div{
+            max-width: 830px;
+            margin: 0 auto;
+        }
         h3 {
             margin-top: 40px;
             font-size: 36px;
