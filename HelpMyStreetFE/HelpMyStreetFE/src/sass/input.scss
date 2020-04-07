@@ -1,5 +1,11 @@
 @import "./mixins/forms/inputs";
 
+
+input[type="date"]::-webkit-inner-spin-button {
+    display: none;
+    -webkit-appearance: none;
+}
+
 .input {
     label {
         position: absolute;
