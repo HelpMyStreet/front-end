@@ -13,5 +13,9 @@ namespace HelpMyStreetFE.Controllers
     {
       return View();
     }
+    public IActionResult PrivacyPolicy()
+    {
+      return View();
+    }
   }
 }
