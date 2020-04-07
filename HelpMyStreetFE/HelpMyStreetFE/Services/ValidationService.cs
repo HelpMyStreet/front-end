@@ -34,8 +34,8 @@ namespace HelpMyStreetFE.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "");
-                throw e;
+                _logger.LogError(e, "An unexpected error occurred vaidating user");
+                return ValidationResponse.UnexepectedError(e.Message);
             }
         }
 
