@@ -59,15 +59,18 @@ export function initialiseStepTwo() {
   $("#registration_form").on("submit", function () {
     $(".expander").slideDown();
     const valid = validateFormData($(this), {
-      first_name: (v) => v != "" || "Please enter a first name",
-      last_name: (v) => v != "" || "Please enter a last name",
-      postcode: (v) => v != "" || "Please enter a postcode",
+      first_name: (v) => v !== "" || "Please enter a first name",
+      last_name: (v) => v !== "" || "Please enter a last name",
+      postcode: (v) => v !== "" || "Please enter a postcode",
       mobile_number: (v) =>
-        v.length === 11 || "Please enter a valid mobile number",
+        (v.length === 11 && v.slice(0, 2) === "07") ||
+        "Please enter a valid mobile number starting with 07",
       alt_number: (v) =>
-        v == "" || v.length === 11 || "Please enter a valid phone number",
+        v == "" ||
+        (v.length === 11 && v[0] === "0") ||
+        "Please enter a valid phone number",
       address_line_1: (v) =>
-        v != "" || "Please enter the first line of your address",
+        v !== "" || "Please enter the first line of your address",
     });
 
     return valid;

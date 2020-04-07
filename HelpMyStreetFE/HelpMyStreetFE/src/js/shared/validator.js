@@ -1,6 +1,20 @@
 export function validateFormData(form, validation) {
-  return form.serializeArray().reduce((acc, cur) => {
-    const { name, value } = cur;
+  const obj = form
+    .find(".input")
+    .get()
+    .reduce((acc, cur) => {
+      const inp = $(cur).find("input");
+      if (inp[0]) {
+        const { name, value, type } = inp[0];
+
+        acc[name] = type === "checkbox" ? inp.is(":checked") : value;
+      }
+
+      return acc;
+    }, {});
+
+  return Object.entries(obj).reduce((acc, cur) => {
+    const [name, value] = cur;
 
     const errDisplay = $(`input[name=${name}] ~ .error`);
     errDisplay && errDisplay.text("").hide();
@@ -8,7 +22,7 @@ export function validateFormData(form, validation) {
     const validator = validation[name];
 
     if (validator) {
-      const valid = validator(value);
+      const valid = validator(value, obj);
       if (valid !== true) {
         acc = false;
         errDisplay.text(valid).show();
@@ -16,5 +30,7 @@ export function validateFormData(form, validation) {
     }
 
     return acc;
-  }, true);
+  }, true) === true
+    ? obj
+    : false;
 }
