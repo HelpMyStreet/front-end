@@ -8,6 +8,7 @@ export function datepickerLoad(id) {
             field: datepicker,
             format: "DD/MM/YYYY",
             minDate: new Date(1900, 1, 1),
+            yearRange: [1900, maxDate.getFullYear()],
             maxDate: maxDate,
             defaultDate: maxDate,
             toString(date, format) { // using moment
