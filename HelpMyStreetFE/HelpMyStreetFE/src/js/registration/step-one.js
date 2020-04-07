@@ -1,5 +1,6 @@
 ﻿import clientFirebase from "../firebase";
 import { buttonLoad, buttonUnload } from "../shared/btn";
+import { validateFormData } from "../shared/validator";
 
 export function initialiseStepOne() {
   clientFirebase.init({
@@ -12,34 +13,28 @@ export function initialiseStepOne() {
     appId: "1:1075949051901:web:1be61ff6f6de11c1934394",
   });
 
-  $("#registration_form").on("submit", function () {
-    const { email, password, confirm_password } = $(this)
-      .find(".input")
-      .get()
-      .reduce((acc, cur) => {
-        const inp = $(cur).find("input");
-        const { name, value, type } = inp[0];
+  $("#registration_form").on("submit", function (evt) {
+    evt.preventDefault();
 
-        const errDisplay = $(cur).find(".error");
-        errDisplay && errDisplay.text("").hide();
+    const valid = validateFormData($(this), {
+      email: (v) => v !== "" || "Please enter an email address",
+      password: (v) =>
+        RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{10,})").test(v) ||
+        "Please use a strong password",
+      confirm_password: (v, d) =>
+        d.password === v || "Please ensure passwords match",
+    });
 
-        acc[name] = {
-          val: type === "checkbox" ? value === "on" : value,
-          el: $(cur),
-        };
+    if (valid === false) return;
 
-        return acc;
-      }, {});
-
-    const pwValid = validatePassword(password.val, confirm_password.val);
-    if (pwValid !== true) setError(confirm_password.el, pwValid);
+    const { email, password } = valid;
 
     var btn = $(this).find("button[type=submit]");
 
     buttonLoad(btn);
 
     clientFirebase.auth
-      .createUserWithEmailAndPassword(email.val, password.val)
+      .createUserWithEmailAndPassword(email, password)
       .then(async (credentials) => {
         const token = await credentials.user.getIdToken();
 
@@ -49,7 +44,7 @@ export function initialiseStepOne() {
             "content-type": "application/json",
           },
           body: JSON.stringify({
-            email: email.val,
+            email,
             token,
           }),
         });
@@ -59,10 +54,10 @@ export function initialiseStepOne() {
       .catch((err) => {
         switch (err.code) {
           case "auth/email-already-in-use":
-            setError(email.el, err.message);
+            setError("email", err.message);
             break;
           case "auth/weak-password":
-            setError(password.el, err.message);
+            setError("password", err.message);
             break;
         }
       })
@@ -72,10 +67,6 @@ export function initialiseStepOne() {
   });
 }
 
-function setError(inputElement, message) {
-  inputElement.find(".error").text(message).show();
-}
-
-function validatePassword(pass, check) {
-  return pass === check || "Please ensure the passwords match";
+function setError(formField, message) {
+  $(`input[name=${formField}] ~ .error`).text(message).show();
 }
