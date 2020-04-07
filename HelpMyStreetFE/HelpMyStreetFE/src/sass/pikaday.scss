@@ -7,6 +7,7 @@
 // Declare any of these variables before importing this SCSS file to easily override defaults
 // Variables are namespaced with the pd (pikaday) prefix
 @import "./colours.scss";
+@import "./variables.scss";
 
 // Colours
 
@@ -27,8 +28,7 @@ $dark-blue: #333 !default;
     position: relative;
     color: $black;
     background: $white;
-
-    border-radius:0px 0px 4px 4px;
+    border-radius: 0px 0px 4px 4px;
 
 
     &.is-hidden {
@@ -39,7 +39,12 @@ $dark-blue: #333 !default;
         position: absolute;
         box-shadow: 0 5px 15px -5px $black;
     }
-    //TODO Media Query here
+
+    display: none !important;
+    
+    @media (min-width: $sm-screen){
+        display:block !important;
+    }   
 }
 
 // clear child float (pika-lendar), using the famous micro clearfix hack
