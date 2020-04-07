@@ -98,6 +98,57 @@ h6 {
   width: 280px;
 }
 
+.circle {
+    margin: 8px auto;
+    display: block;
+    background-color: $dark-blue;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-weight: bold;
+    border-radius: 50%;
+
+    @media screen and (min-width: $sm-screen) {
+        font-size: 32px;
+        line-height: 39px;
+        height: 64px;
+        width: 64px;
+    }
+
+    @media screen and (max-width: $sm-screen) {
+        font-size: 20px;
+        line-height: 24px;
+        height: 40px;
+        width: 40px;
+    }
+}
+
+.fab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $dark-blue;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+
+    @media screen and (max-width: $med-screen) {
+        font-size: 20px;
+        line-height: 24px;
+        height: 40px;
+        width: 40px;
+    }
+
+    @media screen and (min-width: $med-screen) {
+        font-size: 40px;
+        line-height: 49px;
+        height: 80px;
+        width: 80px;
+    }
+}
+
 .text {
   &-right {
     text-align: right;
@@ -158,32 +209,6 @@ h6 {
 
     @media screen and (max-width: $med-screen) {
         padding: $med-margin 16px;
-    }
-}
-
-
-
-.fab {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $dark-blue;
-    color: white;
-    border-radius: 50%;
-    font-weight: bold;
-
-    @media screen and (max-width: $med-screen) {
-        font-size: 20px;
-        line-height: 24px;
-        height: 40px;
-        width: 40px;
-    }
-
-    @media screen and (min-width: $med-screen) {
-        font-size: 40px;
-        line-height: 49px;
-        height: 80px;
-        width: 80px;
     }
 }
 
