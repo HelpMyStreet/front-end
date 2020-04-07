@@ -1,31 +1,4 @@
-﻿/*
-.container {
-    max-width: 1224px;
-    margin: auto;
-
-    .row {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-column-gap: 24px;
-        justify-content: center;
-        justify-items: stretch;
-
-        @for $i from 1 through 12 {
-            .sm#{$i} {
-                grid-column-end: span $i;
-            }
-        }
-
-        @for $i from 1 through 11 {
-            .sm-offset-#{$i} {
-                grid-column-start: $i;
-            }
-        }
-    }
-}
-*/
-
-@media screen and (min-width: 1000px){
+﻿@media screen and (min-width: $med-screen){
     .container {
         max-width: 1224px + 24px;
         margin: auto;
@@ -50,11 +23,16 @@
     }
 }
 
-@media screen and (max-width: 1000px){
+@media screen and (min-width: $sm-screen) and (max-width: $med-screen){
+    .container {
+        width: calc(100vw - 64px);
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: $sm-screen){
     .container{
         width: calc(100vw - 32px);
         margin: auto;
     }
 }
-
-

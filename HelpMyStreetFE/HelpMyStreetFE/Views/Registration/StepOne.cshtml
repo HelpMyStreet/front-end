@@ -14,6 +14,12 @@
     <div class="row justify-center mt72">
         <div class="sm8">
             <h1>Sign up to help</h1>
+            <p>
+                Join today as a Helper to give as little or as much time as you can spare. Or join as a Street Champion and coordinate the activity in your street. You'll be helping neighbours help each other.
+            </p>
+            <p>
+                <span class="bold">Registering is quick and easy.</span> We’ll collect your details and verify your identity with our partner Yoti. Anyone who's over 18 and can confirm their identity with a valid passport or driving licence can register with HelpMyStreet.org. You'll need a smartphone running iOS or Android.
+            </p>
             @if (Context.Request.Query["failure"] == "error")
             {
                 <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
@@ -25,17 +31,18 @@
             <form id="registration_form" method="post">
                 <div class="input">
                     <label>Email address</label>
-                    <input name="email" type="Email" placeholder="Enter your email address" required />
+                    <input name="email" type="Email" placeholder="Enter your email address" />
                     <span class="error"></span>
                 </div>
                 <div class="input">
-                    <label>Password <span class="input__hint">(6 characters with a mix of letters and numbers)</span></label>
-                    <input name="password" type="Password" placeholder="Password" required />
+                    <label>Password</label>
+                    <input name="password" type="Password" placeholder="Password" />
                     <span class="error"></span>
+                    <span class="input__hint">(10 characters with at least 1 Uppercase letter, 1 lowercase letter and a number)</span>
                 </div>
                 <div class="input">
                     <label>Confirm password</label>
-                    <input name="confirm_password" type="Password" placeholder="Password" required />
+                    <input name="confirm_password" type="Password" placeholder="Password" />
                     <span class="error"></span>
                 </div>
                 <p>
@@ -45,6 +52,7 @@
                 <div class="input input--checkbox">
                     <label>
                         <input name="privacy_notice" type="checkbox" hidden required />
+                        <span class="error"></span>
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
@@ -54,6 +62,7 @@
                 <div class="input input--checkbox">
                     <label>
                         <input name="terms_and_conditions" type="checkbox" hidden required />
+                        <span class="error"></span>
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
@@ -61,7 +70,7 @@
                     </label>
                 </div>
                 <div class="controls">
-                    <button class="btn cta" id="submit_button" type="submit">
+                    <button class="btn cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>

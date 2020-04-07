@@ -1,7 +1,6 @@
 ﻿.stepper {
   display: flex;
   width: 100%;
-  align-items: stretch;
 
   &__step {
     text-align: center;
@@ -12,27 +11,16 @@
       opacity: 1;
     }
 
-    &__number {
-      margin: 8px auto;
-      display: block;
-      background-color: $dark-blue;
-      color: white;
-      font-size: 32px;
-      line-height: 39px;
-      font-weight: bold;
-      height: 64px;
-      width: 64px;
-      padding: 12.8px 0 12.2px;
-      border-radius: 40px;
-      z-index: 1;
-    }
-
     &__text {
       color: $dark-blue;
       font-size: 18px;
       line-height: 22px;
       letter-spacing: 0.38px;
       font-weight: bold;
+
+      @media screen and (max-width: $sm-screen) {
+        display: none;
+      }
     }
   }
 
@@ -41,8 +29,15 @@
     border-top: 1px dashed #979797;
     height: 0px;
     z-index: 0;
-    margin: 40px -40px;
     flex: 1 1 0px;
+
+    @media screen and (min-width: $sm-screen) {
+      margin: 40px -40px;
+    }
+
+    @media screen and (max-width: $sm-screen) {
+      display: none;
+    }
   }
 }
 
