@@ -217,3 +217,84 @@ form {
     display: none;
   }
 }
+
+.verification {
+  &__info {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 66.66667%;
+    padding: 20px 12px 20px 12px;
+    border-bottom: 1px lightgrey dashed;
+    &__heading {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    p {
+      color: grey;
+    }
+    &__extra-links {
+      margin-top: 20px;
+      :first-child {
+        margin-bottom: 5px;
+      }
+      :not(:first-child):not(:last-child) {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      :last-child {
+        margin-top: 5px;
+      }
+    }
+  }
+  &__yoti {
+    &__wrapper {
+      margin-top: 30px;
+      margin-bottom: 40px;
+    }
+    &__heading {
+      font-size: 24px;
+      font-weight: 600;
+      padding-bottom: 30px;
+    }
+    &__download {
+      padding-bottom: 20px;
+      border-bottom: lightgrey dashed 1px;
+      &__heading {
+        color: $dark-blue;
+        font-size: 24px;
+        font-weight: 600;
+      }
+    }
+    &__confirm {
+      padding-top: 20px;
+      &__heading {
+        color: $dark-blue;
+        font-size: 24px;
+        font-weight: 600;
+      }
+      &__button {
+        background-color: $green;
+        width: 220px;
+        border-radius: 25px;
+        color: white;
+        font-size: 24px;
+        text-align: center;
+        font-weight: 600;
+        padding: 10px 0;
+        cursor: pointer;
+        display: block;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.registration {
+  &__header {
+    height: 50px;
+    @media screen and (max-width: $screen-md-min) {
+      margin: auto;
+      border-bottom: solid lightgrey 1px;
+    }
+  }
+}

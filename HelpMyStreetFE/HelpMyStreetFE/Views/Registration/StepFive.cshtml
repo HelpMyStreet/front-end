@@ -1,4 +1,4 @@
-﻿@model RegistrationViewModel;
+﻿@model HelpMyStreetFE.Models.Registration.RegistrationViewModel;
 
 @section Scripts {
     <script>
@@ -39,7 +39,7 @@
         <div class="verification__yoti__confirm sm8">
             <div class="verification__yoti__confirm__heading">Success?</div>
             <p>As soon as your ID documents have been successfully added in Yoti, click to complete your ID Verification on HelpMyStreet.org</p>
-            <div class="verification__yoti__confirm__button">Confirm ID</div>
+            <a href="/yoti/Authenticate" class="verification__yoti__confirm__button">Confirm ID</a>
         </div>
     </div>
 </div>

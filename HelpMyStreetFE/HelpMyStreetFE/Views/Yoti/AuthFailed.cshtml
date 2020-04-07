@@ -1,0 +1,26 @@
+﻿@model AuthenticateViewModel;
+
+@section Scripts {
+    <script>
+        const initObj = { domId: '@Model.DomId', scenarioId: '@Model.ScenarioId', clientSdkId: '@Model.ClientSdkId' };
+    </script>
+    <script src="~/yoti.js" asp-append-version="true"></script>
+}
+
+<div class="container">
+    <div class="yoti__auth__result sm8">
+        <h2>Oops. Sorry, something didn’t work!</h2>
+        <h2>Let’s get you back on track</h2>
+        <div class="yoti__auth__result__content failed-content">
+            <p>Please check this informtion is exactly the same in your Yoti app and your HelpMyStreet registration:</p>
+            <ul>
+                <li>Name</li>
+                <li>Date of Birth (your Passport or Driver's Licence)</li>
+                <li>Address (either from your ID document or added separately)</li>
+                <li>Address (either from your ID document or added separatley)</li>
+            </ul>
+            <p>Please then try again by clicking on the button below</p>
+            <div id="@Model.DomId"></div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
+using HelpMyStreetFE.Enums.Validation;
 using HelpMyStreetFE.Models;
+using HelpMyStreetFE.Models.Validation;
 using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,6 @@ namespace HelpMyStreetFE.Controllers
             _validationService = validationService;
         }
 
-        [AllowAnonymous] //Remove after development
         public IActionResult Authenticate()
         {
             var viewModel = new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
@@ -31,11 +31,41 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpPost]
-        public IActionResult ValidateToken(string token)
+        public async Task<IActionResult> ValidateToken([FromBody] ValidateTokenRequest request, CancellationToken token = default)
         {
-            var i = HttpContext.User;
-            //_validationService.ValidateUser();
-            throw new NotImplementedException();
+            var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (id != null)
+            {
+                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = request.Token, UserId = id }, token);
+                return handleValidationTokenResponse(response);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+        }
+
+        public IActionResult AuthSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult AuthFailed()
+        {
+            return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
+        }
+
+        private IActionResult handleValidationTokenResponse(ValidationResponse response)
+        {
+            return response.Status switch
+            {
+                ValidationStatus.Success => Ok(response),
+                ValidationStatus.Unauthorized => Unauthorized(response),
+                ValidationStatus.UnexepectedError => StatusCode(500, response),
+                ValidationStatus.ValidationFailed => BadRequest(response),
+                _ => StatusCode(500, response)
+            };
         }
     }
 }

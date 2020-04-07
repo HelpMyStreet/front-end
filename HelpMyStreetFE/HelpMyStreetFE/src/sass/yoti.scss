@@ -1,5 +1,8 @@
 @mixin li-yoti {
   font-size: 16px;
+}
+
+@mixin ul-yoti {
   li:first-child {
     margin-bottom: 5px;
   }
@@ -104,6 +107,7 @@
       text-align: center;
       font-weight: bold;
       font-size: 36px;
+      color: $p-color;
       @media screen and (max-width: $screen-md) {
         font-size: 24px;
       }
@@ -116,8 +120,10 @@
       &__heading {
         text-align: center;
         font-weight: 600;
+        color: $p-color;
       }
       &__list {
+        @include ul-yoti;
         @media screen and (max-width: $screen-md-min) {
           display: none;
         }
@@ -125,6 +131,7 @@
           @include li-yoti;
         }
         &__mobile {
+          @include ul-yoti;
           li {
             @include li-yoti;
           }
@@ -134,5 +141,30 @@
         }
       }
     }
+    &__result {
+      text-align: center;
+      &__content {
+        color: $light-orange;
+        display: flex;
+        flex-direction: column;
+        p {
+          color: inherit;
+        }
+      }
+      &__image {
+        height: 300px;
+        width: 300px;
+        margin: auto;
+      }
+    }
+  }
+}
+
+.failed-content {
+  max-width: 50%;
+  margin: auto;
+  text-align: left;
+  @media screen and (max-width: $screen-md-min) {
+    max-width: 80%;
   }
 }

@@ -9,6 +9,6 @@ namespace HelpMyStreetFE.Services
 {
     public interface IValidationService
     {
-        public Task<ValidationResponse> ValidateUser(ValidationRequest request, CancellationToken token = default);
+        public Task<ValidationResponse> ValidateUserAsync(ValidationRequest request, CancellationToken token = default);
     }
 }
