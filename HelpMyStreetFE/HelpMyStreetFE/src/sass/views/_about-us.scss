@@ -3,6 +3,10 @@
 
 .content-page--about-us {
   .content-page {
+    .placeholder {
+      max-width: 400;
+    }
+    
     &__body {
       padding: 0 0 1rem;
       margin-bottom: 2rem;
@@ -10,6 +14,13 @@
 
     &__section {
       display: block;
+
+      &--outer {
+        /* Darker background every other row */
+        &:nth-child(even) {
+          background-color: $background-darker-1;
+        }
+      }
       
       &__inner {
         display: flex;
