@@ -1,5 +1,6 @@
 @import "../mixins/typography/copy";
 @import "../mixins/effects";
+@import "../components/about/associated-organisations";
 
 .content-page {
   ul,
@@ -12,6 +13,7 @@
   }
 }
 
+/** Space at top of content pages */
 .content-page--community,
 .content-page--about-us {
   .content-page {
@@ -23,9 +25,12 @@
 
 .content-page--about-us {
   .content-page {
+    &__body {
+      padding: 0 0 1rem;
+      margin-bottom: 2rem;
+    }
 
     &__section {
-      border: 1px solid #fa0;
       display: block;
       
       &__inner {
@@ -53,38 +58,6 @@
           padding: 2rem;
         }
       }
-    }    
-  }
-
-  .associated {
-    background-color: $background-darker-1;
-
-    &__items {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-
-      @media screen and (min-width: $med-screen) {
-        grid-template-columns: repeat(3, 1fr);  
-      }
-    }
-
-    &__item {
-      padding: $sm-margin;
-    }
-
-    &__logo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: white;
-      @include shadow-xs;
-    }
-
-    &__title {
-      @include copy-sz-md;
-      padding: $xxs-margin 0;
-      color: $black;
-      font-weight: bold;
     }
   }
 }

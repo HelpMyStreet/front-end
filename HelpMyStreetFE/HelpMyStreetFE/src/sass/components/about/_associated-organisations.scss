@@ -1,0 +1,37 @@
+.content-page {
+  &__associated {
+    background-color: $background-darker-1;
+    padding: 2rem 0 2rem;
+    margin-bottom: 2rem;
+
+    .associated {
+      &__items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        @media screen and (min-width: $med-screen) {
+          grid-template-columns: repeat(3, 1fr);  
+        }
+      }
+
+      &__item {
+        padding: $sm-margin;
+      }
+
+      &__logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        @include shadow-xs;
+      }
+
+      &__title {
+        @include copy-sz-md;
+        padding: $sm-margin 0;
+        color: $black;
+        font-weight: bold;
+      }
+    }
+  }
+}
