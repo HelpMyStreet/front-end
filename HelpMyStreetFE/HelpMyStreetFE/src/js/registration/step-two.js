@@ -8,7 +8,7 @@ export function initialiseStepTwo() {
     $(".expander").slideDown();
   });
 
-    datepickerLoad('datepicker');
+  datepickerLoad('datepicker');
   $("#address_finder").on("click", async function (evt) {
     evt.preventDefault();
     buttonLoad($(this));

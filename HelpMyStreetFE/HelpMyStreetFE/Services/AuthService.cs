@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Services
 
             var fb = FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile(firebaseCredentials)
+                Credential = GoogleCredential.FromJson(firebaseCredentials)
             });
 
             _firebase = FirebaseAuth.GetAuth(fb);
