@@ -1,7 +1,9 @@
 ﻿.street-check {
     @media screen and (min-width: $med-screen) {
-        padding-left: 273px !important;
-
+        > div{
+            max-width: 830px;
+            margin: 0 auto;
+        }
         h3 {
             margin-top: 40px;
             font-size: 36px;
@@ -16,7 +18,25 @@
         }
     }
 
-    @media screen and (max-width: $sm-screen) {
+    @media screen and (min-width: $sm-screen) and (max-width: $med-screen) {
+        > div {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .postcode-input-button {
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-column-gap: $sm-margin;
+        }
+    }
+
+    @media screen and (max-width: $med-screen) {
+        .align-center {
+            justify-content: center;
+        }
+
         span {
             width: 100%;
         }
@@ -68,6 +88,8 @@
             width: 100%;
         }
     }
+
+
 
     label {
         font-weight: bold;
