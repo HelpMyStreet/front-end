@@ -35,6 +35,11 @@
                 <input name="last_name" type="text" placeholder="e.g. Smith" />
                 <span class="error"></span>
             </div>
+            <div class="input sm8">
+                <label>Date of birth</label>
+                <input name="dob" type="date" min="1900-01-01"  max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                <span class="error"></span>
+            </div>
             <div class="input sm5">
                 <label>Postcode</label>
                 <input name="postcode_search" type="text" placeholder="e.g. NG1 1PS" />
@@ -93,7 +98,7 @@
 
             <div class="sm8">
                 <div class="controls">
-                    <button class="btn cta" id="submit_button" type="submit">
+                    <button class="btn cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>

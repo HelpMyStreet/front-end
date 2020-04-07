@@ -62,6 +62,7 @@ export function initialiseStepTwo() {
       first_name: (v) => v !== "" || "Please enter a first name",
       last_name: (v) => v !== "" || "Please enter a last name",
       postcode: (v) => v !== "" || "Please enter a postcode",
+      dob: (v) => v !== "" || "Please enter a valid date of birth",
       mobile_number: (v) =>
         (v.length === 11 && v.slice(0, 2) === "07") ||
         "Please enter a valid mobile number starting with 07",

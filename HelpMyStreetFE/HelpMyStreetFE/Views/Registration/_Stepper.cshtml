@@ -17,7 +17,7 @@
         @foreach (var step in Steps)
         {
             <div class="stepper__step @(Model == step.Key ? "stepper__step--active": string.Empty)">
-                <div class="stepper__step__number">
+                <div class="stepper__step__number circle">
                     @step.Key
                 </div>
                 <div class="stepper__step__text">

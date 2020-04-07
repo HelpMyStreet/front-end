@@ -64,7 +64,7 @@ namespace HelpMyStreetFE.Services
                 },
                 MobilePhone = mobile,
                 OtherPhone = otherPhone ?? "",
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = dob,
                 DisplayName = $"{firstName} {lastName}"
             });
         }

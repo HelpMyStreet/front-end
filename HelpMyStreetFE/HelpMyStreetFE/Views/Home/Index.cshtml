@@ -13,7 +13,7 @@
             <p class="subtitle">
                 We enable people sheltering at home to be helped by neighbourhood volunteers, safely and securely.
             </p>
-            <button class="btn cta large">Sign Up Now</button>
+            <a href="/registration/stepone" class="btn cta large">Sign Up Now</a>
         </div>
         <div class="sm6 text-right">
             <img class="hero__img" src="~/img/HelpMyStreet_header_main.png" alt="Help My Street Main Header" width="535" />
@@ -48,11 +48,13 @@
             </p>
             <div class="input mt68 mb56">
                 <label>Your Postcode</label>
-                <input id="postcode" type="text" placeholder="Enter your Postcode..." />
-                <button class="btn cta" id="postcode_button">
-                    <span class="text">Check postcode</span>
-                    <span class="loader">Checking&hellip;</span>
-                </button>
+                <div class="postcode-input-button">
+                    <input id="postcode" type="text" placeholder="Enter your Postcode..." />
+                    <button class="btn cta" id="postcode_button">
+                        <span class="text">Check postcode</span>
+                        <span class="loader">Checking&hellip;</span>
+                    </button>
+                </div>
                 <div id="postcode_covered" class="dnone">
                     Postcode covered
                 </div>
@@ -75,7 +77,7 @@
         </div>
     </div>
     <div class="row mt72 mb15 justify-center step">
-        <div class="sm1"><span class="fab">1</span></div>
+        <div class="sm1"><span class="fab circle">1</span></div>
         <div class="sm7">
             <h4>
                 Sign up as a Street Champion
@@ -86,7 +88,7 @@
         </div>
     </div>
     <div class="row list-item justify-center step">
-        <div class="sm1"><span class="fab">2</span></div>
+        <div class="sm1"><span class="fab circle">2</span></div>
         <div class="sm7">
             <h4>
                 Sign up as a Volunteer
@@ -98,7 +100,7 @@
     </div>
     <div class="row list-item justify-center">
         <div class="sm4">
-            <button class="btn cta large fill mt16">Sign Up Now</button>
+            <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
         </div>
     </div>
     <div class="row justify-center text-center mt72 help">
