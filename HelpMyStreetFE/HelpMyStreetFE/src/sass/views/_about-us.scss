@@ -2,15 +2,14 @@
 @import "../components/about/associated-organisations";
 
 .content-page--about-us {
-  .content-page {
-    .placeholder {
-      max-width: 400;
-    }
 
-    &__body {
-      padding: 0 0 1rem;
-      margin-bottom: 2rem;
-    }
+  /* Until we get photography */
+  .placeholder {
+    max-width: 380px;
+    max-height: 380px;
+  }
+
+  .content-page {
 
     &__section {
       display: block;
@@ -26,7 +25,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 1rem 2rem;        
+        padding: 2rem 2rem;        
       }
   
       @media screen and (min-width: $med-screen) {
