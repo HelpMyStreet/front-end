@@ -14,9 +14,10 @@ $background-darker-1: #f0ede8;
 $black: #131614;
 $gray-10: #dddddd;
 $gray-8: #a0a0a0;
+$white: #ffffff;
 
 .white {
-  color: white;
+    color: $white;
 }
 
 .green {

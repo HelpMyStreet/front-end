@@ -1,4 +1,5 @@
 import firebase from "../firebase";
+import { showLoadingSpinner, hideLoadingSpinner } from "../states/loading";
 
 const handleErrorResponse = response => {
   if (response) {
@@ -25,6 +26,8 @@ const validate = (email, password) => {
 };
 
 export const login = async (email, password) => {
+  showLoadingSpinner('.header-login__form');
+  
   const validationResponse = validate(email, password);
   if (validationResponse.success) {
     try {
@@ -42,9 +45,12 @@ export const login = async (email, password) => {
       //TODO: Actually decide where the user should go after logging in
       window.location.href = "/account";
     } catch (e) {
+      hideLoadingSpinner('.header-login__form');
       return handleErrorResponse(e);
     }
   } else {
+    hideLoadingSpinner('.header-login__form');
+  
     return validationResponse;
   }
 };

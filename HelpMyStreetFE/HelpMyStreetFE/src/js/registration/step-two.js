@@ -1,5 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData } from "../shared/validator";
+import { datepickerLoad } from "../shared/date-picker";
 
 export function initialiseStepTwo() {
   $("#manual_address").on("click", function (evt) {
@@ -7,6 +8,7 @@ export function initialiseStepTwo() {
     $(".expander").slideDown();
   });
 
+  datepickerLoad('datepicker');
   $("#address_finder").on("click", async function (evt) {
     evt.preventDefault();
     buttonLoad($(this));
@@ -62,6 +64,7 @@ export function initialiseStepTwo() {
       first_name: (v) => v !== "" || "Please enter a first name",
       last_name: (v) => v !== "" || "Please enter a last name",
       postcode: (v) => v !== "" || "Please enter a postcode",
+      dob: (v) => v !== "" || "Please enter a valid date of birth",
       mobile_number: (v) =>
         (v.length === 11 && v.slice(0, 2) === "07") ||
         "Please enter a valid mobile number starting with 07",
