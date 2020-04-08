@@ -8,8 +8,7 @@ export function initialiseStepOne() {
 
    getAppSetting("Firebase:Configuration").done(function (response) {
     let firebaseConfig = JSON.parse(response.parameter);
-    clientFirebase.init(firebaseConfig);
-    window.account = account;
+    clientFirebase.init(firebaseConfig);    
    })
 
   $("#registration_form").on("submit", function (evt) {
