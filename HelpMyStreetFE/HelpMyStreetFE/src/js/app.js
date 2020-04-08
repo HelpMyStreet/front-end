@@ -1,22 +1,18 @@
-﻿import "../sass/main.scss";
+﻿
+import "../sass/main.scss";
 import firebase from "./firebase/index";
 import account from "./account";
 import notification from "./account/notification";
 import "./shared/info-popup";
 import "./shared/site-header";
+import { getAppSetting } from "./configuration/appSettings";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBcXGTnRXhFGq3fb6-ulyo-7qL8P0RIbqA",
-  authDomain: "factor50-test.firebaseapp.com",
-  databaseURL: "https://factor50-test.firebaseio.com",
-  projectId: "factor50-test",
-  storageBucket: "factor50-test.appspot.com",
-  messagingSenderId: "1075949051901",
-  appId: "1:1075949051901:web:1be61ff6f6de11c1934394"
-};
+getAppSetting("Firebase:Configuration").done(function (response) {
+    let firebaseConfig = JSON.parse(response.parameter);
+    firebase.init(firebaseConfig);
+    window.account = account;
+})
 
-firebase.init(firebaseConfig);
-window.account = account;
 
 $(function() {
   $("#postcode_button").click(function(evt) {
