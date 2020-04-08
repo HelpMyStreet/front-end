@@ -213,3 +213,21 @@ form {
   }
 }
 
+.list__item {
+    display: flex;
+    align-items: center;
+    
+
+    @media screen and (max-width: $sm-screen){
+        align-items: flex-start;
+    }
+
+    .circle{
+        margin: 0;
+        margin-right: 20px;
+    }
+}
+
+.list__item + .list__item{
+    margin-top: 20px;
+}
