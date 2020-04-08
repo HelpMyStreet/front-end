@@ -1,3 +1,5 @@
+@import "./main.scss";
+
 @mixin li-yoti {
   font-size: 16px;
 }
@@ -114,7 +116,7 @@
     }
     &__explanation {
       padding: 30px 0;
-      color: $light-orange;
+      color: $p-color;
       max-width: 400px;
       margin: auto;
       &__heading {
@@ -144,7 +146,7 @@
     &__result {
       text-align: center;
       &__content {
-        color: $light-orange;
+        color: $p-color;
         display: flex;
         flex-direction: column;
         p {
