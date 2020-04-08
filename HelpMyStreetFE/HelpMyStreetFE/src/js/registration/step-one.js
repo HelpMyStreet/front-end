@@ -1,17 +1,16 @@
 ﻿import clientFirebase from "../firebase";
 import { buttonLoad, buttonUnload } from "../shared/btn";
+import { getAppSetting } from "../configuration/appSettings";
 import { validateFormData } from "../shared/validator";
 
+
 export function initialiseStepOne() {
-  clientFirebase.init({
-    apiKey: "AIzaSyBcXGTnRXhFGq3fb6-ulyo-7qL8P0RIbqA",
-    authDomain: "factor50-test.firebaseapp.com",
-    databaseURL: "https://factor50-test.firebaseio.com",
-    projectId: "factor50-test",
-    storageBucket: "factor50-test.appspot.com",
-    messagingSenderId: "1075949051901",
-    appId: "1:1075949051901:web:1be61ff6f6de11c1934394",
-  });
+
+   getAppSetting("Firebase:Configuration").done(function (response) {
+    let firebaseConfig = JSON.parse(response.parameter);
+    clientFirebase.init(firebaseConfig);
+    window.account = account;
+   })
 
   $("#registration_form").on("submit", function (evt) {
     evt.preventDefault();
