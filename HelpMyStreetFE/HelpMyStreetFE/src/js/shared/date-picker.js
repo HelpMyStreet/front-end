@@ -10,7 +10,7 @@ export function datepickerLoad(id) {
             minDate: new Date(1900, 1, 1),
             yearRange: [1900, maxDate.getFullYear()],
             maxDate: maxDate,
-            defaultDate: maxDate,
+            defaultDate: new Date(1990,1,1),
             toString(date, format) { // using moment
                 return moment(date).format('DD MMM YYYY');
             },
