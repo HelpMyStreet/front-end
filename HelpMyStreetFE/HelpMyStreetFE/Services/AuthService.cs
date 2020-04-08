@@ -28,9 +28,16 @@ namespace HelpMyStreetFE.Services
             _userRepository = userRepository;
             _logger = logger;
 
+            var firebaseCredentials = _configuration["Firebase:Credentials"];
+
+            if (firebaseCredentials == string.Empty)
+            {
+                throw new Exception("Firebase cedentials missing");
+            }
+
             var fb = FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromJson(getGoogleCredentialJson())
+                Credential = GoogleCredential.FromJson(firebaseCredentials)
             });
 
             _firebase = FirebaseAuth.GetAuth(fb);
@@ -53,28 +60,6 @@ namespace HelpMyStreetFE.Services
 
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
-        }
-
-        private string getGoogleCredentialJson()
-        {
-            try
-            {
-                var firebaseCredentials = _configuration["Firebase:Credentials"];
-
-                if (firebaseCredentials == string.Empty)
-                {
-                    throw new Exception("Firebase cedentials missing");
-                }
-
-                var credential = File.ReadAllText(firebaseCredentials);
-                return credential;
-
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "An unexpected error occured getting the google credential");
-                throw e;
-            }
-        }
+        }      
     }
 }
