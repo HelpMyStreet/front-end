@@ -10,9 +10,13 @@
 @import "./login.scss";
 @import "./site/site-nav";
 @import "./components/authentication/header-login";
+
+@import "./views/content-page";
 @import "./views/account";
 
 @import "./mixins/forms/checkbox";
+@import "./mixins//typography/titles";
+@import "./mixins//typography/copy";
 
 @import "./components/loading-spinner";
 
@@ -20,7 +24,7 @@
 @import "./components/profile/profile-panel";
 @import "./components/info-popup";
 @import "./components/home/home";
-@import  "./components/list/list";
+@import "./components/list/list";
 
 * {
   font-family: "Montserrat", sans-serif;
@@ -37,8 +41,7 @@ body {
 }
 
 p {
-  font-size: 18px;
-  line-height: 27px;
+  @include copy-sz-md;
   color: $p-color;
 
   &.subtitle {
@@ -48,33 +51,29 @@ p {
 }
 
 h1 {
+  @include title-sz-1;
   color: $dark-blue;
-  font-size: 56px;
-  line-height: 72px;
   letter-spacing: 1px;
   font-weight: bold;
 }
 
 h2 {
   @extend h1;
-  font-size: 44px;
-  line-height: 56px;
+  @include title-sz-2;
   letter-spacing: 0.5px;
   margin: 0 0 22px;
 }
 
 h4 {
   @extend h2;
+  @include title-sz-4;
   color: black;
-  font-size: 32px;
-  line-height: 44px;
   margin: 15px 0;
 }
 
 h6 {
   @extend h4;
-  font-size: 18px;
-  line-height: 27px;
+  @include title-sz-6;
 }
 
 .flex {
@@ -168,9 +167,9 @@ h6 {
 .btn {
   border-radius: 24px;
   border: 2px solid transparent;
-  font-size: 18px;
+  font-size: 1rem;
+  line-height: 1.222;
   font-weight: bold;
-  line-height: 22px;
   letter-spacing: 0.5px;
   padding: 13px 40px;
   text-decoration: none;
@@ -184,8 +183,8 @@ h6 {
     line-height: 29px;
     padding: 17px 112px 18px;
 
-    @media screen and (max-width: $sm-screen){
-        width: 100%;
+    @media screen and (max-width: $sm-screen) {
+      width: 100%;
     }
   }
 

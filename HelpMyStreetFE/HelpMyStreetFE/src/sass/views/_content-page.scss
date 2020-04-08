@@ -1,0 +1,34 @@
+@import "../mixins/typography/copy";
+@import "../mixins/effects";
+@import "./about-us";
+
+.content-page {
+  ul,
+  ol {
+    margin-bottom: $xs-margin;
+    li {
+      @extend p;
+      margin-bottom: $xxs-margin;
+    }
+  }
+
+  a {
+    color: $blue;
+    transition: color 0.5s;
+
+    &:hover {
+      color: $green;
+      transition: color 0.1s;
+    }
+  }
+}
+
+/** Space at top of content pages */
+.content-page--community,
+.content-page--about-us {
+  .content-page {
+    &__header {
+      margin-top: $med-margin;
+    }
+  }
+}
