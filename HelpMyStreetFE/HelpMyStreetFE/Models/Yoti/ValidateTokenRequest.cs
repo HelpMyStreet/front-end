@@ -7,6 +7,7 @@ namespace HelpMyStreetFE.Models.Yoti
 {
     public class ValidateTokenRequest
     {
-        public string Token { get; set; }
+        public string token { get; set; }
+        public string id { get; set; }
     }
 }
