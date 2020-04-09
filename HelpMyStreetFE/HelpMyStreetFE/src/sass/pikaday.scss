@@ -34,10 +34,7 @@
     }
 
     display: none !important;
-    
-    @media (min-width: $sm-screen){
-        display:block !important;
-    }   
+           
 }
 
 // clear child float (pika-lendar), using the famous micro clearfix hack
