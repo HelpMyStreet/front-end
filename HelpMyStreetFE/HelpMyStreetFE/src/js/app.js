@@ -6,6 +6,7 @@ import notification from "./account/notification";
 import "./shared/info-popup";
 import "./shared/site-header";
 import { getAppSetting } from "./configuration/appSettings";
+import { intialiseCookieConsent } from "./shared/cookie-helper"
 
 getAppSetting("Firebase:Configuration").done(function (response) {
     let firebaseConfig = JSON.parse(response.parameter);
@@ -14,7 +15,9 @@ getAppSetting("Firebase:Configuration").done(function (response) {
 })
 
 
-$(function() {
+$(function () {
+    intialiseCookieConsent();
+
   $("#postcode_button").click(function(evt) {
     const postCode = $("#postcode").val();
 

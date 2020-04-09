@@ -1,0 +1,34 @@
+@import "../colours.scss";
+@import "../mixins/effects";
+#cookie-consent {
+    position: fixed;
+    display:none;
+    right: 0;
+    bottom: 0;
+    min-width: 250px;
+    background: $light-blue;
+    z-index: 3;
+    padding: 10px;
+    border-radius: 10px 0px 10px 0px;
+    opacity:0.95;
+
+    @include shadow-md;
+
+    h3 {
+        color: $dark-blue;
+        margin: 6px 0px 6px 0;
+    }
+
+    .cookie-text {
+        font-size: 0.8rem;
+
+        a {
+            font-size: 0.8rem;
+        }
+    }
+
+    .btn--consent {
+        float: right;
+        padding: 9px;
+    }
+}
