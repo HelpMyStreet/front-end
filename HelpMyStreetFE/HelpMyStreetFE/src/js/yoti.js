@@ -17,7 +17,7 @@ $(() => {
           shareComplete: {
             closeDelay: 4000, // default to 4000, min of 500 - max of 10000
             tokenHandler: async (token, done) => {
-              var response = await fetch("/yoti/ValidateToken" + "?token=" & token);
+              var response = await fetch("/yoti/ValidateToken" + "?token=" + token);
 
               if (response.status == 200) {
                 done();
