@@ -8161,7 +8161,7 @@ function toggleState(e) {
 /***/ (function(module, exports) {
 
 var siteNavToggle = document.getElementById('site-nav-toggle');
-siteNavToggle && siteNavToggle.addEventListener('click', function () {
+siteNavToggle.addEventListener('click', function () {
   $('#site-nav').toggleClass('collapsed');
   $('#site-nav-toggle').toggleClass('collapsed');
 });
