@@ -6,7 +6,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -17,11 +20,13 @@ namespace HelpMyStreetFE.Services
         private readonly FirebaseAuth _firebase;
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<AuthService> _logger;
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepository)
+        public AuthService(IConfiguration configuration, IUserRepository userRepository, ILogger<AuthService> logger)
         {
             _configuration = configuration;
             _userRepository = userRepository;
+            _logger = logger;
 
             var firebaseCredentials = _configuration["Firebase:Credentials"];
 
@@ -55,6 +60,6 @@ namespace HelpMyStreetFE.Services
 
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
-        }
+        }      
     }
 }

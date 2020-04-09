@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1070 1098" width="32" height="32">
+  <defs>
+    <style>
+      .circle-blue {
+        fill: #1e91d6;
+      }
+      .circle-orange {
+        fill: #ff4e00;
+      }
+
+      .bg-1 {
+        opacity: 0.2;
+      }
+
+      .fore-2 {
+        opacity: 0.8;
+      }
+
+      .bg-2 {
+        opacity: 0.2;
+      }
+
+      .fore-3 {
+        opacity: 0.8;
+      }
+
+      .fore-4 {
+        opacity: 0.6;
+      }
+
+      .hollow-1 {
+        stroke: #1e91d6;
+        stroke-width: 10;
+        fill: none;
+      }
+
+      .hollow-2 {
+        stroke: #ff4e00;
+        stroke-width: 10;
+        fill: none;
+      }
+
+      .group {
+        animation-name: spinny;
+        transform-origin: center;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+
+      .group-1 {
+        animation-duration: 5s;
+      }
+
+      .group-2 {
+        animation-duration: 4s;
+      }
+
+      .group-3 {
+        animation-duration: 3s;
+      }
+
+      .group-4 {
+        animation-duration: 2s;
+      }
+
+      @keyframes spinny {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </defs>
+  <g class="group group-1">
+    <circle cx="360" cy="235" r="170" class="circ circle-orange bg-1" />
+    <circle cx="530" cy="600" r="230" class="circ circle-blue bg-2" />
+  </g>
+
+  <g class="group group-3">
+    <circle cx="330" cy="390" r="100" class="circ circle-blue fore-1" />
+    <circle cx="630" cy="290" r="180" class="circ circle-blue fore-2" />
+  </g>
+
+  <g class="group group-4">
+    <circle cx="210" cy="600" r="170" class="circ circle-orange fore-3" />
+    <circle cx="650" cy="690" r="130" class="circ circle-orange fore-4" />
+  </g>
+</svg>

@@ -1,0 +1,170 @@
+@mixin li-yoti {
+  font-size: 16px;
+}
+
+@mixin ul-yoti {
+  li:first-child {
+    margin-bottom: 5px;
+  }
+  li:not(:first-child):not(:last-child) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  li:last-child {
+    margin-top: 5px;
+  }
+}
+
+.yoti {
+  &__instructions {
+    border-left: 1px solid $gray-10;
+    &__item {
+      padding: 0px 0px 20px 30px;
+      &__header {
+        color: $dark-blue;
+        font-weight: 600;
+        line-height: 30px;
+      }
+      &__content {
+        color: grey;
+        font-size: 18px;
+        &__extra-info {
+          display: flex;
+          flex-direction: column;
+          :last-child {
+            font-style: italic;
+          }
+        }
+        &__list {
+          padding-left: 0;
+          li:first-child {
+            margin-bottom: 5px;
+          }
+          li:not(:first-child):not(:last-child) {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+          li:last-child {
+            margin-top: 5px;
+          }
+        }
+        p {
+          margin: 0;
+        }
+      }
+      &__number {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        border-radius: 15px;
+        background-color: $green;
+        top: 0;
+        left: -15px;
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        line-height: 30px;
+      }
+    }
+    &__check-grid {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      display: -ms-grid;
+      -ms-grid-columns: 20px 1fr;
+      &__icon {
+        height: 30px;
+        width: 20px;
+        -ms-grid-column: 1;
+        grid-column: 1;
+      }
+      &__text {
+        line-height: 30px;
+        padding-left: 10px;
+        -ms-grid-column: 2;
+        grid-column: 2;
+      }
+      &__or {
+        line-height: 30px;
+        padding-left: 10px;
+        -ms-grid-column: 2;
+        grid-column: 2;
+        color: $green;
+        font-weight: 600;
+      }
+    }
+  }
+  &__download {
+    display: inline-flex;
+    &__gap {
+      width: 10px;
+      height: 100%;
+    }
+  }
+
+  &__auth {
+    padding-top: 30px;
+    &__header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 36px;
+      color: $p-color;
+      @media screen and (max-width: $screen-md) {
+        font-size: 24px;
+      }
+    }
+    &__explanation {
+      padding: 30px 0;
+      color: $p-color;
+      max-width: 400px;
+      margin: auto;
+      &__heading {
+        text-align: center;
+        font-weight: 600;
+        color: $p-color;
+      }
+      &__list {
+        @include ul-yoti;
+        @media screen and (max-width: $screen-md-min) {
+          display: none;
+        }
+        li {
+          @include li-yoti;
+        }
+        &__mobile {
+          @include ul-yoti;
+          li {
+            @include li-yoti;
+          }
+          @media screen and (min-width: $screen-md) {
+            display: none;
+          }
+        }
+      }
+    }
+    &__result {
+      text-align: center;
+      &__content {
+        color: $p-color;
+        display: flex;
+        flex-direction: column;
+        p {
+          color: inherit;
+        }
+      }
+      &__image {
+        height: 300px;
+        width: 300px;
+        margin: auto;
+      }
+    }
+  }
+}
+
+.failed-content {
+  max-width: 50%;
+  margin: auto;
+  text-align: left;
+  @media screen and (max-width: $screen-md-min) {
+    max-width: 80%;
+  }
+}

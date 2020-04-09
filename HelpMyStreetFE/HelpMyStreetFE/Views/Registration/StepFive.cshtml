@@ -1,0 +1,45 @@
+﻿@model HelpMyStreetFE.Models.Registration.RegistrationViewModel;
+
+@section Scripts {
+    <script>
+        const activeStep = @Model.ActiveStep;
+    </script>
+    <script src="~/registration.js" asp-append-version="true"></script>
+}
+
+<div class="container">
+    <partial name="_Stepper" for="ActiveStep" />
+
+    <div class="row justify-center mt72">
+        <div class="sm8">
+            <h2>Congratulations!</h2>
+        </div>
+    </div>
+    <div class="row justify-center">
+        <div class="verification__info sm8">
+            <div class="verification__info__heading">You’re now registered with Help My Street.</div>
+            <p>In a moment, we’ll take you through to your profile page. First we need to ask you to complete ID Verification with our partner <a href="https://yoti.zendesk.com/hc/en-us/sections/202188005-Who-and-what-is-Yoti">Yoti</a>.</p>
+            <p>We’ve selected Yoti because they have ‘Privacy by Design’ and your details are absolutely safe. Not even Yoti or HelpMyStreet will be able to access your data without your consent.</p>
+            <p>To complete <a href="https://yoti.zendesk.com/hc/en-us/sections/202203865-Using-Yoti-online">ID Verification</a> you’ll need a <a href="https://yoti.zendesk.com/hc/en-us/sections/202128969-ID-documents-we-support">valid ID</a> in your name (either Passport or Driving Licence) and a smartphone (iOS or Android).</p>
+            <ul class="verification__info__extra-links">
+                <li><a href="https://yoti.zendesk.com/hc/en-us/sections/202188005-Who-and-what-is-Yoti">About HelpMyStreet's digital ID verification provider</a></li>
+                <li><a href="https://yoti.zendesk.com/hc/en-us/sections/202203865-Using-Yoti-online">How does it work?</a></li>
+                <li><a href="https://yoti.zendesk.com/hc/en-us/sections/202201325-Security-and-information-storage">Information Security</a></li>
+            </ul>
+        </div>
+        <div class="verification__yoti__wrapper sm8">
+            <div class="verification__yoti__heading">Please follow the steps below:</div>
+            <partial name="_YotiInstructions" />
+        </div>
+        <div class="verification__yoti__download sm8">
+            <div class="verification__yoti__download__heading">Got your ID and Smartphone?</div>
+            <p>Download the Yoti App.</p>
+            <partial name="_YotiDownload" />
+        </div>
+        <div class="verification__yoti__confirm sm8">
+            <div class="verification__yoti__confirm__heading">Success?</div>
+            <p>As soon as your ID documents have been successfully added in Yoti, click to complete your ID Verification on HelpMyStreet.org</p>
+            <a href="/yoti/Authenticate" class="verification__yoti__confirm__button">Confirm ID</a>
+        </div>
+    </div>
+</div>

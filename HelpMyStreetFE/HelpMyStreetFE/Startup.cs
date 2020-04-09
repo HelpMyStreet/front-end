@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using HelpMyStreetFE.Models.Yoti;
 
 namespace HelpMyStreetFE
 {
@@ -30,11 +31,13 @@ namespace HelpMyStreetFE
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 });
             services.AddControllersWithViews();
+            services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IAddressRepository, AddressRepository>();
             services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IValidationService, ValidationService>();
             services.AddControllers();
         }
 

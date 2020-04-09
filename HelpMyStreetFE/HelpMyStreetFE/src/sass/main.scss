@@ -5,20 +5,28 @@
 @import "./colours.scss";
 @import "./spacing.scss";
 @import "./input.scss";
+@import "./pikaday.scss";
 @import "./registration.scss";
 @import "./login.scss";
+@import "./yoti.scss";
 
 @import "./site/site-nav";
 @import "./components/authentication/header-login";
+
+@import "./views/content-page";
 @import "./views/account";
 
 @import "./mixins/forms/checkbox";
+@import "./mixins//typography/titles";
+@import "./mixins//typography/copy";
+
+@import "./components/loading-spinner";
 
 @import "./components/notification-card/notification";
 @import "./components/profile/profile-panel";
 @import "./components/info-popup";
 @import "./components/home/home";
-@import  "./components/list/list";
+@import "./components/list/list";
 
 * {
   font-family: "Montserrat", sans-serif;
@@ -35,8 +43,7 @@ body {
 }
 
 p {
-  font-size: 18px;
-  line-height: 27px;
+  @include copy-sz-md;
   color: $p-color;
 
   &.subtitle {
@@ -46,33 +53,29 @@ p {
 }
 
 h1 {
+  @include title-sz-1;
   color: $dark-blue;
-  font-size: 56px;
-  line-height: 72px;
   letter-spacing: 1px;
   font-weight: bold;
 }
 
 h2 {
   @extend h1;
-  font-size: 44px;
-  line-height: 56px;
+  @include title-sz-2;
   letter-spacing: 0.5px;
   margin: 0 0 22px;
 }
 
 h4 {
   @extend h2;
+  @include title-sz-4;
   color: black;
-  font-size: 32px;
-  line-height: 44px;
   margin: 15px 0;
 }
 
 h6 {
   @extend h4;
-  font-size: 18px;
-  line-height: 27px;
+  @include title-sz-6;
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -96,8 +99,8 @@ input[type=number]::-webkit-outer-spin-button {
   display: inline-flex;
 }
 
-.bold{
-    font-weight: bold;
+.bold {
+  font-weight: bold;
 }
 
 .dnone {
@@ -109,58 +112,54 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .circle {
-    margin: 8px auto;
-    display: block;
-    background-color: $dark-blue;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    font-weight: bold;
-    border-radius: 50%;
+  margin: 8px auto;
+  display: block;
+  background-color: $dark-blue;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  font-weight: bold;
+  border-radius: 50%;
 
-    @media screen and (min-width: $sm-screen) {
-        font-size: 32px;
-        line-height: 39px;
-        min-height: 64px;
-        min-width: 64px;
-        height: 64px;
-        width: 64px;
-    }
+  @media screen and (min-width: $sm-screen) {
+    font-size: 32px;
+    line-height: 39px;
+    height: 64px;
+    width: 64px;
+  }
 
-    @media screen and (max-width: $sm-screen) {
-        font-size: 20px;
-        line-height: 24px;
-        min-height: 40px;
-        min-width: 40px;
-        height: 40px;
-        width: 40px;
-    }
+  @media screen and (max-width: $sm-screen) {
+    font-size: 20px;
+    line-height: 24px;
+    height: 40px;
+    width: 40px;
+  }
 }
 
 .fab {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $dark-blue;
-    color: white;
-    border-radius: 50%;
-    font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $dark-blue;
+  color: white;
+  border-radius: 50%;
+  font-weight: bold;
 
-    @media screen and (max-width: $med-screen) {
-        font-size: 20px;
-        line-height: 24px;
-        height: 40px;
-        width: 40px;
-    }
+  @media screen and (max-width: $med-screen) {
+    font-size: 20px;
+    line-height: 24px;
+    height: 40px;
+    width: 40px;
+  }
 
-    @media screen and (min-width: $med-screen) {
-        font-size: 40px;
-        line-height: 49px;
-        height: 80px;
-        width: 80px;
-    }
+  @media screen and (min-width: $med-screen) {
+    font-size: 40px;
+    line-height: 49px;
+    height: 80px;
+    width: 80px;
+  }
 }
 
 .text {
@@ -176,9 +175,9 @@ input[type=number]::-webkit-outer-spin-button {
 .btn {
   border-radius: 24px;
   border: 2px solid transparent;
-  font-size: 18px;
+  font-size: 1rem;
+  line-height: 1.222;
   font-weight: bold;
-  line-height: 22px;
   letter-spacing: 0.5px;
   padding: 13px 40px;
   text-decoration: none;
@@ -192,8 +191,8 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 29px;
     padding: 17px 112px 18px;
 
-    @media screen and (max-width: $sm-screen){
-        width: 100%;
+    @media screen and (max-width: $sm-screen) {
+      width: 100%;
     }
   }
 
@@ -212,24 +211,24 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .card {
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    border: 1px solid #dddddd;
-    background-color: white;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  background-color: white;
 
-    @media screen and (min-width: $med-screen) {
-        padding: 24px;
-    }
+  @media screen and (min-width: $med-screen) {
+    padding: 24px;
+  }
 
-    @media screen and (max-width: $med-screen) {
-        padding: $med-margin 16px;
-    }
+  @media screen and (max-width: $med-screen) {
+    padding: $med-margin 16px;
+  }
 }
 
 .fill {
-    @media screen and (max-width: $sm-screen) {
-        width: 100%;
-    }
+  @media screen and (max-width: $sm-screen) {
+    width: 100%;
+  }
 }
 
 .mdi-check {
