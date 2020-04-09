@@ -84,10 +84,7 @@ export function initialiseStepTwo() {
       let validForm = (valid && contactNumbersValid);
 
       (contactNumbersValid) || errorSpan.text("Please enter a mobile number or an alternative phone number").show      
-      (validForm) || errorSpan.hide;
-
-
-      console.log(validForm);
+      (validForm) || errorSpan.hide;      
 
       return validForm;
   });
