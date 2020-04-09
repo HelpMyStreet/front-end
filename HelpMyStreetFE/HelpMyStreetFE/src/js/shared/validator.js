@@ -34,3 +34,16 @@ export function validateFormData(form, validation) {
     ? obj
     : false;
 }
+
+
+export async function validatePostCode(postcode) {
+    let postcodeValid = false;
+    const resp = await fetch(`/api/postcode/${postcode}`);
+    
+    if (resp.ok) {
+        const { hasContent, isSuccessful } = await resp.json();  
+        postcodeValid = (hasContent && isSuccessful);        
+    }
+
+    return postcodeValid
+}

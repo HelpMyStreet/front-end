@@ -14,8 +14,7 @@ export function initialiseStepThree() {
 
     $(".error").hide();
 
-    if (!obj["volunteer[]"]) {
-      console.log('showing');
+    if (!obj["volunteer[]"]) {      
       valid = false;
       $("#volunteer-error").show();
     }

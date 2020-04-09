@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData } from "../shared/validator";
+import { validateFormData, validatePostCode } from "../shared/validator";
 import { datepickerLoad } from "../shared/date-picker";
 
 export function initialiseStepTwo() {
@@ -58,12 +58,14 @@ export function initialiseStepTwo() {
     buttonUnload($(this));
   });
 
-  $("#registration_form").on("submit", function () {
-    $(".expander").slideDown();
+  $("#registration_form").on("submit", function (event) {
+      $(".expander").slideDown();
+
     const valid = validateFormData($(this), {
       first_name: (v) => v !== "" || "Please enter a first name",
       last_name: (v) => v !== "" || "Please enter a last name",
-      postcode: (v) => v !== "" || "Please enter a postcode",
+       postcode: (v) => v !== "" ||      
+             "Please enter a postcode",
       dob: (v) => v !== "" || "Please enter a valid date of birth",
       mobile_number: (v) => 
           v == "" ||
@@ -72,20 +74,41 @@ export function initialiseStepTwo() {
       alt_number: (v) =>
         v == "" ||
         (v.length === 11 && v[0] === "0") ||
-        "Please enter a valid phone number",
-      address_line_1: (v) =>
-        v !== "" || "Please enter the first line of your address",
+            "Please enter a valid phone number",
+        city: (v) => 
+            (v.length > 2) ||
+            "Please enter a valid city",
+      address_line_1: (v) =>          
+          (v.length > 2) ||
+            "Please enter a valid first line of your address",
     });
-
+      
       let mobileNumber = $(this).find("input[name='mobile_number']");      
       let altNumber = $(this).find("input[name='alt_number']");            
       let errorSpan = altNumber.find("~ .error");
       let contactNumbersValid = (mobileNumber.val() !== "" || altNumber.val() !== "");      
+      
+      (contactNumbersValid) || errorSpan.text("Please enter a mobile number or an alternative phone number").show()
       let validForm = (valid && contactNumbersValid);
+      (validForm) || errorSpan.hide;
 
-      (contactNumbersValid) || errorSpan.text("Please enter a mobile number or an alternative phone number").show      
-      (validForm) || errorSpan.hide;      
-
-      return validForm;
+      let postcodeValid;
+      let postcodeInput = $("input[name='postcode']");
+      event.preventDefault(); //this will prevent the default submit needed now we do a call to api
+      if (validForm) { // avoid calling service when possible, so check if the form is valid first
+          validatePostCode(postcodeInput.val()).then(function (response) {
+              postcodeValid = response;
+              if (!postcodeValid) {
+                  postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+              } else {
+                  postcodeInput.find("~ .error").hide();
+              }
+          }).finally(function () {
+              validForm = (validForm && postcodeValid);
+              if (validForm) {
+                  $("#registration_form").unbind('submit').submit(); // continue the submit unbind preventDefault
+              }
+          });
+      }
   });
 }
