@@ -65,8 +65,9 @@ export function initialiseStepTwo() {
       last_name: (v) => v !== "" || "Please enter a last name",
       postcode: (v) => v !== "" || "Please enter a postcode",
       dob: (v) => v !== "" || "Please enter a valid date of birth",
-      mobile_number: (v) =>
-        (v.length === 11 && v.slice(0, 2) === "07") ||
+      mobile_number: (v) => 
+          v == "" ||
+          (v.length === 11 && v.slice(0, 2) === "07") ||
         "Please enter a valid mobile number starting with 07",
       alt_number: (v) =>
         v == "" ||
@@ -76,6 +77,18 @@ export function initialiseStepTwo() {
         v !== "" || "Please enter the first line of your address",
     });
 
-    return valid;
+      let mobileNumber = $(this).find("input[name='mobile_number']");      
+      let altNumber = $(this).find("input[name='alt_number']");            
+      let errorSpan = altNumber.find("~ .error");
+      let contactNumbersValid = (mobileNumber.val() !== "" || altNumber.val() !== "");      
+      let validForm = (valid && contactNumbersValid);
+
+      (contactNumbersValid) || errorSpan.text("Please enter a mobile number or an alternative phone number").show      
+      (validForm) || errorSpan.hide;
+
+
+      console.log(validForm);
+
+      return validForm;
   });
 }
