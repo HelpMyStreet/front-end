@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Models
         public string ScenarioId { get; set; }
         public string ClientSdkId { get; set; }
         public string DomId { get; set; }
+        public string UserId { get; set; }
     }
 }

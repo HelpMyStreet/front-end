@@ -6,7 +6,8 @@
 
 @section Scripts {
     <script>
-        const initObj = { domId: '@Model.DomId', scenarioId: '@Model.ScenarioId', clientSdkId: '@Model.ClientSdkId' };
+        const initObj = { userId: '@Model.UserId', domId: '@Model.DomId', scenarioId: '@Model.ScenarioId', clientSdkId: '@Model.ClientSdkId' };
+        window.location.href = window.location.href + "?id=" + userId
     </script>
     <script src="~/yoti.js" asp-append-version="true"></script>
 }

@@ -13,7 +13,7 @@
             string otherNumber,
             string dateOfBirth,
             string gender,
-            bool underlyingMedicalConditions
+            string underlyingMedicalConditions
             )
         {
             Initials = initials;
@@ -39,7 +39,7 @@
         public string OtherNumber { get; set; }
         public string DateOfBirth { get; set; }
         public string Gender { get; set; }
-        public bool UnderlyingMedicalConditions { get; set; }
+        public string UnderlyingMedicalConditions { get; set; }
 
     }
 }

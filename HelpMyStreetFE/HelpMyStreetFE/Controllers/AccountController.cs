@@ -32,12 +32,12 @@ namespace HelpMyStreetFE.Controllers
             var personalDetails = user.UserPersonalDetails;
             string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
             string address = personalDetails.Address.AddressLine1 + "," + personalDetails.Address.Postcode;
-            string gender = "XXX";
-            bool underlyingMedicalConditions = false;
+            string gender = "Unknown";
+            string underlyingMedicalConditions = "No";
 
             if(personalDetails.UnderlyingMedicalCondition.HasValue)
             {
-                underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value;
+                underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value ? "Yes" : "No";
             }
                     
             return new UserDetails(
