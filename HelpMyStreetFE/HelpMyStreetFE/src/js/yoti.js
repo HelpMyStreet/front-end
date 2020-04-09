@@ -23,7 +23,7 @@ $(() => {
                 done();
                 window.location.href = "/yoti/AuthSuccess";
               } else {
-                  done();
+                done();
                 window.location.href = "/yoti/AuthFailed";
               }
             },

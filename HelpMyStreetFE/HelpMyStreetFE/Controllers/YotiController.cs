@@ -26,16 +26,16 @@ namespace HelpMyStreetFE.Controllers
 
         public IActionResult Authenticate()
         {
-            var viewModel = new AuthenticateViewModel { UserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value, ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
+            var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
             return View(viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ValidateToken(string userId, string token, CancellationToken cancellationToken)
+        public async Task<IActionResult> ValidateToken(string token, CancellationToken cancellationToken)
         {
-            var id = userId ?? HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (id != null && token!= null)
+            if (id != null)
             {
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = id }, cancellationToken);
                 return handleValidationTokenResponse(response);
