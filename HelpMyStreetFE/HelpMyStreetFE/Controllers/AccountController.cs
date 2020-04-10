@@ -32,8 +32,18 @@ namespace HelpMyStreetFE.Controllers
             var personalDetails = user.UserPersonalDetails;
             string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
             string address = personalDetails.Address.AddressLine1 + "," + personalDetails.Address.Postcode;
+            string streetChampion = string.Empty;
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
+
+            if(user.ChampionPostcodes.Count>0)
+            {
+                streetChampion = "Street Champion";
+            }
+            else if(user.IsVerified.HasValue && user.IsVerified.Value==true)
+            {
+                streetChampion = "Volunteer";
+            }
 
             if(personalDetails.UnderlyingMedicalCondition.HasValue)
             {
@@ -47,9 +57,10 @@ namespace HelpMyStreetFE.Controllers
                 personalDetails.LastName,
                 personalDetails.EmailAddress,
                 address,
+                streetChampion,
                 personalDetails.MobilePhone,
                 personalDetails.OtherPhone,
-                personalDetails.DateOfBirth.Value.ToString(),
+                personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
                 gender,
                 underlyingMedicalConditions
                 );
