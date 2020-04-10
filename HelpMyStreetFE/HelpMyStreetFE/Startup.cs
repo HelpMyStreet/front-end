@@ -67,6 +67,38 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
+                    name: "about",
+                    pattern: "about-us",
+                    defaults: new { controller = "Pages", action = "AboutUs" });
+                endpoints.MapControllerRoute(
+                    name: "community",
+                    pattern: "community",
+                    defaults: new { controller = "Pages", action = "Community" });
+                endpoints.MapControllerRoute(
+                    name: "privacy",
+                    pattern: "privacy-policy",
+                    defaults: new { controller = "Pages", action = "PrivacyPolicy" });
+                endpoints.MapControllerRoute(
+                    name: "terms",
+                    pattern: "terms-conditions",
+                    defaults: new { controller = "Pages", action = "Terms" });
+                endpoints.MapControllerRoute(
+                    name: "resources",
+                    pattern: "resources",
+                    defaults: new { controller = "Pages", action = "Resources" });
+                endpoints.MapControllerRoute(
+                    name: "questions",
+                    pattern: "questions",
+                    defaults: new { controller = "Pages", action = "Questions" });
+                endpoints.MapControllerRoute(
+                    name: "contact",
+                    pattern: "contact-us",
+                    defaults: new { controller = "Pages", action = "ContactUs" });
+
+                // Enable attribute routing
+                //endpoints.MapControllers();
             });
         }
     }

@@ -1,0 +1,36 @@
+@{
+    ViewBag.Title = "Contact Us";
+}
+<div class="container">
+    <partial name="_SiteHeaderPublic" />
+</div>
+<article class="content-page content-page--contact-us">
+
+    <div class="content-page__section--outer">
+        <div class="container content-page__section">
+            <div class="content-page__section__inner">
+                <header class="content-page__header content-page__section__body">
+                    <h2 class="content-page__title">Contact Us</h2>
+                    <p>Across the country, people are stepping up to help those in need. We’re seeing some amazing acts of care and kindness. </p>
+                    <p>This is not just about giving time, it’s about <em>helping</em>; doing something positive for the communities we all live in. </p>
+                    <p><a href="/">HelpMyStreet.org</a> has been launched to help the Helpers.</p>
+                </header>
+            </div>
+
+            <div class="content-page__section__inner">
+                <partial name="_PlaceholderImg" />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="content-page__section--outer content-page__contact-us">
+        <div class="container">
+            <partial name="_ContactUsSummary" />
+
+            <div class="content-page__contact-us__form card">
+                <partial name="_ContactForm" />
+            </div>
+        </div>
+    </div>
+</article>
