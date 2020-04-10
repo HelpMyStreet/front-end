@@ -2,7 +2,7 @@
 
 $(() => {
 
-    getParameterByName = function (name, url) {
+    var getParameterByName = function (name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
         var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -12,7 +12,7 @@ $(() => {
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
-    processYoti = async function (thisToken) {
+    var processYoti = async function (thisToken) {
         var response = await fetch("/yoti/ValidateToken" + "?token=" + thisToken);
 
         if (response.status == 200) {

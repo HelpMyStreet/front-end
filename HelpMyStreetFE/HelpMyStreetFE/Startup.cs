@@ -37,6 +37,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IValidationRepository, ValidationRepository>();
             services.AddSingleton<IValidationService, ValidationService>();
             services.AddControllers();
         }
