@@ -8,7 +8,7 @@ const getParameterByName = function (name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-const processYoti = function (thisToken) {
+const processYoti = async function (thisToken) {
     var response = await fetch("/yoti/ValidateToken" + "?token=" + thisToken);
 
     if (response.status == 200) {
