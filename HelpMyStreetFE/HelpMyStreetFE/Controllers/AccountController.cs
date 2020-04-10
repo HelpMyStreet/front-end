@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,14 +32,24 @@ namespace HelpMyStreetFE.Controllers
             var personalDetails = user.UserPersonalDetails;
             string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
             string address = personalDetails.Address.AddressLine1 + "," + personalDetails.Address.Postcode;
+            string streetChampion = string.Empty;
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
 
-            if(personalDetails.UnderlyingMedicalCondition.HasValue)
+            if (user.ChampionPostcodes.Count > 0)
+            {
+                streetChampion = "Street Champion";
+            }
+            else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
+            {
+                streetChampion = "Volunteer";
+            }
+
+            if (personalDetails.UnderlyingMedicalCondition.HasValue)
             {
                 underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value ? "Yes" : "No";
             }
-                    
+
             return new UserDetails(
                 initials,
                 personalDetails.DisplayName,
@@ -47,9 +57,10 @@ namespace HelpMyStreetFE.Controllers
                 personalDetails.LastName,
                 personalDetails.EmailAddress,
                 address,
+                streetChampion,
                 personalDetails.MobilePhone,
                 personalDetails.OtherPhone,
-                personalDetails.DateOfBirth.Value.ToString(),
+                personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
                 gender,
                 underlyingMedicalConditions
                 );
@@ -64,18 +75,18 @@ namespace HelpMyStreetFE.Controllers
 
             AccountViewModel viewModel = new AccountViewModel();
 
-            if (user!=null)
+            if (user != null)
             {
                 var userDetails = GetUserDetails(user);
 
-                List<NotificationModel> notifications = new List<NotificationModel>() 
-                { 
-                    new NotificationModel 
+                List<NotificationModel> notifications = new List<NotificationModel>()
+                {
+                    new NotificationModel
                     {
-                        Id = Guid.NewGuid(), 
-                        Title = "Good news " + user.UserPersonalDetails.FirstName +"!", 
-                        Message = "Your account is all set up. From your profile you can claim local streets, search for local volunteers and update your details. Keep checking back and keep an eye on your email inbox for the latest updates to our service. We hope to be distributing requests for help very soon.", 
-                        Type = NotificationType.Success 
+                        Id = Guid.NewGuid(),
+                        Title = "Good news " + user.UserPersonalDetails.FirstName +"!",
+                        Message = "Your account is all set up. From your profile you can claim local streets, search for local volunteers and update your details. Keep checking back and keep an eye on your email inbox for the latest updates to our service. We hope to be distributing requests for help very soon.",
+                        Type = NotificationType.Success
                     }
                 };
                 viewModel.UserDetails = userDetails;

@@ -9,6 +9,7 @@
             string lastName,
             string emailAddress,
             string address,
+            string streetChampion,
             string mobileNumber,
             string otherNumber,
             string dateOfBirth,
@@ -26,6 +27,7 @@
             DateOfBirth = dateOfBirth;
             Gender = gender;
             Address = address;
+            StreetChampion = streetChampion;
             UnderlyingMedicalConditions = underlyingMedicalConditions;
         }
 
@@ -40,6 +42,7 @@
         public string DateOfBirth { get; set; }
         public string Gender { get; set; }
         public string UnderlyingMedicalConditions { get; set; }
+        public string StreetChampion { get; set; }
 
     }
 }
