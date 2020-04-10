@@ -49,7 +49,7 @@ namespace HelpMyStreetFE.Controllers
                 address,
                 personalDetails.MobilePhone,
                 personalDetails.OtherPhone,
-                personalDetails.DateOfBirth.Value.ToString(),
+                personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
                 gender,
                 underlyingMedicalConditions
                 );
