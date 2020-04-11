@@ -1,9 +1,8 @@
 .login {
   &__fail-message {
-    position: absolute;
-    left: 0;
+    font-size: 0.7rem;
     color: red;
-    display: hidden;
-    line-height: 22px;
+    text-wrap: normal;
+    max-width: 220px;
   }
 }
