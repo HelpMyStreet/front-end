@@ -5,17 +5,16 @@ import account from "./account";
 import notification from "./account/notification";
 import "./shared/info-popup";
 import "./shared/site-header";
-import { getAppSetting } from "./configuration/appSettings";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
-
-getAppSetting("Firebase:Configuration").done(function (response) {
-    let firebaseConfig = JSON.parse(response.parameter);
-    firebase.init(firebaseConfig);
-    window.account = account;
-})
 
 
 $(function () {
+
+    if (typeof configuration !== 'undefined') {
+        firebase.init(JSON.parse(configuration.firebase));
+    }
+    window.account = account;
+
     intialiseCookieConsent();
 
   $("#postcode_button").click(function(evt) {

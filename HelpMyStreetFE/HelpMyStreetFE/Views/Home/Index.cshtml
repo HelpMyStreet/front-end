@@ -4,6 +4,10 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script>
+     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
+</script>
+
 <div class="container">
     <partial name="_SiteHeaderPublic" />
 

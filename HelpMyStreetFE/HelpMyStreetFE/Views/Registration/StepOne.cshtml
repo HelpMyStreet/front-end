@@ -4,7 +4,9 @@
 
 @section Scripts {
     <script>
-        const activeStep = @Model.ActiveStep;
+        const activeStep = @Model.ActiveStep;    
+        const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
+    
     </script>
     <script src="~/registration.js" asp-append-version="true"></script>
 }
