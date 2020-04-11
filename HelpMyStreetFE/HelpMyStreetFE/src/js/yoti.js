@@ -24,7 +24,7 @@ $(() => {
 
     var urlToken = getParameterByName("token");
     if (urlToken) {
-        proessYoti(urlToken)
+        processYoti(urlToken)
     } else {
         if (initObj) {
             window.Yoti.Share.init({
