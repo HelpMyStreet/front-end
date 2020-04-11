@@ -1,16 +1,106 @@
 @{
     ViewBag.Title = "Resources";
+    var Guidance = new[]{
+            new {
+                Resource = "Advice for everyone",
+                Source = "NHS UK",
+                Url = "https://www.nhs.uk/conditions/coronavirus-covid-19/"
+            },
+            new {
+                Resource = "Coronavirus: How to help safely",
+                Source = "GOV.UK (Cabinet Office)",
+                Url = "https://www.gov.uk/government/publications/coronavirus-how-to-help-safely--2/coronavirus-how-to-help-safely"                
+            },
+            new {
+                Resource = "Stay at home: guidance for households with a possible coronavirus infection",
+                Source = "GOV.UK (Public Health England)",
+                Url = "https://www.gov.uk/government/publications/covid-19-stay-at-home-guidance"                
+            },
+            new {
+                Resource = "Guidance on social distancing",
+                Source = "GOV.UK (Cabinet Office)",
+                Url = "https://www.gov.uk/government/publications/covid-19-guidance-on-social-distancing-and-for-vulnerable-people"                
+            },
+        };
+
+
+    var FurtherHelp = new[]{
+            new {
+                Resource = "Get coronavirus support as a clinically extremely vulnerable person",
+                Source = "GOV.UK",
+                Url = "https://www.gov.uk/coronavirus-extremely-vulnerable"                
+            },
+            new {
+                Resource = "Find a local council",
+                Source = "GOV.UK",
+                Url = "https://www.gov.uk/find-local-council"                
+            }
+        };
 }
 <div class="container">
     <partial name="_SiteHeaderPublic" />
 
-    <article class="content-page content-page--questions">
+    <article class="content-page content-page--resources">
         <header class="content-page__header">
             <h2 class="content-page__title">Resources</h2>
         </header>
 
         <div class="content-page__body">
-            <p>TBC</p>
+            <h3>Official guidance</h3>
+            <p>Links to the latest official advice and guidance</p>
+            <table class="table--resources">
+                <thead>
+                    <tr>
+                        <th>Resource</th>
+                        <th>Source</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var resource in Guidance)
+                    {
+                        <tr>
+                            <td>
+                                @resource.Resource
+                            </td>
+                            <td>
+                                @resource.Source
+                            </td>
+                            <td>
+                                <a href="@resource.Url">@resource.Url</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <h3>Where to find further help</h3>
+            <p>If you are vulnerable and need extra help as a result of the coronavirus outbreak these services may be able to help you.
+Please make sure to check you’re eligible for help before contacting these services to ensure they can support those most in need.
+</p>
+            <table>
+                <thead>
+                    <th>Resource</th>
+                    <th>Source</th>
+                    <th>URL</th>
+                </thead>
+                <tbody>
+                    @foreach (var resource in FurtherHelp)
+                        {
+                            <tr>
+                                <td>
+                                    @resource.Resource
+                                </td>
+                                <td>
+                                    @resource.Source
+                                </td>
+                                <td>
+                                    <a href="@resource.Url">@resource.Url</a>
+                                </td>
+                            </tr>
+                        }
+                </tbody>
+            </table>
         </div>
     </article>
 </div>

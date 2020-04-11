@@ -22,14 +22,31 @@
       transition: color 0.1s;
     }
   }
+
+  table {
+    margin-bottom: $med-margin;
+    border-spacing: 0px;
+
+    th {
+      background-color: $background-darker-1;
+    }
+
+    th,td {
+      text-align: start;
+      border-bottom: 1px solid $gray-8;
+      padding: 0.5rem;
+      margin: 0;
+    }
+  }
 }
 
 /** Space at top of content pages */
 .content-page--community,
-.content-page--about-us {
+.content-page--about-us,
+.content-page--resources {
   .content-page {
     &__header {
-      margin-top: $med-margin;
+      margin-top: $lg-margin;
     }
   }
 }
