@@ -1,5 +1,6 @@
 ﻿using HelpMyStreetFE.Models.Validation;
 using HelpMyStreetFE.Models.Yoti;
+using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,10 +15,13 @@ namespace HelpMyStreetFE.Services
 {
     public class ValidationService : BaseHttpService, IValidationService
     {
+        private readonly IValidationRepository _validationRepository;
         private readonly ILogger<ValidationService> _logger;
-        public ValidationService(ILogger<ValidationService> logger, IConfiguration config) : base(config, "Services:Validation")
+
+        public ValidationService(ILogger<ValidationService> logger, IConfiguration config, IValidationRepository validationRepository) : base(config, "Services:Validation")
         {
             _logger = logger;
+            _validationRepository = validationRepository;
         }
 
         public async Task<ValidationResponse> ValidateUserAsync(ValidationRequest request, CancellationToken token = default)
@@ -27,8 +31,7 @@ namespace HelpMyStreetFE.Services
                 var check = CheckValidationRequest(request);
                 if (check != null) return check;
 
-                var url = $"/api/getValidation/{request.UserId}/{request.Token}";
-                var response = await Client.PostAsync(url, null);
+                var response = await _validationRepository.ValidateUser(request);
 
                 return handleResponse(response);
             }
