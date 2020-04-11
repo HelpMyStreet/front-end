@@ -1,0 +1,18 @@
+.content-page--resources {
+  .table {
+    &__wrapper {
+      // If min table width exceeds page width
+      overflow-x: auto;
+    }
+
+    &--resources {
+      .resource-url {
+        display: none;
+
+        @media screen and (min-width: $med-screen) {
+          display: table-cell;
+        }
+      }
+    }
+  }
+}
