@@ -58,17 +58,16 @@ $(function () {
   });
   $("#login-submit").click(async () => {
     try {
-      //TODO: Add some sort of loading spinner to indicate stuff is happening
-      $("#login-submit")[0].disabled = true;
-      const email = $("#email").val();
-      const password = $("#password").val();
-      const response = await account.login.login(email, password);
-      if (!response.success) {
+        $("#login-submit")[0].disabled = true;
+        const email = $("#email").val();
+        const password = $("#password").val();
+        const response = await account.login.login(email, password);
+        if (!response.success) {
         $("#login-fail-message").text(response.message);
         $("#login-submit")[0].disabled = false;
       }
     } finally {
-      $("#login-submit")[0].disabled = false;
+        $("#login-submit")[0].disabled = false;
     }
   });
 });
