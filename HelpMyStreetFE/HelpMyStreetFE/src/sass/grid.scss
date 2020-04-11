@@ -1,4 +1,12 @@
-﻿@media screen and (min-width: $med-screen){
+﻿/** Outer Wrapper */
+.outer-container {
+    width: 100%;
+    &--darker {
+        background-color: $background-darker-1;
+    }
+}
+
+@media screen and (min-width: $med-screen) {
     .container {
         max-width: 1224px + 24px;
         margin: auto;
@@ -23,15 +31,15 @@
     }
 }
 
-@media screen and (min-width: $sm-screen) and (max-width: $med-screen){
+@media screen and (min-width: $sm-screen) and (max-width: $med-screen) {
     .container {
         width: calc(100vw - 64px);
         margin: auto;
     }
 }
 
-@media screen and (max-width: $sm-screen){
-    .container{
+@media screen and (max-width: $sm-screen) {
+    .container {
         width: calc(100vw - 32px);
         margin: auto;
     }
