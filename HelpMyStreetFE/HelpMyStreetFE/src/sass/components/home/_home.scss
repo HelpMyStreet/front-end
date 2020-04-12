@@ -4,22 +4,14 @@
 @import "./help.scss";
 @import "./stats.scss";
 
-@media screen and (max-width: $sm-screen){
-    .btn--sign-up {
-        white-space: nowrap;
-        display: flex;
-        justify-content: center;
-        padding: 0;
-    }
+.btn--sign-up {
+    white-space: nowrap;
+    display: block;
+    text-align: center;
 
-    .w100 {
-        width: 100%;
-    }
+    @media screen and (min-width: $sm-screen) {
+        display: inline-block;
+    }    
 }
 
-@media screen and (max-width: $med-screen){
-    .btn--sign-up{
-        margin-top: $med-margin;
-    }
-}
     
