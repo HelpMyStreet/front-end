@@ -1,55 +1,92 @@
+@model HelpMyStreetFE.Models.ContactForm.ContactFormViewModel
+
 <article class="contact-form">
-  <form id="contact-form" method="post">
 
-    <div class="row">
-      <div class="input">        
-          <label>Your name</label>
-          <input name="name" type="text" placeholder="e.g. John" />
-          <span class="error"></span>
-      </div>
-      <div class="input">        
-          <label>Your email address</label>
-          <input name="name" type="email" placeholder="Email address" />
-          <span class="error"></span>
-      </div>
-    </div>
+    <form id="contact-form" method="post" asp-controller="ContactForm" asp-action="Send"
+          data-ajax="true" data-ajax-method="post" data-ajax-mode="replace"
+          data-ajax-begin="onContactFormBegin" data-ajax-complete="onContactFormComplete"
+          data-ajax-failure="onContactFormFailed" data-ajax-success="onContactFormSuccess">
+        @if (ViewBag.Message != null)
+        {
+            <div>@ViewBag.Message</div>
+        }
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="input">
+                <label asp-for="Name">Your name *</label>
+                <input name="Name" type="text" placeholder="e.g. John" asp-for="Name" required />
+                <span class="error" asp-validation-for="Name"></span>
+            </div>
+            <div class="input">
+                <label asp-for="Email">Your email address *</label>
+                <input name="Email" type="email" placeholder="Email address" asp-for="Email" required />
+                <span class="error" asp-validation-for="Email"></span>
+            </div>
+        </div>
 
-    <div class="row">
-      <div class="input">        
-          <label>Your mobile number</label>
-          <input name="name" type="tel" placeholder="Phone number" />
-          <span class="error"></span>
-      </div>
-      <div class="input">        
-          <label>Other telephone number</label>
-          <input name="name" type="email" placeholder="" />
-          <span class="error"></span>
-      </div>
-    </div>
-    
-    <div class="row">
-      <div class="input">        
-          <label>Your organisation (if applicable)</label>
-          <input name="name" type="text" placeholder="Organisation name" />
-          <span class="error"></span>
-      </div>
-      <div class="input">        
-          <label>Your role (if applicable)</label>
-          <input name="name" type="text" placeholder="Your role" />
-          <span class="error"></span>
-      </div>
-    </div>
+        <div class="row">
+            <div class="input">
+                <label asp-for="MobileNumber">Your mobile number</label>
+                <input name="MobileNumber" type="tel" placeholder="Phone number" asp-for="MobileNumber" />
+                <span class="error" asp-validation-for="MobileNumber"></span>
+            </div>
+            <div class="input">
+                <label asp-for="OtherNumber">Other telephone number</label>
+                <input name="OtherNumber" type="tel" placeholder="" asp-for="OtherNumber" />
+                <span class="error" asp-validation-for="OtherNumber"></span>
+            </div>
+        </div>
 
-    <div class="row">
-      <div class="input">        
-          <label>How can we help?</label>
-          <input name="name" type="text" placeholder="How can we help?" />
-          <span class="error"></span>
-      </div>
-    </div>
-    
-    <div class="row">
-      <button type="submit" class="btn cta btn--submit">Send</button>
-    </div>
-  </form>
+        <div class="row">
+            <div class="input">
+                <label asp-for="Organisation">Your organisation (if applicable)</label>
+                <input name="Organisation" type="text" placeholder="Organisation name" asp-for="Organisation" />
+                <span class="error" asp-validation-for="Organisation"></span>
+            </div>
+            <div class="input">
+                <label asp-forRoleRole">Your role (if applicable)</label>
+                <input name="Role" type="text" placeholder="Your role" asp-for="Role" />
+                <span class="error" asp-validation-for="Role"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input">
+                <label asp-for="Message">How can we help? *</label>
+                <textarea name="Message" rows="3" type="text" placeholder="How can we help?" asp-for="Message" required></textarea>
+                <span class="error" asp-validation-for="Message"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div id="contact-form-result"></div>
+        </div>
+
+        <div class="row">
+            <button id="contact-form-submit" type="submit" class="btn cta btn--submit">Send</button>
+            <partial name="_LoadingSpinner" />
+        </div>
+
+    </form>
+
+    @using (Html.BeginScripts())
+    {
+        <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+        <script>
+            var results = $("#contact-form-result");
+            var onContactFormBegin = function () {
+                $('.loading-spinner', '.contact-form').removeClass('hidden');
+            };
+            var onContactFormComplete = function () {
+                $('.loading-spinner', '.contact-form').addClass('hidden');
+            };
+            var onContactFormSuccess = function (context) {
+                results.html("<p>Success: Thank you, your enquiry has been sent.</p>");
+            };
+            var onContactFormFailed = function (context) {
+                results.html("<p>Sorry, there's been an error. Please check the form and try again.</p>");
+            };
+        </script>
+    }
+
 </article>
