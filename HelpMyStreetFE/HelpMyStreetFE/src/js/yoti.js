@@ -17,7 +17,7 @@ $(() => {
         console.log(response);
         if (response.status == 200) {
             window.location.href = "/yoti/AuthSuccess";
-        } else {
+        } else {            
             window.location.href = "/yoti/AuthFailed";            
         }
     }

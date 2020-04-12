@@ -54,8 +54,14 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> AuthSuccess()
         {
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            await _userService.CreateUserStepFiveAsync(id, true);
-            return View();
+            User user = await _userService.GetUserAsync(id);
+            if (user.RegistrationHistory.Count == 4) 
+            {
+                await _userService.CreateUserStepFiveAsync(id, true);
+                return View();
+            }
+
+            return RedirectToAction("AuthFailed");
         }
 
         public IActionResult AuthFailed()
