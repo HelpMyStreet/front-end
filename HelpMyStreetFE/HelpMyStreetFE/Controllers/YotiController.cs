@@ -1,6 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Validation;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Validation;
@@ -17,9 +19,11 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly YotiOptions _options;
         private readonly IValidationService _validationService;
+        private readonly IUserService _userService;
 
-        public YotiController(IOptions<YotiOptions> options, IValidationService validationService)
+        public YotiController(IOptions<YotiOptions> options, IValidationService validationService, IUserService userService)
         {
+            _userService = userService;
             _options = options.Value;
             _validationService = validationService;
         }
@@ -47,8 +51,10 @@ namespace HelpMyStreetFE.Controllers
 
         }
 
-        public IActionResult AuthSuccess()
+        public async Task<IActionResult> AuthSuccess()
         {
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            await _userService.CreateUserStepFiveAsync(id, true);
             return View();
         }
 
