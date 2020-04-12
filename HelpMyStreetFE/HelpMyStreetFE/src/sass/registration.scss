@@ -81,6 +81,11 @@ form {
       height: 64px;
     }
 
+    textarea {
+        width: 100%;
+        height: 128px;
+    }
+
     &--separator {
       border: none;
       border-top: 1px dashed #ddd;
