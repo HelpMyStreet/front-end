@@ -98,5 +98,16 @@ namespace HelpMyStreetFE.Services
                 ChampionPostcodes = postcodes
             });
         }
+
+        public async Task CreateUserStepFiveAsync(
+         int id,
+         bool verified)
+        {
+            await _userRepository.CreateUserStepFive(new RegistrationStepFive
+            {
+                UserID = id,
+                IsVerified = verified
+            });
+        }
     }
 }
