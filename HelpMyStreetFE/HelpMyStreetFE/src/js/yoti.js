@@ -34,7 +34,7 @@ $(() => {
                         scenarioId: initObj.scenarioId,
                         clientSdkId: initObj.clientSdkId,
                         button: {
-                            label: "Start Yoti",
+                            label: "Open Yoti",
                             align: "center",
                             width: "full", // "auto"
                         },
