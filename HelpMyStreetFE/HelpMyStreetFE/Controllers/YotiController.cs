@@ -1,6 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Validation;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Validation;
@@ -17,9 +19,11 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly YotiOptions _options;
         private readonly IValidationService _validationService;
+        private readonly IUserService _userService;
 
-        public YotiController(IOptions<YotiOptions> options, IValidationService validationService)
+        public YotiController(IOptions<YotiOptions> options, IValidationService validationService, IUserService userService)
         {
+            _userService = userService;
             _options = options.Value;
             _validationService = validationService;
         }
@@ -47,9 +51,17 @@ namespace HelpMyStreetFE.Controllers
 
         }
 
-        public IActionResult AuthSuccess()
+        public async Task<IActionResult> AuthSuccess()
         {
-            return View();
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            User user = await _userService.GetUserAsync(id);
+            if (user.RegistrationHistory.Count == 4) 
+            {
+                await _userService.CreateUserStepFiveAsync(id, true);
+                return View();
+            }
+
+            return RedirectToAction("AuthFailed");
         }
 
         public IActionResult AuthFailed()

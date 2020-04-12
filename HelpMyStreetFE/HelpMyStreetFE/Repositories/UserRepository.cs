@@ -73,6 +73,16 @@ namespace HelpMyStreetFE.Repositories
             return response.Id;
         }
 
+        public async Task<int> CreateUserStepFive(RegistrationStepFive data)
+        {
+            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageFive", new
+            {
+                RegistrationStepFive = data
+            });
+
+            return response.Id;
+        }
+
         public async Task<int> UpdateUser(User user)
         {
             var response = await PutAsync<ModifyUserResponse>("/api/putmodifyuser", new { user });
