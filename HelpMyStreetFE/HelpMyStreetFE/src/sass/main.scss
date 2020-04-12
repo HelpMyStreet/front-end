@@ -128,6 +128,8 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 39px;
     height: 64px;
     width: 64px;
+    min-height: 64px;
+    min-width: 64px;
   }
 
   @media screen and (max-width: $sm-screen) {
@@ -135,6 +137,8 @@ input[type=number]::-webkit-outer-spin-button {
     line-height: 24px;
     height: 40px;
     width: 40px;
+    min-height: 40px;
+    min-width: 40px;
   }
 }
 
