@@ -10,9 +10,9 @@
 @import "./login.scss";
 @import "./yoti.scss";
 
+@import "./ui/buttons";
+
 @import "./site/site-nav";
-@import "./components/authentication/header-login";
-@import "./components/cookie-consent";
 @import "./views/content-page";
 @import "./views/account";
 @import "./views/resources";
@@ -21,8 +21,9 @@
 @import "./mixins//typography/titles";
 @import "./mixins//typography/copy";
 
+@import "./components/authentication/header-login";
+@import "./components/cookie-consent";
 @import "./components/loading-spinner";
-
 @import "./components/notification-card/notification";
 @import "./components/profile/profile-panel";
 @import "./components/info-popup";
@@ -173,43 +174,6 @@ input[type=number]::-webkit-outer-spin-button {
   }
 }
 
-.btn {
-  border-radius: 24px;
-  border: 2px solid transparent;
-  font-size: 1rem;
-  line-height: 1.222;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  padding: 13px 40px;
-  text-decoration: none;
-
-  &.border-blue {
-    border: 2px solid $blue;
-  }
-
-  &.large {
-    border-radius: 32px;
-    line-height: 29px;
-    padding: 17px 112px 18px;
-
-    @media screen and (max-width: $sm-screen) {
-      width: 100%;
-    }
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  .loader {
-    display: none;
-  }
-}
-
-.cta {
-  @extend .white;
-  @extend .bg-green;
-}
 
 .card {
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
