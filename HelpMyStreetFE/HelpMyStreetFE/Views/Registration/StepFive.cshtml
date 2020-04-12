@@ -18,28 +18,24 @@
     <div class="row justify-center">
         <div class="verification__info sm8">
             <div class="verification__info__heading">You’re now registered with Help My Street.</div>
-            <p>In a moment, we’ll take you through to your profile page. First we need to ask you to complete ID Verification with our partner <a href="https://yoti.zendesk.com/hc/en-us/sections/202188005-Who-and-what-is-Yoti">Yoti</a>.</p>
-            <p>We’ve selected Yoti because they have ‘Privacy by Design’ and your details are absolutely safe. Not even Yoti or HelpMyStreet will be able to access your data without your consent.</p>
-            <p>To complete <a href="https://yoti.zendesk.com/hc/en-us/sections/202203865-Using-Yoti-online">ID Verification</a> you’ll need a <a href="https://yoti.zendesk.com/hc/en-us/sections/202128969-ID-documents-we-support">valid ID</a> in your name (either Passport or Driving Licence) and a smartphone (iOS or Android).</p>
-            <ul class="verification__info__extra-links">
-                <li><a href="https://yoti.zendesk.com/hc/en-us/sections/202188005-Who-and-what-is-Yoti">About HelpMyStreet's digital ID verification provider</a></li>
-                <li><a href="https://yoti.zendesk.com/hc/en-us/sections/202203865-Using-Yoti-online">How does it work?</a></li>
-                <li><a href="https://yoti.zendesk.com/hc/en-us/sections/202201325-Security-and-information-storage">Information Security</a></li>
-            </ul>
+            <p>We’re making volunteering in your local community simple and safe for everyone. All our volunteers are ID verified with our partner <a href="https://yoti.zendesk.com/hc/en-us/sections/202188005-Who-and-what-is-Yoti" target="_blank">Yoti</a>, to provide peace of mind to those in need, as well as their friends and family.</p>            
+            <p>We’ve selected Yoti because they have 'Privacy by Design' and your details are completely protected. Not even Yoti or HelpMyStreet can access your data without your consent.</p>
+            <p>To complete your ID verification, please have an ID in your name (either Passport or Driver’s Licence) and a smartphone (iOS or Android).</p>
+            <p>If you require more information, look for <a href="@Url.Action("Questions","Pages")" target="_blank">ID Verification on our Questions page</a></p>       
         </div>
         <div class="verification__yoti__wrapper sm8">
-            <div class="verification__yoti__heading">Please follow the steps below:</div>
+            <div class="verification__yoti__heading">Be a Verified Volunteer in 4 steps ...</div>
             <partial name="_YotiInstructions" />
         </div>
         <div class="verification__yoti__download sm8">
             <div class="verification__yoti__download__heading">Got your ID and Smartphone?</div>
-            <p>Download the Yoti App.</p>
+            <p>Start Now Download the Yoti App.</p>
             <partial name="_YotiDownload" />
         </div>
         <div class="verification__yoti__confirm sm8">
-            <div class="verification__yoti__confirm__heading">Success?</div>
-            <p>As soon as your ID documents have been successfully added in Yoti, click to complete your ID Verification on HelpMyStreet.org</p>
-            <a href="/yoti/Authenticate" class="verification__yoti__confirm__button">Confirm ID</a>
+            <div class="verification__yoti__confirm__heading">Ready to go?</div>
+            <p>As soon as your ID documents have been successfully added in Yoti, click the green 'Confirm ID' button below <b>to complete your ID Verification</b> for HelpMyStreet.org</p>
+            <a href="/yoti/Authenticate" class="btn cta verification__yoti__confirm__button">Confirm ID</a>
         </div>
     </div>
 </div>
