@@ -11,6 +11,15 @@
     }
 }
 
+.content-page--questions,
+.content-page--resources {
+    .content-page {
+        &__header {
+            margin-top: $lg-margin;
+        }
+    }
+}
+
 .content-page {
 
     &__outer {
@@ -49,10 +58,40 @@
             }
         }
     }
-}
 
+    table {
+        margin-bottom: $med-margin;
+        border-spacing: 0px;
 
-.content-page {
+        th {
+            background-color: $background-darker-1;
+        }
+
+        th {
+            padding: 0.5rem;
+        }
+
+        tr {
+            td {
+                padding: 0.5rem 0;
+
+                &:not(:nth-last-child(2)) {
+                    padding-right: 0.5rem;
+                }
+
+                @media screen and (min-width: $sm-screen) {
+                    padding: 0.5rem;
+                }
+            }
+        }
+
+        th, td {
+            text-align: start;
+            border-bottom: 1px solid $gray-8;
+            margin: 0;
+        }
+    }
+
     ul,
     ol {
         margin-bottom: $xs-margin;
