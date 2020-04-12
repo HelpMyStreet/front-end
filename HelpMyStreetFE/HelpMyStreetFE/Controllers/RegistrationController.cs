@@ -8,6 +8,7 @@ using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HelpMyStreetFE.Controllers
@@ -19,17 +20,19 @@ namespace HelpMyStreetFE.Controllers
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
         private readonly IAddressService _addressService;
-
+        private readonly IConfiguration _configuration;
         public RegistrationController(
             ILogger<RegistrationController> logger,
             IUserService userService,
             IAuthService authService,
-            IAddressService addressService)
+            IAddressService addressService,
+            IConfiguration configuration)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService;
             _authService = authService;
             _addressService = addressService;
+            _configuration = configuration;
         }
 
         [AllowAnonymous]
@@ -38,7 +41,8 @@ namespace HelpMyStreetFE.Controllers
         {
             return View(new RegistrationViewModel
             {
-                ActiveStep = 1
+                ActiveStep = 1,
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
             });
         }
 

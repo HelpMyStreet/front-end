@@ -6,5 +6,7 @@
         public int NumStreetChampions { get; set; }
         public int NumStreetsCovered { get; set; }
         public int NumStreetsRemaining { get; set; }
+        public string FirebaseConfiguration { get; set; }
+
     }
 }

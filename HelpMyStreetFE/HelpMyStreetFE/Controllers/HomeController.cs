@@ -6,6 +6,7 @@ using HelpMyStreetFE.Services;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -13,12 +14,15 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IAddressService _addressService;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(ILogger<HomeController> logger, IAddressService addressService)
+        public HomeController(ILogger<HomeController> logger, IAddressService addressService, IConfiguration configuration)
         {
             _logger = logger;
             _addressService = addressService;
+            _configuration = configuration;
         }
+
 
         public async Task<IActionResult> Index()
         {
@@ -39,7 +43,8 @@ namespace HelpMyStreetFE.Controllers
                 NumStreetChampions = reqs[0].Result,
                 NumStreetsCovered = reqs[1].Result,
                 NumStreetsRemaining = reqs[2].Result,
-                PostCodesCovered = reqs[3].Result
+                PostCodesCovered = reqs[3].Result,
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
 
             return View(model);

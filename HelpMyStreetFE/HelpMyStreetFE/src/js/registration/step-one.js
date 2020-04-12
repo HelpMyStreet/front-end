@@ -1,15 +1,11 @@
 ﻿import clientFirebase from "../firebase";
 import { buttonLoad, buttonUnload } from "../shared/btn";
-import { getAppSetting } from "../configuration/appSettings";
 import { validateFormData } from "../shared/validator";
 
 
 export function initialiseStepOne() {
 
-   getAppSetting("Firebase:Configuration").done(function (response) {
-    let firebaseConfig = JSON.parse(response.parameter);
-    clientFirebase.init(firebaseConfig);    
-   })
+    clientFirebase.init(JSON.parse(configuration.firebase));        
 
   $("#registration_form").on("submit", function (evt) {
     evt.preventDefault();
