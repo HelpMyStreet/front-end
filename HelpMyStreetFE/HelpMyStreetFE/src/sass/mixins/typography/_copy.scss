@@ -17,8 +17,12 @@
 
 // for exposition copy paragraph under the main Header title
 @mixin copy-sz-lg {
-  font-size: 4.81vw;
+  font-size: 1.1rem;
   line-height: 1.333;
+
+  @media screen and (min-width: $screen-xs) {
+    font-size: 5.5vw;
+  }
 
   @media screen and (min-width: $sm-screen) {
     font-size: 1.333rem;

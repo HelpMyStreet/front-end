@@ -71,6 +71,7 @@ h2 {
 h3 {
   @extend h2;
   @include title-sz-3;
+  color: black;
   letter-spacing: 0.5px;
 }
 
