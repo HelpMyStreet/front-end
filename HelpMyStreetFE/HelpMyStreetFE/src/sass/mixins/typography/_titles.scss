@@ -1,7 +1,11 @@
 @mixin title-sz-1 {
-  font-size: 3.111rem;
+  font-size: 11vw;
   line-height: 1.286;
-  font-weight: 700;
+
+  @media screen and (min-width: $sm-screen) {
+    font-size: 3.111rem;
+    font-weight: 700;
+  }
 }
 
 @mixin title-sz-2 {

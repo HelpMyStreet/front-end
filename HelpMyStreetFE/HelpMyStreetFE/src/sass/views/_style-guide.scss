@@ -1,0 +1,26 @@
+@import "../mixins/typography/copy";
+@import "../mixins/effects";
+
+.style-guide {
+  
+  &__category {
+    margin: 1rem;
+    padding: 1rem;
+    @include shadow-md;
+  }
+
+  &__definition {
+    border: 1px solid #ccc;
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .code {
+      background-color: #444;
+      color: #ff0;
+      padding: 0.5rem;
+      @include copy-sz-sm;
+    }
+  }
+}
