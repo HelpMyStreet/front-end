@@ -118,7 +118,7 @@ namespace HelpMyStreetFE.Controllers
                     {
                         Id = Guid.NewGuid(),
                         Title = "Good news " + user.UserPersonalDetails.FirstName +"!",
-                        Message = "Your account is all set up. From your profile you can claim local streets, search for local volunteers and update your details. Keep checking back and keep an eye on your email inbox for the latest updates to our service. We hope to be distributing requests for help very soon.",
+                        Message = "Your account is all set up. You will soon be able to update the personal and volunteering details on your profile page. Street Champions will be able to manage their streets, search for local volunteers, and handle requests for help. Keep an eye on your email inbox for the latest updates. Thanks for joining HelpMyStreet!",
                         Type = NotificationType.Success
                     }
                 };
