@@ -37,8 +37,11 @@
             }
         };
 }
+<partial name="_SiteHeaderPublic" />
+
 <div class="container">
-    <partial name="_SiteHeaderPublic" />
+    <div class="row">
+        <div class="sm12 content-page content-page--resources">
 
     <article class="content-page content-page--resources">
         <header class="content-page__header">
@@ -82,9 +85,11 @@ Please make sure to check you’re eligible for help before contacting these ser
             <div class="table__wrapper">
                 <table class="table--resources">
                     <thead>
+                      <tr>
                         <th>Resource</th>
                         <th>Source</th>
                         <th class="resource-url">URL</th>
+                      </tr>
                     </thead>
                     <tbody>
                         @foreach (var resource in FurtherHelp)
@@ -104,6 +109,8 @@ Please make sure to check you’re eligible for help before contacting these ser
                     </tbody>
                 </table>
             </div>
+
+            </article>
         </div>
-    </article>
+    </div>
 </div>

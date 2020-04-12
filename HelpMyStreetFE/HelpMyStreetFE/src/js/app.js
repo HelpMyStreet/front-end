@@ -5,17 +5,16 @@ import account from "./account";
 import notification from "./account/notification";
 import "./shared/info-popup";
 import "./shared/site-header";
-import { getAppSetting } from "./configuration/appSettings";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
-
-getAppSetting("Firebase:Configuration").done(function (response) {
-    let firebaseConfig = JSON.parse(response.parameter);
-    firebase.init(firebaseConfig);
-    window.account = account;
-})
 
 
 $(function () {
+
+    if (typeof configuration !== 'undefined') {
+        firebase.init(JSON.parse(configuration.firebase));
+    }
+    window.account = account;
+
     intialiseCookieConsent();
 
   $("#postcode_button").click(function(evt) {
@@ -58,17 +57,16 @@ $(function () {
   });
   $("#login-submit").click(async () => {
     try {
-      //TODO: Add some sort of loading spinner to indicate stuff is happening
-      $("#login-submit")[0].disabled = true;
-      const email = $("#email").val();
-      const password = $("#password").val();
-      const response = await account.login.login(email, password);
-      if (!response.success) {
+        $("#login-submit")[0].disabled = true;
+        const email = $("#email").val();
+        const password = $("#password").val();
+        const response = await account.login.login(email, password);
+        if (!response.success) {
         $("#login-fail-message").text(response.message);
         $("#login-submit")[0].disabled = false;
       }
     } finally {
-      $("#login-submit")[0].disabled = false;
+        $("#login-submit")[0].disabled = false;
     }
   });
 });
