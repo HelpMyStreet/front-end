@@ -7,10 +7,23 @@
     margin: 1rem;
     padding: 1rem;
     @include shadow-md;
+
+    &.typography {      
+      display: grid;
+      grid-template-columns: 1fr;
+
+      @media screen and (min-width: $med-screen) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      > div {
+        margin-right: 1rem;
+      }
+    }
   }
 
   &__definition {
-    border: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     padding: .5rem;
     display: flex;
     justify-content: space-between;
