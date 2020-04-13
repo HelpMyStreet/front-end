@@ -60,6 +60,11 @@ namespace HelpMyStreetFE.Services
 
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
-        }      
+        }
+
+        public async Task Logout(HttpContext httpContext)
+        {
+            await httpContext.SignOutAsync();            
+        }
     }
 }

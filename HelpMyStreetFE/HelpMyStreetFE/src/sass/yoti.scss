@@ -157,8 +157,15 @@
 
     &__auth {
         padding-top: 30px;
-
-        #yoti-test {
+        
+        &__loading{
+            text-align:center;
+            display:none;
+            img{
+                width:129px;
+            }
+        }
+        &__button {
             height: 47px;
 
             @media screen and (min-width: $screen-sm) {
