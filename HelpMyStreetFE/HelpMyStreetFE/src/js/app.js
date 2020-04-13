@@ -6,7 +6,7 @@ import notification from "./account/notification";
 import "./shared/info-popup";
 import "./shared/site-header";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
-
+import { intialiseForgottonForm } from "./home/forgotton-password"
 
 $(function () {
 
@@ -16,6 +16,7 @@ $(function () {
     window.account = account;
 
     intialiseCookieConsent();
+    intialiseForgottonForm(firebase, account);
 
   $("#postcode_button").click(function(evt) {
     const postCode = $("#postcode").val();

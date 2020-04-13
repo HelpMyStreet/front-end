@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Configuration;
+using HelpMyStreetFE.Models.Home;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -47,6 +48,40 @@ namespace HelpMyStreetFE.Controllers
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
 
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FirebaseAccountAction(string mode, string oobCode, string apiKey, string continueUrl)
+        {
+            switch (mode)
+            {
+                case "resetPassword":
+                    return RedirectToAction("ResetPassword", new { oobCode = oobCode });
+                default:
+                    return RedirectToAction("index");
+            }            
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ForgottonPassword()
+        {
+            ForgottonPasswordViewModel model = new ForgottonPasswordViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ResetPassword(string oobCode)
+        {
+            ResetPasswordViewModel model = new ResetPasswordViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"],
+                ActionCode = oobCode
+
+            };
             return View(model);
         }
 

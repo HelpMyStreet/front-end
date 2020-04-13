@@ -16,7 +16,9 @@ export function initialiseStepOne() {
         RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{10,})").test(v) ||
         "Please use a strong password",
       confirm_password: (v, d) =>
-        d.password === v || "Please ensure passwords match",
+            d.password === v || "Please ensure passwords match",
+      privacy_notice: (v) => v === true || "Please tick to confirm that you acknowledge the Help My Street <a href=' / privacy - policy'>Privacy Notice</a>",
+      terms_and_conditions: (v) => v === true || "Please tick to confirm that you agree to the Help My Street <a href=' / terms - conditions'>Terms and Conditions</a>",
     });
 
     if (valid === false) return;
