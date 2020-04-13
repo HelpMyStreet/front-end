@@ -1,3 +1,4 @@
 appsettings.Development.json
 wwwroot/main.js
 wwwroot/registration.js
+wwwroot/yoti.js
