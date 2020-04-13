@@ -10,6 +10,8 @@
 }
 
 @{
+    ViewData["Title"] = "Registration";
+
     var responsibilities = new Dictionary<char, string>
 {
         { '1', "Communicate with people who are sheltering safely at home and/or their friends and family." },
@@ -66,30 +68,30 @@
                                 <span class="mdi mdi-check"></span>
                             </span>
                             @pc.FriendlyName @pc.Postcode
-                        <span class="message">
-                            @if (Model.LocalAvailability)
-                            {
-                                if (pc.ChampionCount < 2)
+                            <span class="message">
+                                @if (Model.LocalAvailability)
                                 {
-                                    if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                    if (pc.ChampionCount < 2)
                                     {
-                                        @("Your street needs a Street Champion, can you help?")
+                                        if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                        {
+                                            @("Your street needs a Street Champion, can you help?")
+                                        }
+                                        else
+                                        {
+                                            @("Your local neighbours might need help here.")
+                                        }
                                     }
                                     else
                                     {
-                                        @("Your local neighbours might need help here.")
+                                        @("We already have Street Champions here. Can you help others nearby?")
                                     }
                                 }
                                 else
                                 {
-                                    @("We already have Street Champions here. Can you help others nearby?")
+                                    @("Coverage is good in your area, but you can still add yourself as an additional street champion.")
                                 }
-                            }
-                            else
-                            {
-                                @("Coverage is good in your area, but you can still add yourself as an additional street champion.")
-                            }
-                        </span>
+                            </span>
                         </label>
                     </div>
                     <hr class="input--separator" />
