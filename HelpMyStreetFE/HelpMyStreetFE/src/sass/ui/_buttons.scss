@@ -33,4 +33,8 @@
 .cta {
   @extend .white;
   @extend .bg-green;
+
+  &:hover {
+    @extend .white;
+  }
 }

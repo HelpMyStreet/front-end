@@ -54,6 +54,16 @@ p {
   }
 }
 
+a {
+  color: $blue;
+  transition: color 0.5s;
+
+  &:hover {
+      color: $green;
+      transition: color 0.1s;
+  }
+}
+
 h1 {
   @include title-sz-1;
   color: $dark-blue;
