@@ -162,13 +162,11 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpPost("[controller]/stepfour")]
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
-        {
+        {            
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             try
             {
-                _logger.LogInformation($"Step 4 submission for {id}");
-
+                _logger.LogInformation($"Step 4 submission for {id}");                
                 await _userService.CreateUserStepFourAsync(
                     id,
                     form.ChampionRoleUnderstood,
