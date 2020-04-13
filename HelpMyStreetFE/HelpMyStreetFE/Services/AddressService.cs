@@ -72,7 +72,7 @@ namespace HelpMyStreetFE.Services
             {
                 var street = string.Concat(postcode.AddressDetails[0].AddressLine1.Where(c => !char.IsNumber(c)));
                 var champs = await _userRepository.GetChampionCountByPostcode(postcode.Postcode);
-                nearby.Add(new PostCodeDetail { StreetName = street, ChampionCount = champs, Postcode = postcode.Postcode });
+                nearby.Add(new PostCodeDetail { StreetName = street, ChampionCount = champs, Postcode = postcode.Postcode, DistanceInMetres = postcode.DistanceInMetres, FriendlyName = postcode.FriendlyName });
             }
 
             return nearby;

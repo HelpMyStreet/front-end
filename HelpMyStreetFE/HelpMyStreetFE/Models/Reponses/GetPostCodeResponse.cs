@@ -7,6 +7,8 @@ namespace HelpMyStreetFE.Models.Reponses
     {
         public string Postcode { get; set; }
         public List<Address> AddressDetails { get; set; }
+        public int DistanceInMetres { get; set; }
+        public string FriendlyName { get; set; }
     }
 
     public class GetPostCodeResponse
