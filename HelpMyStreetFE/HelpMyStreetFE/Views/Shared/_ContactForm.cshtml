@@ -63,7 +63,7 @@
         </div>
 
         <div class="row">
-            <button id="contact-form-submit" type="submit" class="btn cta btn--submit">Send</button>
+            <button id="contact-form-submit" type="submit" class="btn cta btn--submit">Submit</button>
             <partial name="_LoadingSpinner" />
         </div>
 
@@ -81,7 +81,7 @@
                 $('.loading-spinner', '.contact-form').addClass('hidden');
             };
             var onContactFormSuccess = function (context) {
-                results.html("<p>Success: Thank you, your enquiry has been sent.</p>");
+                results.html("<p>Thank you, we'll be in touch.</p>");
             };
             var onContactFormFailed = function (context) {
                 results.html("<p>Sorry, there's been an error. Please check the form and try again.</p>");
