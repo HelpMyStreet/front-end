@@ -11,6 +11,6 @@ namespace HelpMyStreetFE.Models.Registration
         [BindProperty(Name = "street_champion")]
         public bool ChampionRoleUnderstood { get; set; }
         [BindProperty(Name = "postcodes[]")]
-        public List<string> ChampionPostcodes { get; set; }
+        public List<string> ChampionPostcodes { get; set; } = new List<string>();
     }
 }
