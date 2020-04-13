@@ -42,7 +42,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
             {
-                streetChampion = "Volunteer";
+                streetChampion = "Helper";
             }
 
             if (personalDetails.UnderlyingMedicalCondition.HasValue)
@@ -95,16 +95,21 @@ namespace HelpMyStreetFE.Controllers
 
             if (user.RegistrationHistory.Count > 0)
             {
-                int maxStep = user.RegistrationHistory.Max(a => a.Key);
+                int maxStep = user.RegistrationHistory.Max(a => a.Key); 
                 correctPage = GetCorrectPage(maxStep);
             }
                 
-            if(correctPage.Length>0)
+
+            if(correctPage.Length > 0)
             {
                 //Registration journey is not complete
                 return Redirect(correctPage);
             }
-
+            else if(!user.IsVerified.Value)
+            {
+                return Redirect(GetCorrectPage(4));
+            }
+                        
             //Assume the registration page has been fully completed
             AccountViewModel viewModel = new AccountViewModel();
 

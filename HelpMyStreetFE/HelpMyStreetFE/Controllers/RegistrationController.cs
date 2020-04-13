@@ -138,7 +138,7 @@ namespace HelpMyStreetFE.Controllers
             var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
 
             var nearbyWithoutUser = nearby.Where(p => p.Postcode != user.PostalCode).OrderBy(c => c.ChampionCount).ToList();
-            var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
+            var userPostcode = nearby.Where(p => p.Postcode.Replace(" ", "").ToLower() == user.PostalCode.Replace(" ", "").ToLower()).FirstOrDefault();
             var localAvailability = !nearby.Aggregate(false, (acc, next) => acc || next.ChampionCount < 2);
 
             // If the user's postcode is available or no other postcodes are available, lead with the user's post code
@@ -162,13 +162,11 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpPost("[controller]/stepfour")]
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
-        {
+        {            
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             try
             {
-                _logger.LogInformation($"Step 4 submission for {id}");
-
+                _logger.LogInformation($"Step 4 submission for {id}");                
                 await _userService.CreateUserStepFourAsync(
                     id,
                     form.ChampionRoleUnderstood,
