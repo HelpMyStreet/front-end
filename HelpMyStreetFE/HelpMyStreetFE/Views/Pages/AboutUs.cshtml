@@ -25,6 +25,7 @@
         <section class="container content-page__outer content-page__outer--reverse">
             <div class="content-page__inner">
                 <article class="content-page__section__body">
+                    <h2 class="content-page__title">Helping the Helpers</h2>
                     <p>We want to enable them to deliver the help you need, or the help you can give, to your neighbours in your own street and community. </p>
                     <p>HelpMyStreet.org aims to make volunteering in your local community simple, safe and effective for everyone. </p>
                 </article>
@@ -115,15 +116,22 @@
         </section>
     </div>
 
-    <div class="outer-container">
-        <div class="container content-page__contact-us">
-            <partial name="_ContactUsSummary" />
+    <article class="content-page content-page--contact-us">
 
-            <div class="content-page__contact-us__form card">
-                <partial name="_ContactForm" />
+        <div class="outer-container">
+            <div class="container content-page__outer content-page__contact-us">
+
+                <div class="content-page__inner">
+                    <partial name="_ContactUsSummary" />
+                </div>
+
+                <div class="content-page__inner content-page__contact-us__form card">
+                    <partial name="_ContactForm" />
+                </div>
             </div>
         </div>
-    </div>
+
+    </article>
 
 </article>
 

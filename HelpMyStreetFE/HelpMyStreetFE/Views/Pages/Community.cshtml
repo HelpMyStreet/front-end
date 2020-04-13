@@ -75,15 +75,22 @@
         </section>
     </div>
 
-    <div class="outer-container">
-        <div class="container content-page__contact-us">
-            <partial name="_ContactUsSummary" />
+    <article class="content-page content-page--contact-us">
 
-            <div class="content-page__contact-us__form card">
-                <partial name="_ContactForm" />
+        <div class="outer-container">
+            <div class="container content-page__outer content-page__contact-us">
+
+                <div class="content-page__inner">
+                    <partial name="_ContactUsSummary" />
+                </div>
+
+                <div class="content-page__inner content-page__contact-us__form card">
+                    <partial name="_ContactForm" />
+                </div>
             </div>
         </div>
-    </div>
+
+    </article>
 
 </article>
 
