@@ -15,6 +15,8 @@ namespace HelpMyStreetFE.Repositories
         Task<User> GetUser(int id);
         Task<User> GetUserByAuthId(string authId);
         Task<int> UpdateUser(User user);
-        
+        Task<int> GetDistinctChampionUserCount();
+        Task<int> GetChampionPostcodesCoveredCount();
+        Task<int> GetDistinctVolunteerUserCount();
     }
 }
