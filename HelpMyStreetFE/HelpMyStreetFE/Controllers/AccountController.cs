@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Controllers
         {
             var personalDetails = user.UserPersonalDetails;
             string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
-            string address = personalDetails.Address.AddressLine1 + "," + personalDetails.Address.Postcode;
+            string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
             string streetChampion = string.Empty;
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
@@ -42,7 +42,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
             {
-                streetChampion = "Volunteer";
+                streetChampion = "Helper";
             }
 
             if (personalDetails.UnderlyingMedicalCondition.HasValue)
@@ -95,16 +95,17 @@ namespace HelpMyStreetFE.Controllers
 
             if (user.RegistrationHistory.Count > 0)
             {
-                int maxStep = user.RegistrationHistory.Max(a => a.Key);
+                int maxStep = user.RegistrationHistory.Max(a => a.Key); 
                 correctPage = GetCorrectPage(maxStep);
             }
                 
-            if(correctPage.Length>0)
+
+            if(correctPage.Length > 0)
             {
                 //Registration journey is not complete
                 return Redirect(correctPage);
             }
-
+            
             //Assume the registration page has been fully completed
             AccountViewModel viewModel = new AccountViewModel();
 
@@ -118,7 +119,7 @@ namespace HelpMyStreetFE.Controllers
                     {
                         Id = Guid.NewGuid(),
                         Title = "Good news " + user.UserPersonalDetails.FirstName +"!",
-                        Message = "Your account is all set up. From your profile you can claim local streets, search for local volunteers and update your details. Keep checking back and keep an eye on your email inbox for the latest updates to our service. We hope to be distributing requests for help very soon.",
+                        Message = "Your account is all set up. You will soon be able to update the personal and volunteering details on your profile page. Street Champions will be able to manage their streets, search for local volunteers, and handle requests for help. Keep an eye on your email inbox for the latest updates. Thanks for joining HelpMyStreet!",
                         Type = NotificationType.Success
                     }
                 };

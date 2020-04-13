@@ -1,4 +1,5 @@
 ﻿using HelpMyStreetFE.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -28,6 +29,14 @@ namespace HelpMyStreetFE.Controllers
             await _authService.LoginWithTokenAsync(loginRequest.token, HttpContext);
 
             return Ok();
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _authService.Logout(HttpContext);
+            return RedirectToAction("Index", "Home");            
         }
     }
 }

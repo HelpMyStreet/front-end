@@ -13,17 +13,19 @@ $(() => {
     }
 
     var processYoti = async function (thisToken) {
+        $('#' + initObj.domId).hide();
+        $('.yoti__auth__loading').show();
         var response = await fetch("/yoti/ValidateToken" + "?token=" + thisToken);
-
+        console.log(response);
         if (response.status == 200) {
             window.location.href = "/yoti/AuthSuccess";
-        } else {
-            window.location.href = "/yoti/AuthFailed";
+        } else {            
+            window.location.href = "/yoti/AuthFailed";            
         }
     }
 
     var urlToken = getParameterByName("token");
-    if (urlToken) {
+    if (urlToken) {   
         processYoti(urlToken)
     } else {
         if (initObj) {
@@ -34,7 +36,7 @@ $(() => {
                         scenarioId: initObj.scenarioId,
                         clientSdkId: initObj.clientSdkId,
                         button: {
-                            label: "Start Yoti",
+                            label: "Open Yoti",
                             align: "center",
                             width: "full", // "auto"
                         },

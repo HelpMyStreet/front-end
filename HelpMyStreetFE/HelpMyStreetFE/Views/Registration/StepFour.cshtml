@@ -47,7 +47,7 @@
             <div class="sm8">
                 <div class="input input--checkbox">
                     <label>
-                        <input name="street_champion" type="checkbox" hidden />
+                        <input name="street_champion" type="checkbox" value="true" hidden />
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
@@ -65,32 +65,29 @@
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
-                            @pc.StreetName @pc.Postcode
+                            @pc.FriendlyName @pc.Postcode
                         <span class="message">
-                            @if (Model.UsersPostCode.ChampionCount < 2)
+                            @if (Model.LocalAvailability)
                             {
-                                if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                if (pc.ChampionCount < 2)
                                 {
-                                    @("Your street needs a Street Champion, can you help?")
+                                    if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                    {
+                                        @("Your street needs a Street Champion, can you help?")
+                                    }
+                                    else
+                                    {
+                                        @("Your local neighbours might need help here.")
+                                    }
                                 }
                                 else
-                                {
-                                    @("Your local neighbours might also need help here.")
-                                }
-                            }
-                            else if (Model.LocalAvailability)
-                            {
-                                if (pc.Postcode == Model.UsersPostCode.Postcode)
                                 {
                                     @("We already have Street Champions here. Can you help others nearby?")
                                 }
-                                else
-                                {
-                                    @("Your local neighbours need help here.")
-                                }
-                            } else
+                            }
+                            else
                             {
-                                @("Coverage is good in your area, but you can still add yourself as an additional street champion")
+                                @("Coverage is good in your area, but you can still add yourself as an additional street champion.")
                             }
                         </span>
                         </label>

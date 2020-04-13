@@ -7,6 +7,8 @@ namespace HelpMyStreetFE.Models.Registration
         public string Postcode { get; set; }
         public string StreetName { get; set; }
         public int ChampionCount { get; set; }
+        public int DistanceInMetres { get; set; }
+        public string FriendlyName { get; set; }
     }
 
     public class StepFourRegistrationViewModel : RegistrationViewModel
