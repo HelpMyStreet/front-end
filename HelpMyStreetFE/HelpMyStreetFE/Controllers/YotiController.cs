@@ -40,8 +40,12 @@ namespace HelpMyStreetFE.Controllers
             var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             if (id != null)
-            {
+            {                
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = id }, cancellationToken);
+                if(response.Status == ValidationStatus.Success)
+                {                    
+                    await _userService.CreateUserStepFiveAsync(int.Parse(id), true);
+                }
                 return handleValidationTokenResponse(response);
             }
             else
@@ -52,15 +56,13 @@ namespace HelpMyStreetFE.Controllers
         }
 
         public async Task<IActionResult> AuthSuccess()
-        {
+        {    
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             User user = await _userService.GetUserAsync(id);
-            if (user.RegistrationHistory.Count == 4) 
-            {
-                await _userService.CreateUserStepFiveAsync(id, true);
+            if (user.IsVerified.HasValue && user.IsVerified.Value) 
+            {        
                 return View();
             }
-
             return RedirectToAction("AuthFailed");
         }
 
