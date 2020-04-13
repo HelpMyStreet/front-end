@@ -2,11 +2,10 @@
 {
     public class HomeViewModel
     {
-        public int PostCodesCovered { get; set; }
+        public int PostCodesCoveredPercentage { get; set; }
         public int NumStreetChampions { get; set; }
         public int NumStreetsCovered { get; set; }
-        public int NumStreetsRemaining { get; set; }
+        public int NumVolunteers { get; set; }
         public string FirebaseConfiguration { get; set; }
-
     }
 }

@@ -26,16 +26,16 @@
 
         <div class="row stats mb40 text-center justify-center">
             <div class="sm3">
+                <h2 class="orange">@Model.NumVolunteers</h2>
+                <p>Volunteers</p>
+            </div>
+            <div class="sm3">
                 <h2>@Model.NumStreetChampions</h2>
                 <p>Street champions</p>
             </div>
             <div class="sm3">
                 <h2 class="green">@Model.NumStreetsCovered</h2>
                 <p>Streets covered</p>
-            </div>
-            <div class="sm3">
-                <h2 class="orange">@Model.NumStreetsRemaining</h2>
-                <p>Streets remaining</p>
             </div>
         </div>
 
@@ -44,10 +44,10 @@
                 <h3>Is your street covered?</h3>
                 <p class="ma0">
                     <span class="inline-flex align-center">
-                        0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCovered">&nbsp;</span></span> 100%
+                        0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCoveredPercentage%">&nbsp;</span></span> 100%
                     </span>
                     <span class="ml32">
-                        @Model.PostCodesCovered% of the country's postcodes are covered so far.
+                        @Model.PostCodesCoveredPercentage% of the country's postcodes are covered so far.
                     </span>
                 </p>
                 <div class="input mt68 mb56">
