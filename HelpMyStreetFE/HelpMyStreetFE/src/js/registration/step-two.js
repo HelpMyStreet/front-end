@@ -69,11 +69,11 @@ export function initialiseStepTwo() {
       dob: (v) => v !== "" || "Please enter a valid date of birth",
       mobile_number: (v) => 
           v == "" ||
-          (v.length === 11 && v.slice(0, 2) === "07") ||
+          (v.replace(" ", "").length === 11 && v.slice(0, 2) === "07") ||
         "Please enter a valid mobile number starting with 07",
       alt_number: (v) =>
         v == "" ||
-        (v.length === 11 && v[0] === "0") ||
+          ((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
             "Please enter a valid phone number",
         city: (v) => 
             (v.length > 2) ||
