@@ -105,11 +105,7 @@ namespace HelpMyStreetFE.Controllers
                 //Registration journey is not complete
                 return Redirect(correctPage);
             }
-            else if(!user.IsVerified.Value)
-            {
-                return Redirect(GetCorrectPage(4));
-            }
-                        
+            
             //Assume the registration page has been fully completed
             AccountViewModel viewModel = new AccountViewModel();
 
