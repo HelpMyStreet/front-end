@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HelpMyStreetFE.Models.ContactForm
+namespace HelpMyStreetFE.Models.Email
 {
     public class EmailConfig
     {

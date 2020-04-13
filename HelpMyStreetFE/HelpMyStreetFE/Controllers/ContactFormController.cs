@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using HelpMyStreetFE.Models.ContactForm;
+using HelpMyStreetFE.Models.Email;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using HelpMyStreetFE.Services;
@@ -16,10 +17,12 @@ namespace HelpMyStreetFE.Controllers
     public class ContactFormController : Controller
     {
         private readonly IOptions<EmailConfig> appSettings;
+        private readonly IEmailService _emailService;
 
-        public ContactFormController(IOptions<EmailConfig> app)
+        public ContactFormController(IOptions<EmailConfig> app, IEmailService emailService)
         {
             appSettings = app;
+            _emailService = emailService;
         }
 
         public ViewResult Index()
@@ -30,7 +33,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/ContactForm/Send", Name = "SendEmail")]
-        public IActionResult SendEmail(ContactFormViewModel vm)
+        public  IActionResult SendEmail(ContactFormViewModel vm)
         {
             if (ModelState.IsValid)
             {
@@ -40,7 +43,15 @@ namespace HelpMyStreetFE.Controllers
                     var textContent = $"Name: {vm.Name} \r\nEmail: {vm.Email} \r\nMobile: {vm.MobileNumber} \r\nOther phone: {vm.OtherNumber} \r\nOrganisation: {vm.Organisation} \r\nRole: {vm.Role} \r\nMessage: {vm.Message}";
                     var htmlContent = $"<p>Name: {vm.Name} <br>Email: {vm.Email} <br>Mobile: {vm.MobileNumber} <br>Other phone: {vm.OtherNumber} <br>Organisation: {vm.Organisation} <br>Role: {vm.Role} <br>Message: {vm.Message}";
 
-                    SendEmail(subject, textContent, htmlContent).Wait();
+                    List<RecipientModel> recipients = new List<RecipientModel>
+                    {
+                        new RecipientModel
+                        {
+                            Email = appSettings.Value.ToEmail,
+                            Name = appSettings.Value.ToName
+                        }
+                    };
+                    _emailService.SendEmail(subject, textContent, htmlContent, recipients).Wait();                    
                 }
                 catch (Exception ex)
                 {
@@ -49,28 +60,6 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return PartialView("_ContactForm", vm);
-        }
-
-        async Task SendEmail(string Subject, string textContet, string htmlContent)
-        {
-            var apiKey = appSettings.Value.ApiKey;
-            if (apiKey == string.Empty)
-            {
-                throw new Exception("SendGrid Api Key missing.");
-            }
-
-            var client = new SendGridClient(apiKey);
-            var eml = new SendGridMessage()
-            {
-                From = new EmailAddress(appSettings.Value.FromEmail, appSettings.Value.FromName),
-                Subject = Subject,
-                PlainTextContent = textContet,
-                HtmlContent = htmlContent
-            };
-            eml.AddTo(new EmailAddress(appSettings.Value.ToEmail, appSettings.Value.ToName));
-
-            var response = await client.SendEmailAsync(eml);
-        }
-
+        }   
     }
 }
