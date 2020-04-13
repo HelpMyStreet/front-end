@@ -44,7 +44,7 @@
             <h2>Volunteers</h2>
             @if (Context.Request.Query["failure"] == "error")
             {
-                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+        <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
             }
         </div>
     </div>
@@ -135,7 +135,7 @@
 
             <div class="sm8">
                 <div class="controls">
-                    <button class="btn cta fill" id="submit_button" type="submit">
+                    <button class="btn large cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>

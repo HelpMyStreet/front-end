@@ -1,4 +1,6 @@
-﻿.stepper {
+﻿$screen-md-min: 767px;
+
+.stepper {
   display: flex;
   width: 100%;
 
@@ -202,10 +204,7 @@ form {
   }
 
   .btn {
-    height: 64px;
-    border-radius: 32px;
-
-    &--full-width {
+    &.fill {
       width: 100%;
     }
   }

@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.Services
                 MobilePhone = mobile,
                 OtherPhone = otherPhone ?? "",
                 DateOfBirth = dob,
-                DisplayName = $"{firstName} {lastName}"
+                DisplayName = $"{firstName}"
             });
         }
 
