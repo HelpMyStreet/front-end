@@ -25,9 +25,8 @@
             }
 
             &__logo_wrap {
-                width: 80%; /*or whatever you choose*/
+                max-width: 80%; /*or whatever you choose*/
                 margin: auto;
-
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -38,10 +37,14 @@
 
                 img {
                     display: block;
-                    width: 100%;
-                    max-width: 300px; /*actual image width*/
+                    max-width: 80%; /*actual image width*/                    
                     height: auto; /* maintain aspect ratio*/
                     margin: auto; /*optional centering of image*/
+
+                    @media screen and (min-width: $med-screen) {
+                        max-width: 300px; /*actual image width*/
+                        max-height: 240px; /*actual image width*/
+                    }
                 }
             }
 

@@ -49,6 +49,12 @@
         align-items: center;
         padding: 2rem 2rem;
 
+        &--align-left {
+            text-align: left;
+            justify-content: left;
+            align-items: flex-start;
+        }
+
         img {
             max-width: calc(100vw - 32px);
 
