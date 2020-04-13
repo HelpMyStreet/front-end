@@ -24,7 +24,7 @@
             </p>
             @if (Context.Request.Query["failure"] == "error")
             {
-                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+        <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
             }
         </div>
     </div>
@@ -54,7 +54,7 @@
                 <div class="input input--checkbox">
                     <label>
                         <input name="privacy_notice" type="checkbox" hidden required />
-                        <span class="error"></span>
+                        <span class="error">Please tick to confirm that you acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a></span>
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
@@ -64,7 +64,7 @@
                 <div class="input input--checkbox">
                     <label>
                         <input name="terms_and_conditions" type="checkbox" hidden required />
-                        <span class="error"></span>
+                        <span class="error">Please tick to confirm that you agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a></span>
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
