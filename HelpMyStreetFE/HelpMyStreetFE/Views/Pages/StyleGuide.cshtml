@@ -1,0 +1,107 @@
+<div class="style-guide">
+  <div id="titles" class="style-guide__category typography">
+    <div>
+      <h1>Heading 1</h1>
+      <h2>Heading 2</h2>
+      <h3>Heading 3</h3>
+      <h4>Heading 4</h4>
+      <h5>Heading 5</h5>
+      <h6>Heading 6</h6>
+    </div>
+    <div>
+      <p>Default copy :: Lorem ipsum dolor sit amet consectetur adipiscing, elit ultricies parturient hendrerit phasellus, conubia tristique erat euismod donec.</p>
+      <p class="subtitle">Exposition copy :: Lorem ipsum dolor sit amet consectetur adipiscing, elit ultricies parturient hendrerit phasellus, conubia tristique erat euismod donec.</p>
+    </div>
+  </div>
+
+  <div id="buttons" class="style-guide__category">
+    <h4>Buttons</h4>
+    
+    <div class="style-guide__definition">
+      <div class="code">
+        @Html.Raw(Html.Encode("<button class='btn cta'>Default</button>"))
+      </div>
+      <div class="output">
+        <button class="btn cta">Default CTA</button>
+      </div>
+    </div>
+
+    <div class="style-guide__definition">
+      <div class="code">
+        @Html.Raw(Html.Encode("<button class='btn cta large'>Default</button>"))
+      </div>
+      <div class="output">
+        <button class="btn cta large">Large CTA</button>
+      </div>
+    </div>
+
+    <div class="style-guide__definition">
+      <div class="code">
+        @Html.Raw(Html.Encode("<button class='btn blue border-blue transparent'>Default</button>"))
+      </div>
+      <div class="output">
+        <button class="btn blue border-blue transparent">Secondary</button>
+      </div>
+    </div>
+
+    <div class="style-guide__definition">
+      <div class="code">
+        @Html.Raw(Html.Encode("<button class='btn cta fill'>.fill</button>"))
+      </div>
+      <div style="flex-basis: 100%">
+        <div>Button expands to available width on small screens</div>
+        <div class="output">        
+          <button class="btn cta fill">Fill available space</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="components" class="style-guide__category components">
+    <div class="style-guide__definition">
+      <div class="code">
+        @Html.Raw(Html.Encode("<div class='card'>A card</div>"))
+      </div>
+      <div class="output">
+        <div class="card">A card</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mixins" class="style-guide__category mixins">
+    <div class="style-guide__definition">
+      <div>
+        <div>Use mixins to define common copy styling e.g.</div>
+        <h6>CSS</h6>
+        <div class="code">          
+          <pre><code>@Html.Raw(Html.Encode("@import './mixins/typography/titles'"))
+@Html.Raw(Html.Encode(".some-text { @include title-sz-1; }"))</code></pre>
+        </div>
+        <h6>Implementation</h6>
+        <div class="code">          
+          <pre><code>@Html.Raw(Html.Encode("<div class='some-text'>This copy will be title size 1</div>"))</code></pre>
+        </div>
+      </div>
+      <div>
+        <p>Mixins available:</p>
+        <ul class="list">
+          <li>title-sz-1</li>
+          <li>title-sz-2</li>
+          <li>title-sz-3</li>
+          <li>title-sz-4</li>
+          <li>title-sz-5</li>
+          <li>title-sz-6</li>
+        </ul>
+        <ul class="list">
+          <li>copy-sz-xs</li>
+          <li>copy-sz-sm</li>
+          <li>copy-sz-md</li>
+          <li>copy-sz-lg</li>
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+
+</div>
