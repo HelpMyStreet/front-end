@@ -78,6 +78,11 @@ h4 {
 h6 {
   @extend h4;
   @include title-sz-6;
+  margin-bottom: 0;
+}
+
+h6 + p {
+  margin-top:0;
 }
 
 input[type=number]::-webkit-inner-spin-button,
