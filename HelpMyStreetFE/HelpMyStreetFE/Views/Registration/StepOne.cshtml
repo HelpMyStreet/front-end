@@ -4,80 +4,84 @@
 
 @section Scripts {
     <script>
-        const activeStep = @Model.ActiveStep;    
+        const activeStep = @Model.ActiveStep;
         const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
-    
+
     </script>
     <script src="~/registration.js" asp-append-version="true"></script>
 }
 
-<div class="container">
-    <partial name="_Stepper" for="ActiveStep" />
-    <div class="row justify-center mt72">
-        <div class="sm8">
-            <h1>Sign up to help</h1>
-            <p>
-                Join today as a Helper to give as little or as much time as you can spare. Or join as a Street Champion and coordinate the activity in your street. You'll be helping neighbours help each other.
-            </p>
-            <p>
-                <span class="bold">Registering is quick and easy.</span> We’ll collect your details and verify your identity with our partner Yoti. Anyone who's over 18 and can confirm their identity with a valid passport or driving licence can register with HelpMyStreet.org. You'll need a smartphone running iOS or Android.
-            </p>
-            @if (Context.Request.Query["failure"] == "error")
-            {
-        <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
-            }
-        </div>
-    </div>
-    <div class="row justify-center">
-        <div class="sm8">
-            <form id="registration_form" method="post">
-                <div class="input">
-                    <label>Email address</label>
-                    <input name="email" type="Email" placeholder="Enter your email address" />
-                    <span class="error"></span>
-                </div>
-                <div class="input">
-                    <label>Password</label>
-                    <input name="password" type="Password" placeholder="Password" />
-                    <span class="error"></span>
-                    <span class="input__hint">(10+ characters including an uppercase letter, a lowercase letter and a number)</span>
-                </div>
-                <div class="input">
-                    <label>Confirm password</label>
-                    <input name="confirm_password" type="Password" placeholder="Password" />
-                    <span class="error"></span>
-                </div>
+@{
+    ViewData["Title"] = "Registration";
+}
+
+    <div class="container">
+        <partial name="_Stepper" for="ActiveStep" />
+        <div class="row justify-center mt72">
+            <div class="sm8">
+                <h1>Sign up to help</h1>
                 <p>
-                    The information you provide will be shared with Street Champions in your local area to help organise volunteers.
-                    You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+                    Join today as a Helper to give as little or as much time as you can spare. Or join as a Street Champion and coordinate the activity in your street. You'll be helping neighbours help each other.
                 </p>
-                <div class="input input--checkbox">
-                    <label>
-                        <input name="privacy_notice" type="checkbox" hidden required />
+                <p>
+                    <span class="bold">Registering is quick and easy.</span> We’ll collect your details and verify your identity with our partner Yoti. Anyone who's over 18 and can confirm their identity with a valid passport or driving licence can register with HelpMyStreet.org. You'll need a smartphone running iOS or Android.
+                </p>
+                @if (Context.Request.Query["failure"] == "error")
+                {
+                    <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
+                }
+            </div>
+        </div>
+        <div class="row justify-center">
+            <div class="sm8">
+                <form id="registration_form" method="post">
+                    <div class="input">
+                        <label>Email address</label>
+                        <input name="email" type="Email" placeholder="Enter your email address" />
                         <span class="error"></span>
-                        <span class="input--checkbox__checkbox">
-                            <span class="mdi mdi-check"></span>
-                        </span>
-                        I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
-                    </label>
-                </div>
-                <div class="input input--checkbox">
-                    <label>
-                        <input name="terms_and_conditions" type="checkbox" hidden required />
+                    </div>
+                    <div class="input">
+                        <label>Password</label>
+                        <input name="password" type="Password" placeholder="Password" />
                         <span class="error"></span>
-                        <span class="input--checkbox__checkbox">
-                            <span class="mdi mdi-check"></span>
-                        </span>
-                        I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
-                    </label>
-                </div>
-                <div class="controls">
-                    <button class="btn cta large fill" id="submit_button" type="submit">
-                        <span class="text">Continue to next page &gt;</span>
-                        <span class="loader">Creating account&hellip;</span>
-                    </button>
-                </div>
-            </form>
+                        <span class="input__hint">(10+ characters including an uppercase letter, a lowercase letter and a number)</span>
+                    </div>
+                    <div class="input">
+                        <label>Confirm password</label>
+                        <input name="confirm_password" type="Password" placeholder="Password" />
+                        <span class="error"></span>
+                    </div>
+                    <p>
+                        The information you provide will be shared with Street Champions in your local area to help organise volunteers.
+                        You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+                    </p>
+                    <div class="input input--checkbox">
+                        <label>
+                            <input name="privacy_notice" type="checkbox" hidden required />
+                            <span class="error"></span>
+                            <span class="input--checkbox__checkbox">
+                                <span class="mdi mdi-check"></span>
+                            </span>
+                            I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+                        </label>
+                    </div>
+                    <div class="input input--checkbox">
+                        <label>
+                            <input name="terms_and_conditions" type="checkbox" hidden required />
+                            <span class="error"></span>
+                            <span class="input--checkbox__checkbox">
+                                <span class="mdi mdi-check"></span>
+                            </span>
+                            I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
+                        </label>
+                    </div>
+                    <div class="controls">
+                        <button class="btn cta large fill" id="submit_button" type="submit">
+                            <span class="text">Continue to next page &gt;</span>
+                            <span class="loader">Creating account&hellip;</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
