@@ -24,7 +24,7 @@
             </p>
             @if (Context.Request.Query["failure"] == "error")
             {
-                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+        <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
             }
         </div>
     </div>
@@ -40,7 +40,7 @@
                     <label>Password</label>
                     <input name="password" type="Password" placeholder="Password" />
                     <span class="error"></span>
-                    <span class="input__hint">(10 characters with at least 1 Uppercase letter, 1 lowercase letter and a number)</span>
+                    <span class="input__hint">(10+ characters including an uppercase letter, a lowercase letter and a number)</span>
                 </div>
                 <div class="input">
                     <label>Confirm password</label>
