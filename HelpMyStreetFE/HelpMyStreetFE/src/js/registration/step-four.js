@@ -1,6 +1,6 @@
 export function initialiseStepFour() {
   $("input[name=street_champion]").on("change", function () {
-    if ($(this).is(":checked")) $(".expander").slideDown();
+      if ($(this).val() == "true") $(".expander").slideDown();
     else $(".expander").slideUp();
   });
 
