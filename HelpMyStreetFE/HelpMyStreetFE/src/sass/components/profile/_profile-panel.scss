@@ -17,6 +17,7 @@
     width: 100%;
     @include title-sz-5;
     color: $dark-blue;
+    margin-bottom: 10px;
   }
 
   &__divider {
@@ -24,3 +25,10 @@
     border-top: 1px solid $gray-10;
   }
 }
+
+@media screen and (min-width: $med-screen){
+    .profile {
+        margin-top: 20px;
+    }
+}
+
