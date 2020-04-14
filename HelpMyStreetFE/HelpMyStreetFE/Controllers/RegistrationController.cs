@@ -165,7 +165,11 @@ namespace HelpMyStreetFE.Controllers
         {            
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             try
-            {
+            {                
+                if (!form.ChampionRoleUnderstood)
+                {
+                    form.ChampionPostcodes = new System.Collections.Generic.List<string>();
+                }
                 _logger.LogInformation($"Step 4 submission for {id}");                
                 await _userService.CreateUserStepFourAsync(
                     id,
