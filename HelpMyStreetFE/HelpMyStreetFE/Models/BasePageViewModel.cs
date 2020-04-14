@@ -9,7 +9,6 @@ namespace HelpMyStreetFE.Models
     public class BasePageViewModel
     {
         
-        public string FirebaseConfiguration { get; set; }
-        public ContactFormViewModel ContactFormViewModel { get; set; }
+        public string FirebaseConfiguration { get; set; }        
     }
 }
