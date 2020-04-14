@@ -1,4 +1,7 @@
 .account__nav {
+    @media screen and (max-width: $med-screen){
+        margin-bottom: 20px;
+    }
     &__item {
         list-style: none;
         a {
