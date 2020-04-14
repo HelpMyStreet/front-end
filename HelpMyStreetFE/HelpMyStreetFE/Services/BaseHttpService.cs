@@ -11,10 +11,11 @@ namespace HelpMyStreetFE.Services
 {
     public abstract class BaseHttpService
     {
-        protected readonly HttpClient Client = new HttpClient();
+        protected readonly HttpClient Client;
 
-        protected BaseHttpService(IConfiguration config, string configKey)
+        protected BaseHttpService(HttpClient client, IConfiguration config, string configKey)
         {
+            Client = client;
             HttpFunctionServiceOptions options = new HttpFunctionServiceOptions();
 
             config.GetSection(configKey).Bind(options);

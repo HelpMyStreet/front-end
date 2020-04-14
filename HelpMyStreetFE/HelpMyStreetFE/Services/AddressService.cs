@@ -18,41 +18,22 @@ namespace HelpMyStreetFE.Services
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IUserRepository _userRepository;
-
+        
         public AddressService(
             ILogger<AddressService> logger,
             IConfiguration configuration,
             IAddressRepository addressRepository,
-            IUserRepository userRepository) : base(configuration, "Services:Address")
+            IUserRepository userRepository,
+            HttpClient client) : base(client,configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
             _userRepository = userRepository;
         }
 
-        public int GetVolunteerCount()
+        public Task<int> GetTotalStreets()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> GetStreetsCovered()
-        {
-            return Task.Factory.StartNew(() => 1734);
-        }
-
-        public Task<int> GetStreetChampions()
-        {
-            return Task.Factory.StartNew(() => 2834);
-        }
-
-        public Task<int> GetStreetsRemaining()
-        {
-            return Task.Factory.StartNew(() => 8182);
-        }
-
-        public Task<int> GetPostCodesCovered()
-        {
-            return Task.Factory.StartNew(() => 15);
+            return Task.Factory.StartNew(() => 1765422);  // TODO: Implement in Address Service
         }
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
@@ -77,5 +58,20 @@ namespace HelpMyStreetFE.Services
 
             return nearby;
         }
+
+        public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
+        {
+            GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();            
+            response.PostCodeResponse = await CheckPostCode(postcode);
+            if(response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
+            {
+                response.ChampionCount = await _userRepository.GetChampionCountByPostcode(postcode);
+                response.VolunteerCount = await _userRepository.GetVolunteerCountByPostcode(postcode);
+            }
+
+            return response;
+        }
+
+
     }
 }

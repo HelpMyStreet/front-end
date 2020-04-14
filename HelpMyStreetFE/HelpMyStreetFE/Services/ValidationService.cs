@@ -18,7 +18,11 @@ namespace HelpMyStreetFE.Services
         private readonly IValidationRepository _validationRepository;
         private readonly ILogger<ValidationService> _logger;
 
-        public ValidationService(ILogger<ValidationService> logger, IConfiguration config, IValidationRepository validationRepository) : base(config, "Services:Validation")
+        public ValidationService(
+            ILogger<ValidationService> logger, 
+            IConfiguration config, 
+            IValidationRepository validationRepository,
+            HttpClient client) : base(client,config, "Services:Validation")
         {
             _logger = logger;
             _validationRepository = validationRepository;

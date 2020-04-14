@@ -11,6 +11,8 @@
 }
 
 @{
+    ViewData["Title"] = "Registration";
+
     var volunteerOptions = new Dictionary<SupportActivities, string>
 {
         { SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
@@ -41,17 +43,19 @@
 
     <div class="row justify-center mt72">
         <div class="sm8">
-            <h2>Volunteers</h2>
+            <h2>Helpers</h2>
             @if (Context.Request.Query["failure"] == "error")
             {
-                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+        <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
             }
         </div>
     </div>
     <form id="registration_form" method="post">
         <div class="row justify-center">
             <div class="sm8">
-                <h5>I can help with the following:</h5>
+                <p>Helpers work with Street Champions by volunteering for specific requests, supporting people in need and keeping the Street Champions up to date.</p>
+                <h5>I can help people in need by:</h5>
+                <p>(Please tick as many as you like)</p>
                 <span class="error" id="volunteer-error">Please select at least one option</span>
                 @foreach (var option in volunteerOptions)
                 {
@@ -85,7 +89,7 @@
                 }
             </div>
             <div class="sm8 mt40">
-                <h5>Are you happy to support other volunteers over the phone?</h5>
+                <h5>Are you happy to support other Helpers over the phone?</h5>
                 <span class="error" id="contact-error">Please select an option</span>
                 <div class="input input--radio">
                     <label>
@@ -135,7 +139,7 @@
 
             <div class="sm8">
                 <div class="controls">
-                    <button class="btn cta fill" id="submit_button" type="submit">
+                    <button class="btn large cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>

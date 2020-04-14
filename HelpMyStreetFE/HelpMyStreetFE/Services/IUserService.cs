@@ -13,5 +13,8 @@ namespace HelpMyStreetFE.Services
         Task CreateUserStepThreeAsync(int id, System.Collections.Generic.List<HelpMyStreet.Utils.Enums.SupportActivities> activities, float supportRadius, bool supportContact, bool medical);
         Task CreateUserStepFourAsync(int id, bool roleUnderstood, System.Collections.Generic.List<string> postcodes);
         Task CreateUserStepFiveAsync(int id, bool verified);
+        Task<int> GetStreetChampions();
+        Task<int> GetStreetsCovered();
+        Task<int> GetVolunteers();
     }
 }

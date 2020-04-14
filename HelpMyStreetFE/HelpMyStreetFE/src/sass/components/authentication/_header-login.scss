@@ -5,28 +5,30 @@ $breakpointSm: 900px;
 
 /* Collapsed states */
 .collapsed {
-  .header-login {    
-    &__collapsed-nav {
-      display: flex;
-      justify-content: center;
-    }
-    &__form {    
-      display: none;
-    }
-    &__form-header {      
-      justify-content: space-between;
-    }
+    .header-login {
+        &__collapsed-nav {
+            display: flex;
+            justify-content: center;
+        }
 
-    @media screen and (min-width: $breakpointSm) {
-      &__collapsed-nav {
-        display: none;
-      }
-      
-      &__form {
-        display: flex; 
-      }
+        &__form {
+            display: none;
+        }
+
+        &__form-header {
+            justify-content: space-between;
+        }
+
+        @media screen and (min-width: $breakpointSm) {
+            &__collapsed-nav {
+                display: none;
+            }
+
+            &__form {
+                display: flex;
+            }
+        }
     }
-  }
 }
 
 .header-login {
@@ -115,6 +117,7 @@ $breakpointSm: 900px;
 
     .btn--sign-up {
         white-space: nowrap;
+        display: inline-block;
     }
 
     @media screen and (min-width: $breakpointSm) {

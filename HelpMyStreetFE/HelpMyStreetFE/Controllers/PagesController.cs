@@ -33,5 +33,9 @@ namespace HelpMyStreetFE.Controllers
         {
             return View();
         }
+        public IActionResult StyleGuide()
+        {
+            return View();
+        }
     }
 }

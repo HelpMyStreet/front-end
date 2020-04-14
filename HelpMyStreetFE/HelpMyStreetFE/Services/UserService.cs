@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.Services
                 MobilePhone = mobile,
                 OtherPhone = otherPhone ?? "",
                 DateOfBirth = dob,
-                DisplayName = $"{firstName} {lastName}"
+                DisplayName = $"{firstName}"
             });
         }
 
@@ -108,6 +108,21 @@ namespace HelpMyStreetFE.Services
                 UserID = id,
                 IsVerified = verified
             });
+        }
+
+        public async Task<int> GetStreetChampions()
+        {
+            return await _userRepository.GetDistinctChampionUserCount();
+        }
+
+        public async Task<int> GetStreetsCovered()
+        {
+            return await _userRepository.GetChampionPostcodesCoveredCount();
+        }
+
+        public async Task<int> GetVolunteers()
+        {
+            return await _userRepository.GetDistinctVolunteerUserCount();
         }
     }
 }

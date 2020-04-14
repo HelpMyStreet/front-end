@@ -26,6 +26,10 @@
 
         <div class="row stats mb40 text-center justify-center">
             <div class="sm3">
+                <h2 class="orange">@Model.NumVolunteers</h2>
+                <p>Volunteers</p>
+            </div>
+            <div class="sm3">
                 <h2>@Model.NumStreetChampions</h2>
                 <p>Street champions</p>
             </div>
@@ -33,24 +37,20 @@
                 <h2 class="green">@Model.NumStreetsCovered</h2>
                 <p>Streets covered</p>
             </div>
-            <div class="sm3">
-                <h2 class="orange">@Model.NumStreetsRemaining</h2>
-                <p>Streets remaining</p>
-            </div>
         </div>
 
         <div class="row card street-check">
-            <div class="sm12">
+            <div class="sm12 max">
                 <h3>Is your street covered?</h3>
                 <p class="ma0">
                     <span class="inline-flex align-center">
-                        0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCovered">&nbsp;</span></span> 100%
+                        0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCoveredPercentage%">&nbsp;</span></span> 100%
                     </span>
                     <span class="ml32">
-                        @Model.PostCodesCovered% of the country's postcodes are covered so far.
+                        @Model.PostCodesCoveredPercentage% of the country's postcodes are covered so far.
                     </span>
                 </p>
-                <div class="input mt68 mb56">
+                <div class="input mt68 mb15">
                     <label>Your Postcode</label>
                     <div class="postcode-input-button">
                         <input id="postcode" type="text" placeholder="Enter your Postcode..." />
@@ -59,18 +59,41 @@
                             <span class="loader">Checking&hellip;</span>
                         </button>
                     </div>
-                    <div id="postcode_covered" class="dnone">
-                        Postcode covered
-                    </div>
-                    <div id="postcode_notcovered" class="dnone">
-                        Postcode not covered
-                    </div>
-                    <div id="postcode_error" class="dnone">
-                        Error
-                    </div>
+                </div>
+            </div>
+            <div class="postcode__info dnone">
+                <div id="postcode_covered" class="dnone postcode__info__message">                    
+                    <div class="row">
+                        <div class="sm8 postcode__info__message__text">
+                            Yes! Your street is covered - but we need more Helpers and Street Champions to help people in need!
+                        </div>
+                        <div class="sm4">
+                            <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>                         
+                            <a href="" id="#requestHelp" class="dnone"> Request Help</a>
+                        </div>                                        
+                    </div>                    
+                </div>
+                <div id="postcode_notcovered" class="dnone postcode__info__message">
+                    <div class="row">
+                        <div class="sm8 postcode__info__message__text">
+                            Your street is not yet covered. Sign up as a Street Champions or Helper and help people in need
+                        </div>
+                        <div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
+                    </div>                                      
+                </div>
+                <div id="postcode_invalid" class="dnone postcode__info__message">
+                    <div class="row">
+                        <div class="sm12 postcode__info__message__text__warning">
+                            Sorry - that’s not quite right. Please enter a valid UK postcode.
+                        </div>
+                    </div>                    
+                </div>
+                <div id="postcode_error" class="dnone postcode__info__message__text__warning">
+                    We're currently experiencing issues finding coverage, please try again later.
                 </div>
             </div>
         </div>
+        
 
         <div class="row mt72 justify-center">
             <div class="sm8 text-center">

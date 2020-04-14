@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HelpMyStreetFE.Models.Yoti;
-using HelpMyStreetFE.Models.ContactForm;
+using HelpMyStreetFE.Models.Email;
 
 namespace HelpMyStreetFE
 {
@@ -34,14 +34,17 @@ namespace HelpMyStreetFE
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
-            services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IAddressRepository, AddressRepository>();
-            services.AddSingleton<IAddressService, AddressService>();
+            services.AddHttpClient<IUserRepository, UserRepository>();
+            services.AddHttpClient<IValidationRepository, ValidationRepository>();
+            services.AddHttpClient<IAddressRepository, AddressRepository>();
+            services.AddHttpClient<IAddressService, AddressService>();
+            services.AddHttpClient<IValidationService, ValidationService>();            
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<IValidationRepository, ValidationRepository>();
-            services.AddSingleton<IValidationService, ValidationService>();
+            services.AddSingleton<IAuthService, AuthService>();            
+            services.AddSingleton<IEmailService, EmailService>();        
             services.AddControllers();
+            services.AddRazorPages()
+            .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

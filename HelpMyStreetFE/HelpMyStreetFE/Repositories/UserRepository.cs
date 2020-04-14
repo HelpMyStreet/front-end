@@ -5,13 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class UserRepository : BaseHttpRepository, IUserRepository
-    {
-        public UserRepository(IConfiguration config, ILogger<UserRepository> logger) : base(config, logger, "Services:User")
+    {        
+        public UserRepository(HttpClient client, IConfiguration config, ILogger<UserRepository> logger) : base(client,config, logger, "Services:User")
         { }
 
         public async Task<User> GetUserByAuthId(string authId)
@@ -94,6 +95,33 @@ namespace HelpMyStreetFE.Repositories
         {
             var response = await GetAsync<GetCountResponse>($"/api/getchampioncountbypostcode?postcode={postcode}");
 
+            return response.Count;
+        }
+
+        public async Task<int> GetDistinctChampionUserCount()
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctChampionUserCount");
+
+            return response.Count;
+        }
+
+        public async Task<int> GetChampionPostcodesCoveredCount()
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetChampionPostcodesCoveredCount");
+
+            return response.Count;
+        }
+
+        public async Task<int> GetDistinctVolunteerUserCount()
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctVolunteerUserCount");
+
+            return response.Count;
+        }
+
+        public async Task<int> GetVolunteerCountByPostcode(string postcode)
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
             return response.Count;
         }
     }

@@ -10,15 +10,17 @@
 }
 
 @{
+    ViewData["Title"] = "Registration";
+
     var responsibilities = new Dictionary<char, string>
 {
-        { '1', "Communicate with people who are sheltering safely at home and/or their friends and family." },
-        { '2', "Co-ordinate and complete their requests for help, by working with local Helpers or completing them yourself." },
-        { '3', "Collaborate with other Street Champions." },
-        { '4', "Respect people, their needs and their personal information." }
+        { '1', "Communicating with people who are sheltering safely at home and/or their friends and family." },
+        { '2', "Collecting their requests for help and support." },
+        { '3', "Co-ordinating and completing the requests for help, either by working with local Helpers or completing the requests themselves." },
+        { '4', "Collaborating with other Street Champions e.g. those in adjoining streets." },
+        { '5', "Respecting people and their personal information." }
     };
 }
-
 
 <div class="container">
 
@@ -26,10 +28,16 @@
 
     <div class="row justify-center mt72">
         <div class="sm8">
-            <h2>Street Champions</h2>
+            <h2>Street champions</h2>
+            <p>
+                <span class="bold">Street Champions</span> coordinate activity in their local community. They receive requests for help from people who are sheltering safely at home and work with local Helpers to ensure that these request for help, such as collecting prescription medicines, are completed. Street Champions are responsible for a specific street (or streets) and we would encourage every street to have 2 Street Champions so that they can share the workload, support each other and ensure that there’s always coverage for the street.
+            </p>
+            <p>
+                <span class="bold">Street Champions</span> lead the helping activities in that street by:
+            </p>
             @if (Context.Request.Query["failure"] == "error")
             {
-                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+                <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
             }
         </div>
     </div>
@@ -38,20 +46,25 @@
             <div class="sm8 list">
                 @foreach (var responsibility in responsibilities)
                 {
-                    <div class="list__item">
-                        <span class="list__item__point circle">@responsibility.Key</span>
-                        <span class="list__item__text">@responsibility.Value</span>
-                    </div>
+                    <p><span class="bold list--key">@responsibility.Key.</span>@responsibility.Value</p>
                 }
             </div>
             <div class="sm8">
                 <div class="input input--checkbox">
                     <label>
-                        <input name="street_champion" type="checkbox" value="true" hidden />
+                        <input name="street_champion" type="radio" value="true" hidden />
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
                         I understand and agree to undertake the role of a Street Champion
+                    </label>
+                    <br />
+                    <label>
+                        <input name="street_champion" type="radio" value="false" hidden />
+                        <span class="input--checkbox__checkbox">
+                            <span class="mdi mdi-check"></span>
+                        </span>
+                        I will do what I can as a helper and <span class="bold">do not</span> agree to undertake the role of a Street Champion
                     </label>
                 </div>
             </div>
@@ -66,30 +79,30 @@
                                 <span class="mdi mdi-check"></span>
                             </span>
                             @pc.FriendlyName @pc.Postcode
-                        <span class="message">
-                            @if (Model.LocalAvailability)
-                            {
-                                if (pc.ChampionCount < 2)
+                            <span class="message">
+                                @if (Model.LocalAvailability)
                                 {
-                                    if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                    if (pc.ChampionCount < 2)
                                     {
-                                        @("Your street needs a Street Champion, can you help?")
+                                        if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                        {
+                                            @("Your street needs a Street Champion, can you help?")
+                                        }
+                                        else
+                                        {
+                                            @("Your local neighbours might need help here.")
+                                        }
                                     }
                                     else
                                     {
-                                        @("Your local neighbours might need help here.")
+                                        @("We already have Street Champions here. Can you help others nearby?")
                                     }
                                 }
                                 else
                                 {
-                                    @("We already have Street Champions here. Can you help others nearby?")
+                                    @("Coverage is good in your area, but you can still add yourself as an additional street champion.")
                                 }
-                            }
-                            else
-                            {
-                                @("Coverage is good in your area, but you can still add yourself as an additional street champion.")
-                            }
-                        </span>
+                            </span>
                         </label>
                     </div>
                     <hr class="input--separator" />
@@ -98,7 +111,7 @@
 
             <div class="sm8">
                 <div class="controls">
-                    <button class="btn cta fill" id="submit_button" type="submit">
+                    <button class="btn large cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>

@@ -9,10 +9,8 @@ namespace HelpMyStreetFE.Services
     public interface IAddressService
     {
         Task<GetPostCodeResponse> CheckPostCode(string postCode);
-        Task<int> GetPostCodesCovered();
         Task<List<PostCodeDetail>> GetPostcodeDetailsNearUser(User user);
-        Task<int> GetStreetChampions();
-        Task<int> GetStreetsCovered();
-        Task<int> GetStreetsRemaining();
+        Task<int> GetTotalStreets();
+        Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode);
     }
 }

@@ -1,4 +1,6 @@
-﻿.stepper {
+﻿$screen-md-min: 767px;
+
+.stepper {
   display: flex;
   width: 100%;
 
@@ -55,9 +57,6 @@ form {
   .error {
     display: none;
     color: red;
-    position: absolute;
-    left: 0;
-    bottom: -25px;
   }
 
   .input {
@@ -202,10 +201,7 @@ form {
   }
 
   .btn {
-    height: 64px;
-    border-radius: 32px;
-
-    &--full-width {
+    &.fill {
       width: 100%;
     }
   }
