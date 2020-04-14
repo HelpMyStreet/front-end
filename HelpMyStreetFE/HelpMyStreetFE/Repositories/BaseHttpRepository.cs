@@ -12,11 +12,12 @@ namespace HelpMyStreetFE.Repositories
 {
     public abstract class BaseHttpRepository
     {
-        protected readonly HttpClient Client = new HttpClient();
+        protected readonly HttpClient Client;
         protected readonly ILogger<BaseHttpRepository> Logger;
 
-        protected BaseHttpRepository(IConfiguration config, ILogger<BaseHttpRepository> logger, string configKey)
+        protected BaseHttpRepository(HttpClient client,IConfiguration config, ILogger<BaseHttpRepository> logger, string configKey)
         {
+            Client = client;
             Logger = logger;
             HttpFunctionServiceOptions options = new HttpFunctionServiceOptions();
 

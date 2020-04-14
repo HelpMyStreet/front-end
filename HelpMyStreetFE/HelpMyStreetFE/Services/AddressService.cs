@@ -18,12 +18,13 @@ namespace HelpMyStreetFE.Services
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IUserRepository _userRepository;
-
+        
         public AddressService(
             ILogger<AddressService> logger,
             IConfiguration configuration,
             IAddressRepository addressRepository,
-            IUserRepository userRepository) : base(configuration, "Services:Address")
+            IUserRepository userRepository,
+            HttpClient client) : base(client,configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
