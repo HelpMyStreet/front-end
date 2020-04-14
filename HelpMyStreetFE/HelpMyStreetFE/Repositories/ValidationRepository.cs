@@ -8,7 +8,7 @@ namespace HelpMyStreetFE.Repositories
 {
     public class ValidationRepository : BaseHttpRepository, IValidationRepository
     {
-        public ValidationRepository(IConfiguration config, ILogger<ValidationRepository> logger) : base(config, logger, "Services:Validation")
+        public ValidationRepository(HttpClient client, IConfiguration config, ILogger<ValidationRepository> logger) : base(client,config, logger, "Services:Validation")
         {
         }
 
