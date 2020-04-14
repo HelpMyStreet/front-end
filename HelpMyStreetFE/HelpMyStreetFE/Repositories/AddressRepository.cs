@@ -1,13 +1,14 @@
 ﻿using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class AddressRepository : BaseHttpRepository, IAddressRepository
     {
-        public AddressRepository(IConfiguration config, ILogger<AddressRepository> logger) : base(config, logger, "Services:Address")
+        public AddressRepository(HttpClient client,IConfiguration config, ILogger<AddressRepository> logger) : base(client,config, logger, "Services:Address")
         {
         }
 

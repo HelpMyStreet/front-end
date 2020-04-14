@@ -34,14 +34,13 @@ namespace HelpMyStreetFE
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
-            services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IAddressRepository, AddressRepository>();
-            services.AddSingleton<IAddressService, AddressService>();
+            services.AddHttpClient<IUserRepository, UserRepository>();
+            services.AddHttpClient<IValidationRepository, ValidationRepository>();
+            services.AddHttpClient<IAddressRepository, AddressRepository>();
+            services.AddHttpClient<IAddressService, AddressService>();
+            services.AddHttpClient<IValidationService, ValidationService>();            
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<IValidationRepository, ValidationRepository>();
-            services.AddSingleton<IValidationService, ValidationService>();
-            services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<IAuthService, AuthService>();            
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation();
