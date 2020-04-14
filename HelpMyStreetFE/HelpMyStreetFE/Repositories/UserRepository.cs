@@ -118,5 +118,11 @@ namespace HelpMyStreetFE.Repositories
 
             return response.Count;
         }
+
+        public async Task<int> GetVolunteerCountByPostcode(string postcode)
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
+            return response.Count;
+        }
     }
 }
