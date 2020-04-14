@@ -51,7 +51,7 @@ namespace HelpMyStreetFE.Services
             await _userRepository.CreateUserStepTwo(new RegistrationStepTwo
             {
                 UserID = id,
-                PostalCode = postCode,
+                PostalCode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postCode),
                 FirstName = firstName,
                 LastName = lastName,
                 Address = new Address
@@ -59,7 +59,7 @@ namespace HelpMyStreetFE.Services
                     AddressLine1 = addressLine1,
                     AddressLine2 = addressLine2 ?? "",
                     AddressLine3 = addressLine3 ?? "",
-                    Postcode = postCode,
+                    Postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postCode),
                     Locality = locality
                 },
                 MobilePhone = mobile,

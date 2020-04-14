@@ -1,37 +1,72 @@
+using HelpMyStreetFE.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace HelpMyStreetFE.Controllers
 {
     public class PagesController : Controller
     {
+        private readonly IConfiguration _configuration;
+        public PagesController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
        
         public IActionResult AboutUs()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);            
         }
         public IActionResult Community()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
         public IActionResult PrivacyPolicy()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
         public IActionResult Terms()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
         public IActionResult Resources()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
         public IActionResult Questions()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
         public IActionResult ContactUs()
         {
-            return View();
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
         public IActionResult StyleGuide()
         {
