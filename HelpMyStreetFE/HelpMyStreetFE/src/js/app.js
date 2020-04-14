@@ -52,10 +52,9 @@ $(function () {
                         $(".postcode__info, #postcode_notcovered").show();
                     else if (data.volunteerCount > 0 || data.championCount > 0) {
                         $(".postcode__info, #postcode_covered").show();
-                        if (data.volunteerCount > 0 && data.championCount > 0) {
-                            $(".postcode__info").show();
-                           // $("#request_help").hide();  //phase 1.1
-                        }
+                        //if (data.volunteerCount > 0 && data.championCount > 0) { // phase.1.1
+                        //    $(".postcode__info, #request_help").show();                           
+                        //}
                     }                        
                 }              
         })
