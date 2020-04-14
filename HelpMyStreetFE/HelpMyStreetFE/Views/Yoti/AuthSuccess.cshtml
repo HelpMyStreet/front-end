@@ -1,4 +1,8 @@
-﻿<script>
+﻿@{
+    ViewData["Title"] = "Authentication Success";
+}
+
+<script>
     //TODO: Add a loading spinner or indication to show the user that they are about to be redirected
     //After 5 seconds there is a redirect to the account page
     setTimeout(function () { window.location.href = '@Url.Action("Index","Account")' }, 5000);
@@ -10,10 +14,10 @@
         <div class="yoti__auth__result__content">
             <p>You now have a fully verified HelpMyStreet profile.</p>
             <p>We’ll take you to your profile page.</p>
-            <img class="yoti__auth__result__image" src="~/img/icons/thumbs-up.svg"/>
+            <img class="yoti__auth__result__image" src="~/img/icons/thumbs-up.svg" />
             <p><a href="@Url.Action("Index", "Account")"> Go to my Profile Page</a></p>
         </div>
-        
+
 
     </div>
 </div>
