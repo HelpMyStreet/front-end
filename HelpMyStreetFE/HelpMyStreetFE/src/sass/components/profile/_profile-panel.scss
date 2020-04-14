@@ -17,10 +17,15 @@
     width: 100%;
     @include title-sz-5;
     color: $dark-blue;
+    margin-bottom: 10px;
   }
 
   &__divider {
     border: none;
     border-top: 1px solid $gray-10;
   }
+}
+
+.profile{
+    margin-top: 20px;
 }
