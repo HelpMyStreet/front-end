@@ -28,6 +28,11 @@ $(function () {
       $("#postcode_notcovered").hide();
       $("#postcode_covered").hide();
       $("#postcode_error").hide();
+      $("#postcode_invalid").hide();
+      //$("#request_help").hide();        
+      $(".postcode__info").hide();
+      $('#postcode_button').removeClass('postcode_button_clicked')
+
       $(this)
         .find(".text")
         .hide();
@@ -35,11 +40,23 @@ $(function () {
         .find(".loader")
         .show();
 
-      fetch(`/api/postcode/${postCode}`)
+        fetch(`/api/postcode/checkCoverage/${postCode}`)
         .then(resp => resp.json())
-        .then(data => {
-          if (data.addresses && data.addresses.length) $("#postcode_covered").show();
-          else $("#postcode_notcovered").show();
+            .then(data => {
+                $('#postcode_button').addClass('postcode_button_clicked')                
+                var postCodeValid = (data.postCodeResponse.isSuccessful && data.postCodeResponse.hasContent);                
+                if (postCodeValid == false) {
+                    $(".postcode__info, #postcode_invalid").show();
+                } else {
+                    if (data.volunteerCount == 0 && data.championCount == 0)
+                        $(".postcode__info, #postcode_notcovered").show();
+                    else if (data.volunteerCount > 0 || data.championCount > 0) {
+                        $(".postcode__info, #postcode_covered").show();
+                        //if (data.volunteerCount > 0 && data.championCount > 0) { // phase.1.1
+                        //    $(".postcode__info, #request_help").show();                           
+                        //}
+                    }                        
+                }              
         })
         .catch(err => {
           $("#postcode_error").show();

@@ -31,4 +31,11 @@ namespace HelpMyStreetFE.Models.Reponses
         public NearbyPostcodeResponseContent Content { get; set; }
         
     }
+
+    public class GetPostCodeCoverageResponse
+    {
+        public GetPostCodeResponse PostCodeResponse { get; set; }
+        public int VolunteerCount { get; set; }
+        public int ChampionCount { get; set; }
+    }
 }

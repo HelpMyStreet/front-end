@@ -13,9 +13,9 @@
     <div class="container">
         <div class="row mb56 flex justify-center hero">
             <div class="sm6">
-                <h1>Welcome to<br /> Help My Street</h1>
+                <h1>Be the first to put your street on the map! Sign up now.</h1>
                 <p class="subtitle">
-                    We enable people sheltering at home to be helped by neighbourhood volunteers, safely and securely.
+                    We're working with Community Organisers to help them make volunteering in the local community simple, safe and effective for everyone. Sign up as a Street Champion or Helper to help and support local people shelter safely at home.
                 </p>
                 <a href="/registration/stepone" class="btn cta large btn--sign-up">Sign Up Now</a>
             </div>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="row card street-check">
-            <div class="sm12">
+            <div class="sm12 max">
                 <h3>Is your street covered?</h3>
                 <p class="ma0">
                     <span class="inline-flex align-center">
@@ -50,7 +50,7 @@
                         @Model.PostCodesCoveredPercentage% of the country's postcodes are covered so far.
                     </span>
                 </p>
-                <div class="input mt68 mb56">
+                <div class="input mt68 mb15">
                     <label>Your Postcode</label>
                     <div class="postcode-input-button">
                         <input id="postcode" type="text" placeholder="Enter your Postcode..." />
@@ -59,24 +59,47 @@
                             <span class="loader">Checking&hellip;</span>
                         </button>
                     </div>
-                    <div id="postcode_covered" class="dnone">
-                        Postcode covered
-                    </div>
-                    <div id="postcode_notcovered" class="dnone">
-                        Postcode not covered
-                    </div>
-                    <div id="postcode_error" class="dnone">
-                        Error
-                    </div>
+                </div>
+            </div>
+            <div class="postcode__info dnone">
+                <div id="postcode_covered" class="dnone postcode__info__message">                    
+                    <div class="row">
+                        <div class="sm8 postcode__info__message__text">
+                            Yes! Your street is covered - but we need more Helpers and Street Champions to help people in need!
+                        </div>
+                        <div class="sm4">
+                            <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>                         
+                            <a href="" id="#requestHelp" class="dnone"> Request Help</a>
+                        </div>                                        
+                    </div>                    
+                </div>
+                <div id="postcode_notcovered" class="dnone postcode__info__message">
+                    <div class="row">
+                        <div class="sm8 postcode__info__message__text">
+                            Your street is not yet covered. Sign up as a Street Champions or Helper and help people in need
+                        </div>
+                        <div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
+                    </div>                                      
+                </div>
+                <div id="postcode_invalid" class="dnone postcode__info__message">
+                    <div class="row">
+                        <div class="sm12 postcode__info__message__text__warning">
+                            Sorry - that’s not quite right. Please enter a valid UK postcode.
+                        </div>
+                    </div>                    
+                </div>
+                <div id="postcode_error" class="dnone postcode__info__message__text__warning">
+                    We're currently experiencing issues finding coverage, please try again later.
                 </div>
             </div>
         </div>
+        
 
         <div class="row mt72 justify-center">
             <div class="sm8 text-center">
-                <h2>What you can do right now</h2>
+                <h2>Help people shelter safely at home …</h2>
                 <p>
-                    Millions of people in local communities are helping their neighbours and enabling them to safely shelter at home. We want to help everyone stay safe and secure and take care of some of the processes and paperwork that would otherwise take up time. You can help:
+                    HelpMyStreet.org supports community organisers and  makes volunteering in your local community simple, safe and effective for everyone. Sign up today to help people in your street shelter safely at home:
                 </p>
             </div>
         </div>
@@ -87,7 +110,7 @@
                     Sign up as a Street Champion
                 </h4>
                 <p>
-                    Sign up now so that your street is covered. We’ll connect you with local people who need help and the volunteers who can help you.
+                    Street Champions look after a street and lead the helping activities in that street. They are in touch with the people who are sheltering safely at home and work with local Helpers to complete their requests for help.
                 </p>
             </div>
         </div>
@@ -98,7 +121,7 @@
                     Sign up as a Volunteer
                 </h4>
                 <p>
-                    We’ll enable you to be verified quickly and easily, and show you who in your street needs support and how you can help them.
+                    Helpers provide direct help such as collecting prescription medicines, running local errands and shopping for essentials. They work with Street Champions to ensure the right help is getting to the right people in need.
                 </p>
             </div>
         </div>
@@ -109,23 +132,23 @@
         </div>
         <div class="row justify-center text-center mt72 help">
             <div class="sm12 mb12">
-                <h2>We will help people with&hellip;</h2>
+                <h2>Getting the right help to the right people&hellip;</h2>
             </div>
             <div class="sm4">
                 <div class="card pt32">
-                    <img src="~/img/document_icon.svg" alt="Collect prescription" width="86" />
+                    <img src="~/img/people-icon--orange.svg" alt="human icon" width="86" />
                     <h6 class="mb0">Collect prescription for 73 year old grandmother</h6>
                 </div>
             </div>
             <div class="sm4">
                 <div class="card pt32">
-                    <img src="~/img/document_icon.svg" alt="Grocery shoppinh" width="86" />
+                    <img src="~/img/people-icon--blue.svg" alt="human icon" width="86" />
                     <h6 class="mb0">Grocery shopping for a pregnant young mum</h6>
                 </div>
             </div>
             <div class="sm4">
                 <div class="card pt32">
-                    <img src="~/img/document_icon.svg" alt="Post items" width="86" />
+                    <img src="~/img/people-icon--orange.svg" alt="human icon" width="86" />
                     <h6 class="mb0">Post items for an 88 year old grandad</h6>
                 </div>
             </div>
@@ -136,18 +159,16 @@
             </div>
             <div class="sm8">
                 <p>
-                    Thank you to all the community volunteers around the UK who are working tirelessly to make sure that
-                    vulnerable people in their communities can continue to shelter safely at home. Our aim is to enable
-                    everyone to receive help from a trusted neighbourly volunteer:
+                    Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
                 </p>
             </div>
             <div class="sm8 list mb-lg">
-                <span><span class="mdi mdi-check blue"></span> Safety - enabling every volunteer to be ID verified</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
                 <span>
-                    <span class="mdi mdi-check blue"></span> Privacy - protecting everyone’s data and only sharing it with the people who absolutely need it
+                    <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
                 </span>
-                <span><span class="mdi mdi-check blue"></span> Coverage - supporting every street in the UK</span>
-                <span><span class="mdi mdi-check blue"></span> Neighbours Near and Far - enabling help for friends and family who live at the other end of the country</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
                 <span><span class="mdi mdi-check blue"></span> Supporting the frontline community organisers and volunteers by taking care of processes and paperwork</span>
             </div>
         </div>

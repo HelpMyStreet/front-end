@@ -108,13 +108,7 @@
         }
     }
 
-    a {
-        color: $blue;
-        transition: color 0.5s;
-
-        &:hover {
-            color: $green;
-            transition: color 0.1s;
-        }
+    .cta {
+        display: inline-block;
     }
 }

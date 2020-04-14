@@ -26,5 +26,13 @@ namespace HelpMyStreetFE.Controllers
             _logger.LogInformation($"PostCode {postCode}");
             return await _addressService.CheckPostCode(postCode);
         }
+
+        [HttpGet("checkCoverage/{postCode}")]
+        public async Task<ActionResult<GetPostCodeCoverageResponse>> CheckCoverage(string postCode)
+        {
+            _logger.LogInformation($"Checking coverage for PostCode {postCode}");
+            return await _addressService.GetPostcodeCoverage(postCode);
+        }
+
     }
 }
