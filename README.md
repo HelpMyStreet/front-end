@@ -2,6 +2,8 @@
 
 Website to be hosted at helpmystreet.org
 
+https://vsrm.dev.azure.com/HelpMyStreet/_apis/public/Release/badge/6a0f70ae-5438-4fbe-a9f2-8a46ef2b14b2/4/13
+
 ## Configuration
 
 `appsettings.json` has default local configurations. To override set the following environment variables:
