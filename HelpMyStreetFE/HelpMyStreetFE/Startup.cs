@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HelpMyStreetFE.Models.Yoti;
-using HelpMyStreetFE.Models.ContactForm;
+using HelpMyStreetFE.Models.Email;
 
 namespace HelpMyStreetFE
 {
@@ -42,6 +42,8 @@ namespace HelpMyStreetFE
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddControllers();
+            services.AddRazorPages()
+            .AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

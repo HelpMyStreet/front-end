@@ -9,7 +9,7 @@
 @import "./registration.scss";
 @import "./login.scss";
 @import "./yoti.scss";
-
+@import "./forgotton-password.scss";
 @import "./ui/buttons";
 
 @import "./site/site-nav";
@@ -30,6 +30,8 @@
 @import "./components/home/home";
 @import "./components/list/list";
 
+@import "./views/style-guide";
+
 * {
   font-family: "Montserrat", sans-serif;
   font-size: 18px;
@@ -49,8 +51,7 @@ p {
   color: $p-color;
 
   &.subtitle {
-    font-size: 24px;
-    line-height: 36px;
+    @include copy-sz-lg;
   }
 }
 
@@ -68,6 +69,13 @@ h2 {
   margin: 0 0 22px;
 }
 
+h3 {
+  @extend h2;
+  @include title-sz-3;
+  color: black;
+  letter-spacing: 0.5px;
+}
+
 h4 {
   @extend h2;
   @include title-sz-4;
@@ -75,9 +83,20 @@ h4 {
   margin: 15px 0;
 }
 
+h5 {
+  @extend h2;
+  @include title-sz-5;
+  color: $black;
+}
+
 h6 {
   @extend h4;
   @include title-sz-6;
+  margin-bottom: 0;
+}
+
+h6 + p {
+  margin-top:0;
 }
 
 input[type=number]::-webkit-inner-spin-button,

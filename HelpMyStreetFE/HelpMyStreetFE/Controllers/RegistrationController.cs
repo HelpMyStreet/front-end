@@ -137,38 +137,36 @@ namespace HelpMyStreetFE.Controllers
             var user = await _userService.GetUserAsync(id);
             var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
 
-            var nearbyWithoutUser = nearby.Where(p => p.Postcode != user.PostalCode).OrderBy(c => c.ChampionCount).ToList();
             var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
-            var localAvailability = !nearby.Aggregate(false, (acc, next) => acc || next.ChampionCount < 2);
+            var nearbyToDisplay = nearby.Where(p => p.Postcode != user.PostalCode).OrderBy(p => p.ChampionCount).ThenBy(p => p.DistanceInMetres).Take(4).ToList();
 
-            // If the user's postcode is available or no other postcodes are available, lead with the user's post code
-            if (userPostcode.ChampionCount < 2 || localAvailability)
+            // Insert user postcode at the top of the list...
+            nearbyToDisplay.Insert(0, userPostcode);
+
+            // ...but re-sort if there are already 2 champions there
+            if (userPostcode.ChampionCount >= 2)
             {
-                nearbyWithoutUser.Insert(0, userPostcode);
+                nearbyToDisplay = nearbyToDisplay.OrderBy(p => p.ChampionCount).ThenBy(p => p.DistanceInMetres).ToList();
             }
-            else
-            {
-                nearbyWithoutUser.Insert(0, userPostcode);
-            }
+
+            var championsNeeded = nearbyToDisplay.Aggregate(false, (acc, next) => acc || next.ChampionCount < 2);
 
             return View(new StepFourRegistrationViewModel
             {
                 ActiveStep = 4,
-                NearbyPostCodes = nearby,
+                NearbyPostCodes = nearbyToDisplay,
                 UsersPostCode = userPostcode,
-                LocalAvailability = localAvailability
+                LocalAvailability = championsNeeded
             });
         }
 
         [HttpPost("[controller]/stepfour")]
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
-        {
+        {            
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
             try
             {
-                _logger.LogInformation($"Step 4 submission for {id}");
-
+                _logger.LogInformation($"Step 4 submission for {id}");                
                 await _userService.CreateUserStepFourAsync(
                     id,
                     form.ChampionRoleUnderstood,

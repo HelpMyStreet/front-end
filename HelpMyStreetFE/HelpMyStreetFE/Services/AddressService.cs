@@ -31,29 +31,9 @@ namespace HelpMyStreetFE.Services
             _userRepository = userRepository;
         }
 
-        public int GetVolunteerCount()
+        public Task<int> GetTotalStreets()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> GetStreetsCovered()
-        {
-            return Task.Factory.StartNew(() => 1734);
-        }
-
-        public Task<int> GetStreetChampions()
-        {
-            return Task.Factory.StartNew(() => 2834);
-        }
-
-        public Task<int> GetStreetsRemaining()
-        {
-            return Task.Factory.StartNew(() => 8182);
-        }
-
-        public Task<int> GetPostCodesCovered()
-        {
-            return Task.Factory.StartNew(() => 15);
+            return Task.Factory.StartNew(() => 1765422);  // TODO: Implement in Address Service
         }
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
@@ -73,7 +53,7 @@ namespace HelpMyStreetFE.Services
             {
                 var street = string.Concat(postcode.AddressDetails[0].AddressLine1.Where(c => !char.IsNumber(c)));
                 var champs = await _userRepository.GetChampionCountByPostcode(postcode.Postcode);
-                nearby.Add(new PostCodeDetail { StreetName = street, ChampionCount = champs, Postcode = postcode.Postcode });
+                nearby.Add(new PostCodeDetail { StreetName = street, ChampionCount = champs, Postcode = postcode.Postcode, DistanceInMetres = postcode.DistanceInMetres, FriendlyName = postcode.FriendlyName });
             }
 
             return nearby;

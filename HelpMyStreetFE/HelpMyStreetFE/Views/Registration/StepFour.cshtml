@@ -10,6 +10,8 @@
 }
 
 @{
+    ViewData["Title"] = "Registration";
+
     var responsibilities = new Dictionary<char, string>
 {
         { '1', "Communicate with people who are sheltering safely at home and/or their friends and family." },
@@ -29,7 +31,7 @@
             <h2>Street Champions</h2>
             @if (Context.Request.Query["failure"] == "error")
             {
-                <p class="orange">There has been an error submitting your details. Please try again and if the problem persists contact support.</p>
+                <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
             }
         </div>
     </div>
@@ -47,7 +49,7 @@
             <div class="sm8">
                 <div class="input input--checkbox">
                     <label>
-                        <input name="street_champion" type="checkbox" hidden />
+                        <input name="street_champion" type="checkbox" value="true" hidden />
                         <span class="input--checkbox__checkbox">
                             <span class="mdi mdi-check"></span>
                         </span>
@@ -65,34 +67,31 @@
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
-                            @pc.StreetName @pc.Postcode
-                        <span class="message">
-                            @if (Model.UsersPostCode.ChampionCount < 2)
-                            {
-                                if (pc.Postcode == Model.UsersPostCode.Postcode)
+                            @pc.FriendlyName @pc.Postcode
+                            <span class="message">
+                                @if (Model.LocalAvailability)
                                 {
-                                    @("Your street needs a Street Champion, can you help?")
+                                    if (pc.ChampionCount < 2)
+                                    {
+                                        if (pc.Postcode == Model.UsersPostCode.Postcode)
+                                        {
+                                            @("Your street needs a Street Champion, can you help?")
+                                        }
+                                        else
+                                        {
+                                            @("Your local neighbours might need help here.")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @("We already have Street Champions here. Can you help others nearby?")
+                                    }
                                 }
                                 else
                                 {
-                                    @("Your local neighbours might also need help here.")
+                                    @("Coverage is good in your area, but you can still add yourself as an additional street champion.")
                                 }
-                            }
-                            else if (Model.LocalAvailability)
-                            {
-                                if (pc.Postcode == Model.UsersPostCode.Postcode)
-                                {
-                                    @("We already have Street Champions here. Can you help others nearby?")
-                                }
-                                else
-                                {
-                                    @("Your local neighbours need help here.")
-                                }
-                            } else
-                            {
-                                @("Coverage is good in your area, but you can still add yourself as an additional street champion")
-                            }
-                        </span>
+                            </span>
                         </label>
                     </div>
                     <hr class="input--separator" />
@@ -101,7 +100,7 @@
 
             <div class="sm8">
                 <div class="controls">
-                    <button class="btn cta fill" id="submit_button" type="submit">
+                    <button class="btn large cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
                         <span class="loader">Creating account&hellip;</span>
                     </button>

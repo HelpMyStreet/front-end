@@ -97,5 +97,26 @@ namespace HelpMyStreetFE.Repositories
 
             return response.Count;
         }
+
+        public async Task<int> GetDistinctChampionUserCount()
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctChampionUserCount");
+
+            return response.Count;
+        }
+
+        public async Task<int> GetChampionPostcodesCoveredCount()
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetChampionPostcodesCoveredCount");
+
+            return response.Count;
+        }
+
+        public async Task<int> GetDistinctVolunteerUserCount()
+        {
+            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctVolunteerUserCount");
+
+            return response.Count;
+        }
     }
 }

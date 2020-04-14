@@ -13,6 +13,8 @@ $(() => {
     }
 
     var processYoti = async function (thisToken) {
+        $('.yoti__auth__button').hide();
+        $('.yoti__auth__loading').show();
         var response = await fetch("/yoti/ValidateToken" + "?token=" + thisToken);
         console.log(response);
         if (response.status == 200) {

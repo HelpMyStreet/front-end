@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Controllers
         {
             var personalDetails = user.UserPersonalDetails;
             string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
-            string address = personalDetails.Address.AddressLine1 + "," + personalDetails.Address.Postcode;
+            string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
             string streetChampion = string.Empty;
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
@@ -42,7 +42,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
             {
-                streetChampion = "Volunteer";
+                streetChampion = "Helper";
             }
 
             if (personalDetails.UnderlyingMedicalCondition.HasValue)
@@ -95,16 +95,17 @@ namespace HelpMyStreetFE.Controllers
 
             if (user.RegistrationHistory.Count > 0)
             {
-                int maxStep = user.RegistrationHistory.Max(a => a.Key);
+                int maxStep = user.RegistrationHistory.Max(a => a.Key); 
                 correctPage = GetCorrectPage(maxStep);
             }
                 
-            if(correctPage.Length>0)
+
+            if(correctPage.Length > 0)
             {
                 //Registration journey is not complete
                 return Redirect(correctPage);
             }
-
+            
             //Assume the registration page has been fully completed
             AccountViewModel viewModel = new AccountViewModel();
 
@@ -135,5 +136,7 @@ namespace HelpMyStreetFE.Controllers
             await Task.CompletedTask;
             return Ok();
         }
+
+            
     }
 }
