@@ -43,8 +43,7 @@ $(function () {
         fetch(`/api/postcode/checkCoverage/${postCode}`)
         .then(resp => resp.json())
             .then(data => {
-                $('#postcode_button').addClass('postcode_button_clicked')
-                console.log(data);
+                $('#postcode_button').addClass('postcode_button_clicked')                
                 var postCodeValid = (data.postCodeResponse.isSuccessful && data.postCodeResponse.hasContent);                
                 if (postCodeValid == false) {
                     $(".postcode__info, #postcode_invalid").show();
