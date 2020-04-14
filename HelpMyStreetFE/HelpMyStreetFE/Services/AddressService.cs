@@ -38,13 +38,14 @@ namespace HelpMyStreetFE.Services
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
         {
+            postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
             var response = await Client.GetAsync($"/api/getpostcode?postcode={postcode}");
             var str = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<GetPostCodeResponse>(str);
         }
 
         public async Task<List<PostCodeDetail>> GetPostcodeDetailsNearUser(User user)
-        {
+        {            
             var postCodes = await _addressRepository.GetNearbyPostcodes(user.PostalCode);
 
             var nearby = new List<PostCodeDetail>();
@@ -59,8 +60,9 @@ namespace HelpMyStreetFE.Services
             return nearby;
         }
 
-        public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
-        {
+        public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode) { 
+
+            postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
             GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();            
             response.PostCodeResponse = await CheckPostCode(postcode);
             if(response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)

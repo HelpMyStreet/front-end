@@ -1,21 +1,25 @@
+@model BasePageViewModel;
 @{
     ViewBag.Title = "Common Questions";
 }
-    <partial name="_SiteHeaderPublic" />
+<script>
+     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
+</script>
+<partial name="_SiteHeaderPublic" />
 
-    <div class="container">
-        <div class="row">
-            <div class="sm12 content-page content-page--resources">
+<div class="container">
+    <div class="row">
+        <div class="sm12 content-page content-page--resources">
 
-                <article class="content-page content-page--questions">
-                    <header class="content-page__header">
-                        <h2 class="content-page__title">Common Questions</h2>
-                    </header>
+            <article class="content-page content-page--questions">
+                <header class="content-page__header">
+                    <h2 class="content-page__title">Common Questions</h2>
+                </header>
 
-                    <div class="content-page__body">
-                        <p>TBC</p>
-                    </div>
-                </article>
-            </div>
+                <div class="content-page__body">
+                    <p>TBC</p>
+                </div>
+            </article>
         </div>
     </div>
+</div>

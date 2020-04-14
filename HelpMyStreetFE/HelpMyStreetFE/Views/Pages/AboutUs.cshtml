@@ -1,6 +1,10 @@
+@model BasePageViewModel;
 @{
     ViewBag.Title = "About Us";
 }
+<script>
+     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
+</script>
 <partial name="_SiteHeaderPublic" />
 
 <article class="content-page content-page--about-us">
@@ -126,7 +130,7 @@
                 </div>
 
                 <div class="content-page__inner content-page__contact-us__form card">
-                    <partial name="_ContactForm" />
+                    <partial name="_ContactForm" model="null" />
                 </div>
             </div>
         </div>
