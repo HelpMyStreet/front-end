@@ -2,6 +2,8 @@
 
 Website to be hosted at helpmystreet.org
 
+[![Build Status](https://dev.azure.com/HelpMyStreet/public-website/_apis/build/status/HelpMyStreet.front-end?branchName=master)](https://dev.azure.com/HelpMyStreet/public-website/_build/latest?definitionId=3&branchName=master)
+
 ## Configuration
 
 `appsettings.json` has default local configurations. To override set the following environment variables:
