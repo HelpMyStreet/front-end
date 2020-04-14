@@ -2,7 +2,7 @@
 
 Website to be hosted at helpmystreet.org
 
-https://vsrm.dev.azure.com/HelpMyStreet/_apis/public/Release/badge/6a0f70ae-5438-4fbe-a9f2-8a46ef2b14b2/4/13
+[![Build Status](https://dev.azure.com/HelpMyStreet/public-website/_apis/build/status/HelpMyStreet.front-end?branchName=master)](https://dev.azure.com/HelpMyStreet/public-website/_build/latest?definitionId=3&branchName=master)
 
 ## Configuration
 
