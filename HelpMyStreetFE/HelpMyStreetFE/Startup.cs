@@ -41,6 +41,7 @@ namespace HelpMyStreetFE
             services.AddHttpClient<IValidationService, ValidationService>();            
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
+            services.AddSingleton<IEmailService, EmailService>();        
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation();
