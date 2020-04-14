@@ -58,5 +58,20 @@ namespace HelpMyStreetFE.Services
 
             return nearby;
         }
+
+        public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
+        {
+            GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();            
+            response.PostCodeResponse = await CheckPostCode(postcode);
+            if(response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
+            {
+                response.ChampionCount = await _userRepository.GetChampionCountByPostcode(postcode);
+                response.VolunteerCount = await _userRepository.GetVolunteerCountByPostcode(postcode);
+            }
+
+            return response;
+        }
+
+
     }
 }
