@@ -1,6 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode } from "../shared/validator";
-import { datepickerLoad } from "../shared/date-picker";
+import { datepickerLoad, validateDob } from "../shared/date-picker";
 
 export function initialiseStepTwo() {
   $("#manual_address").on("click", function (evt) {
@@ -58,38 +58,45 @@ export function initialiseStepTwo() {
     buttonUnload($(this));
   });
 
-  $("#registration_form").on("submit", function (event) {
-      $(".expander").slideDown();
+    $("#registration_form").on("submit", function (event) {
+        $(".expander").slideDown();
 
-    const valid = validateFormData($(this), {
-      first_name: (v) => v !== "" || "Please enter a first name",
-      last_name: (v) => v !== "" || "Please enter a last name",
-       postcode: (v) => v !== "" ||      
-             "Please enter a postcode",
-      dob: (v) => v !== "" || "Please enter a valid date of birth",
-      mobile_number: (v) => 
-          v == "" ||
-          (v.replace(" ", "").length === 11 && v.slice(0, 2) === "07") ||
-        "Please enter a valid mobile number starting with 07",
-      alt_number: (v) =>
-        v == "" ||
-          ((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
-            "Please enter a valid phone number",
-        city: (v) => 
-            (v.length > 2) ||
-            "Please enter a valid city",
-      address_line_1: (v) =>          
-          (v.length > 2) ||
-            "Please enter a valid first line of your address",
-    });
-      
+        const valid = validateFormData($(this), {
+            first_name: (v) => v !== "" || "Please enter a first name",
+            last_name: (v) => v !== "" || "Please enter a last name",
+            postcode: (v) => v !== "" ||
+                "Please enter a postcode",
+            dob: (v) => v !== "" || "Please enter a valid date of birth",
+            mobile_number: (v) =>
+                v == "" ||
+                (v.replace(" ", "").length === 11 && v.slice(0, 2) === "07") ||
+                "Please enter a valid mobile number starting with 07",
+            alt_number: (v) =>
+                v == "" ||
+                ((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
+                "Please enter a valid phone number",
+            city: (v) =>
+                (v.length > 2) ||
+                "Please enter a valid city",
+            address_line_1: (v) =>
+                (v.length > 2) ||
+                "Please enter a valid first line of your address",
+        });
+
+
+        let dob = $(this).find("input[name='dob']");   
+        let dobValid;        
+        validateDob(dob.val(), dob.attr('id'));        
+        dobValid = dob.find("~ .error").is(":visible") ? false : true;// check if dob has any error messags shown if so, invalidate form        
+        
+
       let mobileNumber = $(this).find("input[name='mobile_number']");      
       let altNumber = $(this).find("input[name='alt_number']");            
       let errorSpan = altNumber.find("~ .error");
       let contactNumbersValid = (mobileNumber.val() !== "" || altNumber.val() !== "");      
       
       (contactNumbersValid) || errorSpan.text("Please enter a mobile number or an alternative phone number").show()
-      let validForm = (valid && contactNumbersValid);
+      let validForm = (valid && contactNumbersValid && dobValid);
       (validForm) || errorSpan.hide;
 
       let postcodeValid;
