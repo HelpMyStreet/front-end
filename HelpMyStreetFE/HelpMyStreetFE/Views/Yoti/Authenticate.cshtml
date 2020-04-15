@@ -11,14 +11,7 @@
     <script src="~/yoti.js" asp-append-version="true"></script>
 }
 
-<div class="yoti__auth__loading yoti__auth__loading__mobile">
-    <div class="middle">
-        <img src="~/img/loading_spinner.svg" />
-        <div>
-            <span>Verifying your ID…</span>
-        </div>
-    </div>      
-</div>
+<partial name="_LoadingMobile" />
 
 <div class="container">
     <div class="yoti__auth sm8">
@@ -31,15 +24,8 @@
         <div class="yoti__auth__button" id="@Model.DomId"></div>
 
 
-        
 
-        <div class="yoti__auth__loading yoti__auth__loading__desktop">
-            <div class="middle">
-                <img src="~/img/loading_spinner.svg" />
-            </div>
-            <div class="middle">
-                <span>Verifying your ID…</span>
-            </div>
-        </div>
+
+        <partial name="_LoadingDesktop" />
     </div>
 </div>
