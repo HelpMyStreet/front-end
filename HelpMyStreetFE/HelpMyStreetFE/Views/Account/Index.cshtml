@@ -1,10 +1,12 @@
 ﻿@model HelpMyStreetFE.Models.Account.AccountViewModel;
 
 <partial name="_UserHeader" for="@Model.UserDetails" />
-
+@{
+    ViewBag.Title = "My Profile";
+}
 <main class="account__wrapper container">
     <partial name="_NotificationHandler" for="@Model.Notifications" />
-    
+
     <div class="mb-md">
         <partial name="_MiniUserProfile" for="@Model.UserDetails" />
     </div>
@@ -15,9 +17,9 @@
             <header class="profile-panel__header">
                 <h3 class="profile-panel__title">My Profile</h3>
             </header>
-            <partial name="_UserData" for="@Model.UserDetails"/>
+            <partial name="_UserData" for="@Model.UserDetails" />
             @*<hr class="profile-panel__divider mt-0 mb-0 ml-md mr-md">
-            <partial name="_ContactPreference" />*@
+                <partial name="_ContactPreference" />*@
         </article>
     </div>
 </main>
