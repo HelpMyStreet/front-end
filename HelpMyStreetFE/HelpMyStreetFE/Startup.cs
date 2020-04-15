@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Models.Email;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace HelpMyStreetFE
 {
@@ -62,7 +63,11 @@ namespace HelpMyStreetFE
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".webmanifest"] = "application/manifest+json";
+            app.UseStaticFiles(new StaticFileOptions{
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
             app.UseCookiePolicy();

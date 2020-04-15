@@ -1,9 +1,5 @@
 export function datepickerLoad(id) {
     let datepicker = document.getElementById(id);
-    var maxDate = new Date();
-    
-    maxDate.setFullYear(maxDate.getFullYear() - 18, maxDate.getMonth(), maxDate.getDate());
-    
 
 
     datepicker.addEventListener("focusout", function (e) {
@@ -30,10 +26,13 @@ export function datepickerLoad(id) {
 }
 
 export function validateDob(val, id) {
-    val = val.replace(/\s/g, '');
+
     var regexFormatString = RegExp(/^(([0-9])|([0-2][0-9])|([3][0-1]))\ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\ \d{4}$/);
     var regex = RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
     let stringDate = regexFormatString.test(val);
+    if (!stringDate) {
+        val = val.replace(/\s/g, '');
+    }
     if (regex.test(val) == false && stringDate == false ) {
         $('#' + id).find("~ .error").show();
         $('#' + id).find("~ .error").text("Please enter a valid date of birth in the following format DD/MM/YYYY");
