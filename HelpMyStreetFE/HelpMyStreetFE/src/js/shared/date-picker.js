@@ -1,9 +1,5 @@
 export function datepickerLoad(id) {
     let datepicker = document.getElementById(id);
-    var maxDate = new Date();
-    
-    maxDate.setFullYear(maxDate.getFullYear() - 18, maxDate.getMonth(), maxDate.getDate());
-    
 
 
     datepicker.addEventListener("focusout", function (e) {
