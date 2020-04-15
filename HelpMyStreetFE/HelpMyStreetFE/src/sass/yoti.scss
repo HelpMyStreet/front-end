@@ -78,7 +78,7 @@ $screen-md-min: 767px;
 
                 &__extra-info {
                     display: flex;
-                    flex-direction: column;              
+                    flex-direction: column;
                 }
 
                 &__list {
@@ -160,19 +160,76 @@ $screen-md-min: 767px;
 
     &__auth {
         padding-top: 30px;
-        
-        &__loading{
-            text-align:center;
-            display:none;
-            img{
-                width:129px;
+
+        &__loading {
+            visibility: hidden;
+
+            &__mobile {
+
+
+                @media screen and (min-width: $screen-md-min) {
+                    display: none;
+                }
+
+                text-align: center;
+                position: absolute;
+                background: $dark-blue-transparant;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                right: 0;
+                z-index: 3;
+
+                img {
+                    width: 129px;
+                }
+
+                span {
+                    font-size: 1em;
+                    color: $orange;
+                    font-weight: 600;
+                }
+
+                .middle {
+                    z-index: 4;
+                    position: fixed;
+                    top: 30%;
+                    left: 50%;
+                    margin-top: -50px;
+                    margin-left: -100px;
+                }
+            }
+
+            &__desktop {
+                margin-top: 10px;
+             
+
+                @media screen and (max-width: $screen-md-min) {
+                    display: none;
+                }
+
+                text-align: center;
+                /*display:none;*/
+                span {
+                    font-size: 1.4em;
+                }
+
+                img {
+                    width: 129px;
+                }
+
+                .middle {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
             }
         }
+
         &__button {
             height: 47px;
 
             @media screen and (min-width: $screen-sm) {
-                height:100%;
+                height: 100%;
             }
         }
 
