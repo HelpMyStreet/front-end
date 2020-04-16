@@ -23,9 +23,9 @@ $(() => {
 			
 				console.log(response);	
 					// also in response now is volunteerCount and championCount
-				if (response.postCodeResposne.hasContent && response.postCodeResposne.isSuccessful) {
+				if (response.postCodeResponse.hasContent && response.postCodeResponse.isSuccessful) {
 					$("select[name=address_selector]").html(
-						content.addressDetails.reduce((acc, cur, i) => {
+						response.postCodeResponse.content.addressDetails.reduce((acc, cur, i) => {
 							const text = Object.keys(cur).reduce((tAcc, tCur) => {
 								if (cur[tCur] != null) {
 									tAcc += tAcc === "" ? "" : ", ";
