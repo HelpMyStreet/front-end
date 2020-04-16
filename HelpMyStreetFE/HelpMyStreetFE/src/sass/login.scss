@@ -1,8 +1,35 @@
 .login {
-  &__fail-message {
-    font-size: 0.7rem;
-    color: red;
-    text-wrap: normal;
-    max-width: 220px;
-  }
+    margin-top: 50px;
+    min-height: 55vh;
+
+    &__link {
+        line-height: 4;
+        color: $blue;
+    }
+
+    &__fail-message-main,
+    &__fail-message {
+        font-size: 0.7rem;
+        color: red;
+        text-wrap: normal;
+        max-width: 220px;
+    }
+
+    &__fail-message-main{
+        font-size:1rem;
+    }
+    &__header {
+        color: $dark-blue;
+        font-size: 2em;
+        font-weight: 900;
+        line-height: 1.5;
+    }
+
+    &__side {
+        margin-left: 30px;
+
+        &__text {
+            margin-top: 30px;
+        }
+    }
 }
