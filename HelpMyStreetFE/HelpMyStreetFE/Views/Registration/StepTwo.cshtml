@@ -51,7 +51,7 @@
                 <div class="input sm3">
                     <button class="btn large border-blue blue fill" id="address_finder">
                         <span class="text">Find address</span>                        
-                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinner { text = "Searching..."}' /></div>
+                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching..."}' /></div>
                     </button>
                     <a id="manual_address" href="#" class="input__link">Or enter your address manually</a>
                 </div>
@@ -103,7 +103,7 @@
                     <div class="controls">
                         <button class="btn large cta fill" id="submit_button" type="submit">
                             <span class="text">Continue to next page &gt;</span>                            
-                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinner { text = "Creating account..."}' /></div>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Creating account..."}' /></div>
                         </button>
                     </div>
                 </div>

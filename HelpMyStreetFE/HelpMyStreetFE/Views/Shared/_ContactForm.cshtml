@@ -65,7 +65,9 @@
         <div class="row">
             <button id="contact-form-submit" type="submit" class="btn cta btn--submit">                
                 <span class="text">Submit</span>
-                <div class="loader"><partial name="_LoadingSpinner" /></div>
+                <div class="loader">
+                    <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Sending..."}' />
+                </div>
             </button>
     
         </div>

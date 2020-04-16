@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models
 {
-    public class LoadingSpinner
+    public class LoadingSpinnerViewModel
     {
-        public string text { get; set; }
+        public string Text { get; set; }
     }
 }
