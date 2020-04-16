@@ -6,6 +6,7 @@ module.exports = {
     main: "./js/app.js",
     registration: "./js/registration.js",
     yoti: "./js/yoti.js",
+	requesthelp: "./js/requesthelp/requesthelp.js",
   },
   devtool: "inline-source-map",
   output: {

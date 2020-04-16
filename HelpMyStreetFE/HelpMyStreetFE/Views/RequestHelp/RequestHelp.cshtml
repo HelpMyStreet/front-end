@@ -4,10 +4,7 @@
 @model RequestHelpFormModel;
 
 @section Scripts {
-	<script>
-
-
-	</script>
+	<script src="~/requesthelp.js" asp-append-version="true"></script>
 }
 
 @{
@@ -19,12 +16,12 @@
 		{ SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy" },
 		{ SupportActivities.Errands, "Running essential local errands (e.g. posting mail)" },
 		{ SupportActivities.DogWalking, "Walking the dog" },
-		{ SupportActivities.MealPreparation, "Delivering a hot / pre-prepared meal" },
-		{ SupportActivities.PhoneCalls_Friendly, "Making / receiving phone calls for those in need of a friendly chat" },
-		{ SupportActivities.PhoneCalls_Anxious, "Making / receiving phone calls for those who may be anxious" },
+		{ SupportActivities.MealPreparation, "Providing and delivering a hot / pre-prepared meal" },
+		{ SupportActivities.PhoneCalls_Friendly, "A friendly chat on the phone" },
+		{ SupportActivities.PhoneCalls_Anxious, "Someone to talk through some challenges over the phone" },
 		{ SupportActivities.HomeworkSupport, "Homework support for children being home-schooled" },
-		{ SupportActivities.CheckingIn, "Reaching out to people in my area to check-in" },
-		{ SupportActivities.Other, "I may be able to help with other tasks. Please check with me." },
+		{ SupportActivities.CheckingIn, "Check that someone is OK" },
+		{ SupportActivities.Other, "Something else" },
 	};
 }
 
@@ -44,7 +41,7 @@
 	<div class="row justify-center mt72">
 		<div class="sm12">
 
-			<form id="registration_form" method="post" asp-controller="RequestHelp" asp-action="Send">
+			<form id="requesthelp_form" method="post" asp-controller="RequestHelp" asp-action="Send">
 				<div class="row">
 					<div class="input sm5">
 						<label>Postcode</label>
@@ -175,12 +172,12 @@
 					<div class="input sm12">
 						<h5>What Help are you looking for?</h5>
 						<p>(Please tick as many as you like but at least one)</p>
-						<span class="error" id="volunteer-error">Please select at least one option</span>
+						<span class="error" id="helpneeded-error">Please select at least one option</span>
 						@foreach (var option in helpOptions)
 						{
 							<div class="input input--checkbox">
 								<label>
-									<input name="helpNeeded[]" type="checkbox" value="@option.Key" hidden />
+									<input name="helpneeded[]" type="checkbox" value="@option.Key" hidden />
 									<span class="input--checkbox__checkbox">
 										<span class="mdi mdi-check"></span>
 									</span>
