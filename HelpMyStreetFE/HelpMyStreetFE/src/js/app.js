@@ -78,6 +78,6 @@ $(function () {
     } finally {
         buttonUnload($(this));
         $("#login-submit")[0].disabled = false;
-    }
-  });
+        }
+    });
 });
