@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- next-major-release
 
 pool:
   vmImage: 'windows-latest'
