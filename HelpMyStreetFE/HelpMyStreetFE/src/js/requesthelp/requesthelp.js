@@ -16,11 +16,14 @@ $(() => {
 		const postcode = $("input[name=postcode_search]").val();
 
 		try {
-			const resp = await fetch(`/api/postcode/${postcode}`);
-			if (resp.ok) {
-				const { hasContent, isSuccessful, content } = await resp.json();
-
-				if (hasContent && isSuccessful) {
+			const resp = await fetch(`/api/postcode/checkCoverage/${postcode}`);
+			console.log(resp);
+			if (resp.ok) {						
+				const response = await resp.json();
+			
+				console.log(response);	
+					// also in response now is volunteerCount and championCount
+				if (response.postCodeResposne.hasContent && response.postCodeResposne.isSuccessful) {
 					$("select[name=address_selector]").html(
 						content.addressDetails.reduce((acc, cur, i) => {
 							const text = Object.keys(cur).reduce((tAcc, tCur) => {
