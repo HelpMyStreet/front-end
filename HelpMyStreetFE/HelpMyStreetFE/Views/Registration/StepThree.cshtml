@@ -113,7 +113,7 @@
                 <hr class="input--separator" />
             </div>
             <div class="sm8 mt40">
-                <h5>Do you have an underlying medical condition?</h5>
+                <h5>Do you have any underlying medical conditions which put you at high risk from coronavirus?</h5>
                 <span class="error" id="medical-error">Please select an option</span>
                 <div class="input input--radio">
                     <label>
@@ -141,7 +141,7 @@
                 <div class="controls">
                     <button class="btn large cta fill" id="submit_button" type="submit">
                         <span class="text">Continue to next page &gt;</span>
-                        <span class="loader">Creating account&hellip;</span>
+                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Creating account..."}' /></div>
                     </button>
                 </div>
             </div>

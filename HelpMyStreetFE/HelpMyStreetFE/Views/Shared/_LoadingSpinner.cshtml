@@ -1,4 +1,5 @@
+@model LoadingSpinnerViewModel
 <div class="loading-spinner hidden">
   <img src="~/img/loading_spinner.svg" alt="Loading ..." />
-  <div class="loading-spinner__label">Loading</div>
+  <div class="loading-spinner__label">@Model.Text</div>
 </div>

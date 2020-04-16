@@ -63,8 +63,13 @@
         </div>
 
         <div class="row">
-            <button id="contact-form-submit" type="submit" class="btn cta btn--submit">Submit</button>
-            <partial name="_LoadingSpinner" />
+            <button id="contact-form-submit" type="submit" class="btn cta btn--submit">                
+                <span class="text">Submit</span>
+                <div class="loader">
+                    <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Sending..."}' />
+                </div>
+            </button>
+    
         </div>
 
     </form>
@@ -73,12 +78,15 @@
     {
         <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
         <script>
+            
             var results = $("#contact-form-result");
-            var onContactFormBegin = function () {
-                $('.loading-spinner', '.contact-form').removeClass('hidden');
+            var onContactFormBegin = function () {                
+                 $('#contact-form-submit').find(".text").first().hide();
+                 $('#contact-form-submit').find(".loader").first().show();
             };
             var onContactFormComplete = function () {
-                $('.loading-spinner', '.contact-form').addClass('hidden');
+                $('#contact-form-submit').find(".text").first().show();
+                $('#contact-form-submit').find(".loader").first().hide();
             };
             var onContactFormSuccess = function (context) {
                 results.html("<p>Thank you, we'll be in touch.</p>");

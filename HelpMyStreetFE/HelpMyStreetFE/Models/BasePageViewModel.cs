@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace HelpMyStreetFE.Models
 {
     public class BasePageViewModel
-    {
-        
+    {        
         public string FirebaseConfiguration { get; set; }        
     }
 }

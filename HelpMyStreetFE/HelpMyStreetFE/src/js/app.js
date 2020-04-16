@@ -7,6 +7,7 @@ import "./shared/info-popup";
 import "./shared/site-header";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
 import { intialiseForgottonForm } from "./home/forgotton-password"
+import { buttonLoad, buttonUnload } from "./shared/btn";
 
 $(function () {
 
@@ -33,12 +34,7 @@ $(function () {
       $(".postcode__info").hide();
       $('#postcode_button').removeClass('postcode_button_clicked')
 
-      $(this)
-        .find(".text")
-        .hide();
-      $(this)
-        .find(".loader")
-        .show();
+        buttonLoad($(this));
 
         fetch(`/api/postcode/checkCoverage/${postCode}`)
         .then(resp => resp.json())
@@ -62,18 +58,14 @@ $(function () {
           $("#postcode_error").show();
         })
         .finally(() => {
-          $(this).width(null);
-          $(this).height(null);
-          $(this)
-            .find(".text")
-            .show();
-          $(this)
-            .find(".loader")
-            .hide();
+           $(this).width(null);
+            $(this).height(null);
+            buttonUnload($(this));
         });
     }
   });
-  $("#login-submit").click(async () => {
+    $("#login-submit").click(async () => {
+        buttonLoad($(this));
     try {
         $("#login-submit")[0].disabled = true;
         const email = $("#email").val();
@@ -84,6 +76,7 @@ $(function () {
         $("#login-submit")[0].disabled = false;
       }
     } finally {
+        buttonUnload($(this));
         $("#login-submit")[0].disabled = false;
     }
   });

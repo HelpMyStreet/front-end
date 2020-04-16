@@ -1,13 +1,17 @@
-export function buttonLoad(btn) {
+
+export function buttonLoad(btn) {    
     btn.width(btn.width());
     btn.height(btn.height());
-    btn.find(".text").hide();
-    btn.find(".loader").show();
+    btn.find(".text").first().hide();
+    btn.find(".loader").first().show();
+    
 }
 
 export function buttonUnload(btn) {
     btn.width(null);
     btn.height(null);
-    btn.find(".text").show();
-    btn.find(".loader").hide();
+    btn.find(".text").first().show();
+    btn.find(".loader").first().hide();
 }
+
+

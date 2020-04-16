@@ -59,8 +59,7 @@ export function initialiseStepTwo() {
   });
 
     $("#registration_form").on("submit", function (event) {
-        $(".expander").slideDown();
-
+        $(".expander").slideDown();        
         const valid = validateFormData($(this), {
             first_name: (v) => v !== "" || "Please enter a first name",
             last_name: (v) => v !== "" || "Please enter a last name",
@@ -102,20 +101,25 @@ export function initialiseStepTwo() {
       let postcodeValid;
       let postcodeInput = $("input[name='postcode']");
       event.preventDefault(); //this will prevent the default submit needed now we do a call to api
-      if (validForm) { // avoid calling service when possible, so check if the form is valid first
+        if (validForm) { // avoid calling service when possible, so check if the form is valid first
+            buttonLoad($('#submit_button'));  
           validatePostCode(postcodeInput.val()).then(function (response) {
               postcodeValid = response;
               if (!postcodeValid) {
                   postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+                  buttonUnload($('#submit_button'));  
               } else {
                   postcodeInput.find("~ .error").hide();
               }
-          }).finally(function () {
+          }).catch(function () {
+              buttonUnload($('#submit_button'));  
+            }).finally(function () {
               validForm = (validForm && postcodeValid);
               if (validForm) {
                   $("#registration_form").unbind('submit').submit(); // continue the submit unbind preventDefault
-              }
+              }              
           });
+          
       }
   });
 }
