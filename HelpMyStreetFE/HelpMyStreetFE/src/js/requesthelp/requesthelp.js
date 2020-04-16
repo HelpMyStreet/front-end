@@ -1,6 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode } from "../shared/validator";
-
+  
 $(() => {
 
 	$("#manual_address").on("click", function (evt) {
@@ -44,7 +44,7 @@ $(() => {
 					$("select[name=address_selector]").on("change", function () {
 						const id = $(this).children("option:selected").val();
 
-						const address = content.addressDetails[id];
+						const address = response.postCodeResponse.content.addressDetails[id];
 
 						$("input[name=address_line_1]").val(address.addressLine1);
 						$("input[name=address_line_2]").val(address.addressLine2);
@@ -65,6 +65,19 @@ $(() => {
 
 		event.preventDefault(); 
 
+		let validHelpNeeded = true;
+
+		var obj = $(this).serializeArray().reduce(function (acc, cur) {
+			acc[cur.name] = cur.value;
+			return acc;
+		}, {});
+		$(".error").hide();
+
+		if (!obj["helpNeededArray"]) {
+			validHelpNeeded = false;
+			$("#helpNeeded-error").show();
+		}
+
 		const valid = validateFormData($(this), {
 			firstname: (v) => v !== "" || "Please enter a first name",
 			lastname: (v) => v !== "" || "Please enter a last name",
@@ -82,33 +95,26 @@ $(() => {
 				"Please enter a valid first line of your address",
 		});
 
-		let validForm = valid;
-		(validForm) || errorSpan.hide;
-
-		var obj = $(this).serializeArray().reduce(function (acc, cur) {
-			acc[cur.name] = cur.value;
-			return acc;
-		}, {});
-		$(".error").hide();
-
-		if (!obj["helpneeded[]"]) {
-			validForm = false;
-			$("#helpneeded-error").show();
-		}
+		let validForm = (valid && validHelpNeeded);
 
 		let emailValid = true;
 		let emailInput = $("input[name='email']");
 
 		const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-		if (!email) emailInput.find("~ .error").text("Please provide an email address");
-		if (typeof email != "string") emailInput.find("~ .error").text("Please provide a valid email address");
-		if (!emailRegex.test(email.toLowerCase())) emailInput.find("~ .error").text("Please provide a valid email address");
-
-		if (emailInput.find("~ .error").text().length > 0) {
-			emailValid = false
-		}   
-
+		if (!email) {
+			emailInput.find("~ .error").text("Please provide an email address");
+			emailValid = false;
+		}
+		if (typeof email != "string") {
+			emailInput.find("~ .error").text("Please provide a valid email address");
+			emailValid = false;
+		}
+		if (!emailRegex.test(email.textContent.toLowerCase())) {
+			emailInput.find("~ .error").text("Please provide a valid email address");
+			emailValid = false;
+		}
+   
 		let postcodeValid;
 		let postcodeInput = $("input[name='postcode']");
 		event.preventDefault(); //this will prevent the default submit needed now we do a call to api
@@ -121,8 +127,8 @@ $(() => {
 					postcodeInput.find("~ .error").hide();
 				}
 			}).finally(function () {
-				validForm = (validForm && postcodeValid && emailValid);
-				if (validForm) {
+
+				if (postcodeValid) {
 					$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
 				}
 			});

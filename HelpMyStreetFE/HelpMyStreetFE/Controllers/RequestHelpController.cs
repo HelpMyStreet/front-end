@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.Controllers
                         }
                     };
 
-                    _emailService.SendEmail(subject, textContent, htmlContent, recipients).Wait();
+                   // _emailService.SendEmail(subject, textContent, htmlContent, recipients).Wait();
                 }
                 catch (Exception ex)
                 {

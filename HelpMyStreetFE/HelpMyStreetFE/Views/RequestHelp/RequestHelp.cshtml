@@ -95,7 +95,7 @@
 						<div class="input input--checkbox">
 							<div class="input input--radio">
 								<label>
-									<input name="help_for_me" type="radio" value="true" hidden />
+									<input name="help_for_me" type="radio" value="true" hidden checked="checked"/>
 									<span class="input--radio__radio">
 										<span class="input--radio__radio__inner"></span>
 									</span>
@@ -130,7 +130,7 @@
 
 							<div class="input input--radio">
 								<label>
-									<input name="help_me_or_someoneelse" type="radio" value="false" hidden />
+									<input name="health_concern" type="radio" value="false" hidden checked="checked" />
 									<span class="input--radio__radio">
 										<span class="input--radio__radio__inner"></span>
 									</span>
@@ -172,12 +172,12 @@
 					<div class="input sm12">
 						<h5>What Help are you looking for?</h5>
 						<p>(Please tick as many as you like but at least one)</p>
-						<span class="error" id="helpneeded-error">Please select at least one option</span>
+						<span class="error" id="helpNeeded-error">Please select at least one option</span>
 						@foreach (var option in helpOptions)
 						{
 							<div class="input input--checkbox">
 								<label>
-									<input name="helpneeded[]" type="checkbox" value="@option.Key" hidden />
+									<input name="helpNeededArray" type="checkbox" value="@option.Key" hidden />
 									<span class="input--checkbox__checkbox">
 										<span class="mdi mdi-check"></span>
 									</span>

@@ -30,7 +30,7 @@ namespace HelpMyStreetFE.Models.RequestHelp
         [BindProperty(Name = "message")]
         public string Message { get; set; }
 
-        [BindProperty(Name = "helpNeeded[]")]
+        [BindProperty(Name = "helpNeededArray")]
         public List<SupportActivities> HelpNeeded { get; set; }
 
         [BindProperty(Name = "help_for_me")]
