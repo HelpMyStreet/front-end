@@ -50,21 +50,22 @@
                 }
             </div>
             <div class="sm8">
-                <div class="input input--checkbox">
+                <div class="input input--radio">
                     <label>
                         <input name="street_champion" type="radio" value="true" hidden />
-                        <span class="input--checkbox__checkbox">
-                            <span class="mdi mdi-check"></span>
+                        <span class="input--radio__radio">
+                            <span class="input--radio__radio__inner"></span>
                         </span>
-                        I understand and agree to undertake the role of a Street Champion
+                        Help neighbours help each other. Join as a Street Champion and coordinate the activity in your street. By selecting this role, you confirm that you understand and agree to the responsibilities of a Street Champion.
                     </label>
-                    <br />
+                </div>
+                <div class="input input--radio">
                     <label>
                         <input name="street_champion" type="radio" value="false" hidden />
-                        <span class="input--checkbox__checkbox">
-                            <span class="mdi mdi-check"></span>
+                        <span class="input--radio__radio">
+                            <span class="input--radio__radio__inner"></span>
                         </span>
-                        I will do what I can as a helper and <span class="bold">do not</span> agree to undertake the role of a Street Champion
+                        Join as a Helper only.
                     </label>
                 </div>
             </div>
@@ -112,8 +113,8 @@
             <div class="sm8">
                 <div class="controls">
                     <button class="btn large cta fill" id="submit_button" type="submit">
-                        <span class="text">Continue to next page &gt;</span>
-                        <span class="loader">Creating account&hellip;</span>
+                        <span class="text">Continue to next page &gt;</span>                        
+                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinner { text = "Creating account..."}' /></div>
                     </button>
                 </div>
             </div>

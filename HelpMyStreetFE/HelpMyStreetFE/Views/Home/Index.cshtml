@@ -54,9 +54,9 @@
                     <label>Your Postcode</label>
                     <div class="postcode-input-button">
                         <input id="postcode" type="text" placeholder="Enter your Postcode..." />
-                        <button class="btn cta large" id="postcode_button">
+                        <button class="btn cta large" id="postcode_button">                    
                             <span class="text">Check postcode</span>
-                            <span class="loader">Checking&hellip;</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinner { text = "Checking..."}' /></div>
                         </button>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
             </div>
         </div>
         <div class="row justify-center">
-            <div class="sm4">
+            <div class="sm4 text-center">
                 <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
             </div>
         </div>
@@ -173,7 +173,7 @@
             </div>
         </div>
         <div class="row justify-center">
-            <div class="sm4">
+            <div class="sm4 text-center">
                 <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
             </div>
         </div>

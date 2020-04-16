@@ -1,6 +1,6 @@
 ﻿import { validateFormData } from "../shared/validator";
 import { showLoadingSpinner, hideLoadingSpinner } from "../states/loading"
-
+import { buttonLoad, buttonUnload } from "../shared/btn";
 export function intialiseForgottonForm(firebase, account) {    
     $('#forgotton-form').on("submit", function (evt) {
   
@@ -11,16 +11,16 @@ export function intialiseForgottonForm(firebase, account) {
         evt.preventDefault();        
         
         let email = $(this).find("input[name='email']");
-        if (valid) {            
-            showLoadingDiv();
+        if (valid) {        
+            
+            buttonLoad($('#submitbtn'))
             firebase.auth.sendPasswordResetEmail(email.val()).then(function () {
                 showEmailSentScreen();
             }).catch(function (error) {         
-                if (error !== undefined && error.code !== undefined) {          
-                    console.log(error.code);
+                if (error !== undefined && error.code !== undefined) {                     
                     switch (error.code) {
                         case 'auth/invalid-email':
-                            hideLoadingDiv();
+                            buttonUnload($('#submitbtn'))
                             $(".error").show();
                             $(".error").text("Please enter a valid email address");                            
                             break;
@@ -28,7 +28,7 @@ export function intialiseForgottonForm(firebase, account) {
                             showEmailSentScreen();
                             break;
                         case 'auth/too-many-requests':
-                            hideLoadingDiv();
+                            buttonUnload($('#submitbtn'))
                             $(".error").show();
                             $(".error").text("You have exceed your reset password limit");
                             break;
@@ -51,7 +51,7 @@ export function intialiseForgottonForm(firebase, account) {
         evt.preventDefault();                   
         if (typeof configuration == 'undefined' && configuration.actionCode == 'undefined') return false;
         if (!valid) return false;
-        showLoadingDiv();
+        buttonLoad($('#submitbtn'))
         var actionCode = configuration.actionCode;
         firebase.auth.verifyPasswordResetCode(actionCode).then(function (email) {
             var accountEmail = email;                                    
@@ -60,13 +60,14 @@ export function intialiseForgottonForm(firebase, account) {
                 showPassResetScreen();
                 account.login.login(accountEmail, newPassword).then(function (response) {
                 });
-                hideLoadingDiv()
+                buttonUnload($('#submitbtn'))
             }).catch(function (error) {
                 // catch if firebase password is too weak, but we have our own validation so we shouldnt be hitting here
-                hideLoadingDiv();
+                buttonUnload($('#submitbtn'))
             });
         }).catch(function (error) {
-                showExpiredScreen();
+            showExpiredScreen();
+            buttonUnload($('#submitbtn'))
         });
     });
 }
@@ -87,11 +88,12 @@ function showPassResetScreen() {
 }
 
 function showLoadingDiv(){
-    $('#submitbtn').hide();
+    $().hide();
+
+    buttonLoad('#submitbtn');
     showLoadingSpinner(".forgotton__page__button");
 }
 
 function hideLoadingDiv() {
-    $('#submitbtn').show();
-    hideLoadingSpinner(".forgotton__page__button");
+        
 }

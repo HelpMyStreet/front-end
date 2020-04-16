@@ -25,8 +25,10 @@
         </div>
         
         <div class="header-login__btn pt-sm pb-sm">
-            <button class="btn btn--login transparent blue border-blue mr-md" id="login-submit">Login</button>
-            <partial name="_LoadingSpinner" />
+            <button class="btn btn--login transparent blue border-blue mr-md" id="login-submit">
+                <span class="text">Login</span>
+                <div class="loader"><partial name="_LoadingSpinner"  model='new LoadingSpinner { text = "Logging in"}' /></div>
+            </button>            
             <a href="/registration/stepone" class="btn btn--sign-up cta">Sign Up Now</a>
         </div>
     </div>    
