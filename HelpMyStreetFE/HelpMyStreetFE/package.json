@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.2",
+    "isomorphic-fetch": "^2.2.1",
     "core-js": "^3.6.4",
     "firebase": "^7.13.1",
     "jquery-ajax-unobtrusive": "^3.2.6"

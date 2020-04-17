@@ -89,6 +89,10 @@ $breakpointSm: 900px;
         input {
             @include input-default;
             font-size: 0.7em;
+
+            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+                padding: 0.2rem 0px 0.8rem 10px;
+            }
         }
 
         .link--forgot-pw {

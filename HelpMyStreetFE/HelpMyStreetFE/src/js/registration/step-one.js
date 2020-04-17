@@ -44,7 +44,7 @@ export function initialiseStepOne() {
             token,
           }),
         });
-
+          console.log("hit");
         window.location.href = "/registration/steptwo";
       })
       .catch((err) => {
