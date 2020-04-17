@@ -40,10 +40,15 @@
   box-sizing: border-box;
 }
 
+
 html,
 body {
   background-color: $background-main;
   margin: 0;
+}
+
+.no-fouc {
+    display: none;
 }
 
 p {
