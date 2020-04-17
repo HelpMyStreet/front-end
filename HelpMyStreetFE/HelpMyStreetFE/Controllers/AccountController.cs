@@ -119,7 +119,14 @@ namespace HelpMyStreetFE.Controllers
                     {
                         Id = Guid.NewGuid(),
                         Title = "Good news " + user.UserPersonalDetails.FirstName +"!",
-                        Message = "Your account is all set up. You will soon be able to update the personal and volunteering details on your profile page. Street Champions will be able to manage their streets, search for local volunteers, and handle requests for help. Keep an eye on your email inbox for the latest updates. Thanks for joining HelpMyStreet!",
+                        Message = "<p>Your account is all set up.</p>" +
+                        " <div> Coming Soon: " +
+                            "<ul style='margin-top:2px;'> " +
+                                "<li>You will soon be able to update the personal and volunteering details on your profile page. </li>" +
+                                "<li>Street Champions will be able to manage their streets, search for local volunteers, and handle requests for help.</li>" +
+                            "</ul> " +
+                        "</div>" +
+                        "<p>Keep an eye on your email inbox for the latest updates. Thanks for joining HelpMyStreet!</p>",
                         Type = NotificationType.Success
                     }
                 };

@@ -2,6 +2,24 @@
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData } from "../shared/validator";
 
+function validatePrivacyAndTerms() {
+    // requires checking of two or more inputs at the same time, so cant use the validateFormData.
+    $('.termsprivacy').hide();
+    let privacy = $("input[name='privacy_notice']").is(":checked");
+    let terms = $("input[name='terms_and_conditions']").is(":checked");
+    var errorText = "";
+    privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
+    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href=' / terms - conditions'>Terms and Conditions</a>" : "";
+    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href=' / privacy - policy'>Privacy Notice</a>" : "";
+
+    $('.termsprivacy').show();
+    $('.termsprivacy').html(errorText);
+    
+    if (errorText !== "") {        
+        return false;
+    }
+    return true;
+}
 
 export function initialiseStepOne() {
 
@@ -9,19 +27,17 @@ export function initialiseStepOne() {
 
   $("#registration_form").on("submit", function (evt) {
     evt.preventDefault();
-
     const valid = validateFormData($(this), {
       email: (v) => v !== "" || "Please enter an email address",
       password: (v) =>
         RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{10,})").test(v) ||
         "Please use a strong password",
       confirm_password: (v, d) =>
-            d.password === v || "Please ensure passwords match",
-      privacy_notice: (v) => v === true || "Please tick to confirm that you acknowledge the Help My Street <a href=' / privacy - policy'>Privacy Notice</a>",
-      terms_and_conditions: (v) => v === true || "Please tick to confirm that you agree to the Help My Street <a href=' / terms - conditions'>Terms and Conditions</a>",
-    });
+            d.password === v || "Please ensure passwords match"
+    });      
 
-    if (valid === false) return;
+    let stepOneValid = (valid && validatePrivacyAndTerms());      
+    if (stepOneValid === false) return;
 
     const { email, password } = valid;
 
