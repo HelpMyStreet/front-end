@@ -76,7 +76,7 @@ $(() => {
 			return acc;
 		}, {});
 		$(".error").hide();
-
+		
 		if (!obj["helpNeededArray"]) {
 			validHelpNeeded = false;
 			$("#helpNeeded-error").show();
@@ -103,20 +103,31 @@ $(() => {
 
 		let emailValid = true;
 		let emailInput = $("input[name='email']");
+		let emailInputError = emailInput.find("~ .error");
 
 		const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+		let emailValue = emailInput.val();
+
 		if (!email) {
-			emailInput.find("~ .error").text("Please provide an email address");
+			emailInputError.text("Please provide an email address");
+			emailValid = false;
+		} else if (typeof emailValue != "string") {
+			emailInputError.text("Please provide a valid email address");
+			emailValid = false;
+		} else if (!emailRegex.test(emailValue.toLowerCase())) {
+			emailInputError.text("Please provide a valid email address");
 			emailValid = false;
 		}
-		if (typeof email != "string") {
-			emailInput.find("~ .error").text("Please provide a valid email address");
-			emailValid = false;
+
+		if (!emailValid) {
+			emailInputError.show();
 		}
-		if (!emailRegex.test(email.textContent.toLowerCase())) {
-			emailInput.find("~ .error").text("Please provide a valid email address");
-			emailValid = false;
+
+		validForm = validForm && emailValid;
+
+		if (!validForm) {
+			$("#general-error").show();
 		}
    
 		let postcodeValid;
@@ -134,6 +145,9 @@ $(() => {
 
 				if (postcodeValid) {
 					$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
+				}
+				else {
+					$("#general-error").show();
 				}
 			});
 		}

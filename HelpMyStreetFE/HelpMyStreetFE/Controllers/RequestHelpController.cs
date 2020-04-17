@@ -26,16 +26,16 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/RequestHelp/Send", Name = "RequestHelpSendEmail")]
-        public IActionResult SendEmail(RequestHelpFormModel vm)
+        [Route("/RequestHelp/Send", Name = "RequestHelpSubmit")]
+        public IActionResult SendEmail(RequestHelpFormModel requestHelpFormModel)
         { 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _requestHelpRepository.PersistForm(vm);
+                    _requestHelpRepository.PersistForm(requestHelpFormModel);
 
-                    return View("Confirmation", vm);
+                    return View("Confirmation", requestHelpFormModel);
                 }
                 catch (Exception ex)
                 {
@@ -43,7 +43,8 @@ namespace HelpMyStreetFE.Controllers
                 }
             }
 
-            return View("RequestHelp", vm);
+            requestHelpFormModel.HasErrors = true;
+            return View("RequestHelp", requestHelpFormModel);
         }
     }
 }

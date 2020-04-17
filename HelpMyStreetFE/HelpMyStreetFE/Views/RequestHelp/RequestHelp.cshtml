@@ -34,7 +34,11 @@
 
 			@if (Context.Request.Query["failure"] == "error")
 			{
-				<p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
+				<p class="orange">There has been an error submitting your details. Please try again.</p>
+			}
+			@if (@Model.HasErrors)
+			{
+				<p class="orange">There has been an error submitting your details. Please try again.</p>
 			}
 		</div>
 	</div>
@@ -195,6 +199,7 @@
 							<textarea name="message" rows="5"></textarea>
 						</div>
 					</div>
+
 					<div class="row">
 						<div class="input sm3">
 							<div class="controls">
@@ -203,6 +208,9 @@
 								</button>
 							</div>
 						</div>
+					</div>
+					<div class="row">
+						<span class="error" id="general-error">There are some errors on the page, please correct them</span>
 					</div>
 				</div>
 			</form>
