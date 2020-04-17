@@ -9,32 +9,31 @@
 </script>
 <partial name="_SiteHeaderOnlyLogo" />
 <div class="container login">
-    <div class="row  justify-center">
+    <div class="row  justify-center ">
         <div class="sm6">
             <div class="card">
-
                 <div class="login__header text-center">Log In</div>
                 <form id="login-form" onsubmit="return false;">
                     <div class="input">
                         <label>Email</label>
-                        <input name="email" type="text"  id="email" placeholder="Password" />
+                        <input name="email" type="text" id="email" placeholder="Password" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
                         <label>Password</label>
                         <input name="password" id="password" type="password" placeholder="Password" />
                         <span class="error"></span>
-                    </div>                    
-                      <span id="login-fail-message" class="login__fail-message-main"></span>
-                      <div><a class="login__link" href="/home/forgottonpassword"> Forgotton Password?</a></div>
+                    </div>
+                    <span id="login-fail-message" class="login__fail-message-main"></span>
+                    <div><a class="login__link" href="/home/forgottonpassword"> Forgotton Password?</a></div>
                     <div class="controls">
-                        <button class="btn cta large fill" id="login-submit" type="submit">
+                        <button class="btn cta large fill login-submit-handler" id="login-submit" type="submit">
                             <span class="text">Submit</span>
                             <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in..."}' /></div>
                         </button>
                     </div>
                 </form>
-            </div>  
+            </div>
         </div>
         <div class="sm6">
             <div class="login__side">
@@ -45,8 +44,8 @@
                     </p>
                 </div>
             </div>
-            
         </div>
     </div>
+    
 </div>
 

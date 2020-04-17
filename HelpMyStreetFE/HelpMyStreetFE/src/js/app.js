@@ -64,7 +64,8 @@ $(function () {
         });
     }
   });
-    $("#login-submit").click(async () => {
+
+    $("#login-submit").click(async () => {        
         buttonLoad($(this));
     try {
         $("#login-submit")[0].disabled = true;
