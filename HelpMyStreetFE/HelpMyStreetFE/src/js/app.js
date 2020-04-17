@@ -10,7 +10,7 @@ import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
 
 $(function () {
-
+    $('.no-fouc').removeClass('no-fouc');
     if (typeof configuration !== 'undefined') {
         firebase.init(JSON.parse(configuration.firebase));
     }
@@ -64,7 +64,8 @@ $(function () {
         });
     }
   });
-    $("#login-submit").click(async () => {
+
+    $("#login-submit").click(async () => {        
         buttonLoad($(this));
     try {
         $("#login-submit")[0].disabled = true;
@@ -78,6 +79,6 @@ $(function () {
     } finally {
         buttonUnload($(this));
         $("#login-submit")[0].disabled = false;
-    }
-  });
+        }
+    });
 });
