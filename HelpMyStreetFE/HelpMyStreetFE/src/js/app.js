@@ -10,7 +10,7 @@ import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
 
 $(function () {
-
+    $('.no-fouc').removeClass('no-fouc');
     if (typeof configuration !== 'undefined') {
         firebase.init(JSON.parse(configuration.firebase));
     }
