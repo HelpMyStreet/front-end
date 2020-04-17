@@ -1,4 +1,4 @@
-﻿
+﻿import "isomorphic-fetch"
 import "../sass/main.scss";
 import firebase from "./firebase/index";
 import account from "./account";

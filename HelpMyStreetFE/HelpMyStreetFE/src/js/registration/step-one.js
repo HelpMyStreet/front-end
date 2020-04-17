@@ -43,8 +43,7 @@ export function initialiseStepOne() {
             email,
             token,
           }),
-        });
-
+        });          
         window.location.href = "/registration/steptwo";
       })
       .catch((err) => {
