@@ -6,6 +6,7 @@
 
     .card {
         @media screen and (max-width: $screen-md-min) {
+            padding-top:0;
             background: transparent;
             box-shadow: none;
             border-radius: 0;
