@@ -6,6 +6,7 @@ $(() => {
 	$("#manual_address").on("click", function (evt) {
 		evt.preventDefault();
 		$(".expander").slideDown();
+		$(".expanderDetails").slideDown();
 	});
 
 	$("#address_finder").on("click", async function (evt) {
@@ -51,6 +52,9 @@ $(() => {
 						$("input[name=city]").val(address.locality);
 						$("input[name=postcode]").val(address.postcode);
 						$(".expander").slideDown();
+						$(".expanderDetails").slideDown();
+						
+
 					});
 				}
 			}

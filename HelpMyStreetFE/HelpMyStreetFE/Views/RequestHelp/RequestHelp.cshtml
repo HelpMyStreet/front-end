@@ -8,7 +8,7 @@
 }
 
 @{
-	ViewData["Title"] = "RequestHelp";
+	ViewData["Title"] = "Sign up to help";
 
 	var helpOptions = new Dictionary<SupportActivities, string>
 {
@@ -30,7 +30,7 @@
 <div class="container">
 	<div class="row justify-center mt72">
 		<div class="sm12">
-			<h1>Sign up to help</h1>
+			<h1>@ViewData["Title"]</h1>
 
 			@if (Context.Request.Query["failure"] == "error")
 			{
@@ -89,124 +89,122 @@
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="input sm8">
-						<label>Is this for you or someone else?</label>
-						<div class="input input--checkbox">
-							<div class="input input--radio">
-								<label>
-									<input name="help_for_me" type="radio" value="true" hidden checked="checked"/>
-									<span class="input--radio__radio">
-										<span class="input--radio__radio__inner"></span>
-									</span>
-									Me
-								</label>
-							</div>
-
-							<div class="input input--radio">
-								<label>
-									<input name="help_for_me" type="radio" value="false" hidden />
-									<span class="input--radio__radio">
-										<span class="input--radio__radio__inner"></span>
-									</span>
-									Someone Else
-								</label>
-							</div>
-						</div>
-					</div>
-				</div><div class="row">
-					<div class="input sm8">
-						<label>Is there a concern about someone’s health or wellbeing?</label>
-						<div class="input input--checkbox">
-							<div class="input input--radio">
-								<label>
-									<input name="health_concern" type="radio" value="true" hidden />
-									<span class="input--radio__radio">
-										<span class="input--radio__radio__inner"></span>
-									</span>
-									Yes
-								</label>
-							</div>
-
-							<div class="input input--radio">
-								<label>
-									<input name="health_concern" type="radio" value="false" hidden checked="checked" />
-									<span class="input--radio__radio">
-										<span class="input--radio__radio__inner"></span>
-									</span>
-									No
-								</label>
-							</div>
-
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input sm4">
-						<label>First name</label>
-						<input name="firstname" type="text" placeholder="e.g. John" />
-						<span class="error"></span>
-					</div>
-					<div class="input sm4">
-						<label>Last name</label>
-						<input name="lastname" type="text" placeholder="e.g. Smith" />
-						<span class="error"></span>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="input sm8">
-						<label>Your email Address</label>
-						<input name="email" type="email" placeholder="johndow@mail.com" />
-						<span class="error"></span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input sm8">
-						<label>Your phone number</label>
-						<input name="phonenumber" type="number" placeholder="e.g. 07700112233" />
-						<span class="error"></span>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input sm12">
-						<h5>What Help are you looking for?</h5>
-						<p>(Please tick as many as you like but at least one)</p>
-						<span class="error" id="helpNeeded-error">Please select at least one option</span>
-						@foreach (var option in helpOptions)
-						{
+				<div class="expanderDetails dnone">
+					<div class="row">
+						<div class="input sm8">
+							<label>Is this for you or someone else?</label>
 							<div class="input input--checkbox">
-								<label>
-									<input name="helpNeededArray" type="checkbox" value="@option.Key" hidden />
-									<span class="input--checkbox__checkbox">
-										<span class="mdi mdi-check"></span>
-									</span>
-									@option.Value
-								</label>
+								<div class="input input--radio">
+									<label>
+										<input name="help_for_me" type="radio" value="true" hidden checked="checked" />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										Me
+									</label>
+								</div>
+
+								<div class="input input--radio">
+									<label>
+										<input name="help_for_me" type="radio" value="false" hidden />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										Someone Else
+									</label>
+								</div>
 							</div>
+						</div>
+					</div><div class="row">
+						<div class="input sm8">
+							<label>Is there a concern about someone’s health or wellbeing?</label>
+							<div class="input input--checkbox">
+								<div class="input input--radio">
+									<label>
+										<input name="health_concern" type="radio" value="true" hidden />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										Yes
+									</label>
+								</div>
 
-						}
+								<div class="input input--radio">
+									<label>
+										<input name="health_concern" type="radio" value="false" hidden checked="checked" />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										No
+									</label>
+								</div>
+
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="input sm12">
-						<label>Anything else to add?</label>
-						<input name="message" type="text" placeholder="We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you." />
-
+					<div class="row">
+						<div class="input sm4">
+							<label>First name</label>
+							<input name="firstname" type="text" placeholder="e.g. John" />
+							<span class="error"></span>
+						</div>
+						<div class="input sm4">
+							<label>Last name</label>
+							<input name="lastname" type="text" placeholder="e.g. Smith" />
+							<span class="error"></span>
+						</div>
 					</div>
-				</div>
 
-				<div class="row">
-					<div class="input sm3">
-						<div class="controls">
-							<button class="btn cta large fill" id="submit_button" type="submit">
-								<span class="text">Submit</span>
-								<span class="loader">Creating account&hellip;</span>
-							</button>
+					<div class="row">
+						<div class="input sm8">
+							<label>Your email Address</label>
+							<input name="email" type="email" placeholder="johndow@mail.com" />
+							<span class="error"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm8">
+							<label>Your phone number</label>
+							<input name="phonenumber" type="number" placeholder="e.g. 07700112233" />
+							<span class="error"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm12">
+							<label>What Help are you looking for?</label>
+							<p>(Please tick as many as you like but at least one)</p>
+							<span class="error" id="helpNeeded-error">Please select at least one option</span>
+							@foreach (var option in helpOptions)
+							{
+								<div class="input input--checkbox">
+									<label>
+										<input name="helpNeededArray" type="checkbox" value="@option.Key" hidden />
+										<span class="input--checkbox__checkbox">
+											<span class="mdi mdi-check"></span>
+										</span>
+										@option.Value
+									</label>
+								</div>
+							}
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm12">
+							<label>Anything else to add?</label>
+							<p>We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you.</p>
+							<textarea name="message" rows="5"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm3">
+							<div class="controls">
+								<button class="btn cta large fill" id="submit_button" type="submit">
+									<span class="text">Submit</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-
 			</form>
 		</div>
 	</div>

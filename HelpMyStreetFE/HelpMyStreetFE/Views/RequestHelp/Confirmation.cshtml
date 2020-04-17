@@ -1,0 +1,30 @@
+﻿@using HelpMyStreetFE.Models.RequestHelp;
+
+@model RequestHelpFormModel;
+
+@{
+	ViewData["Title"] = "Sign up for help confirmation";
+}
+
+<partial name="_SiteHeaderPublic" />
+
+<div class="container">
+	<div class="row justify-center mt72">
+		<div class="sm12">
+			<h1>@ViewData["Title"]</h1>
+
+			<p>Thank you for signing up for help.</p>
+
+			@if (Context.Request.Query["failure"] == "error")
+			{
+				<p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
+			}
+		</div>
+	</div>
+</div>
+
+
+
+
+
+

@@ -39,5 +39,19 @@ namespace HelpMyStreetFE.Models.RequestHelp
         [BindProperty(Name = "health_concern")]
         public bool HealthConcern { get; set; }
 
+        [BindProperty(Name = "address_line_1")]
+        public string AddressLine1 { get; set; }
+
+        [BindProperty(Name = "address_line_2")]
+        public string AddressLine2 { get; set; }
+
+        [BindProperty(Name = "city")]
+        public string City { get; set; }
+
+        [BindProperty(Name = "county")]
+        public string County { get; set; }
+
+        [BindProperty(Name = "postcode")]
+        public string Postcode { get; set; }
     }
 }
