@@ -1,4 +1,18 @@
 .login {
+
+    @media screen and (max-width: $screen-md-min) {
+        margin-top: 10px
+    }
+
+    .card {
+        @media screen and (max-width: $screen-md-min) {
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+            border: none;
+        }
+    }
+
     margin-top: 50px;
     min-height: 55vh;
 
@@ -15,18 +29,32 @@
         max-width: 220px;
     }
 
-    &__fail-message-main{
-        font-size:1rem;
+    &__fail-message-main {
+        font-size: 1rem;
     }
+
     &__header {
         color: $dark-blue;
         font-size: 2em;
         font-weight: 900;
         line-height: 1.5;
+
+        @media screen and (max-width: $screen-md-min) {
+            font-size: 1.5em;
+        }
     }
 
     &__side {
         margin-left: 30px;
+
+        @media screen and (max-width: $screen-md-min) {
+            text-align: center;
+            margin: 20px 0;
+            padding-top:20px;
+            border-top: 1px solid $background-darker-1;
+        }
+
+
 
         &__text {
             margin-top: 30px;
