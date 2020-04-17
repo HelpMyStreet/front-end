@@ -6,7 +6,7 @@
     </script>
     <script src="~/yoti.js" asp-append-version="true"></script>
 }
-
+<partial name="_LoadingMobile" />
 <div class="container">
     <div class="yoti__auth__result sm8">
         <h2>Oops. Sorry, something didn’t work!</h2>
@@ -18,10 +18,12 @@
                 <li>Please then try again by clicking on the blue "Open Yoti" button below</li>
             </ul>
             <p>Please then try again by clicking on the button below</p>
-            <div id="@Model.DomId"></div>
-
+            <div class="yoti__auth__button" id="@Model.DomId"></div>
+            <partial name="_LoadingDesktop" />
             <p>If you’ve checked everything and it still doesn’t work, we’re sorry that we can’t progress you to a verified profile today</p>
             <img class="yoti__auth__result__image" src="~/img/sad-face.svg">
         </div>
     </div>
+
+
 </div>
