@@ -33,9 +33,6 @@ $(() => {
 					}
 					else {
 
-						response.volunteerCount = 3;
-						response.championCount = 1;
-
 						if (response.volunteerCount == 0 && response.championCount == 0) {
 							$(".postcode__info, #postcode_notcovered").show();
 						}
