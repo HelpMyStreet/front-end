@@ -21,9 +21,8 @@ $(() => {
 			console.log(resp);
 			if (resp.ok) {						
 				const response = await resp.json();
-			
-				console.log(response);	
-					// also in response now is volunteerCount and championCount
+				
+				// also in response now is volunteerCount and championCount
 				if (response.postCodeResponse.hasContent && response.postCodeResponse.isSuccessful) {
 					$("select[name=address_selector]").html(
 						response.postCodeResponse.content.addressDetails.reduce((acc, cur, i) => {
@@ -77,15 +76,17 @@ $(() => {
 		}, {});
 		$(".error").hide();
 		
-		if (!obj["helpNeededArray"]) {
+		if (!obj["help-needed-array"]) {
 			validHelpNeeded = false;
-			$("#helpNeeded-error").show();
+			$("#help-needed-array-error").show();
 		}
 
 		const valid = validateFormData($(this), {
 			firstname: (v) => v !== "" || "Please enter a first name",
 			lastname: (v) => v !== "" || "Please enter a last name",
-			email: (v) => v !== "" || "Please enter an email address",
+			email: (v) => v !== "" ||
+				RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/').test(v) ||
+				"Please enter a valid email address",
 			postcode: (v) => v !== "" || "Please enter a postcode",
 			phonenumber: (v) =>
 				v == "" ||
@@ -100,31 +101,6 @@ $(() => {
 		});
 
 		let validForm = (valid && validHelpNeeded);
-
-		let emailValid = true;
-		let emailInput = $("input[name='email']");
-		let emailInputError = emailInput.find("~ .error");
-
-		const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-		let emailValue = emailInput.val();
-
-		if (!email) {
-			emailInputError.text("Please provide an email address");
-			emailValid = false;
-		} else if (typeof emailValue != "string") {
-			emailInputError.text("Please provide a valid email address");
-			emailValid = false;
-		} else if (!emailRegex.test(emailValue.toLowerCase())) {
-			emailInputError.text("Please provide a valid email address");
-			emailValid = false;
-		}
-
-		if (!emailValid) {
-			emailInputError.show();
-		}
-
-		validForm = validForm && emailValid;
 
 		if (!validForm) {
 			$("#general-error").show();

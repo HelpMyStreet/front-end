@@ -177,12 +177,12 @@
 						<div class="input sm12">
 							<label>What Help are you looking for?</label>
 							<p>(Please tick as many as you like but at least one)</p>
-							<span class="error" id="helpNeeded-error">Please select at least one option</span>
+							<span class="error" id="help-needed-array-error">Please select at least one option</span>
 							@foreach (var option in helpOptions)
 							{
 								<div class="input input--checkbox">
 									<label>
-										<input name="helpNeededArray" type="checkbox" value="@option.Key" hidden />
+										<input name="help-needed-array" type="checkbox" value="@option.Key" hidden />
 										<span class="input--checkbox__checkbox">
 											<span class="mdi mdi-check"></span>
 										</span>
