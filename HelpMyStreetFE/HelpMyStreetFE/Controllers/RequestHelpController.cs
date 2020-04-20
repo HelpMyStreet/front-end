@@ -1,9 +1,13 @@
 ﻿using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -11,16 +15,44 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly IOptions<EmailConfig> appSettings;
         private readonly IRequestHelpRepository _requestHelpRepository;
+        private readonly ILogger<RequestHelpController> _logger;
+        private readonly IAddressService _addressService;
+        private readonly IUserService _userService;
 
-        public RequestHelpController(IOptions<EmailConfig> app, IRequestHelpRepository requestHelpRepository)
+        public RequestHelpController(ILogger<RequestHelpController> logger, IAddressService addressService, IUserService userService, IOptions<EmailConfig> app, IRequestHelpRepository requestHelpRepository)
         {
             appSettings = app;
             _requestHelpRepository = requestHelpRepository;
+            _logger = logger;
+            _addressService = addressService;
+            _userService = userService;
         }
 
-        public IActionResult RequestHelp()
+        public async Task<IActionResult> RequestHelp()
         {
-            var model = new RequestHelpFormModel();
+            _logger.LogInformation("Get home");
+
+            var reqs = new List<Task<int>>
+            {
+                _userService.GetStreetChampions(),
+                _userService.GetStreetsCovered(),
+                _userService.GetVolunteers(),
+                _addressService.GetTotalStreets()
+            };
+
+            await Task.WhenAll(reqs);
+
+            var model = new RequestHelpFormModel
+            {
+                NumStreetChampions = reqs[0].Result,
+                NumStreetsCovered = reqs[1].Result,
+                NumVolunteers = reqs[2].Result
+            };
+
+            int totalStreets = reqs[3].Result;
+
+            model.PostCodesCoveredPercentage = (int)Math.Ceiling(100.0 * model.NumStreetsCovered / (totalStreets));
+
             return View(model);
         }
 

@@ -3,14 +3,17 @@ import { validateFormData, validatePostCode } from "../shared/validator";
 
 $(() => {
 
-	$("#manual_address").on("click", function (evt) {
+	$("#postcode_button").on("click", async function (evt) {
 		evt.preventDefault();
-		$(".expander").slideDown();
-		$(".expanderDetails").slideDown();
-	});
 
-	$("#address_finder").on("click", async function (evt) {
-		evt.preventDefault();
+		$(".postcode__info, #postcode_invalid").hide();
+		$(".postcode__info, #postcode_notcovered").hide();
+		$(".postcode__info, #postcode_error").hide();
+
+		$("#address_selector").slideUp();
+		$(".expander").slideUp();
+		$(".expanderDetails").slideUp();
+
 		buttonLoad($(this));
 		$("#address_selector").unbind("change");
 
@@ -23,17 +26,22 @@ $(() => {
 
 				if (response.postCodeResponse.hasContent && response.postCodeResponse.isSuccessful) {
 
-					var postCodeValid = response.postCodeResponse.isSuccessful && data.postCodeResponse.hasContent;
+					var postCodeValid = response.postCodeResponse.isSuccessful && response.postCodeResponse.hasContent;
 
 					if (postCodeValid == false) {
 						$(".postcode__info, #postcode_invalid").show();
 					}
 					else {
+
+						response.volunteerCount = 3;
+						response.championCount = 1;
+
 						if (response.volunteerCount == 0 && response.championCount == 0) {
 							$(".postcode__info, #postcode_notcovered").show();
 						}
 
 						else if (response.volunteerCount > 0 || response.championCount > 0) {
+							
 							$("select[name=address_selector]").html(
 								response.postCodeResponse.content.addressDetails.reduce((acc, cur, i) => {
 									const text = Object.keys(cur).reduce((tAcc, tCur) => {

@@ -55,5 +55,11 @@ namespace HelpMyStreetFE.Models.RequestHelp
         public string Postcode { get; set; }
 
         public bool HasErrors { get; set; }
+
+        public int PostCodesCoveredPercentage { get; set; }
+        public int NumStreetChampions { get; set; }
+        public int NumStreetsCovered { get; set; }
+        public int NumVolunteers { get; set; }
+
     }
 }

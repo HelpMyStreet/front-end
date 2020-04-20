@@ -42,75 +42,86 @@
 			}
 		</div>
 	</div>
-	<div class="row justify-center mt72">
-		<div class="sm12">
 
-			<form id="requesthelp_form" method="post" asp-controller="RequestHelp" asp-action="Send">
+
+	<div class="row card street-check">
+		<div class="sm12 max">
+			<h3>Is your street covered?</h3>
+			<p class="ma0">
+				<span class="inline-flex align-center">
+					0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCoveredPercentage%">&nbsp;</span></span> 100%
+				</span>
+				<span class="ml32">
+					@Model.PostCodesCoveredPercentage% of the country's postcodes are covered so far.
+				</span>
+			</p>
+			<div class="input mt68 mb15">
+				<label>Your Postcode</label>
+				<div class="postcode-input-button">
+					<input id="postcode_search" name="postcode_search" type="text" placeholder="Enter your Postcode..." />
+					<button class="btn cta large" id="postcode_button">
+						<span class="text">Check postcode</span>
+						<span class="loader">Checking&hellip;</span>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="postcode__info dnone">
+
+			<div id="postcode_notcovered" class="dnone postcode__info__message">
 				<div class="row">
-					<div class="input sm5">
-						<label>Postcode</label>
-						<input name="postcode_search" type="text" placeholder="e.g. NG1 1PS" />
+					<div class="sm8 postcode__info__message__text">
+						Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
+					</div>
+					<div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
+				</div>
+			</div>
+			<div id="postcode_invalid" class="dnone postcode__info__message">
+				<div class="row">
+					<div class="sm12 postcode__info__message__text__warning">
+						Sorry - that’s not quite right. Please enter a valid UK postcode.
+					</div>
+				</div>
+			</div>
+			<div id="postcode_error" class="dnone postcode__info__message__text__warning">
+				We're currently experiencing issues finding coverage, please try again later.
+			</div>
+		</div>
+
+		<div class="sm12">
+			<form id="requesthelp_form" method="post" asp-controller="RequestHelp" asp-action="Send">
+
+				<div class="input sm8 dnone" id="address_selector">
+					<label>Select address</label>
+					<select name="address_selector">
+					</select>
+				</div>
+				<div class="expander sm8">
+					<h5>Please enter your address</h5>
+					<div class="input">
+						<label>Address line 1</label>
+						<input name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
 						<span class="error"></span>
 					</div>
-					<div class="input sm3">
-						<button class="btn large border-blue blue fill" id="address_finder">
-							<span class="text">Find address</span>
-							<span class="loader">Searching&hellip;</span>
-						</button>
-						<a id="manual_address" href="#" class="input__link">Or enter your address manually</a>
+					<div class="input">
+						<label>Address line 2</label>
+						<input name="address_line_2" type="text" placeholder="e.g. Hockley" />
+						<span class="error"></span>
 					</div>
-					<div class="input sm8 dnone" id="address_selector">
-						<label>Select address</label>
-						<select name="address_selector">
-						</select>
+					<div class="input">
+						<label>Town / City</label>
+						<input name="city" type="text" placeholder="e.g. Nottingham" />
+						<span class="error"></span>
 					</div>
-					<div class="expander sm8">
-						<h5>Please enter your address</h5>
-						<div class="input">
-							<label>Address line 1</label>
-							<input name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
-							<span class="error"></span>
-						</div>
-						<div class="input">
-							<label>Address line 2</label>
-							<input name="address_line_2" type="text" placeholder="e.g. Hockley" />
-							<span class="error"></span>
-						</div>
-						<div class="input">
-							<label>Town / City</label>
-							<input name="city" type="text" placeholder="e.g. Nottingham" />
-							<span class="error"></span>
-						</div>
-						<div class="input">
-							<label>County</label>
-							<input name="county" type="text" placeholder="e.g. Nottingham" />
-							<span class="error"></span>
-						</div>
-						<div class="input">
-							<label>Postcode</label>
-							<input name="postcode" type="text" placeholder="e.g. NG1 1PS" />
-							<span class="error"></span>
-						</div>
+					<div class="input">
+						<label>County</label>
+						<input name="county" type="text" placeholder="e.g. Nottingham" />
+						<span class="error"></span>
 					</div>
-					<div class="postcode__info dnone">
-						<div id="postcode_notcovered" class="dnone postcode__info__message">
-							<div class="row">
-								<div class="sm8 postcode__info__message__text">
-									Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
-								</div>
-								<div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
-							</div>
-						</div>
-						<div id="postcode_invalid" class="dnone postcode__info__message">
-							<div class="row">
-								<div class="sm12 postcode__info__message__text__warning">
-									Sorry - that’s not quite right. Please enter a valid UK postcode.
-								</div>
-							</div>
-						</div>
-						<div id="postcode_error" class="dnone postcode__info__message__text__warning">
-							We're currently experiencing issues finding coverage, please try again later.
-						</div>
+					<div class="input">
+						<label>Postcode</label>
+						<input name="postcode" type="text" placeholder="e.g. NG1 1PS" />
+						<span class="error"></span>
 					</div>
 				</div>
 				<div class="expanderDetails dnone">
@@ -221,6 +232,11 @@
 					</div>
 
 					<div class="row">
+						<p class="orange">
+							<span class="error" id="general-error">There are some errors on the page, please correct them</span>
+						</p>
+					</div>
+					<div class="row">
 						<div class="input sm3">
 							<div class="controls">
 								<button class="btn cta large fill" id="submit_button" type="submit">
@@ -228,9 +244,6 @@
 								</button>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<span class="error" id="general-error">There are some errors on the page, please correct them</span>
 					</div>
 				</div>
 			</form>
