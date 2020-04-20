@@ -9,8 +9,8 @@ function validatePrivacyAndTerms() {
     let terms = $("input[name='terms_and_conditions']").is(":checked");
     var errorText = "";
     privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
-    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href=' / terms - conditions'>Terms and Conditions</a>" : "";
-    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href=' / privacy - policy'>Privacy Notice</a>" : "";
+    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
+    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";
 
     $('.termsprivacy').show();
     $('.termsprivacy').html(errorText);
