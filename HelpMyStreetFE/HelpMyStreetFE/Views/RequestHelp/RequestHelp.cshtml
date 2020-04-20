@@ -42,49 +42,42 @@
 			}
 		</div>
 	</div>
+	<div class="row justify-center mt72">
+		<div class="sm12">
+			<div class="row street-check">
 
-
-	<div class="row card street-check">
-		<div class="sm12 max">
-			<h3>Is your street covered?</h3>
-			<p class="ma0">
-				<span class="inline-flex align-center">
-					0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCoveredPercentage%">&nbsp;</span></span> 100%
-				</span>
-				<span class="ml32">
-					@Model.PostCodesCoveredPercentage% of the country's postcodes are covered so far.
-				</span>
-			</p>
-			<div class="input mt68 mb15">
-				<label>Your Postcode</label>
-				<div class="postcode-input-button">
-					<input id="postcode_search" name="postcode_search" type="text" placeholder="Enter your Postcode..." />
-					<button class="btn cta large" id="postcode_button">
-						<span class="text">Check postcode</span>
-						<span class="loader">Checking&hellip;</span>
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="postcode__info dnone">
-
-			<div id="postcode_notcovered" class="dnone postcode__info__message">
-				<div class="row">
-					<div class="sm8 postcode__info__message__text">
-						Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
-					</div>
-					<div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
-				</div>
-			</div>
-			<div id="postcode_invalid" class="dnone postcode__info__message">
-				<div class="row">
-					<div class="sm12 postcode__info__message__text__warning">
-						Sorry - that’s not quite right. Please enter a valid UK postcode.
+			
+				<div class="input sm12">
+					<label>Your Postcode</label>
+					<div class="postcode-input-button">
+						<input id="postcode_search" name="postcode_search" type="text" placeholder="Enter your Postcode..." />
+						<button class="btn cta large" id="postcode_button">
+							<span class="text">Find address</span>
+							<span class="loader">Checking&hellip;</span>
+						</button>
 					</div>
 				</div>
 			</div>
-			<div id="postcode_error" class="dnone postcode__info__message__text__warning">
-				We're currently experiencing issues finding coverage, please try again later.
+			<div class="postcode__info dnone">
+
+				<div id="postcode_notcovered" class="dnone postcode__info__message">
+					<div class="row">
+						<div class="sm8 postcode__info__message__text">
+							Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
+						</div>
+						<div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
+					</div>
+				</div>
+				<div id="postcode_invalid" class="dnone postcode__info__message">
+					<div class="row">
+						<div class="sm12 postcode__info__message__text__warning">
+							Sorry - that’s not quite right. Please enter a valid UK postcode.
+						</div>
+					</div>
+				</div>
+				<div id="postcode_error" class="dnone postcode__info__message__text__warning">
+					We're currently experiencing issues finding coverage, please try again later.
+				</div>
 			</div>
 		</div>
 
@@ -249,5 +242,6 @@
 			</form>
 		</div>
 	</div>
+</div>
 </div>
 
