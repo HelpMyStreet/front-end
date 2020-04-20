@@ -33,11 +33,13 @@ export function initialiseStepOne() {
         RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{10,})").test(v) ||
         "Please use a strong password",
       confirm_password: (v, d) =>
-            d.password === v || "Please ensure passwords match"
+            d.password === v || "Please ensure passwords match",  
+        terms_and_conditions: (v, d) =>
+            validatePrivacyAndTerms() || ""
+          
     });      
-
-    let stepOneValid = (valid && validatePrivacyAndTerms());      
-    if (stepOneValid === false) return;
+    
+    if (valid === false) return;
 
     const { email, password } = valid;
 

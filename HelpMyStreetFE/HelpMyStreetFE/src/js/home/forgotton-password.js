@@ -10,11 +10,11 @@ export function intialiseForgottonForm(firebase, account) {
         });   
         evt.preventDefault();        
         
-        let email = $(this).find("input[name='email']");
-        if (valid) {        
-            
+        const { email } = valid;
+        
+        if (valid) {                    
             buttonLoad($('#submitbtn'))
-            firebase.auth.sendPasswordResetEmail(email.val()).then(function () {
+            firebase.auth.sendPasswordResetEmail(email).then(function () {
                 showEmailSentScreen();
             }).catch(function (error) {         
                 if (error !== undefined && error.code !== undefined) {                     
