@@ -1,6 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode } from "../shared/validator";
-  
+
 $(() => {
 
 	$("#manual_address").on("click", function (evt) {
@@ -18,47 +18,61 @@ $(() => {
 
 		try {
 			const resp = await fetch(`/api/postcode/checkCoverage/${postcode}`);
-			console.log(resp);
-			if (resp.ok) {						
+			if (resp.ok) {
 				const response = await resp.json();
-				
-				// also in response now is volunteerCount and championCount
+
 				if (response.postCodeResponse.hasContent && response.postCodeResponse.isSuccessful) {
-					$("select[name=address_selector]").html(
-						response.postCodeResponse.content.addressDetails.reduce((acc, cur, i) => {
-							const text = Object.keys(cur).reduce((tAcc, tCur) => {
-								if (cur[tCur] != null) {
-									tAcc += tAcc === "" ? "" : ", ";
-									tAcc += `${cur[tCur]}`;
-								}
 
-								return tAcc;
-							}, "");
+					var postCodeValid = response.postCodeResponse.isSuccessful && data.postCodeResponse.hasContent;
 
-							acc += `<option value="${i}">${text}</option>`;
-							return acc;
-						}, '<option value="" selected disabled hidden>Choose here</option>')
-					);
+					if (postCodeValid == false) {
+						$(".postcode__info, #postcode_invalid").show();
+					}
+					else {
+						if (response.volunteerCount == 0 && response.championCount == 0) {
+							$(".postcode__info, #postcode_notcovered").show();
+						}
 
-					$("#address_selector").slideDown();
-					$("select[name=address_selector]").on("change", function () {
-						const id = $(this).children("option:selected").val();
+						else if (response.volunteerCount > 0 || response.championCount > 0) {
+							$("select[name=address_selector]").html(
+								response.postCodeResponse.content.addressDetails.reduce((acc, cur, i) => {
+									const text = Object.keys(cur).reduce((tAcc, tCur) => {
+										if (cur[tCur] != null) {
+											tAcc += tAcc === "" ? "" : ", ";
+											tAcc += `${cur[tCur]}`;
+										}
 
-						const address = response.postCodeResponse.content.addressDetails[id];
+										return tAcc;
+									}, "");
 
-						$("input[name=address_line_1]").val(address.addressLine1);
-						$("input[name=address_line_2]").val(address.addressLine2);
-						$("input[name=city]").val(address.locality);
-						$("input[name=postcode]").val(address.postcode);
-						$(".expander").slideDown();
-						$(".expanderDetails").slideDown();
-						
+									acc += `<option value="${i}">${text}</option>`;
+									return acc;
+								}, '<option value="" selected disabled hidden>Choose here</option>')
+							);
 
-					});
+							$("#address_selector").slideDown();
+							$("select[name=address_selector]").on("change", function () {
+								const id = $(this).children("option:selected").val();
+
+								const address = response.postCodeResponse.content.addressDetails[id];
+
+								$("input[name=address_line_1]").val(address.addressLine1);
+								$("input[name=address_line_2]").val(address.addressLine2);
+								$("input[name=city]").val(address.locality);
+								$("input[name=postcode]").val(address.postcode);
+								$(".expander").slideDown();
+								$(".expanderDetails").slideDown();
+							});
+						}
+					}
+				}
+				else {
+					$(".postcode__info, #postcode_error").show();
 				}
 			}
 		} catch (ex) {
 			console.error(ex);
+			$(".postcode__info, #postcode_error").show();
 		}
 		buttonUnload($(this));
 	});
@@ -66,7 +80,7 @@ $(() => {
 	$("#requesthelp_form").on("submit", function (event) {
 		$(".expander").slideDown();
 
-		event.preventDefault(); 
+		event.preventDefault();
 
 		let validHelpNeeded = true;
 
@@ -75,7 +89,7 @@ $(() => {
 			return acc;
 		}, {});
 		$(".error").hide();
-		
+
 		if (!obj["help-needed-array"]) {
 			validHelpNeeded = false;
 			$("#help-needed-array-error").show();
@@ -105,7 +119,7 @@ $(() => {
 		if (!validForm) {
 			$("#general-error").show();
 		}
-   
+
 		let postcodeValid;
 		let postcodeInput = $("input[name='postcode']");
 		event.preventDefault(); //this will prevent the default submit needed now we do a call to api
