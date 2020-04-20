@@ -15,6 +15,7 @@ $(() => {
     var processYoti = async function (thisToken) {
         $('.yoti__auth__button').hide();
         $('.yoti__auth__loading').css("visibility", "visible");
+        $('.yoti__auth__loading').css("height", "100%");
         var response = await fetch("/yoti/ValidateToken" + "?token=" + thisToken);  
         if (response.status == 200) {
             window.location.href = "/yoti/AuthSuccess";

@@ -42,8 +42,8 @@ namespace HelpMyStreetFE.Controllers
             if (id != null)
             {                
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = id }, cancellationToken);
-                if(response.Status == ValidationStatus.Success)
-                {                    
+                if (response.Status == ValidationStatus.Success)
+                {
                     await _userService.CreateUserStepFiveAsync(int.Parse(id), true);
                 }
                 return handleValidationTokenResponse(response);
@@ -52,7 +52,6 @@ namespace HelpMyStreetFE.Controllers
             {
                 return Unauthorized();
             }
-
         }
 
         public async Task<IActionResult> AuthSuccess()
@@ -63,12 +62,18 @@ namespace HelpMyStreetFE.Controllers
             {        
                 return View();
             }
-            return RedirectToAction("AuthFailed");
+            return Redirect("/Error/500");
         }
 
-        public IActionResult AuthFailed()
+        public async Task<IActionResult> AuthFailed()
         {
-            return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            User user = await _userService.GetUserAsync(id);
+            // stops people navigating to the url when theyre not supposed to
+            if (user.RegistrationHistory.Count == 4) {
+                return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
+            }
+            return Redirect("/Error/500");
         }
 
         private IActionResult handleValidationTokenResponse(ValidationResponse response)
