@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace HelpMyStreetFE
 {
@@ -63,6 +64,7 @@ namespace HelpMyStreetFE
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent("helpmystreet.org"));
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
             app.UseStaticFiles(new StaticFileOptions{
