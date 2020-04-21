@@ -21,12 +21,14 @@ namespace HelpMyStreetFE.Controllers
         private readonly YotiOptions _options;
         private readonly IValidationService _validationService;
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public YotiController(IOptions<YotiOptions> options, IValidationService validationService, IUserService userService)
+        public YotiController(IOptions<YotiOptions> options, IValidationService validationService, IUserService userService, IAuthService authService)
         {
             _userService = userService;
             _options = options.Value;
             _validationService = validationService;
+            _authService = authService;
         }
 
         [AllowAnonymous]
@@ -57,6 +59,12 @@ namespace HelpMyStreetFE.Controllers
                 if (response.Status == ValidationStatus.Success)
                 {
                     await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
+
+                    if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value == null)
+                    {
+                        // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
+                        await _authService.LoginWithUserId(int.Parse(validUserId), HttpContext);
+                    }
                 }
                 return handleValidationTokenResponse(response);
             }
