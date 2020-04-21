@@ -20,25 +20,28 @@ $(() => {
 		const postcode = $("input[name=postcode_search]").val();
 
 		try {
-			const resp = await fetch(`/api/postcode/checkCoverage/${postcode}`);
-			if (resp.ok) {
-				const response = await resp.json();
 
-				if (response.postCodeResponse.hasContent && response.postCodeResponse.isSuccessful) {
+			const responseLogResponse = await fetch(`/api/requesthelpapi/logRequest/${postcode}`);
+			if (responseLogResponse.ok) {
+				const responseLogResponseJson = await responseLogResponse.json();
 
-					var postCodeValid = response.postCodeResponse.isSuccessful && response.postCodeResponse.hasContent;
+				if (responseLogResponseJson.fulfillable === false) {
+					$(".postcode__info, #postcode_notcovered").show();
+				}
+				else {
 
-					if (postCodeValid == false) {
-						$(".postcode__info, #postcode_invalid").show();
-					}
-					else {
+					$("#requestId").val(responseLogResponseJson.requestId);
 
-						if (response.volunteerCount == 0 && response.championCount == 0) {
-							$(".postcode__info, #postcode_notcovered").show();
-						}
+					const resp = await fetch(`/api/postcode/checkCoverage/${postcode}`);
+					if (resp.ok) {
+						const response = await resp.json();
 
-						else if (response.volunteerCount > 0 || response.championCount > 0) {
-							
+						var postCodeValid = response.postCodeResponse.isSuccessful && response.postCodeResponse.hasContent;
+
+						if (postCodeValid == false) {
+							$(".postcode__info, #postcode_invalid").show();
+						} else {
+
 							$("select[name=address_selector]").html(
 								response.postCodeResponse.content.addressDetails.reduce((acc, cur, i) => {
 									const text = Object.keys(cur).reduce((tAcc, tCur) => {
@@ -69,11 +72,13 @@ $(() => {
 								$(".expanderDetails").slideDown();
 							});
 						}
+
+					}
+					else {
+						$(".postcode__info, #postcode_error").show();
 					}
 				}
-				else {
-					$(".postcode__info, #postcode_error").show();
-				}
+
 			}
 		} catch (ex) {
 			console.error(ex);
