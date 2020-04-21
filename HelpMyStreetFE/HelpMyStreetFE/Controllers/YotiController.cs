@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                return Redirect("Registration/StepFive");
+                return Redirect("/Registration/StepFive");
             }
         }
 
