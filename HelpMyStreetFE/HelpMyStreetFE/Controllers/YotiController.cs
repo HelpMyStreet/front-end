@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Validation;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Validation;
 using HelpMyStreetFE.Models.Yoti;
@@ -29,24 +30,33 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Authenticate()
+        public IActionResult Authenticate(string token, string u)
         {
-            var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
-            return View(viewModel);
+            var validUserId = ValidUserId(u, token);
+
+            if (validUserId != null)
+            {
+                var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
+                return View(viewModel);
+            }
+            else
+            {
+                return Redirect("Registration/StepFive");
+            }
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> ValidateToken(string token, CancellationToken cancellationToken)
+        public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
-            var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var validUserId = ValidUserId(u, token);
 
-            if (id != null)
-            {                
-                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = id }, cancellationToken);
+            if (validUserId != null && token != null)
+            {
+                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success)
                 {
-                    await _userService.CreateUserStepFiveAsync(int.Parse(id), true);
+                    await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
                 }
                 return handleValidationTokenResponse(response);
             }
@@ -88,6 +98,39 @@ namespace HelpMyStreetFE.Controllers
                 ValidationStatus.ValidationFailed => BadRequest(response),
                 _ => StatusCode(500, response)
             };
+        }
+
+        private string ValidUserId(string encodedQueryStringUserId, string token)
+        {
+            try
+            {
+                var queryStringUserId = Base64Helpers.Base64Decode(encodedQueryStringUserId);
+
+                var authenticatedUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                if (authenticatedUserId != null)
+                {
+                    if (authenticatedUserId == queryStringUserId)
+                    {
+                        // User in session, and query string as expected.  First visit to this page, desktop journey, or mobile journey that started in default browser.
+                        return queryStringUserId;
+                    }
+                }
+                else
+                {
+                    if (token != null)
+                    {
+                        // No user in session, but we've got a user ID from the query string and a Yoti token.  Mobile journey that started in non-default browser.
+                        return queryStringUserId;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                
+            }
+
+            return null;
         }
     }
 }
