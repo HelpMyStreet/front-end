@@ -114,11 +114,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 var queryStringUserId = Base64Helpers.Base64Decode(encodedQueryStringUserId);
 
-                var authenticatedUserId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var authenticatedUserIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (authenticatedUserId != null)
+                if (authenticatedUserIdClaim != null)
                 {
-                    if (authenticatedUserId == queryStringUserId)
+                    if (authenticatedUserIdClaim.Value == queryStringUserId)
                     {
                         // User in session, and query string as expected.  First visit to this page, desktop journey, or mobile journey that started in default browser.
                         return queryStringUserId;
@@ -133,7 +133,7 @@ namespace HelpMyStreetFE.Controllers
                     }
                 }
             }
-            catch (Exception)
+            catch //(Exception ex)
             {
                 
             }

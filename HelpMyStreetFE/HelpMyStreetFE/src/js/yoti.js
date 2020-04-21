@@ -15,15 +15,13 @@ $(() => {
     var urlToken = getParameterByName("token");
     var userId = getParameterByName("u");
 
-    alert("User ID:" + userId);
-
     var processYoti = async function (thisToken) {
         $('.yoti__auth__button').hide();
         $('.yoti__auth__loading').css("visibility", "visible");
         $('.yoti__auth__loading').css("height", "100%");
-        var response = await fetch("/yoti/ValidateToken" + "?token=" + thisToken + "&u=" + userId);
+        var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
         if (response.status == 200) {
-            window.location.href = "/yoti/AuthSuccess?u=" + userId;
+            window.location.href = "/yoti/AuthSuccess";
         } else {            
             window.location.href = "/yoti/AuthFailed?u=" + userId;
         }
