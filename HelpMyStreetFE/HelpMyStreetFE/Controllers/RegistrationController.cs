@@ -189,7 +189,9 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("[controller]/stepfive")]
         public IActionResult StepFive()
         {
-            var viewModel = new RegistrationViewModel { ActiveStep = 5 };
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            var viewModel = new RegistrationViewModel { ActiveStep = 5, UserID = userId };
             return View(viewModel);
         }
     }
