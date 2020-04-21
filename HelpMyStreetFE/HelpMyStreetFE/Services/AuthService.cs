@@ -62,6 +62,17 @@ namespace HelpMyStreetFE.Services
                 new ClaimsPrincipal(identity));
         }
 
+        public async Task LoginWithUserId(int userId, HttpContext httpContext)
+        {
+            var user = await _userRepository.GetUser(userId);
+            var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
+            identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
+
+            await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity));
+        }
+
         public async Task Logout(HttpContext httpContext)
         {
             await httpContext.SignOutAsync();            

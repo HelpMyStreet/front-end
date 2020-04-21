@@ -7,6 +7,7 @@ namespace HelpMyStreetFE.Services
     {
         Task Logout(HttpContext httpContext);
         Task LoginWithTokenAsync(string token, HttpContext httpContext);
+        Task LoginWithUserId(int userId, HttpContext httpContext);
         Task<string> VerifyIdTokenAsync(string token);
 
     }
