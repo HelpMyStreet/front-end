@@ -28,12 +28,14 @@ namespace HelpMyStreetFE.Controllers
             _validationService = validationService;
         }
 
+        [AllowAnonymous]
         public IActionResult Authenticate()
         {
             var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
             return View(viewModel);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> ValidateToken(string token, CancellationToken cancellationToken)
         {
