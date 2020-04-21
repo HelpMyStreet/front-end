@@ -55,7 +55,7 @@ namespace HelpMyStreetFE.Models.RequestHelp
 		public string Postcode { get; set; }
 
 		[BindProperty(Name = "requestId")]
-		public string RequestId { get; set; }
+		public int RequestId { get; set; }
 
 		public bool HasErrors { get; set; }
 

@@ -26,5 +26,11 @@ namespace HelpMyStreetFE.Services
             return await _requestHelpRepository.LogRequest(postcode);
 
         }
+
+        public void UpdateRequest(RequestHelpFormModel requestHelpFormModel)
+        {
+            _logger.LogInformation($"Updating Request with Id {requestHelpFormModel.RequestId}");
+            _requestHelpRepository.UpdateRequest(requestHelpFormModel);
+        }
     }
 }

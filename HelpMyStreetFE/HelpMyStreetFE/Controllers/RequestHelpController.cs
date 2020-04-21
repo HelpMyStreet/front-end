@@ -44,7 +44,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 try
                 {
-                    //_requestService.UpdateRequest(requestHelpFormModel);
+                    _requestService.UpdateRequest(requestHelpFormModel);
 
                     return View("Confirmation", requestHelpFormModel);
                 }
