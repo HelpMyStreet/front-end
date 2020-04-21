@@ -42,7 +42,8 @@ namespace HelpMyStreetFE
             services.AddHttpClient<IValidationService, ValidationService>();            
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
-            services.AddSingleton<IEmailService, EmailService>();        
+            services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<IRequestHelpRepository, RequestHelpRepository>();
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation();
@@ -108,7 +109,7 @@ namespace HelpMyStreetFE
                     name: "contact",
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
-
+           
                 // Enable attribute routing
                 //endpoints.MapControllers();
             });
