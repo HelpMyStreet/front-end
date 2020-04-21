@@ -5,6 +5,6 @@
         public int ActiveStep { get; set; }
         public string FirebaseConfiguration { get; set; }
 
-        public int UserID { get; set; }
+        public string EncodedUserID { get; set; }
     }
 }

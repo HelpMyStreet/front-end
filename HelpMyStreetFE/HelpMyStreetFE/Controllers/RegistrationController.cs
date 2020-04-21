@@ -6,6 +6,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -189,9 +190,9 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("[controller]/stepfive")]
         public IActionResult StepFive()
         {
-            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = Base64Helpers.Base64Encode(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var viewModel = new RegistrationViewModel { ActiveStep = 5, UserID = userId };
+            var viewModel = new RegistrationViewModel { ActiveStep = 5, EncodedUserID = userId };
             return View(viewModel);
         }
     }
