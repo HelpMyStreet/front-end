@@ -8,7 +8,7 @@
 }
 
 @{
-	ViewData["Title"] = "Sign up to help";
+	ViewData["Title"] = "Request Help";
 
 	var helpOptions = new Dictionary<SupportActivities, string>
 {
@@ -45,21 +45,18 @@
 	<div class="row justify-center mt72">
 		<div class="sm12">
 			<div class="row street-check">
-
-			
 				<div class="input sm12">
-					<label>Your Postcode</label>
+					<label>Postcode Where Help Is Needed</label>
 					<div class="postcode-input-button">
-						<input id="postcode_search" name="postcode_search" type="text" placeholder="Enter your Postcode..." />
+						<input id="postcode_search" name="postcode_search" type="text" placeholder="Enter Postcode..." />
 						<button class="btn cta large" id="postcode_button">
-							<span class="text">Find address</span>
+							<span class="text">Check Postcode</span>
 							<span class="loader">Checking&hellip;</span>
 						</button>
 					</div>
 				</div>
 			</div>
 			<div class="postcode__info dnone">
-
 				<div id="postcode_notcovered" class="dnone postcode__info__message">
 					<div class="row">
 						<div class="sm8 postcode__info__message__text">
@@ -80,7 +77,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="sm12">
 			<form id="requesthelp_form" method="post" asp-controller="RequestHelp" asp-action="Send">
 
@@ -223,7 +219,7 @@
 							<textarea name="message" rows="5"></textarea>
 						</div>
 					</div>
-					<input id="requestId" name="requestId" type="hidden"/>
+					<input id="requestId" name="requestId" type="hidden" />
 
 					<div class="row">
 						<p class="orange">
@@ -244,5 +240,5 @@
 		</div>
 	</div>
 </div>
-</div>
+
 
