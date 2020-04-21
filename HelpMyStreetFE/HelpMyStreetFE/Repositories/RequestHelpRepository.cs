@@ -41,7 +41,10 @@ namespace HelpMyStreetFE.Repositories
 					requestorFirstName = requestHelpFormModel.FirstName,
 					requestorLastName = requestHelpFormModel.LastName,
 					requestorPhoneNumber = requestHelpFormModel.PhoneNumber,
-					supportActivitiesRequired = requestHelpFormModel.HelpNeeded.Select(itm => itm.ToString()).ToArray()
+					supportActivitiesRequired = new SupportActivityRequest
+					{
+						supportActivities = requestHelpFormModel.HelpNeeded.Select(itm => itm.ToString()).ToArray()
+					}					
 				});
 
 			return response;

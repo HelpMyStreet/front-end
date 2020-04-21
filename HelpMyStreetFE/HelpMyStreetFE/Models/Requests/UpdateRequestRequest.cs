@@ -6,14 +6,16 @@
 		public bool onBehalfOfAnother;
 		public bool healthOrWellbeingConcern;
 
-		public string[] supportActivitiesRequired;
-
+		public SupportActivityRequest supportActivitiesRequired;
 		public string furtherDetails;
-
 		public string requestorFirstName;
 		public string requestorLastName;
 		public string requestorEmailAddress;
 		public string requestorPhoneNumber;
+	}
 
+	public class SupportActivityRequest
+	{
+		public string[] supportActivities;
 	}
 }
