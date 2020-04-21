@@ -15,6 +15,8 @@ $(() => {
     var urlToken = getParameterByName("token");
     var userId = getParameterByName("u");
 
+    alert("User ID:" + userId);
+
     var processYoti = async function (thisToken) {
         $('.yoti__auth__button').hide();
         $('.yoti__auth__loading').css("visibility", "visible");
