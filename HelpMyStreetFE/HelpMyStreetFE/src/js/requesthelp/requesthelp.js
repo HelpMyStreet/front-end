@@ -33,7 +33,7 @@ $(() => {
 				}
 				else {
 
-					$("#requestId").val(responseLogResponseJson.content.requestId);
+					$("#requestId").val(responseLogResponseJson.content.requestID);
 
 					const resp = await fetch(`/api/postcode/checkCoverage/${postcode}`);
 					if (resp.ok) {
