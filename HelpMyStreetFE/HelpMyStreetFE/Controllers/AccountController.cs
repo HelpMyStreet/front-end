@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
+using Microsoft.Extensions.Configuration;
+using HelpMyStreetFE.Models;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -18,13 +20,17 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
+
         public AccountController(
             ILogger<AccountController> logger,
-            IUserService userService
+            IUserService userService,
+            IConfiguration configuration
             )
         {
             _logger = logger;
             _userService = userService;
+            _configuration = configuration;
         }
 
         private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
@@ -65,6 +71,18 @@ namespace HelpMyStreetFE.Controllers
                 underlyingMedicalConditions
                 );
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login()
+        {
+            BasePageViewModel model = new BasePageViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Index()
