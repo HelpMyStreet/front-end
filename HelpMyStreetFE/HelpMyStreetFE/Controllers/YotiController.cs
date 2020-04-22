@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Controllers
                 {
                     await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
 
-                    if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value == null)
+                    if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
                     {
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
                         await _authService.LoginWithUserId(int.Parse(validUserId), HttpContext);
