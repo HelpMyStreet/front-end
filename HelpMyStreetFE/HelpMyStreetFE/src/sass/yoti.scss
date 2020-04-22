@@ -2,45 +2,50 @@
 $screen-md-min: 767px;
 
 @mixin li-yoti {
+    margin-top:18px;
     font-size: 16px;
 
 }
 
 @mixin ol-yoti {
     > li {
+        font-weight: bold;
         counter-increment: item;
         list-style-type: none;
         margin: 0;
         text-indent: -0.7rem;
+        margin-top:15px;
 
         &::before {
             content: counter(item) '.';
             display: inline-block;
             font-weight: bold;
-            padding-right:8px;
+            padding-right: 8px;
         }
     }
 
     ul {
         list-style-type: disc;
+
+        li {
+            padding-left: 8px;
+        }
     }
 
 
-    li:first-child {                
+    li:first-child {
         margin: 5px 0px 5px 0px
     }
 
-    li:not(:first-child):not(:last-child) {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
+
 
     li.no__list__style {
-        &::before{
-            content:none;
+        &::before {
+            content: none;
         }
+
         list-style-type: none;
-        counter-increment:none;
+        counter-increment: none;
         margin-top: 5px;
     }
 }
@@ -121,8 +126,8 @@ $screen-md-min: 767px;
         &__check-grid {
             display: grid;
             grid-template-columns: 20px 1fr;
-            display: -ms-grid;
-            -ms-grid-columns: 20px 1fr;
+            /*display: -ms-grid;
+            -ms-grid-columns: 20px 1fr;*/
 
             &__icon {
                 height: 30px;
@@ -163,7 +168,7 @@ $screen-md-min: 767px;
 
         &__loading {
             visibility: hidden;
-            height:0;
+            height: 0;
 
             &__mobile {
 
@@ -268,20 +273,29 @@ $screen-md-min: 767px;
                 @include ol-yoti;
                 margin: 5px 0px 0px 11px;
 
+                ul {
+                    li {
+                        font-weight: normal;
+                        font-size: 14px;
+                    }
+                }
+
                 @media screen and (max-width: $screen-md-min) {
                     display: none;
                 }
 
-                li {
-                    @include li-yoti;
-                }
+
 
 
                 &__mobile {
                     @include ol-yoti;
 
-                    li {
-                        @include li-yoti;
+
+                    ul {
+                        li {
+                            font-weight: normal;
+                            font-size: 14px;
+                        }
                     }
 
                     @media screen and (min-width: $screen-md) {

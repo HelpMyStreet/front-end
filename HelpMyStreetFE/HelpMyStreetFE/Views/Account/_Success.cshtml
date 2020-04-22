@@ -6,7 +6,7 @@
     </div>
     <div class="notification__content">
         <div class="notification__title">@Model.Title</div>
-        <div class="notification__message">@Model.Message</div>
+        <div class="notification__message">@Html.Raw(@Model.Message)</div>
     </div>
     <div class="notification__close__wrapper" onclick="account.notification.closeNotification('@Model.Id')">
         <img class="notification__close" src="~/img/icons/close.svg" />

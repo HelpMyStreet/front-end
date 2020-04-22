@@ -57,8 +57,7 @@
                     </p>
                     <div class="input input--checkbox">
                         <label>
-                            <input name="privacy_notice" type="checkbox" hidden required />
-                            <span class="error"></span>
+                            <input name="privacy_notice" type="checkbox" hidden  />                            
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
@@ -67,18 +66,18 @@
                     </div>
                     <div class="input input--checkbox">
                         <label>
-                            <input name="terms_and_conditions" type="checkbox" hidden required />
-                            <span class="error"></span>
+                            <input name="terms_and_conditions" type="checkbox" hidden  />
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
                             I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
                         </label>
                     </div>
+                    <span class="termsprivacy error"></span>
                     <div class="controls">
                         <button class="btn cta large fill" id="submit_button" type="submit">
                             <span class="text">Continue to next page &gt;</span>
-                            <span class="loader">Creating account&hellip;</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Creating account..."}' /></div>
                         </button>
                     </div>
                 </form>

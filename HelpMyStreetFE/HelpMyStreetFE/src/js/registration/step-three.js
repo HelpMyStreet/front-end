@@ -2,7 +2,8 @@ import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData } from "../shared/validator";
 
 export function initialiseStepThree() {
-  $("#registration_form").on("submit", function () {
+    $("#registration_form").on("submit", function () {
+        buttonLoad($('#submit_button'));
     let valid = true;
     const obj = $(this)
       .serializeArray()
@@ -32,7 +33,10 @@ export function initialiseStepThree() {
     if (!obj["volunteer_medical_condition"]) {
       valid = false;
       $("#medical-error").show();
-    }
+        }
+        if (!valid) {
+            buttonUnload($('#submit_button'));
+        }
 
     return valid;
   });

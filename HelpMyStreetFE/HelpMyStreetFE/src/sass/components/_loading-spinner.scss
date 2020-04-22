@@ -1,23 +1,8 @@
 .loading-spinner {
-    position: absolute;
-    top: 0;
-    left: 0;  
-    width: 100%;
-    height: 100%;
-    max-height: 5rem;
+    &__label,
+    img {
+        display: inline-block;
+        vertical-align: middle;
+    }       
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    pointer-events: none;
-    
-    width: 100%;
-    height: 100%;
-    background-color: rgba(247,246,244, 0.7);
-    border-radius: 4px;
-    padding: 0.25rem 1rem;
-
-    &.hidden {
-      display: none;
-    }
 }

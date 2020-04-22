@@ -1,5 +1,9 @@
 ﻿@model AuthenticateViewModel;
 
+@{
+    ViewData["Title"] = "Authentication Failed";
+}
+
 @section Scripts {
     <script>
         const initObj = { domId: '@Model.DomId', scenarioId: '@Model.ScenarioId', clientSdkId: '@Model.ClientSdkId' };

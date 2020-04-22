@@ -14,8 +14,8 @@
     border-radius: 4px;
     display: grid;
     grid-template-columns: 170px 1fr;
-    display: -ms-grid;
-    -ms-grid-columns: 170px 1fr;
+    /*display: -ms-grid;
+    -ms-grid-columns: 170px 1fr;*/
   }
   &__icon {
     height: 55px;

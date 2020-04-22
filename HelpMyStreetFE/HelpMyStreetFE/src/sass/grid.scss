@@ -6,6 +6,18 @@
     }
 }
 
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+ .container{
+    .row{
+            @for $i from 1 through 12 {
+                .sm#{$i} {                          
+                        padding-left: 0px !important;                    
+                }
+            }
+           }
+    }
+}
+
 @media screen and (min-width: $med-screen) {
     .container {
         max-width: 1224px + 24px;
@@ -21,6 +33,10 @@
                     flex-basis: 100% * ($i / 12);
                     padding-right: 12px;
                     padding-left: 12px;
+
+                    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+                        padding-left: 0px;
+                    }
                 }
             }
 
