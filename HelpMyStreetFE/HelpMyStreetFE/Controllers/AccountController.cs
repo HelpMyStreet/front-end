@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
+using Microsoft.Extensions.Configuration;
+using HelpMyStreetFE.Models;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -18,13 +20,17 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
+        private readonly IConfiguration _configuration;
+
         public AccountController(
             ILogger<AccountController> logger,
-            IUserService userService
+            IUserService userService,
+            IConfiguration configuration
             )
         {
             _logger = logger;
             _userService = userService;
+            _configuration = configuration;
         }
 
         private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
@@ -66,22 +72,17 @@ namespace HelpMyStreetFE.Controllers
                 );
         }
 
-        private string GetCorrectPage(int maxStep)
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login()
         {
-            switch(maxStep)
+            BasePageViewModel model = new BasePageViewModel
             {
-                case 1:
-                    return "/registration/steptwo";
-                case 2:
-                    return "/registration/stepthree";
-                case 3:
-                    return "/registration/stepfour";
-                case 4:
-                    return "/registration/stepfive";
-                default:
-                    return string.Empty; //Registration journey is complete
-            }
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -90,17 +91,9 @@ namespace HelpMyStreetFE.Controllers
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             User user = await _userService.GetUserAsync(id);
 
-            //Assume the registration page has been fully completed
-            string correctPage = string.Empty;
+            string correctPage = RegistrationController.GetCorrectPage(user);
 
-            if (user.RegistrationHistory.Count > 0)
-            {
-                int maxStep = user.RegistrationHistory.Max(a => a.Key); 
-                correctPage = GetCorrectPage(maxStep);
-            }
-                
-
-            if(correctPage.Length > 0)
+            if (correctPage.Length > 0)
             {
                 //Registration journey is not complete
                 return Redirect(correctPage);
