@@ -113,7 +113,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
-                    defaults: new { controller = "Home", action = "Login" });
+                    defaults: new { controller = "Account", action = "Login" });
 
                 // Enable attribute routing
                 //endpoints.MapControllers();
