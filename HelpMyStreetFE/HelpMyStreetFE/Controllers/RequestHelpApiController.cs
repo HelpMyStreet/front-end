@@ -1,4 +1,5 @@
 ﻿using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
@@ -29,7 +30,7 @@ namespace HelpMyStreetFE.Controllers
 		}
 
 		[HttpGet("logRequest/{postCode}")]
-		public async Task<ActionResult<Request>> LogRequest(string postCode)
+		public async Task<ActionResult<LogRequestResponse>> LogRequest(string postCode)
 		{
 			_logger.LogInformation($"PostCode {postCode}");
 

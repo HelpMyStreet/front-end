@@ -1,5 +1,6 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ namespace HelpMyStreetFE.Services
             _logger = logger;
         }
 
-        public async Task<Request> LogRequestAsync(string postcode)
+        public async Task<LogRequestResponse> LogRequestAsync(string postcode)
         {
             _logger.LogInformation($"Logging Request for postcode {postcode}");
             return await _requestHelpRepository.LogRequest(postcode);

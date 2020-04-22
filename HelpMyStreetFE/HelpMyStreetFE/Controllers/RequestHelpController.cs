@@ -23,9 +23,10 @@ namespace HelpMyStreetFE.Controllers
             _logger = logger;
            }
 
+        [Route("/RequestHelpA", Name = "RequestHelpA")]
         public IActionResult RequestHelp()
         {
-            _logger.LogInformation("Request Help");
+            _logger.LogInformation("RequestHelpA");
 
             var model = new RequestHelpFormModel
             {
@@ -37,9 +38,12 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("/RequestHelp/Send", Name = "RequestHelpSubmit")]
+        [Route("/RequestHelpB", Name = "RequestHelpB")]
         public IActionResult SendEmail(RequestHelpFormModel requestHelpFormModel)
-        { 
+        {
+            _logger.LogInformation("RequestHelpB");
+
+
             if (ModelState.IsValid)
             {
                 try
