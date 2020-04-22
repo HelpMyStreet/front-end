@@ -3,7 +3,7 @@
 @model RequestHelpFormModel;
 
 @{
-	ViewData["Title"] = "Sign up for help confirmation";
+	ViewData["Title"] = "Request Help Confirmation";
 }
 
 <partial name="_SiteHeaderPublic" />
@@ -13,7 +13,7 @@
 		<div class="sm12">
 			<h1>@ViewData["Title"]</h1>
 
-			<p>Thank you for signing up for help.</p>
+			<p>Thank you for your request for help.</p>
 
 			@if (Context.Request.Query["failure"] == "error")
 			{
