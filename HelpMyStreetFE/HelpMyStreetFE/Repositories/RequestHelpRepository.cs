@@ -1,6 +1,7 @@
-﻿using HelpMyStreetFE.Models.Reponses;
+﻿using HelpMyStreet.Contracts.RequestService.Request;
+
+using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Models.Requests;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -24,22 +25,27 @@ namespace HelpMyStreetFE.Repositories
 			});
 
 			return response;
-		}
+    }
 
 		public async Task<string> UpdateRequest(RequestHelpFormModel requestHelpFormModel)
 		{
+
 			var response = await PostAsync<string>($"/api/updaterequest",
+
 				new UpdateRequestRequest
 				{
-					requestId = requestHelpFormModel.RequestId,
-					furtherDetails = requestHelpFormModel.Message,
-					healthOrWellbeingConcern = requestHelpFormModel.HealthConcern,
-					onBehalfOfAnother = !requestHelpFormModel.HelpForMe,
-					requestorEmailAddress = requestHelpFormModel.Email,
-					requestorFirstName = requestHelpFormModel.FirstName,
-					requestorLastName = requestHelpFormModel.LastName,
-					requestorPhoneNumber = requestHelpFormModel.PhoneNumber,
-					supportActivitiesRequired = requestHelpFormModel.HelpNeeded.Select(itm => itm.ToString()).ToArray()
+					RequestID = requestHelpFormModel.RequestId,
+					FurtherDetails = requestHelpFormModel.Message,
+					HealthOrWellbeingConcern = requestHelpFormModel.HealthConcern,
+					OnBehalfOfAnother = !requestHelpFormModel.HelpForMe,
+					RequestorEmailAddress = requestHelpFormModel.Email,
+					RequestorFirstName = requestHelpFormModel.FirstName,
+					RequestorLastName = requestHelpFormModel.LastName,
+					RequestorPhoneNumber = requestHelpFormModel.PhoneNumber,
+					SupportActivitiesRequired = new SupportActivityRequest
+					{
+						SupportActivities = requestHelpFormModel.HelpNeeded
+					}					
 				});
 
 			return response;
