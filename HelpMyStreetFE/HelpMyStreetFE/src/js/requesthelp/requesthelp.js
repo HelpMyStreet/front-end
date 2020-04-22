@@ -23,14 +23,17 @@ $(() => {
 
 			const responseLogResponse = await fetch(`/api/requesthelpapi/logRequest/${postcode}`);
 			if (responseLogResponse.ok) {
+
 				const responseLogResponseJson = await responseLogResponse.json();
 
-				if (responseLogResponseJson.fulfillable === false) {
+				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;
+
+				if (logRequestValid === false || responseLogResponseJson.content.fulfillable === false) {
 					$(".postcode__info, #postcode_notcovered").show();
 				}
 				else {
 
-					$("#requestId").val(responseLogResponseJson.requestId);
+					$("#requestId").val(responseLogResponseJson.content.requestId);
 
 					const resp = await fetch(`/api/postcode/checkCoverage/${postcode}`);
 					if (resp.ok) {

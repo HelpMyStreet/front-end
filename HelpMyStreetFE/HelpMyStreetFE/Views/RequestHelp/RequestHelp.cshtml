@@ -15,13 +15,13 @@
 		{ SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
 		{ SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy" },
 		{ SupportActivities.Errands, "Running essential local errands (e.g. posting mail)" },
-		{ SupportActivities.DogWalking, "Walking the dog" },
-		{ SupportActivities.MealPreparation, "Providing and delivering a hot / pre-prepared meal" },
+		{ SupportActivities.DogWalking, "Walking a calm dog" },
+		{ SupportActivities.MealPreparation, "A hot / pre-prepared meal" },
 		{ SupportActivities.PhoneCalls_Friendly, "A friendly chat on the phone" },
-		{ SupportActivities.PhoneCalls_Anxious, "Someone to talk through some challenges over the phone" },
-		{ SupportActivities.HomeworkSupport, "Homework support for children being home-schooled" },
+		{ SupportActivities.PhoneCalls_Anxious, "Some extra support over the phone" },
+		{ SupportActivities.HomeworkSupport, "Remote support for children being home-schooled" },
 		{ SupportActivities.CheckingIn, "Check that someone is OK" },
-		{ SupportActivities.Other, "Something else" },
+		{ SupportActivities.Other, "I’d like to check if you can help with something else" },
 	};
 }
 
@@ -56,25 +56,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="postcode__info dnone">
-				<div id="postcode_notcovered" class="dnone postcode__info__message">
-					<div class="row">
-						<div class="sm8 postcode__info__message__text">
-							Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
-						</div>
-						<div class="sm4"><a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a></div>
-					</div>
-				</div>
-				<div id="postcode_invalid" class="dnone postcode__info__message">
-					<div class="row">
-						<div class="sm12 postcode__info__message__text__warning">
-							Sorry - that’s not quite right. Please enter a valid UK postcode.
-						</div>
-					</div>
-				</div>
-				<div id="postcode_error" class="dnone postcode__info__message__text__warning">
-					We're currently experiencing issues finding coverage, please try again later.
-				</div>
+			<div class="row postcode__info dnone">
+				<div id="postcode_notcovered" class="dnone postcode__info__message">We’re sorry, but that postcode isn’t currently covered by Street Champions.  We’re working all the time to recruit new volunteers though, so please do check back later.</div>
+				<div id="postcode_error" class="dnone postcode__info__message__text__warning">We're currently experiencing issues finding coverage, please try again later.</div>
 			</div>
 		</div>
 		<div class="sm12">
@@ -86,7 +70,7 @@
 					</select>
 				</div>
 				<div class="expander sm8">
-					<h5>Please enter your address</h5>
+					<label>Check the address</label>
 					<div class="input">
 						<label>Address line 1</label>
 						<input name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
@@ -168,12 +152,12 @@
 					</div>
 					<div class="row">
 						<div class="input sm4">
-							<label>First name</label>
+							<label>You first name</label>
 							<input name="firstname" type="text" placeholder="e.g. John" />
 							<span class="error"></span>
 						</div>
 						<div class="input sm4">
-							<label>Last name</label>
+							<label>Your last name</label>
 							<input name="lastname" type="text" placeholder="e.g. Smith" />
 							<span class="error"></span>
 						</div>
@@ -182,7 +166,7 @@
 					<div class="row">
 						<div class="input sm8">
 							<label>Your email Address</label>
-							<input name="email" type="email" placeholder="johndow@mail.com" />
+							<input name="email" type="email" placeholder="e.g. johndow@gmail.com" />
 							<span class="error"></span>
 						</div>
 					</div>
@@ -196,7 +180,7 @@
 					<div class="row">
 						<div class="input sm12">
 							<label>What Help are you looking for?</label>
-							<p>(Please tick as many as you like but at least one)</p>
+							<p>(Please tick as many as you like, but at least one)</p>
 							<span class="error" id="help-needed-array-error">Please select at least one option</span>
 							@foreach (var option in helpOptions)
 							{

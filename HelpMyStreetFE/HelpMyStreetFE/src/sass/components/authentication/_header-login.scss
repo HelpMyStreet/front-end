@@ -120,6 +120,11 @@ $breakpointSm: 900px;
         display: inline-block;
     }
 
+    .btn--request-help {
+        white-space: nowrap;
+        display: inline-block;
+    }
+
     @media screen and (min-width: $breakpointSm) {
         display: flex;
         flex-wrap: wrap;

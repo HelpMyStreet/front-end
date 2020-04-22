@@ -3,7 +3,7 @@
 @model RequestHelpFormModel;
 
 @{
-	ViewData["Title"] = "Sign up for help confirmation";
+	ViewData["Title"] = "Thank you";
 }
 
 <partial name="_SiteHeaderPublic" />
@@ -13,11 +13,15 @@
 		<div class="sm12">
 			<h1>@ViewData["Title"]</h1>
 
-			<p>Thank you for signing up for help.</p>
+			<p>Your request has been received and will be passed to local volunteers who will contact you directly.</p>
 
 			@if (Context.Request.Query["failure"] == "error")
 			{
-				<p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
+				<p class="orange">There has been an error submitting your details. Please try again.</p>
+			}
+			@if (@Model.HasErrors)
+			{
+				<p class="orange">There has been an error submitting your details. Please try again.</p>
 			}
 		</div>
 	</div>
