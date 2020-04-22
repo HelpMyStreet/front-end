@@ -32,12 +32,20 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Authenticate(string token, string u)
+        public async Task<IActionResult> Authenticate(string token, string u)
         {
             var validUserId = DecodedAndCheckedUserId(u);
 
             if (validUserId != null)
             {
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));
+                string correctPage = RegistrationController.GetCorrectPage(user);
+                if (correctPage != "/registration/stepfive")
+                {
+                    // A different step needs to be completed at this point
+                    return Redirect(correctPage);
+                }
+
                 var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
                 return View(viewModel);
             }
@@ -55,6 +63,14 @@ namespace HelpMyStreetFE.Controllers
 
             if (validUserId != null && token != null)
             {
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));
+                string correctPage = RegistrationController.GetCorrectPage(user);
+                if (correctPage != "/registration/stepfive")
+                {
+                    // A different step needs to be completed at this point
+                    return Redirect(correctPage);
+                }
+
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success)
                 {
@@ -90,12 +106,22 @@ namespace HelpMyStreetFE.Controllers
         {
             var validUserId = DecodedAndCheckedUserId(u);
 
-            User user = await _userService.GetUserAsync(int.Parse(validUserId));
-            // stops people navigating to the url when theyre not supposed to
-            if (user.RegistrationHistory.Count == 4) {
+            if (validUserId != null)
+            {
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));
+                string correctPage = RegistrationController.GetCorrectPage(user);
+                if (correctPage != "/registration/stepfive")
+                {
+                    // A different step needs to be completed at this point
+                    return Redirect(correctPage);
+                }
+
                 return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
             }
-            return Redirect("/Error/500");
+            else
+            {
+                return Redirect("/registration/stepfive");
+            }
         }
 
         private IActionResult handleValidationTokenResponse(ValidationResponse response)
