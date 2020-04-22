@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Controllers
         [AllowAnonymous]
         public IActionResult Authenticate(string token, string u)
         {
-            var validUserId = ValidUserId(u, token);
+            var validUserId = DecodedAndCheckedUserId(u);
 
             if (validUserId != null)
             {
@@ -51,7 +51,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
-            var validUserId = ValidUserId(u, token);
+            var validUserId = DecodedAndCheckedUserId(u);
 
             if (validUserId != null && token != null)
             {
@@ -85,10 +85,12 @@ namespace HelpMyStreetFE.Controllers
             return Redirect("/Error/500");
         }
 
-        public async Task<IActionResult> AuthFailed()
+        [AllowAnonymous]
+        public async Task<IActionResult> AuthFailed(string u)
         {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            User user = await _userService.GetUserAsync(id);
+            var validUserId = DecodedAndCheckedUserId(u);
+
+            User user = await _userService.GetUserAsync(int.Parse(validUserId));
             // stops people navigating to the url when theyre not supposed to
             if (user.RegistrationHistory.Count == 4) {
                 return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
@@ -108,7 +110,12 @@ namespace HelpMyStreetFE.Controllers
             };
         }
 
-        private string ValidUserId(string encodedQueryStringUserId, string token)
+        /// <summary>
+        /// Base64 decodes encodedQueryStringUserId, and ensures it matches the user in session (if any)
+        /// </summary>
+        /// <param name="encodedQueryStringUserId"></param>
+        /// <returns></returns>
+        private string DecodedAndCheckedUserId(string encodedQueryStringUserId)
         {
             try
             {
@@ -116,29 +123,19 @@ namespace HelpMyStreetFE.Controllers
 
                 var authenticatedUserIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (authenticatedUserIdClaim != null)
+                if (authenticatedUserIdClaim == null || authenticatedUserIdClaim.Value == queryStringUserId)
                 {
-                    if (authenticatedUserIdClaim.Value == queryStringUserId)
-                    {
-                        // User in session, and query string as expected.  First visit to this page, desktop journey, or mobile journey that started in default browser.
-                        return queryStringUserId;
-                    }
+                    return queryStringUserId;
                 }
                 else
                 {
-                    if (token != null)
-                    {
-                        // No user in session, but we've got a user ID from the query string and a Yoti token.  Mobile journey that started in non-default browser.
-                        return queryStringUserId;
-                    }
+                    return null;
                 }
             }
             catch //(Exception ex)
             {
-                
+                return null;
             }
-
-            return null;
         }
     }
 }
