@@ -29,10 +29,15 @@
 }
 
 .cta {
-  @extend .white;
-  @extend .bg-green;
-
-  &:hover {
     @extend .white;
-  }
+    @extend .bg-green;
+
+    &:hover {
+        @extend .white;
+    }
+
+    &--orange {
+        @extend .bg-orange;
+        display: inline-block;
+    }
 }

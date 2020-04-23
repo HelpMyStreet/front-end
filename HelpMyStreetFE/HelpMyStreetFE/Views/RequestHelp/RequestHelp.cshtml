@@ -1,0 +1,242 @@
+﻿@using HelpMyStreetFE.Models.RequestHelp;
+@using HelpMyStreet.Utils.Enums
+
+@model RequestHelpFormModel;
+
+@section Scripts {
+	<script src="~/requesthelp.js" asp-append-version="true"></script>
+}
+
+@{
+	ViewData["Title"] = "Request Help";
+
+	var helpOptions = new Dictionary<SupportActivities, string>
+{
+		{ SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
+		{ SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy" },
+		{ SupportActivities.Errands, "Running essential local errands (e.g. posting mail)" },
+		{ SupportActivities.DogWalking, "Walking a calm dog" },
+		{ SupportActivities.MealPreparation, "A hot / pre-prepared meal" },
+		{ SupportActivities.PhoneCalls_Friendly, "A friendly chat on the phone" },
+		{ SupportActivities.PhoneCalls_Anxious, "Some extra support over the phone" },
+		{ SupportActivities.HomeworkSupport, "Remote support for children being home-schooled" },
+		{ SupportActivities.CheckingIn, "Check that someone is OK" },
+		{ SupportActivities.Other, "I’d like to check if you can help with something else" },
+	};
+}
+
+<partial name="_SiteHeaderPublic" />
+
+<div class="container">
+	<div class="row justify-center mt72">
+		<div class="sm12">
+			<h1>@ViewData["Title"]</h1>
+			<p>Please use this form to request help for yourself or someone you are worried about</p>
+
+			@if (Context.Request.Query["failure"] == "error")
+			{
+				<p class="orange">There has been an error submitting your details. Please try again.</p>
+			}
+			@if (@Model.HasErrors)
+			{
+				<p class="orange">There has been an error submitting your details. Please try again.</p>
+			}
+		</div>
+	</div>
+	<div class="row justify-center mt72">
+		<div class="sm12">
+			<div class="row street-check">
+				<div class="input sm6 ">
+					<label>Postcode Where Help Is Needed</label>
+					<div class="postcode-input-button">
+						<input id="postcode_search" class="fullwidth" name="postcode_search" type="text" placeholder="Enter Postcode..." />					
+					</div>
+				</div>
+				<div class="sm6">
+					<button class="btn cta large" id="postcode_button">
+						<span class="text">Check Postcode</span>
+						<span class="loader">Checking&hellip;</span>
+					</button>
+				</div>
+			</div>
+			<div class="row postcode__info dnone">			
+					<div id="postcode_invalid" class="dnone postcode__info__message">
+						<div class="row">
+							<div class="sm12 postcode__info__message__text__warning">
+								Sorry - that’s not quite right. Please enter a valid UK postcode.
+							</div>
+						</div>
+					</div>
+					<div id="postcode_notcovered" class="dnone postcode__info__message">We’re sorry, but that postcode isn’t currently covered by Street Champions.  We’re working all the time to recruit new volunteers though, so please do check back later.</div>
+					<div id="postcode_error" class="dnone postcode__info__message__text__warning">We're currently experiencing issues finding coverage, please try again later.</div>
+					<div id="streetchampionCoverage" class="dnone postcode__info__message">		
+						<div class="row">
+							<div class="sm8">
+								<span class="postcode__info__message__text pl0"></span>
+							</div>
+							<div class="sm4">
+								<button class="btn cta large" id="continueRequest" type="submit">
+									<span class="text">Continue</span>
+								</button>
+							</div>
+						</div>
+						
+					</div>
+				</div>			
+		</div>
+		<div class="sm12">
+			<form id="requesthelp_form" method="post" asp-route="requesthelpB">
+
+				<input id="postcode" name="postcode" type="hidden"/>
+	
+				<div class="expanderDetails dnone">
+					<div class="row">
+						<div class="input sm8">
+							<label>Is this for you or someone else?</label>
+							<div class="input input--checkbox">
+								<div class="input input--radio">
+									<label>
+										<input name="on_behalf_of_another" type="radio" value="false" hidden @(Model.OnBehalfOfAnother ? "" : "checked='checked'") />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										Me
+									</label>
+								</div>
+
+								<div class="input input--radio">
+									<label>
+										<input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										Someone Else
+									</label>
+								</div>
+							</div>
+						</div>
+					</div><div class="row">
+						<div class="input sm8">
+							<label>Is there a concern about someone’s health or wellbeing?</label>
+							<div class="input input--checkbox">
+								<div class="input input--radio">
+									<label>
+										<input name="health_concern" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										Yes
+									</label>
+								</div>
+
+								<div class="input input--radio">
+									<label>
+										<input name="health_concern" type="radio" value="false" hidden @(Model.HealthConcern ? "" : "checked='checked'") />
+										<span class="input--radio__radio">
+											<span class="input--radio__radio__inner"></span>
+										</span>
+										No
+									</label>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm4">
+							<label>Your first name</label>
+							<input name="firstname" type="text" value="@(Model.FirstName != null ? Model.FirstName : null)" placeholder="e.g. John" />
+							<span class="error"></span>
+						</div>
+						<div class="input sm4">
+							<label>Your last name</label>
+							<input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)" placeholder="e.g. Smith" />
+							<span class="error"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="input sm8">
+							<label>Your email Address</label>
+							<input name="email" type="email" value="@(Model.Email != null ? Model.Email : null)" placeholder="e.g. johndow@gmail.com" />
+							<span class="error"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm8">
+							<label>Your phone number</label>
+							<input name="phonenumber" type="number" value="@(Model.PhoneNumber != null ? Model.PhoneNumber : null)" placeholder="e.g. 07700112233" />
+							<span class="error"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm12">
+							<label>What Help are you looking for?</label>
+							<p>(Please tick as many as you like, but at least one)</p>
+							<span class="error" id="help-needed-array-error">Please select at least one option</span>
+							@foreach (var option in helpOptions)
+							{
+								<div class="input input--checkbox">
+									<label>
+										<input name="help-needed-array" type="checkbox" value="@option.Key" hidden @(Model.HelpNeeded != null && Model.HelpNeeded.Contains(option.Key) ? "checked='checked'" : "") />
+										<span class="input--checkbox__checkbox">
+											<span class="mdi mdi-check"></span>
+										</span>
+										@option.Value
+									</label>
+								</div>
+							}
+						</div>
+					</div>
+					<div class="row">
+						<div class="input sm12">
+							<label>Anything else to add?</label>
+							<textarea name="message" rows="5" placeholder="We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you.">@Model.Message</textarea>
+						</div>
+					</div>
+					<input id="requestId" name="requestId" type="hidden" />
+					<input id="hasStreetChampion" name="hasStreetChampion" type="hidden" />
+					<p>
+						The information you provide will be shared with Street Champions in your local area to help organise volunteers.
+						You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+					</p>
+					<div class="input input--checkbox">
+						<label>
+							<input name="privacy_notice" type="checkbox" hidden />
+							<span class="input--checkbox__checkbox">
+								<span class="mdi mdi-check"></span>
+							</span>
+							I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+						</label>
+					</div>
+					<div class="input input--checkbox">
+						<label>
+							<input name="terms_and_conditions" type="checkbox" hidden />
+							<span class="input--checkbox__checkbox">
+								<span class="mdi mdi-check"></span>
+							</span>
+							I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
+						</label>
+					</div>
+					<span class="termsprivacy error"></span>
+					<div class="row">
+						<p class="orange">
+							<span class="error" id="general-error">There are some errors on the page, please correct them</span>
+						</p>
+					</div>
+					<div class="row">
+						<div class="input sm3">
+							<div class="controls">
+								<button class="btn cta large fill" id="submit_button" type="submit">
+									<span class="text">Submit</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+

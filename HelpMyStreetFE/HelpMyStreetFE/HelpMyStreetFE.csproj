@@ -5,9 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Requests\**" />
     <Compile Remove="src\sass\components\NewFolder1\**" />
+    <Content Remove="Models\Requests\**" />
     <Content Remove="src\sass\components\NewFolder1\**" />
+    <EmbeddedResource Remove="Models\Requests\**" />
     <EmbeddedResource Remove="src\sass\components\NewFolder1\**" />
+    <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
   </ItemGroup>
 
@@ -18,7 +22,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
-    <PackageReference Include="HelpMyStreet.Utils" Version="1.1.34" />
+    <PackageReference Include="HelpMyStreet.Contracts" Version="1.1.46" />
+    <PackageReference Include="HelpMyStreet.Utils" Version="1.1.46" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0-preview1.19506.2" />

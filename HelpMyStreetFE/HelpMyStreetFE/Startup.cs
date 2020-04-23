@@ -39,11 +39,14 @@ namespace HelpMyStreetFE
             services.AddHttpClient<IUserRepository, UserRepository>();
             services.AddHttpClient<IValidationRepository, ValidationRepository>();
             services.AddHttpClient<IAddressRepository, AddressRepository>();
+            services.AddHttpClient<IRequestHelpRepository, RequestHelpRepository>();
             services.AddHttpClient<IAddressService, AddressService>();
             services.AddHttpClient<IValidationService, ValidationService>();            
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
-            services.AddSingleton<IEmailService, EmailService>();        
+            services.AddSingleton<IEmailService, EmailService>();
+            
+            services.AddSingleton<IRequestService, RequestService>();
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation();
