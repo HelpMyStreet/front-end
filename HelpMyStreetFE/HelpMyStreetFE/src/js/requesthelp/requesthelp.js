@@ -80,15 +80,20 @@ $(() => {
 			$("#help-needed-array-error").show();
 		}
 
+
+
+
 		const valid = validateFormData($(this), {
 			firstname: (v) => v !== "" || "Please enter a first name",
-			email: (v) => v !== "" ||
-				RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/').test(v) ||
+			email: (v) => (v == "") || validateEmail(v) ||
 				"Please enter a valid email address",
 			phonenumber: (v) =>
 				v == "" ||
 				((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
 				"Please enter a valid phone number",
+			phonenumber: (v, d) =>
+				(v !== "") || (d.email !== "") || "Please enter an email address or a phone number",
+		
 		});
 
 		let validForm = (valid && validHelpNeeded);
@@ -100,3 +105,9 @@ $(() => {
 		}
 	});
 });
+
+
+function validateEmail(email) {
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return re.test(email);
+}

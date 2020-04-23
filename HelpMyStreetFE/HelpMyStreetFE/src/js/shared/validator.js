@@ -19,10 +19,10 @@ export function validateFormData(form, validation) {
     const errDisplay = $(`input[name=${name}] ~ .error`);
     errDisplay && errDisplay.text("").hide();
 
-    const validator = validation[name];
-
+      const validator = validation[name];
+  
     if (validator) {
-      const valid = validator(value, obj);
+        const valid = validator(value, obj);
       if (valid !== true) {
         acc = false;
         errDisplay.text(valid).show();
