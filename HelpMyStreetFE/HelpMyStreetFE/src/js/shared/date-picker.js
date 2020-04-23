@@ -25,8 +25,7 @@ export function datepickerLoad(id) {
 
 }
 
-export function validateDob(val, id) {
-
+export function validateDob(val, id) {    
     var regexFormatString = RegExp(/^(([0-9])|([0-2][0-9])|([3][0-1]))\ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\ \d{4}$/);
     var regex = RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
     let stringDate = regexFormatString.test(val);
@@ -36,20 +35,23 @@ export function validateDob(val, id) {
     if (regex.test(val) == false && stringDate == false ) {
         $('#' + id).find("~ .error").show();
         $('#' + id).find("~ .error").text("Please enter a valid date of birth in the following format DD/MM/YYYY");
+        return false;
     } else {       
         $('#' + id).find("~ .error").hide();
         if (!stringDate) {
             var dateParts = val.split("/");
             var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
             var age = _calculateAge(dateObject);
-
             if (age < 18) {
                 $('#' + id).find("~ .error").show();
                 $('#' + id).find("~ .error").text("You must be at least 18 years old to create an account");
-
+                return false;
             } else {
                 $('#' + id).val(moment(dateObject).format('DD MMM YYYY'));
+                return true;
             }
+        } else {
+            return true;
         }
     }        
 }
