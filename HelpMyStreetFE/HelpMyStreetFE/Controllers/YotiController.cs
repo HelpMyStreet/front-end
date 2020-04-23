@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Authenticate(string token, string u)
         {
-            var validUserId = DecodedAndCheckedUserId(u);
+            var validUserId = DecodedAndCheckedUserId(u, token != null);
 
             if (validUserId != null)
             {
@@ -59,7 +59,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
-            var validUserId = DecodedAndCheckedUserId(u);
+            var validUserId = DecodedAndCheckedUserId(u, token != null);
 
             if (validUserId != null && token != null)
             {
@@ -104,7 +104,7 @@ namespace HelpMyStreetFE.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AuthFailed(string u)
         {
-            var validUserId = DecodedAndCheckedUserId(u);
+            var validUserId = DecodedAndCheckedUserId(u, true);
 
             if (validUserId != null)
             {
@@ -141,7 +141,7 @@ namespace HelpMyStreetFE.Controllers
         /// </summary>
         /// <param name="encodedQueryStringUserId"></param>
         /// <returns></returns>
-        private string DecodedAndCheckedUserId(string encodedQueryStringUserId)
+        private string DecodedAndCheckedUserId(string encodedQueryStringUserId, bool tokenSupplied)
         {
             try
             {
@@ -149,7 +149,7 @@ namespace HelpMyStreetFE.Controllers
 
                 var authenticatedUserIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (authenticatedUserIdClaim == null || authenticatedUserIdClaim.Value == queryStringUserId)
+                if (tokenSupplied || authenticatedUserIdClaim != null && authenticatedUserIdClaim.Value == queryStringUserId)
                 {
                     return queryStringUserId;
                 }
