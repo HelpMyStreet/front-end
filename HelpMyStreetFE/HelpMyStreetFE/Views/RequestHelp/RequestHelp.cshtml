@@ -191,8 +191,7 @@
 					<div class="row">
 						<div class="input sm12">
 							<label>Anything else to add?</label>
-							<p>We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you.</p>
-							<textarea name="message" rows="5" value="@(Model.Message != null ? Model.Message : null)"></textarea>
+							<textarea name="message" rows="5" placeholder="We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you.">@Model.Message</textarea>
 						</div>
 					</div>
 					<input id="requestId" name="requestId" type="hidden" />
