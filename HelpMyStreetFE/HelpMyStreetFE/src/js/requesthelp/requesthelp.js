@@ -9,7 +9,9 @@ $(() => {
 		$(".postcode__info, #postcode_invalid").hide();
 		$(".postcode__info, #postcode_notcovered").hide();
 		$(".postcode__info, #postcode_error").hide();
-
+		$(".postcode__info, #postcode_invalid").hide();
+		$(".postcode__info, #streetchampionCoverage").hide();
+		
 		$(".expanderDetails").slideUp();
 
 		buttonLoad($(this));
@@ -20,20 +22,38 @@ $(() => {
 
 			const responseLogResponse = await fetch(`/api/requesthelpapi/logRequest/${postcode}`);
 			if (responseLogResponse.ok) {
-
+			
 				const responseLogResponseJson = await responseLogResponse.json();
 
 				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;
-
-				if (logRequestValid === false || responseLogResponseJson.content.fulfillable === false) {
+				console.log(responseLogResponseJson.content);
+				if (logRequestValid === false) {
 					$(".postcode__info, #postcode_notcovered").show();
+				}
+				else if (responseLogResponseJson.content.fulfillable == 1) {			 //invalid postcode		
+					$(".postcode__info, #postcode_invalid").show();
 				}
 				else {
 
-					$("#requestId").val(responseLogResponseJson.content.requestID);
-					$("#postcode").val(postcode);
+					if (responseLogResponseJson.content.fulfillable == 4 || responseLogResponseJson.content.fulfillable == 6) {// pass to street champion or // manuel defer
+						var hasStreetChamp = responseLogResponseJson.content.fulfillable == 4;
+						$(".postcode__info, #streetchampionCoverage").show();
+						if (hasStreetChamp) {
+							$("#streetchampionCoverage .postcode__info__message__text").text("Great! There are volunteers in that area! Please go ahead and tell us a litte more.");
+						} else {
+							$("#streetchampionCoverage .postcode__info__message__text").text("We've just launched HelpMyStreet and we're building our network across the country. We're working hard to ensure we have local volunteers in this area who can get the right help to the right people."
+								+ "We'll do all we can to find someone to complete your request, but this may take a few days. Can we go ahead and do that for you? Please tell us more about your request so we can find the right person to help you.");
+						}
+						$("#streetchampionCoverage").show();
+						$('#continueRequest').click(function () {
+							$(".postcode__info, #streetchampionCoverage").hide();
+							$("#requestId").val(responseLogResponseJson.content.requestID);
+							$("#postcode").val(postcode);
+							$(".expanderDetails").slideDown();
+						})
+					} 
 
-					$(".expanderDetails").slideDown();
+					
 				}
 			}
 		} catch (ex) {
