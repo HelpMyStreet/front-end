@@ -35,13 +35,13 @@ namespace HelpMyStreetFE.Repositories
 				new UpdateRequestRequest
 				{
 					RequestID = requestHelpFormModel.RequestId,
-					FurtherDetails = requestHelpFormModel.Message,
+					FurtherDetails = requestHelpFormModel.Message ?? string.Empty,
 					HealthOrWellbeingConcern = requestHelpFormModel.HealthConcern,
 					OnBehalfOfAnother = requestHelpFormModel.OnBehalfOfAnother,
-					RequestorEmailAddress = requestHelpFormModel.Email,
+					RequestorEmailAddress = requestHelpFormModel.Email ?? string.Empty,
 					RequestorFirstName = requestHelpFormModel.FirstName,
-					RequestorLastName = requestHelpFormModel.LastName,
-					RequestorPhoneNumber = requestHelpFormModel.PhoneNumber,
+					RequestorLastName = requestHelpFormModel.LastName ?? string.Empty,
+					RequestorPhoneNumber = requestHelpFormModel.PhoneNumber ?? string.Empty,
 					SupportActivitiesRequired = new SupportActivityRequest
 					{
 						SupportActivities = requestHelpFormModel.HelpNeeded
