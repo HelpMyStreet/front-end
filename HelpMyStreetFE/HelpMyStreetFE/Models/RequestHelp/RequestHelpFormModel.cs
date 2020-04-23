@@ -33,23 +33,11 @@ namespace HelpMyStreetFE.Models.RequestHelp
 		[BindProperty(Name = "help-needed-array")]
 		public List<SupportActivities> HelpNeeded { get; set; }
 
-		[BindProperty(Name = "help_for_me")]
-		public bool HelpForMe { get; set; }
+		[BindProperty(Name = "on_behalf_of_another")]
+		public bool OnBehalfOfAnother { get; set; }
 
 		[BindProperty(Name = "health_concern")]
 		public bool HealthConcern { get; set; }
-
-		[BindProperty(Name = "address_line_1")]
-		public string AddressLine1 { get; set; }
-
-		[BindProperty(Name = "address_line_2")]
-		public string AddressLine2 { get; set; }
-
-		[BindProperty(Name = "city")]
-		public string City { get; set; }
-
-		[BindProperty(Name = "county")]
-		public string County { get; set; }
 
 		[BindProperty(Name = "postcode")]
 		public string Postcode { get; set; }

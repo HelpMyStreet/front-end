@@ -64,39 +64,8 @@
 		<div class="sm12">
 			<form id="requesthelp_form" method="post" asp-route="requesthelpB">
 
-				<div class="input sm8 dnone" id="address_selector">
-					<label>Select address</label>
-					<select name="address_selector">
-					</select>
-				</div>
-				<div class="expander sm8">
-					<label>Check the address</label>
-					<div class="input">
-						<label>Address line 1</label>
-						<input name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
-						<span class="error"></span>
-					</div>
-					<div class="input">
-						<label>Address line 2</label>
-						<input name="address_line_2" type="text" placeholder="e.g. Hockley" />
-						<span class="error"></span>
-					</div>
-					<div class="input">
-						<label>Town / City</label>
-						<input name="city" type="text" placeholder="e.g. Nottingham" />
-						<span class="error"></span>
-					</div>
-					<div class="input">
-						<label>County</label>
-						<input name="county" type="text" placeholder="e.g. Nottingham" />
-						<span class="error"></span>
-					</div>
-					<div class="input">
-						<label>Postcode</label>
-						<input name="postcode" type="text" placeholder="e.g. NG1 1PS" />
-						<span class="error"></span>
-					</div>
-				</div>
+				<input id="postcode" name="postcode" type="hidden"/>
+	
 				<div class="expanderDetails dnone">
 					<div class="row">
 						<div class="input sm8">
@@ -104,7 +73,7 @@
 							<div class="input input--checkbox">
 								<div class="input input--radio">
 									<label>
-										<input name="help_for_me" type="radio" value="true" hidden checked="checked" />
+										<input name="on_behalf_of_another" type="radio" value="false" hidden checked="checked" />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -114,7 +83,7 @@
 
 								<div class="input input--radio">
 									<label>
-										<input name="help_for_me" type="radio" value="false" hidden />
+										<input name="on_behalf_of_another" type="radio" value="true" hidden />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>

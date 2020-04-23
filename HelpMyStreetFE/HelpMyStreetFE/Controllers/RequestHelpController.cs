@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
+using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -39,7 +40,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("/RequestHelpB", Name = "RequestHelpB")]
-        public IActionResult SendEmail(RequestHelpFormModel requestHelpFormModel)
+        public async Task<IActionResult> SendEmail(RequestHelpFormModel requestHelpFormModel)
         {
             _logger.LogInformation("RequestHelpB");
 
@@ -48,13 +49,16 @@ namespace HelpMyStreetFE.Controllers
             {
                 try
                 {
-                    _requestService.UpdateRequest(requestHelpFormModel);
+                    var result = await _requestService.UpdateRequest(requestHelpFormModel);
 
                     return View("Confirmation", requestHelpFormModel);
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    _logger.LogError("RequestHelpB", ex);
+
+                    requestHelpFormModel.HasErrors = true;
+                    return View("RequestHelp", requestHelpFormModel);
                 }
             }
 
