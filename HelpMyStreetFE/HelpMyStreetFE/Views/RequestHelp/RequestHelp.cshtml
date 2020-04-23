@@ -31,6 +31,7 @@
 	<div class="row justify-center mt72">
 		<div class="sm12">
 			<h1>@ViewData["Title"]</h1>
+			<p>Please use this form to request help for yourself or someone you are worried about</p>
 
 			@if (Context.Request.Query["failure"] == "error")
 			{
@@ -73,7 +74,7 @@
 							<div class="input input--checkbox">
 								<div class="input input--radio">
 									<label>
-										<input name="on_behalf_of_another" type="radio" value="false" hidden checked="checked" />
+										<input name="on_behalf_of_another" type="radio" value="false" hidden @(Model.OnBehalfOfAnother ? "" : "checked='checked'") />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -83,7 +84,7 @@
 
 								<div class="input input--radio">
 									<label>
-										<input name="on_behalf_of_another" type="radio" value="true" hidden />
+										<input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "")/>
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -98,7 +99,7 @@
 							<div class="input input--checkbox">
 								<div class="input input--radio">
 									<label>
-										<input name="health_concern" type="radio" value="true" hidden />
+										<input name="health_concern" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -108,7 +109,7 @@
 
 								<div class="input input--radio">
 									<label>
-										<input name="health_concern" type="radio" value="false" hidden checked="checked" />
+										<input name="health_concern" type="radio" value="false" hidden @(Model.HealthConcern ? "" : "checked='checked'") />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -121,13 +122,13 @@
 					</div>
 					<div class="row">
 						<div class="input sm4">
-							<label>You first name</label>
-							<input name="firstname" type="text" placeholder="e.g. John" />
+							<label>Your first name</label>
+							<input name="firstname" type="text" value="@(Model.FirstName != null ? Model.FirstName : null)" placeholder="e.g. John" />
 							<span class="error"></span>
 						</div>
 						<div class="input sm4">
 							<label>Your last name</label>
-							<input name="lastname" type="text" placeholder="e.g. Smith" />
+							<input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)"  placeholder="e.g. Smith" />
 							<span class="error"></span>
 						</div>
 					</div>
@@ -135,14 +136,14 @@
 					<div class="row">
 						<div class="input sm8">
 							<label>Your email Address</label>
-							<input name="email" type="email" placeholder="e.g. johndow@gmail.com" />
+							<input name="email" type="email" value="@(Model.Email != null ? Model.Email : null)" placeholder="e.g. johndow@gmail.com" />
 							<span class="error"></span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input sm8">
 							<label>Your phone number</label>
-							<input name="phonenumber" type="number" placeholder="e.g. 07700112233" />
+							<input name="phonenumber" type="number" value="@(Model.PhoneNumber != null ? Model.PhoneNumber : null)" placeholder="e.g. 07700112233" />
 							<span class="error"></span>
 						</div>
 					</div>
@@ -155,7 +156,7 @@
 							{
 								<div class="input input--checkbox">
 									<label>
-										<input name="help-needed-array" type="checkbox" value="@option.Key" hidden />
+										<input name="help-needed-array" type="checkbox" value="@option.Key" hidden @(Model.HelpNeeded != null && Model.HelpNeeded.Contains(option.Key) ? "checked='checked'" : "") />
 										<span class="input--checkbox__checkbox">
 											<span class="mdi mdi-check"></span>
 										</span>
@@ -169,7 +170,7 @@
 						<div class="input sm12">
 							<label>Anything else to add?</label>
 							<p>We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you.</p>
-							<textarea name="message" rows="5"></textarea>
+							<textarea name="message" rows="5" value="@(Model.Message != null ? Model.Message : null)"></textarea>
 						</div>
 					</div>
 					<input id="requestId" name="requestId" type="hidden" />

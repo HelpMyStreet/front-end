@@ -9,12 +9,9 @@ namespace HelpMyStreetFE.Models.RequestHelp
 	public class RequestHelpFormModel
 	{
 		[Required]
-		[MaxLength(50)]
 		[BindProperty(Name = "firstname")]
 		public string FirstName { get; set; }
 
-		[Required]
-		[MaxLength(50)]
 		[BindProperty(Name = "lastname")]
 		public string LastName { get; set; }
 
@@ -26,10 +23,10 @@ namespace HelpMyStreetFE.Models.RequestHelp
 		[BindProperty(Name = "phonenumber")]
 		public string PhoneNumber { get; set; }
 
-		[MaxLength(500)]
 		[BindProperty(Name = "message")]
 		public string Message { get; set; }
 
+		[Required]
 		[BindProperty(Name = "help-needed-array")]
 		public List<SupportActivities> HelpNeeded { get; set; }
 
