@@ -57,16 +57,6 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Login()
-        {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> FirebaseAccountAction(string mode, string oobCode, string apiKey, string continueUrl)
         {
             switch (mode)

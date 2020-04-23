@@ -38,5 +38,6 @@
 
     &--orange {
         @extend .bg-orange;
+        display: inline-block;
     }
 }

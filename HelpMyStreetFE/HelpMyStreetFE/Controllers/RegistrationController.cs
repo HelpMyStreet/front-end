@@ -69,8 +69,16 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/steptwo")]
-        public ActionResult StepTwo()
+        public async Task<ActionResult> StepTwo()
         {
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/steptwo")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
+
             return View(new RegistrationViewModel
             {
                 ActiveStep = 2
@@ -80,11 +88,17 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/steptwo")]
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form)
         {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/steptwo")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
 
             try
             {
-                await _userService.CreateUserStepTwoAsync(id, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth);
+                await _userService.CreateUserStepTwoAsync(userId, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth);
                 return Redirect("/registration/stepthree");
             }
             catch (Exception ex)
@@ -96,8 +110,16 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/stepthree")]
-        public ActionResult StepThree()
+        public async Task<ActionResult> StepThree()
         {
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/stepthree")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
+
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3
@@ -107,14 +129,20 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/stepthree")]
         public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form)
         {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/stepthree")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
 
             try
             {
-                _logger.LogInformation($"Step 3 submission for {id}");
+                _logger.LogInformation($"Step 3 submission for {userId}");
 
                 await _userService.CreateUserStepThreeAsync(
-                    id,
+                    userId,
                     form.VolunteerOptions,
                     form.VolunteerDistance,
                     form.VolunteerPhoneContact,
@@ -133,9 +161,15 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("[controller]/stepfour")]
         public async Task<ActionResult> StepFour()
         {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/stepfour")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
 
-            var user = await _userService.GetUserAsync(id);
+            var user = await _userService.GetUserAsync(userId);
             var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
 
             var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
@@ -163,17 +197,24 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpPost("[controller]/stepfour")]
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
-        {            
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+        {
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/stepfour")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
+
             try
-            {                
+            {
                 if (!form.ChampionRoleUnderstood)
                 {
                     form.ChampionPostcodes = new System.Collections.Generic.List<string>();
                 }
-                _logger.LogInformation($"Step 4 submission for {id}");                
+                _logger.LogInformation($"Step 4 submission for {userId}");
                 await _userService.CreateUserStepFourAsync(
-                    id,
+                    userId,
                     form.ChampionRoleUnderstood,
                     form.ChampionPostcodes);
 
@@ -188,12 +229,48 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/stepfive")]
-        public IActionResult StepFive()
+        public async Task<IActionResult> StepFive()
         {
-            var userId = Base64Helpers.Base64Encode(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string correctPage = await GetCorrectPage(int.Parse(userId));
+            if (correctPage != "/registration/stepfive")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
 
-            var viewModel = new RegistrationViewModel { ActiveStep = 5, EncodedUserID = userId };
+            var viewModel = new RegistrationViewModel { ActiveStep = 5, EncodedUserID = Base64Helpers.Base64Encode(userId) };
             return View(viewModel);
+        }
+
+        public async Task<string> GetCorrectPage(int userId)
+        {
+            User user = await _userService.GetUserAsync(userId);
+            return GetCorrectPage(user);
+        }
+
+        public static string GetCorrectPage(User user)
+        {
+            if (user.RegistrationHistory.Count > 0)
+            {
+                int maxStep = user.RegistrationHistory.Max(a => a.Key);
+
+                switch (maxStep)
+                {
+                    case 1:
+                        return "/registration/steptwo";
+                    case 2:
+                        return "/registration/stepthree";
+                    case 3:
+                        return "/registration/stepfour";
+                    case 4:
+                        return "/registration/stepfive";
+                    default:
+                        return string.Empty; //Registration journey is complete
+                }
+            }
+
+            return "/registration/stepone";
         }
     }
 }

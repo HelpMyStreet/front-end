@@ -46,38 +46,43 @@
 	<div class="row justify-center mt72">
 		<div class="sm12">
 			<div class="row street-check">
-				<div class="input sm12">
+				<div class="input sm6 ">
 					<label>Postcode Where Help Is Needed</label>
 					<div class="postcode-input-button">
-						<input id="postcode_search" name="postcode_search" type="text" placeholder="Enter Postcode..." />
-						<button class="btn cta large" id="postcode_button">
-							<span class="text">Check Postcode</span>
-							<span class="loader">Checking&hellip;</span>
-						</button>
+						<input id="postcode_search" class="fullwidth" name="postcode_search" type="text" placeholder="Enter Postcode..." />					
 					</div>
 				</div>
+				<div class="sm6">
+					<button class="btn cta large" id="postcode_button">
+						<span class="text">Check Postcode</span>
+						<span class="loader">Checking&hellip;</span>
+					</button>
+				</div>
 			</div>
-			<div class="row postcode__info dnone">
-				<div id="postcode_invalid" class="dnone postcode__info__message">
-					<div class="row">
-						<div class="sm12 postcode__info__message__text__warning">
-							Sorry - that’s not quite right. Please enter a valid UK postcode.
+			<div class="row postcode__info dnone">			
+					<div id="postcode_invalid" class="dnone postcode__info__message">
+						<div class="row">
+							<div class="sm12 postcode__info__message__text__warning">
+								Sorry - that’s not quite right. Please enter a valid UK postcode.
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="postcode_notcovered" class="dnone postcode__info__message">We’re sorry, but that postcode isn’t currently covered by Street Champions.  We’re working all the time to recruit new volunteers though, so please do check back later.</div>
-				<div id="postcode_error" class="dnone postcode__info__message__text__warning">We're currently experiencing issues finding coverage, please try again later.</div>
-                <div id="streetchampionCoverage" class="dnone postcode__info__message">
-                    <div class="row">
-                        <span class="sm9  postcode__info__message__text"></span>
-                        <div class="sm3">
-                            <button class="btn cta large fill" id="continueRequest" type="submit">
-                                <span class="text">Continue</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-			</div>
+					<div id="postcode_notcovered" class="dnone postcode__info__message">We’re sorry, but that postcode isn’t currently covered by Street Champions.  We’re working all the time to recruit new volunteers though, so please do check back later.</div>
+					<div id="postcode_error" class="dnone postcode__info__message__text__warning">We're currently experiencing issues finding coverage, please try again later.</div>
+					<div id="streetchampionCoverage" class="dnone postcode__info__message">		
+						<div class="row">
+							<div class="sm8">
+								<span class="postcode__info__message__text pl0"></span>
+							</div>
+							<div class="sm4">
+								<button class="btn cta large" id="continueRequest" type="submit">
+									<span class="text">Continue</span>
+								</button>
+							</div>
+						</div>
+						
+					</div>
+				</div>			
 		</div>
 		<div class="sm12">
 			<form id="requesthelp_form" method="post" asp-route="requesthelpB">
@@ -101,7 +106,7 @@
 
 								<div class="input input--radio">
 									<label>
-										<input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "")/>
+										<input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -145,7 +150,7 @@
 						</div>
 						<div class="input sm4">
 							<label>Your last name</label>
-							<input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)"  placeholder="e.g. Smith" />
+							<input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)" placeholder="e.g. Smith" />
 							<span class="error"></span>
 						</div>
 					</div>
@@ -190,7 +195,30 @@
 						</div>
 					</div>
 					<input id="requestId" name="requestId" type="hidden" />
-
+					<input id="hasStreetChampion" name="hasStreetChampion" type="hidden" />
+					<p>
+						The information you provide will be shared with Street Champions in your local area to help organise volunteers.
+						You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+					</p>
+					<div class="input input--checkbox">
+						<label>
+							<input name="privacy_notice" type="checkbox" hidden />
+							<span class="input--checkbox__checkbox">
+								<span class="mdi mdi-check"></span>
+							</span>
+							I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+						</label>
+					</div>
+					<div class="input input--checkbox">
+						<label>
+							<input name="terms_and_conditions" type="checkbox" hidden />
+							<span class="input--checkbox__checkbox">
+								<span class="mdi mdi-check"></span>
+							</span>
+							I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
+						</label>
+					</div>
+					<span class="termsprivacy error"></span>
 					<div class="row">
 						<p class="orange">
 							<span class="error" id="general-error">There are some errors on the page, please correct them</span>
