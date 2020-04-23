@@ -14,8 +14,7 @@ namespace HelpMyStreetFE.Models.RequestHelp
 
 		[BindProperty(Name = "lastname")]
 		public string LastName { get; set; }
-
-		[Required]
+		
 		[EmailAddress]
 		[BindProperty(Name = "email")]
 		public string Email { get; set; }
