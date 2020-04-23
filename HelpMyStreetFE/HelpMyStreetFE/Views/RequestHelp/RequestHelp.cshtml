@@ -101,7 +101,7 @@
 
 								<div class="input input--radio">
 									<label>
-										<input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "")/>
+										<input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
 										<span class="input--radio__radio">
 											<span class="input--radio__radio__inner"></span>
 										</span>
@@ -145,7 +145,7 @@
 						</div>
 						<div class="input sm4">
 							<label>Your last name</label>
-							<input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)"  placeholder="e.g. Smith" />
+							<input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)" placeholder="e.g. Smith" />
 							<span class="error"></span>
 						</div>
 					</div>
@@ -192,6 +192,29 @@
 					</div>
 					<input id="requestId" name="requestId" type="hidden" />
 
+					<p>
+						The information you provide will be shared with Street Champions in your local area to help organise volunteers.
+						You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+					</p>
+					<div class="input input--checkbox">
+						<label>
+							<input name="privacy_notice" type="checkbox" hidden />
+							<span class="input--checkbox__checkbox">
+								<span class="mdi mdi-check"></span>
+							</span>
+							I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+						</label>
+					</div>
+					<div class="input input--checkbox">
+						<label>
+							<input name="terms_and_conditions" type="checkbox" hidden />
+							<span class="input--checkbox__checkbox">
+								<span class="mdi mdi-check"></span>
+							</span>
+							I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
+						</label>
+					</div>
+					<span class="termsprivacy error"></span>
 					<div class="row">
 						<p class="orange">
 							<span class="error" id="general-error">There are some errors on the page, please correct them</span>
