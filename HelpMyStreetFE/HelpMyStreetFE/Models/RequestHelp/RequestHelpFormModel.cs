@@ -42,7 +42,12 @@ namespace HelpMyStreetFE.Models.RequestHelp
 		[BindProperty(Name = "requestId")]
 		public int RequestId { get; set; }
 
+		[BindProperty(Name = "hasStreetChampion")]
+		public bool HasStreetChampion { get; set; }
+
 		public bool HasErrors { get; set; }
+
+
 
 	}
 }
