@@ -62,7 +62,6 @@ $(() => {
 
 		const valid = validateFormData($(this), {
 			firstname: (v) => v !== "" || "Please enter a first name",
-			lastname: (v) => v !== "" || "Please enter a last name",
 			email: (v) => v !== "" ||
 				RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/').test(v) ||
 				"Please enter a valid email address",
@@ -76,9 +75,8 @@ $(() => {
 
 		if (!validForm) {
 			$("#general-error").show();
+		} else {
+			$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
 		}
-
-		$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
-
 	});
 });
