@@ -49,8 +49,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 try
                 {
-                    var result = await _requestService.UpdateRequest(requestHelpFormModel);
-
+                    var result = await _requestService.UpdateRequest(requestHelpFormModel);                    
                     return View("Confirmation", requestHelpFormModel);
                 }
                 catch (Exception ex)
