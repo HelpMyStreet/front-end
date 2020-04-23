@@ -65,6 +65,7 @@ $(() => {
 						}
 						$("#streetchampionCoverage").show();
 						$('#continueRequest').click(function () {
+							$('#hasStreetChampion').val(hasStreetChamp);
 							$(".postcode__info, #streetchampionCoverage").hide();
 							$("#requestId").val(responseLogResponseJson.content.requestID);
 							$("#postcode").val(postcode);
