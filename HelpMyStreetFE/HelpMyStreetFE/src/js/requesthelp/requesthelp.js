@@ -81,8 +81,6 @@ $(() => {
 		}
 
 
-
-
 		const valid = validateFormData($(this), {
 			firstname: (v) => v !== "" || "Please enter a first name",
 			email: (v) => (v == "") || validateEmail(v) ||
