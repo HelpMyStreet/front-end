@@ -27,17 +27,17 @@ namespace HelpMyStreetFE.Repositories
 			return response;
     }
 
-		public async Task<string> UpdateRequest(RequestHelpFormModel requestHelpFormModel)
+		public async Task<UpdateRequestResponse> UpdateRequest(RequestHelpFormModel requestHelpFormModel)
 		{
 
-			var response = await PostAsync<string>($"/api/updaterequest",
+			var response = await PostAsync<UpdateRequestResponse>($"/api/updaterequest",
 
 				new UpdateRequestRequest
 				{
 					RequestID = requestHelpFormModel.RequestId,
 					FurtherDetails = requestHelpFormModel.Message,
 					HealthOrWellbeingConcern = requestHelpFormModel.HealthConcern,
-					OnBehalfOfAnother = !requestHelpFormModel.HelpForMe,
+					OnBehalfOfAnother = requestHelpFormModel.OnBehalfOfAnother,
 					RequestorEmailAddress = requestHelpFormModel.Email,
 					RequestorFirstName = requestHelpFormModel.FirstName,
 					RequestorLastName = requestHelpFormModel.LastName,
