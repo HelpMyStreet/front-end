@@ -76,7 +76,7 @@ namespace HelpMyStreetFE.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
-            BasePageViewModel model = new BasePageViewModel
+            LoginViewModel model = new LoginViewModel
             {
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };

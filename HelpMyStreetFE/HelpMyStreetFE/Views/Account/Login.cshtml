@@ -1,11 +1,10 @@
-﻿@model BasePageViewModel
+﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) }
-
 </script>
 <partial name="_SiteHeaderOnlyLogo" />
 <div class="container login">
