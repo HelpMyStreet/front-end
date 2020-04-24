@@ -2,7 +2,7 @@
     <div class="outer-container outer-container--darker">
         <div class="container page-header-login align-center">
             <div class="page-header-login__sign-in">
-                <partial name="_HeaderLogin" />
+                @await Component.InvokeAsync("HeaderLogin")
             </div>
         </div>
     </div>

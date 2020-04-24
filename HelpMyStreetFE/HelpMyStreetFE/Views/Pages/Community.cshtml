@@ -1,12 +1,9 @@
-@model BasePageViewModel;
+
 @{
     ViewBag.Title = "Community Organisers";
 }
-<script>
-     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
-</script>
-<partial name="_SiteHeaderPublic" />
 
+<partial name="_SiteHeaderPublic" />
 <article class="content-page content-page--community">
 
     <div class="outer-container">

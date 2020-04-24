@@ -1,49 +1,50 @@
 @model HelpMyStreetFE.Models.Account.UserDetails;
+<article class="user-profile profile-panel p-md">
+    <article class="profile">
+        <dl class="profile__user-data">
+            <div class="profile__user-data__item">
+                <dt class="flex">Display name </dt>
+                <dd>@Model.DisplayName</dd>
+            </div>
 
-<article class="profile">
-    <dl class="profile__user-data">
-        <div class="profile__user-data__item">
-            <dt class="flex">Display name </dt>
-            <dd>@Model.DisplayName</dd>
-        </div>
+            <div class="profile__user-data__item">
+                <dt>Email address</dt>
+                <dd>@Model.EmailAddress</dd>
+            </div>
+            <div class="profile__user-data__item">
+                <dt>First name</dt>
+                <dd>@Model.FirstName</dd>
+            </div>
+            <div class="profile__user-data__item">
+                <dt>Last name</dt>
+                <dd>@Model.LastName</dd>
+            </div>
+        </dl>
 
-        <div class="profile__user-data__item">
-            <dt>Email address</dt>
-            <dd>@Model.EmailAddress</dd>
-        </div>
-        <div class="profile__user-data__item">
-            <dt>First name</dt>
-            <dd>@Model.FirstName</dd>
-        </div>
-        <div class="profile__user-data__item">
-            <dt>Last name</dt>
-            <dd>@Model.LastName</dd>
-        </div>
-    </dl>
+        <dl class="profile__user-data__item">
+            <dt>Address</dt>
+            <dd>@Model.Address</dd>
+        </dl>
 
-    <dl class="profile__user-data__item">
-        <dt>Address</dt>
-        <dd>@Model.Address</dd>
-    </dl>
+        <dl class="profile__user-data">
+            <div class="profile__user-data__item">
+                <dt>Mobile number</dt>
+                <dd>@Model.MobileNumber</dd>
+            </div>
+            <div class="profile__user-data__item">
+                <dt>Other number</dt>
+                <dd>@Model.OtherNumber</dd>
+            </div>
 
-    <dl class="profile__user-data">
-        <div class="profile__user-data__item">
-            <dt>Mobile number</dt>
-            <dd>@Model.MobileNumber</dd>
-        </div>
-        <div class="profile__user-data__item">
-            <dt>Other number</dt>
-            <dd>@Model.OtherNumber</dd>
-        </div>
+            <div class="profile__user-data__item">
+                <dt>Date of birth</dt>
+                <dd>@Model.DateOfBirth</dd>
+            </div>
+        </dl>
 
-        <div class="profile__user-data__item">
-            <dt>Date of birth</dt>
-            <dd>@Model.DateOfBirth</dd>
-        </div>
-    </dl>
-
-    <dl class="profile__user-data__item">
-        <dt class="flex"><div>Do you have any underlying medical condition(s) which may put you at higher risk of severe illness from COVID-19 / Coronavirus?</div></dt>
-        <dd>@Model.UnderlyingMedicalConditions</dd>
-    </dl>
-</article>
+        <dl class="profile__user-data__item">
+            <dt class="flex"><div>Do you have any underlying medical condition(s) which may put you at higher risk of severe illness from COVID-19 / Coronavirus?</div></dt>
+            <dd>@Model.UnderlyingMedicalConditions</dd>
+        </dl>
+    </article>
+    </article>

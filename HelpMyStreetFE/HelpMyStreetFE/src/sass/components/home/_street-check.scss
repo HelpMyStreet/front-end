@@ -97,11 +97,7 @@
         font-weight: bold;
     }
 
-    .btn {
-        @media screen and (min-width: $med-screen) {
-            margin-left: 24px;
-        }
-
+    .btn {        
         @media screen and (max-width: $sm-screen) {
             width: 100%;
             margin-top: $sm-margin;
@@ -125,14 +121,25 @@
     width: 100%;
 
     &__message {
+        display: block;
+
         @media screen and (min-width: $sm-screen) {
             margin: 0 0px;
+        }
+
+        @media screen and (min-width: $med-screen) {
+            display: flex;
+            align-items: center;
         }
 
         &__text {
             padding: 20px;
             color: $dark-blue;
             font-weight: 600;
+
+            p {
+                color: $dark-blue;
+            }
 
             &__warning {
                 color: $orange;

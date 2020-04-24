@@ -1,11 +1,9 @@
-@model BasePageViewModel;
+
 @{
     ViewBag.Title = "Terms and Conditions";
 }
 <partial name="_SiteHeaderPublic" />
-<script>
-     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
-</script>
+
 <div class="container">
     <div class="row">
         <div class="sm12 content-page content-page--terms">

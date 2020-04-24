@@ -1,4 +1,4 @@
-@model BasePageViewModel;
+
 @{
     ViewBag.Title = "Resources";
     var Guidance = new[]{
@@ -38,9 +38,7 @@
             }
         };
 }
-<script>
-     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
-</script>
+
 <partial name="_SiteHeaderPublic" />
 
 <div class="container">

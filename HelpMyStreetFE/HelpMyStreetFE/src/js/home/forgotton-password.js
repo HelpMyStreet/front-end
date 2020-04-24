@@ -49,10 +49,10 @@ export function intialiseForgottonForm(firebase, account) {
 
         if (!valid) return false;
         evt.preventDefault();                   
-        if (typeof configuration == 'undefined' && configuration.actionCode == 'undefined') return false;
+        if (typeof resetConfig == 'undefined' && resetConfig.actionCode == 'undefined') return false;
         if (!valid) return false;
         buttonLoad($('#submitbtn'))
-        var actionCode = configuration.actionCode;
+        var actionCode = resetConfig.actionCode;
         firebase.auth.verifyPasswordResetCode(actionCode).then(function (email) {
             var accountEmail = email;                                    
             var newPassword = $("input[name='password']").val();            
