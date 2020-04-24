@@ -68,36 +68,12 @@ namespace HelpMyStreetFE.Controllers
                 );
         }
 
-        private string GetCorrectPage(int maxStep)
-        {
-            switch (maxStep)
-            {
-                case 1:
-                    return "/registration/steptwo";
-                case 2:
-                    return "/registration/stepthree";
-                case 3:
-                    return "/registration/stepfour";
-                case 4:
-                    return "/registration/stepfive";
-                default:
-                    return string.Empty; //Registration journey is complete
-            }
-        }
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUser();
 
-            //Assume the registration page has been fully completed
-            string correctPage = string.Empty;
-
-            if (user.RegistrationHistory.Count > 0)
-            {
-                int maxStep = user.RegistrationHistory.Max(a => a.Key);
-                correctPage = GetCorrectPage(maxStep);
-            }
+            string correctPage = RegistrationController.GetCorrectPage(user);
 
             if (correctPage.Length > 0)
             {
