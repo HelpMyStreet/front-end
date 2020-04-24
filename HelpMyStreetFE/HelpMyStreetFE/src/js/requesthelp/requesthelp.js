@@ -13,7 +13,7 @@ function validatePrivacyAndTerms() {
 
 	$('.termsprivacy').show();
 	$('.termsprivacy').html(errorText);
-	$("#general-error").show();
+
 	if (errorText !== "") {
 		return false;
 	}
@@ -96,7 +96,7 @@ $(() => {
 			validHelpNeeded = false;
 			$("#help-needed-array-error").show();
 		}
-
+		
 		const valid = validateFormData($(this), {
 			firstname: (v) => v !== "" || "Please enter a first name",				
 			phonenumber: (v, d) =>
@@ -105,10 +105,12 @@ $(() => {
 		var phone = $('input[name=phonenumber')
 		var email = $('input[name=email')
 			
-		let validForm = (valid && validHelpNeeded && validateEmail(email, "Please enter a valid email address") && validatePhoneNumber(phone, "Please enter a valid phone number") && validatePrivacyAndTerms());
-
-		if (!validForm) {
-			$("#general-error").show();
+		let validForm = (valid && validHelpNeeded && validateEmail(email, "Please enter a valid email address") && validatePhoneNumber(phone, "Please enter a valid phone number"));
+		
+		if (!validForm || !validatePrivacyAndTerms()) {
+			if (!validForm) {
+				$("#general-error").show();
+			}
 			buttonUnload($("#submit_button"));
 		} else {
 			$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
