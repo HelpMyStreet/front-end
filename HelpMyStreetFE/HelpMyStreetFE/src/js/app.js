@@ -26,12 +26,12 @@ $(function () {
       $(this).width($(this).width());
       $(this).height($(this).height());
 
-      $("#postcode_notcovered").hide();
-      $("#postcode_covered").hide();
+      $("#postcode_notcovered").addClass('dnone');
+      $("#postcode_covered").addClass('dnone');
       $("#postcode_error").hide();
       $("#postcode_invalid").hide();
       //$("#request_help").hide();        
-      $(".postcode__info").hide();
+      $(".postcode__info").addClass('dnone');
       $('#postcode_button').removeClass('postcode_button_clicked')
 
         buttonLoad($(this));
@@ -45,9 +45,10 @@ $(function () {
                     $(".postcode__info, #postcode_invalid").show();
                 } else {
                     if (data.volunteerCount == 0 && data.championCount == 0)
-                        $(".postcode__info, #postcode_notcovered").show();
-                    else if (data.volunteerCount > 0 || data.championCount > 0) {
-                        $(".postcode__info, #postcode_covered").show();
+                    {
+                        $(".postcode__info, #postcode_notcovered").removeClass('dnone');
+                    } else if (data.volunteerCount > 0 || data.championCount > 0) {
+                        $(".postcode__info, #postcode_covered").removeClass('dnone');
                         //if (data.volunteerCount > 0 && data.championCount > 0) { // phase.1.1
                         //    $(".postcode__info, #request_help").show();                           
                         //}
