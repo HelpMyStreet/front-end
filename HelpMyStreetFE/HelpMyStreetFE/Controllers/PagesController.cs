@@ -6,67 +6,37 @@ namespace HelpMyStreetFE.Controllers
 {
     public class PagesController : Controller
     {
-        private readonly IConfiguration _configuration;
-        public PagesController(IConfiguration configuration)
-        {
-            _configuration = configuration;
+        public PagesController()
+        {   
         }
        
         public IActionResult AboutUs()
         {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);            
+            return View();            
         }
         public IActionResult Community()
-        {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+        {    
+            return View();
         }
         public IActionResult PrivacyPolicy()
-        {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+        {    
+            return View();
         }
         public IActionResult Terms()
-        {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+        {       
+            return View();
         }
         public IActionResult Resources()
-        {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+        {    
+            return View();
         }
         public IActionResult Questions()
         {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+            return View();
         }
         public IActionResult ContactUs()
         {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+            return View();
         }
         public IActionResult StyleGuide()
         {

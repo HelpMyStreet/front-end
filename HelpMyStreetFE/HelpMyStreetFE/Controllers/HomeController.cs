@@ -45,8 +45,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 NumStreetChampions = reqs[0].Result,
                 NumStreetsCovered = reqs[1].Result,
-                NumVolunteers = reqs[2].Result,
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+                NumVolunteers = reqs[2].Result,                
             };
 
             int totalStreets = reqs[3].Result;
@@ -70,20 +69,15 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet]
         public async Task<IActionResult> ForgottonPassword()
-        {
-            ForgottonPasswordViewModel model = new ForgottonPasswordViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
+        {     
+            return View();
         }
 
         [HttpGet]
         public async Task<IActionResult> ResetPassword(string oobCode)
         {
             ResetPasswordViewModel model = new ResetPasswordViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"],
+            {        
                 ActionCode = oobCode
 
             };
@@ -94,6 +88,6 @@ namespace HelpMyStreetFE.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        }       
     }
 }

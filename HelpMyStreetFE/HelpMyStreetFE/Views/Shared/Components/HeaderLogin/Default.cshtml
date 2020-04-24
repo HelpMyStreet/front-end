@@ -1,7 +1,11 @@
+@model BasePageViewModel
+<script>
+     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
+</script>
 <article id="header-login" class="header-login pl-sm pr-sm pt-sm collapsed">
     <div id="header-login__toggle" class="header-login__collapsed-nav">
         <button id="header-login__btn--toggle" class="btn header-login__btn--toggle transparent blue border-blue mr-md">Login</button>
-        <a href="/registration/stepone" class="btn btn--sign-up cta">Sign Up Now</a> 
+        <a href="/registration/stepone" class="btn btn--sign-up cta">Sign Up Now</a>
     </div>
     <div id="header-login-form" class="header-login__form">
         <header class="header-login__form-header mt-sm">
@@ -9,7 +13,7 @@
             <button class="header-login__btn--toggle btn--close">
                 <svg xmlns="" viewBox="0 0 100 100" class="icon--close" width="32" height="32">
                     <circle cx="50" cy="50" r="50" class="bg" />
-                    <path d="M30,30 L70,70 M30,70 L70,30" class="cross" stroke-linecap="round" />    
+                    <path d="M30,30 L70,70 M30,70 L70,30" class="cross" stroke-linecap="round" />
                 </svg>
             </button>
         </header>
@@ -23,13 +27,13 @@
             <input type="Password" placeholder="Password" id="password" />
             <span><a href="@Url.Action("ForgottonPassword", "Home")" class="link--forgot-pw">Forgotten password?</a></span>
         </div>
-        
+
         <div class="header-login__btn pt-sm pb-sm">
             <button class="btn btn--login transparent blue border-blue mr-md login-submit-handler" id="login-submit">
                 <span class="text">Login</span>
-                <div class="loader"><partial name="_LoadingSpinner"  model='new LoadingSpinnerViewModel { Text = "Logging in"}' /></div>
-            </button>            
+                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in"}' /></div>
+            </button>
             <a href="/registration/stepone" class="btn btn--sign-up cta">Sign Up Now</a>
         </div>
-    </div>    
+    </div>
 </article>
