@@ -55,7 +55,7 @@ $(() => {
 						var hasStreetChamp = responseLogResponseJson.content.fulfillable == 4;
 						$(".postcode__info, #streetchampionCoverage").show();
 						if (hasStreetChamp) {
-							$("#streetchampionCoverage .postcode__info__message__text").text("Great! There are volunteers in that area! Please go ahead and tell us a litte more.");
+							$("#streetchampionCoverage .postcode__info__message__text").text("Great! There are volunteers in that area! Please go ahead and tell us a little more.");
 						} else {
 							$("#streetchampionCoverage .postcode__info__message__text").text("We've just launched HelpMyStreet and we're building our network across the country. We're working hard to ensure we have local volunteers in this area who can get the right help to the right people."
 								+ "We'll do all we can to find someone to complete your request, but this may take a few days. Can we go ahead and do that for you? Please tell us more about your request so we can find the right person to help you.");
@@ -83,7 +83,7 @@ $(() => {
 	$("#requesthelp_form").on("submit", function (event) {
 
 		event.preventDefault();
-
+		buttonLoad($("#submit_button"));
 		let validHelpNeeded = true;
 
 		var obj = $(this).serializeArray().reduce(function (acc, cur) {
@@ -99,6 +99,7 @@ $(() => {
 
 		if (validatePrivacyAndTerms() === false) {
 			$("#general-error").show();
+			buttonUnload($("#submit_button"));
 			return;
 		} 
 		const valid = validateFormData($(this), {
@@ -113,6 +114,7 @@ $(() => {
 
 		if (!validForm) {
 			$("#general-error").show();
+			buttonUnload($("#submit_button"));
 		} else {
 			$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
 		}

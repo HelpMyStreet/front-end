@@ -54,8 +54,8 @@
 				</div>
 				<div class="sm6">
 					<button class="btn cta large" id="postcode_button">
-						<span class="text">Check Postcode</span>
-						<span class="loader">Checking&hellip;</span>
+						<span class="text">Check Postcode</span>												
+						<div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking..."}' /></div>
 					</button>
 				</div>
 			</div>
@@ -234,7 +234,8 @@
 						<div class="input sm3">
 							<div class="controls">
 								<button class="btn cta large fill" id="submit_button" type="submit">
-									<span class="text">Submit</span>
+									<span class="text">Submit</span>									
+									<div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
 								</button>
 							</div>
 						</div>
