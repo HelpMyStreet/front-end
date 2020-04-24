@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validatePostCode } from "../shared/validator";
+import { validateFormData, validateEmail, validatePhoneNumber } from "../shared/validator";
 
 function validatePrivacyAndTerms() {
 	// requires checking of two or more inputs at the same time, so cant use the validateFormData.
@@ -102,19 +102,14 @@ $(() => {
 			return;
 		} 
 		const valid = validateFormData($(this), {
-			firstname: (v) => v !== "" || "Please enter a first name",
-			email: (v) => (v == "") || validateEmail(v) ||
-				"Please enter a valid email address",
-			phonenumber: (v) =>
-				v == "" ||
-				((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
-				"Please enter a valid phone number",
+			firstname: (v) => v !== "" || "Please enter a first name",				
 			phonenumber: (v, d) =>
-				(v !== "") || (d.email !== "") || "Please enter an email address or a phone number",
-		
+				(v !== "") || (d.email !== "") || "Please enter an email address or a phone number",		
 		});
-
-		let validForm = (valid && validHelpNeeded);
+		var phone = $('input[name=phonenumber')
+		var email = $('input[name=email')
+			
+		let validForm = (valid && validHelpNeeded && validateEmail(email, "Please enter a valid email address") && validatePhoneNumber(phone, "Please enter a valid phone number"));
 
 		if (!validForm) {
 			$("#general-error").show();
@@ -125,7 +120,3 @@ $(() => {
 });
 
 
-function validateEmail(email) {
-	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return re.test(email);
-}
