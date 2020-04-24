@@ -124,5 +124,11 @@ namespace HelpMyStreetFE.Repositories
             var response = await GetAsync<GetCountResponse>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
             return response.Count;
         }
+
+        public async Task<GetHelperResponse> GetHelpersByPostcode(string postcode)
+        {
+            var response = await GetAsync<GetHelperResponse>($"/api/GetHelpersByPostcode?postCode={postcode}");
+            return response;
+        }
     }
 }

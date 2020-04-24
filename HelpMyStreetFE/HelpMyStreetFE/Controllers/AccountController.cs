@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
-using Microsoft.Extensions.Configuration;
-using HelpMyStreetFE.Models;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -20,17 +19,13 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
-
         public AccountController(
             ILogger<AccountController> logger,
-            IUserService userService,
-            IConfiguration configuration
+            IUserService userService
             )
         {
             _logger = logger;
             _userService = userService;
-            _configuration = configuration;
         }
 
         private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
@@ -68,28 +63,15 @@ namespace HelpMyStreetFE.Controllers
                 personalDetails.OtherPhone,
                 personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
                 gender,
-                underlyingMedicalConditions
+                underlyingMedicalConditions,
+                user.ChampionPostcodes
                 );
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login()
-        {
-            LoginViewModel model = new LoginViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View(model);
-        }
-
-
-        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //TODO: Check that the user is authenticated
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            User user = await _userService.GetUserAsync(id);
+            var user = await GetCurrentUser();
 
             string correctPage = RegistrationController.GetCorrectPage(user);
 
@@ -98,14 +80,72 @@ namespace HelpMyStreetFE.Controllers
                 //Registration journey is not complete
                 return Redirect(correctPage);
             }
-            
+
+            var userDetails = GetUserDetails(user);
+
             //Assume the registration page has been fully completed
-            AccountViewModel viewModel = new AccountViewModel();
+            var viewModel = GetAccountViewModel(user);
+
+            viewModel.CurrentPage = MenuPage.UserDetails;
+            viewModel.PageModel = userDetails;
+            return View(viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Streets()
+        {
+            var currentUser = await GetCurrentUser();
+            var viewModel = GetAccountViewModel(currentUser);
+            viewModel.CurrentPage = MenuPage.MyStreets;
+            var streetsViewModel = new StreetsViewModel();          
+            foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
+            {
+                Street street = new Street();
+                street.Name = postcode;
+                var helpers = await _userService.GetHelpersByPostcode(postcode);
+                if (helpers.Users != null)
+                {
+                    foreach (var helper in helpers.Users)
+                    {
+                        if (helper.ID == currentUser.ID) continue;
+                        street.Helpers.Add(new Helper
+                        {
+                            Name = helper.UserPersonalDetails.DisplayName,
+                            PhoneNumber = helper.UserPersonalDetails.MobilePhone,
+                            AlternatePhoneNumber = helper.UserPersonalDetails.OtherPhone,
+                            Email = helper.UserPersonalDetails.EmailAddress,
+                            SupportedActivites = helper.SupportActivities
+                        });
+                    }
+                    streetsViewModel.Streets.Add(street);
+                }
+            }
+
+            viewModel.PageModel = streetsViewModel;
+            return View("Index", viewModel);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> CloseNotification(Guid id)
+        {
+            //TODO: Pass this id to something that will stop that notification from being sent
+            await Task.CompletedTask;
+            return Ok();
+        }
+
+        private async Task<User> GetCurrentUser()
+        {
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _userService.GetUserAsync(id);
+            return user;
+        }
+
+        private AccountViewModel GetAccountViewModel(User user)
+        {
+            var viewModel = new AccountViewModel();
 
             if (user != null)
             {
-                var userDetails = GetUserDetails(user);
-
                 List<NotificationModel> notifications = new List<NotificationModel>()
                 {
                     new NotificationModel
@@ -123,20 +163,14 @@ namespace HelpMyStreetFE.Controllers
                         Type = NotificationType.Success
                     }
                 };
-                viewModel.UserDetails = userDetails;
+
                 viewModel.Notifications = notifications;
+                var userDetails = GetUserDetails(user);
+                viewModel.UserDetails = userDetails;
+                viewModel.IsStreetChampion = userDetails.StreetChampion.Equals("Street Champion", System.StringComparison.InvariantCultureIgnoreCase);
             }
-            return View(viewModel);
-        }
 
-        [HttpPut]
-        public async Task<IActionResult> CloseNotification(Guid id)
-        {
-            //TODO: Pass this id to something that will stop that notification from being sent
-            await Task.CompletedTask;
-            return Ok();
+            return viewModel;
         }
-
-            
     }
 }
