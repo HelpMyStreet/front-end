@@ -49,39 +49,39 @@
 				<div class="input sm6 ">
 					<label>Postcode Where Help Is Needed</label>
 					<div class="postcode-input-button">
-						<input id="postcode_search" class="fullwidth" name="postcode_search" type="text" placeholder="Enter Postcode..." />					
+						<input id="postcode_search" class="fullwidth" name="postcode_search" type="text" placeholder="Enter Postcode..." />
 					</div>
 				</div>
 				<div class="sm6">
 					<button class="btn cta large" id="postcode_button">
-						<span class="text">Check Postcode</span>												
+						<span class="text">Check Postcode</span>
 						<div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking..."}' /></div>
 					</button>
 				</div>
 			</div>
-			<div class="row postcode__info dnone">			
-					<div id="postcode_invalid" class="dnone postcode__info__message">
-						<div class="row">
-							<div class="sm12 postcode__info__message__text__warning">
-								Sorry - that’s not quite right. Please enter a valid UK postcode.
-							</div>
+			<div class="row postcode__info dnone">
+				<div id="postcode_invalid" class="dnone postcode__info__message">
+					<div class="row">
+						<div class="sm12 postcode__info__message__text__warning">
+							Sorry - that’s not quite right. Please enter a valid UK postcode.
 						</div>
-					</div>					
-					<div id="postcode_error" class="dnone postcode__info__message__text__warning">We're currently experiencing issues finding coverage, please try again later.</div>
-					<div id="streetchampionCoverage" class="dnone postcode__info__message">		
-						<div class="row">
-							<div class="sm8">
-								<span class="postcode__info__message__text pl0"></span>
-							</div>
-							<div class="sm4">
-								<button class="btn cta large" id="continueRequest" type="submit">
-									<span class="text">Continue</span>
-								</button>
-							</div>
-						</div>
-						
 					</div>
-				</div>			
+				</div>
+				<div id="postcode_error" class="dnone postcode__info__message__text__warning">We're currently experiencing issues finding coverage, please try again later.</div>
+				<div id="streetchampionCoverage" class="dnone postcode__info__message">
+					<div class="row">
+						<div class="sm8">
+							<span class="postcode__info__message__text pl0"></span>
+						</div>
+						<div class="sm4">
+							<button class="btn cta large" id="continueRequest" type="submit">
+								<span class="text">Continue</span>
+							</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
 		</div>
 		<div class="sm12">
 			<form id="requesthelp_form" method="post" asp-route="requesthelpB">
@@ -203,8 +203,9 @@
 					<input id="requestId" name="requestId" type="hidden" />
 					<input id="hasStreetChampion" name="hasStreetChampion" type="hidden" />
 					<p>
-						The information you provide will be shared with Street Champions in your local area to help organise volunteers.
-						You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+						We will use this information to process your request and share it with registered volunteers in the area where help is needed,
+						who will likely contact you directly. We may also contact you about aspects of the HelpMyStreet service. For more information
+						regarding how HelpMyStreet uses your data, please see our <a href="/privacy-policy">Privacy Notice</a>
 					</p>
 					<div class="input input--checkbox">
 						<label>
@@ -243,5 +244,4 @@
 		</div>
 	</div>
 </div>
-
 
