@@ -85,9 +85,7 @@
 		</div>
 		<div class="sm12">
 			<form id="requesthelp_form" method="post" asp-route="requesthelpB">
-
 				<input id="postcode" name="postcode" type="hidden" />
-
                 <div class="expanderDetails dnone">
                     <div class="row">
                         <div class="input sm8">
@@ -117,7 +115,8 @@
 
                             </div>
                         </div>
-                    </div><div class="row">
+                    </div>
+                    <div class="row">
                         <div class="input sm8">
                             <h5>Is there a concern about someone’s health or wellbeing?</h5>
                             <div class="input input--checkbox">
@@ -141,19 +140,17 @@
                                         No
                                     </label>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input sm4">
-                            <label>Your first name</label>
+                            <h5>Your first name</h5>
                             <input name="firstname" type="text" value="@(Model.FirstName != null ? Model.FirstName : null)" placeholder="e.g. John" />
                             <span class="error"></span>
                         </div>
                         <div class="input sm4">
-                            <label>Your last name</label>
+                            <h5>Your last name</h5>
                             <input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)" placeholder="e.g. Smith" />
                             <span class="error"></span>
                         </div>
@@ -161,14 +158,14 @@
 
                     <div class="row">
                         <div class="input sm8">
-                            <label>Your email Address</label>
+                            <h5>Your email Address</h5>
                             <input name="email" type="email" value="@(Model.Email != null ? Model.Email : null)" placeholder="e.g. johndow@gmail.com" />
                             <span class="error"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input sm8">
-                            <label>Your phone number</label>
+                            <h5>Your phone number</h5>
                             <input name="phonenumber" type="number" value="@(Model.PhoneNumber != null ? Model.PhoneNumber : null)" placeholder="e.g. 07700112233" />
                             <span class="error"></span>
                         </div>

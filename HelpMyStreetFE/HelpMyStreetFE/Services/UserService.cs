@@ -1,5 +1,6 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
 using System;
@@ -123,6 +124,11 @@ namespace HelpMyStreetFE.Services
         public async Task<int> GetVolunteers()
         {
             return await _userRepository.GetDistinctVolunteerUserCount();
+        }
+
+        public async Task<GetHelperResponse> GetHelpersByPostcode(string postcode)
+        {
+            return await _userRepository.GetHelpersByPostcode(postcode);
         }
     }
 }
