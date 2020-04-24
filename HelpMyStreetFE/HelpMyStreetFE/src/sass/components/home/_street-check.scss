@@ -134,6 +134,10 @@
             color: $dark-blue;
             font-weight: 600;
 
+            p {
+                color: $dark-blue;
+            }
+
             &__warning {
                 color: $orange;
                 font-weight: 600;
