@@ -8,7 +8,7 @@ export function initialiseStepFour() {
         if (!$("input[name=street_champion]").is(":checked")) {
             buttonUnload($('#submit_button'));
             $('#championSelectError').show();
-            $('#championSelectError').text("Please select an option")
+            $('#championSelectError').text("Please select one of the options above")
             evt.preventDefault();
             return;
         } else {
@@ -17,7 +17,7 @@ export function initialiseStepFour() {
                 if (getNumberOfPostcodesSelected() == 0) {
                     buttonUnload($('#submit_button'));
                     $('#championSelectError').show();
-                    $('#championSelectError').text("You must select at least one postcode")
+                    $('#championSelectError').text("Please select at least one postcode to cover as Street Champion")
                     evt.preventDefault();
                     return;
                 }
