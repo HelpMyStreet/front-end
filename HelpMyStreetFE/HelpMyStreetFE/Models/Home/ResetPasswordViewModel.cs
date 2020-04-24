@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models.Home
 {
-
-
     public class ResetPasswordViewModel {
         public string  ActionCode { get; set;}
     }

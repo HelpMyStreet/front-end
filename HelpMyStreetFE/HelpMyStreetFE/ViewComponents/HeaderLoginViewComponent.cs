@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            BasePageViewModel model = new BasePageViewModel
+            LoginViewModel model = new LoginViewModel
             {
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
