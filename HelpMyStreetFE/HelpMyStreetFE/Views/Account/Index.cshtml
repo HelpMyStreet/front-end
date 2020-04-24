@@ -1,13 +1,15 @@
 ﻿@model HelpMyStreetFE.Models.Account.AccountViewModel;
+@using HelpMyStreetFE.Enums.Account
 
-@{
-    ViewData["Title"] = "My Profile";
+@section Scripts {
+    <script src="~/profile.js" asp-append-version="true"></script>
 }
-
 <partial name="_UserHeader" for="@Model.UserDetails" />
 @{
     ViewBag.Title = "My Profile";
+
 }
+
 <main class="account__wrapper container">
     <partial name="_NotificationHandler" for="@Model.Notifications" />
 
@@ -15,15 +17,20 @@
         <partial name="_MiniUserProfile" for="@Model.UserDetails" />
     </div>
 
-    <div class="account__body">
-        <partial name="_AccountNavigation" />
-        <article class="user-profile profile-panel p-md">
-            <header class="profile-panel__header">
-                <h3 class="profile-panel__title">My Profile</h3>
-            </header>
-            <partial name="_UserData" for="@Model.UserDetails" />
-            @*<hr class="profile-panel__divider mt-0 mb-0 ml-md mr-md">
-                <partial name="_ContactPreference" />*@
-        </article>
-    </div>
+  
+        <div class="account__body">
+            <partial name="_AccountNavigation" />
+            @switch (Model.CurrentPage)
+            {
+                case MenuPage.MyStreets:
+                    <partial name="_MyStreets" for="@Model.PageModel" />
+                    break;
+                default:
+                    <partial name="_UserData" for="@Model.PageModel" />
+                    break;
+            }
+
+
+        </div>
+        
 </main>
