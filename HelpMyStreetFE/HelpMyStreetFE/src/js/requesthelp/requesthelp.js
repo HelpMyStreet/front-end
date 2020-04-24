@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validatePostCode } from "../shared/validator";
+import { validateFormData, validateEmail, validatePhoneNumber } from "../shared/validator";
 
 function validatePrivacyAndTerms() {
 	// requires checking of two or more inputs at the same time, so cant use the validateFormData.
@@ -25,8 +25,7 @@ $(() => {
 	$("#postcode_button").on("click", async function (evt) {
 		evt.preventDefault();
 
-		$(".postcode__info, #postcode_invalid").hide();
-		$(".postcode__info, #postcode_notcovered").hide();
+		$(".postcode__info, #postcode_invalid").hide();		
 		$(".postcode__info, #postcode_error").hide();
 		$(".postcode__info, #postcode_invalid").hide();
 		$(".postcode__info, #streetchampionCoverage").hide();
@@ -43,25 +42,23 @@ $(() => {
 			if (responseLogResponse.ok) {
 			
 				const responseLogResponseJson = await responseLogResponse.json();
-
-				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;
-				console.log(responseLogResponseJson.content);
+				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;				
 				if (logRequestValid === false) {
-					$(".postcode__info, #postcode_notcovered").show();
+					$("#postcode_invalid").show();
 				}
-				else if (responseLogResponseJson.content.fulfillable == 1) {			 //invalid postcode		
-					$(".postcode__info, #postcode_invalid").show();
+				else if (responseLogResponseJson.content.fulfillable == 1) {					
+					$("#postcode_invalid").show();
 				}
 				else {
 
 					if (responseLogResponseJson.content.fulfillable == 4 || responseLogResponseJson.content.fulfillable == 6) {// pass to street champion or // manuel defer
 						var hasStreetChamp = responseLogResponseJson.content.fulfillable == 4;
-						$(".postcode__info, #streetchampionCoverage").show();
+						$("#streetchampionCoverage").show();
 						if (hasStreetChamp) {
-							$("#streetchampionCoverage .postcode__info__message__text").text("Great! There are volunteers in that area! Please go ahead and tell us a litte more.");
+							$("#streetchampionCoverage .postcode-checker__validation__message--text").html("<p>Great! There are volunteers in that area! Please go ahead and tell us a little more.</p>");
 						} else {
-							$("#streetchampionCoverage .postcode__info__message__text").text("We've just launched HelpMyStreet and we're building our network across the country. We're working hard to ensure we have local volunteers in this area who can get the right help to the right people."
-								+ "We'll do all we can to find someone to complete your request, but this may take a few days. Can we go ahead and do that for you? Please tell us more about your request so we can find the right person to help you.");
+							$("#streetchampionCoverage .postcode-checker__validation__message--text").html("<p>We've just launched HelpMyStreet and we're building our network across the country. We're working hard to ensure we have local volunteers in this area who can get the right help to the right people.</p>"
+								+ "<p>We'll do all we can to find someone to complete your request, but this may take a few days. Can we go ahead and do that for you?</p>");
 						}
 						$("#streetchampionCoverage").show();
 						$('#continueRequest').click(function () {
@@ -86,7 +83,7 @@ $(() => {
 	$("#requesthelp_form").on("submit", function (event) {
 
 		event.preventDefault();
-
+		buttonLoad($("#submit_button"));
 		let validHelpNeeded = true;
 
 		var obj = $(this).serializeArray().reduce(function (acc, cur) {
@@ -99,28 +96,22 @@ $(() => {
 			validHelpNeeded = false;
 			$("#help-needed-array-error").show();
 		}
-
-		if (validatePrivacyAndTerms() === false) {
-			$("#general-error").show();
-			return;
-		} 
-		const valid = validateFormData($(this), {
-			firstname: (v) => v !== "" || "Please enter a first name",
-			email: (v) => (v == "") || validateEmail(v) ||
-				"Please enter a valid email address",
-			phonenumber: (v) =>
-				v == "" ||
-				((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
-				"Please enter a valid phone number",
-			phonenumber: (v, d) =>
-				(v !== "") || (d.email !== "") || "Please enter an email address or a phone number",
 		
+		const valid = validateFormData($(this), {
+			firstname: (v) => v !== "" || "Please enter a first name",				
+			phonenumber: (v, d) =>
+				(v !== "") || (d.email !== "") || "Please enter an email address or a phone number",		
 		});
-
-		let validForm = (valid && validHelpNeeded);
-
-		if (!validForm) {
-			$("#general-error").show();
+		var phone = $('input[name=phonenumber')
+		var email = $('input[name=email')
+			
+		let validForm = (valid && validHelpNeeded && validateEmail(email, "Please enter a valid email address") && validatePhoneNumber(phone, "Please enter a valid phone number"));
+		
+		if (!validForm || !validatePrivacyAndTerms()) {
+			if (!validForm) {
+				$("#general-error").show();
+			}
+			buttonUnload($("#submit_button"));
 		} else {
 			$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
 		}
@@ -128,7 +119,3 @@ $(() => {
 });
 
 
-function validateEmail(email) {
-	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	return re.test(email);
-}

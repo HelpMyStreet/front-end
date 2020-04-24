@@ -10,10 +10,10 @@ namespace HelpMyStreetFE.Controllers
 {
     public class ErrorsController : Controller
     {
-        private readonly IConfiguration _configuration;
-        public ErrorsController(IConfiguration configuration)
+
+        public ErrorsController()
         {
-            _configuration = configuration;
+
         }
         public IActionResult Index()
         {
@@ -23,23 +23,14 @@ namespace HelpMyStreetFE.Controllers
         [Route("Error/404")]
         public IActionResult Error404()
         {
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-            return View("404", model);
+
+            return View("404");
         }
 
         [Route("Error/{code:int}")]
         public IActionResult Error(int code)
-        {
-            // TODO: Add some logging in here - any non-404 error will hit this.
-            BasePageViewModel model = new BasePageViewModel
-            {
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
-            };
-
-            return View("500", model);
+        {           
+            return View("500");
         }
     }
 }

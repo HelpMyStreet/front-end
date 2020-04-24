@@ -1,0 +1,21 @@
+@model HelpMyStreetFE.Models.Account.Street;
+
+@{ 
+    var viewModel = Model;
+
+}
+    
+            <div class="profile__mystreet">
+                <div class="profile__mystreet__header">
+                   @Model.Name <span class="profile__mystreet__header__arrow"><span class="profile__mystreet__header__arrow--up"></span></span>
+                </div>                
+                <div class="profile__mystreet__details dnone">
+                    <div class="profile__mystreet__details__volunteer br-none">
+                        <span class="profile__mystreet__details__volunteer--big"><span>Street Champions And Helpers</span></span>
+                    </div>
+                    <div class="profile__mystreet__details__volunteer">
+                        <span class="profile__mystreet__details__volunteer--big"><span>Can help with...</span></span>
+                    </div>
+                    @Html.DisplayFor(x => x.Helpers)
+                </div>
+            </div>

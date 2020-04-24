@@ -1,0 +1,98 @@
+
+@import "../list";
+.profile {
+    &__mystreet {
+        border: 1px solid $gray-10;
+        border-radius: 4px;
+        margin-top: 20px;
+
+        &__header {
+            @include title-sz-6;
+            color: $dark-blue;
+            cursor: pointer;
+            display: block;
+            padding: 10px;
+
+
+            &:hover {
+                background: $light-blue;
+            }
+
+            &__arrow {
+                float: right;
+
+
+                &--up {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 0;
+                    height: 0;
+                    border-left: 20px solid transparent;
+                    border-right: 20px solid transparent;
+                    border-top: 20px solid $dark-blue;
+                }
+
+                &--down {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 0;
+                    height: 0;
+                    border-left: 20px solid transparent;
+                    border-right: 20px solid transparent;
+                    border-bottom: 20px solid $dark-blue;
+                }
+            }
+        }
+
+        &__details {
+            border-top: 1px solid $gray-10;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            grid-gap: 0%;
+            background-color: #fff;
+            color: $p-color;
+            padding: 20px;
+
+
+
+            &__volunteer {
+                border: 1px solid $p-color;
+                padding: 20px;
+
+                &--small {
+                    margin-top: 4px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+
+                    a,
+                    span {
+                        @include copy-sz-xs;
+
+                        @media screen and (min-width: $sm-screen) {
+                            @include copy-sz-md;
+                        }
+                    }
+                }
+
+                &--big {
+
+                    span {
+                        @include copy-sz-sm;
+
+                        @media screen and (min-width: $sm-screen) {
+                            @include copy-sz-lg;
+                        }
+                    }
+                }
+            }
+
+            .br-none {
+                border-right: none;
+            }
+
+            .bt-none {
+                border-top: none;
+            }
+        }
+    }
+}

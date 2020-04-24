@@ -24,10 +24,10 @@ namespace HelpMyStreetFE.Controllers
             _logger = logger;
            }
 
-        [Route("/RequestHelpA", Name = "RequestHelpA")]
+        [Route("/request-help-v1", Name = "request-help-v1")]
         public IActionResult RequestHelp()
         {
-            _logger.LogInformation("RequestHelpA");
+            _logger.LogInformation("request-help-v1");
 
             var model = new RequestHelpFormModel
             {

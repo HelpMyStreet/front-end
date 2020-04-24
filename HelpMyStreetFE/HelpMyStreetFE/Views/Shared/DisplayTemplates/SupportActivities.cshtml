@@ -1,0 +1,21 @@
+@model HelpMyStreet.Utils.Enums.SupportActivities;
+@using HelpMyStreet.Utils.Enums
+@{
+    var viewModel = Model;
+    var volunteerOptions = new Dictionary<SupportActivities, string>
+{
+        { SupportActivities.Shopping, "Shopping" },
+        { SupportActivities.CollectingPrescriptions, "Prescriptions" },
+        { SupportActivities.Errands, "Errands" },
+        { SupportActivities.DogWalking, "Dog Walking" },
+        { SupportActivities.MealPreparation, "Prepared Meal" },
+        { SupportActivities.PhoneCalls_Friendly, "Friendly Chat" },
+        { SupportActivities.PhoneCalls_Anxious, "Supportive Chat" },
+        { SupportActivities.HomeworkSupport, "Homework" },
+        { SupportActivities.CheckingIn, "Check in" },
+        { SupportActivities.Other, "Other" },
+    };
+}
+
+    <span class="csl">@volunteerOptions[Model]</span>
+

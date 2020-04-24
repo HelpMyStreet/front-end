@@ -1,0 +1,47 @@
+@model HelpMyStreetFE.Models.Account.Helper;
+@using HelpMyStreet.Utils.Enums;
+@{ 
+    var viewModel = Model;
+
+}
+
+        <div class="profile__mystreet__details__volunteer bt-none br-none">
+            <div class="profile__mystreet__details__volunteer--small">
+                <span> @Model.Name</span>
+                @if(@Model.IsStreetChampion) {
+                  <span>(Champion)</span> 
+                } else{
+                <span>(Helper)</span>                                
+                }
+            </div>
+            <div class="profile__mystreet__details__volunteer--small"><a href="mailto:@Model.Email">@Model.Email</a></div>
+            <div class="profile__mystreet__details__volunteer--small">
+                <a href="tel:@Model.PhoneNumber">@Model.PhoneNumber</a>
+
+                @if (!string.IsNullOrEmpty(Model.AlternatePhoneNumber))
+                {
+                   <span>/</span> <a href="tel:@Model.AlternatePhoneNumber"> @Model.AlternatePhoneNumber</a>
+                }
+
+            </div>
+        
+        </div>
+        <div class="profile__mystreet__details__volunteer  bt-none">
+            @if (Model.SupportedActivites.Count > 0)
+            {
+                if (Model.SupportedActivites.Count == @Enum.GetNames(typeof(SupportActivities)).Length)
+                {
+                    <span>Any task</span>
+                }
+                else
+                {
+                <span class="profile__mystreet__details__volunteer--small">@Html.DisplayFor(x => x.SupportedActivites)</span>
+                }
+            }
+            else
+            {
+                <span class="profile__mystreet__details__volunteer--small"><span>Did not Specifiy tasks they can help with at sign-up"</span></span>
+            }
+        </div>
+
+

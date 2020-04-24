@@ -1,11 +1,13 @@
-﻿namespace HelpMyStreetFE.Models.Account
+﻿using System.Collections.Generic;
+
+namespace HelpMyStreetFE.Models.Account
 {
     public class UserDetails //I expect this class to be depricated when we know how to differentiate users
     {
         public UserDetails(
-            string initials, 
-            string displayName, 
-            string firstName, 
+            string initials,
+            string displayName,
+            string firstName,
             string lastName,
             string emailAddress,
             string address,
@@ -14,7 +16,8 @@
             string otherNumber,
             string dateOfBirth,
             string gender,
-            string underlyingMedicalConditions
+            string underlyingMedicalConditions,
+            List<string> championPostcodes
             )
         {
             Initials = initials;
@@ -29,6 +32,7 @@
             Address = address;
             StreetChampion = streetChampion;
             UnderlyingMedicalConditions = underlyingMedicalConditions;
+            ChampionPostcodes = championPostcodes;
         }
 
         public string Initials { get; set; }
@@ -43,6 +47,7 @@
         public string Gender { get; set; }
         public string UnderlyingMedicalConditions { get; set; }
         public string StreetChampion { get; set; }
+        public List<string> ChampionPostcodes { get; set; }
 
     }
 }
