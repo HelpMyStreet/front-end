@@ -25,8 +25,7 @@ $(() => {
 	$("#postcode_button").on("click", async function (evt) {
 		evt.preventDefault();
 
-		$(".postcode__info, #postcode_invalid").hide();
-		$(".postcode__info, #postcode_notcovered").hide();
+		$(".postcode__info, #postcode_invalid").hide();		
 		$(".postcode__info, #postcode_error").hide();
 		$(".postcode__info, #postcode_invalid").hide();
 		$(".postcode__info, #streetchampionCoverage").hide();
@@ -43,13 +42,11 @@ $(() => {
 			if (responseLogResponse.ok) {
 			
 				const responseLogResponseJson = await responseLogResponse.json();
-
-				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;
-				console.log(responseLogResponseJson.content);
+				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;				
 				if (logRequestValid === false) {
-					$(".postcode__info, #postcode_notcovered").show();
+					$(".postcode__info, #postcode_invalid").show();
 				}
-				else if (responseLogResponseJson.content.fulfillable == 1) {			 //invalid postcode		
+				else if (responseLogResponseJson.content.fulfillable == 1) {					
 					$(".postcode__info, #postcode_invalid").show();
 				}
 				else {
