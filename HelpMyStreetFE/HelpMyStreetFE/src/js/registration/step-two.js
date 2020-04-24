@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validatePostCode } from "../shared/validator";
+import { validateFormData, validatePostCode, validatePhoneNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
 
 export function initialiseStepTwo() {
@@ -65,15 +65,7 @@ export function initialiseStepTwo() {
             last_name: (v) => v !== "" || "Please enter a last name",
             postcode: (v) => v !== "" ||
                 "Please enter a postcode",
-            dob: (v) => v !== "" || "Please enter a valid date of birth",
-            mobile_number: (v) =>
-                v == "" ||
-                (v.replace(" ", "").length === 11 && v.slice(0, 2) === "07") ||
-                "Please enter a valid mobile number starting with 07",
-            alt_number: (v) =>
-                v == "" ||
-                ((v.replace(" ", "").length === 10 || v.replace(" ", "").length === 11) && v[0] === "0") ||
-                "Please enter a valid phone number",
+            dob: (v) => v !== "" || "Please enter a valid date of birth",          
             alt_number: (v, d) =>
                 ((d.mobile_number !== "") || (v !== ""))  || "Please enter a mobile number or an alternative phone number",
             city: (v) =>
@@ -85,8 +77,10 @@ export function initialiseStepTwo() {
         });
 
         let dob = $(this).find("input[name='dob']");               
-        let dobValid =  validateDob(dob.val(), dob.attr('id'));                                        
-        let validForm = (valid  && dobValid);
+        let dobValid = validateDob(dob.val(), dob.attr('id'));       
+        let mobile = $(this).find("input[name='mobile_number']");       
+        let alt = $(this).find("input[name='alt_number']");               
+        let validForm = (valid && dobValid && validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07") && validatePhoneNumber(alt, "Please enter a valid alternative number"));
  
       let postcodeValid;
       let postcodeInput = $("input[name='postcode']");

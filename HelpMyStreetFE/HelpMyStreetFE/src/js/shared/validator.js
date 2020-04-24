@@ -47,3 +47,28 @@ export async function validatePostCode(postcode) {
 
     return postcodeValid
 }
+
+
+export function validateEmail(emailElement, errorMessage) {
+    var email = emailElement.val();
+    if (email == "") return true;
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var valid = re.test(email);
+    console.log(valid);
+    if (valid == false) {
+        emailElement.find("~ .error").show();
+        emailElement.find("~ .error").text(errorMessage);
+    }
+    return valid;
+}
+
+ export function validatePhoneNumber(phoneNumberEl, errorMessage) {
+    var phoneNumber = phoneNumberEl.val();
+    if (phoneNumber == "") return true;
+    var valid = ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0");
+    if (valid == false) {
+        phoneNumberEl.find("~ .error").show();
+        phoneNumberEl.find("~ .error").text(errorMessage);
+    }
+    return valid;
+}
