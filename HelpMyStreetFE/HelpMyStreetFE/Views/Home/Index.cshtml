@@ -51,8 +51,8 @@
 					<div class="postcode-input-button">
 						<input id="postcode" type="text" placeholder="Enter your Postcode..." />
 						<button class="btn cta large" id="postcode_button">
-							<span class="text">Check postcode</span>
-							<span class="loader">Checking&hellip;</span>
+							<span class="text">Check postcode</span>							
+							<div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking…"}' /></div>
 						</button>
 					</div>
 				</div>
