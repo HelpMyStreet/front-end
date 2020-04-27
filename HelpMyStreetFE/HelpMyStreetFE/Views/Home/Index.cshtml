@@ -19,16 +19,16 @@
 			</div>
 		</div>
 
-		<div class="row stats mb40 text-center justify-center">
-			<div class="sm3">
+		<div class="row stats mb40 text-center justify-center "> 
+			<div class="sm3 dnone">
 				<h2 class="orange">@Model.NumVolunteers</h2>
 				<p>Volunteers</p>
 			</div>
-			<div class="sm3">
+			<div class="sm3 dnone">
 				<h2>@Model.NumStreetChampions</h2>
 				<p>Street champions</p>
 			</div>
-			<div class="sm3">
+			<div class="sm3 dnone">
 				<h2 class="green">@Model.NumStreetsCovered</h2>
 				<p>Streets covered</p>
 			</div>
@@ -37,7 +37,7 @@
 		<div class="row card street-check">
 			<div class="sm12 max">
 				<h3>Is your street covered?</h3>
-				<p class="ma0">
+				<p class="ma0 dnone">
 					<span class="inline-flex align-center">
 						0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCoveredPercentage%">&nbsp;</span></span> 100%
 					</span>
@@ -50,8 +50,8 @@
 					<div class="postcode-input-button">
 						<input id="postcode" type="text" placeholder="Enter your Postcode..." />
 						<button class="btn cta large" id="postcode_button">
-							<span class="text">Check postcode</span>
-							<span class="loader">Checking&hellip;</span>
+							<span class="text">Check postcode</span>							
+							<div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking…"}' /></div>
 						</button>
 					</div>
 				</div>
