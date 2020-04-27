@@ -6,12 +6,12 @@
         <li class="account__nav__item">
             <a href="/account/" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>
         </li>
-        @if (Model.IsStreetChampion)
+        @*@if (Model.IsStreetChampion)
         {
             <li class="account__nav__item">
                 <a href="/account/streets" class="@(Model.CurrentPage == MenuPage.MyStreets ? "selected" : string.Empty)">My Streets</a>
             </li>
-        }
+        }*@
         <li class="account__nav__item">
             <a href="#" style="cursor:default;" onclick="event.preventDefault();">Coming Soon...</a>
         </li>
