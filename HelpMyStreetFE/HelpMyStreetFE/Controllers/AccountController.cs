@@ -102,9 +102,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 Street street = new Street();
                 street.Name = postcode;
-                var helpers = await _userService.GetHelpersByPostcode(postcode);
+                var helpers = await _userService.GetHelpersByPostcode(postcode) ;            
+                var champs = await _userService.GetChampionsByPostcode(postcode);
+                helpers.Users.AddRange(champs.Users);
                 if (helpers.Users != null)
-                {
+                {            
                     foreach (var helper in helpers.Users)
                     {
                         if (helper.ID == currentUser.ID) continue;
@@ -114,13 +116,13 @@ namespace HelpMyStreetFE.Controllers
                             PhoneNumber = helper.UserPersonalDetails.MobilePhone,
                             AlternatePhoneNumber = helper.UserPersonalDetails.OtherPhone,
                             Email = helper.UserPersonalDetails.EmailAddress,
-                            SupportedActivites = helper.SupportActivities
-                        });
+                            SupportedActivites = helper.SupportActivities,
+                            IsStreetChampion = helper.StreetChampionRoleUnderstood.Value
+                        }); 
                     }
                     streetsViewModel.Streets.Add(street);
                 }
             }
-
             viewModel.PageModel = streetsViewModel;
             return View("Index", viewModel);
         }

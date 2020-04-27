@@ -80,7 +80,7 @@
                         @include copy-sz-sm;
 
                         @media screen and (min-width: $sm-screen) {
-                            @include copy-sz-lg;
+                            @include copy-sz-md;
                         }
                     }
                 }
