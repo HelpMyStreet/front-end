@@ -20,5 +20,6 @@ namespace HelpMyStreetFE.Repositories
         Task<int> GetChampionPostcodesCoveredCount();
         Task<int> GetDistinctVolunteerUserCount();
         Task<GetHelperResponse> GetHelpersByPostcode(string postcode);
+        Task<GetHelperResponse> GetChampionsByPostcode(string postcode);
     }
 }
