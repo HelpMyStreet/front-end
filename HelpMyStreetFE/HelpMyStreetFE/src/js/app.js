@@ -15,8 +15,8 @@ const mapsAPIKey = "AIzaSyAiCC5pku-80g3yX8vVbRlXA0liX9wuX7s";
 
 var script = document.createElement('script');
 script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsAPIKey}&callback=initMap`;
-script.defer = true;
-script.async = true;
+script.defer = false;
+script.async = false;
 
 var map;
 
@@ -103,7 +103,7 @@ function buildInfoWindow(marker, postcode, champions, volunteers) {
         infowindow.open(map, marker);
     });
     marker.addListener('mouseout', function () {
-        setTimeout(infowindow.close, 3000);
+        setTimeout(function () { infowindow.close(); }, 3000);
     });
 }
 
