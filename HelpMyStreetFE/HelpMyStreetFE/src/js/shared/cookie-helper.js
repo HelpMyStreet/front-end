@@ -1,17 +1,33 @@
 ﻿export function intialiseCookieConsent() {
-    let cookieName = "confirmedConsent";
-    let cookie = getCookie(cookieName);
-    if (!cookie) {
-        setTimeout(function () {
-            $("#cookie_close").on("click", function () {
-                setCookie(cookieName, "true", 100);
-                $("#cookie-consent").fadeOut(200);                
-            });
-            $("#cookie-consent").fadeIn(400);
+    $('body').ihavecookies({
+        // Optional callback function when 'Accept' button is clicked
+        onAccept: function () {
+            // Do whatever you need to here...
+        },
 
-        }, 2000)       
-   }
+        // Array of cookie types for which to show checkboxes.
+        // - type: Type of cookie. This is also the label that is displayed.
+        // - value: Value of the checkbox so it can be easily identified in
+        //          your application.
+        // - description: Description for this cookie type. Displayed in
+        //                title attribute.        
+        title: 'This website uses cookies',
+        message: ' We use cookies to help make our website usable and to understand how visitors interact with us. More information can be found in our <a href="/privacy-policy" target="_blank">Privacy Policy</a>. <br /> You can change or withdraw your consent at any time by changing your browser settings.',
+        expires: 365,
+        moreInfoLabel: '',
+        
+        cookieTypes: [         
+            {
+                type: 'Statistics',
+                value: 'Statistics',
+                description: 'Cookies related to site visits, browser types, etc.'
+            },
+        
+        ],
+
+    });
 }
+
 
 export function getCookie(name) {
     // Split cookie string and get all individual name=value pairs in an array
