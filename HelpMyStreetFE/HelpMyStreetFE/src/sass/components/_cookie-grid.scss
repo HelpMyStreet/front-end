@@ -1,0 +1,211 @@
+﻿.cookie-grid-container {
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
+    grid-template-rows: repeat(11, 0.2fr);
+    gap: 1px 1px;
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary CookieNameVal ProviderName PurposeVal ExpiryVal" "Neccesary CookieNameVal1 ProviderName PurposeVal1 ExpiryValTwo" "Neccesary CookieNameVal2 ProviderName PurposeVal3 ExpiryValThree" "Statistics ThirdPartyCookie1 ThirdPartyProvider PurposeOne ThirdPartyExpiryOne" "Statistics ThirdPartyCookie2 ThirdPartyProvider PurposeTwo ThirdPartyExpiryTwo" "Statistics ThirdParticyCookie3 ThirdPartyProvider PurposeThree ThirdPartyExpiryThree" "Statistics ThirdPartyCookie4 ThirdPartyProvider2 PurposeFour ThirdPartyExpiryFour" "Statistics ThirdPartyCookie5 ThirdPartyProvider2 PurposeFive ThirdPartyExpiryFive" "Statistics ThirdPartyCookie6 ThirdPartyProvider2 PurposeSix ThirdPartyExpirySix" "Statistics ThirdPartyCookie7 ThirdPartyProvider2 PurposeSeven ThirdPartyExpirySeven" "Statistics ThirdParticyCookie8 ThirdPartyProvider2 PurposeEight ThirdPartyExpiryEight";
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+
+    div {
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align:center;
+    }
+
+
+
+
+    .Type {
+        grid-area: Type;
+        font-weight: 600;
+    }
+
+    .Cookie {
+        grid-area: Cookie;
+        font-weight: 600;
+    }
+
+    .Provider {
+        grid-area: Provider;
+        font-weight: 600;
+    }
+
+    .Purpose {
+        grid-area: Purpose;
+        font-weight: 600;
+    }
+
+    .Expiry {
+        grid-area: Expiry;
+        font-weight: 600;
+    }
+
+    .Neccesary {
+        grid-area: Neccesary;
+    }
+
+    .CookieNameVal {
+        grid-area: CookieNameVal;
+    }
+
+    .ProviderName {
+        grid-area: ProviderName;
+
+        a {
+            display: contents;
+        }
+    }
+
+    .PurposeVal {
+        grid-area: PurposeVal;
+    }
+
+    .PurposeVal1 {
+        grid-area: PurposeVal1;
+    }
+
+    .PurposeVal3 {
+        grid-area: PurposeVal3;
+    }
+
+    .ExpiryVal {
+        grid-area: ExpiryVal;
+    }
+
+    .ExpiryValTwo {
+        grid-area: ExpiryValTwo;
+    }
+
+    .ExpiryValThree {
+        grid-area: ExpiryValThree;
+    }
+
+    .CookieNameVal1 {
+        grid-area: CookieNameVal1;
+    }
+
+    .CookieNameVal2 {
+        grid-area: CookieNameVal2;
+    }
+
+    .Statistics {
+        grid-area: Statistics;
+    }
+
+    .ThirdPartyCookie1 {
+        grid-area: ThirdPartyCookie1;
+    }
+
+    .ThirdPartyCookie2 {
+        grid-area: ThirdPartyCookie2;
+    }
+
+    .ThirdParticyCookie3 {
+        grid-area: ThirdParticyCookie3;
+    }
+
+    .ThirdPartyCookie4 {
+        grid-area: ThirdPartyCookie4;
+    }
+
+    .ThirdPartyCookie5 {
+        grid-area: ThirdPartyCookie5;
+    }
+
+    .ThirdParticyCookie6 {
+        grid-area: ThirdParticyCookie6;
+    }
+
+    .ThirdPartyCookie7 {
+        grid-area: ThirdPartyCookie7;
+    }
+
+    .ThirdParticyCookie8 {
+        grid-area: ThirdParticyCookie8;
+    }
+
+    .ThirdPartyProvider {
+        grid-area: ThirdPartyProvider;
+
+        a {
+            display: contents;
+        }
+    }
+
+    .ThirdPartyProvider2 {
+        grid-area: ThirdPartyProvider2;
+
+        a {
+            display: contents;
+        }
+    }
+
+    .PurposeOne {
+        grid-area: PurposeOne;
+    }
+
+    .PurposeTwo {
+        grid-area: PurposeTwo;
+    }
+
+    .PurposeThree {
+        grid-area: PurposeThree;
+    }
+
+    .PurposeFour {
+        grid-area: PurposeFour;
+    }
+
+    .PurposeFive {
+        grid-area: PurposeFive;
+    }
+
+    .PurposeSix {
+        grid-area: PurposeSix;
+    }
+
+    .PurposeSeven {
+        grid-area: PurposeSeven;
+    }
+
+    .PurposeEight {
+        grid-area: PurposeEight;
+    }
+
+    .ThirdPartyExpiryOne {
+        grid-area: ThirdPartyExpiryOne;
+    }
+
+    .ThirdPartyExpiryTwo {
+        grid-area: ThirdPartyExpiryTwo;
+    }
+
+    .ThirdPartyExpiryThree {
+        grid-area: ThirdPartyExpiryThree;
+    }
+
+    .ThirdPartyExpiryFour {
+        grid-area: ThirdPartyExpiryFour;
+    }
+
+    .ThirdPartyExpiryFive {
+        grid-area: ThirdPartyExpiryFive;
+    }
+
+    .ThirdPartyExpirySix {
+        grid-area: ThirdPartyExpirySix;
+    }
+
+    .ThirdPartyExpirySeven {
+        grid-area: ThirdPartyExpirySeven;
+    }
+
+    .ThirdPartyExpiryEight {
+        grid-area: ThirdPartyExpiryEight;
+    }
+}
