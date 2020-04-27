@@ -4,10 +4,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-<script>
-     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
-</script>
-
     <partial name="_SiteHeaderPublic" />
 
 	<div class="container">
@@ -24,16 +20,16 @@
 			</div>
 		</div>
 
-		<div class="row stats mb40 text-center justify-center">
-			<div class="sm3">
+		<div class="row stats mb40 text-center justify-center "> 
+			<div class="sm3 dnone">
 				<h2 class="orange">@Model.NumVolunteers</h2>
 				<p>Volunteers</p>
 			</div>
-			<div class="sm3">
+			<div class="sm3 dnone">
 				<h2>@Model.NumStreetChampions</h2>
 				<p>Street champions</p>
 			</div>
-			<div class="sm3">
+			<div class="sm3 dnone">
 				<h2 class="green">@Model.NumStreetsCovered</h2>
 				<p>Streets covered</p>
 			</div>
@@ -42,7 +38,7 @@
 		<div class="row card street-check">
 			<div class="sm12 max">
 				<h3>Is your street covered?</h3>
-				<p class="ma0">
+				<p class="ma0 dnone">
 					<span class="inline-flex align-center">
 						0% <span class="progress"><span class="indicator" style="width: @Model.PostCodesCoveredPercentage%">&nbsp;</span></span> 100%
 					</span>
@@ -62,27 +58,29 @@
 				</div>
 			</div>
 			<div class="postcode__info dnone">
-				<div id="postcode_covered" class="dnone postcode__info__message">
-					<div class="row">
-						<div class="sm8 postcode__info__message__text">
+				<div id="postcode_covered" class="dnone postcode__info__message">					
+						<div class="postcode__info__message__text">
 							Yes! Your street is covered - but we need more Helpers and Street Champions to help people in need!
 						</div>
-						<div class="sm4">
-							<a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
-							<a href="/requesthelpA" id="#requestHelp" class="requesthelp_link"> Request Help</a>
+						<div>
+							<a href="/registration/stepone" class="btn cta large fill btn--sign-up">Sign Up Now</a>							
 						</div>
-					</div>
+						<div>
+							<a href="/request-help-v1" id="#requestHelp" class="requesthelp_link"> Request Help</a>
+						</div>					
 				</div>
 				<div id="postcode_notcovered" class="dnone postcode__info__message">
-					<div class="row">
-						<div class="sm8 postcode__info__message__text">
-							Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
-						</div>
-						<div class="sm4">
-							<a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
-							<a href="/requesthelpA" id="#requestHelp" class="requesthelp_link"> Request Help</a>
-						</div>
+					
+					<div class="postcode__info__message__text">
+						Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
 					</div>
+					<div>
+						<a href="/registration/stepone" class="btn cta large fill btn--sign-up">Sign Up Now</a>
+					</div>
+					<div>
+						<a href="/request-help-v1" id="#requestHelp" class="requesthelp_link"> Request Help</a>
+					</div>
+				
 				</div>
 				<div id="postcode_invalid" class="dnone postcode__info__message">
 					<div class="row">
@@ -158,7 +156,7 @@
 		</div>
 		<div class="row justify-center text-center mt72">
 			<div class="sm4">
-				<a href="/requesthelpA" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
+				<a href="/request-help-v1" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
 			</div>
 		</div>
 		<div class="row justify-center text-center mt72">

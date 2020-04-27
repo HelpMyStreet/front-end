@@ -16,5 +16,7 @@ namespace HelpMyStreetFE.Services
         Task<int> GetStreetChampions();
         Task<int> GetStreetsCovered();
         Task<int> GetVolunteers();
+        Task<GetHelperResponse> GetHelpersByPostcode(string postcode);
+        Task<GetHelperResponse> GetChampionsByPostcode(string postcode);
     }
 }

@@ -1,0 +1,15 @@
+﻿@model HelpMyStreetFE.Models.Account.StreetsViewModel;
+
+@{
+    var viewModel = Model;
+
+}
+<article class="user-profile profile-panel p-md">
+    <header class="profile-panel__header">
+        <h3 class="profile-panel__title">My Streets</h3>
+    </header>
+
+    <article class="profile">
+        @Html.DisplayFor(x => x.Streets)
+    </article>
+</article>

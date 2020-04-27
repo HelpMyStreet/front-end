@@ -24,3 +24,16 @@
         }
     }
 }
+
+
+.csl:not(:last-of-type):after {
+    content: ",";
+}
+
+.csl:nth-last-of-type(2):before {
+    content: none;
+}
+
+.csl:nth-last-of-type(2):after {
+    content: " and ";
+} 
