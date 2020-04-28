@@ -19,13 +19,16 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
         public AccountController(
             ILogger<AccountController> logger,
-            IUserService userService
+            IUserService userService,
+            IAddressService addressService
             )
         {
             _logger = logger;
             _userService = userService;
+            _addressService = addressService;
         }
 
         private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
@@ -36,7 +39,8 @@ namespace HelpMyStreetFE.Controllers
             string streetChampion = string.Empty;
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
-
+            bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
+            bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
             if (user.ChampionPostcodes.Count > 0)
             {
                 streetChampion = "Street Champion";
@@ -64,8 +68,10 @@ namespace HelpMyStreetFE.Controllers
                 personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
                 gender,
                 underlyingMedicalConditions,
-                user.ChampionPostcodes
-                );
+                user.ChampionPostcodes,
+                isStreetChampion,
+                isVerified
+                ) ;
         }
 
         [HttpGet]
@@ -96,20 +102,29 @@ namespace HelpMyStreetFE.Controllers
         {
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel(currentUser);
+            viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
-            var streetsViewModel = new StreetsViewModel();          
+            var streetsViewModel = new StreetsViewModel();
+
+            var friendlyPostcodes = await _addressService.GetFriendlyNames(viewModel.UserDetails.ChampionPostcodes);
+            
             foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
             {
-                Street street = new Street();
+                Street street = new Street();                
                 street.Name = postcode;
-                var helpers = await _userService.GetHelpersByPostcode(postcode) ;            
-                var champs = await _userService.GetChampionsByPostcode(postcode);
+                if (friendlyPostcodes.Content != null)
+                {
+                    street.FriendlyName = friendlyPostcodes.Content.PostcodesResponse[HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode)].FriendlyName;
+                }
+                var helpers = await _userService.GetHelpersByPostcode(postcode);            
+                var champs = await _userService.GetChampionsByPostcode(postcode);                
                 helpers.Users.AddRange(champs.Users);
                 if (helpers.Users != null)
                 {            
-                    foreach (var helper in helpers.Users)
+                    foreach (var helper in helpers.Users.GroupBy(x => x.ID).Select(g => g.First()).ToList())// de duping
                     {
                         if (helper.ID == currentUser.ID) continue;
+                        if (!helper.IsVerified.HasValue || !helper.IsVerified.Value) continue;
                         street.Helpers.Add(new Helper
                         {
                             Name = helper.UserPersonalDetails.DisplayName,
@@ -168,8 +183,8 @@ namespace HelpMyStreetFE.Controllers
 
                 viewModel.Notifications = notifications;
                 var userDetails = GetUserDetails(user);
-                viewModel.UserDetails = userDetails;
-                viewModel.IsStreetChampion = userDetails.StreetChampion.Equals("Street Champion", System.StringComparison.InvariantCultureIgnoreCase);
+                viewModel.UserDetails = userDetails;                
+                
             }
 
             return viewModel;
