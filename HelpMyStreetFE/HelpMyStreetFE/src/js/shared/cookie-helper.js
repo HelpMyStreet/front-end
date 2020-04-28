@@ -1,18 +1,50 @@
 ﻿export function intialiseCookieConsent() {
-    let cookieName = "confirmedConsent";
-    let cookie = getCookie(cookieName);
-    if (!cookie) {
-        setTimeout(function () {
-            $("#cookie_close").on("click", function () {
-                setCookie(cookieName, "true", 100);
-                $("#cookie-consent").fadeOut(200);                
-            });
-            $("#cookie-consent").fadeIn(400);
+    $('body').ihavecookies({
+        // Optional callback function when 'Accept' button is clicked
+        onAccept: function () {
+            var acceptedStatsCookie = $.fn.ihavecookies.preference('Statistics');  
+            if (acceptedStatsCookie == false) {
+                deleteUneccsaryCookies(setCookie); // delete all cookies (GTM will add any back in based on the below cookies that are set)              
+            }
+        },
+        // Array of cookie types for which to show checkboxes.
+        // - type: Type of cookie. This is also the label that is displayed.
+        // - value: Value of the checkbox so it can be easily identified in
+        //          your application.
+        // - description: Description for this cookie type. Displayed in
+        //                title attribute.        
+        title: 'This website uses cookies',
+        message: ' We use cookies to help make our website usable and to understand how visitors interact with us. More information can be found in our <a href="/privacy-policy" target="_blank">Privacy Policy</a>. <br /> You can change or withdraw your consent at any time by changing your browser settings.',
+        expires: 365,
+        moreInfoLabel: '',
+        
+        cookieTypes: [         
+            {
+                type: 'Statistics',
+                value: 'Statistics',
+                description: 'Cookies related to site visits, browser types, etc.'
+            },
+        
+        ],
 
-        }, 2000)       
-   }
+    });
 }
 
+function deleteUneccsaryCookies(setCookieAfterDelete) {
+    var neccesaryCookies = ['ARRAffinity','cookieControl','cookieControlPrefs','.AspNetCore']
+
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        var isNeccesary = (neccesaryCookies.find(x => name.trim().startsWith(x.trim())) != undefined);
+        console.log(isNeccesary);
+        if (cookie && !isNeccesary)
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+    setCookieAfterDelete("optOutStats", "1", 365)
+}
 export function getCookie(name) {
     // Split cookie string and get all individual name=value pairs in an array
     var cookieArr = document.cookie.split(";");
