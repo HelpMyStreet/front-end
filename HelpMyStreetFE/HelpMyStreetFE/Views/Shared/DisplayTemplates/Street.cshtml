@@ -18,13 +18,17 @@
                 </div>     
                 @if (Model.Helpers.Count > 0)
                 {
-                <div class="profile__mystreet__details dnone">
+                <div class="profile__mystreet__details__desktop">
                     <div class="profile__mystreet__details__volunteer br-none">
                         <span class="profile__mystreet__details__volunteer--big"><span>Street Champions And Helpers</span></span>
                     </div>
                     <div class="profile__mystreet__details__volunteer">
                         <span class="profile__mystreet__details__volunteer--big"><span>Can help with...</span></span>
                     </div>
+                    @Html.DisplayFor(x => x.Helpers)
+                </div>
+                
+                 <div class="profile__mystreet__details__mobile ">
                     @Html.DisplayFor(x => x.Helpers)
                 </div>
                 }
