@@ -15,6 +15,22 @@
             display: block;
             padding: 10px;
 
+            .mobile {
+                display: inline-block;
+
+                @media screen and (min-width: $sm-screen) {
+                    display:none;
+                }
+            }
+
+            .desktop {
+                display: none;
+
+                @media screen and (min-width: $sm-screen) {
+                    display:inline-block;
+                }
+            }
+
 
             &:hover {
                 background: $light-blue;

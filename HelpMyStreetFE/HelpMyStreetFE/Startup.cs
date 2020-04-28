@@ -42,7 +42,7 @@ namespace HelpMyStreetFE
             services.AddHttpClient<IRequestHelpRepository, RequestHelpRepository>();
             services.AddHttpClient<IAddressService, AddressService>();
             services.AddHttpClient<IValidationService, ValidationService>();            
-            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
             

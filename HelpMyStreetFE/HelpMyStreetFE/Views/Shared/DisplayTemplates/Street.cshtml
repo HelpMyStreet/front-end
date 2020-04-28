@@ -7,7 +7,18 @@
     
             <div class="profile__mystreet">
                 <div class="profile__mystreet__header">
-                    @Model.Name   @if (Model.Helpers.Count == 0)
+                    <span class="mobile">@Model.Name</span>
+                    <span class="desktop">
+                        @if (String.IsNullOrEmpty(Model.FriendlyName))
+                        {
+                            @Model.Name
+                        }
+                        else
+                        {
+                            @Model.FriendlyName
+                        }
+                    </span>
+                    @if (Model.Helpers.Count == 0)
                     {
                         <span> - No helpers are currently covering this postcode</span>
                     }

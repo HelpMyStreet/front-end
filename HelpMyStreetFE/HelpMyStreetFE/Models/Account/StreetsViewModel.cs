@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Models.Account
             Helpers = new List<Helper>();
         }
         public string Name { get; set; }
+        public string FriendlyName { get; set; }
         public List<Helper> Helpers { get; set; }
     }
 

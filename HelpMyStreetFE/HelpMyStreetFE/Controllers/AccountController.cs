@@ -19,13 +19,16 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
         public AccountController(
             ILogger<AccountController> logger,
-            IUserService userService
+            IUserService userService,
+            IAddressService addressService
             )
         {
             _logger = logger;
             _userService = userService;
+            _addressService = addressService;
         }
 
         private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
@@ -98,11 +101,18 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
-            var streetsViewModel = new StreetsViewModel();          
+            var streetsViewModel = new StreetsViewModel();
+
+            var friendlyPostcodes = await _addressService.GetFriendlyNames(viewModel.UserDetails.ChampionPostcodes);
+            
             foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
             {
-                Street street = new Street();
+                Street street = new Street();                
                 street.Name = postcode;
+                if (friendlyPostcodes.Content != null)
+                {
+                    street.FriendlyName = friendlyPostcodes.Content.PostcodesResponse[HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode)].FriendlyName;
+                }
                 var helpers = await _userService.GetHelpersByPostcode(postcode) ;            
                 var champs = await _userService.GetChampionsByPostcode(postcode);
                 helpers.Users.AddRange(champs.Users);
