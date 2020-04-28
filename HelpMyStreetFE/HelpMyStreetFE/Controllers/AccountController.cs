@@ -96,6 +96,7 @@ namespace HelpMyStreetFE.Controllers
         {
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel(currentUser);
+            viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();          
             foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
