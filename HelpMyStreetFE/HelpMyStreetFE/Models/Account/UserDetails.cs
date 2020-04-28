@@ -17,7 +17,9 @@ namespace HelpMyStreetFE.Models.Account
             string dateOfBirth,
             string gender,
             string underlyingMedicalConditions,
-            List<string> championPostcodes
+            List<string> championPostcodes,
+            bool isStreetChampion,
+            bool isVerified
             )
         {
             Initials = initials;
@@ -33,6 +35,8 @@ namespace HelpMyStreetFE.Models.Account
             StreetChampion = streetChampion;
             UnderlyingMedicalConditions = underlyingMedicalConditions;
             ChampionPostcodes = championPostcodes;
+            IsStreetChampion = isStreetChampion;
+            IsVerified = isVerified;
         }
 
         public string Initials { get; set; }
@@ -48,6 +52,8 @@ namespace HelpMyStreetFE.Models.Account
         public string UnderlyingMedicalConditions { get; set; }
         public string StreetChampion { get; set; }
         public List<string> ChampionPostcodes { get; set; }
+        public bool IsStreetChampion { get; set; }
+        public bool IsVerified { get; set; }
 
     }
 }

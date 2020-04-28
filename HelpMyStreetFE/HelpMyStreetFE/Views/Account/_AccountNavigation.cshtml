@@ -6,7 +6,7 @@
         <li class="account__nav__item">
             <a href="/account/" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>
         </li>
-        @if (Model.IsStreetChampion)
+        @if (Model.UserDetails.IsStreetChampion && Model.UserDetails.IsVerified)
         {
             <li class="account__nav__item">
                 <a href="/account/streets" class="@(Model.CurrentPage == MenuPage.MyStreets ? "selected" : string.Empty)">My Streets</a>

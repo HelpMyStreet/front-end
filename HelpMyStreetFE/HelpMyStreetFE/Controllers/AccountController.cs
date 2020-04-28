@@ -39,7 +39,8 @@ namespace HelpMyStreetFE.Controllers
             string streetChampion = string.Empty;
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
-
+            bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
+            bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
             if (user.ChampionPostcodes.Count > 0)
             {
                 streetChampion = "Street Champion";
@@ -67,8 +68,10 @@ namespace HelpMyStreetFE.Controllers
                 personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
                 gender,
                 underlyingMedicalConditions,
-                user.ChampionPostcodes
-                );
+                user.ChampionPostcodes,
+                isStreetChampion,
+                isVerified
+                ) ;
         }
 
         [HttpGet]
@@ -113,14 +116,15 @@ namespace HelpMyStreetFE.Controllers
                 {
                     street.FriendlyName = friendlyPostcodes.Content.PostcodesResponse[HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode)].FriendlyName;
                 }
-                var helpers = await _userService.GetHelpersByPostcode(postcode) ;            
-                var champs = await _userService.GetChampionsByPostcode(postcode);
+                var helpers = await _userService.GetHelpersByPostcode(postcode);            
+                var champs = await _userService.GetChampionsByPostcode(postcode);                
                 helpers.Users.AddRange(champs.Users);
                 if (helpers.Users != null)
                 {            
-                    foreach (var helper in helpers.Users)
+                    foreach (var helper in helpers.Users.GroupBy(x => x.ID).Select(g => g.First()).ToList())// de duping
                     {
                         if (helper.ID == currentUser.ID) continue;
+                        if (!helper.IsVerified.HasValue || !helper.IsVerified.Value) continue;
                         street.Helpers.Add(new Helper
                         {
                             Name = helper.UserPersonalDetails.DisplayName,
@@ -179,8 +183,8 @@ namespace HelpMyStreetFE.Controllers
 
                 viewModel.Notifications = notifications;
                 var userDetails = GetUserDetails(user);
-                viewModel.UserDetails = userDetails;
-                viewModel.IsStreetChampion = userDetails.StreetChampion.Equals("Street Champion", System.StringComparison.InvariantCultureIgnoreCase);
+                viewModel.UserDetails = userDetails;                
+                
             }
 
             return viewModel;
