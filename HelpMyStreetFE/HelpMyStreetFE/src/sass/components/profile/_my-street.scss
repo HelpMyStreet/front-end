@@ -19,7 +19,7 @@
                 display: inline-block;
 
                 @media screen and (min-width: $sm-screen) {
-                    display:none;
+                    display: none;
                 }
             }
 
@@ -27,7 +27,7 @@
                 display: none;
 
                 @media screen and (min-width: $sm-screen) {
-                    display:inline-block;
+                    display: inline-block;
                 }
             }
 
@@ -48,12 +48,6 @@
                     border-left: 10px solid transparent;
                     border-right: 10px solid transparent;
                     border-top: 10px solid $dark-blue;
-
-                    @media screen and (min-width: $sm-screen) {
-                        border-left: 20px solid transparent;
-                        border-right: 20px solid transparent;
-                        border-top: 20px solid $dark-blue;
-                    }
                 }
 
                 &--down {
@@ -62,14 +56,8 @@
                     width: 0;
                     height: 0;
                     border-left: 10px solid transparent;
-                    border-right: 20px solid transparent;
+                    border-right: 10px solid transparent;
                     border-bottom: 10px solid $dark-blue;
-
-                    @media screen and (min-width: $sm-screen) {
-                        border-left: 20px solid transparent;
-                        border-right: 20px solid transparent;
-                        border-bottom: 20px solid $dark-blue;
-                    }
                 }
             }
         }
@@ -145,11 +133,12 @@
 
 
             &__volunteer {
-                border: 1px solid $p-color;
+                border-bottom: 1px solid $gray-10;
                 padding: 2px 10px;
 
                 @media screen and (min-width: $sm-screen) {
-                    padding: 20px;
+                    padding: 10px;
+                    border: 1px solid $p-color;
                 }
 
                 &--small {
