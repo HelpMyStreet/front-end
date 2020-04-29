@@ -100,7 +100,8 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ComingSoon()
         {
-            AccountViewModel viewModel = GetAccountViewModel(await GetCurrentUser());      
+            AccountViewModel viewModel = GetAccountViewModel(await GetCurrentUser());
+            viewModel.Notifications = new List<NotificationModel>();
             viewModel.CurrentPage = MenuPage.ComingSoon;
             return View("Index", viewModel);
         }
