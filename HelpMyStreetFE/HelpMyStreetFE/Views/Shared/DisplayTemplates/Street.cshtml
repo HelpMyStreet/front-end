@@ -5,17 +5,17 @@
 
 }
     
-    <div class="profile__mystreet">
+    <div class="profile__mystreet">   
         <div class="profile__mystreet__header">
             <span class="mobile">@Model.Name</span>
             <span class="desktop">
                 @if (String.IsNullOrEmpty(Model.FriendlyName))
                 {
-                    @Model.Name
+                    @Model.Name 
                 }
                 else
                 {
-                    @Model.FriendlyName
+                    @Model.FriendlyName <span>(@Model.Name)</span>
                 }
             </span>
             @if (Model.Helpers.Count == 0)

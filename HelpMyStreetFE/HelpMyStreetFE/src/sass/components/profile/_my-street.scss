@@ -3,6 +3,30 @@
 
 .profile {
 
+
+    ul {
+        @include copy-sz-md;
+        color: $p-color;
+    }
+
+    .desktop {
+        display: none;
+
+        @media screen and (min-width: $sm-screen) {
+            display: block;
+            @include copy-sz-md;
+        }
+    }
+
+    .mobile {
+        display: block;
+        @include copy-sz-xs;
+
+        @media screen and (min-width: $sm-screen) {
+            display: none;
+        }
+    }
+
     &__mystreet {
         border: 1px solid $gray-10;
         border-radius: 4px;
