@@ -38,10 +38,9 @@ function deleteUneccsaryCookies(setCookieAfterDelete) {
         var cookie = cookies[i];
         var eqPos = cookie.indexOf("=");
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        var isNeccesary = (neccesaryCookies.find(x => name.trim().startsWith(x.trim())) != undefined);
-        console.log(isNeccesary);
+        var isNeccesary = (neccesaryCookies.find(x => name.trim().startsWith(x.trim())) != undefined);        
         if (cookie && !isNeccesary)
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = name + "=; path=/; domain=" + window.location.hostname + "; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
     setCookieAfterDelete("optOutStats", "1", 365)
 }
