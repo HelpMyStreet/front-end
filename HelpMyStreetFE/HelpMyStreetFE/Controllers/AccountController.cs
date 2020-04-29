@@ -134,6 +134,7 @@ namespace HelpMyStreetFE.Controllers
                     {
                         if (helper.ID == currentUser.ID) continue;
                         if (!helper.IsVerified.HasValue || !helper.IsVerified.Value) continue;
+                        bool isStreetChampion = (helper.StreetChampionRoleUnderstood.Value && helper.ChampionPostcodes.Contains(postcode));
                         street.Helpers.Add(new Helper
                         {
                             Name = helper.UserPersonalDetails.DisplayName,
@@ -141,7 +142,7 @@ namespace HelpMyStreetFE.Controllers
                             AlternatePhoneNumber = helper.UserPersonalDetails.OtherPhone,
                             Email = helper.UserPersonalDetails.EmailAddress,
                             SupportedActivites = helper.SupportActivities,
-                            IsStreetChampion = helper.StreetChampionRoleUnderstood.Value
+                            IsStreetChampion = isStreetChampion
                         }); 
                     }
                     streetsViewModel.Streets.Add(street);
