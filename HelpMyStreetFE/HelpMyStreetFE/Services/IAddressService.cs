@@ -12,5 +12,6 @@ namespace HelpMyStreetFE.Services
         Task<List<PostCodeDetail>> GetPostcodeDetailsNearUser(User user);
         Task<int> GetTotalStreets();
         Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode);
+        Task<GetPostcodesResponse> GetFriendlyNames(List<string> postcodes);
     }
 }

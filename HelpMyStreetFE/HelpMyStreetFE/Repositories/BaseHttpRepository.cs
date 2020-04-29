@@ -60,6 +60,7 @@ namespace HelpMyStreetFE.Repositories
         {
             if (resp.IsSuccessStatusCode)
             {
+                var t = await resp.Content.ReadAsStringAsync();
                 var respObj = JsonConvert.DeserializeObject<TResponse>(await resp.Content.ReadAsStringAsync());
                 return respObj;
             }

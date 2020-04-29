@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models.Reponses;
+﻿using HelpMyStreet.Contracts.AddressService.Request;
+using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
@@ -15,6 +16,11 @@ namespace HelpMyStreetFE.Repositories
         public async Task<NearbyPostcodeResponse> GetNearbyPostcodes(string postcode)
         {
             return await GetAsync<NearbyPostcodeResponse>($"/api/getnearbypostcodes?postcode={postcode}");
+        }
+
+        public async Task<GetPostcodesResponse> GetPostcodes(GetPostcodesRequest request)
+        {
+            return await PostAsync<GetPostcodesResponse>($"/api/GetPostCodes", request);
         }
     }
 }

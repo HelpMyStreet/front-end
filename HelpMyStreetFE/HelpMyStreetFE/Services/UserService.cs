@@ -130,5 +130,11 @@ namespace HelpMyStreetFE.Services
         {
             return await _userRepository.GetHelpersByPostcode(postcode);
         }
+
+        public async Task<GetHelperResponse> GetChampionsByPostcode(string postcode)
+        {
+            return await _userRepository.GetChampionsByPostcode(postcode);
+        }
     }
+
 }
