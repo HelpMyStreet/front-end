@@ -1,3 +1,6 @@
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -33,6 +36,39 @@ namespace HelpMyStreetFE
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
                 });
+
+
+            services.AddHttpClient<IAddressService>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
+            services.AddHttpClient<IUserRepository>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
+            services.AddHttpClient<IValidationService>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
+
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
@@ -41,11 +77,11 @@ namespace HelpMyStreetFE
             services.AddHttpClient<IAddressRepository, AddressRepository>();
             services.AddHttpClient<IRequestHelpRepository, RequestHelpRepository>();
             services.AddHttpClient<IAddressService, AddressService>();
-            services.AddHttpClient<IValidationService, ValidationService>();            
+            services.AddHttpClient<IValidationService, ValidationService>();
             services.AddSingleton<IUserService, Services.UserService>();
-            services.AddSingleton<IAuthService, AuthService>();            
+            services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IEmailService, EmailService>();
-            
+
             services.AddSingleton<IRequestService, RequestService>();
             services.AddControllers();
             services.AddRazorPages()
@@ -70,7 +106,8 @@ namespace HelpMyStreetFE
             app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent("helpmystreet.org"));
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
-            app.UseStaticFiles(new StaticFileOptions{
+            app.UseStaticFiles(new StaticFileOptions
+            {
                 ContentTypeProvider = provider
             });
 
