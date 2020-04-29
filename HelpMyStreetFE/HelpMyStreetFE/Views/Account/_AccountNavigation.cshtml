@@ -12,8 +12,10 @@
                 <a href="/account/streets" class="@(Model.CurrentPage == MenuPage.MyStreets ? "selected" : string.Empty)">My Streets</a>
             </li>
         }
-        <li class="account__nav__item">
-            <a href="/account/comingSoon"  class="@(Model.CurrentPage == MenuPage.ComingSoon ? "selected" : string.Empty)" >Coming Soon...</a>
-        </li>
+        @if (Model.UserDetails.IsVerified) { 
+            <li class="account__nav__item">
+                <a href="/account/comingSoon" class="@(Model.CurrentPage == MenuPage.ComingSoon ? "selected" : string.Empty)">Coming Soon...</a>
+            </li>
+         }
     </ul>
 </nav>
