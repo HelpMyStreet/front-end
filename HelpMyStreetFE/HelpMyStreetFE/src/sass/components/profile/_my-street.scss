@@ -74,6 +74,20 @@
 
                 @media screen and (min-width: $sm-screen) {
                     display: grid;
+                    display: -ms-grid;
+
+                    @for $i from 1 through 100 {
+                        div:nth-of-type(#{$i}) {
+                            @if($i % 2 == 0) {
+                                -ms-grid-row: ($i - 1);
+                                -ms-grid-column: 2;
+                            }
+                            @else {
+                                -ms-grid-row: $i;
+                                -ms-grid-column: 1;
+                            }
+                        }
+                    }
                 }
 
                 .br-none {

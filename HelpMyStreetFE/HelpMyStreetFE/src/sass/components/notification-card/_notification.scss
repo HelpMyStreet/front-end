@@ -3,53 +3,64 @@
 @import "../../mixins/effects";
 
 .notification {
-  &__card {
-    
-    @include shadow-md;
-    
-    padding: 30px 30px 30px 0px;
-    width: 100%;
-    background-color: white;
-    
-    border-radius: 4px;
-    display: grid;
-    grid-template-columns: 170px 1fr;
-    /*display: -ms-grid;
-    -ms-grid-columns: 170px 1fr;*/
-  }
-  &__icon {
-    height: 55px;
-    width: 55px;
-    &__wrapper {
-      margin: auto;
-      grid-column: 1;
-      -ms-grid-column: 1;
+    &__card {
+
+        @include shadow-md;
+        padding: 30px 30px 30px 0px;
+        width: 100%;
+        background-color: white;
+        border-radius: 4px;
+        display: grid;
+        grid-template-columns: 170px 1fr;
+        display: -ms-grid;
     }
-  }
-  &__title {
-    color: $sub-title-blue;
-    @include title-sz-6;  
-  }
-  &__message {
-    color: $p-color;
-    @include copy-sz-lg;
-  }
-  &__close {
-    height: 10px;
-    width: 10px;
-    margin-top: 10px;
-    margin-left: 10px;
-    position: relative;
-    &__wrapper {
-      top: 10px;
-      right: 10px;
-      width: 30px;
-      height: 30px;
-      background-color: #eef5ed;
-      border-radius: 50%;
-      position: absolute;
-      cursor: pointer;
-      margin: auto;
+
+    &__icon {
+        height: 55px;
+        width: 55px;
+
+
+        &__wrapper {
+            margin: auto;
+            grid-column: 1;
+            -ms-grid-column: 1;
+            -ms-grid-row: 1;
+        }
     }
-  }
+
+    &__content {
+        -ms-grid-row: 1;
+        -ms-grid-column: 3;
+    }
+
+    &__title {
+        color: $sub-title-blue;
+        @include title-sz-6;
+    }
+
+    &__message {
+        color: $p-color;
+        @include copy-sz-lg;
+  
+    }
+
+    &__close {
+        height: 10px;
+        width: 10px;
+        margin-top: 10px;
+        margin-left: 10px;
+        position: relative;
+
+        &__wrapper {
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: #eef5ed;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            margin: auto;
+        }
+    }
 }

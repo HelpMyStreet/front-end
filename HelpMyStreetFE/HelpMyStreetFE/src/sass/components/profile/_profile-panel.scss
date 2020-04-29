@@ -24,11 +24,24 @@
     border: none;
     border-top: 1px solid $gray-10;
   }
+
+
 }
+
+.profile{
+   &__text{
+            ul{
+                li {color: $p-color;}
+            }
+        }
+   }
 
 @media screen and (min-width: $med-screen){
     .profile {
         margin-top: 20px;
+     
     }
+
+    
 }
 
