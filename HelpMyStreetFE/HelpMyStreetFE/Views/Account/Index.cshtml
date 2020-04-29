@@ -18,19 +18,22 @@
     </div>
 
   
-        <div class="account__body">
-            <partial name="_AccountNavigation" />
-            @switch (Model.CurrentPage)
-            {
-                case MenuPage.MyStreets:
-                    <partial name="_MyStreets" for="@Model.PageModel" />
-                    break;
-                default:
-                    <partial name="_UserData" for="@Model.PageModel" />
-                    break;
-            }
+    <div class="account__body">
+        <partial name="_AccountNavigation" />
+        @switch (Model.CurrentPage)
+        {
+            case MenuPage.MyStreets:
+                <partial name="_MyStreets" for="@Model.PageModel" />
+                break;
+            case MenuPage.ComingSoon:
+                <partial name="_ComingSoon"/>
+                break;
+            default:
+                <partial name="_UserData" for="@Model.PageModel" />
+                break;
+        }
 
 
-        </div>
+    </div>
         
 </main>

@@ -98,6 +98,14 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> ComingSoon()
+        {
+            AccountViewModel viewModel = GetAccountViewModel(await GetCurrentUser());      
+            viewModel.CurrentPage = MenuPage.ComingSoon;
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Streets()
         {
             var currentUser = await GetCurrentUser();
