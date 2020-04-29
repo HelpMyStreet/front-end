@@ -11,6 +11,8 @@ using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -20,15 +22,19 @@ namespace HelpMyStreetFE.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
         private readonly IAddressService _addressService;
+        private readonly IConfiguration _configuration;
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
-            IAddressService addressService
+            IAddressService addressService,
+            IConfiguration configuration
             )
         {
             _logger = logger;
             _userService = userService;
             _addressService = addressService;
+            _configuration = configuration;
+
         }
 
         private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
@@ -72,6 +78,18 @@ namespace HelpMyStreetFE.Controllers
                 isStreetChampion,
                 isVerified
                 ) ;
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login()
+        {
+            LoginViewModel model = new LoginViewModel
+            {
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
 
         [HttpGet]
