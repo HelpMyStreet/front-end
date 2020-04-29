@@ -47,10 +47,19 @@
     @media screen and (min-width: $med-screen) {
         &__body {
             display: grid;
+            display: -ms-grid;
             grid-template-columns: 13rem 1fr;
+            -ms-grid-columns: 13rem 1fr;
+
+            .profile-panel {
+                -ms-grid-row: 1;
+                -ms-grid-column: 2;
+            }
         }
 
         &__nav {
+            -ms-grid-row: 1;
+            -ms-grid-column: 1;
             margin-right: 1.6666rem;
         }
     }
