@@ -3,39 +3,6 @@
 @import "../components/mini-user-profile/user-avatar";
 
 .account {
-    &__header {
-        &__logo {
-            width: 47vw;
-            height: auto;
-
-            @media screen and (min-width: 600px) {
-                width: auto;
-                height: 53px;
-            }
-        }
-
-        &__user {
-            $circle-dimensions: 50px;
-            height: $circle-dimensions;
-            width: $circle-dimensions;
-            border-radius: 64px;
-            background-color: $user-circle-background;
-            font-size: 16px;
-            line-height: $circle-dimensions;
-            text-align: center;
-            cursor: default;
-
-            &__wrapper {
-                float: right;
-            }
-        }
-
-        &__wrapper {
-            margin: auto;
-            border-bottom: 1px solid $gray-10;
-        }
-    }
-
     &__notifications {
         max-width: $content-max-width;
 

@@ -13,6 +13,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models;
 using Microsoft.Extensions.Configuration;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -179,9 +180,15 @@ namespace HelpMyStreetFE.Controllers
         }
 
         private async Task<User> GetCurrentUser()
-        {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id);
+        {         
+            var user = HttpContext.Session.GetObjectFromJson<User>("User");
+            if (user == null)
+            {
+                var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                user = await _userService.GetUserAsync(id);
+                HttpContext.Session.SetObjectAsJson("User", user);
+            }
+
             return user;
         }
 
