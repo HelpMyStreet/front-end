@@ -1,7 +1,7 @@
 @import "../..//mixins/typography/titles";
 @import "../..//mixins/typography/copy";
 @import "../../mixins/effects";
-
+@import "./variables";
 .notification {
     &__card {
 
@@ -11,8 +11,14 @@
         background-color: white;
         border-radius: 4px;
         display: grid;
-        grid-template-columns: 170px 1fr;
         display: -ms-grid;
+        grid-template-columns: 1fr;
+        padding:10px;
+
+        @media screen and (min-width: $sm-screen) {
+            grid-template-columns: 170px 1fr;
+            padding:0px;
+        }
     }
 
     &__icon {
@@ -25,6 +31,11 @@
             grid-column: 1;
             -ms-grid-column: 1;
             -ms-grid-row: 1;
+            display: none;
+
+            @media screen and (min-width: $sm-screen) {
+                display: block;
+            }
         }
     }
 
@@ -41,7 +52,6 @@
     &__message {
         color: $p-color;
         @include copy-sz-lg;
-  
     }
 
     &__close {
