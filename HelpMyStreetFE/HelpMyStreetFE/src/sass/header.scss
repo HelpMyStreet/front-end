@@ -29,12 +29,17 @@
 
 .page-header {
     display: grid;
-    grid-template-columns: auto 1fr;
     grid-template-rows: auto auto auto;
-    grid-template-areas: "logo toggle" "userDetails userDetails";
+
 
     @media screen and (min-width: $breakpointSm) {
         grid-template-areas: "logo nav userDetails";
+        grid-template-columns: auto 1fr 0.3fr;
+    }
+
+    @media screen and (max-width: $breakpointSm) {
+        grid-template-areas: "logo toggle" "userDetails userDetails";
+        grid-template-columns: auto 1fr;
     }
 
     &__account {
