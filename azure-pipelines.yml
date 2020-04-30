@@ -37,6 +37,7 @@ steps:
 #  displayName: DotNetCore test
 #  inputs:
 #    command: 'test'
+#    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: Npm@1
   displayName: npm install
