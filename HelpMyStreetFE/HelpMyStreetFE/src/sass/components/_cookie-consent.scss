@@ -18,7 +18,7 @@
 
 #gdpr-cookie-message h4 {
     color: $dark-blue;
-    font-family: 'Quicksand', sans-serif;
+
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -26,7 +26,7 @@
 
 #gdpr-cookie-message h5 {
     color: $dark-blue;
-    font-family: 'Quicksand', sans-serif;
+
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -67,19 +67,19 @@ button#ihavecookiesBtn {
     border: none;
     background: $dark-blue;
     color: white;
-    font-family: 'Quicksand', sans-serif;
+    opacity:0.8;
     font-size: 15px;
     padding: 7px;
     border-radius: 3px;
-    margin-left: 15px;
+    margin-left: 12px;
     cursor: pointer;
     transition: all 0.3s ease-in;
 }
 
 #gdpr-cookie-message button:hover {
-    background: white;
-    color: $dark-blue;
-    transition: all 0.3s ease-in;
+    opacity:1;
+  
+
 }
 
 button#gdpr-cookie-advanced {
@@ -95,4 +95,12 @@ button#gdpr-cookie-advanced {
     float: none;
     margin-top: 0;
     margin-right: 5px;
+
+
+}
+#gdpr-cookie-message label {
+    float: none;
+    margin-top: 0;
+    margin-right: 5px;
+    font-size: 15px;
 }
