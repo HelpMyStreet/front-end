@@ -117,6 +117,10 @@ $breakpointSm: 900px;
     .btn {
         @include copy-sz-md;
         padding: 0.25rem 1rem;
+        img{
+            height:28px;
+        }
+        min-width:180px;
     }
 
     .btn--sign-up {
