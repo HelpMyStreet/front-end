@@ -1,7 +1,6 @@
 const siteNavToggle = document.getElementById('site-nav-toggle')
 
 siteNavToggle && siteNavToggle.addEventListener('click', function () {
-    console.log("hit");
     $('#profile-dropdown').removeClass("dnone");
     $('#sitenavCollapsed').toggleClass('dnone');
     $('#profile-header-account').toggleClass('collapsed')

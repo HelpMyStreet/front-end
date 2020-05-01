@@ -1,5 +1,7 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
@@ -135,6 +137,49 @@ namespace HelpMyStreetFE.Services
         {
             return await _userRepository.GetChampionsByPostcode(postcode);
         }
+
+        public UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
+        {
+            var personalDetails = user.UserPersonalDetails;
+            string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
+            string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
+            string streetChampion = string.Empty;
+            string gender = "Unknown";
+            string underlyingMedicalConditions = "No";
+            bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
+            bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
+            if (user.ChampionPostcodes.Count > 0)
+            {
+                streetChampion = "Street Champion";
+            }
+            else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
+            {
+                streetChampion = "Helper";
+            }
+
+            if (personalDetails.UnderlyingMedicalCondition.HasValue)
+            {
+                underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value ? "Yes" : "No";
+            }
+
+            return new UserDetails(
+                initials,
+                personalDetails.DisplayName,
+                personalDetails.FirstName,
+                personalDetails.LastName,
+                personalDetails.EmailAddress,
+                address,
+                streetChampion,
+                personalDetails.MobilePhone,
+                personalDetails.OtherPhone,
+                personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
+                gender,
+                underlyingMedicalConditions,
+                user.ChampionPostcodes,
+                isStreetChampion,
+                isVerified
+                );
+        }       
     }
 
 }
