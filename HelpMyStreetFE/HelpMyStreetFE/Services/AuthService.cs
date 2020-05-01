@@ -57,6 +57,7 @@ namespace HelpMyStreetFE.Services
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
+            identity.AddClaim(new Claim(ClaimTypes.GivenName, user.UserPersonalDetails.FirstName + " " + user.UserPersonalDetails.LastName));
 
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));

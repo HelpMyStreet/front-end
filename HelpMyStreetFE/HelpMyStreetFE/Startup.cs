@@ -103,7 +103,9 @@ namespace HelpMyStreetFE
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
-            
+            services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
+            services.AddSession();
+           
             services.AddSingleton<IRequestService, RequestService>();
             services.AddControllers();
             services.AddRazorPages()
@@ -131,7 +133,7 @@ namespace HelpMyStreetFE
             app.UseStaticFiles(new StaticFileOptions{
                 ContentTypeProvider = provider
             });
-
+            app.UseSession();
             app.UseRouting();
             app.UseCookiePolicy();
             app.UseAuthentication();

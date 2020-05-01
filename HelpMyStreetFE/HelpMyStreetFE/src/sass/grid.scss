@@ -19,6 +19,11 @@
 }
 
 @media screen and (min-width: $med-screen) {
+    .container-fluid {
+        max-width: 1400px + 24px;
+        margin:auto;
+    }
+ 
     .container {
         max-width: 1224px + 24px;
         margin: auto;
