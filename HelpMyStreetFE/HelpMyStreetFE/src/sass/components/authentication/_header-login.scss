@@ -120,7 +120,9 @@ $breakpointSm: 900px;
         img{
             height:28px;
         }
+        @media screen and (min-width: $breakpointSm) {
         min-width:180px;
+        }
     }
 
     .btn--sign-up {
