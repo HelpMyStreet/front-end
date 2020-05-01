@@ -44,7 +44,7 @@
                 <div id="profile-dropdown" class="page-header__account__header__dropdown dnone">
                     @if (Model.isLoggedIn)
                     {
-                        <div class="page-header__account__header__dropdown__navigation">
+                        <div class="page-header__account__header__dropdown__navigation m-0">
                             <partial name="_accountNavigation" for="@Model.AccountVM" />
                         </div>
                     }
@@ -53,7 +53,7 @@
                     </div>
                     @if (Model.isLoggedIn)
                     {
-                        <div class="profile-dropdown-logout  page-header__account__header__dropdown__navigation ">
+                        <div class="profile-dropdown-logout  page-header__account__header__dropdown__navigation m-0">
                             <nav class="account__nav">
                                 <ul class="account__nav__list m-0 p-0">
                                     <li class="account__nav__item"><a href="@Url.Action("Logout", "Auth")">Log Out</a></li>
