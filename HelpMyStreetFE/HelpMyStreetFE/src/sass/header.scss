@@ -204,23 +204,25 @@
                 &__dropdown {
                     &__navigation {
                         @include shadow-xs;
+                        margin-top:10px;
+                        
                     }
 
                     &--collapsed {
-
+                       
                         .site-nav {
                             padding: 0 10px;
 
                             &__link {
                                 display: block;
-                                margin-bottom: 0.5rem;
+                               
                             }
 
 
 
                             .site-nav__items {
                                 background: inherit;
-
+                                padding-top:0;
                                 .site-nav__item {
                                     border-bottom: none;
                                     display: block;
@@ -250,7 +252,7 @@
                             a {
                                 border: none;
                                 border-top: 1px solid $background-darker-1;
-
+                                margin-bottom:0px;
                                 @include copy-sz-sm;
                                 padding: 12px;
                                 padding: 10px;
@@ -264,6 +266,8 @@
                 margin: auto;
             }
         }
+
+      
     }
 
 
@@ -271,6 +275,7 @@
     &__logo {
         grid-area: logo;
         padding: .5rem .5rem;
+        align-self: center;
 
         @media screen and (min-width: $breakpointSm) {
             padding: 0 1rem;
@@ -286,6 +291,8 @@
         @media screen and (min-width: $breakpointSm) {
             grid-area: nav;
         }
+
+ 
     }
 
     &__toggle {
@@ -337,3 +344,5 @@
         }
     }
 }
+
+
