@@ -16,8 +16,10 @@
         title: 'This website uses cookies',
         message: ' We use cookies to help make our website usable and to understand how visitors interact with us. More information can be found in our <a href="/privacy-policy" target="_blank">Privacy Policy</a>. <br /> You can change or withdraw your consent at any time by changing your browser settings.',
         expires: 365,
+        delay: 2000,
         moreInfoLabel: '',
-        
+        acceptBtnLabel: 'Accept All Cookies',
+        cookieTypesTitle: 'Select cookies to accept:',
         cookieTypes: [         
             {
                 type: 'Statistics',
@@ -28,6 +30,11 @@
         ],
 
     });
+    setTimeout(function () {
+        $('#gdpr-cookie-advanced').click(function () {
+            $('#gdpr-cookie-accept').html("Allow Selection")
+        });
+    },2300);
 }
 
 function deleteUneccsaryCookies(setCookieAfterDelete) {
@@ -40,7 +47,7 @@ function deleteUneccsaryCookies(setCookieAfterDelete) {
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         var isNeccesary = (neccesaryCookies.find(x => name.trim().startsWith(x.trim())) != undefined);        
         if (cookie && !isNeccesary)
-            document.cookie = name + "=; path=/; domain=" + window.location.hostname + "; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
     setCookieAfterDelete("optOutStats", "1", 365)
 }

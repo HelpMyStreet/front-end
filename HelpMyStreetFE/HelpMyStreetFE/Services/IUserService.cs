@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Reponses;
 
 namespace HelpMyStreetFE.Services
@@ -18,5 +19,7 @@ namespace HelpMyStreetFE.Services
         Task<int> GetVolunteers();
         Task<GetHelperResponse> GetHelpersByPostcode(string postcode);
         Task<GetHelperResponse> GetChampionsByPostcode(string postcode);
+        UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user);
+      
     }
 }
