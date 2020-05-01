@@ -76,6 +76,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task Logout(HttpContext httpContext)
         {
+            httpContext.Session.Clear();
             await httpContext.SignOutAsync();            
         }
     }
