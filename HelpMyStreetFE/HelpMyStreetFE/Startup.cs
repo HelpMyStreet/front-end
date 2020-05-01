@@ -177,7 +177,10 @@ namespace HelpMyStreetFE
                     name: "login",
                     pattern: "login",
                     defaults: new { controller = "Account", action = "Login" });
-
+                    endpoints.MapControllerRoute(
+                    name: "ForgottenPassword",
+                    pattern: "forgotten-password",
+                    defaults: new { controller = "Home", action = "ForgottenPassword" });
                 // Enable attribute routing
                 //endpoints.MapControllers();
             });
