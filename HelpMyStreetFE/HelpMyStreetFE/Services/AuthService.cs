@@ -1,6 +1,7 @@
 ﻿using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -52,24 +53,24 @@ namespace HelpMyStreetFE.Services
 
         public async Task LoginWithTokenAsync(string token, HttpContext httpContext)
         {
-            var uid = await VerifyIdTokenAsync(token);
+            var uid = await VerifyIdTokenAsync(token);            
             var user = await _userRepository.GetUserByAuthId(uid);
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
             identity.AddClaim(new Claim(ClaimTypes.GivenName, user.UserPersonalDetails.FirstName + " " + user.UserPersonalDetails.LastName));
-
+            httpContext.Session.SetObjectAsJson("User", user);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
         }
 
         public async Task LoginWithUserId(int userId, HttpContext httpContext)
         {
-            var user = await _userRepository.GetUser(userId);
+            var user = await _userRepository.GetUser(userId);            
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
-
+            httpContext.Session.SetObjectAsJson("User", user);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity));
         }
