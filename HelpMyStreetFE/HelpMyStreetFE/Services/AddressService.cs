@@ -1,4 +1,6 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using HelpMyStreet.Contracts.AddressService.Request;
+
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Repositories;
@@ -74,6 +76,18 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
-
+        public async Task<GetPostcodesResponse> GetFriendlyNames(List<string> postcodes)
+        {
+            GetPostcodesRequest request = new GetPostcodesRequest
+            {
+                PostcodeList = new PostcodeList
+                {
+                    Postcodes = postcodes.Select(x => x).ToList()
+                },
+                IncludeAddressDetails = false
+            };
+            return await _addressRepository.GetPostcodes(request);
+            
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿export function initialiseMyStreet() {    
     $('.profile__mystreet__header').click(function () {
-        var details =  $(this).find("~ .profile__mystreet__details")
+        var details = $(this).find("~ .profile__mystreet__details")        
         details.toggleClass("dnone");
 
         if (details.hasClass("dnone")) {
