@@ -8,7 +8,7 @@ import "./shared/site-header";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
 import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
-const mapsAPIKey = "AIzaSyBgmsbN_8ALxGsEmyEFHckh24dgboaZiMo"; 
+
 $(function () {
     $('.no-fouc').removeClass('no-fouc');
     if (typeof configuration !== 'undefined') {
