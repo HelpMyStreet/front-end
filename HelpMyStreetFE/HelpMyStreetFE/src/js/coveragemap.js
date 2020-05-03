@@ -150,14 +150,14 @@ function deleteMarkers() {
 }
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
-    let endpoint = 'api/Maps/VolunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
+    let endpoint = 'api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
     const content = await fetch(endpoint);
     const users = await content.json();
     return users.volunteerCoordinates;
 }
 
 async function getPostcodeCoordinates(postcode) {
-    let endpoint = 'api/Maps/PostcodeCoordinate?postcode=' + postcode;
+    let endpoint = 'api/Maps/postcodeCoordinate?postcode=' + postcode;
     const content = await fetch(endpoint);
     const coordinates = await content.json();
     return coordinates;

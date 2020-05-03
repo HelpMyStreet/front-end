@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Controllers
             return await Task.FromResult(script);
         }
 
-        [HttpGet("VolunteerCoordinates")]
+        [HttpGet("volunteerCoordinates")]
         public async Task<ActionResult<VolunteerCoordinatesResponse>> GetVolunteerCoordinates([FromQuery]double swLatitude, [FromQuery]double swLongitude, [FromQuery]double neLatitude, [FromQuery]double neLongitude, [FromQuery]int minDistanceBetweenInMetres)
         {
             VolunteerCoordinatesResponse volunteerCoordinatesResponse = await _userService.GetVolunteerCoordinates(swLatitude, swLongitude, neLatitude, neLongitude, minDistanceBetweenInMetres);
