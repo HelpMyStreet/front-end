@@ -18,5 +18,6 @@ namespace HelpMyStreetFE.Services
         Task<int> GetVolunteers();
         Task<GetHelperResponse> GetHelpersByPostcode(string postcode);
         Task<GetHelperResponse> GetChampionsByPostcode(string postcode);
+        Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
     }
 }

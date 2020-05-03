@@ -1,3 +1,5 @@
+using HelpMyStreet.Utils.CoordinatedResetCache;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,6 +13,7 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Internal;
 
 namespace HelpMyStreetFE
 {
@@ -42,11 +45,17 @@ namespace HelpMyStreetFE
             services.AddHttpClient<IRequestHelpRepository, RequestHelpRepository>();
             services.AddHttpClient<IAddressService, AddressService>();
             services.AddHttpClient<IValidationService, ValidationService>();            
+            services.AddHttpClient<IGoogleService, GoogleService>();            
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
-            
             services.AddSingleton<IRequestService, RequestService>();
+
+            // cache
+            services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
+            services.AddTransient<ISystemClock, MockableDateTime>();
+            services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
+
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation();
