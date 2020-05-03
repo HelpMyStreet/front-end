@@ -14,6 +14,7 @@ document.head.appendChild(script);
 
 let googleMap;
 let googleMapMarkers = new Map();
+let postcodeMarker = null;
 
 window.initGoogleMap = async function () {
 
@@ -44,11 +45,29 @@ window.initGoogleMap = async function () {
             if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
                 let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
                 setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
+
+                postcodeMarker = new google.maps.Marker({
+                    position: { lat: postcodeCoordinate.latitude, lng: postcodeCoordinate.longitude },
+                    title: postcodeCoordinate.postcode,
+                });
+
+                addMarkerForPostcodeLookup();
+
             }
         }
     });
 };
 
+function addMarkerForPostcodeLookup() {
+    postcodeMarker.setMap(googleMap);
+}
+
+function removedMarkerForPostcodeLookup() {
+    if (postcodeMarker) {
+        postcodeMarker.setMap(null);
+        postcodeMarker = null;
+    }
+}
 
 function geoLocationSuccess(position) {
     setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
@@ -76,6 +95,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 
     if (zoomLevel <= largeAreaZoomNumber) {
         deleteMarkers();
+        removedMarkerForPostcodeLookup();
     }
 
     coords.map(coord => {
@@ -128,8 +148,8 @@ function getMarkerKey(marker) {
     return marker.getPosition().lat() + '_' + marker.getPosition().lng();
 }
 
-function setMapOnAll(googleMmap) {
-    googleMapMarkers.forEach(function (value, key, mapCollection) { value.setMap(googleMmap); });
+function setMapOnAll(googleMap) {
+    googleMapMarkers.forEach(function (value, key, mapCollection) { value.setMap(googleMap); });
 }
 
 function clearMarkers() {
