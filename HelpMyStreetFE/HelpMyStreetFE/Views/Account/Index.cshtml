@@ -4,14 +4,14 @@
 @section Scripts {
     <script src="~/profile.js" asp-append-version="true"></script>
 }
-<partial name="_UserHeader" for="@Model.UserDetails" />
+
 @{
     ViewBag.Title = "My Profile";
 
 }
 
 <main class="account__wrapper container">
-    <partial name="_NotificationHandler" for="@Model.Notifications" />
+    @*<partial name="_NotificationHandler" for="@Model.Notifications" />*@
 
     <div class="mb-md">
         <partial name="_MiniUserProfile" for="@Model.UserDetails" />

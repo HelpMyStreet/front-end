@@ -11,6 +11,9 @@ using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models;
+using Microsoft.Extensions.Configuration;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -20,58 +23,33 @@ namespace HelpMyStreetFE.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
         private readonly IAddressService _addressService;
+        private readonly IConfiguration _configuration;
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
-            IAddressService addressService
+            IAddressService addressService,
+            IConfiguration configuration
             )
         {
             _logger = logger;
             _userService = userService;
             _addressService = addressService;
+            _configuration = configuration;
+
         }
 
-        private UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
+  
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login()
         {
-            var personalDetails = user.UserPersonalDetails;
-            string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
-            string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
-            string streetChampion = string.Empty;
-            string gender = "Unknown";
-            string underlyingMedicalConditions = "No";
-            bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
-            bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
-            if (user.ChampionPostcodes.Count > 0)
+            LoginViewModel model = new LoginViewModel
             {
-                streetChampion = "Street Champion";
-            }
-            else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
-            {
-                streetChampion = "Helper";
-            }
-
-            if (personalDetails.UnderlyingMedicalCondition.HasValue)
-            {
-                underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value ? "Yes" : "No";
-            }
-
-            return new UserDetails(
-                initials,
-                personalDetails.DisplayName,
-                personalDetails.FirstName,
-                personalDetails.LastName,
-                personalDetails.EmailAddress,
-                address,
-                streetChampion,
-                personalDetails.MobilePhone,
-                personalDetails.OtherPhone,
-                personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
-                gender,
-                underlyingMedicalConditions,
-                user.ChampionPostcodes,
-                isStreetChampion,
-                isVerified
-                ) ;
+                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+            };
+            return View(model);
         }
 
         [HttpGet]
@@ -87,7 +65,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
 
-            var userDetails = GetUserDetails(user);
+            var userDetails = _userService.GetUserDetails(user);
 
             //Assume the registration page has been fully completed
             var viewModel = GetAccountViewModel(user);
@@ -161,9 +139,15 @@ namespace HelpMyStreetFE.Controllers
         }
 
         private async Task<User> GetCurrentUser()
-        {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id);
+        {         
+            var user = HttpContext.Session.GetObjectFromJson<User>("User");
+            if (user == null)
+            {
+                var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                user = await _userService.GetUserAsync(id);
+                HttpContext.Session.SetObjectAsJson("User", user);
+            }
+
             return user;
         }
 
@@ -192,7 +176,7 @@ namespace HelpMyStreetFE.Controllers
                 };
 
                 viewModel.Notifications = notifications;
-                var userDetails = GetUserDetails(user);
+                var userDetails = _userService.GetUserDetails(user);
                 viewModel.UserDetails = userDetails;                
                 
             }

@@ -1,7 +1,7 @@
 ﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 }
 <script>
     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) }
