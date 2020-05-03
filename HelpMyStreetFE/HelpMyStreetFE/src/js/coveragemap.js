@@ -12,7 +12,7 @@ script.async = false;
 
 document.head.appendChild(script);
 
-let googleMap; 
+let googleMap;
 let googleMapMarkers = new Map();
 
 window.initGoogleMap = async function () {
@@ -23,7 +23,7 @@ window.initGoogleMap = async function () {
     });
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geoLocationSuccess, locationError);
+        navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
     }
 
     googleMap.addListener('idle', function () {
@@ -37,10 +37,10 @@ window.initGoogleMap = async function () {
         updateMap(swLat, swLng, neLat, neLng);
     });
 
-    $("#postcode_button").click(async function(evt) {
+    $("#postcode_button").click(async function (evt) {
         let postcode = $("#postcode").val();
         if (postcode) {
-          let postcodeCoordinates = await  getPostcodeCoordinates(postcode);
+            let postcodeCoordinates = await getPostcodeCoordinates(postcode);
             if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
                 let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
                 setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
@@ -57,10 +57,6 @@ function geoLocationSuccess(position) {
 function setMapCentre(latitude, longitude, zoomLevel) {
     googleMap.setCenter({ lat: latitude, lng: longitude });
     googleMap.setZoom(zoomLevel);
-}
-
-function locationError(error) {
-    console.log(error);
 }
 
 async function updateMap(swLat, swLng, neLat, neLng) {
@@ -105,7 +101,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
-    let R = 6376.5; 
+    let R = 6376.5;
     let dLat = deg2rad(lat2 - lat1);
     let dLon = deg2rad(lon2 - lon1);
     let a =
