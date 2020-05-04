@@ -13,6 +13,8 @@
     <EmbeddedResource Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
+    <Content Remove="appsettings.Development.json" />
+    <Content Remove="appsettings.Development.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +39,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="NewRelic.Agent" Version="8.26.630" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
+    <PackageReference Include="Polly.Contrib.DuplicateRequestCollapser" Version="0.2.0" />
     <PackageReference Include="SendGrid" Version="9.13.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\logos\markers\" />
+  </ItemGroup>
 </Project>

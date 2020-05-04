@@ -138,6 +138,11 @@ namespace HelpMyStreetFE.Services
             return await _userRepository.GetChampionsByPostcode(postcode);
         }
 
+        public async Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres)
+        {
+            return await _userRepository.GetVolunteerCoordinates(swLatitude, swLongitude, neLatitude, neLongitude, minDistanceBetweenInMetres);
+        }
+
         public UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
         {
             var personalDetails = user.UserPersonalDetails;
@@ -179,7 +184,7 @@ namespace HelpMyStreetFE.Services
                 isStreetChampion,
                 isVerified
                 );
-        }       
+        }
     }
 
 }
