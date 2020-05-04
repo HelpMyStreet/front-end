@@ -16,6 +16,8 @@ let googleMap;
 let googleMapMarkers = new Map();
 let postcodeMarker = null;
 
+let previousZoomLevel = -1;
+
 window.initGoogleMap = async function () {
 
     googleMap = new google.maps.Map(document.getElementById('map'), {
@@ -98,6 +100,12 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         removedMarkerForPostcodeLookup();
     }
 
+    // delete min distance markers when zooming in
+    if (zoomLevel === (largeAreaZoomNumber + 1) && (previousZoomLevel === largeAreaZoomNumber)) {
+        deleteMarkers();
+        removedMarkerForPostcodeLookup();
+    }
+
     coords.map(coord => {
         let thisMarker;
         if (isMapShowingLargeArea === true) {
@@ -118,6 +126,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     });
 
     showMarkers();
+    previousZoomLevel = zoomLevel;
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
