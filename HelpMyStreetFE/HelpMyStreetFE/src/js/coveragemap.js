@@ -5,6 +5,9 @@ const closeUpZoomNumber = 16; // zoom level when postcode is entered
 let initialUKZoomNumber = 6; // zoom level of the UK when geo location is not enabled
 const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 
+let initialLat = 54.383618;
+let initialLng = -3.821280;
+
 let script = document.createElement('script');
 script.src = 'api/Maps/js';
 script.defer = false;
@@ -20,9 +23,11 @@ let previousZoomLevel = -1;
 
 window.initGoogleMap = async function () {
 
-    // zoom out one step if on a mobile
+    // zoom out one step if on a mobile and change centre of map
     if (/Mobi|Android/i.test(navigator.userAgent)) {
         initialUKZoomNumber -= 1;
+        initialLat = 55.841264;
+        initialLng = -4.119149;
     }
 
     let noPoi = [
@@ -102,7 +107,7 @@ window.initGoogleMap = async function () {
     ];
 
     googleMap = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 54.383618, lng: -3.821280 },
+        center: { lat: initialLat, lng: initialLng },
         zoom: initialUKZoomNumber
     });
 
@@ -208,7 +213,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         }
         addMarker(thisMarker);
     });
-
+    console.log(googleMap.getCenter().toJSON());
     showMarkers();
     previousZoomLevel = zoomLevel;
 }
