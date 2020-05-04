@@ -20,7 +20,7 @@ let previousZoomLevel = -1;
 
 window.initGoogleMap = async function () {
 
-    var noPoi = [
+    let noPoi = [
         {
             featureType: "poi.attraction",
             stylers: [
