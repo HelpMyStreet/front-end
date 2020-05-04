@@ -227,7 +227,13 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2) {
 
 function addMarker(marker) {
     let key = getMarkerKey(marker);
+
     if (!googleMapMarkers.has(key)) {
+
+        marker.addListener('click', function () {
+            setMapCentre(marker.getPosition().lat(), marker.getPosition().lng(), googleMap.getZoom() + 1);
+        });
+
         googleMapMarkers.set(key, marker);
     }
 }
