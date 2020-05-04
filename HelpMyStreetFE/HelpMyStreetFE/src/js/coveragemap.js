@@ -103,11 +103,6 @@ window.initGoogleMap = async function () {
 
     googleMap.setOptions({ styles: noPoi });
 
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
-    }
-
     googleMap.addListener('idle', function () {
         let bounds = googleMap.getBounds();
         let ne = bounds.getNorthEast();
