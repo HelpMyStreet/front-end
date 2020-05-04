@@ -1,7 +1,6 @@
 
 
 $(() => {
-
     var getParameterByName = function (name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
@@ -13,9 +12,9 @@ $(() => {
     }
 
     var urlToken = getParameterByName("token");
-    var userId = getParameterByName("u");
+  
 
-    var processYoti = async function (thisToken) {
+    var processYoti = async function (thisToken, userId) {
         $('.yoti__auth__button').hide();
         $('.yoti__auth__loading').css("visibility", "visible");
         $('.yoti__auth__loading').css("height", "100%");
@@ -27,9 +26,6 @@ $(() => {
         }
     }
 
-    if (urlToken) {   
-        processYoti(urlToken)
-    } else {
         if (initObj) {
             window.Yoti.Share.init({
                 elements: [
@@ -37,10 +33,9 @@ $(() => {
                         domId: initObj.domId,
                         scenarioId: initObj.scenarioId,
                         clientSdkId: initObj.clientSdkId,
-                        button: {
-                            label: "Open Yoti",
-                            align: "center",
-                            width: "full", // "auto"
+                        type: "inline",
+                        qr: {
+                            title: " Scan with the Yoti app"
                         },
                         modal: {
                             zIndex: 9999,
@@ -48,7 +43,7 @@ $(() => {
                         shareComplete: {
                             closeDelay: 4000, // default to 4000, min of 500 - max of 10000
                             tokenHandler: async (token, done) => {
-                                processYoti(token);
+                                processYoti(token, initObj.userId);
                                 done();
                             },
                         },
@@ -57,6 +52,5 @@ $(() => {
             });
         } else {
             throw new Error("initObj is null");
-        }
-    }
+        }    
 });

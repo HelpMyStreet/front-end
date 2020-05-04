@@ -6,7 +6,7 @@
 
             &__section {
                 border-bottom: 1px solid $gray-10;
-                padding-bottom:10px;
+                padding-bottom: 10px;
             }
 
             &.active {
@@ -20,11 +20,15 @@
             &__text {
                 &__header {
                     font-weight: 600;
+
+                    &--small {
+                        font-weight: 600;
+                        color: $black;
+                        @include copy-sz-sm;
+                    }
                 }
 
                 &__copy {
-
-
                     p {
                         margin: 0.5rem 0;
                         @include copy-sz-md;

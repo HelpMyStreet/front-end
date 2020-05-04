@@ -1,5 +1,4 @@
-﻿
-
+﻿@model HelpMyStreetFE.Models.Yoti.VerificationViewModel
 @{
     var viewModel = Model;
 
@@ -17,14 +16,12 @@
                 <div id="step-one" class="verification-step">
                     <partial name="_StepOne" />
                 </div>
-                <div id="step-two" class="verification-step active">
+                <div id="step-two" class="verification-step ">
                     <partial name="_StepTwo" />
                 </div>
-                <div  id="step-three" class="verification-step">
-                    <partial name="_StepThree" />
-                </div>
-            
-            </article>
-            
+                <div  id="step-three" class="verification-step active">
+                    <partial name="_StepThree" for="YotiOptions" />
+                </div>            
+            </article>            
         </article>
     </div>

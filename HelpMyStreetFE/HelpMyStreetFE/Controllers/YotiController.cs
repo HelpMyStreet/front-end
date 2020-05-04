@@ -63,14 +63,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (validUserId != null && token != null)
             {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));
-                string correctPage = RegistrationController.GetCorrectPage(user);
-                if (correctPage != "/registration/stepfive")
-                {
-                    // A different step needs to be completed at this point
-                    return Redirect(correctPage);
-                }
-
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));                
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success)
                 {
@@ -107,20 +100,12 @@ namespace HelpMyStreetFE.Controllers
             var validUserId = DecodedAndCheckedUserId(u, true);
 
             if (validUserId != null)
-            {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));
-                string correctPage = RegistrationController.GetCorrectPage(user);
-                if (correctPage != "/registration/stepfive")
-                {
-                    // A different step needs to be completed at this point
-                    return Redirect(correctPage);
-                }
-
+            {                                
                 return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
             }
             else
             {
-                return Redirect("/registration/stepfive");
+                return Redirect("/Error/500");
             }
         }
 
