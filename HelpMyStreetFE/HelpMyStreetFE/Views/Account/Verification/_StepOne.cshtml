@@ -1,0 +1,28 @@
+﻿@using HelpMyStreetFE.Models.Yoti;
+<div class="row verification-step__section">
+    <div class="sm6">
+        <div class="verification-step__image--large">
+            <img src="~/img/logos/Yoti_logo.svg" />
+        </div>
+
+    </div>
+    <div class="sm6">
+        <div class="verification-step__text">
+            <div class="verification-step__copy">
+                <p>All our volunteers are ID Verified with out partner Yoti. to provide peace of mind to those in need, as well as their friends and family</p>
+            </div>
+            <div class="verification-step__copy">
+                <a>Already for the Yoti app?</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm12">
+    <partial name="_StepCounter" model='new StepCounterViewModel { Step = 1, Description = "Please have an ID in your name (either Passport or Drivers Licence) and a smartphone (iOS or Android)" }'>
+    </div>
+</div>
+
+
+<partial name="_NextPrevButtons" />

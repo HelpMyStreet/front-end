@@ -20,13 +20,14 @@
   
     <div class="account__body">
         <partial name="_AccountNavigation" />
+        <partial name="_Verification" />
         @switch (Model.CurrentPage)
         {
             case MenuPage.MyStreets:
                 <partial name="_MyStreets" for="@Model.PageModel" />
                 break;
             case MenuPage.ComingSoon:
-                <partial name="_ComingSoon"/>
+                <partial name="_ComingSoon" />
                 break;
             default:
                 <partial name="_UserData" for="@Model.PageModel" />

@@ -1,0 +1,11 @@
+﻿@model HelpMyStreetFE.Models.Yoti.StepCounterViewModel;
+<div class="stepper">
+    <div class="stepper__step">
+        <div class="stepper__step__number circle">
+            @Model.Step
+        </div>
+        <div class="stepper__step__text">
+           Step @Model.Step: @Model.Description
+        </div>
+    </div>
+</div>

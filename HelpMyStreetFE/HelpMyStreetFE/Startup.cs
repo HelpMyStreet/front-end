@@ -109,7 +109,10 @@ namespace HelpMyStreetFE
             services.AddSingleton<IRequestService, RequestService>();
             services.AddControllers();
             services.AddRazorPages()
-            .AddRazorRuntimeCompilation();
+            .AddRazorRuntimeCompilation()
+            .AddRazorOptions(opt => opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml"));
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

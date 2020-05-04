@@ -1,0 +1,30 @@
+﻿
+
+@{
+    var viewModel = Model;
+
+}
+    <div class="verification-panel">
+        <article class="user-profile profile-panel p-md">
+            <header class="profile-panel__header">
+                <h3 class="profile-panel__title" id="verification-title">My Activity</h3>
+            </header>
+
+            <article class="profile">
+                <div id="landing" class="verification-step ">
+                    <partial name="_VerificationLanding" />
+                </div> 
+                <div id="step-one" class="verification-step">
+                    <partial name="_StepOne" />
+                </div>
+                <div id="step-two" class="verification-step active">
+                    <partial name="_StepTwo" />
+                </div>
+                <div  id="step-three" class="verification-step">
+                    <partial name="_StepThree" />
+                </div>
+            
+            </article>
+            
+        </article>
+    </div>
