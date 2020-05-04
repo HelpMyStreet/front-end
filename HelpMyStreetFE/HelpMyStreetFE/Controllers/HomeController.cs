@@ -26,7 +26,6 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
         }
 
-
         public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Get home");

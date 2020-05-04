@@ -26,7 +26,10 @@ $(() => {
         }
     }
 
-        if (initObj) {
+    if (initObj) {
+        if (urlToken) {
+            processYoti(urlToken, initObj.userId)
+        } else {
             window.Yoti.Share.init({
                 elements: [
                     {
@@ -40,17 +43,16 @@ $(() => {
                         modal: {
                             zIndex: 9999,
                         },
-                        shareComplete: {
-                            closeDelay: 4000, // default to 4000, min of 500 - max of 10000
+                        shareComplete: {    
                             tokenHandler: async (token, done) => {
-                                processYoti(token, initObj.userId);
-                                done();
+                                processYoti(token, initObj.userId);                             
                             },
                         },
                     },
                 ],
             });
-        } else {
+        }
+    }else {
             throw new Error("initObj is null");
         }    
 });

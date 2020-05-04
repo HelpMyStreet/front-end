@@ -60,10 +60,8 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
             var validUserId = DecodedAndCheckedUserId(u, token != null);
-
             if (validUserId != null && token != null)
-            {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));                
+            {                           
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success)
                 {
