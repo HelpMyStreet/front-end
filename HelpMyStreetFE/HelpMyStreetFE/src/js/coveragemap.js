@@ -20,10 +20,89 @@ let previousZoomLevel = -1;
 
 window.initGoogleMap = async function () {
 
+    var noPoi = [
+        {
+            featureType: "poi.attraction",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.business",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.government",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.medical",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.park",
+            elementType: "labels.icon",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.place_of_worship",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.school",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.sports_complex",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "transit",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        }
+    ];
+
     googleMap = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 54.383618, lng: -3.821280 },
         zoom: initialUKZoomNumber
     });
+
+    googleMap.setOptions({ styles: noPoi });
+
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
