@@ -103,6 +103,11 @@ window.initGoogleMap = async function () {
 
     googleMap.setOptions({ styles: noPoi });
 
+
+    //if (navigator.geolocation) {
+    //    navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
+    //}
+
     googleMap.addListener('idle', function () {
         let bounds = googleMap.getBounds();
         let ne = bounds.getNorthEast();
@@ -114,24 +119,24 @@ window.initGoogleMap = async function () {
         updateMap(swLat, swLng, neLat, neLng);
     });
 
-    $("#postcode_button").click(async function (evt) {
-        let postcode = $("#postcode").val();
-        if (postcode) {
-            let postcodeCoordinates = await getPostcodeCoordinates(postcode);
-            if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
-                let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
-                setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
+    //$("#postcode_button").click(async function (evt) {
+    //    let postcode = $("#postcode").val();
+    //    if (postcode) {
+    //        let postcodeCoordinates = await getPostcodeCoordinates(postcode);
+    //        if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
+    //            let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
+    //            setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
 
-                postcodeMarker = new google.maps.Marker({
-                    position: { lat: postcodeCoordinate.latitude, lng: postcodeCoordinate.longitude },
-                    title: postcodeCoordinate.postcode,
-                });
+    //            postcodeMarker = new google.maps.Marker({
+    //                position: { lat: postcodeCoordinate.latitude, lng: postcodeCoordinate.longitude },
+    //                title: postcodeCoordinate.postcode,
+    //            });
 
-                addMarkerForPostcodeLookup();
+    //            addMarkerForPostcodeLookup();
 
-            }
-        }
-    });
+    //        }
+    //    }
+    //});
 };
 
 function addMarkerForPostcodeLookup() {
