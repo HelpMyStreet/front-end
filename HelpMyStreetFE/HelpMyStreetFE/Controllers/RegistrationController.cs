@@ -198,7 +198,14 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/stepfour")]
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
         {
-            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);            
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            string correctPage = await GetCorrectPage(userId);
+            if (correctPage != "/registration/stepfour")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
+
             try
             {
                 if (!form.ChampionRoleUnderstood)
@@ -211,7 +218,7 @@ namespace HelpMyStreetFE.Controllers
                     form.ChampionRoleUnderstood,
                     form.ChampionPostcodes);
 
-                return Redirect("/account");
+                return Redirect("/registration/stepfive");
             }
             catch (Exception ex)
             {
@@ -221,6 +228,20 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
+        [HttpGet("[controller]/stepfive")]
+        public async Task<IActionResult> StepFive()
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string correctPage = await GetCorrectPage(int.Parse(userId));
+            if (correctPage != "/registration/stepfive")
+            {
+                // A different step needs to be completed at this point
+                return Redirect(correctPage);
+            }
+
+            var viewModel = new RegistrationViewModel { ActiveStep = 5, EncodedUserID = Base64Helpers.Base64Encode(userId) };
+            return View(viewModel);
+        }
 
         public async Task<string> GetCorrectPage(int userId)
         {
@@ -241,7 +262,9 @@ namespace HelpMyStreetFE.Controllers
                     case 2:
                         return "/registration/stepthree";
                     case 3:
-                        return "/registration/stepfour";        
+                        return "/registration/stepfour";
+                    case 4:
+                        return "/registration/stepfive";
                     default:
                         return string.Empty; //Registration journey is complete
                 }
