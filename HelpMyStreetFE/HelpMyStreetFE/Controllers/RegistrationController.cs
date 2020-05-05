@@ -89,6 +89,8 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            // Remove any references to User in session so on next Load it fetches the updated values;
+            HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(userId);
             if (correctPage != "/registration/steptwo")
             {
@@ -130,6 +132,8 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            // Remove any references to User in session so on next Load it fetches the updated values;
+            HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(userId);
             if (correctPage != "/registration/stepthree")
             {
@@ -162,6 +166,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepFour()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
             string correctPage = await GetCorrectPage(userId);
             if (correctPage != "/registration/stepfour")
             {
@@ -199,6 +204,8 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            // Remove any references to User in session so on next Load it fetches the updated values;
+            HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(userId);
             if (correctPage != "/registration/stepfour")
             {
@@ -230,8 +237,10 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet("[controller]/stepfive")]
         public async Task<IActionResult> StepFive()
-        { 
+        {       
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // Remove any references to User in session so on next Load it fetches the updated values;
+            HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(int.Parse(userId));
             if (correctPage != "/registration/stepfive")
             {
