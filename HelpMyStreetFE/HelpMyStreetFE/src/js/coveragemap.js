@@ -213,7 +213,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         }
         addMarker(thisMarker);
     });
-    console.log(googleMap.getCenter().toJSON());
+
     showMarkers();
     previousZoomLevel = zoomLevel;
 }
