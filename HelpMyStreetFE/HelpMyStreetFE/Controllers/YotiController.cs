@@ -58,12 +58,14 @@ namespace HelpMyStreetFE.Controllers
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
-        {
+        {     
             var validUserId = DecodedAndCheckedUserId(u, token != null);
 
             if (validUserId != null && token != null)
             {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));
+                // Remove any references to User in session so on next Load it fetches the updated values;
+                HttpContext.Session.Remove("User"); 
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));         
                 string correctPage = RegistrationController.GetCorrectPage(user);
                 if (correctPage != "/registration/stepfive")
                 {
@@ -75,7 +77,7 @@ namespace HelpMyStreetFE.Controllers
                 if (response.Status == ValidationStatus.Success)
                 {
                     await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
-
+                    
                     if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
                     {
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
