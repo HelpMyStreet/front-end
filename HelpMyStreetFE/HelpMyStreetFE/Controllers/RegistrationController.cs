@@ -230,18 +230,14 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet("[controller]/stepfive")]
         public async Task<IActionResult> StepFive()
-        {
- 
-
+        { 
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             string correctPage = await GetCorrectPage(int.Parse(userId));
             if (correctPage != "/registration/stepfive")
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
-            }
-            // remove user from session (which is created from login on step one) so on profile load it can go load the user with the updated values
-            HttpContext.Session.Remove("User");
+            }     
             var viewModel = new RegistrationViewModel { ActiveStep = 5, EncodedUserID = Base64Helpers.Base64Encode(userId) };
             return View(viewModel);
         }
