@@ -1,4 +1,6 @@
-﻿export function initialiseVerification() {
+﻿import { initialiseYoti } from "../yoti";
+
+export function initialiseVerification() {
    
     if ($('.verification-panel')[0]) { // if verification panel is being rendered 
         var maxStep = 3;
@@ -21,7 +23,12 @@ function _SetUI(stepNumber, maxStep) {
     _setActive(stepNumber);
     _showOrHideNextButton(stepNumber, maxStep);
     _setTitle(stepNumber);
+
+    if (stepNumber == maxStep) {
+        initialiseYoti();
+    }
 }
+
 
 function _setTitle(stepNumber) {
     var title = "My Verification";

@@ -13,7 +13,6 @@ $(() => {
 
     var urlToken = getParameterByName("token");
   
-
     var processYoti = async function (thisToken, userId) {
         $('.yoti__auth__button').hide();
         $('.yoti__auth__loading').css("visibility", "visible");
@@ -25,34 +24,42 @@ $(() => {
             window.location.href = "/yoti/AuthFailed?u=" + userId;
         }
     }
+  
 
     if (initObj) {
         if (urlToken) {
             processYoti(urlToken, initObj.userId)
-        } else {
-            window.Yoti.Share.init({
-                elements: [
-                    {
-                        domId: initObj.domId,
-                        scenarioId: initObj.scenarioId,
-                        clientSdkId: initObj.clientSdkId,
-                        type: "inline",
-                        qr: {
-                            title: " Scan with the Yoti app"
-                        },
-                        modal: {
-                            zIndex: 9999,
-                        },
-                        shareComplete: {    
-                            tokenHandler: async (token, done) => {
-                                processYoti(token, initObj.userId);                             
-                            },
-                        },
-                    },
-                ],
-            });
-        }
+        }                  
     }else {
             throw new Error("initObj is null");
         }    
 });
+
+
+export function initialiseYoti() {
+    if (initObj) {
+        window.Yoti.Share.init({
+            elements: [
+                {
+                    domId: initObj.domId,
+                    scenarioId: initObj.scenarioId,
+                    clientSdkId: initObj.clientSdkId,
+                    type: "inline",
+                    qr: {
+                        title: " Scan with the Yoti app"
+                    },
+                    modal: {
+                        zIndex: 9999,
+                    },
+                    shareComplete: {
+                        tokenHandler: async (token) => {
+                            processYoti(token, initObj.userId);
+                        },
+                    },
+                },
+            ],
+        });
+    }else {
+            throw new Error("initObj is null");
+        }   
+}
