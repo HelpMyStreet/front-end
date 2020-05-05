@@ -11,7 +11,7 @@
 
     @media screen and (min-width: $sm-screen) {
         display: inline-block;
-    }    
+    }
 }
 
 .requesthelp_link {
@@ -21,4 +21,8 @@
     padding: 1rem;
 }
 
-    
+.home-map-container {
+    @media screen and (max-width: $med-screen) {
+        min-height: 500px
+    }
+}
