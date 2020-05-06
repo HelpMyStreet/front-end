@@ -13,17 +13,6 @@ $(() => {
 
     var urlToken = getParameterByName("token");
   
-    var processYoti = async function (thisToken, userId) {
-        $('.yoti__auth__button').hide();
-        $('.yoti__auth__loading').css("visibility", "visible");
-        $('.yoti__auth__loading').css("height", "100%");
-        var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
-        if (response.status == 200) {
-            window.location.href = "/yoti/AuthSuccess";
-        } else {            
-            window.location.href = "/yoti/AuthFailed?u=" + userId;
-        }
-    }
   
 
     if (initObj) {
@@ -36,15 +25,33 @@ $(() => {
 });
 
 
+var processYoti = async function (thisToken, userId) {
+    $('#overlay').show();
+    $('.loading-overlay').show();
+    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
+    if (response.status == 200) {
+        window.location.href = "/Account";
+    } else {
+        var event = document.createEvent('Event');
+        event.initEvent('failed-auth', true, true);
+        document.getElementById('verification-panel').dispatchEvent(event);
+        $('#overlay').hide();
+        $('.loading-overlay').hide();    
+    }
+}
+var yoti;
 export function initialiseYoti() {
     if (initObj) {
-        window.Yoti.Share.init({
+        if (yoti) {
+            yoti.destroy();
+        }
+       yoti = window.Yoti.Share.init({
             elements: [
                 {
                     domId: initObj.domId,
                     scenarioId: initObj.scenarioId,
                     clientSdkId: initObj.clientSdkId,
-                    type: "inline",
+                    type: "inline",             
                     qr: {
                         title: " Scan with the Yoti app"
                     },
@@ -52,13 +59,15 @@ export function initialiseYoti() {
                         zIndex: 9999,
                     },
                     shareComplete: {
-                        tokenHandler: async (token) => {
+                        tokenHandler: async (token, done) => {
                             processYoti(token, initObj.userId);
+                            done();
                         },
                     },
                 },
             ],
-        });
+       });
+
     }else {
             throw new Error("initObj is null");
         }   

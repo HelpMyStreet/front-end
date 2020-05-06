@@ -143,16 +143,11 @@ namespace HelpMyStreetFE.Controllers
         }
 
         private async Task<User> GetCurrentUser()
-        {         
-            var user = HttpContext.Session.GetObjectFromJson<User>("User");
-            if (user == null)
-            {
-                var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                user = await _userService.GetUserAsync(id);
-                HttpContext.Session.SetObjectAsJson("User", user);
-            }
-
-            return user;
+        {              
+             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+             var  user = await _userService.GetUserAsync(id);
+             HttpContext.Session.SetObjectAsJson("User", user);   
+             return user;
         }
 
         private AccountViewModel GetAccountViewModel(User user)
@@ -178,14 +173,18 @@ namespace HelpMyStreetFE.Controllers
                         Type = NotificationType.Success
                     }
                 };
-
+                var userDetails = _userService.GetUserDetails(user);
                 viewModel.Notifications = notifications;
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
-                    EncodedUserID = Base64Helpers.Base64Encode(user.ID.ToString())
+                    EncodedUserID = Base64Helpers.Base64Encode(user.ID.ToString()),
+                    DisplayName = userDetails.DisplayName,
+                    IsStreetChampion = userDetails.IsStreetChampion,
+                    IsVerified = userDetails.IsVerified,
+                    
                 };
-                var userDetails = _userService.GetUserDetails(user);
+       
                 viewModel.UserDetails = userDetails;                
                 
             }

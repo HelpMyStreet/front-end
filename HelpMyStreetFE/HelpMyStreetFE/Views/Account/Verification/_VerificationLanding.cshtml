@@ -1,5 +1,7 @@
-﻿
+﻿@model HelpMyStreetFE.Models.Yoti.VerificationViewModel
 
+@if (Model.IsVerified)
+{
 <div class="row">
     <div class="sm6">
         <div class="verification-step__status">
@@ -8,8 +10,8 @@
                     <img src="~/img/icons/green-tick.svg" />
                 </div>
                 <div class="verification-step__status__title">
-                    You're nearly there <br />
-                    Just your ID Verification to complete!
+                    You're fully Verified and ready to go!
+
                 </div>
             </div>
         </div>
@@ -17,18 +19,68 @@
     <div class="sm6">
         <div class="verification-step__status">
             <div class="verification-step___text">
-                <span class="verification-step__text__header">Why Verify?</span>
-                <div class="verification-step___text__copy">
-                    <p>John D, you're currently registered as an unverified Helper. As soon as you've completed your ID Verification. you'll be a Verified Helper and will be able to access requests for help and support from tpeople in your local area.</p>                              
-                    <p>Last week we had 23 Requests from people who need to shelter safely at home. Verify now so that you can start helping these people today!</p>
+                <span class="verification-step__text__header">Verified</span>
+                <div class="verification-step__text__copy">
+                    @if (Model.IsStreetChampion)
+                    {
+                    <p>@Model.DisplayName, you're a successfully Verified  Street Champion! </p>
+                        <p>You can see contact details of other Street Champions and Helpers close by on the "My Streets" tab.</p>
+                        <p>When there is a "Request for Help" in your area you will be automatically emailed with details of what is needed.</p>
+                    }
+                    else
+                    {
+                        <p>@Model.DisplayName, you're a successfully Verified Helper!</p>
+                        <p>Nearby Street Champions can get in touch with you to introduce themselves, and they may also get in touch with you to help with a relevant task that needs doing in your area.</p>                      
+                    }
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <div class="row">
+        <div class="sm6">
+            <div class="verification-step__status">
+                <div class="verification-step__status--centre">
+                    <div class="verification-step__status__img">
+                        <img src="~/img/icons/gray-tick.svg" />
+                    </div>
+                    <div class="verification-step__status__title">
+                        You're nearly there <br />
+                        Just your ID Verification to complete!
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sm6">
+            <div class="verification-step__status">
+                <div class="verification-step___text">
+                    <span class="verification-step__text__header">Why Verify?</span>
+                    <div class="verification-step__text__copy">
+                        @if (Model.IsStreetChampion)
+                        {
+                            <p>@Model.DisplayName,  you're currently registered as an Unverified Street Champion. As soon as you've completed your ID verification, you'll be a Verified Street Champion and will be able to access requests for help and support from people in your local area.</p>
+                            <p>You will also be able to see contact details of other Street Champions and Helpers close by on the "My Streets" tab</p>
+                            <p>We are now receiving requests from people who need to shelter safely at home. Verify now so that you can start helping these people today!</p>
+                        }
+                        else
+                        {
+                            <p>@Model.DisplayName, you're currently registered as an Unverified Helper. As soon as you've completed your ID verification, you'll be a Verified Helper and will be ready to start helping and supporting people in your local area. </p>
+                            <p>We are now receiving requests from people who need to shelter safely at home. Verify now so that you can start helping these people today!</p>
+                        }
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<footer>
-    <div class="btn-wrapper">
-        <button class="btn cta btnNext right">Confirm ID</button>
-    </div>
-</footer>
+    <footer>
+        <div class="btn-wrapper">
+            <button class="btn cta btnNext right">Confirm ID</button>
+        </div>
+    </footer>
+}

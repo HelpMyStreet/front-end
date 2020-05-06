@@ -14,6 +14,7 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
+using System;
 
 namespace HelpMyStreetFE
 {
@@ -31,10 +32,10 @@ namespace HelpMyStreetFE
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
+                {            
+                    options.Cookie.HttpOnly = true;                    
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.Cookie.SameSite = SameSiteMode.Strict;                        
                 });
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
@@ -105,7 +106,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IEmailService, EmailService>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
-           
+
             services.AddSingleton<IRequestService, RequestService>();
             services.AddControllers();
             services.AddRazorPages()
