@@ -17,6 +17,8 @@ using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Internal;
+using Polly;
+using HelpMyStreet.Utils.PollyPolicies;
 
 namespace HelpMyStreetFE
 {
@@ -43,6 +45,9 @@ namespace HelpMyStreetFE
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
 
+           
+            PollyHttpPolicies pollyHttpPolicies = new PollyHttpPolicies(new PollyHttpPoliciesConfig());
+
             services.AddHttpClient<IUserRepository, UserRepository>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
@@ -51,7 +56,7 @@ namespace HelpMyStreetFE
             }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            });
+            }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
             services.AddHttpClient<IValidationRepository, ValidationRepository>(client =>
             {
@@ -61,7 +66,7 @@ namespace HelpMyStreetFE
             }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            });
+            }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
             services.AddHttpClient<IAddressRepository, AddressRepository>(client =>
             {
@@ -71,7 +76,7 @@ namespace HelpMyStreetFE
             }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            });
+            }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
             services.AddHttpClient<IRequestHelpRepository, RequestHelpRepository>(client =>
             {
@@ -81,7 +86,7 @@ namespace HelpMyStreetFE
             }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            });
+            }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
             services.AddHttpClient<IAddressService, AddressService>(client =>
             {
@@ -91,7 +96,7 @@ namespace HelpMyStreetFE
             }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            });
+            }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
             services.AddHttpClient<IValidationService, ValidationService>(client =>
             {
@@ -101,7 +106,7 @@ namespace HelpMyStreetFE
             }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            });
+            }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
             services.AddHttpClient<IGoogleService, GoogleService>(client =>
             {
@@ -196,7 +201,10 @@ namespace HelpMyStreetFE
                     name: "login",
                     pattern: "login",
                     defaults: new { controller = "Account", action = "Login" });
-
+                    endpoints.MapControllerRoute(
+                    name: "ForgottenPassword",
+                    pattern: "forgotten-password",
+                    defaults: new { controller = "Home", action = "ForgottenPassword" });
                 // Enable attribute routing
                 //endpoints.MapControllers();
             });
