@@ -1,31 +1,31 @@
 ﻿import { initialiseYoti } from "../yoti";
 
 export function initialiseVerification() {
-   
-    var maxStep = 3;
-    $('.btnNext').click(function () {
-        var activeStep = $('.verification-step.active')[0].id;
-        var stepNumber = _getStepNumber(activeStep) + 1;           
-        _SetUI(stepNumber, maxStep);      
-    })
+    
+    if ($("#verification-panel").is(":visible")) {
+        var maxStep = 3;
+        $('.btnNext').click(function () {
+            var activeStep = $('.verification-step.active')[0].id;
+            var stepNumber = _getStepNumber(activeStep) + 1;
+            _SetUI(stepNumber, maxStep);
+        })
 
-    $('.btnPrev').click(function () {
-        var activeStep = $('.verification-step.active')[0].id;
-        var stepNumber = _getStepNumber(activeStep) - 1;
-        _SetUI(stepNumber, maxStep);
-    })
+        $('.btnPrev').click(function () {
+            var activeStep = $('.verification-step.active')[0].id;
+            var stepNumber = _getStepNumber(activeStep) - 1;
+            _SetUI(stepNumber, maxStep);
+        })
 
-    $('.btnBackToStart').click(function () {
-        _SetUI(0, maxStep);
-    })
+        $('.btnBackToStart').click(function () {
+            _SetUI(0, maxStep);
+        })
 
-    // Listen for the event.
-    document.getElementById("verification-panel").addEventListener('failed-auth', function (e) {    
-       _SetUI(3, maxStep);
-        $('.auth-error').show();
-    }, false);
-
-
+        // Listen for the event.
+        document.getElementById("verification-panel").addEventListener('failed-auth', function (e) {
+            _SetUI(3, maxStep);
+            $('.auth-error').show();
+        }, false);
+    }
 }
 
 
