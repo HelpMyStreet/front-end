@@ -11,7 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using HelpMyStreet.Contracts.AddressService.Response;
+using HelpMyStreet.Contracts.Shared;
+using HelpMyStreet.Utils.Utils;
+using GetPostcodesResponse = HelpMyStreetFE.Models.Reponses.GetPostcodesResponse;
 
 namespace HelpMyStreetFE.Services
 {
@@ -20,13 +25,13 @@ namespace HelpMyStreetFE.Services
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IUserRepository _userRepository;
-        
+
         public AddressService(
             ILogger<AddressService> logger,
             IConfiguration configuration,
             IAddressRepository addressRepository,
             IUserRepository userRepository,
-            HttpClient client) : base(client,configuration, "Services:Address")
+            HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
@@ -47,7 +52,7 @@ namespace HelpMyStreetFE.Services
         }
 
         public async Task<List<PostCodeDetail>> GetPostcodeDetailsNearUser(User user)
-        {            
+        {
             var postCodes = await _addressRepository.GetNearbyPostcodes(user.PostalCode);
 
             var nearby = new List<PostCodeDetail>();
@@ -62,12 +67,13 @@ namespace HelpMyStreetFE.Services
             return nearby;
         }
 
-        public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode) { 
+        public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
+        {
 
             postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
-            GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();            
+            GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();
             response.PostCodeResponse = await CheckPostCode(postcode);
-            if(response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
+            if (response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
             {
                 response.ChampionCount = await _userRepository.GetChampionCountByPostcode(postcode);
                 response.VolunteerCount = await _userRepository.GetVolunteerCountByPostcode(postcode);
@@ -87,7 +93,28 @@ namespace HelpMyStreetFE.Services
                 IncludeAddressDetails = false
             };
             return await _addressRepository.GetPostcodes(request);
-            
+
+        }
+
+        public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest)
+        {
+            string json = JsonConvert.SerializeObject(getPostcodeCoordinatesRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetPostcodeCoordinates", data);
+            string str = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>>(str);
+        }
+
+        public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode)
+        {
+            postcode = PostcodeFormatter.FormatPostcode(postcode);
+            GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest = new GetPostcodeCoordinatesRequest()
+            {
+                Postcodes = new List<string>() { postcode }
+            };
+            ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode> getPostcodeCoordinatesResponse = await GetPostcodeCoordinates(getPostcodeCoordinatesRequest);
+
+            return getPostcodeCoordinatesResponse;
         }
     }
 }
