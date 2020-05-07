@@ -82,6 +82,15 @@
                         margin-right: 0.5rem;
                     }
                 }
+                &__download{
+                    display:inline-block;
+                    a{
+                        display:inline-block;
+                        vertical-align:middle;
+                        text-decoration:none;
+                        margin-right:1.5rem
+                    }
+                }
             }
 
             &__img-wrapper {
