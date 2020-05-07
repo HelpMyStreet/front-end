@@ -21,5 +21,6 @@ namespace HelpMyStreetFE.Repositories
         Task<int> GetDistinctVolunteerUserCount();
         Task<GetHelperResponse> GetHelpersByPostcode(string postcode);
         Task<GetHelperResponse> GetChampionsByPostcode(string postcode);
+        Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
     }
 }

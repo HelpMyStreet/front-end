@@ -7,7 +7,8 @@ module.exports = {
     registration: "./js/registration.js",
     yoti: "./js/yoti.js",
 	requesthelp: "./js/requesthelp/requesthelp.js",
-	profile: "./js/profile/profile.js"
+    profile: "./js/profile/profile.js",
+    coveragemap: "./js/coveragemap.js"
   },
   devtool: "inline-source-map",
   output: {

@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using HelpMyStreet.Utils.CoordinatedResetCache;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -14,6 +16,7 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
 
@@ -105,6 +108,16 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
+            services.AddHttpClient<IGoogleService, GoogleService>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
@@ -112,6 +125,12 @@ namespace HelpMyStreetFE
             services.AddSession();
            
             services.AddSingleton<IRequestService, RequestService>();
+
+            // cache
+            services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
+            services.AddTransient<ISystemClock, MockableDateTime>();
+            services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
+
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation();
