@@ -34,7 +34,7 @@
 
     @media screen and (min-width: $breakpointSm) {
         grid-template-areas: "logo nav userDetails";
-        grid-template-columns: auto 1fr 0.3fr;
+        
     }
 
     @media screen and (max-width: $breakpointSm) {

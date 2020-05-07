@@ -1,0 +1,28 @@
+﻿@using HelpMyStreetFE.Models.Yoti;
+
+<div class="row">
+    <div class="sm12">
+        <partial name="_StepCounter" model='new StepCounterViewModel { Step = 2, Description = "Follow the instructions in the Yoti app to upload your passport or Driving License" }'>
+    </div>
+</div>
+<div class="row">
+    <div class="sm12">
+        <div class="verification-step__text">
+            <p class="verification-step__text__header--small">Please have an ID in your name (either Passport or Driver's Licence) and a smartphone (iOS or Android)<p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm6">
+        <partial name="_YotiInstructions" />
+    </div>
+    <div class="sm6">
+        <div class="verification-step__img-wrapper">
+            <img src="~/img/phone-screen-yoti.png" />
+        </div>
+    </div>
+</div>
+
+
+<partial name="_NextPrevButtons" />

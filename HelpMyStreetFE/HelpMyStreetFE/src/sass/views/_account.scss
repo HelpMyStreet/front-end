@@ -17,10 +17,20 @@
             display: -ms-grid;
             grid-template-columns: 13rem 1fr;
             -ms-grid-columns: 13rem 1fr;
+            grid-template-areas: "nav verificationpanel" "nav profilepanel";
+            grid-template-rows: auto auto;
 
-            .profile-panel {
+            .verification-panel {
                 -ms-grid-row: 1;
                 -ms-grid-column: 2;
+                 grid-area: verificationpanel;
+                 margin-bottom:10px;
+            }
+
+            .profile-panel {
+                -ms-grid-row: 2;
+                -ms-grid-column: 2;
+                grid-area: profilepanel;
             }
         }
 
@@ -28,6 +38,7 @@
             -ms-grid-row: 1;
             -ms-grid-column: 1;
             margin-right: 1.6666rem;
+            grid-area: nav;
         }
     }
 }

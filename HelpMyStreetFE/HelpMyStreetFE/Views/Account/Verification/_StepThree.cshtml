@@ -1,0 +1,41 @@
+﻿@using HelpMyStreetFE.Models.Yoti;
+@model YotiOptions
+
+
+<div class="row">
+    <div class="sm12">
+        <div class="auth-error">
+            <div class="verification-step__text">
+                <p class="verification-step__text__header--small">Oops. Sorry, something didn’t work!<p>
+                    <div class="verification-step__text__copy">
+                        <ul>
+                            <li>Please check the Yoti app has taken a clear picture of your details on your Passport or Driving Licence.</li>
+                            <li>Please check that your details taken from the documents in the Yoti app are correct.</li>
+                            <li>Please then try again by scanning the QR Code</li>
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm12">
+        <partial name="_StepCounter" model='new StepCounterViewModel { Step = 3, Description = "Scan The Code with the Yoti App" }'>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm6">
+        <div class="yoti__auth__button" id="@Model.DomId"></div>
+    </div>
+    <div class="sm6">
+        <div class="verification-step__text">
+            <p class="verification-step__text__header--small">Scan with the Yoti App<p>            
+            <p  class="verification-step__text__copy">All our volunteers are ID Verified with our partner Yoti. to provide peace of mind to those in need, as well as their friends and family</p>
+        </div>      
+        </div>
+    </div>
+
+
+<partial name="_NextPrevButtons" />
