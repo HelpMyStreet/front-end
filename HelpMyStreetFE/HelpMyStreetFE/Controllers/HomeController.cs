@@ -67,7 +67,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ForgottonPassword()
+        public async Task<IActionResult> ForgottenPassword()
         {     
             return View();
         }

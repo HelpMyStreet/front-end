@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace HelpMyStreetFE.Repositories
 {
     public class UserRepository : BaseHttpRepository, IUserRepository
-    {        
-        public UserRepository(HttpClient client, IConfiguration config, ILogger<UserRepository> logger) : base(client,config, logger, "Services:User")
+    {
+        public UserRepository(HttpClient client, IConfiguration config, ILogger<UserRepository> logger) : base(client, config, logger, "Services:User")
         { }
 
         public async Task<User> GetUserByAuthId(string authId)
@@ -134,6 +134,12 @@ namespace HelpMyStreetFE.Repositories
         public async Task<GetHelperResponse> GetChampionsByPostcode(string postcode)
         {
             var response = await GetAsync<GetHelperResponse>($"/api/GetChampionsByPostcode?postCode={postcode}");
+            return response;
+        }
+
+        public async Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres)
+        {
+            VolunteerCoordinatesResponse response = await GetAsync<VolunteerCoordinatesResponse>($"/api/GetVolunteerCoordinates?SWLatitude={swLatitude}&SWLongitude={swLongitude}&NELatitude={neLatitude}&NELongitude={neLongitude}&MinDistanceBetweenInMetres={minDistanceBetweenInMetres}&VolunteerType=3&IsVerifiedType=3");
             return response;
         }
     }
