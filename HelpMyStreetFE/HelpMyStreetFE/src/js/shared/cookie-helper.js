@@ -6,6 +6,9 @@
             if (acceptedStatsCookie == false) {
                 deleteUneccsaryCookies(setCookie); // delete all cookies (GTM will add any back in based on the below cookies that are set)              
             }
+            
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ 'event': 'cookie_clicked' });
         },
         // Array of cookie types for which to show checkboxes.
         // - type: Type of cookie. This is also the label that is displayed.

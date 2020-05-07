@@ -2,8 +2,11 @@
 
 const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
 const closeUpZoomNumber = 16; // zoom level when postcode is entered
-const initialUKZoomNumber = 6; // zoom level of the UK when geo location is not enabled
+let initialUKZoomNumber = 6; // zoom level of the UK when geo location is not enabled
 const geolocationZoomNumber = 14; // zoom level when geo location is enabled
+
+let initialLat = 54.383618;
+let initialLng = -3.821280;
 
 let script = document.createElement('script');
 script.src = 'api/Maps/js';
@@ -16,16 +19,104 @@ let googleMap;
 let googleMapMarkers = new Map();
 let postcodeMarker = null;
 
+let previousZoomLevel = -1;
+
 window.initGoogleMap = async function () {
 
+    // zoom out one step if on a mobile and change centre of map
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+        initialUKZoomNumber -= 1;
+        initialLat = 55.841264;
+        initialLng = -4.119149;
+    }
+
+    let noPoi = [
+        {
+            featureType: "poi.attraction",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.business",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.government",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.medical",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.park",
+            elementType: "labels.icon",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.place_of_worship",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.school",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "poi.sports_complex",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        },
+        {
+            featureType: "transit",
+            stylers: [
+                {
+                    visibility: "off"
+                }
+            ]
+        }
+    ];
+
     googleMap = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 54.383618, lng: -3.821280 },
+        center: { lat: initialLat, lng: initialLng },
         zoom: initialUKZoomNumber
     });
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
-    }
+    googleMap.setOptions({ styles: noPoi });
+
+
+    //if (navigator.geolocation) {
+    //    navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
+    //}
 
     googleMap.addListener('idle', function () {
         let bounds = googleMap.getBounds();
@@ -38,24 +129,24 @@ window.initGoogleMap = async function () {
         updateMap(swLat, swLng, neLat, neLng);
     });
 
-    $("#postcode_button").click(async function (evt) {
-        let postcode = $("#postcode").val();
-        if (postcode) {
-            let postcodeCoordinates = await getPostcodeCoordinates(postcode);
-            if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
-                let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
-                setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
+    //$("#postcode_button").click(async function (evt) {
+    //    let postcode = $("#postcode").val();
+    //    if (postcode) {
+    //        let postcodeCoordinates = await getPostcodeCoordinates(postcode);
+    //        if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
+    //            let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
+    //            setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
 
-                postcodeMarker = new google.maps.Marker({
-                    position: { lat: postcodeCoordinate.latitude, lng: postcodeCoordinate.longitude },
-                    title: postcodeCoordinate.postcode,
-                });
+    //            postcodeMarker = new google.maps.Marker({
+    //                position: { lat: postcodeCoordinate.latitude, lng: postcodeCoordinate.longitude },
+    //                title: postcodeCoordinate.postcode,
+    //            });
 
-                addMarkerForPostcodeLookup();
+    //            addMarkerForPostcodeLookup();
 
-            }
-        }
-    });
+    //        }
+    //    }
+    //});
 };
 
 function addMarkerForPostcodeLookup() {
@@ -98,6 +189,12 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         removedMarkerForPostcodeLookup();
     }
 
+    // delete min distance markers when zooming in
+    if (zoomLevel === (largeAreaZoomNumber + 1) && (previousZoomLevel === largeAreaZoomNumber)) {
+        deleteMarkers();
+        removedMarkerForPostcodeLookup();
+    }
+
     coords.map(coord => {
         let thisMarker;
         if (isMapShowingLargeArea === true) {
@@ -118,6 +215,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     });
 
     showMarkers();
+    previousZoomLevel = zoomLevel;
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
@@ -139,7 +237,13 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2) {
 
 function addMarker(marker) {
     let key = getMarkerKey(marker);
+
     if (!googleMapMarkers.has(key)) {
+
+        marker.addListener('click', function () {
+            setMapCentre(marker.getPosition().lat(), marker.getPosition().lng(), googleMap.getZoom() + 1);
+        });
+
         googleMapMarkers.set(key, marker);
     }
 }
