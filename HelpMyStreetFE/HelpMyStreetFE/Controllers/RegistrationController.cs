@@ -225,7 +225,7 @@ namespace HelpMyStreetFE.Controllers
                     form.ChampionRoleUnderstood,
                     form.ChampionPostcodes);
 
-                return Redirect("/registration/stepfive");
+                return Redirect("/account");
             }
             catch (Exception ex)
             {
@@ -233,22 +233,6 @@ namespace HelpMyStreetFE.Controllers
                 _logger.LogError(ex.ToString());
                 return Redirect("/registration/stepfour?failure=error");
             }
-        }
-
-        [HttpGet("[controller]/stepfive")]
-        public async Task<IActionResult> StepFive()
-        {       
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            // Remove any references to User in session so on next Load it fetches the updated values;
-            HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(int.Parse(userId));
-            if (correctPage != "/registration/stepfive")
-            {
-                // A different step needs to be completed at this point
-                return Redirect(correctPage);
-            }     
-            var viewModel = new RegistrationViewModel { ActiveStep = 5, EncodedUserID = Base64Helpers.Base64Encode(userId) };
-            return View(viewModel);
         }
 
         public async Task<string> GetCorrectPage(int userId)
@@ -271,8 +255,6 @@ namespace HelpMyStreetFE.Controllers
                         return "/registration/stepthree";
                     case 3:
                         return "/registration/stepfour";
-                    case 4:
-                        return "/registration/stepfive";
                     default:
                         return string.Empty; //Registration journey is complete
                 }
