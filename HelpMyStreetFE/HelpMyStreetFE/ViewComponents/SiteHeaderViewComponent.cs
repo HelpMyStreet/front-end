@@ -31,11 +31,10 @@ namespace HelpMyStreetFE.ViewComponents
             };            
             if (viewModel.isLoggedIn)
             {
-               
+                var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 var user = HttpContext.Session.GetObjectFromJson<User>("User");
-                if(user == null)
-                {
-                    var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if(user == null || user.ID != id)
+                {               
                     user = await _userService.GetUserAsync(id);
                     HttpContext.Session.SetObjectAsJson("User", user);
                 }
