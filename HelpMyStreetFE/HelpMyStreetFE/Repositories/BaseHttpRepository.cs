@@ -52,7 +52,6 @@ namespace HelpMyStreetFE.Repositories
             Logger.LogInformation($"Get request to {url}");
             var resp = await Client.GetAsync(url);
             Logger.LogInformation($"Request code: {resp.StatusCode}");
-
             return await HandleResponseAsync<TResponse>(resp);
         }
 

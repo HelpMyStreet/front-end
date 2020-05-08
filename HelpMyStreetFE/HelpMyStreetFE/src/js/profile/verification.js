@@ -57,9 +57,7 @@ $.fn.isInViewport = function () {
 };
 function _setTitle(stepNumber) {
     var title = "My Verification";
-    if (stepNumber > 0) {
-        title += " - Step " + stepNumber;
-    } else {
+    if (stepNumber == 0) {
          title = "My Activity";
     }
     $('#verification-title').text(title);

@@ -76,34 +76,44 @@ export function initialiseStepTwo() {
                 "Please enter a valid first line of your address",
         });
 
-        let dob = $(this).find("input[name='dob']");               
-        let dobValid = validateDob(dob.val(), dob.attr('id'));       
-        let mobile = $(this).find("input[name='mobile_number']");       
-        let alt = $(this).find("input[name='alt_number']");               
-        let validForm = (valid && dobValid && validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07") && validatePhoneNumber(alt, "Please enter a valid alternative number"));
- 
-      let postcodeValid;
-      let postcodeInput = $("input[name='postcode']");
-      event.preventDefault(); //this will prevent the default submit needed now we do a call to api
-        if (validForm) { // avoid calling service when possible, so check if the form is valid first
-            buttonLoad($('#submit_button'));  
-          validatePostCode(postcodeInput.val()).then(function (response) {
-              postcodeValid = response;
-              if (!postcodeValid) {
-                  postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
-                  buttonUnload($('#submit_button'));  
-              } else {
-                  postcodeInput.find("~ .error").hide();
-              }
-          }).catch(function () {
-              buttonUnload($('#submit_button'));  
-            }).finally(function () {
-              validForm = (validForm && postcodeValid);
-              if (validForm) {
-                  $("#registration_form").unbind('submit').submit(); // continue the submit unbind preventDefault
-              }              
-          });
-          
-      }
+        runAdditionalValidation($(this)).then(function (additonalChecks) {
+            let validForm = (additonalChecks && valid);
+            console.log(validForm)
+            let postcodeValid;
+            let postcodeInput = $("input[name='postcode']");
+            event.preventDefault(); //this will prevent the default submit needed now we do a call to api
+            if (validForm) { // avoid calling service when possible, so check if the form is valid first
+                buttonLoad($('#submit_button'));
+                validatePostCode(postcodeInput.val()).then(function (response) {
+                    postcodeValid = response;
+                    if (!postcodeValid) {
+                        postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+                        buttonUnload($('#submit_button'));
+                    } else {
+                        postcodeInput.find("~ .error").hide();
+                    }
+                }).catch(function () {
+                    buttonUnload($('#submit_button'));
+                }).finally(function () {
+                    validForm = (validForm && postcodeValid);
+                    if (validForm) {
+                        $("#registration_form").unbind('submit').submit(); // continue the submit unbind preventDefault
+                    }
+                });
+
+            }
+        })
   });
+}
+
+var runAdditionalValidation = async function(form) {
+    let dob = form.find("input[name='dob']");
+    console.log(dob);
+    let mobile = form.find("input[name='mobile_number']");
+    let alt = form.find("input[name='alt_number']");         
+
+    var v1 = validateDob(dob.val(), dob.attr('id'));
+    var v2 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07");
+    var v3 = validatePhoneNumber(alt, "Please enter a valid alternative number");
+    return (v1 && v2 && v3);
 }
