@@ -77,8 +77,7 @@ export function initialiseStepTwo() {
         });
 
         runAdditionalValidation($(this)).then(function (additonalChecks) {
-            let validForm = (additonalChecks && valid);
-            console.log(validForm)
+            let validForm = (additonalChecks && valid);            
             let postcodeValid;
             let postcodeInput = $("input[name='postcode']");
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
@@ -107,8 +106,7 @@ export function initialiseStepTwo() {
 }
 
 var runAdditionalValidation = async function(form) {
-    let dob = form.find("input[name='dob']");
-    console.log(dob);
+    let dob = form.find("input[name='dob']");    
     let mobile = form.find("input[name='mobile_number']");
     let alt = form.find("input[name='alt_number']");         
 
