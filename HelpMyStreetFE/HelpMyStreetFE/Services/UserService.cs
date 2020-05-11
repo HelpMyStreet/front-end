@@ -148,20 +148,13 @@ namespace HelpMyStreetFE.Services
             var personalDetails = user.UserPersonalDetails;
             string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
             string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
-            string streetChampion = string.Empty;
+          
             string gender = "Unknown";
             string underlyingMedicalConditions = "No";
             bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
             bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
-            if (user.ChampionPostcodes.Count > 0)
-            {
-                streetChampion = "Street Champion";
-            }
-            else if (user.IsVerified.HasValue && user.IsVerified.Value == true)
-            {
-                streetChampion = "Helper";
-            }
-
+            string streetChampion = isStreetChampion ? "Street Champion" : "Helper";
+            
             if (personalDetails.UnderlyingMedicalCondition.HasValue)
             {
                 underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value ? "Yes" : "No";

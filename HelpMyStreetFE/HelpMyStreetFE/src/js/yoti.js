@@ -41,7 +41,7 @@ var yoti = new Object();
     
 export function initialiseYoti() {
     if (initObj) {
-        updateQueryStringParam("u", initObj.userId);
+   
         if (yoti.instance) {
             yoti.instance.destroy();
         }
@@ -72,22 +72,3 @@ export function initialiseYoti() {
             throw new Error("initObj is null");
         }   
 }
-var updateQueryStringParam = function (key, value) {
-    var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
-        urlQueryString = document.location.search,
-        newParam = key + '=' + value,
-        params = '?' + newParam;
-
-    // If the "search" string exists, then build params from it
-    if (urlQueryString) {
-        var keyRegex = new RegExp('([\?&])' + key + '[^&]*');
-
-        // If param exists already, update it
-        if (urlQueryString.match(keyRegex) !== null) {
-            params = urlQueryString.replace(keyRegex, "$1" + newParam);
-        } else { // Otherwise, add it to end of query string
-            params = urlQueryString + '&' + newParam;
-        }
-    }
-    window.history.replaceState({}, "", baseUrl + params);
-};
