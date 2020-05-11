@@ -1,7 +1,9 @@
 @import "./user-data";
 @import "./contact-preference";
 @import "../../mixins/effects";
+@import "../../mixins/typography/copy";
 @import "./my-street";
+@import "./verification";
 .profile-panel {
   background-color: white;
   border-radius: 4px;

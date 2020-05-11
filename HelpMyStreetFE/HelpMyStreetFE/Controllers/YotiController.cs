@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,46 +38,28 @@ namespace HelpMyStreetFE.Controllers
 
             if (validUserId != null)
             {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));
-                string correctPage = RegistrationController.GetCorrectPage(user);
-                if (correctPage != "/registration/stepfive")
-                {
-                    // A different step needs to be completed at this point
-                    return Redirect(correctPage);
-                }
-
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));                        
                 var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
                 return View(viewModel);
             }
             else
             {
-                return Redirect("/Registration/StepFive");
+                return Redirect("/account");
             }
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
-        {     
+        {
             var validUserId = DecodedAndCheckedUserId(u, token != null);
-
             if (validUserId != null && token != null)
-            {
-                // Remove any references to User in session so on next Load it fetches the updated values;
-                HttpContext.Session.Remove("User"); 
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));         
-                string correctPage = RegistrationController.GetCorrectPage(user);
-                if (correctPage != "/registration/stepfive")
-                {
-                    // A different step needs to be completed at this point
-                    return Redirect(correctPage);
-                }
-
+            {                           
                 var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success)
                 {
                     await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
-                    
+
                     if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
                     {
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
@@ -109,20 +91,12 @@ namespace HelpMyStreetFE.Controllers
             var validUserId = DecodedAndCheckedUserId(u, true);
 
             if (validUserId != null)
-            {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));
-                string correctPage = RegistrationController.GetCorrectPage(user);
-                if (correctPage != "/registration/stepfive")
-                {
-                    // A different step needs to be completed at this point
-                    return Redirect(correctPage);
-                }
-
+            {                                
                 return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
             }
             else
             {
-                return Redirect("/registration/stepfive");
+                return Redirect("/Error/500");
             }
         }
 

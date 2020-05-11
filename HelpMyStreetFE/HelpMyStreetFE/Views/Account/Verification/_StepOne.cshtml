@@ -1,0 +1,52 @@
+﻿@using HelpMyStreetFE.Models.Yoti;
+<div class="row verification-step__section">
+    <div class="sm6">
+        <div class="verification-step__image--large">
+            <img src="~/img/logos/Yoti_logo.svg" />
+        </div>
+
+    </div>
+    <div class="sm6">
+        <div class="verification-step__text">
+            <div class="verification-step__text__copy">
+                <p>All our volunteers are ID Verified with our partner Yoti to provide peace of mind to those in need, as well as their friends and family.</p>
+            </div>
+            <div class="verification-step__text__copy">
+                <a class="btnNext" title="Next Step">Already got the Yoti app?</a>
+
+                <div class="row">
+                    <div class="sm4 pl-0">
+                        <span> Yoti is certified by:</span>
+                    </div>
+                    <div class=" sm8  verification-step__yoti__logos">
+                    <img  src="~/img/logos/Yoti Verified/ISO.png" width="60"/>
+                    <img src="~/img/logos/Yoti Verified/AICPA.png" width="60"/>
+                    <img src="~/img/logos/Yoti Verified/SPD.png" width="60"/>
+                    <img  src="~/img/logos/Yoti Verified/BCorp.png" width="30"/></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm12">
+    <partial name="_StepCounter" model='new StepCounterViewModel { Step = 1, Description = "Please have an ID in your name (either Passport or Drivers Licence) and a smartphone (iOS or Android)" }'>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm6">
+        <div class="verification-step__text">
+            <div class="verification-step__text__copy">
+                <p><strong>Download the Yoti app to complete ID Verification </strong></p>
+            </div>            
+        </div>
+    </div>
+    <div class="sm6">
+        <partial name="_YotiDownload" />
+    </div>
+</div>
+
+
+<partial name="_NextPrevButtons" />

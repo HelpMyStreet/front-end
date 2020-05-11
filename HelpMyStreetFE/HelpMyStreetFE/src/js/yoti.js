@@ -1,7 +1,6 @@
 
 
 $(() => {
-
     var getParameterByName = function (name, url) {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/g, '\\$&');
@@ -14,49 +13,81 @@ $(() => {
 
     var urlToken = getParameterByName("token");
     var userId = getParameterByName("u");
+    if (initObj) {
+        if (urlToken) {
+            processYoti(urlToken, userId)
+        }                  
+    }else {
+            throw new Error("initObj is null");
+        }    
+});
 
-    var processYoti = async function (thisToken) {
-        $('.yoti__auth__button').hide();
-        $('.yoti__auth__loading').css("visibility", "visible");
-        $('.yoti__auth__loading').css("height", "100%");
-        var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
-        if (response.status == 200) {
-            window.location.href = "/yoti/AuthSuccess";
-        } else {            
-            window.location.href = "/yoti/AuthFailed?u=" + userId;
-        }
-    }
 
-    if (urlToken) {   
-        processYoti(urlToken)
+var processYoti = async function (thisToken, userId) {
+    $('#overlay').show();
+    $('.loading-overlay').show();
+    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
+    if (response.status == 200) {
+        window.location.href = "/Account";
     } else {
-        if (initObj) {
-            window.Yoti.Share.init({
-                elements: [
-                    {
-                        domId: initObj.domId,
-                        scenarioId: initObj.scenarioId,
-                        clientSdkId: initObj.clientSdkId,
-                        button: {
-                            label: "Open Yoti",
-                            align: "center",
-                            width: "full", // "auto"
-                        },
-                        modal: {
-                            zIndex: 9999,
-                        },
-                        shareComplete: {
-                            closeDelay: 4000, // default to 4000, min of 500 - max of 10000
-                            tokenHandler: async (token, done) => {
-                                processYoti(token);
-                                done();
-                            },
+        var event = document.createEvent('Event');
+        event.initEvent('failed-auth', true, true);
+        document.getElementById('verification-panel').dispatchEvent(event);
+        $('#overlay').hide();
+        $('.loading-overlay').hide();    
+    }
+}
+var yoti = new Object();
+    
+export function initialiseYoti() {
+    if (initObj) {
+        updateQueryStringParam("u", initObj.userId);
+        if (yoti.instance) {
+            yoti.instance.destroy();
+        }
+       yoti.instance = window.Yoti.Share.init({
+            elements: [
+                {
+                    domId: initObj.domId,
+                    scenarioId: initObj.scenarioId,
+                    clientSdkId: initObj.clientSdkId,
+                    type: "inline",             
+                    qr: {
+                        title: "Scan with the Yoti app"
+                    },
+                    modal: {
+                        zIndex: 9999,
+                    },
+                    shareComplete: {
+                        tokenHandler: async (token, done) => {
+                            processYoti(token, initObj.userId);
+                            done();
                         },
                     },
-                ],
-            });
-        } else {
+                },
+            ],
+       });
+
+    }else {
             throw new Error("initObj is null");
+        }   
+}
+var updateQueryStringParam = function (key, value) {
+    var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
+        urlQueryString = document.location.search,
+        newParam = key + '=' + value,
+        params = '?' + newParam;
+
+    // If the "search" string exists, then build params from it
+    if (urlQueryString) {
+        var keyRegex = new RegExp('([\?&])' + key + '[^&]*');
+
+        // If param exists already, update it
+        if (urlQueryString.match(keyRegex) !== null) {
+            params = urlQueryString.replace(keyRegex, "$1" + newParam);
+        } else { // Otherwise, add it to end of query string
+            params = urlQueryString + '&' + newParam;
         }
     }
-});
+    window.history.replaceState({}, "", baseUrl + params);
+};

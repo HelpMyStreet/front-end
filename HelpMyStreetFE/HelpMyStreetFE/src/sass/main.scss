@@ -253,3 +253,13 @@ dd {
         margin-right:10px;
     }
 }
+
+
+#overlay {
+    position:absolute;
+    width:100vw;
+    height:100vh;
+    cursor:not-allowed;
+    z-index:100;
+    display:none;
+}

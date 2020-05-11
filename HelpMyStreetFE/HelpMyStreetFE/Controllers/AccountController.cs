@@ -14,6 +14,8 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models;
 using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
+using Microsoft.Extensions.Options;
+using HelpMyStreetFE.Models.Yoti;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -24,18 +26,20 @@ namespace HelpMyStreetFE.Controllers
         private readonly IUserService _userService;
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
+        private readonly IOptions<YotiOptions> _yotiOptions;
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
             IAddressService addressService,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IOptions<YotiOptions> yotiOptions
             )
         {
             _logger = logger;
             _userService = userService;
             _addressService = addressService;
             _configuration = configuration;
-
+            _yotiOptions = yotiOptions;
         }
 
   
@@ -139,16 +143,11 @@ namespace HelpMyStreetFE.Controllers
         }
 
         private async Task<User> GetCurrentUser()
-        {         
-            var user = HttpContext.Session.GetObjectFromJson<User>("User");
-            if (user == null)
-            {
-                var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                user = await _userService.GetUserAsync(id);
-                HttpContext.Session.SetObjectAsJson("User", user);
-            }
-
-            return user;
+        {              
+             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+             var  user = await _userService.GetUserAsync(id);
+             HttpContext.Session.SetObjectAsJson("User", user);   
+             return user;
         }
 
         private AccountViewModel GetAccountViewModel(User user)
@@ -174,9 +173,18 @@ namespace HelpMyStreetFE.Controllers
                         Type = NotificationType.Success
                     }
                 };
-
-                viewModel.Notifications = notifications;
                 var userDetails = _userService.GetUserDetails(user);
+                viewModel.Notifications = notifications;
+                viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
+                {
+                    YotiOptions = _yotiOptions.Value,
+                    EncodedUserID = Base64Helpers.Base64Encode(user.ID.ToString()),
+                    DisplayName = userDetails.DisplayName,
+                    IsStreetChampion = userDetails.IsStreetChampion,
+                    IsVerified = userDetails.IsVerified,
+                    
+                };
+       
                 viewModel.UserDetails = userDetails;                
                 
             }

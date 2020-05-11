@@ -16,6 +16,7 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
+using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
@@ -36,10 +37,10 @@ namespace HelpMyStreetFE
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
+                {            
+                    options.Cookie.HttpOnly = true;                    
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.Cookie.SameSite = SameSiteMode.Strict;                        
                 });
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
@@ -123,7 +124,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IEmailService, EmailService>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
-           
+
             services.AddSingleton<IRequestService, RequestService>();
 
             // cache
@@ -133,7 +134,10 @@ namespace HelpMyStreetFE
 
             services.AddControllers();
             services.AddRazorPages()
-            .AddRazorRuntimeCompilation();
+            .AddRazorRuntimeCompilation()
+            .AddRazorOptions(opt => opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml"));
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
