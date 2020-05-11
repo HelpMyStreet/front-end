@@ -1,9 +1,21 @@
 ﻿import { initialiseYoti } from "../yoti";
 
 export function initialiseVerification() {
-    
+
+    updateQueryStringParam("u", initObj.userId);
     if ($("#verification-panel").is(":visible")) {
         var maxStep = 3;
+
+        $('#reload-yoti').click(function () {
+            $(".yoti__auth__button").hide(); 
+            // reload yoti button but wait a second before we do incase we need to wait for the websockets to finish whatever they are doing 
+            setTimeout(function () {
+                initialiseYoti();
+                $(".yoti__auth__button").show();
+            }, 1000)
+            
+            
+        })
         $('.btnNext').click(function () {
             var activeStep = $('.verification-step.active')[0].id;
             var stepNumber = _getStepNumber(activeStep) + 1;
@@ -71,6 +83,7 @@ function _showOrHideNextButton(stepNumber, maxStep){
     }
 }
 
+
 function _getStepNumber(stepId) {
     
     switch (stepId) {
@@ -105,4 +118,29 @@ function _setActive(stepNumber) {
             $('#landing').addClass("active");
     }
 
+}
+
+
+var updateQueryStringParam = function (key, value) {
+    var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
+        urlQueryString = document.location.search,
+        newParam = key + '=' + value,
+        params = '?' + newParam;
+    baseUrl = removeTrailingSlashes(baseUrl)
+    // If the "search" string exists, then build params from it
+    if (urlQueryString) {
+        var keyRegex = new RegExp('([\?&])' + key + '[^&]*');
+
+        // If param exists already, update it
+        if (urlQueryString.match(keyRegex) !== null) {
+            params = urlQueryString.replace(keyRegex, "$1" + newParam);
+        } else { // Otherwise, add it to end of query string
+            params = urlQueryString + '&' + newParam;
+        }
+    }
+    window.history.replaceState({}, "", baseUrl + params);
+};
+
+function removeTrailingSlashes(url) {
+    return url.replace(/\/+$/, ''); //Removes one or more trailing slashes from URL
 }
