@@ -28,6 +28,7 @@
 
 
 <div class="container">
+    <partial name="_ProgressBar" />
     <div class="row justify-center">
         <div class="sm12">
             <h1>@ViewData["Title"]</h1>
@@ -46,7 +47,7 @@
                 </div>
                 <div class="sm6">
                     <button class="btn cta large" id="postcode_button">
-                        <span class="text">Check Postcode</span>                        
+                        <span class="text">Check Postcode</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking..."}' /></div>
                     </button>
                 </div>
@@ -74,7 +75,7 @@
                 </div>
             </div>
         </div>
-        
+
 
     </div>
 
