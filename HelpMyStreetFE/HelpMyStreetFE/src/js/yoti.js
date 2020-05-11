@@ -1,28 +1,3 @@
-
-
-$(() => {
-    var getParameterByName = function (name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    var urlToken = getParameterByName("token");
-    var userId = getParameterByName("u");
-    if (initObj) {
-        if (urlToken) {
-            processYoti(urlToken, userId)
-        }                  
-    }else {
-            throw new Error("initObj is null");
-        }    
-});
-
-
 var processYoti = async function (thisToken, userId) {
     $('#overlay').show();
     $('.loading-overlay').show();
