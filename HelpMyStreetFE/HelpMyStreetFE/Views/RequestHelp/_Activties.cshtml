@@ -1,30 +1,32 @@
-﻿@using HelpMyStreet.Utils.Enums
+﻿@using HelpMyStreetFE.Models.RequestHelp;
 @{
     var viewModel = Model;
-    var activites = new Dictionary<SupportActivities, KeyValuePair<string, string>>
-{
-        { SupportActivities.Shopping, new KeyValuePair<string, string>("Shopping", "Picking up essential groceries") },
-        { SupportActivities.CollectingPrescriptions, new KeyValuePair<string, string>("Prescriptions", "Collecting from a local pharmacy") },
-        { SupportActivities.Errands, new KeyValuePair<string, string>("Errands", "Essential local errands (e.g. posting mail)") },
-        { SupportActivities.DogWalking, new KeyValuePair<string, string>("Dog Walking", "Walking a calm dog") },
-        { SupportActivities.MealPreparation, new KeyValuePair<string, string>("A Meal", "Getting a hot / pre-prepared meal") },
-        { SupportActivities.PhoneCalls_Friendly, new KeyValuePair<string, string>("Friendly Chat", "A  freindly chat on the phone") },
-        { SupportActivities.PhoneCalls_Anxious, new KeyValuePair<string, string>("Supportive Chat", "Someone to talk through some challenges over the phone") },
-        { SupportActivities.HomeworkSupport, new KeyValuePair<string, string>("Homework", "Support for children being homeschooled") },
-        { SupportActivities.CheckingIn, new KeyValuePair<string, string>("Check in", "Check that someone is OK") },
-        { SupportActivities.Other, new KeyValuePair<string, string>("Something Else", "") },
-                         
-    };
+    var activties = new List<RequestActivityViewModel>
+    {
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping,FriendlyName ="Shopping", Description = "Picking up essential groceries", ColourCode = "blue", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, FriendlyName ="Prescriptions",Description = "Collecting from a local pharmacy", ColourCode = "blue", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Errands,FriendlyName ="Errands", Description = "Essential local errands (e.g. posting mail)", ColourCode = "blue", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking,FriendlyName ="Dog Walking", Description = "Walking a calm dog", ColourCode = "dark-blue", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation,FriendlyName ="A Meal", Description = "Getting a hot / pre-prepared meal", ColourCode = "dark-blue", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly,FriendlyName ="Friendly Chat", Description = "A freindly chat on the phone", ColourCode = "light-purple", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious,FriendlyName ="Supportive Chat", Description = "Someone to talk through some challenges over the phone", ColourCode = "light-purple", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport,FriendlyName ="Homework", Description = "Support for children being homeschooled", ColourCode = "dark-blue", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn, FriendlyName ="Check in", Description = "Check that someone is OK", ColourCode = "light-purple", Icon = "fa-shopping"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other, FriendlyName = "Something Else", ColourCode = "dark-blue", Icon = "fa-shopping"},
+    };    
 }
 
     <div class="activity-tiles">
         <div class="row">
-            @foreach (var activity in activites)
+            @foreach (var activity in activties)
             {
             <div class="sm4">
-                <div class="activity-tiles__tile">
-                    <div class="activity-tiles__tile__header">@activity.Key</div>
-                    <div class="activity-tiles__tile__description">@activity.Value</div>
+                <div class="activity-tiles__tile @activity.ColourCode">
+                    <div class="activity-tiles__tile__content">
+                        <div class="activity-tiles__tile__content__icon"></div>
+                        <div class="activity-tiles__tile__content__header">@activity.FriendlyName</div>
+                        <div class="activity-tiles__tile__content__description">@activity.Description</div>
+                    </div>
                 </div>
             </div>
             }

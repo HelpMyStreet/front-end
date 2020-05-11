@@ -1,45 +1,41 @@
 
 
-.postcode-checker {
-    .input {
-        label {
-            font-weight: 900;
-        }
-    }
 
-    &__input {
-        input {
-            height: 62px;
-        }
-    }
+.activity-tiles {
+    &__tile {
+        text-align:center;
+        background: white;
+        padding: 10px;
+        width: 100%;
+        margin: 10px;
+        height: 200px;
+        @include shadow-md;
+        border-radius: 3px;
 
-    &__validation {
-        margin-top: 10px;
-
-        &__message {
-            font-weight: 600;
-
-            p,
-            &--text {
-                color: $dark-blue;
-            }
-
-            &--warning {
-                color: $orange;
-            }
-        }
-    }
-}
-
-
-.request-help {
-    &__form {
-        .input {
-            margin-top: 10px;
+        &.dark-blue {
+            color: $dark-blue;
         }
 
-        &__controls {
-            margin-top:30px
+        &.blue {
+            color: $blue;
+        }
+
+        &.light-purple {
+            color: $light-purple;
+        }
+        &__content{
+
+        &__header{
+            font-weight:600;
+            font-size:1.5em;
+            margin-bottom:10px;
+
+            
+        }
+
+        &__description{
+            color: $black;
+        }
         }
     }
 }
