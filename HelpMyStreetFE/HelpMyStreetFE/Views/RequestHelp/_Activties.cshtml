@@ -1,0 +1,35 @@
+﻿@using HelpMyStreet.Utils.Enums
+@{
+    var viewModel = Model;
+    var activites = new Dictionary<SupportActivities, KeyValuePair<string, string>>
+{
+        { SupportActivities.Shopping, new KeyValuePair<string, string>("Shopping", "Picking up essential groceries") },
+        { SupportActivities.CollectingPrescriptions, new KeyValuePair<string, string>("Prescriptions", "Collecting from a local pharmacy") },
+        { SupportActivities.Errands, new KeyValuePair<string, string>("Errands", "Essential local errands (e.g. posting mail)") },
+        { SupportActivities.DogWalking, new KeyValuePair<string, string>("Dog Walking", "Walking a calm dog") },
+        { SupportActivities.MealPreparation, new KeyValuePair<string, string>("A Meal", "Getting a hot / pre-prepared meal") },
+        { SupportActivities.PhoneCalls_Friendly, new KeyValuePair<string, string>("Friendly Chat", "A  freindly chat on the phone") },
+        { SupportActivities.PhoneCalls_Anxious, new KeyValuePair<string, string>("Supportive Chat", "Someone to talk through some challenges over the phone") },
+        { SupportActivities.HomeworkSupport, new KeyValuePair<string, string>("Homework", "Support for children being homeschooled") },
+        { SupportActivities.CheckingIn, new KeyValuePair<string, string>("Check in", "Check that someone is OK") },
+        { SupportActivities.Other, new KeyValuePair<string, string>("Something Else", "") },
+                         
+    };
+}
+
+    <div class="activity-tiles">
+        <div class="row">
+            @foreach (var activity in activites)
+            {
+            <div class="sm4">
+                <div class="activity-tiles__tile">
+                    <div class="activity-tiles__tile__header">@activity.Key</div>
+                    <div class="activity-tiles__tile__description">@activity.Value</div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+
+
+
