@@ -4,7 +4,7 @@
     grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
     grid-template-rows: repeat(11, 0.2fr);
     gap: 1px 1px;
-    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary CookieNameVal ProviderName PurposeVal ExpiryVal" "Neccesary CookieNameVal1 ProviderName PurposeVal1 ExpiryValTwo" "Neccesary CookieNameVal2 ProviderName PurposeVal3 ExpiryValThree" "Statistics ThirdPartyCookie1 ThirdPartyProvider PurposeOne ThirdPartyExpiryOne" "Statistics ThirdPartyCookie2 ThirdPartyProvider PurposeTwo ThirdPartyExpiryTwo" "Statistics ThirdParticyCookie3 ThirdPartyProvider PurposeThree ThirdPartyExpiryThree" "Statistics ThirdPartyCookie4 ThirdPartyProvider2 PurposeFour ThirdPartyExpiryFour" "Statistics ThirdPartyCookie5 ThirdPartyProvider2 PurposeFive ThirdPartyExpiryFive" "Statistics ThirdPartyCookie6 ThirdPartyProvider2 PurposeSix ThirdPartyExpirySix" "Statistics ThirdPartyCookie7 ThirdPartyProvider2 PurposeSeven ThirdPartyExpirySeven" "Statistics ThirdParticyCookie8 ThirdPartyProvider2 PurposeEight ThirdPartyExpiryEight";
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cCookieControlPrefs ProviderName pCookieControlPrefs eCookieControlPrefs" "Neccesary cOptOutStats ProviderName pOptOutStats eOptOutStats" "Statistics c_ga tppGoogle tp_ga te_ga" "Statistics c_gat tppGoogle tp_gat te_gat" "Statistics c_gid tppGoogle tp_gid te_gid" "Statistics tc_hjid tpp_Hotjar tp_hjid te_hjid" "Statistics tc_hjRecordingLastActivity tpp_Hotjar tp_hjRecordingLastActivity te_hjRecordingLastActivity" "Statistics tc_hjTLDTest tpp_Hotjar PurposeSix te_hjTLDTest" "Statistics tc_hjIncludedInSample tpp_Hotjar tp_hjIncludedInSample te_hjIncludedInSample" "Statistics tc_hjRecordingEnabled tpp_Hotjar tp_hjRecordingEnabled te_hjRecordingEnabled";
     border-top: 1px solid black;
     border-left: 1px solid black;
 
@@ -14,7 +14,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align:center;
+        text-align: center;
     }
 
 
@@ -49,8 +49,8 @@
         grid-area: Neccesary;
     }
 
-    .CookieNameVal {
-        grid-area: CookieNameVal;
+    .cAntiForgery {
+        grid-area: cAntiForgery;
     }
 
     .ProviderName {
@@ -61,44 +61,74 @@
         }
     }
 
-    .PurposeVal {
-        grid-area: PurposeVal;
+    .pAntiForgery {
+        grid-area: pAntiForgery;
     }
 
-    .PurposeVal1 {
-        grid-area: PurposeVal1;
+    .pArrfinity {
+        grid-area: pArrfinity;
     }
 
-    .PurposeVal3 {
-        grid-area: PurposeVal3;
+    .pCookieControl {
+        grid-area: pCookieControl;
     }
 
-    .ExpiryVal {
-        grid-area: ExpiryVal;
+    .pCookieControlPrefs {
+        grid-area: pCookieControlPrefs;
     }
 
-    .ExpiryValTwo {
-        grid-area: ExpiryValTwo;
+    eCookieControlPrefs {
+        grid-area: eCookieControlPrefs;
     }
 
-    .ExpiryValThree {
-        grid-area: ExpiryValThree;
+    .pOptOutStats {
+        grid-area: pOptOutStats;
     }
 
-    .CookieNameVal1 {
-        grid-area: CookieNameVal1;
+    .eOptOutStats {
+        grid-area: eOptOutStats;
     }
 
-    .CookieNameVal2 {
-        grid-area: CookieNameVal2;
+    eCookieControlPrefs {
+        grid-area: eCookieControlPrefs;
+    }
+
+
+    .eAntiForgery {
+        grid-area: eAntiForgery;
+    }
+
+    .eArrfinity {
+        grid-area: eArrfinity;
+    }
+
+    .eCookieControl {
+        grid-area: eCookieControl;
+    }
+
+    .cArrfinity {
+        grid-area: cArrfinity;
+    }
+
+    .cCookieControl {
+        grid-area: cCookieControl;
+    }
+
+
+    .cCookieControlPrefs {
+        grid-area: cCookieControlPrefs;
+    }
+
+    .cOptOutStats {
+        grid-area: cOptOutStats;
     }
 
     .Statistics {
         grid-area: Statistics;
     }
 
-    .ThirdPartyCookie1 {
-        grid-area: ThirdPartyCookie1;
+    .c_ga {
+        grid-area: c_ga;
     }
 
     .ThirdPartyCookie2 {
@@ -109,103 +139,103 @@
         grid-area: ThirdParticyCookie3;
     }
 
-    .ThirdPartyCookie4 {
-        grid-area: ThirdPartyCookie4;
+    .tc_hjid {
+        grid-area: tc_hjid;
     }
 
-    .ThirdPartyCookie5 {
-        grid-area: ThirdPartyCookie5;
+    .tc_hjRecordingLastActivity {
+        grid-area: tc_hjRecordingLastActivity;
     }
 
     .ThirdParticyCookie6 {
         grid-area: ThirdParticyCookie6;
     }
 
-    .ThirdPartyCookie7 {
-        grid-area: ThirdPartyCookie7;
+    .tc_hjIncludedInSample {
+        grid-area: tc_hjIncludedInSample;
     }
 
-    .ThirdParticyCookie8 {
-        grid-area: ThirdParticyCookie8;
+    .tc_hjRecordingEnabled {
+        grid-area: tc_hjRecordingEnabled;
     }
 
-    .ThirdPartyProvider {
-        grid-area: ThirdPartyProvider;
+    .tppGoogle {
+        grid-area: tppGoogle;
 
         a {
             display: contents;
         }
     }
 
-    .ThirdPartyProvider2 {
-        grid-area: ThirdPartyProvider2;
+    .tpp_Hotjar {
+        grid-area: tpp_Hotjar;
 
         a {
             display: contents;
         }
     }
 
-    .PurposeOne {
-        grid-area: PurposeOne;
+    .tp_ga {
+        grid-area: tp_ga;
     }
 
-    .PurposeTwo {
-        grid-area: PurposeTwo;
+    .tp_gat {
+        grid-area: tp_gat;
     }
 
-    .PurposeThree {
-        grid-area: PurposeThree;
+    .tp_gid {
+        grid-area: tp_gid;
     }
 
-    .PurposeFour {
-        grid-area: PurposeFour;
+    .tp_hjid {
+        grid-area: tp_hjid;
     }
 
-    .PurposeFive {
-        grid-area: PurposeFive;
+    .tp_hjRecordingLastActivity {
+        grid-area: tp_hjRecordingLastActivity;
     }
 
-    .PurposeSix {
+    .tp_hjTLDTest {
         grid-area: PurposeSix;
     }
 
-    .PurposeSeven {
-        grid-area: PurposeSeven;
+    .tp_hjIncludedInSample {
+        grid-area: tp_hjIncludedInSample;
     }
 
-    .PurposeEight {
-        grid-area: PurposeEight;
+    .tp_hjRecordingEnabled {
+        grid-area: tp_hjRecordingEnabled;
     }
 
-    .ThirdPartyExpiryOne {
-        grid-area: ThirdPartyExpiryOne;
+    .te_ga {
+        grid-area: te_ga;
     }
 
-    .ThirdPartyExpiryTwo {
-        grid-area: ThirdPartyExpiryTwo;
+    .te_gat {
+        grid-area: te_gat;
     }
 
-    .ThirdPartyExpiryThree {
-        grid-area: ThirdPartyExpiryThree;
+    .te_gid {
+        grid-area: te_gid;
     }
 
-    .ThirdPartyExpiryFour {
-        grid-area: ThirdPartyExpiryFour;
+    .te_hjid {
+        grid-area: te_hjid;
     }
 
-    .ThirdPartyExpiryFive {
-        grid-area: ThirdPartyExpiryFive;
+    .te_hjRecordingLastActivity {
+        grid-area: te_hjRecordingLastActivity;
     }
 
-    .ThirdPartyExpirySix {
-        grid-area: ThirdPartyExpirySix;
+    .te_hjTLDTest {
+        grid-area: te_hjTLDTest;
     }
 
-    .ThirdPartyExpirySeven {
-        grid-area: ThirdPartyExpirySeven;
+    .te_hjIncludedInSample {
+        grid-area: te_hjIncludedInSample;
     }
 
-    .ThirdPartyExpiryEight {
-        grid-area: ThirdPartyExpiryEight;
+    .te_hjRecordingEnabled {
+        grid-area: te_hjRecordingEnabled;
     }
 }

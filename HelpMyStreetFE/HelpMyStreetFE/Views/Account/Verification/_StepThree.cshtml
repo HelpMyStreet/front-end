@@ -14,28 +14,24 @@
                             <li>Please then try again by scanning the QR Code</li>
                         </ul>
                     </div>
+                <p>Still having problems? Please let us know by sending us a message to <a href="mailto:support@helpmystreet.org">support@helpmystreet.org</a></p>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="sm12">
+    <div class="sm7">
         <partial name="_StepCounter" model='new StepCounterViewModel { Step = 3, Description = "Scan The Code with the Yoti App" }'>
+            <div class="verification-step__text">
+                <p class="verification-step__text__copy">All our volunteers are ID Verified with our partner Yoti. to provide peace of mind to those in need, as well as their friends and family</p>
+            </div>
+    </div>
+    <div class="sm5">
+        <div class="yoti__auth__button" id="@Model.DomId"></div>
     </div>
 </div>
 
-<div class="row">
-    <div class="sm6">
-        <div class="yoti__auth__button" id="@Model.DomId"></div>
-    </div>
-    <div class="sm6">
-        <div class="verification-step__text">
-            <p class="verification-step__text__header--small">Scan with the Yoti App<p>            
-            <p  class="verification-step__text__copy">All our volunteers are ID Verified with our partner Yoti. to provide peace of mind to those in need, as well as their friends and family</p>
-        </div>      
-        </div>
-    </div>
 
 
 <partial name="_NextPrevButtons" />
