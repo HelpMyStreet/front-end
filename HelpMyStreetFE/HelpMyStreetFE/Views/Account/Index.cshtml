@@ -38,7 +38,7 @@
                         <partial name="_MyStreets" for="@Model.PageModel" />
                         break;
                     case MenuPage.ComingSoon:
-                        <partial name="_ComingSoon" />
+                        <partial name="_ComingSoon"  for="@Model.UserDetails" />
                         break;
                     default:
                         <partial name="_Verification" for="VerificationViewModel" />
