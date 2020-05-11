@@ -32,6 +32,11 @@ export function initialiseVerification() {
             _SetUI(0, maxStep);
         })
 
+        var auth = getParameterByName("auth");
+        if (auth == "failed") {
+            _SetUI(3, maxStep);
+            $('.auth-error').show();
+        }
         // Listen for the event.
         document.getElementById("verification-panel").addEventListener('failed-auth', function (e) {
             _SetUI(3, maxStep);
@@ -144,3 +149,14 @@ var updateQueryStringParam = function (key, value) {
 function removeTrailingSlashes(url) {
     return url.replace(/\/+$/, ''); //Removes one or more trailing slashes from URL
 }
+
+var getParameterByName = function (name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
