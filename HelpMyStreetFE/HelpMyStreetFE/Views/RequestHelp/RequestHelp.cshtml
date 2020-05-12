@@ -9,57 +9,31 @@
 
 @{
     ViewData["Title"] = "Request Help";
-
-    var helpOptions = new Dictionary<SupportActivities, string>
-{
-        { SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
-        { SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy" },
-        { SupportActivities.Errands, "Running essential local errands (e.g. posting mail)" },
-        { SupportActivities.DogWalking, "Walking a calm dog" },
-        { SupportActivities.MealPreparation, "A hot / pre-prepared meal" },
-        { SupportActivities.PhoneCalls_Friendly, "A friendly chat on the phone" },
-        { SupportActivities.PhoneCalls_Anxious, "Some extra support over the phone" },
-        { SupportActivities.HomeworkSupport, "Remote support for adults home-schooling their children" },
-        { SupportActivities.CheckingIn, "Check that someone is OK" },
-        { SupportActivities.Other, "I’d like to check if you can help with something else" },
-    };
 }
 
 
 
-<div class="container">
+<div class="container request-help">
     <div class="row mt-md">
         <div class="sm12">
             <partial name="_ProgressBar" />
         </div>
     </div>
+
+    <h2>What type of help are you looking for</h2>
     <button class="btnBack">Back</button>
     <button class="btnNext">Next</button>
+
+    
     <partial name="_Activties" />
-
-
-    <div class="tiles">
-        <div class="row">
-            <div class="sm6">
-                <div data-type="timeframe" class="tiles__tile">
-                    <div class="tiles__tile__content ">
-                        <div class="tiles__tile__content__icon"></div>
-                        <div class="tiles__tile__content__header">Request on somebedy else</div>
-                        <div class="tiles__tile__content__description">lalala</div>
-                    </div>
-                </div>
-            </div>
-            <div class="sm6">
-                <div data-type="timeframe" class="tiles__tile">
-                    <div class="tiles__tile__content ">
-                        <div class="tiles__tile__content__icon"></div>
-                        <div class="tiles__tile__content__header">Request for me else</div>
-                        <div class="tiles__tile__content__description">lalala</div>
-                    </div>
-                </div>
-            </div>
+    <div class="row">
+        <div class="sm12 input">
+            <label for="additional-help-detail">Would you like to tell us more about the help you need?</label>
+            <textarea name="additional-help-detail" placeholder="Please don't include any sensitve details that aren't needed in order for us to help you"></textarea>
         </div>
     </div>
+ 
+    <partial name="_Timeframe" />  
 </div>
 
 

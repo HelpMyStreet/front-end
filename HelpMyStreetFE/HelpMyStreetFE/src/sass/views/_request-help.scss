@@ -2,7 +2,37 @@
 
 @import '../components/tiles/tiles';
 
+.request-help {
+    .btnBack {
+        display: none;
+    }
 
-.btnBack{
-    display:none;
+
+    .input {
+        margin-top: 10px;
+
+        select {
+            font-size: 1.2rem;
+            padding-left: 10px;
+        }
+
+        select:focus {
+            outline-color: $light-orange;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            position: relative;
+            font-size: 1.2em;
+            top: 0;
+            margin-bottom:10px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1.2em;
+        }
+    }
 }

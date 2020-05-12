@@ -1,6 +1,6 @@
 ﻿
-var selectedActivities = [];
-
+var selectedActivities = {};
+var selectedTime = {};
 $(() => {
     intialiseRequestTiles();    
     initaliseProgressButtons()
@@ -47,19 +47,37 @@ var intialiseRequestTiles = function () {
     $('.tiles__tile').click(function () {
         var id = String($(this).attr("id"));
         var type = $(this).attr("data-type");
-
         switch (type) {
             case "activities":
-                $(this).toggleClass("selected");
-                if ($(this).hasClass("selected")) {
-                    selectedActivities.push(id);
-                } else if (selectedActivities.includes(id)) {
-                    delete selectedActivities[id];
-                }
+                handleActivity($(this));    
+                break;
+            case "timeframe":
+                handleTimeFrame($(this));
                 break;
         }
-
-
-
     })
+}
+
+
+var handleTimeFrame = function (el) {
+    $('*[data-type="timeframe"]').removeClass("selected");
+    var allowCustomEntry = el.attr("data-allowcustom");
+    var selectedValue = el.attr("data-val");
+    selectedTime = selectedValue
+    if (allowCustomEntry == "True") {
+        $("#CustomTime").show();
+        $("#CustomTime").find("select").change(function () {
+            selectedTime = el.children("option:selected").val();
+            console.log(selectedTime);
+        });
+    } else {
+        $("#CustomTime").hide();
+    }
+    el.addClass("selected");   
+}
+
+var handleActivity = function (el) {
+    $('*[data-type="activities"]').removeClass("selected");
+    el.addClass("selected");
+    selectedActivities = el.attr("id");    
 }
