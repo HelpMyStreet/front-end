@@ -1,6 +1,8 @@
 ﻿
 var selectedActivities = {};
 var selectedTime = {};
+var selectedFor = {};
+
 $(() => {
     intialiseRequestTiles();    
     initaliseProgressButtons()
@@ -34,9 +36,19 @@ var initaliseProgressButtons = function () {
         $('.btnNext').show();
     }
     $('.btnNext').click(function () {
+
+        var activeTab = $('.progress-bar').find('.is-active');
+        var currentTab = activeTab.attr("data-tab");
+        var nextTab = activeTab.next().attr("data-tab");        
+        _moveTab(currentTab, nextTab);
         changeProgressNext($(this));
     })
     $('.btnBack').click(function () {
+        var activeTab = $('.progress-bar').find('.is-active');
+        var currentTab = activeTab.attr("data-tab");
+        var previousTab = activeTab.prev().attr("data-tab");
+        console.log(currentTab, previousTab);
+        _moveTab(currentTab, previousTab);
         changeProgressPrev($(this));
     })
 
@@ -45,7 +57,6 @@ var initaliseProgressButtons = function () {
 
 var intialiseRequestTiles = function () {
     $('.tiles__tile').click(function () {
-        var id = String($(this).attr("id"));
         var type = $(this).attr("data-type");
         switch (type) {
             case "activities":
@@ -54,9 +65,22 @@ var intialiseRequestTiles = function () {
             case "timeframe":
                 handleTimeFrame($(this));
                 break;
+
+            case "request-for":
+                handleRequestFor($(this));
+                break;
+
         }
     })
 }
+
+
+var handleRequestFor = function (el) {
+    $('*[data-type="request-for"]').removeClass("selected");
+    el.addClass("selected");
+    selectedFor = el.attr("id");    
+}
+
 
 
 var handleTimeFrame = function (el) {
@@ -80,4 +104,10 @@ var handleActivity = function (el) {
     $('*[data-type="activities"]').removeClass("selected");
     el.addClass("selected");
     selectedActivities = el.attr("id");    
+}
+
+
+function _moveTab(currentTab, nextTab) {    
+    $('*[data-tab-page="' + currentTab +'"]').hide();
+    $('[data-tab-page="' + nextTab + '"]').show();
 }

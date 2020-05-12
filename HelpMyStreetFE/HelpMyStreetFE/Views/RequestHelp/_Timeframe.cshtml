@@ -25,8 +25,9 @@
         }
     </div>
     <div class="row">
-        <div class="sm6 input">
-            <select  class="dnone" id="CustomTime">
+        <div class="sm6 input dnone" id="CustomTime">
+            Within
+            <select>
                 <option value="" disabled selected>Please select</option>
                 @for (int i = 1; i <= 30; ++i)
                 {
@@ -39,8 +40,6 @@
                     {
                         <option value="@i.ToString()">@i Days</option>
                     }
-
-
                 }
             </select>
         </div>
