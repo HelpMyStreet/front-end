@@ -8,6 +8,7 @@ $screen-md-min: 767px;
     }
     a{
         cursor:pointer;
+        word-break:break-word;
     }
     .auth-error {
         border: 4px solid $orange;
@@ -247,7 +248,8 @@ $screen-md-min: 767px;
 
                 .btn-wrapper {
                     overflow: hidden;
-
+                    
+              
                     .clear-button {
                         background: $white;
                         color: $blue;
@@ -390,6 +392,7 @@ $screen-md-min: 767px;
         &__auth {
             padding-top: 30px;
 
+     
             &__loading {
                 visibility: hidden;
                 height: 0;
