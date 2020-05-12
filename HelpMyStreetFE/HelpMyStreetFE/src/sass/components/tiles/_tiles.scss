@@ -1,0 +1,53 @@
+﻿.tiles {
+    &__tile {
+        text-align: center;
+        background: white;
+        padding: 10px;
+        width: 100%;
+        margin: 10px;
+        @include shadow-md;
+        border-radius: 3px;
+        cursor: pointer;
+        border:2px solid $white;
+
+        &--large {
+            height: 200px;
+        }
+
+        &:hover {
+            border: 2px solid $light-orange;
+            box-shadow: 0 0 10px $light-orange-opaque;
+        }
+
+        &.selected {
+            border: 2px solid $light-orange;
+            background: $light-orange-opaque
+        }
+
+        &.dark-blue {
+            color: $dark-blue;
+        }
+
+        &.blue {
+            color: $blue;
+        }
+
+        &.light-purple {
+            color: $light-purple;
+        }
+
+        &__content {
+            top: 20%;
+
+            &__header {
+                font-weight: 600;
+                font-size: 1.5em;
+                margin-bottom: 10px;
+            }
+
+            &__description {
+                color: $black;
+            }
+        }
+    }
+}

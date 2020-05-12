@@ -28,7 +28,38 @@
 
 
 <div class="container">
-    <partial name="_ProgressBar" />
+    <div class="row mt-md">
+        <div class="sm12">
+            <partial name="_ProgressBar" />
+        </div>
+    </div>
+    <button class="btnBack">Back</button>
+    <button class="btnNext">Next</button>
     <partial name="_Activties" />
-   
+
+
+    <div class="tiles">
+        <div class="row">
+            <div class="sm6">
+                <div data-type="timeframe" class="tiles__tile">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon"></div>
+                        <div class="tiles__tile__content__header">Request on somebedy else</div>
+                        <div class="tiles__tile__content__description">lalala</div>
+                    </div>
+                </div>
+            </div>
+            <div class="sm6">
+                <div data-type="timeframe" class="tiles__tile">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon"></div>
+                        <div class="tiles__tile__content__header">Request for me else</div>
+                        <div class="tiles__tile__content__description">lalala</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+

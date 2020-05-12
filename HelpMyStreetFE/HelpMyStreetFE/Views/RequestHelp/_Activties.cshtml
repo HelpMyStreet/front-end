@@ -2,7 +2,7 @@
 @{
     var viewModel = Model;
     var activties = new List<RequestActivityViewModel>
-    {
+{
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping,FriendlyName ="Shopping", Description = "Picking up essential groceries", ColourCode = "blue", Icon = "fa-shopping"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, FriendlyName ="Prescriptions",Description = "Collecting from a local pharmacy", ColourCode = "blue", Icon = "fa-shopping"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Errands,FriendlyName ="Errands", Description = "Essential local errands (e.g. posting mail)", ColourCode = "blue", Icon = "fa-shopping"},
@@ -13,25 +13,29 @@
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport,FriendlyName ="Homework", Description = "Support for children being homeschooled", ColourCode = "dark-blue", Icon = "fa-shopping"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn, FriendlyName ="Check in", Description = "Check that someone is OK", ColourCode = "light-purple", Icon = "fa-shopping"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other, FriendlyName = "Something Else", ColourCode = "dark-blue", Icon = "fa-shopping"},
-    };    
+    };
 }
 
-    <div class="activity-tiles">
-        <div class="row">
-            @foreach (var activity in activties)
-            {
+<div class="tiles">
+    <div class="row">
+        @foreach (var activity in activties)
+        {
             <div class="sm4">
-                <div class="activity-tiles__tile @activity.ColourCode">
-                    <div class="activity-tiles__tile__content">
-                        <div class="activity-tiles__tile__content__icon"></div>
-                        <div class="activity-tiles__tile__content__header">@activity.FriendlyName</div>
-                        <div class="activity-tiles__tile__content__description">@activity.Description</div>
+                <div id="@activity.Activity" data-type="activities" class="tiles__tile tiles__tile--large  @activity.ColourCode">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon"></div>
+                        <div class="tiles__tile__content__header">@activity.FriendlyName</div>
+                        <div class="tiles__tile__content__description">@activity.Description</div>
                     </div>
                 </div>
             </div>
-            }
-        </div>
+        }
     </div>
+</div>
+
+
+
+
 
 
 

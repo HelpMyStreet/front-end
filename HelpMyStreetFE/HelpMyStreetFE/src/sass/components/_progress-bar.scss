@@ -84,8 +84,6 @@
     left: auto;
 }
 
-
-
 .progress-bar .is-complete:not(:first-child):after,
 .progress-bar .is-active:not(:first-child):after {
     content: "";
@@ -99,14 +97,17 @@
     border-top-style: solid;
     
 }
+
 .progress-bar .is-complete:not(:first-child):nth-of-type(2):after,
 .progress-bar .is-active:not(:first-child):nth-of-type(2):after {
     border-image: linear-gradient(45deg, var(--color--gradient-1), var(--color--gradient-2)) 1;
+    transition: opacity 1s;
 }
 
 .progress-bar .is-complete:not(:first-child):nth-of-type(3):after,
-.progress-bar .is-active:not(:first-child):nth-of-type(3):after {    
+.progress-bar .is-active:not(:first-child):nth-of-type(3):after {
     border-image: linear-gradient(45deg, var(--color--gradient-2), var(--color--gradient-3)) 1;
+    transition: opacity 1s;
 }
 
 
@@ -127,8 +128,7 @@
     opacity:0;
 }
 
-.progress-bar .is-active:before,
-.progress-bar .is-hovered:before {
+.progress-bar .is-active:before {
     background-color: var(--color-white);
     border-color: var(--color-green);
     content: "";
@@ -145,27 +145,3 @@
     transition: all .2s ease-in-out;
 }
 
-.progress-bar li:hover:before,
-.progress-bar .is-hovered:before {
-    transform: scale(1.33);
-}
-
-
-
-
-.x-ray .progress-bar,
-.x-ray .progress-bar li {
-    border: 1px dashed red;
-}
-
-
-.progress-bar .has-changes:before {
-    content: "";
-    display: block;
-    width: 8px;
-    height: 8px;
-    position: absolute;
-    left: calc(50% - 4px);
-    bottom: -20px;
-    background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%208%208%22%3E%3Cpath%20fill%3D%22%23ed1c24%22%20d%3D%22M4%200l4%208H0z%22%2F%3E%3C%2Fsvg%3E');
-}
