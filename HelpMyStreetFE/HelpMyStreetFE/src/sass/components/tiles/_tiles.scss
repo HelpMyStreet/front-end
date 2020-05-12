@@ -14,6 +14,8 @@
             height: 200px;
         }
 
+
+
         &:hover {
             border: 2px solid $light-orange;
             box-shadow: 0 0 10px $light-orange-opaque;
@@ -39,7 +41,7 @@
         }
 
         &__content {
-            top: 20%;
+            top: 15%;
 
             &__header {
                 font-weight: 600;
@@ -47,10 +49,15 @@
                 margin-bottom: 10px;
             }
 
+            &__icon {
+                margin-bottom: 5px;
+            }
+
+            
+
             &__description {
                 color: $black;
             }
         }
     }
-
 }

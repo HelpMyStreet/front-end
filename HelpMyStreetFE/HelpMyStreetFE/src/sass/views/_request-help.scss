@@ -3,10 +3,11 @@
 @import '../components/tiles/tiles';
 
 .request-help {
-    .btnBack {
-        display: none;
-    }
 
+    h2{
+        text-align:center;
+        margin:30px 0;
+    }
 
     .input {
         margin-top: 10px;
@@ -26,13 +27,38 @@
             position: relative;
             font-size: 1.2em;
             top: 0;
-            margin-bottom:10px;
+            margin-bottom: 10px;
         }
 
         textarea {
             width: 100%;
             min-height: 150px;
             font-size: 1.2em;
+        }
+    }
+
+    .btn-wrapper {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid $gray-10;
+
+        .right {
+            float: right;
+        }
+
+        .btnBack {
+            display: none;
+        }
+
+
+        .clear-button {
+            background: $background-main;
+            color: $blue;
+            border-color: $blue;
+        }
+
+        .clear-button:hover {
+            background: $white;                        
         }
     }
 }
