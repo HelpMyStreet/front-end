@@ -32,19 +32,18 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Authenticate(string token, string u)
+        [HttpGet]
+        public async Task<IActionResult> Authenticate(string token, string u, bool mobile)
         {
             var validUserId = DecodedAndCheckedUserId(u, token != null);
 
             if (validUserId != null)
-            {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));                        
-                var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
-                return View(viewModel);
+            {                                      
+                return View();
             }
             else
             {
-                return Redirect("/account");
+                return Redirect("/account?auth=failed");
             }
         }
 
@@ -76,32 +75,6 @@ namespace HelpMyStreetFE.Controllers
             else
             {
                 return Unauthorized();
-            }
-        }
-
-        public async Task<IActionResult> AuthSuccess()
-        {    
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            User user = await _userService.GetUserAsync(id);
-            if (user.IsVerified.HasValue && user.IsVerified.Value) 
-            {        
-                return View();
-            }
-            return Redirect("/Error/500");
-        }
-
-        [AllowAnonymous]
-        public async Task<IActionResult> AuthFailed(string u)
-        {
-            var validUserId = DecodedAndCheckedUserId(u, true);
-
-            if (validUserId != null)
-            {                                
-                return View(new AuthenticateViewModel { ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId });
-            }
-            else
-            {
-                return Redirect("/Error/500");
             }
         }
 

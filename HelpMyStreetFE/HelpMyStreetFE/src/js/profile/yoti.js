@@ -1,7 +1,7 @@
-var processYoti = async function (thisToken, userId) {
+export async function processYoti(thisToken, userId, mobile) {
     $('#overlay').show();
     $('.loading-overlay').show();
-    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId + "&mobile=false");
+    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId + "&mobile=" + mobile);
     if (response.status == 200) {
         window.location.href = "/Account";
     } else {
@@ -34,7 +34,7 @@ export function initialiseYoti() {
                     },
                     shareComplete: {
                         tokenHandler: async (token, done) => {
-                            processYoti(token, initObj.userId);
+                            processYoti(token, initObj.userId, false);
                             done();
                         },
                     },

@@ -7,8 +7,8 @@ namespace HelpMyStreetFE.Models
 {
     public class AuthenticateViewModel
     {
-        public string ScenarioId { get; set; }
-        public string ClientSdkId { get; set; }
-        public string DomId { get; set; }
+        public string Token { get; set; }
+        public string EncodedUserID { get; set; }
+        public bool Mobile { get; set; }
     }
 }
