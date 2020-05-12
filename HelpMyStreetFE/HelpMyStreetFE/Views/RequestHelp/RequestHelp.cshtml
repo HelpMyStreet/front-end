@@ -31,6 +31,10 @@
     <div class="row justify-center">
         <div class="sm12">
             <h1>@ViewData["Title"]</h1>
+            @if (@Model.HasErrors)
+            {
+                <p class="orange">There has been an error submitting your details. Please try again.</p>
+            }
             <p>Please use this form to request help for yourself or someone you are worried about</p>
         </div>
     </div>
@@ -46,7 +50,7 @@
                 </div>
                 <div class="sm6">
                     <button class="btn cta large" id="postcode_button">
-                        <span class="text">Check Postcode</span>                        
+                        <span class="text">Check Postcode</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking..."}' /></div>
                     </button>
                 </div>
@@ -74,7 +78,7 @@
                 </div>
             </div>
         </div>
-        
+
 
     </div>
 
