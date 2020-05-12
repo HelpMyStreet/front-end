@@ -1,4 +1,4 @@
-﻿import { initialiseYoti } from "../yoti";
+﻿import { initialiseYoti } from "./yoti";
 
 export function initialiseVerification() {
 

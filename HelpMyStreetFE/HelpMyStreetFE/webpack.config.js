@@ -5,8 +5,8 @@ module.exports = {
   entry: {
     main: "./js/app.js",
     registration: "./js/registration.js",
-    yoti: "./js/yoti.js",
-	requesthelp: "./js/requesthelp/requesthelp.js",
+    auth: "./js/authenticate.js",
+    requesthelp: "./js/requesthelp/requesthelp.js",
     profile: "./js/profile/profile.js",
     coveragemap: "./js/coveragemap.js"
   },
