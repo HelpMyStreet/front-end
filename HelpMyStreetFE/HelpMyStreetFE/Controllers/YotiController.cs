@@ -50,22 +50,26 @@ namespace HelpMyStreetFE.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
+        public async Task<IActionResult> ValidateToken(string token, string u, bool mobile, CancellationToken cancellationToken)
         {
             var validUserId = DecodedAndCheckedUserId(u, token != null);
             if (validUserId != null && token != null)
             {                           
-                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
+                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);           
                 if (response.Status == ValidationStatus.Success)
                 {
-                    await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
-
-                    if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
-                    {
-                        // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
-                        await _authService.LoginWithUserId(int.Parse(validUserId), HttpContext);
-                        return Redirect("/account");
-                    }
+                    await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);                 
+                }
+                
+                if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null) 
+                {
+                    // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
+                    await _authService.LoginWithUserId(int.Parse(validUserId), HttpContext);                                   
+                }
+                if (mobile)
+                {
+                    string redirect = response.Status == ValidationStatus.Success ? "/account" : "/account?auth=failed";
+                    return Redirect(redirect);                    
                 }
                 return handleValidationTokenResponse(response);
             }

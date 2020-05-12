@@ -1,7 +1,7 @@
 var processYoti = async function (thisToken, userId) {
     $('#overlay').show();
     $('.loading-overlay').show();
-    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
+    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId + "&mobile=false");
     if (response.status == 200) {
         window.location.href = "/Account";
     } else {
@@ -15,8 +15,7 @@ var processYoti = async function (thisToken, userId) {
 var yoti = new Object();
     
 export function initialiseYoti() {
-    if (initObj) {
-   
+    if (initObj) {   
         if (yoti.instance) {
             yoti.instance.destroy();
         }
