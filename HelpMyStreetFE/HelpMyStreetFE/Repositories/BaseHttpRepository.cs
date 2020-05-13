@@ -47,6 +47,14 @@ namespace HelpMyStreetFE.Repositories
             return await HandleResponseAsync<TResponse>(resp);
         }
 
+        protected async Task<HttpResponseMessage> GetAsync(string url)
+        {
+            Logger.LogInformation($"Get request to {url}");
+            var resp = await Client.GetAsync(url);
+            Logger.LogInformation($"Request code: {resp.StatusCode}");
+            return resp;
+        }
+
         protected async Task<TResponse> GetAsync<TResponse>(string url)
         {
             Logger.LogInformation($"Get request to {url}");
