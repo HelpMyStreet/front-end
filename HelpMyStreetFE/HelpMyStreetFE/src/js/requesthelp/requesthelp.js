@@ -75,4 +75,23 @@ function validateTab(currentTab){
 function _moveTab(currentTab, nextTab) {    
     $('*[data-tab-page="' + currentTab +'"]').hide();
     $('[data-tab-page="' + nextTab + '"]').show();
+
+    if ($('.progress-bar').isInViewport() == false) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: ($(".progress-bar").offset().top - 50)
+        }, 500);
+
+    }
 }
+
+
+
+$.fn.isInViewport = function () {
+    var elementTop = $(this).offset().top;
+    var elementBottom = elementTop + $(this).outerHeight();
+
+    var viewportTop = $(window).scrollTop();
+    var viewportBottom = viewportTop + $(window).height();
+
+    return elementBottom > viewportTop && elementTop < viewportBottom;
+};
