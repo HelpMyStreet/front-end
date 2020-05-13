@@ -34,10 +34,12 @@ var initaliseProgressButtons = function () {
         var activeTab = $('.progress-bar').find('.is-active');
         var currentTab = activeTab.attr("data-tab");
         var nextTab = activeTab.next().attr("data-tab");
-        if (validateTab(currentTab) != false) {
-            _moveTab(currentTab, nextTab)
-            changeProgressNext($(this));
-        }
+        validateTab(currentTab).then(function (valid) {
+            if (valid == true) {
+                _moveTab(currentTab, nextTab)
+                changeProgressNext($(this));
+            }
+        });
     });
     $('.btnBack').click(function () {
         var activeTab = $('.progress-bar').find('.is-active');
@@ -47,7 +49,7 @@ var initaliseProgressButtons = function () {
         changeProgressPrev($(this));
     });   
 }
-function validateTab(currentTab){
+async function validateTab(currentTab){
     $('#hasErrors').hide();
     var valid = true;
 
@@ -60,7 +62,7 @@ function validateTab(currentTab){
             }
             break;
         case "details":
-            if (detailStage.validate(requestStage.selectedFor) == false) {
+            if (await detailStage.validate(requestStage.selectedFor) == false) {
                 valid = false;
             }
             break;

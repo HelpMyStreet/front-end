@@ -83,6 +83,7 @@
 
         .btnNext {
             background: $orange;
+            min-width: 250px;
         }
 
         .clear-button {
@@ -97,20 +98,21 @@
     }
 
     .user-detail {
-        margin-bottom:20px;
+        margin-bottom: 20px;
+
         .input {
             a.input__link {
                 position: relative;
                 bottom: 0;
             }
 
-            &.find-address{
-                margin-top:55px;
+            &.find-address {
+                margin-top: 55px;
             }
         }
     }
 
-    .lowercase{
-        text-transform:lowercase;
+    .lowercase {
+        text-transform: lowercase;
     }
 }

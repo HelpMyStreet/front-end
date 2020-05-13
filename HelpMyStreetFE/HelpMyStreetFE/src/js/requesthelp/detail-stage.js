@@ -1,4 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
+import { validatePostCode } from "../shared/validator";
+
 export var detailStage = new Object();
 detailStage.onBehalf = false
 detailStage.consentForContact = { val: false, errorSpan: "e-consentForContact" };
@@ -32,16 +34,16 @@ detailStage.theirDetails = {
 }
 
 
-detailStage.validate = function (requestFor) {
+detailStage.validate = async function (requestFor) {
     var onBehalf = requestFor.val == "someone-else" ? true : false;
     $('.error').hide();
-    var valid = validateYourDetails();
+    var valid = await validateYourDetails();
     if (detailStage.consentForContact.val == false) {
         $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
         valid = false;
     }
     if (onBehalf == true) {
-        if (validateTheirDetails() == false) {
+        if (await validateTheirDetails() == false) {
             valid = false;
         }
     }
@@ -49,7 +51,7 @@ detailStage.validate = function (requestFor) {
 
 }
 
-var validateYourDetails = function () {
+var validateYourDetails = async function  () {
     var valid = true;
     if (!detailStage.yourDetails.firstname.val) {
         $('#' + detailStage.yourDetails.firstname.errorSpan).show().text("Please enter a first name");
@@ -91,6 +93,15 @@ var validateYourDetails = function () {
         $('#' + detailStage.yourDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
         $("#expander_your").slideDown();
         valid = false;
+    } else {   
+        buttonLoad($('#btnNext'))
+        var validPostcode = await validatePostCode(detailStage.yourDetails.address.postcode.val)
+        if (!validPostcode) {
+            valid = false;
+            $('#' + detailStage.yourDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
+            $("#expander_your").slideDown();
+        }
+        buttonUnload($('#btnNext'));
     }
 
     return valid;
@@ -98,7 +109,7 @@ var validateYourDetails = function () {
     
 }
 
-var validateTheirDetails = function () {
+var validateTheirDetails = async function () {
     var valid = true;
     if (!detailStage.theirDetails.firstname.val) {
         $('#' + detailStage.theirDetails.firstname.errorSpan).show().text("Please enter a first name");
@@ -135,6 +146,16 @@ var validateTheirDetails = function () {
         $('#' + detailStage.theirDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
         $("#expander_their").slideDown();
         valid = false;
+    } else {        
+        buttonLoad($('#btnNext'));
+        var validPostcode = await validatePostCode(detailStage.theirDetails.address.postcode.val)        
+        if (!validPostcode) {
+            valid = false;
+            $('#' + detailStage.theirDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
+            $("#expander_your").slideDown();
+     
+        }
+        buttonUnload($('#btnNext'));
     }
 
     return valid;

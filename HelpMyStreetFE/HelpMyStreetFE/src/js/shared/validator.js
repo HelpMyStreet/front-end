@@ -44,7 +44,6 @@ export async function validatePostCode(postcode) {
         const { hasContent, isSuccessful } = await resp.json();  
         postcodeValid = (hasContent && isSuccessful);        
     }
-
     return postcodeValid
 }
 

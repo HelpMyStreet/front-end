@@ -2,5 +2,8 @@
     <div class="btn-wrapper">
         <button class="btn cta large  btnBack  left clear-button" type="button">Back</button>
         <span id="hasErrors" class="error">Please check the form for any errors</span>
-        <button class="btn btnNext cta large  right" type="button">Continue</button>
+        <button id="btnNext" class="btn btnNext cta large  right" type="button">
+            <span class="text">Continue</span>
+            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Validating..."}' /></div>
+        </button>
     </div>
