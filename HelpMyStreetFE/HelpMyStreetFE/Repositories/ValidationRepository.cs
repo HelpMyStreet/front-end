@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<HttpResponseMessage> ValidateUser(ValidationRequest request)
         {
-            return await GetAsync<HttpResponseMessage>($"/api/getValidation/{request.UserId}/{request.Token}");
+            return await GetAsync($"/api/getValidation/{request.UserId}/{request.Token}");
         }
     }
 }

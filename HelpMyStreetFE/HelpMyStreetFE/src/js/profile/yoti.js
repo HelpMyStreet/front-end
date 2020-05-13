@@ -1,15 +1,19 @@
 export async function processYoti(thisToken, userId, mobile) {
     $('#overlay').show();
     $('.loading-overlay').show();
-    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId + "&mobile=" + mobile);
+    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
     if (response.status == 200) {
         window.location.href = "/Account";
     } else {
-        var event = document.createEvent('Event');
-        event.initEvent('failed-auth', true, true);
-        document.getElementById('verification-panel').dispatchEvent(event);
-        $('#overlay').hide();
-        $('.loading-overlay').hide();    
+        if (mobile) {
+            window.location.href = "/Account?auth=failed";
+        } else {
+            var event = document.createEvent('Event');
+            event.initEvent('failed-auth', true, true);
+            document.getElementById('verification-panel').dispatchEvent(event);
+            $('#overlay').hide();
+            $('.loading-overlay').hide();
+        }
     }
 }
 var yoti = new Object();
