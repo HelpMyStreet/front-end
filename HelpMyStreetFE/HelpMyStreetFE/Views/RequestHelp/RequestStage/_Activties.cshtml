@@ -16,29 +16,30 @@
     };
 }
 
-<div class="tiles">
-    <div class="row">
-        @foreach (var activity in activties)
-        {
-            <div class="sm4">
-                <div id="@activity.Activity" data-type="activities" class="tiles__tile tiles__tile--large  @activity.ColourCode">
-                    <div class="tiles__tile__content ">
-                        @if (!string.IsNullOrEmpty(activity.Icon))
-                        {
-                            <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Icon" /> </div>
-                        }
-                        else
-                        {
-                            <div class="mt-md"></div>
-                        }
-                        <div class="tiles__tile__content__header">@activity.FriendlyName</div>
-                        <div class="tiles__tile__content__description">@activity.Description</div>
+    <div class="tiles">
+        <div class="row">
+            @foreach (var activity in activties)
+            {
+                <div class="sm4">
+                    <div id="@activity.Activity" data-type="activities" class="tiles__tile tiles__tile--large  @activity.ColourCode">
+                        <div class="tiles__tile__content ">
+                            @if (!string.IsNullOrEmpty(activity.Icon))
+                            {
+                                <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Icon" /> </div>
+                            }
+                            else
+                            {
+                                <div class="mt-md"></div>
+                            }
+                            <div class="tiles__tile__content__header">@activity.FriendlyName</div>
+                            <div class="tiles__tile__content__description">@activity.Description</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
+        <span id="e-activity" class="error"></span>
     </div>
-</div>
 
 
 

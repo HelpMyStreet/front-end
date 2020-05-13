@@ -135,7 +135,11 @@ namespace HelpMyStreetFE
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation()
-            .AddRazorOptions(opt => opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml"));
+            .AddRazorOptions(opt => {
+                opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/RequestHelp/RequestStage/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/RequestHelp/DetailStage/{0}.cshtml");
+            });
             
             
         }

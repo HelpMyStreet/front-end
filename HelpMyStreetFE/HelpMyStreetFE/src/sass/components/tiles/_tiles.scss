@@ -1,5 +1,6 @@
 ﻿.tiles {
-    margin:20px 0;
+    margin: 20px 0;
+
     &__tile {
         text-align: center;
         background: white;
@@ -13,7 +14,7 @@
 
         &--large {
             height: 200px;
-            padding:0px;
+            padding: 0px;
         }
 
 
@@ -24,10 +25,30 @@
         }
 
 
+        .on-selected {
+            display: none;
+        }
+
+        .no-selected {
+            display: inline-block;
+        }
+
         &.selected {
             border: 2px solid $light-orange;
             background: $light-orange-opaque;
             color: $dark-blue;
+
+            .cirlce {
+                background: $orange;
+
+                .on-selected {
+                    display: inline-block;
+                }
+
+                .no-selected {
+                    display: none;
+                }
+            }
         }
 
         &.dark-blue {
@@ -48,14 +69,27 @@
             &__header {
                 font-weight: 600;
                 font-size: 1.2em;
-                margin-bottom: 10px;
+                margin-bottom: 2px;
             }
 
             &__icon {
                 margin-bottom: 5px;
+
+                .cirlce {
+                    background: $background-main;
+                    border-radius: 50%;
+                    width: 66px;
+                    margin: auto;
+                    padding: 11px;
+                    height:60px;
+                    display:inline-block;
+                    img {                        
+                        vertical-align: middle;
+                    }
+                }
             }
 
-            
+
 
             &__description {
                 color: $black;

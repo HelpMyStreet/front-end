@@ -1,18 +1,13 @@
-﻿
-var selectedActivities = {};
-var selectedTime = {};
-var selectedFor = {};
+﻿import { intialiseRequestStage, requestStage } from "./request-stage";
+import { initaliseDetailStage, detailStage } from "./detail-stage";
 
 $(() => {
-    intialiseRequestTiles();    
-    initaliseProgressButtons()
-
+    initaliseProgressButtons();
+    intialiseRequestStage();
 });
 
 
 var initaliseProgressButtons = function () {
-
-
     var changeProgressNext = function (btn) {
         var activeTab = $('.progress-bar').find('.is-active');
         activeTab.removeClass("is-active");
@@ -36,76 +31,46 @@ var initaliseProgressButtons = function () {
         $('.btnNext').show();
     }
     $('.btnNext').click(function () {
-
         var activeTab = $('.progress-bar').find('.is-active');
         var currentTab = activeTab.attr("data-tab");
-        var nextTab = activeTab.next().attr("data-tab");        
-        _moveTab(currentTab, nextTab);
-        changeProgressNext($(this));
-    })
+        var nextTab = activeTab.next().attr("data-tab");
+        if (validateTab(currentTab) != false) {
+            _moveTab(currentTab, nextTab)
+            changeProgressNext($(this));
+        }
+    });
     $('.btnBack').click(function () {
         var activeTab = $('.progress-bar').find('.is-active');
         var currentTab = activeTab.attr("data-tab");
         var previousTab = activeTab.prev().attr("data-tab");
-        console.log(currentTab, previousTab);
         _moveTab(currentTab, previousTab);
         changeProgressPrev($(this));
-    })
-
-    
+    });   
 }
+function validateTab(currentTab){
+    $('#hasErrors').hide();
+    var valid = true;
 
-var intialiseRequestTiles = function () {
-    $('.tiles__tile').click(function () {
-        var type = $(this).attr("data-type");
-        switch (type) {
-            case "activities":
-                handleActivity($(this));    
-                break;
-            case "timeframe":
-                handleTimeFrame($(this));
-                break;
-
-            case "request-for":
-                handleRequestFor($(this));
-                break;
-
-        }
-    })
-}
-
-
-var handleRequestFor = function (el) {
-    $('*[data-type="request-for"]').removeClass("selected");
-    el.addClass("selected");
-    selectedFor = el.attr("id");    
-}
-
-
-
-var handleTimeFrame = function (el) {
-    $('*[data-type="timeframe"]').removeClass("selected");
-    var allowCustomEntry = el.attr("data-allowcustom");
-    var selectedValue = el.attr("data-val");
-    selectedTime = selectedValue
-    if (allowCustomEntry == "True") {
-        $("#CustomTime").show();
-        $("#CustomTime").find("select").change(function () {
-            selectedTime = el.children("option:selected").val();
-            console.log(selectedTime);
-        });
-    } else {
-        $("#CustomTime").hide();
+    switch (currentTab) {
+        case "request":
+            if (requestStage.validate() == false) {
+                valid = false;
+            } else {
+                initaliseDetailStage(requestStage.selectedFor)
+            }
+            break;
+        case "details":
+            if (detailStage.validate(requestStage.selectedFor) == false) {
+                valid = false;
+            }
+            break;
     }
-    el.addClass("selected");   
-}
 
-var handleActivity = function (el) {
-    $('*[data-type="activities"]').removeClass("selected");
-    el.addClass("selected");
-    selectedActivities = el.attr("id");    
+    if (!valid) {
+        $('#hasErrors').show();        
+    }
+    return valid;
 }
-
 
 function _moveTab(currentTab, nextTab) {    
     $('*[data-tab-page="' + currentTab +'"]').hide();
