@@ -11,6 +11,9 @@
             <li class="account__nav__item">
                 <a href="/account/openrequests" class="@(Model.CurrentPage == MenuPage.OpenRequests ? "selected" : string.Empty)">Open Requests</a>
             </li>
+            <li class="account__nav__item">
+                <a href="/account/acceptedrequests" class="@(Model.CurrentPage == MenuPage.AcceptedRequests ? "selected" : string.Empty)">Accepted Requests</a>
+            </li>
             @if (Model.UserDetails.IsStreetChampion && Model.UserDetails.IsVerified)
             {
                 <li class="account__nav__item">
