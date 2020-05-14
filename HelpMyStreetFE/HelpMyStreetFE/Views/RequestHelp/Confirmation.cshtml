@@ -1,6 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.RequestHelp;
 
-@model RequestHelpFormModel;
+
 
 @{
 	ViewData["Title"] = "Thank you";
@@ -11,25 +11,7 @@
 <div class="container">
 	<div class="row justify-center mt72">
 		<div class="sm12">
-			<h1>@ViewData["Title"]</h1>
-
-			@if (Model.HasStreetChampion)
-			{
-				<p>Your request has been received and will be passed to local volunteers who should contact you directly</p>
-			}
-			else
-			{
-		<p>We’ve just launched HelpMyStreet and we’re building our network across the country. We’re working hard to ensure we have local volunteers in your area who can get the right help to the right people. You’ll be contacted soon to progress your request.</p>
-			}
-
-			@if (Context.Request.Query["failure"] == "error")
-			{
-				<p class="orange">There has been an error submitting your details. Please try again.</p>
-			}
-			@if (@Model.HasErrors)
-			{
-				<p class="orange">There has been an error submitting your details. Please try again.</p>
-			}
+		
 		</div>
 	</div>
 </div>

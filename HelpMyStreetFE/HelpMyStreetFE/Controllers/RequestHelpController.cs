@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
 {
+
     public class RequestHelpController : Controller
     {
         private readonly IOptions<EmailConfig> appSettings;
@@ -24,53 +25,11 @@ namespace HelpMyStreetFE.Controllers
             _logger = logger;
            }
 
-        [Route("/request-help-v1", Name = "request-help-v1")]
         public IActionResult RequestHelp()
         {
-            _logger.LogInformation("request-help-v1");
+            _logger.LogInformation("request-help");
+            return View();
+        }            
 
-            var model = new RequestHelpFormModel
-            {
-                HasErrors = false
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("/RequestHelpB", Name = "RequestHelpB")]
-        public async Task<IActionResult> SendEmail(RequestHelpFormModel requestHelpFormModel)
-        {
-            _logger.LogInformation("RequestHelpB");
-
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var result = await _requestService.UpdateRequest(requestHelpFormModel);
-                    if (result.IsSuccessful)
-                    {
-                        return View("Confirmation", requestHelpFormModel);
-                    }
-                    else
-                    {
-                        requestHelpFormModel.HasErrors = true;
-                        return View("RequestHelp", requestHelpFormModel);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError("RequestHelpB", ex);
-
-                    requestHelpFormModel.HasErrors = true;
-                    return View("RequestHelp", requestHelpFormModel);
-                }
-            }
-
-            requestHelpFormModel.HasErrors = true;
-            return View("RequestHelp", requestHelpFormModel);
-        }
     }
 }

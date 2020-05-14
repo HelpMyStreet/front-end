@@ -1,6 +1,6 @@
 ﻿export var requestStage = new Object;
 requestStage.selectedActivity = { val: null, errorSpan: "e-activity"};
-requestStage.selectedTime = { val: null, errorSpan: "e-time-frame" };
+requestStage.selectedTime = { val: null, id:null,  errorSpan: "e-time-frame" };
 requestStage.selectedFor = { val: null, errorSpan: "e-help-for" };
 requestStage.selectedHealthWellBeing = { val: null, errorSpan: "e-critcal" };
 requestStage.additonalHelpDetail = { val: null, errorSpan: "e-additional-help" };
@@ -79,11 +79,11 @@ var handleTimeFrame = function (el) {
     var allowCustomEntry = el.attr("data-allowcustom");
     var selectedValue = el.attr("data-val");
     requestStage.selectedTime.val = selectedValue
+    requestStage.selectedTime.id = el.attr("id");
     if (allowCustomEntry == "True") {
         $("#CustomTime").show();
         $("#CustomTime").find("select").change(function () {
-            requestStage.selectedTime.val =$(this).val();
-          
+            requestStage.selectedTime.val = $(this).val();                      
         });
     } else {
         $("#CustomTime").hide();

@@ -139,6 +139,7 @@ namespace HelpMyStreetFE
                 opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/RequestStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/DetailStage/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/RequestHelp/ReviewStage/{0}.cshtml");
             });
             
             
@@ -205,6 +206,10 @@ namespace HelpMyStreetFE
                     name: "contact",
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
+                endpoints.MapControllerRoute(
+               name: "request-help",
+               pattern: "request-help",
+               defaults: new { controller = "RequestHelp", action = "RequestHelp" });
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",

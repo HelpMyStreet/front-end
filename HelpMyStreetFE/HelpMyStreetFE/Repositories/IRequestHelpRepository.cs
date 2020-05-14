@@ -8,7 +8,6 @@ namespace HelpMyStreetFE.Repositories
 	{
 		Task<LogRequestResponse> LogRequest(string postcode);
 
-		Task<UpdateRequestResponse> UpdateRequest(RequestHelpFormModel requestHelpFormModel);
 	}
 }
 

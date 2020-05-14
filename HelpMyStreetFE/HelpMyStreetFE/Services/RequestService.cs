@@ -28,12 +28,6 @@ namespace HelpMyStreetFE.Services
 
         }
 
-        public async Task<UpdateRequestResponse> UpdateRequest(RequestHelpFormModel requestHelpFormModel)
-        {
-            _logger.LogInformation($"Updating Request with Id {requestHelpFormModel.RequestId}");
-            var result =  await _requestHelpRepository.UpdateRequest(requestHelpFormModel);
 
-            return result;
-        }
     }
 }

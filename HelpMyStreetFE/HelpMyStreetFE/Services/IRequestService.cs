@@ -8,6 +8,5 @@ namespace HelpMyStreetFE.Services
     {
         Task<LogRequestResponse> LogRequestAsync(string postcode);
 
-        Task<UpdateRequestResponse> UpdateRequest(RequestHelpFormModel requestHelpFormModel);
 	}
 }

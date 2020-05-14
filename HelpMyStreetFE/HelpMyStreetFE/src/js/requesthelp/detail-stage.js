@@ -51,128 +51,6 @@ detailStage.validate = async function (requestFor) {
 
 }
 
-var validateYourDetails = async function  () {
-    var valid = true;
-    if (!detailStage.yourDetails.firstname.val) {
-        $('#' + detailStage.yourDetails.firstname.errorSpan).show().text("Please enter a first name");
-        valid = false;
-    }
-    if (!detailStage.yourDetails.lastname.val) {
-        $('#' + detailStage.yourDetails.lastname.errorSpan).show().text("Please enter a last name");
-        valid = false;
-    }
-    if (!detailStage.yourDetails.mobilenumber.val && !detailStage.yourDetails.altnumber.val) {
-        $('#' + detailStage.yourDetails.mobilenumber.errorSpan).show().text("Please enter either a mobile or an alternative phone number");
-        valid = false;
-    } else {
-        if (!validPhoneNumber(detailStage.yourDetails.mobilenumber.val)) {
-            $('#' + detailStage.yourDetails.mobilenumber.errorSpan).show().text("Please enter a valid UK mobile number");
-        }
-        if (!validPhoneNumber(detailStage.yourDetails.altnumber.val)) {
-            $('#' + detailStage.yourDetails.altnumber.errorSpan).show().text("Please enter a valid UK phone number");
-        }
-    }
-
-    if (!detailStage.yourDetails.email.val || !validEmail(detailStage.yourDetails.email.val)) {
-        $('#' + detailStage.yourDetails.email.errorSpan).show().text("Please enter a valid email address");        
-        valid = false;
-    }
-
-    if (!detailStage.yourDetails.address.addressLine1.val) {
-        $('#' + detailStage.yourDetails.address.addressLine1.errorSpan).show().text("Please enter a valid first line of your address");
-        $("#expander_your").slideDown();
-        valid = false;
-    }
-    if (!detailStage.yourDetails.address.locality.val) {
-        $('#' + detailStage.yourDetails.address.locality.errorSpan).show().text("Please enter a valid city");
-        $("#expander_your").slideDown();
-        valid = false;
-    }
-
-    if (!detailStage.yourDetails.address.postcode.val) {
-        $('#' + detailStage.yourDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
-        $("#expander_your").slideDown();
-        valid = false;
-    } else {   
-        buttonLoad($('#btnNext'))
-        var validPostcode = await validatePostCode(detailStage.yourDetails.address.postcode.val)
-        if (!validPostcode) {
-            valid = false;
-            $('#' + detailStage.yourDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
-            $("#expander_your").slideDown();
-        }
-        buttonUnload($('#btnNext'));
-    }
-
-    return valid;
-
-    
-}
-
-var validateTheirDetails = async function () {
-    var valid = true;
-    if (!detailStage.theirDetails.firstname.val) {
-        $('#' + detailStage.theirDetails.firstname.errorSpan).show().text("Please enter a first name");
-        valid = false;
-    }
-    if (!detailStage.theirDetails.lastname.val) {
-        $('#' + detailStage.theirDetails.lastname.errorSpan).show().text("Please enter a last name");
-        valid = false;
-    }
-    if (!detailStage.theirDetails.mobilenumber.val && !detailStage.theirDetails.altnumber.val) {
-        $('#' + detailStage.theirDetails.mobilenumber.errorSpan).show().text("Please enter either a mobile or an alternative phone number");
-        valid = false;
-    } else {
-        if (!validPhoneNumber(detailStage.theirDetails.mobilenumber.val)) {
-            $('#' + detailStage.theirDetails.mobilenumber.errorSpan).show().text("Please enter a valid UK mobile number");
-        }
-        if (!validPhoneNumber(detailStage.theirDetails.altnumber.val)) {
-            $('#' + detailStage.theirDetails.altnumber.errorSpan).show().text("Please enter a valid UK phone number");
-        }
-    }
-
-    if (!detailStage.theirDetails.address.addressLine1.val) {
-        $('#' + detailStage.theirDetails.address.addressLine1.errorSpan).show().text("Please enter a valid first line of your address");
-        $("#expander_their").slideDown();
-        valid = false;
-    }
-    if (!detailStage.theirDetails.address.locality.val) {
-        $('#' + detailStage.theirDetails.address.locality.errorSpan).show().text("Please enter a valid city");
-        $("#expander_their").slideDown();
-        valid = false;
-    }
-
-    if (!detailStage.theirDetails.address.postcode.val) {
-        $('#' + detailStage.theirDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
-        $("#expander_their").slideDown();
-        valid = false;
-    } else {        
-        buttonLoad($('#btnNext'));
-        var validPostcode = await validatePostCode(detailStage.theirDetails.address.postcode.val)        
-        if (!validPostcode) {
-            valid = false;
-            $('#' + detailStage.theirDetails.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
-            $("#expander_your").slideDown();
-     
-        }
-        buttonUnload($('#btnNext'));
-    }
-
-    return valid;
-
-
-}
-
-
-var validEmail = function(email){    
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;    
-    return re.test(email);
-}
-
-var validPhoneNumber = function (phoneNumber) {
-    if (!phoneNumber) return true;
-    return ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0");
-}
 
 export function initaliseDetailStage(requestFor) {
     detailStage.onBehalf = requestFor.val == "someone-else" ? true : false;
@@ -291,4 +169,106 @@ var intialiseConsentForContact = function () {
     $('input[name="consent_for_contact"]').change(function () {
         detailStage.consentForContact = $(this).is(":checked");
     })
+}
+
+
+var validatePersonalDetails = function (obj) {
+    var valid = true;
+    if (!obj.firstname.val) {
+        $('#' + obj.firstname.errorSpan).show().text("Please enter a first name");
+        valid = false;
+    }
+    if (!obj.lastname.val) {
+        $('#' + obj.lastname.errorSpan).show().text("Please enter a last name");
+        valid = false;
+    }
+    if (!obj.mobilenumber.val && !obj.altnumber.val) {
+        $('#' + obj.mobilenumber.errorSpan).show().text("Please enter either a mobile or an alternative phone number");
+        valid = false;
+    } else {
+        if (!validPhoneNumber(obj.mobilenumber.val)) {
+            $('#' + obj.mobilenumber.errorSpan).show().text("Please enter a valid UK mobile number");
+            valid = false;
+        }
+        if (!validPhoneNumber(obj.altnumber.val)) {
+            $('#' + obj.altnumber.errorSpan).show().text("Please enter a valid UK phone number");
+            valid = false;
+        }
+    }
+    return valid;
+}
+
+var validateAddress = async function (obj, expanderPostfix) {
+    var valid = true;
+    if (!obj.address.addressLine1.val) {
+        $('#' + obj.address.addressLine1.errorSpan).show().text("Please enter a valid first line of your address");
+        $("#expander_" + expanderPostfix).slideDown();
+        valid = false;
+    }
+    if (!obj.address.locality.val) {
+        $('#' + obj.address.locality.errorSpan).show().text("Please enter a valid city");
+        $("#expander_" + expanderPostfix).slideDown();
+        valid = false;
+    }
+
+    if (!obj.address.postcode.val) {
+        $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
+        $("#expander_" + expanderPostfix).slideDown();
+        valid = false;
+    } else {
+        try {
+            buttonLoad($('#btnNext'))
+            var validPostcode = await validatePostCode(obj.address.postcode.val)
+            if (!validPostcode) {
+                valid = false;
+                $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
+                $("#expander_" + expanderPostfix).slideDown();
+            }
+        } catch  {
+            $('#' + obj.address.postcode.errorSpan).show().text("an error occured trying to validate your postcode, please try again.");
+            valid = false;
+        } finally {
+            buttonUnload($('#btnNext'));
+        }
+
+    }
+    return valid;
+}
+
+var validateYourDetails = async function () {
+    var valid = true;
+
+    if (!validatePersonalDetails(detailStage.yourDetails))
+        valid = false;
+
+    if (!detailStage.yourDetails.email.val || !validEmail(detailStage.yourDetails.email.val)) {
+        $('#' + detailStage.yourDetails.email.errorSpan).show().text("Please enter a valid email address");
+        valid = false;
+    }
+    if (!await validateAddress(detailStage.yourDetails, "your"))
+        valid = false;
+
+    return valid;
+}
+
+var validateTheirDetails = async function () {
+    var valid = true;
+    if (!validatePersonalDetails(detailStage.theirDetails))
+        valid = false;
+
+    if (!await validateAddress(detailStage.theirDetails, "their"))
+        valid = false;
+
+    return valid;
+
+}
+
+var validEmail = function (email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+var validPhoneNumber = function (phoneNumber) {
+    if (!phoneNumber) return true;
+    return ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0");
 }

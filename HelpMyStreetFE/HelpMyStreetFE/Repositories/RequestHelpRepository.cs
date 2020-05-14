@@ -26,29 +26,6 @@ namespace HelpMyStreetFE.Repositories
 
 			return response;
     }
-
-		public async Task<UpdateRequestResponse> UpdateRequest(RequestHelpFormModel requestHelpFormModel)
-		{
-
-			var response = await PostAsync<UpdateRequestResponse>($"/api/updaterequest",
-
-				new UpdateRequestRequest
-				{
-					RequestID = requestHelpFormModel.RequestId,
-					FurtherDetails = requestHelpFormModel.Message ?? string.Empty,
-					HealthOrWellbeingConcern = requestHelpFormModel.HealthConcern,
-					OnBehalfOfAnother = requestHelpFormModel.OnBehalfOfAnother,
-					RequestorEmailAddress = requestHelpFormModel.Email ?? string.Empty,
-					RequestorFirstName = requestHelpFormModel.FirstName,
-					RequestorLastName = requestHelpFormModel.LastName ?? string.Empty,
-					RequestorPhoneNumber = requestHelpFormModel.PhoneNumber ?? string.Empty,
-					SupportActivitiesRequired = new SupportActivityRequest
-					{
-						SupportActivities = requestHelpFormModel.HelpNeeded
-					}					
-				});
-
-			return response;
-		}
+		
 	}
 }

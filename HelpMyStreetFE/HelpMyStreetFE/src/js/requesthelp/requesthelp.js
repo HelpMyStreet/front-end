@@ -1,5 +1,6 @@
 ﻿import { intialiseRequestStage, requestStage } from "./request-stage";
 import { initaliseDetailStage, detailStage } from "./detail-stage";
+import { intialiseReviewStage, reviewStage } from "./review-stage";
 
 $(() => {
     initaliseProgressButtons();
@@ -13,10 +14,13 @@ var initaliseProgressButtons = function () {
         activeTab.removeClass("is-active");
         activeTab.addClass("is-complete");
         var nextTab = activeTab.next();
-        nextTab.addClass("is-active");
+        nextTab.addClass("is-active");       
         if (nextTab.next().length == 0) {
             btn.hide();
-        }
+            $('.btnSubmit').show();
+        } 
+
+        
         $('.btnBack').show();
     }
     var changeProgressPrev = function (btn) {
@@ -26,8 +30,9 @@ var initaliseProgressButtons = function () {
         prevTab.removeClass("is-complete");
         prevTab.addClass("is-active");
         if (prevTab.prev().length == 0) {
-            btn.hide();
+            btn.hide();           
         }
+        $('.btnSubmit').hide();
         $('.btnNext').show();
     }
     $('.btnNext').click(function () {
@@ -37,7 +42,7 @@ var initaliseProgressButtons = function () {
         validateTab(currentTab).then(function (valid) {
             if (valid == true) {
                 _moveTab(currentTab, nextTab)
-                changeProgressNext($(this));
+                changeProgressNext($('.btnNext'));
             }
         });
     });
@@ -64,8 +69,13 @@ async function validateTab(currentTab){
         case "details":
             if (await detailStage.validate(requestStage.selectedFor) == false) {
                 valid = false;
-            }
-            break;
+            } else {
+                var requestHelp = new Object();
+                requestHelp.request = requestStage;
+                requestHelp.detail = detailStage;
+                intialiseReviewStage(requestHelp);
+                intialiseSubmit();
+            }      
     }
 
     if (!valid) {
@@ -86,6 +96,76 @@ function _moveTab(currentTab, nextTab) {
     }
 }
 
+
+var intialiseSubmit = function () {
+    $('.btnSubmit').click(function () {        
+        var requestor = {
+            firstname: detailStage.yourDetails.firstname.val,
+            lastname: detailStage.yourDetails.lastname.val,
+            email: detailStage.yourDetails.email.val,
+            mobile: detailStage.yourDetails.mobilenumber.val,
+            altNumber: detailStage.yourDetails.altnumber.val,
+            address: {
+                addressline1: detailStage.yourDetails.address.addressLine1.val,
+                addressline2: detailStage.yourDetails.address.addressLine2.val,
+                locality: detailStage.yourDetails.address.locality.val,
+                postcode: detailStage.yourDetails.address.postcode.val
+            }
+        }
+        var recipient = requestor;
+        if (detailStage.onBehalf) {
+            recipient = {
+                firstname: detailStage.theirDetails.firstname.val,
+                lastname: detailStage.theirDetails.lastname.val,
+                email: detailStage.theirDetails.email.val,
+                mobile: detailStage.theirDetails.mobilenumber.val,
+                altNumber: detailStage.theirDetails.altnumber.val,
+                address: {
+                    addressline1: detailStage.theirDetails.address.addressLine1.val,
+                    addressline2: detailStage.theirDetails.address.addressLine2.val,
+                    locality: detailStage.theirDetails.address.locality.val,
+                    postcode: detailStage.theirDetails.address.postcode.val,
+                }
+            }
+        }
+
+        var helpRequest = {
+            forRequestor: !detailStage.onBehalf,
+            readPrivacyNotice: requestStage.agreeToTerms.privacy,
+            acceptedTerms: requestStage.agreeToTerms.terms,
+            requestor: requestor,
+            recipient: recipient,
+            consentForContact: detailStage.consentForContact,
+            specialCommunicationNeeds: reviewStage.communicationNeeds.val,
+            otherDetails: reviewStage.helperAdditionalDetails.val,
+        }
+        var jobRequest = {
+            supportActivity: requestStage.selectedActivity.val,
+            details: requestStage.additonalHelpDetail.val,
+            dueDays: requestStage.selectedTime.val,
+            healthCritical: requestStage.selectedHealthWellBeing.val
+        }
+
+        var data = {
+            helpRequest: helpRequest,
+            jobRequest: jobRequest
+        };
+        
+
+        fetch(`api/requesthelp/RequestHelp`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(function () {
+            console.log(test);
+        })                                
+    })
+   
+
+}
 
 
 $.fn.isInViewport = function () {
