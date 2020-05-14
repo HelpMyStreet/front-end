@@ -38,20 +38,13 @@ namespace HelpMyStreetFE.Controllers
 
             if (validUserId != null)
             {
-                User user = await _userService.GetUserAsync(int.Parse(validUserId));
-                string correctPage = RegistrationController.GetCorrectPage(user);
-                if (correctPage != "/registration/stepfive")
-                {
-                    // A different step needs to be completed at this point
-                    return Redirect(correctPage);
-                }
-
+                User user = await _userService.GetUserAsync(int.Parse(validUserId));                        
                 var viewModel = new AuthenticateViewModel {ClientSdkId = _options.ClientSdkId, DomId = _options.DomId, ScenarioId = _options.ScenarioId };
                 return View(viewModel);
             }
             else
             {
-                return Redirect("/Registration/StepFive");
+                return Redirect("/account");
             }
         }
 

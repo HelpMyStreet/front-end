@@ -53,7 +53,6 @@ export function validateEmail(emailElement, errorMessage) {
     if (email == "") return true;
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var valid = re.test(email);
-    console.log(valid);
     if (valid == false) {
         emailElement.find("~ .error").show();
         emailElement.find("~ .error").text(errorMessage);
@@ -61,7 +60,7 @@ export function validateEmail(emailElement, errorMessage) {
     return valid;
 }
 
- export function validatePhoneNumber(phoneNumberEl, errorMessage) {
+export function validatePhoneNumber(phoneNumberEl, errorMessage) {
     var phoneNumber = phoneNumberEl.val();
     if (phoneNumber == "") return true;
     var valid = ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0");
