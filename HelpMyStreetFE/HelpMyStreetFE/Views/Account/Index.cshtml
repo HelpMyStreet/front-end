@@ -8,8 +8,7 @@
             domId: '@Model.VerificationViewModel.YotiOptions.DomId', scenarioId: '@Model.VerificationViewModel.YotiOptions.ScenarioId', clientSdkId: '@Model.VerificationViewModel.YotiOptions.ClientSdkId',
             userId: '@Model.VerificationViewModel.EncodedUserID'
        };
-    </script>
-    <script src="~/yoti.js" asp-append-version="true"></script>
+    </script>    
 }
 
 @{
@@ -38,7 +37,7 @@
                         <partial name="_MyStreets" for="@Model.PageModel" />
                         break;
                     case MenuPage.ComingSoon:
-                        <partial name="_ComingSoon" />
+                        <partial name="_ComingSoon"  for="@Model.UserDetails" />
                         break;
                     default:
                         <partial name="_Verification" for="VerificationViewModel" />

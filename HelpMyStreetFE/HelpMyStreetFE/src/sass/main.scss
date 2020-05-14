@@ -5,10 +5,8 @@
 @import "./footer.scss";
 @import "./spacing.scss";
 @import "./input.scss";
-@import "./pikaday.scss";
 @import "./registration.scss";
 @import "./login.scss";
-@import "./yoti.scss";
 @import "./forgotton-password.scss";
 @import "./ui/buttons";
 
@@ -22,6 +20,7 @@
 @import "./mixins//typography/copy";
 
 @import "./components/authentication/header-login";
+@import "./components/authentication/yoti-loading-mobile";
 @import "./components/cookie-consent";
 @import "./components/loading-spinner";
 @import "./components/notification-card/notification";
