@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Enums.Account
     {
         UserDetails,
         MyStreets,
-        ComingSoon
+        ComingSoon,
+        OpenRequests
     }
 }
