@@ -134,6 +134,16 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> OpenRequests()
+        {
+            var currentUser = await GetCurrentUser();
+            var viewModel = GetAccountViewModel(currentUser);
+            viewModel.CurrentPage = MenuPage.OpenRequests;
+
+            return View("Index", viewModel);
+        }
+
         [HttpPut]
         public async Task<IActionResult> CloseNotification(Guid id)
         {
