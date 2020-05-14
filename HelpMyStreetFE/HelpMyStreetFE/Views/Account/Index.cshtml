@@ -33,6 +33,9 @@
 
                 @switch (Model.CurrentPage)
                 {
+                    case MenuPage.OpenRequests:
+                        <partial name="_OpenRequests" for="@Model.PageModel" />
+                        break;
                     case MenuPage.MyStreets:
                         <partial name="_MyStreets" for="@Model.PageModel" />
                         break;
