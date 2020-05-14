@@ -6,11 +6,23 @@
         <li class="account__nav__item">
             <a href="/account/" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>
         </li>
-        @if (Model.UserDetails.IsStreetChampion && Model.UserDetails.IsVerified)
+        @if (Model.UserDetails.IsVerified)
         {
             <li class="account__nav__item">
-                <a href="/account/streets" class="@(Model.CurrentPage == MenuPage.MyStreets ? "selected" : string.Empty)">My Streets</a>
+                <a href="/account/openrequests" class="@(Model.CurrentPage == MenuPage.OpenRequests ? "selected" : string.Empty)">Open Requests</a>
             </li>
+            @if (Model.UserDetails.IsStreetChampion && Model.UserDetails.IsVerified)
+            {
+                <li class="account__nav__item">
+                    <a href="/account/streets" class="@(Model.CurrentPage == MenuPage.MyStreets ? "selected" : string.Empty)">My Streets</a>
+                </li>
+            }
+            else
+            {
+                <li class="account__nav__item">
+                    <a href="/account/comingSoon" class="@(Model.CurrentPage == MenuPage.ComingSoon ? "selected" : string.Empty)">Coming Soon...</a>
+                </li>
+            }
         }
         <li class="account__nav__item">
             <a href="/account/openrequests" class="@(Model.CurrentPage == MenuPage.OpenRequests ? "selected" : string.Empty)">Open Requests</a>
