@@ -23,19 +23,19 @@ namespace HelpMyStreetFE.Services
 
 
 
-        public Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel viewModel)
+        public Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
         {
             _logger.LogInformation($"Logging Request");
             var request = new HelpMyStreet.Contracts.RequestService.Request.PostNewRequestForHelpRequest
             {
-                HelpRequest = new HelpRequest
-                {
+                HelpRequest = new HelpRequest {                                     
                     AcceptedTerms = viewModel.HelpRequest.AcceptedTerms,
                     OtherDetails = viewModel.HelpRequest.OtherDetails,
                     ConsentForContact = viewModel.HelpRequest.ConsentForContact,
                     SpecialCommunicationNeeds = viewModel.HelpRequest.SpecialCommunicationNeeds,
                     ForRequestor = viewModel.HelpRequest.ForRequestor,
                     ReadPrivacyNotice = viewModel.HelpRequest.ReadPrivacyNotice,
+                    CreatedByUserId = userId,
                     Recipient = new RequestPersonalDetails
                     {
                         FirstName = viewModel.HelpRequest.Recipient.Firstname,

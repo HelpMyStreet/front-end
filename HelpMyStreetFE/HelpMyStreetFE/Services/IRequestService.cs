@@ -6,7 +6,7 @@ namespace HelpMyStreetFE.Services
 {
     public interface IRequestService
     { 
-        Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel request);
+        Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel request, int userId);
 
     }
 }

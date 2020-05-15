@@ -4,6 +4,7 @@ using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers { 
@@ -26,7 +27,11 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                return await _requestService.LogRequestAsync(model);
+                int userId = 0;
+                if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated){
+                    userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                }
+                return await _requestService.LogRequestAsync(model, userId);
             }catch(Exception ex)
             {
                 _logger.LogError("an error occured requesting help", ex);
