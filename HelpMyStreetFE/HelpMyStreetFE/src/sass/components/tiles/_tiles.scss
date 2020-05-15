@@ -128,8 +128,8 @@
                     }
                 }
 
-                .icon-size-sm{
-                    width:45px;
+                .icon-size-sm {
+                    width: 45px;
                 }
             }
 
@@ -137,6 +137,8 @@
 
             &__description {
                 color: $black;
+                width: 97%;
+                margin: auto;
 
                 &.left {
                     text-align: left;
