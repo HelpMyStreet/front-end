@@ -164,10 +164,10 @@ var intialiseSubmit = function () {
             if (resp.ok) {
                 let respData = await resp.json()                
                 if (respData.hasContent == true & respData.isSuccessful == true) {
-                    if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6) {
-                        window.location.href = "/requesthelp/success";
-                    } else if (respData.content.fulfillable == 1 || respData.content.fulfillable == 2 || respData.content.fulfillable == 3) {
-                        throw 'Request was unfulliable by either error, invalid postcode or generic unfulliable';
+                    if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6 || respData.content.fulfillable == 2 ) {
+                        window.location.href = "/requesthelp/success?fulfillable=" + respData.content.fulfillable + "&onBehalf=" + detailStage.onBehalf;
+                    } else if (respData.content.fulfillable == 1 || respData.content.fulfillable == 3) {
+                        throw 'The Request for helphad an error, this could be due to an invalid postcodee';
                     }
                 } else {
                     throw 'error occured from within the request service';

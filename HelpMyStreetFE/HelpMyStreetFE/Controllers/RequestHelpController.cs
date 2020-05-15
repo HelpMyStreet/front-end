@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Services;
@@ -27,18 +28,35 @@ namespace HelpMyStreetFE.Controllers
             return View();
         }
 
-        public IActionResult Success()
+        public IActionResult Success(Fulfillable fulfillable, bool onBehalf)
         {
+        
+            string message = "<p>Your request will be passed to a local volunteer who should get in touch shortly.</p>";
+            string button = " <a href='/' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";                   
+            
+ 
+            if (fulfillable == Fulfillable.Accepted_ManualReferral || fulfillable == Fulfillable.Rejected_Unfulfillable)
+            {
+                message = "<p>We’ve just launched HelpMyStreet and we’re building our network across the country. We’re working hard to ensure we have local volunteers in your area who can get the right help to the right people. You’ll be contacted soon to progress your request.</p>";                
+            }            
+
+            if (onBehalf)
+            {
+                message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home </p>";
+                button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+            }
+
             List<NotificationModel> notifications = new List<NotificationModel> {
             new NotificationModel
             {
-                Title = "Thank you!",
+                Title = "Thank you",
+                Subtitle = "Your request has been received",
                 Type = Enums.Account.NotificationType.Success,
-                Message = "We'll do what we can to find someone who can help in that area if we're succesful then we'll let you know - or a local volunteer may contact you directly (if you gave us permission to do those things)."
+                Message = message,
+                Button = button
             }
             };
         
-
             return View(notifications);
         }
 

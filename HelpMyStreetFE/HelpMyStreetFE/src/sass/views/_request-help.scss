@@ -26,47 +26,60 @@
             padding-left: 10px;
         }
 
-        select:focus {
-            outline-color: $light-orange;
+        .manual-entry {
+            text-decoration: underline;
+            cursor: pointer;
         }
 
-        &.input--checkbox,
-        &.input--radio {
-            label {
-                font-weight: 500;
-                color: $black;
-
-                &.selected {
-                    font-weight: 600;
-                }
-            }
+        .edit-address {
+            font-weight: 500;
+            font-size: 1rem;                  
+            float: right;
+            display:none;
         }
+    
 
-        &.input--checkbox {
-            .mdi {
-                &.mdi-check {
-                    font-size: 20px;
-                }
-            }
-        }
+    select:focus {
+        outline-color: $light-orange;
+    }
 
+    &.input--checkbox,
+    &.input--radio {
         label {
-            display: block;
-            font-weight: 600;
-            position: relative;
-            font-size: 1.2em;
-            top: 0;
-            margin-bottom: 10px;
-        }
+            font-weight: 500;
+            color: $black;
 
-
-
-        textarea {
-            width: 100%;
-            min-height: 150px;
-            font-size: 1.2em;
+            &.selected {
+                font-weight: 600;
+            }
         }
     }
+
+    &.input--checkbox {
+        .mdi {
+            &.mdi-check {
+                font-size: 20px;
+            }
+        }
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        position: relative;
+        font-size: 1.2em;
+        top: 0;
+        margin-bottom: 10px;
+    }
+
+
+
+    textarea {
+        width: 100%;
+        min-height: 150px;
+        font-size: 1.2em;
+    }
+}
 
     .btn-wrapper {
         margin-top: 20px;

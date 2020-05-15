@@ -101,6 +101,7 @@ var initaliseAddressFinder = function (postfix, obj) {
     $('input[name="county_' + postfix + '"]').blur(function () {
         obj.address.county.val = $(this).val();
     });
+    
     $('input[name="postcode_' + postfix + '"]').blur(function () {
         obj.address.postcode.val = $(this).val();
     });
@@ -146,13 +147,13 @@ var initaliseAddressFinder = function (postfix, obj) {
                         obj.address.addressLine2.val = address.addressLine2;
                         obj.address.locality.val = address.locality;
                         obj.address.postcode.val = address.postcode;
-                        
 
+                        $(this).parent().find(".edit-address").show();
                         $("input[name=address_line_1_" + postfix + "]").val(obj.address.addressLine1.val);
                         $("input[name=address_line_2_" + postfix + "]").val(obj.address.addressLine2.val);
                         $("input[name=city_" + postfix + "]").val(obj.address.locality.val);
                         $("input[name=postcode_" + postfix + "]").val(obj.address.postcode.val);
-                        $("#expander_" + postfix).slideDown();                        
+                        //$("#expander_" + postfix).slideDown();                        
                     });
                 }
             }
@@ -253,6 +254,13 @@ var validateTheirDetails = async function () {
     let valid = true;
     if (!validatePersonalDetails(detailStage.theirDetails))
         valid = false;
+
+
+    if (detailStage.theirDetails.email.val && !validEmail(detailStage.theirDetails.email.val)) {
+        $('#' + detailStage.theirDetails.email.errorSpan).show().text("Please enter a valid email address");
+        valid = false;
+    }
+
 
     if (!await validateAddress(detailStage.theirDetails, "their"))
         valid = false;

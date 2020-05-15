@@ -6,11 +6,10 @@
     </div>
     <div class="notification__content">
         <div class="notification__title">@Model.Title</div>
-        <div class="notification__title">Your request has been submitted</div>
-        <div class="notification__message">@Html.Raw(@Model.Message)</div>
-        <div class="notification__message">Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home.</div>
+        <div class="notification__title">@Model.Subtitle</div>
+        <div class="notification__message">@Html.Raw(@Model.Message)</div>        
         <div class="notification__button text-center mt-md">
-            <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+           @Html.Raw(Model.Button)
         </div>
     </div>            
 </div>
