@@ -19,7 +19,7 @@
     }
 
     .mobile {
-        display: block;
+        display: inline-block;
         @include copy-sz-xs;
 
         @media screen and (min-width: $sm-screen) {

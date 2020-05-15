@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HelpMyStreetFE.Models.Account
+namespace HelpMyStreetFE.Models
 {
     public class NotificationModel
     {

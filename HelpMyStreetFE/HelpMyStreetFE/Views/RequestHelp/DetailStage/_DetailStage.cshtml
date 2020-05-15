@@ -1,0 +1,18 @@
+﻿@using HelpMyStreetFE.Models.RequestHelp;
+
+
+    <div data-tab-page="details" class="dnone">
+
+        <div id="their-details" class="dnone">
+            <partial name="_UserDetails" model="new UserDetailsViewModel { OnBehalf = true }" />
+        </div>
+        <hr class="input--separator" />
+        <partial name="_UserDetails" model="new UserDetailsViewModel { OnBehalf = false }" />
+        <hr class="input--separator" />
+        <div class="row">
+            <div class="sm12 input">
+                <label>Consent for contact</label>
+                <partial name="_ConsentForContact" />  
+            </div>
+        </div>
+    </div>

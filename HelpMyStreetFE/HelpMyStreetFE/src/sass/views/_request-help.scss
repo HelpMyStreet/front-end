@@ -1,45 +1,119 @@
 
 
-.postcode-checker {
-    .input {
-        label {
-            font-weight: 900;
-        }
-    }
-
-    &__input {
-        input {
-            height: 62px;
-        }
-    }
-
-    &__validation {
-        margin-top: 10px;
-
-        &__message {
-            font-weight: 600;
-
-            p,
-            &--text {
-                color: $dark-blue;
-            }
-
-            &--warning {
-                color: $orange;
-            }
-        }
-    }
-}
-
+@import '../components/tiles/tiles';
 
 .request-help {
-    &__form {
-        .input {
-            margin-top: 10px;
+
+    span,
+    a {
+        font-size: 1em;
+    }
+
+    p {
+        font-size: 1.2em;
+    }
+
+    h2 {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    .input {
+        margin-top: 20px;
+
+        select {
+            font-size: 1.2rem;
+            padding-left: 10px;
         }
 
-        &__controls {
-            margin-top:30px
+        select:focus {
+            outline-color: $light-orange;
         }
+
+        &.input--checkbox,
+        &.input--radio {
+            label {
+                font-weight: 500;
+                color: $black;
+
+                &.selected {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &.input--checkbox {
+            .mdi {
+                &.mdi-check {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            position: relative;
+            font-size: 1.2em;
+            top: 0;
+            margin-bottom: 10px;
+        }
+
+
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1.2em;
+        }
+    }
+
+    .btn-wrapper {
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 1px solid $gray-10;
+
+        .right {
+            float: right;
+        }
+
+        .btnBack {
+            display: none;
+        }
+
+        .btnSubmit,
+        .btnNext {
+            background: $orange;
+            min-width: 250px;
+        }
+
+        .clear-button {
+            background: $background-main;
+            color: $blue;
+            border-color: $blue;
+        }
+
+        .clear-button:hover {
+            background: $white;
+        }
+    }
+
+    .user-detail {
+        margin-bottom: 20px;
+
+        .input {
+            a.input__link {
+                position: relative;
+                bottom: 0;
+            }
+
+            &.find-address {
+                margin-top: 55px;
+            }
+        }
+    }
+
+    .lowercase {
+        text-transform: lowercase;
     }
 }

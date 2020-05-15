@@ -1,7 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.RequestHelp;
 @using HelpMyStreet.Utils.Enums
 
-@model RequestHelpFormModel;
 
 @section Scripts {
     <script src="~/requesthelp.js" asp-append-version="true"></script>
@@ -9,239 +8,23 @@
 
 @{
     ViewData["Title"] = "Request Help";
-
-    var helpOptions = new Dictionary<SupportActivities, string>
-{
-        { SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
-        { SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy" },
-        { SupportActivities.Errands, "Running essential local errands (e.g. posting mail)" },
-        { SupportActivities.DogWalking, "Walking a calm dog" },
-        { SupportActivities.MealPreparation, "A hot / pre-prepared meal" },
-        { SupportActivities.PhoneCalls_Friendly, "A friendly chat on the phone" },
-        { SupportActivities.PhoneCalls_Anxious, "Some extra support over the phone" },
-        { SupportActivities.HomeworkSupport, "Remote support for adults home-schooling their children" },
-        { SupportActivities.CheckingIn, "Check that someone is OK" },
-        { SupportActivities.Other, "I’d like to check if you can help with something else" },
-    };
 }
 
 
 
-<div class="container">
-    <div class="row justify-center">
+<div class="container request-help">
+    <div class="row mt-md">
         <div class="sm12">
-            <h1>@ViewData["Title"]</h1>
-            <p>Please use this form to request help for yourself or someone you are worried about</p>
+            <partial name="_ProgressBar" />
         </div>
     </div>
+    <form>
+        <partial name="_RequestStage">
+        <partial name="_DetailStage">
+        <partial name="_ReviewStage">
+        <partial name="_NextPrevButtons" />
+</form>
 
-    <div class="row justify-center  mt72">
-        <div class="sm12 postcode-checker">
-            <div class="row ">
-                <div class="input sm6 pl0">
-                    <label>Postcode Where Help Is Needed</label>
-                    <div class="postcode-checker__input">
-                        <input id="postcode_search" class="fullwidth" name="postcode_search" type="text" placeholder="Enter Postcode..." />
-                    </div>
-                </div>
-                <div class="sm6">
-                    <button class="btn cta large" id="postcode_button">
-                        <span class="text">Check Postcode</span>                        
-                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Checking..."}' /></div>
-                    </button>
-                </div>
-            </div>
-            <div class="postcode-checker__validation">
-                <div id="postcode_invalid" class="dnone postcode-checker__validation__message">
-                    <div class="row">
-                        <div class="sm12 postcode-checker__validation__message--warning">
-                            Sorry - that’s not quite right. Please enter a valid UK postcode.
-                        </div>
-                    </div>
-                </div>
-                <div id="postcode_error" class="dnone postcode-checker__validation__message--warning">We're currently experiencing issues finding coverage, please try again later.</div>
-                <div id="streetchampionCoverage" class="dnone postcode-checker__validation__message">
-                    <div class="row">
-                        <div class="sm6 pl0">
-                            <span class="postcode-checker__validation__message--text pl0"></span>
-                        </div>
-                        <div class="sm6">
-                            <button class="btn cta large" id="continueRequest" type="submit">
-                                <span class="text">Continue</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-
-    </div>
-
-    <div class="request-help expanderDetails dnone">
-        <div class="row">
-            <div class="sm12">
-                <form id="requesthelp_form" class="request-help__form" method="post" asp-route="requesthelpB">
-                    <input id="postcode" name="postcode" type="hidden" />
-                    <input id="requestId" name="requestId" type="hidden" />
-                    <input id="hasStreetChampion" name="hasStreetChampion" type="hidden" />
-                    <div class="row">
-                        <div class="input sm8">
-                            <h5>Is this for you or someone else?</h5>
-                            <div class="input input--checkbox">
-                                <div class="input input--radio">
-                                    <label>
-                                        <input name="on_behalf_of_another" type="radio" value="false" hidden @(Model.OnBehalfOfAnother ? "" : "checked='checked'") />
-                                        <span class="input--radio__radio">
-                                            <span class="input--radio__radio__inner"></span>
-                                        </span>
-                                        Me
-                                    </label>
-                                </div>
-                                <hr class="input--separator" />
-                                <div class="input input--radio">
-                                    <label>
-                                        <input name="on_behalf_of_another" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
-                                        <span class="input--radio__radio">
-                                            <span class="input--radio__radio__inner"></span>
-                                        </span>
-                                        Someone Else
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input sm8">
-                            <h5>Is there a concern about someone’s health or wellbeing?</h5>
-                            <div class="input input--checkbox">
-                                <div class="input input--radio">
-                                    <label>
-                                        <input name="health_concern" type="radio" value="true" hidden @(Model.HealthConcern ? "checked='checked'" : "") />
-                                        <span class="input--radio__radio">
-                                            <span class="input--radio__radio__inner"></span>
-                                        </span>
-                                        Yes
-                                    </label>
-                                </div>	<hr class="input--separator" />
-
-
-                                <div class="input input--radio">
-                                    <label>
-                                        <input name="health_concern" type="radio" value="false" hidden @(Model.HealthConcern ? "" : "checked='checked'") />
-                                        <span class="input--radio__radio">
-                                            <span class="input--radio__radio__inner"></span>
-                                        </span>
-                                        No
-                                    </label>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="request-help__form__personal">
-                        <div class="row">
-                            <div class="input sm4">
-                                <h5>Your first name</h5>
-                                <input name="firstname" type="text" value="@(Model.FirstName != null ? Model.FirstName : null)" placeholder="e.g. John" />
-                                <span class="error"></span>
-                            </div>
-                            <div class="input sm4">
-                                <h5>Your last name</h5>
-                                <input name="lastname" type="text" value="@(Model.LastName != null ? Model.LastName : null)" placeholder="e.g. Smith" />
-                                <span class="error"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input sm8">
-                                <h5>Your email Address</h5>
-                                <input name="email" type="email" value="@(Model.Email != null ? Model.Email : null)" placeholder="e.g. johndow@gmail.com" />
-                                <span class="error"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input sm8">
-                                <h5>Your phone number</h5>
-                                <input name="phonenumber" type="number" value="@(Model.PhoneNumber != null ? Model.PhoneNumber : null)" placeholder="e.g. 07700112233" />
-                                <span class="error"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input sm12">
-                            <h5>What Help are you looking for?</h5>
-                            <p>(Please tick as many as you like, but at least one)</p>
-                            <span class="error" id="help-needed-array-error">Please select at least one option</span>
-                            @foreach (var option in helpOptions)
-                            {
-                                <div class="input input--checkbox">
-                                    <label>
-                                        <input name="help-needed-array" type="checkbox" value="@option.Key" hidden @(Model.HelpNeeded != null && Model.HelpNeeded.Contains(option.Key) ? "checked='checked'" : "") />
-                                        <span class="input--checkbox__checkbox">
-                                            <span class="mdi mdi-check"></span>
-                                        </span>
-                                        @option.Value
-                                    </label>
-                                </div>
-                                <hr class="input--separator" />
-
-                            }
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input sm12">
-                            <h5>Anything else to add?</h5>
-                            <textarea name="message" rows="5" placeholder="We will share this description with local volunteers who may be able to help.  Please don’t include anything sensitive that isn’t essential to the request – but do tell us anything we need to know to be able to help you.">@Model.Message</textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="sm12">
-                            <p>
-                                We will use this information to process your request and share it with registered volunteers in the area where help is needed,
-                                who will likely contact you directly. We may also contact you about aspects of the HelpMyStreet service. For more information
-                                regarding how HelpMyStreet uses your data, please see our <a href="/privacy-policy" target="_blank">Privacy Notice</a>
-                            </p>
-                        </div>
-                        <div class="sm12">
-                            <div class="input input--checkbox">
-                                <label>
-                                    <input name="privacy_notice" type="checkbox" hidden />
-                                    <span class="input--checkbox__checkbox">
-                                        <span class="mdi mdi-check"></span>
-                                    </span>
-                                    I acknowledge the Help My Street <a href="/privacy-policy" target="_blank">Privacy Notice</a>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="sm12">
-                            <div class="input input--checkbox">
-                                <label>
-                                    <input name="terms_and_conditions" type="checkbox" hidden />
-                                    <span class="input--checkbox__checkbox">
-                                        <span class="mdi mdi-check"></span>
-                                    </span>
-                                    I agree to the Help My Street <a href="/terms-conditions" target="_blank">Terms and Conditions</a>
-                                </label>
-                            </div>
-                        </div>
-                        <span class="termsprivacy error"></span>
-                        <div class="row">
-                            <p class="orange">
-                                <span class="error" id="general-error">There are some errors on the page, please correct them</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row  request-help__form__controls">
-                        <div class="sm3">
-                            <button class="btn cta large fill" id="submit_button" type="submit">
-                                <span class="text">Submit</span>
-                                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
+
+

@@ -42,5 +42,11 @@ namespace HelpMyStreetFE.Controllers
         {
             return View();
         }
+
+        public IActionResult RequestHelp()
+        {
+            return View("~/Views/RequestHelp/RequestHelp.cshtml");
+        }
+
     }
 }
