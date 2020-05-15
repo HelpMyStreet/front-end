@@ -5,8 +5,8 @@ using HelpMyStreetFE.Models.RequestHelp;
 namespace HelpMyStreetFE.Services
 {
     public interface IRequestService
-    {
-        Task<LogRequestResponse> LogRequestAsync(string postcode);
+    { 
+        Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel request);
 
-	}
+    }
 }

@@ -1,6 +1,7 @@
 ﻿import { intialiseRequestStage, requestStage } from "./request-stage";
 import { initaliseDetailStage, detailStage } from "./detail-stage";
 import { intialiseReviewStage, reviewStage } from "./review-stage";
+import { buttonLoad, buttonUnload } from "../shared/btn";
 
 $(() => {
     initaliseProgressButtons();
@@ -103,11 +104,11 @@ var intialiseSubmit = function () {
             firstname: detailStage.yourDetails.firstname.val,
             lastname: detailStage.yourDetails.lastname.val,
             email: detailStage.yourDetails.email.val,
-            mobile: detailStage.yourDetails.mobilenumber.val,
-            altNumber: detailStage.yourDetails.altnumber.val,
+            mobile: detailStage.yourDetails.mobilenumber.val ? detailStage.yourDetails.mobilenumber.val : '',
+            altNumber: detailStage.yourDetails.altnumber.val ? detailStage.yourDetails.altnumber.val : '',
             address: {
                 addressline1: detailStage.yourDetails.address.addressLine1.val,
-                addressline2: detailStage.yourDetails.address.addressLine2.val,
+                addressline2: detailStage.yourDetails.address.addressLine2.val ?  detailStage.yourDetails.address.addressLine2.val : '',
                 locality: detailStage.yourDetails.address.locality.val,
                 postcode: detailStage.yourDetails.address.postcode.val
             }
@@ -117,12 +118,12 @@ var intialiseSubmit = function () {
             recipient = {
                 firstname: detailStage.theirDetails.firstname.val,
                 lastname: detailStage.theirDetails.lastname.val,
-                email: detailStage.theirDetails.email.val,
-                mobile: detailStage.theirDetails.mobilenumber.val,
-                altNumber: detailStage.theirDetails.altnumber.val,
+                email: detailStage.theirDetails.email.val, 
+                mobile: detailStage.theirDetails.mobilenumber.val ,
+                altNumber: detailStage.theirDetails.altnumber.val ,
                 address: {
                     addressline1: detailStage.theirDetails.address.addressLine1.val,
-                    addressline2: detailStage.theirDetails.address.addressLine2.val,
+                    addressline2: detailStage.theirDetails.address.addressLine2.val, 
                     locality: detailStage.theirDetails.address.locality.val,
                     postcode: detailStage.theirDetails.address.postcode.val,
                 }
@@ -130,38 +131,51 @@ var intialiseSubmit = function () {
         }
 
         var helpRequest = {
-            forRequestor: !detailStage.onBehalf,
-            readPrivacyNotice: requestStage.agreeToTerms.privacy,
-            acceptedTerms: requestStage.agreeToTerms.terms,
-            requestor: requestor,
-            recipient: recipient,
-            consentForContact: detailStage.consentForContact,
-            specialCommunicationNeeds: reviewStage.communicationNeeds.val,
-            otherDetails: reviewStage.helperAdditionalDetails.val,
+            ForRequestor: !detailStage.onBehalf,
+            ReadPrivacyNotice: requestStage.agreeToTerms.privacy,
+            AcceptedTerms: requestStage.agreeToTerms.terms,
+            Requestor: requestor,
+            Recipient: recipient,
+            ConsentForContact: detailStage.consentForContact,
+            SpecialCommunicationNeeds: reviewStage.communicationNeeds.val ,
+            OtherDetails: reviewStage.helperAdditionalDetails.val,
         }
         var jobRequest = {
-            supportActivity: requestStage.selectedActivity.val,
-            details: requestStage.additonalHelpDetail.val,
-            dueDays: requestStage.selectedTime.val,
-            healthCritical: requestStage.selectedHealthWellBeing.val
+            SupportActivity: requestStage.selectedActivity.val,
+            Details: requestStage.additonalHelpDetail.val ,
+            DueDays: parseInt(requestStage.selectedTime.val),
+            HealthCritical: (requestStage.selectedHealthWellBeing.val == "true")
         }
 
         var data = {
-            helpRequest: helpRequest,
-            jobRequest: jobRequest
+            HelpRequest: helpRequest,
+            JobRequest: jobRequest
         };
-        
 
-        fetch(`api/requesthelp/RequestHelp`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(function () {
-            console.log(test);
-        })                                
+        $('.retryMessage').hide();
+        buttonLoad($("#btnSubmit"));
+        fetch('api/requesthelp', {                        
+            method: 'post',
+            headers: {                
+                'content-type': 'application/json'
+            },                        
+             body: JSON.stringify(data)
+        }).then(function (response) {
+            response.json().then(function (data) {
+                console.log(data);
+                if (data.hasContent == true & data.isSuccessful == true) {
+                    if (data.content.fulfillable == 4 || data.content.fulfillable == 5 || data.content.fulfillable == 6) {
+                        window.location.href = "/requesthelp/success";
+                    } else if (data.content.fulfillable == 1 || data.content.fulfillable == 2 || data.content.fulfillable == 3) {
+                        $('.retryMessage').show();
+                    }
+                }
+            })
+        }).catch(function(){
+
+        }).finally(function () {
+            buttonUnload($("#btnSubmit"));
+        })                            
     })
    
 

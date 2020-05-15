@@ -16,16 +16,13 @@ namespace HelpMyStreetFE.Repositories
 		public RequestHelpRepository(HttpClient client, IConfiguration config, ILogger<RequestHelpRepository> logger) : base(client, config, logger, "Services:Request")
 		{ }
 
-		public async Task<LogRequestResponse> LogRequest(string postcode)
-		{
-			postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
-			var response = await PostAsync<LogRequestResponse>($"/api/logrequest", new
-			{
-				postcode
-			});
+	
 
+		public async Task<LogRequestResponse> LogRequest(PostNewRequestForHelpRequest request)
+		{
+			var response = await PostAsync<LogRequestResponse>($"/api/PostNewRequestForHelp", request);
 			return response;
-    }
-		
+		}
+
 	}
 }

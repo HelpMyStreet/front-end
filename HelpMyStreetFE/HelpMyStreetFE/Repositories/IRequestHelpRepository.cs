@@ -6,7 +6,7 @@ namespace HelpMyStreetFE.Repositories
 {
 	public interface IRequestHelpRepository
 	{
-		Task<LogRequestResponse> LogRequest(string postcode);
+		Task<LogRequestResponse> LogRequest(HelpMyStreet.Contracts.RequestService.Request.PostNewRequestForHelpRequest request);
 
 	}
 }

@@ -13,18 +13,25 @@ namespace HelpMyStreetFE.Controllers {
     [ApiController]
     public class RequestHelpAPIController : ControllerBase
     {
-        private readonly ILogger<RequestHelpAPIController> _logger;        
-
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger)
+        private readonly ILogger<RequestHelpAPIController> _logger;
+        private readonly IRequestService _requestService;
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-           
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
         [HttpPost]        
-        public ActionResult RequestHelp([FromBody]RequestHelpViewModel model)
+        public async Task<ActionResult<LogRequestResponse>> RequestHelp([FromBody] RequestHelpViewModel model)
         {
-            return StatusCode(500);
+            try
+            {
+                return await _requestService.LogRequestAsync(model);
+            }catch(Exception ex)
+            {
+                _logger.LogError("an error occured requesting help", ex);
+                return StatusCode(500);
+            }            
         }
     }
 }

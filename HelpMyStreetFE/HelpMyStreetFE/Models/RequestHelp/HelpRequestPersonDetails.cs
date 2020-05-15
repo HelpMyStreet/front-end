@@ -10,8 +10,8 @@ namespace HelpMyStreetFE.Models.RequestHelp
 		public string Firstname { get; set; }
 		public string Lastname { get; set; }
 		public string Email { get; set; }
-		public string Mobile { get; set; }
-		public string AltNumber { get; set; }
+		public string? Mobile { get; set; }
+		public string? AltNumber { get; set; }
 
 		public HelpRequestAddress Address { get; set; }
 	}
