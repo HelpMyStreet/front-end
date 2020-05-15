@@ -140,6 +140,7 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
+            viewModel.PageModel = new List<string>();
 
             return View("Index", viewModel);
         }
