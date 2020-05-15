@@ -1,8 +1,43 @@
-﻿﻿<div class="verification-panel">
+﻿@model HelpMyStreetFE.Models.Account.AccountViewModel
+
+﻿<div class="verification-panel">
     <div class="user-profile profile-panel p-md">
         <header class="profile-panel__header">
             <h3 class="profile-panel__title">Accepted Requests</h3>
             <p>Requests for help that you’ve accepted</p>
         </header>
+
+        <div class="profile">
+            @if (Model.UserDetails.IsVerified)
+            {
+                @if (Model.PageModel.Count == 0)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__title">
+                            All Clear – for now!
+                        </p>
+                        <p class="profile__empty__text">
+                            When you accept requests for help, they’ll move from the Open
+                            Requests tab in to here. From here you’ll be able to access
+                            the contact details you’ll need to complete the tasks by
+                            clicking on “More info”
+                        </p>
+                        <p class="profile__empty__title">Visit the <a href="/account/openrequests">Open Requests</a> tab now to look for help that’s needed in your area</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="profile__empty">
+                    <p class="profile__empty__title">
+                        <a href="/account">Get verified</a> to start accepting requests
+                    </p>
+                    <p class="profile__empty__text">
+                        Once you’re verified, you’ll be able to start accepting requests for help from your local community
+                    </p>
+                    <p class="profile__empty__title">Thanks</p>
+                </div>
+            }
+        </div>
     </div>
 </div>
