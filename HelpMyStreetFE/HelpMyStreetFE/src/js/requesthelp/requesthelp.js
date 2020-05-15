@@ -10,11 +10,11 @@ $(() => {
 
 
 var initaliseProgressButtons = function () {
-    var changeProgressNext = function (btn) {
-        var activeTab = $('.progress-bar').find('.is-active');
+    let changeProgressNext = function (btn) {
+        let activeTab = $('.progress-bar').find('.is-active');
         activeTab.removeClass("is-active");
         activeTab.addClass("is-complete");
-        var nextTab = activeTab.next();
+        let nextTab = activeTab.next();
         nextTab.addClass("is-active");       
         if (nextTab.next().length == 0) {
             btn.hide();
@@ -25,9 +25,9 @@ var initaliseProgressButtons = function () {
         $('.btnBack').show();
     }
     var changeProgressPrev = function (btn) {
-        var activeTab = $('.progress-bar').find('.is-active');
+        let activeTab = $('.progress-bar').find('.is-active');
         activeTab.removeClass("is-active");
-        var prevTab = activeTab.prev();
+        let prevTab = activeTab.prev();
         prevTab.removeClass("is-complete");
         prevTab.addClass("is-active");
         if (prevTab.prev().length == 0) {
@@ -37,9 +37,9 @@ var initaliseProgressButtons = function () {
         $('.btnNext').show();
     }
     $('.btnNext').click(function () {
-        var activeTab = $('.progress-bar').find('.is-active');
-        var currentTab = activeTab.attr("data-tab");
-        var nextTab = activeTab.next().attr("data-tab");
+        let activeTab = $('.progress-bar').find('.is-active');
+        let currentTab = activeTab.attr("data-tab");
+        let nextTab = activeTab.next().attr("data-tab");
         validateTab(currentTab).then(function (valid) {
             if (valid == true) {
                 _moveTab(currentTab, nextTab)
@@ -48,16 +48,16 @@ var initaliseProgressButtons = function () {
         });
     });
     $('.btnBack').click(function () {
-        var activeTab = $('.progress-bar').find('.is-active');
-        var currentTab = activeTab.attr("data-tab");
-        var previousTab = activeTab.prev().attr("data-tab");
+        let activeTab = $('.progress-bar').find('.is-active');
+        let currentTab = activeTab.attr("data-tab");
+        let previousTab = activeTab.prev().attr("data-tab");
         _moveTab(currentTab, previousTab);
         changeProgressPrev($(this));
     });   
 }
 async function validateTab(currentTab){
     $('#hasErrors').hide();
-    var valid = true;
+    let valid = true;
 
     switch (currentTab) {
         case "request":
@@ -71,7 +71,7 @@ async function validateTab(currentTab){
             if (await detailStage.validate(requestStage.selectedFor) == false) {
                 valid = false;
             } else {
-                var requestHelp = new Object();
+                let requestHelp = new Object();
                 requestHelp.request = requestStage;
                 requestHelp.detail = detailStage;
                 intialiseReviewStage(requestHelp);
@@ -99,8 +99,8 @@ function _moveTab(currentTab, nextTab) {
 
 
 var intialiseSubmit = function () {
-    $('.btnSubmit').click(function () {        
-        var requestor = {
+    $('.btnSubmit').click(async function () {
+        let requestor = {
             firstname: detailStage.yourDetails.firstname.val,
             lastname: detailStage.yourDetails.lastname.val,
             email: detailStage.yourDetails.email.val,
@@ -108,90 +108,90 @@ var intialiseSubmit = function () {
             altNumber: detailStage.yourDetails.altnumber.val ? detailStage.yourDetails.altnumber.val : '',
             address: {
                 addressline1: detailStage.yourDetails.address.addressLine1.val,
-                addressline2: detailStage.yourDetails.address.addressLine2.val ?  detailStage.yourDetails.address.addressLine2.val : '',
+                addressline2: detailStage.yourDetails.address.addressLine2.val ? detailStage.yourDetails.address.addressLine2.val : '',
                 locality: detailStage.yourDetails.address.locality.val,
                 postcode: detailStage.yourDetails.address.postcode.val
             }
         }
-        var recipient = requestor;
-        if (detailStage.onBehalf) {
-            recipient = {
-                firstname: detailStage.theirDetails.firstname.val,
-                lastname: detailStage.theirDetails.lastname.val,
-                email: detailStage.theirDetails.email.val, 
-                mobile: detailStage.theirDetails.mobilenumber.val ,
-                altNumber: detailStage.theirDetails.altnumber.val ,
-                address: {
-                    addressline1: detailStage.theirDetails.address.addressLine1.val,
-                    addressline2: detailStage.theirDetails.address.addressLine2.val, 
-                    locality: detailStage.theirDetails.address.locality.val,
-                    postcode: detailStage.theirDetails.address.postcode.val,
-                }
+        let recipient = !detailStage.onBehalf ? requestor : {
+            firstname: detailStage.theirDetails.firstname.val,
+            lastname: detailStage.theirDetails.lastname.val,
+            email: detailStage.theirDetails.email.val,
+            mobile: detailStage.theirDetails.mobilenumber.val,
+            altNumber: detailStage.theirDetails.altnumber.val,
+            address: {
+                addressline1: detailStage.theirDetails.address.addressLine1.val,
+                addressline2: detailStage.theirDetails.address.addressLine2.val,
+                locality: detailStage.theirDetails.address.locality.val,
+                postcode: detailStage.theirDetails.address.postcode.val,
             }
         }
 
-        var helpRequest = {
+        let helpRequest = {
             ForRequestor: !detailStage.onBehalf,
             ReadPrivacyNotice: requestStage.agreeToTerms.privacy,
             AcceptedTerms: requestStage.agreeToTerms.terms,
             Requestor: requestor,
             Recipient: recipient,
             ConsentForContact: detailStage.consentForContact,
-            SpecialCommunicationNeeds: reviewStage.communicationNeeds.val ,
+            SpecialCommunicationNeeds: reviewStage.communicationNeeds.val,
             OtherDetails: reviewStage.helperAdditionalDetails.val,
         }
-        var jobRequest = {
+        let jobRequest = {
             SupportActivity: requestStage.selectedActivity.val,
-            Details: requestStage.additonalHelpDetail.val ,
+            Details: requestStage.additonalHelpDetail.val,
             DueDays: parseInt(requestStage.selectedTime.val),
             HealthCritical: (requestStage.selectedHealthWellBeing.val == "true")
         }
 
-        var data = {
+        let data = {
             HelpRequest: helpRequest,
             JobRequest: jobRequest
         };
 
         $('.retryError').hide();
-        buttonLoad($("#btnSubmit"));
-        fetch('api/requesthelp', {                        
-            method: 'post',
-            headers: {                
-                'content-type': 'application/json'
-            },                        
-             body: JSON.stringify(data)
-        }).then(function (response) {
-            response.json().then(function (data) {
-                console.log(data);
-                if (data.status && data.status == 500) {
-                    $('.retryError').show();
-                } else {
-                    if (data.hasContent == true & data.isSuccessful == true) {
-                        if (data.content.fulfillable == 4 || data.content.fulfillable == 5 || data.content.fulfillable == 6) {
-                            window.location.href = "/requesthelp/success";
-                        } else if (data.content.fulfillable == 1 || data.content.fulfillable == 2 || data.content.fulfillable == 3) {
-                            $('.retryError').show();
-                        }
-                    }
-                }
-            })
-        }).catch(function(){
-            $('.retryError').show();
-        }).finally(function () {
-            buttonUnload($("#btnSubmit"));
-        })                            
-    })
-   
 
+        try {
+            buttonLoad($("#btnSubmit"));
+            let resp = await fetch('api/requesthelp', {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (resp.ok) {
+                let respData = await resp.json()                
+                if (respData.hasContent == true & respData.isSuccessful == true) {
+                    if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6) {
+                        window.location.href = "/requesthelp/success";
+                    } else if (respData.content.fulfillable == 1 || respData.content.fulfillable == 2 || respData.content.fulfillable == 3) {
+                        throw 'Request was unfulliable by either error, invalid postcode or generic unfulliable';
+                    }
+                } else {
+                    throw 'error occured from within the request service';
+                }
+            } else {
+                throw 'error calling the request service'
+            }
+        } catch(e) {
+            $('.retryError').show();
+            console.error(e);
+        } finally {
+            buttonUnload($("#btnSubmit"));
+        }
+
+    });
 }
 
 
 $.fn.isInViewport = function () {
-    var elementTop = $(this).offset().top;
-    var elementBottom = elementTop + $(this).outerHeight();
+    let elementTop = $(this).offset().top;
+    let elementBottom = elementTop + $(this).outerHeight();
 
-    var viewportTop = $(window).scrollTop();
-    var viewportBottom = viewportTop + $(window).height();
+    let viewportTop = $(window).scrollTop();
+    let viewportBottom = viewportTop + $(window).height();
 
     return elementBottom > viewportTop && elementTop < viewportBottom;
 };

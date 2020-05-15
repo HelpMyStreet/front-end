@@ -1,47 +1,45 @@
-﻿export var requestStage = new Object;
-requestStage.selectedActivity = { val: null, errorSpan: "e-activity"};
-requestStage.selectedTime = { val: null, id:null,  errorSpan: "e-time-frame" };
-requestStage.selectedFor = { val: null, errorSpan: "e-help-for" };
-requestStage.selectedHealthWellBeing = { val: null, errorSpan: "e-critcal" };
-requestStage.additonalHelpDetail = { val: null, errorSpan: "e-additional-help" };
-requestStage.agreeToTerms = {
-    privacy: false,
-    terms: false,
-};
+﻿export var requestStage = {
+    selectedActivity:{ val: null, errorSpan: "e-activity" },
+    selectedTime: { val: null, id: null, errorSpan: "e-time-frame" },
+    selectedFor: { val: null, errorSpan: "e-help-for" },
+    selectedHealthWellBeing: { val: null, errorSpan: "e-critcal" },
+    additonalHelpDetail: { val: null, errorSpan: "e-additional-help" },
+    agreeToTerms: {
+        privacy: false,
+        terms: false,
+    },
+    validate:function () {
+        $('.error').hide();
+        let valid = true;
+        if (!requestStage.selectedActivity.val) {
+            $('#' + requestStage.selectedActivity.errorSpan).show().text("Please select at least one task type");
+            valid = false;
+        } else if (requestStage.selectedActivity.val == "Other" && (requestStage.additonalHelpDetail.val == "" || !requestStage.additonalHelpDetail.val)) {
+            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please enter some additional details");
+            valid = false;
+        }
 
-requestStage.validate = function () {
+        if (requestStage.additonalHelpDetail.val && requestStage.additonalHelpDetail.val.length >= 1000) {
+            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Sorry, we can only accept up to 1000 characters");
+        }
 
-    $('.error').hide();
-    var valid = true;
-    if (!requestStage.selectedActivity.val) {
-        $('#' + requestStage.selectedActivity.errorSpan).show().text("Please select at least one task type");
-        valid = false;
-    } else if (requestStage.selectedActivity.val == "Other" && (requestStage.additonalHelpDetail.val == "" || !requestStage.additonalHelpDetail.val)) {      
-        $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please enter some additional details");
-        valid = false;
-    }
-
-    if (requestStage.additonalHelpDetail.val && requestStage.additonalHelpDetail.val.length >= 1000 ) {
-        $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Sorry, we can only accept up to 1000 characters");
-    }
-
-    if (!requestStage.selectedTime.val) {
-        $('#' + requestStage.selectedTime.errorSpan).show().text("Please tell us when you need this to be done by");
-        valid = false;
-    }
-    if (!requestStage.selectedFor.val) {
-        $('#' + requestStage.selectedFor.errorSpan).show().text("Please select from one of the available options");
-        valid = false;
-    }
-    if (!requestStage.selectedHealthWellBeing.val) {
-        $('#' + requestStage.selectedHealthWellBeing.errorSpan).show().text("Please select from one of the available options");
-        valid = false;        
-    }
-
-    if (!validatePrivacyAndTerms())
+        if (!requestStage.selectedTime.val) {
+            $('#' + requestStage.selectedTime.errorSpan).show().text("Please tell us when you need this to be done by");
+            valid = false;
+        }
+        if (!requestStage.selectedFor.val) {
+            $('#' + requestStage.selectedFor.errorSpan).show().text("Please select from one of the available options");
+            valid = false;
+        }
+        if (!requestStage.selectedHealthWellBeing.val) {
+            $('#' + requestStage.selectedHealthWellBeing.errorSpan).show().text("Please select from one of the available options");
+            valid = false;
+        }
+        if (!validatePrivacyAndTerms())
             valid = false;
 
-    return valid;
+        return valid;
+    }
 }
 
 export function intialiseRequestStage() {
@@ -53,7 +51,7 @@ export function intialiseRequestStage() {
 
 var intialiseRequestTiles = function () {
     $('.tiles__tile').click(function () {
-        var type = $(this).attr("data-type");
+        let type = $(this).attr("data-type");
         switch (type) {
             case "activities":
                 handleActivity($(this));    
@@ -76,8 +74,8 @@ var handleRequestFor = function (el) {
 }
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
-    var allowCustomEntry = el.attr("data-allowcustom");
-    var selectedValue = el.attr("data-val");
+    let allowCustomEntry = el.attr("data-allowcustom");
+    let selectedValue = el.attr("data-val");
     requestStage.selectedTime.val = selectedValue
     requestStage.selectedTime.id = el.attr("id");
     if (allowCustomEntry == "True") {
@@ -97,7 +95,7 @@ var handleActivity = function (el) {
 }
 var intialiseHealthWellBeingCheckbox = function () {
     $('input[name="volunteer_medical_condition"]').change(function (el) {
-        var selected = $('input[name=volunteer_medical_condition]:checked');
+        let selected = $('input[name=volunteer_medical_condition]:checked');
         $('input[name=volunteer_medical_condition]').parent().removeClass("selected");
         selected.parent().addClass("selected");
         requestStage.selectedHealthWellBeing.val = selected.val();       
@@ -122,7 +120,7 @@ function validatePrivacyAndTerms() {
     $('#e-terms-privacy').hide();
     let privacy = $("input[name='privacy_notice']").is(":checked");
     let terms = $("input[name='terms_and_conditions']").is(":checked");
-    var errorText = "";
+    let errorText = "";
     privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
     privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
     privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";

@@ -1,56 +1,54 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validatePostCode } from "../shared/validator";
 
-export var detailStage = new Object();
-detailStage.onBehalf = false
-detailStage.consentForContact = { val: false, errorSpan: "e-consentForContact" };
-detailStage.yourDetails = {
-    firstname: { val: null, errorSpan: "e-firstname_your"},
-    lastname: { val: null, errorSpan: "e-lastname_your" },
-    mobilenumber: { val: null, errorSpan: "e-mobile_number_your" },
-    altnumber: { val: null, errorSpan: "e-alt_number_your" },
-    email: { val: null, errorSpan: "e-email_your" },
-    address: {
-        addressLine1: { val: null, errorSpan: "e-addressline1_your" },
-        addressLine2: { val: null, errorSpan: "e-addressline2_your" },
-        locality: { val: null, errorSpan: "e-city_your" },
-        county: { val: null, errorSpan: "e-county_your" },
-        postcode: { val: null, errorSpan: "e-postcode_your" },
-    }
-}
-detailStage.theirDetails = {
-    firstname: { val: null, errorSpan: "e-firstname_their" },
-    lastname: { val: null, errorSpan: "e-lastname_their" },
-    mobilenumber: { val: null, errorSpan: "e-mobile_number_their" },
-    altnumber: { val: null, errorSpan: "e-alt_number_their" },
-    email: { val: null, errorSpan: "e-email_their" },
-    address: {
-        addressLine1: { val: null, errorSpan: "e-addressline1_their" },
-        addressLine2: { val: null, errorSpan: "e-addressline2_their" },
-        locality: { val: null, errorSpan: "e-city_their" },
-        county: { val: null, errorSpan: "e-county_their" },
-        postcode: { val: null, errorSpan: "e-postcode_their" },
-    }
-}
+export var detailStage = {
+    onBehalf: false,
+    consentForContact: { val: false, errorSpan: "e-consentForContact" },
+    yourDetails: {
+        firstname: { val: null, errorSpan: "e-firstname_your" },
+        lastname: { val: null, errorSpan: "e-lastname_your" },
+        mobilenumber: { val: null, errorSpan: "e-mobile_number_your" },
+        altnumber: { val: null, errorSpan: "e-alt_number_your" },
+        email: { val: null, errorSpan: "e-email_your" },
+        address: {
+            addressLine1: { val: null, errorSpan: "e-addressline1_your" },
+            addressLine2: { val: null, errorSpan: "e-addressline2_your" },
+            locality: { val: null, errorSpan: "e-city_your" },
+            county: { val: null, errorSpan: "e-county_your" },
+            postcode: { val: null, errorSpan: "e-postcode_your" },
+        }
+    },
+    theirDetails: {
+        firstname: { val: null, errorSpan: "e-firstname_their" },
+        lastname: { val: null, errorSpan: "e-lastname_their" },
+        mobilenumber: { val: null, errorSpan: "e-mobile_number_their" },
+        altnumber: { val: null, errorSpan: "e-alt_number_their" },
+        email: { val: null, errorSpan: "e-email_their" },
+        address: {
+            addressLine1: { val: null, errorSpan: "e-addressline1_their" },
+            addressLine2: { val: null, errorSpan: "e-addressline2_their" },
+            locality: { val: null, errorSpan: "e-city_their" },
+            county: { val: null, errorSpan: "e-county_their" },
+            postcode: { val: null, errorSpan: "e-postcode_their" },
+        }
+    },
 
-
-detailStage.validate = async function (requestFor) {
-    var onBehalf = requestFor.val == "someone-else" ? true : false;
-    $('.error').hide();
-    var valid = await validateYourDetails();
-    if (detailStage.consentForContact.val == false) {
-        $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
-        valid = false;
-    }
-    if (onBehalf == true) {
-        if (await validateTheirDetails() == false) {
+    validate: async function (requestFor) {
+        let onBehalf = requestFor.val == "someone-else" ? true : false;
+        $('.error').hide();
+        let valid = await validateYourDetails();
+        if (detailStage.consentForContact.val == false) {
+            $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
             valid = false;
         }
+        if (onBehalf == true) {
+            if (await validateTheirDetails() == false) {
+                valid = false;
+            }
+        }
+        return valid;
     }
-    return valid;
-
-}
-
+ }
 
 export function initaliseDetailStage(requestFor) {
     detailStage.onBehalf = requestFor.val == "someone-else" ? true : false;
@@ -143,7 +141,7 @@ var initaliseAddressFinder = function (postfix, obj) {
                     $("#address_selector_" + postfix).slideDown();
                     $("select[name=address_selector_" + postfix + "]").on("change", function () {
                         const id = $(this).children("option:selected").val();
-                        var address = content.addressDetails[id];
+                        let address = content.addressDetails[id];
                         obj.address.addressLine1.val = address.addressLine1;                 
                         obj.address.addressLine2.val = address.addressLine2;
                         obj.address.locality.val = address.locality;
@@ -173,7 +171,7 @@ var intialiseConsentForContact = function () {
 
 
 var validatePersonalDetails = function (obj) {
-    var valid = true;
+    let valid = true;
     if (!obj.firstname.val) {
         $('#' + obj.firstname.errorSpan).show().text("Please enter a first name");
         valid = false;
@@ -199,7 +197,7 @@ var validatePersonalDetails = function (obj) {
 }
 
 var validateAddress = async function (obj, expanderPostfix) {
-    var valid = true;
+    let valid = true;
     if (!obj.address.addressLine1.val) {
         $('#' + obj.address.addressLine1.errorSpan).show().text("Please enter a valid first line of your address");
         $("#expander_" + expanderPostfix).slideDown();
@@ -218,7 +216,7 @@ var validateAddress = async function (obj, expanderPostfix) {
     } else {
         try {
             buttonLoad($('#btnNext'))
-            var validPostcode = await validatePostCode(obj.address.postcode.val)
+            let validPostcode = await validatePostCode(obj.address.postcode.val)
             if (!validPostcode) {
                 valid = false;
                 $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
@@ -236,7 +234,7 @@ var validateAddress = async function (obj, expanderPostfix) {
 }
 
 var validateYourDetails = async function () {
-    var valid = true;
+    let valid = true;
 
     if (!validatePersonalDetails(detailStage.yourDetails))
         valid = false;
@@ -252,7 +250,7 @@ var validateYourDetails = async function () {
 }
 
 var validateTheirDetails = async function () {
-    var valid = true;
+    let valid = true;
     if (!validatePersonalDetails(detailStage.theirDetails))
         valid = false;
 
@@ -264,7 +262,7 @@ var validateTheirDetails = async function () {
 }
 
 var validEmail = function (email) {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 

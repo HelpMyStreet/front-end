@@ -1,11 +1,11 @@
 ﻿
-export var reviewStage = new Object();
-reviewStage.communicationNeeds = { val: null, errorSpan: "e-communication-needs" };
-reviewStage.helperAdditionalDetails = { val: null, errorSpan: "e-helper-additional-details" };
-
-reviewStage.validate = function () {
-    return true;
-}
+export var reviewStage = {
+    communicationNeeds: { val: null, errorSpan: "e-communication-needs" },
+    helperAdditionalDetails: { val: null, errorSpan: "e-helper-additional-details" },
+    validate: function () {
+        return true;
+    }
+};
 
 
 export function intialiseReviewStage(obj) {    
@@ -34,7 +34,7 @@ var loadDescripton = function (request) {
     }    
     $('#review-critical-request').text(request.selectedHealthWellBeing.val == true ? "Yes" : "No");
     if (request.selectedTime.id == "time_5") {
-        var plural = "s"
+        let plural = "s"
         if (request.selectedTime.val == 1) {
             plural = "";
         }
