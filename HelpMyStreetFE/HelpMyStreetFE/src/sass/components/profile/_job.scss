@@ -1,0 +1,10 @@
+@import "../../mixins/effects";
+
+.job {
+  @include shadow-xs;
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid $gray-8;
+  border-radius: 5px;
+  margin: 10px 0;
+}
