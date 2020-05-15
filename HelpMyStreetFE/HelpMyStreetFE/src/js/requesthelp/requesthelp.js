@@ -152,7 +152,7 @@ var intialiseSubmit = function () {
             JobRequest: jobRequest
         };
 
-        $('.retryMessage').hide();
+        $('.retryError').hide();
         buttonLoad($("#btnSubmit"));
         fetch('api/requesthelp', {                        
             method: 'post',
@@ -163,16 +163,20 @@ var intialiseSubmit = function () {
         }).then(function (response) {
             response.json().then(function (data) {
                 console.log(data);
-                if (data.hasContent == true & data.isSuccessful == true) {
-                    if (data.content.fulfillable == 4 || data.content.fulfillable == 5 || data.content.fulfillable == 6) {
-                        window.location.href = "/requesthelp/success";
-                    } else if (data.content.fulfillable == 1 || data.content.fulfillable == 2 || data.content.fulfillable == 3) {
-                        $('.retryMessage').show();
+                if (data.status && data.status == 500) {
+                    $('.retryError').show();
+                } else {
+                    if (data.hasContent == true & data.isSuccessful == true) {
+                        if (data.content.fulfillable == 4 || data.content.fulfillable == 5 || data.content.fulfillable == 6) {
+                            window.location.href = "/requesthelp/success";
+                        } else if (data.content.fulfillable == 1 || data.content.fulfillable == 2 || data.content.fulfillable == 3) {
+                            $('.retryError').show();
+                        }
                     }
                 }
             })
         }).catch(function(){
-
+            $('.retryError').show();
         }).finally(function () {
             buttonUnload($("#btnSubmit"));
         })                            

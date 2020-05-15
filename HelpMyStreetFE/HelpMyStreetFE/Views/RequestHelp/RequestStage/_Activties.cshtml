@@ -4,6 +4,8 @@
     var activties = new List<RequestActivityViewModel>
 {
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping,FriendlyName ="Shopping", Description = "Picking up essential groceries", ColourCode = "blue", Icon = "shopping.svg"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ,FriendlyName ="Face Covering", Description = "Providing a washable and reusable fabric face covering", ColourCode = "dark-blue", Icon = "face-covering.svg", IconClass = "icon-size-sm"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn, FriendlyName ="Check in", Description = "Check that someone is OK", ColourCode = "light-purple", Icon = "check-in.svg"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, FriendlyName ="Prescriptions",Description = "Collecting from a local pharmacy", ColourCode = "blue", Icon = "prescriptions.svg"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Errands,FriendlyName ="Errands", Description = "Essential local errands (e.g. posting mail)", ColourCode = "blue", Icon = "Errands.svg"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking,FriendlyName ="Dog Walking", Description = "Walking a calm dog", ColourCode = "dark-blue", Icon = "dog-walking.svg"},
@@ -11,8 +13,8 @@
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly,FriendlyName ="Friendly Chat", Description = "A freindly chat on the phone", ColourCode = "light-purple", Icon = "friendlychat.svg"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious,FriendlyName ="Supportive Chat", Description = "Someone to talk through some challenges over the phone", ColourCode = "light-purple", Icon = "supportivechat.svg"},
         new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport,FriendlyName ="Homework", Description = "Support for children being homeschooled", ColourCode = "dark-blue", Icon = "homework.svg"},
-        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn, FriendlyName ="Check in", Description = "Check that someone is OK", ColourCode = "light-purple", Icon = "check-in.svg"},
-        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other, FriendlyName = "Something Else", ColourCode = "dark-blue"},
+        
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other, FriendlyName = "Something Else", Description= "'Please tell us more below", ColourCode = "dark-blue"},
     };
 }
 
@@ -25,7 +27,7 @@
                         <div class="tiles__tile__content ">
                             @if (!string.IsNullOrEmpty(activity.Icon))
                             {
-                                <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Icon" /> </div>
+                                <div class="tiles__tile__content__icon"><img class="@activity.IconClass" src="~/img/icons/@activity.Icon" /> </div>
                             }
                             else
                             {

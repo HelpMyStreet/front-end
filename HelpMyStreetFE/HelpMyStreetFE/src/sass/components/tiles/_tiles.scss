@@ -85,21 +85,19 @@
 
                 &__description,
                 &__header {
-                    margin-bottom: 0.3rem;                    
+                    margin-bottom: 0.3rem;
                 }
 
                 &__header {
                     font-weight: 600;
-                    font-size:1.2rem;
+                    font-size: 1.2rem;
                 }
 
-                &__description{
-                    div{
-                        line-height:1.8rem;
+                &__description {
+                    div {
+                        line-height: 1.8rem;
                     }
                 }
-
-                
             }
 
             &__header {
@@ -128,6 +126,10 @@
                     img {
                         vertical-align: middle;
                     }
+                }
+
+                .icon-size-sm{
+                    width:45px;
                 }
             }
 
