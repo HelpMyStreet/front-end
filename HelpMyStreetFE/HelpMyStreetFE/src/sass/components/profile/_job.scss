@@ -7,4 +7,75 @@
   border: 1px solid $gray-8;
   border-radius: 5px;
   margin: 10px 0;
+  padding: 5px;
+  overflow: hidden;
+
+  &__header {
+    height: 50px;
+    margin: -5px -5px 5px;
+    background-color: rgba(30, 145, 214, 0.5);
+
+    &--critical {
+      background-color: rgba(255, 143, 18, 0.5);
+    }
+
+    @media (min-width: $med-screen) {
+      display: none;
+    }
+  }
+
+  &__info {
+    min-height: 100px;
+  }
+
+  &__footer {
+    text-align: center;
+    position: relative;
+
+    @media (min-width: $med-screen) {
+      text-align: right;
+    }
+
+    a {
+      &.open {
+        display: inline;
+      }
+
+      &.close {
+        display: none;
+      }
+
+      &.disabled {
+        color: grey;
+
+        &:hover {
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  &__detail {
+    display: none;
+
+    hr {
+      border: none;
+      border-top: 1px solid $gray-8;
+      width: 75%;
+    }
+  }
+
+  &.open {
+    .job__footer {
+      a {
+        &.open {
+          display: none;
+        }
+
+        &.close {
+          display: inline;
+        }
+      }
+    }
+  }
 }

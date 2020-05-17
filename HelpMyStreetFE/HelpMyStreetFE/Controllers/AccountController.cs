@@ -72,7 +72,7 @@ namespace HelpMyStreetFE.Controllers
             var userDetails = _userService.GetUserDetails(user);
 
             //Assume the registration page has been fully completed
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = GetAccountViewModel<UserDetails>(user);
 
             viewModel.CurrentPage = MenuPage.UserDetails;
             viewModel.PageModel = userDetails;
@@ -82,7 +82,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ComingSoon()
         {
-            AccountViewModel viewModel = GetAccountViewModel(await GetCurrentUser());
+            var viewModel = GetAccountViewModel<dynamic>(await GetCurrentUser());
             viewModel.Notifications = new List<NotificationModel>();
             viewModel.CurrentPage = MenuPage.ComingSoon;
             return View("Index", viewModel);
@@ -92,7 +92,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Streets()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel(currentUser);
+            var viewModel = GetAccountViewModel<StreetsViewModel>(currentUser);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -138,9 +138,14 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> OpenRequests()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel(currentUser);
+            var viewModel = GetAccountViewModel<List<Job>>(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-            viewModel.PageModel = new List<string>();
+            viewModel.PageModel = new List<Job>
+            {
+                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = false },
+                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+            };
 
             return View("Index", viewModel);
         }
@@ -149,9 +154,14 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> AcceptedRequests()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel(currentUser);
+            var viewModel = GetAccountViewModel<List<Job>>(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
-            viewModel.PageModel = new List<string>();
+            viewModel.PageModel = new List<Job>
+            {
+                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = false },
+                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+            };
 
             return View("Index", viewModel);
         }
@@ -172,7 +182,7 @@ namespace HelpMyStreetFE.Controllers
              return user;
         }
 
-        private AccountViewModel GetAccountViewModel(User user)
+        private AccountViewModel GetAccountViewModel<TPageModel>(User user)
         {
             var viewModel = new AccountViewModel();
 
