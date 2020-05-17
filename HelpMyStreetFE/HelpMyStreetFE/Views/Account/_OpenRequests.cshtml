@@ -1,4 +1,11 @@
-﻿@model List<string>
+﻿@using HelpMyStreet.Utils.Models
+@using HelpMyStreetFE.Models.Account
+
+@model AccountViewModel
+
+@{
+    var Jobs = (List<Job>)Model.PageModel;
+}
 
 <div class="verification-panel">
     <div class="user-profile profile-panel p-md">
@@ -8,7 +15,7 @@
         </header>
 
         <div class="profile">
-            @if (Model.Count == 0)
+            @if (Model.PageModel.Count == 0)
             {
                 <div class="profile__empty">
                     <p class="profile__empty__title">All clear!</p>
@@ -19,6 +26,10 @@
                     </p>
                     <p class="profile__empty__title">Thanks</p>
                 </div>
+            }
+            else
+            {
+                @Html.DisplayFor(x => Jobs, new { UserIsVerified = true });
             }
         </div>
     </div>
