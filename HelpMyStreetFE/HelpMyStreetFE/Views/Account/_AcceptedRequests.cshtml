@@ -1,4 +1,11 @@
-﻿@model HelpMyStreetFE.Models.Account.AccountViewModel
+﻿@using HelpMyStreet.Utils.Models
+@using HelpMyStreetFE.Models.Account
+
+@model AccountViewModel
+
+@{
+    var Jobs = (List<Job>)Model.PageModel;
+}
 
 ﻿<div class="verification-panel">
     <div class="user-profile profile-panel p-md">
@@ -24,6 +31,10 @@
                         </p>
                         <p class="profile__empty__title">Visit the <a href="/account/openrequests">Open Requests</a> tab now to look for help that’s needed in your area</p>
                     </div>
+                }
+                else
+                {
+                    @Html.DisplayFor(x => Jobs, new { UserIsVerified = true });
                 }
             }
             else

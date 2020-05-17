@@ -4577,12 +4577,48 @@ function initialiseMyStreet() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _my_streets__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./my-streets */ "./js/profile/my-streets.js");
 /* harmony import */ var _verification__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./verification */ "./js/profile/verification.js");
+/* harmony import */ var _requests__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./requests */ "./js/profile/requests.js");
+
 
 
 $(document).ready(function () {
   Object(_my_streets__WEBPACK_IMPORTED_MODULE_0__["initialiseMyStreet"])();
   Object(_verification__WEBPACK_IMPORTED_MODULE_1__["initialiseVerification"])();
+  Object(_requests__WEBPACK_IMPORTED_MODULE_2__["initialiseRequests"])();
 });
+
+/***/ }),
+
+/***/ "./js/profile/requests.js":
+/*!********************************!*\
+  !*** ./js/profile/requests.js ***!
+  \********************************/
+/*! exports provided: initialiseRequests */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialiseRequests", function() { return initialiseRequests; });
+function initialiseRequests() {
+  $('.job a.open').each(function (_, a) {
+    var el = $(a);
+    var guid = el.attr('data-guid');
+    el.on('click', function (e) {
+      e.preventDefault();
+      $("#".concat(guid)).addClass('open');
+      $("#".concat(guid, " .job__detail")).slideToggle();
+    });
+  });
+  $('.job a.close').each(function (_, a) {
+    var el = $(a);
+    var guid = el.attr('data-guid');
+    el.on('click', function (e) {
+      e.preventDefault();
+      $("#".concat(guid)).removeClass('open');
+      $("#".concat(guid, " .job__detail")).slideToggle();
+    });
+  });
+}
 
 /***/ }),
 
