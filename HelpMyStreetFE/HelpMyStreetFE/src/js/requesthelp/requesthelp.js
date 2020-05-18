@@ -128,6 +128,8 @@ function _moveTab(currentTab, nextTab) {
 
 var intialiseSubmit = function () {
     $('.btnSubmit').click(async function () {
+        reviewStage.getLatestValues();
+
         let requestor = {
             firstname: detailStage.yourDetails.firstname.val,
             lastname: detailStage.yourDetails.lastname.val,
@@ -176,6 +178,7 @@ var intialiseSubmit = function () {
             HelpRequest: helpRequest,
             JobRequest: jobRequest
         };
+
 
         $('.retryError').hide();
 

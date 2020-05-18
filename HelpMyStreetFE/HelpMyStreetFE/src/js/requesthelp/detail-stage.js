@@ -33,8 +33,21 @@ export var detailStage = {
         }
     },
 
+    getLatestValues: function (onBehalf) {
+        if (onBehalf) {
+            getPersonDetails("your", this.yourDetails, true);
+            getPersonDetails("their", this.theirDetails, false);            
+        } else {
+            getPersonDetails("your", this.yourDetails, true);
+        }
+
+        detailStage.consentForContact = $('input[name="consent_for_contact"]').is(":checked");    
+    },
+
+
     validate: async function (requestFor) {
         let onBehalf = requestFor.val == "someone-else" ? true : false;
+        this.getLatestValues(onBehalf);
         $('.error').hide();
         let valid = await validateYourDetails(onBehalf);
         if (detailStage.consentForContact.val == false) {
@@ -52,19 +65,15 @@ export var detailStage = {
 
 export function initaliseDetailStage(requestFor) {
     detailStage.onBehalf = requestFor.val == "someone-else" ? true : false;
-    $('#their-details').hide()
-    intialiseConsentForContact();
+    $('#their-details').hide()    
     if (detailStage.onBehalf == true) {
         $('#their-details').show();
         initaliseAddressFinder("their", detailStage.theirDetails, false);
         initaliseAddressFinder("your", detailStage.yourDetails, true);
-        HideorShowFindAddress(true, "your")
-        intialiseFormFields("their", detailStage.theirDetails);
-        intialiseFormFields("your", detailStage.yourDetails);        
+        HideorShowFindAddress(true, "your")     
     } else {
         HideorShowFindAddress(false, "your")
         initaliseAddressFinder("your", detailStage.yourDetails, false);
-        intialiseFormFields("your", detailStage.yourDetails); 
     } 
 }
 
@@ -87,57 +96,37 @@ var HideorShowFindAddress = function(hide, postfix){
 
 }
 
-var intialiseFormFields = function (postfix, obj) {    
-    $('input[name="first_name_' + postfix + '"]').blur(function () {
-        obj.firstname.val = $(this).val();
-    });
-    
-    $('input[name="last_name_' + postfix + '"]').blur(function () {
-        obj.lastname.val = $(this).val();
-    });
-    
-    $('input[name="mobile_number_' + postfix + '"]').blur(function () {
-        obj.mobilenumber.val = $(this).val();
-    });
-    
-    $('input[name="alt_number_' + postfix + '"]').blur(function () {
-        obj.altnumber.val = $(this).val();
-    });
-    
-    $('input[name="email_' + postfix + '"]').blur(function () {
-        obj.email.val = $(this).val();
-    });
+var getPersonDetails = function (postfix, obj, postcodeOnly) {    
 
+    let GetLatestAddressData = function (postfix, obj, postcodeOnly) {
+        if (postcodeOnly) {
+            obj.address.postcode.val = $('input[name="postcode_search_' + postfix + '"]').val();
+        } else {
+            obj.address.addressLine1.val = $('input[name="address_line_1_' + postfix + '"]').val();
+            obj.address.addressLine2.val = $('input[name="address_line_2_' + postfix + '"]').val();
+            obj.address.locality.val = $('input[name="city_' + postfix + '"]').val();
+            obj.address.county.val = $('input[name="county_' + postfix + '"]').val();
+            obj.address.postcode.val = $('input[name="postcode_' + postfix + '"]').val();
+        }
+    }
+
+    obj.firstname.val = $('input[name="first_name_' + postfix + '"]').val();            
+    obj.lastname.val = $('input[name="last_name_' + postfix + '"]').val();            
+    obj.mobilenumber.val = $('input[name="mobile_number_' + postfix + '"]').val();             
+    obj.altnumber.val = $('input[name="alt_number_' + postfix + '"]').val();            
+    obj.email.val =  $('input[name="email_' + postfix + '"]').val();
+
+    GetLatestAddressData(postfix, obj, postcodeOnly)
 }
 
-var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {    
 
+
+
+var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {    
     if (bindPostcodeSearch) {
-        $('input[name="postcode_search_' + postfix + '"]').blur(function () {
-            obj.address.postcode.val = $(this).val();
-        });
         $("#expander_" + postfix).slideUp();
         $('#address_selector_' + postfix).hide();
-    } else {
-        $('input[name="address_line_1_' + postfix + '"]').blur(function () {
-            obj.address.addressLine1.val = $(this).val();
-        });
-        $('input[name="address_line_2_' + postfix + '"]').blur(function () {
-            obj.address.addressLine2.val = $(this).val();
-        });
-
-        $('input[name="city_' + postfix + '"]').blur(function () {
-            obj.address.locality.val = $(this).val();
-        });
-        $('input[name="county_' + postfix + '"]').blur(function () {
-            obj.address.county.val = $(this).val();
-        });
-
-        $('input[name="postcode_' + postfix + '"]').blur(function () {
-            obj.address.postcode.val = $(this).val();
-        });
-
-
+    } else {       
         $('#manual_address_' + postfix).click(function () {
             $("#expander_" + postfix).slideDown();
         })
@@ -197,11 +186,7 @@ var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
     }
 }
 
-var intialiseConsentForContact = function () {
-    $('input[name="consent_for_contact"]').change(function () {
-        detailStage.consentForContact = $(this).is(":checked");
-    })
-}
+
 
 
 var validatePersonalDetails = function (obj) {

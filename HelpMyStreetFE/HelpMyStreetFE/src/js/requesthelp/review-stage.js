@@ -2,6 +2,11 @@
 export var reviewStage = {
     communicationNeeds: { val: null, errorSpan: "e-communication-needs" },
     helperAdditionalDetails: { val: null, errorSpan: "e-helper-additional-details" },
+
+    getLatestValues: function () {          
+        this.communicationNeeds.val = $('textarea[name="communication-needs"]').val();                
+        this.helperAdditionalDetails.val = $('textarea[name="helper-additional-details"]').val();        
+    },
     validate: function () {
         return true;
     }
@@ -12,9 +17,7 @@ export function intialiseReviewStage(obj) {
     loadSelectedActivity(obj.request.selectedActivity.val);
     loadSelectedFor(obj.request.selectedFor.val);
     loadDescripton(obj.request)
-    loadPersonalDetails(obj.detail);
-    intialiseTextAreas();
-
+    loadPersonalDetails(obj.detail);   
 }
 
 var loadSelectedActivity = function (id) {    
@@ -73,17 +76,7 @@ var loadPersonalDetails = function (detail) {
 }
 
 
-var intialiseTextAreas = function () {
-    $('textarea[name="communication-needs"]').val('');
-    $('textarea[name="communication-needs"]').blur(function () {
-        reviewStage.communicationNeeds.val = $(this).val();
-    });
 
-    $('textarea[name="helper-additional-details"]').val('');
-    $('textarea[name="helper-additional-details"]').blur(function () {
-        reviewStage.helperAdditionalDetails.val = $(this).val();
-    });
-}
 
 
 export function onDirectToRequestClick(callback) {
