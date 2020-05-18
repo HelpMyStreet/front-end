@@ -34,7 +34,8 @@
         </div>
         <div class="input sm3">
             <label>@Model.LabelPrefix postcode</label>
-            <input name="postcode_search_@Model.NamePostfix" type="text" placeholder="e.g. NG1 1PS" />            
+            <input name="postcode_search_@Model.NamePostfix" type="text" placeholder="e.g. NG1 1PS" />
+            <span id="e-postcode_search_@Model.NamePostfix" class="error"></span>
         </div>
         <div class="input sm3 find-address">
             <button class="btn large border-blue blue fill" id="address_finder_@Model.NamePostfix">

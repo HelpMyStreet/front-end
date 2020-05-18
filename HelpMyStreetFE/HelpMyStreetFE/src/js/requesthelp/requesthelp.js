@@ -167,7 +167,7 @@ var intialiseSubmit = function () {
                     if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6 || respData.content.fulfillable == 2 ) {
                         window.location.href = "/requesthelp/success?fulfillable=" + respData.content.fulfillable + "&onBehalf=" + detailStage.onBehalf;
                     } else if (respData.content.fulfillable == 1 || respData.content.fulfillable == 3) {
-                        throw 'The Request for helphad an error, this could be due to an invalid postcodee';
+                        throw 'The Request for help had an error, this could be due to an invalid postcodee';
                     }
                 } else {
                     throw 'error occured from within the request service';

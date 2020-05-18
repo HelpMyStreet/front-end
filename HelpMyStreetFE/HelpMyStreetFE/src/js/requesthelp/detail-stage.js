@@ -36,7 +36,7 @@ export var detailStage = {
     validate: async function (requestFor) {
         let onBehalf = requestFor.val == "someone-else" ? true : false;
         $('.error').hide();
-        let valid = await validateYourDetails();
+        let valid = await validateYourDetails(onBehalf);
         if (detailStage.consentForContact.val == false) {
             $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
             valid = false;
@@ -56,17 +56,36 @@ export function initaliseDetailStage(requestFor) {
     intialiseConsentForContact();
     if (detailStage.onBehalf == true) {
         $('#their-details').show();
-        initaliseAddressFinder("their", detailStage.theirDetails);
-        initaliseAddressFinder("your", detailStage.yourDetails);
+        initaliseAddressFinder("their", detailStage.theirDetails, false);
+        initaliseAddressFinder("your", detailStage.yourDetails, true);
+        HideorShowFindAddress(true, "your")
         intialiseFormFields("their", detailStage.theirDetails);
         intialiseFormFields("your", detailStage.yourDetails);        
     } else {
-        initaliseAddressFinder("your", detailStage.yourDetails);
+        HideorShowFindAddress(false, "your")
+        initaliseAddressFinder("your", detailStage.yourDetails, false);
         intialiseFormFields("your", detailStage.yourDetails); 
     } 
 }
 
+var HideorShowFindAddress = function(hide, postfix){
+    if (hide) {
+        let inputClassforPostcodeSearch = $('input[name="postcode_search_' + postfix + '"]').parent();
+        inputClassforPostcodeSearch.removeClass("sm3");
+        inputClassforPostcodeSearch.addClass("sm6");
+        let inputClassforAddressFine = $('#address_finder_' + postfix + '').parent();
+        inputClassforAddressFine.addClass("dnone");
+    } else {
+        let inputClassforPostcodeSearch = $('input[name="postcode_search_' + postfix + '"]').parent();
+        inputClassforPostcodeSearch.addClass("sm3");
+        inputClassforPostcodeSearch.removeClass("sm6");
+        let inputClassforAddressFine = $('#address_finder_' + postfix + '').parent();
+        inputClassforAddressFine.removeClass("dnone");
+    }
 
+
+
+}
 
 var intialiseFormFields = function (postfix, obj) {
     $('input[name="first_name_' + postfix + '"]').blur(function () {
@@ -87,7 +106,7 @@ var intialiseFormFields = function (postfix, obj) {
 
 }
 
-var initaliseAddressFinder = function (postfix, obj) {
+var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
 
     $('input[name="address_line_1_' + postfix + '"]').blur(function () {
         obj.address.addressLine1.val = $(this).val();
@@ -101,10 +120,16 @@ var initaliseAddressFinder = function (postfix, obj) {
     $('input[name="county_' + postfix + '"]').blur(function () {
         obj.address.county.val = $(this).val();
     });
-    
-    $('input[name="postcode_' + postfix + '"]').blur(function () {
-        obj.address.postcode.val = $(this).val();
-    });
+
+    if (!bindPostcodeSearch) {
+        $('input[name="postcode_' + postfix + '"]').blur(function () {
+            obj.address.postcode.val = $(this).val();
+        });
+    } else {        
+        $('input[name="postcode_search_' + postfix + '"]').blur(function () {
+            obj.address.postcode.val = $(this).val();
+        });
+    }
 
     $('.manual-entry').click(function () {
         $("#expander_" + postfix).slideDown();
@@ -215,26 +240,22 @@ var validateAddress = async function (obj, expanderPostfix) {
         $("#expander_" + expanderPostfix).slideDown();
         valid = false;
     } else {
-        try {
-            buttonLoad($('#btnNext'))
-            let validPostcode = await validatePostCode(obj.address.postcode.val)
-            if (!validPostcode) {
-                valid = false;
-                $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
-                $("#expander_" + expanderPostfix).slideDown();
-            }
-        } catch  {
-            $('#' + obj.address.postcode.errorSpan).show().text("an error occured trying to validate your postcode, please try again.");
+        buttonLoad($('#btnNext'))
+        var postcodeValid = await validatePostCode(obj.address.postcode.val);
+        if (!postcodeValid) {
             valid = false;
-        } finally {
-            buttonUnload($('#btnNext'));
+            $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
+            $("#expander_" + expanderPostfix).slideDown();
         }
-
+        buttonUnload($('#btnNext'));
     }
     return valid;
 }
 
-var validateYourDetails = async function () {
+
+
+
+var validateYourDetails = async function (onBehalf) {
     let valid = true;
 
     if (!validatePersonalDetails(detailStage.yourDetails))
@@ -244,8 +265,17 @@ var validateYourDetails = async function () {
         $('#' + detailStage.yourDetails.email.errorSpan).show().text("Please enter a valid email address");
         valid = false;
     }
-    if (!await validateAddress(detailStage.yourDetails, "your"))
-        valid = false;
+
+    // if they have requested for somoene else, they dont need to find their address. they just need to enter a postcode
+    if (onBehalf == false) {
+        if (!await validateAddress(detailStage.yourDetails, "your"))
+            valid = false;
+    } else {
+        if (!await validatePostCode(detailStage.yourDetails.address.postcode.val)) {
+            valid = false;
+            $('#e-postcode_search_your').show().text("Please enter a valid UK postcode");
+        }
+    }
 
     return valid;
 }
