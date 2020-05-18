@@ -241,7 +241,7 @@ var validateAddress = async function (obj, expanderPostfix) {
         valid = false;
     } else {
         buttonLoad($('#btnNext'))
-        var postcodeValid = await _validatePostcode(obj.address.postcode.val);
+        var postcodeValid = await validatePostCode(obj.address.postcode.val);
         if (!postcodeValid) {
             valid = false;
             $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
@@ -254,18 +254,6 @@ var validateAddress = async function (obj, expanderPostfix) {
 
 
 
-var _validatePostcode = async function (postcode) {
-    let postcodeValid = true;
-    try {
-        let validPostcode = await validatePostCode(postcode)
-        if (!validPostcode) {
-            postcodeValid = false;
-        }
-    } catch  {
-        postcodeValid = false;
-    }
-    return postcodeValid;
-}
 
 var validateYourDetails = async function (onBehalf) {
     let valid = true;
@@ -283,7 +271,7 @@ var validateYourDetails = async function (onBehalf) {
         if (!await validateAddress(detailStage.yourDetails, "your"))
             valid = false;
     } else {
-        if (!await _validatePostcode(detailStage.yourDetails.address.postcode.val)) {
+        if (!await validatePostCode(detailStage.yourDetails.address.postcode.val)) {
             valid = false;
             $('#e-postcode_search_your').show().text("Please enter a valid UK postcode");
         }
