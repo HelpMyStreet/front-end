@@ -124,24 +124,32 @@
                     display: inline-block;
 
                     img {
-                        vertical-align: middle;
+                        vertical-align: middle;                        
                     }
                 }
 
-                .icon-size-sm{
-                    width:45px;
+                .icon-size-sm {
+                    width: 50px;
+                    margin-top: 18px;
+                    vertical-align: bottom;
+                }
+                .double-line-alignment{
+                    margin-top:22px;
                 }
             }
+        
 
 
 
-            &__description {
-                color: $black;
+        &__description {
+            color: $black;
+            width: 97%;
+            margin: auto;
 
-                &.left {
-                    text-align: left;
-                }
+            &.left {
+                text-align: left;
             }
         }
     }
+}
 }

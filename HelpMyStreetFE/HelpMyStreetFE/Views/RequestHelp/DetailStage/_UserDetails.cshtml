@@ -41,45 +41,48 @@
                 <span class="text">Find address</span>
                 <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching..."}' /></div>
             </button>
-            <a id="manual_address_@Model.NamePostfix" href="#" class="input__link manual-entry">Or enter <span class="lowercase">@Model.LabelPrefix</span> address manually</a>
+            <a id="manual_address_@Model.NamePostfix" class="input__link manual-entry">Or enter <span class="lowercase">@Model.LabelPrefix</span> address manually</a>
         </div>
 
     </div>
 
     <div class="row">
-        <div class="input sm8 dnone" id="address_selector_@Model.NamePostfix">
-            <label>Select address</label>
+        <div class="input sm6 dnone" id="address_selector_@Model.NamePostfix">
+            <label>Select address  <a class="input__link manual-entry edit-address">Edit <span class="lowercase">@Model.LabelPrefix</span> address</a></label>
             <select name="address_selector_@Model.NamePostfix">
             </select>
-        </div>
-        <div id="expander_@Model.NamePostfix" class="expander sm8">
-            <h5>Please enter <span class="lowercase">@Model.LabelPrefix</span> address</h5>
-            <div class="input">
-                <label>@Model.LabelPrefix address line 1</label>
-                <input name="address_line_1_@Model.NamePostfix" type="text" placeholder="e.g. 170 High Street" />
-                <span id="e-addressline1_@Model.NamePostfix" class="error"></span>
-            </div>
-            <div class="input">
-                <label>@Model.LabelPrefix address line 2</label>
-                <input name="address_line_2_@Model.NamePostfix" type="text" placeholder="e.g. Hockley" />
-                <span id="e-addressline2_@Model.NamePostfix" class="error"></span>
-            </div>
-            <div class="input">
-                <label>@Model.LabelPrefix town / city</label>
-                <input name="city_@Model.NamePostfix" type="text" placeholder="e.g. Nottingham" />
-                <span id="e-city_@Model.NamePostfix" class="error"></span>
-            </div>
-            <div class="input">
-                <label>@Model.LabelPrefix county</label>
-                <input name="county_@Model.NamePostfix" type="text" placeholder="e.g. Nottingham" />
-                <span id="e-county_@Model.NamePostfix" class="error"></span>
-            </div>
-            <div class="input">
-                <label>@Model.LabelPrefix postcode</label>
-                <input name="postcode_@Model.NamePostfix" type="text" placeholder="e.g. NG1 1PS" />
-                <span id="e-postcode_@Model.NamePostfix" class="error"></span>
-            </div>
-        </div>
 
-    </div>
+        </div>
+        </div>
+        <div class="row">
+            <div id="expander_@Model.NamePostfix" class="expander sm6">
+                <h5>Please enter <span class="lowercase">@Model.LabelPrefix</span> address</h5>
+                <div class="input">
+                    <label>@Model.LabelPrefix address line 1</label>
+                    <input name="address_line_1_@Model.NamePostfix" type="text" placeholder="e.g. 170 High Street" />
+                    <span id="e-addressline1_@Model.NamePostfix" class="error"></span>
+                </div>
+                <div class="input">
+                    <label>@Model.LabelPrefix address line 2</label>
+                    <input name="address_line_2_@Model.NamePostfix" type="text" placeholder="e.g. Hockley" />
+                    <span id="e-addressline2_@Model.NamePostfix" class="error"></span>
+                </div>
+                <div class="input">
+                    <label>@Model.LabelPrefix town / city</label>
+                    <input name="city_@Model.NamePostfix" type="text" placeholder="e.g. Nottingham" />
+                    <span id="e-city_@Model.NamePostfix" class="error"></span>
+                </div>
+                <div class="input">
+                    <label>@Model.LabelPrefix county</label>
+                    <input name="county_@Model.NamePostfix" type="text" placeholder="e.g. Nottingham" />
+                    <span id="e-county_@Model.NamePostfix" class="error"></span>
+                </div>
+                <div class="input">
+                    <label>@Model.LabelPrefix postcode</label>
+                    <input name="postcode_@Model.NamePostfix" type="text" placeholder="e.g. NG1 1PS" />
+                    <span id="e-postcode_@Model.NamePostfix" class="error"></span>
+                </div>
+            </div>
+        </div>
+    
 </div>
