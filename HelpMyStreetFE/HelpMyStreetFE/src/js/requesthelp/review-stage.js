@@ -51,8 +51,12 @@ var loadPersonalDetails = function (detail) {
     $('#review-your-name').text(detail.yourDetails.firstname.val + " " + detail.yourDetails.lastname.val);
 
     let address = ""
-    if (detail.yourDetails.addressLine1) {
+    if (detail.yourDetails.address.addressLine1.val) {
+        $($('#address-label_your')).text("Address:")
+        
         address = detail.yourDetails.address.addressLine1.val + ", " + detail.yourDetails.address.locality.val + ", ";
+    } else {
+        $($('#address-label_your')).text("Postcode: ")
     }
 
     $('#review-your-address').text(address +  detail.yourDetails.address.postcode.val)
