@@ -14,6 +14,7 @@ export function intialiseReviewStage(obj) {
     loadDescripton(obj.request)
     loadPersonalDetails(obj.detail);
     intialiseTextAreas();
+
 }
 
 var loadSelectedActivity = function (id) {    
@@ -23,7 +24,6 @@ var loadSelectedActivity = function (id) {
 var loadSelectedFor = function (id) {
     $('#selected-request-for').html($('#' + id).parent().html()).find("#" + id).removeClass("selected");
 }
-
 
 
 var loadDescripton = function (request) {
@@ -84,3 +84,18 @@ var intialiseTextAreas = function () {
         reviewStage.helperAdditionalDetails.val = $(this).val();
     });
 }
+
+
+export function onDirectToRequestClick(callback) {
+    return $('.to-request').click(function () {
+        callback();
+    });
+         
+}
+
+export function onDirectToDetailClick(callback) {
+    return $('.to-details').click(function () {
+        callback();
+    });
+}
+

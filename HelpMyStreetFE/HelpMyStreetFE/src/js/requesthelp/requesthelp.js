@@ -1,7 +1,10 @@
 ﻿import { intialiseRequestStage, requestStage } from "./request-stage";
 import { initaliseDetailStage, detailStage } from "./detail-stage";
-import { intialiseReviewStage, reviewStage } from "./review-stage";
+import { intialiseReviewStage, reviewStage, onDirectToRequestClick, onDirectToDetailClick } from "./review-stage";
 import { buttonLoad, buttonUnload } from "../shared/btn";
+
+
+
 
 $(() => {
     initaliseProgressButtons();
@@ -20,12 +23,11 @@ var initaliseProgressButtons = function () {
             btn.hide();
             $('.btnSubmit').show();
         } 
-
         
         $('.btnBack').show();
     }
     var changeProgressPrev = function (btn) {
-        let activeTab = $('.progress-bar').find('.is-active');
+        let activeTab = $('.progress-bar').find('.is-active');        
         activeTab.removeClass("is-active");
         let prevTab = activeTab.prev();
         prevTab.removeClass("is-complete");
@@ -47,17 +49,40 @@ var initaliseProgressButtons = function () {
             }
         });
     });
+
     $('.btnBack').click(function () {
+        goBack();
+    });  
+
+    onDirectToDetailClick(function () {
+        goBack();
+    })
+
+    onDirectToRequestClick(function () {
+        goBack();
+        goBack();
+    })
+
+    var goBack = function(){
         let activeTab = $('.progress-bar').find('.is-active');
         let currentTab = activeTab.attr("data-tab");
         let previousTab = activeTab.prev().attr("data-tab");
         _moveTab(currentTab, previousTab);
-        changeProgressPrev($(this));
-    });   
+        changeProgressPrev($('.btnBack'));
+    }
 }
+
+
+
+
+
+
+
+
 async function validateTab(currentTab){
     $('#hasErrors').hide();
     let valid = true;
+    console.log(currentTab);
 
     switch (currentTab) {
         case "request":
@@ -76,7 +101,11 @@ async function validateTab(currentTab){
                 requestHelp.detail = detailStage;
                 intialiseReviewStage(requestHelp);
                 intialiseSubmit();
-            }      
+            }
+            break;
+        default:
+            valid = true;
+            break;        
     }
 
     if (!valid) {
@@ -93,7 +122,6 @@ function _moveTab(currentTab, nextTab) {
         $([document.documentElement, document.body]).animate({
             scrollTop: ($(".progress-bar").offset().top - 50)
         }, 500);
-
     }
 }
 

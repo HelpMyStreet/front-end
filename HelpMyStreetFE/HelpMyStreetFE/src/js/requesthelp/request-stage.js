@@ -47,6 +47,10 @@ export function intialiseRequestStage() {
     intialiseHealthWellBeingCheckbox();
     intialiseAgreeToTerms();
     intialiseAdditonalDetail();
+
+    $('form').submit(function (e) {
+        e.preventDefault();
+    })
 }
 
 var intialiseRequestTiles = function () {

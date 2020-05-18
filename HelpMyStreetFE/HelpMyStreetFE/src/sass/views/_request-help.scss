@@ -4,6 +4,7 @@
 
 .request-help {
 
+    
     span,
     a {
         font-size: 1em;
@@ -12,6 +13,14 @@
     p {
         font-size: 1.2em;
     }
+
+    .to-details,
+    .to-request{
+        text-decoration:underline;
+        cursor:pointer;
+        float:right;
+    }
+
 
     h2 {
         text-align: center;

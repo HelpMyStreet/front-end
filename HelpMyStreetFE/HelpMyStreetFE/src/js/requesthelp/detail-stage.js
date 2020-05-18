@@ -87,121 +87,114 @@ var HideorShowFindAddress = function(hide, postfix){
 
 }
 
-var intialiseFormFields = function (postfix, obj) {
-    $('input[name="first_name_' + postfix + '"]').val('');
+var intialiseFormFields = function (postfix, obj) {    
     $('input[name="first_name_' + postfix + '"]').blur(function () {
         obj.firstname.val = $(this).val();
     });
-
-    $('input[name="last_name_' + postfix + '"]').val('');
+    
     $('input[name="last_name_' + postfix + '"]').blur(function () {
         obj.lastname.val = $(this).val();
     });
-
-    $('input[name="mobile_number_' + postfix + '"]').val('');
+    
     $('input[name="mobile_number_' + postfix + '"]').blur(function () {
         obj.mobilenumber.val = $(this).val();
     });
-
-    $('input[name="alt_number_' + postfix + '"]').val('');
+    
     $('input[name="alt_number_' + postfix + '"]').blur(function () {
         obj.altnumber.val = $(this).val();
     });
-
-    $('input[name="email_' + postfix + '"]').val('');
+    
     $('input[name="email_' + postfix + '"]').blur(function () {
         obj.email.val = $(this).val();
     });
 
 }
 
-var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
-    $('input[name="address_line_1_' + postfix + '"]').val('');
-    $('input[name="address_line_1_' + postfix + '"]').blur(function () {
-        obj.address.addressLine1.val = $(this).val();
-    });
-    $('input[name="address_line_2_' + postfix + '"]').val('');
-    $('input[name="address_line_2_' + postfix + '"]').blur(function () {
-        obj.address.addressLine2.val = $(this).val();
-    });
+var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {    
 
-    $('input[name="city_' + postfix + '"]').val('');
-    $('input[name="city_' + postfix + '"]').blur(function () {
-        obj.address.locality.val = $(this).val();
-    });
-    $('input[name="county_' + postfix + '"]').val('');
-    $('input[name="county_' + postfix + '"]').blur(function () {
-        obj.address.county.val = $(this).val();
-    });
-
-    if (!bindPostcodeSearch) {
-        $('input[name="postcode_' + postfix + '"]').val('');
-        $('input[name="postcode_' + postfix + '"]').blur(function () {
-            obj.address.postcode.val = $(this).val();
-        });
-    } else {        
-        $('input[name="postcode_search_' + postfix + '"]').val('');
+    if (bindPostcodeSearch) {
         $('input[name="postcode_search_' + postfix + '"]').blur(function () {
             obj.address.postcode.val = $(this).val();
         });
-    }
+        $("#expander_" + postfix).slideUp();
+        $('#address_selector_' + postfix).hide();
+    } else {
+        $('input[name="address_line_1_' + postfix + '"]').blur(function () {
+            obj.address.addressLine1.val = $(this).val();
+        });
+        $('input[name="address_line_2_' + postfix + '"]').blur(function () {
+            obj.address.addressLine2.val = $(this).val();
+        });
 
-    $('.manual-entry').click(function () {
-        $("#expander_" + postfix).slideDown();
-    })
+        $('input[name="city_' + postfix + '"]').blur(function () {
+            obj.address.locality.val = $(this).val();
+        });
+        $('input[name="county_' + postfix + '"]').blur(function () {
+            obj.address.county.val = $(this).val();
+        });
 
-    $("#address_finder_" + postfix).on("click", async function (evt) {
-        evt.preventDefault();
-        buttonLoad($(this));
-        $("#address_selector_" + postfix).unbind("change");
+        $('input[name="postcode_' + postfix + '"]').blur(function () {
+            obj.address.postcode.val = $(this).val();
+        });
 
-        const postcode = $("input[name=postcode_search_" + postfix + "]").val();
 
-        try {
-            const resp = await fetch(`/api/postcode/${postcode}`);
-            if (resp.ok) {
-                const { hasContent, isSuccessful, content } = await resp.json();
+        $('#manual_address_' + postfix).click(function () {
+            $("#expander_" + postfix).slideDown();
+        })
 
-                if (hasContent && isSuccessful) {
-                    $("select[name=address_selector_" + postfix + "]").html(
-                        content.addressDetails.reduce((acc, cur, i) => {
-                            const text = Object.keys(cur).reduce((tAcc, tCur) => {
-                                if (cur[tCur] != null) {
-                                    tAcc += tAcc === "" ? "" : ", ";
-                                    tAcc += `${cur[tCur]}`;
-                                }
+        $("#address_finder_" + postfix).on("click", async function (evt) {
+            evt.preventDefault();
+            buttonLoad($(this));
+            $("#address_selector_" + postfix).unbind("change");
 
-                                return tAcc;
-                            }, "");
+            const postcode = $("input[name=postcode_search_" + postfix + "]").val();
 
-                            acc += `<option value="${i}">${text}</option>`;
-                            return acc;
-                        }, '<option value="" selected disabled hidden>Choose here</option>')
-                    );
+            try {
+                const resp = await fetch(`/api/postcode/${postcode}`);
+                if (resp.ok) {
+                    const { hasContent, isSuccessful, content } = await resp.json();
 
-                    $("#address_selector_" + postfix).slideDown();
-                    $("select[name=address_selector_" + postfix + "]").on("change", function () {
-                        const id = $(this).children("option:selected").val();
-                        let address = content.addressDetails[id];
-                        obj.address.addressLine1.val = address.addressLine1;                 
-                        obj.address.addressLine2.val = address.addressLine2;
-                        obj.address.locality.val = address.locality;
-                        obj.address.postcode.val = address.postcode;
+                    if (hasContent && isSuccessful) {
+                        $("select[name=address_selector_" + postfix + "]").html(
+                            content.addressDetails.reduce((acc, cur, i) => {
+                                const text = Object.keys(cur).reduce((tAcc, tCur) => {
+                                    if (cur[tCur] != null) {
+                                        tAcc += tAcc === "" ? "" : ", ";
+                                        tAcc += `${cur[tCur]}`;
+                                    }
 
-                        $(this).parent().find(".edit-address").show();
-                        $("input[name=address_line_1_" + postfix + "]").val(obj.address.addressLine1.val);
-                        $("input[name=address_line_2_" + postfix + "]").val(obj.address.addressLine2.val);
-                        $("input[name=city_" + postfix + "]").val(obj.address.locality.val);
-                        $("input[name=postcode_" + postfix + "]").val(obj.address.postcode.val);
-                        //$("#expander_" + postfix).slideDown();                        
-                    });
+                                    return tAcc;
+                                }, "");
+
+                                acc += `<option value="${i}">${text}</option>`;
+                                return acc;
+                            }, '<option value="" selected disabled hidden>Choose here</option>')
+                        );
+
+                        $("#address_selector_" + postfix).slideDown();
+                        $("select[name=address_selector_" + postfix + "]").on("change", function () {
+                            const id = $(this).children("option:selected").val();
+                            let address = content.addressDetails[id];
+                            obj.address.addressLine1.val = address.addressLine1;
+                            obj.address.addressLine2.val = address.addressLine2;
+                            obj.address.locality.val = address.locality;
+                            obj.address.postcode.val = address.postcode;
+
+                            $(this).parent().find(".edit-address").show();
+                            $("input[name=address_line_1_" + postfix + "]").val(obj.address.addressLine1.val);
+                            $("input[name=address_line_2_" + postfix + "]").val(obj.address.addressLine2.val);
+                            $("input[name=city_" + postfix + "]").val(obj.address.locality.val);
+                            $("input[name=postcode_" + postfix + "]").val(obj.address.postcode.val);
+                            //$("#expander_" + postfix).slideDown();                        
+                        });
+                    }
                 }
+            } catch (ex) {
+                console.error(ex);
             }
-        } catch (ex) {
-            console.error(ex);
-        }
-        buttonUnload($(this));
-    });
+            buttonUnload($(this));
+        });
+    }
 }
 
 var intialiseConsentForContact = function () {
