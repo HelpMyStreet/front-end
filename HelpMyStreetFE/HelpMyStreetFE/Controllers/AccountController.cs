@@ -140,11 +140,33 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel<List<Job>>(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-            viewModel.PageModel = new List<Job>
+            
+            viewModel.PageModel = new List<JobSummary>
             {
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = false },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Shopping,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = false,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.CollectingPrescriptions,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Other,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
             };
 
             return View("Index", viewModel);
@@ -156,11 +178,32 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel<List<Job>>(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
-            viewModel.PageModel = new List<Job>
+            viewModel.PageModel = new List<JobSummary>
             {
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = false },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Shopping,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = false,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.CollectingPrescriptions,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Other,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
             };
 
             return View("Index", viewModel);
