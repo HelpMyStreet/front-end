@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models.Reponses;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace HelpMyStreetFE.Controllers {
         }
 
         [HttpPost]        
-        public async Task<ActionResult<LogRequestResponse>> RequestHelp([FromBody] RequestHelpViewModel model)
+        public async Task<ActionResult<BaseRequestHelpResponse<LogRequestResponse>>> RequestHelp([FromBody] RequestHelpViewModel model)
         {
             try
             {
