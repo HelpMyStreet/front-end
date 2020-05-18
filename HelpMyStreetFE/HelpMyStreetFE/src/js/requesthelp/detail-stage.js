@@ -41,7 +41,8 @@ export var detailStage = {
             getPersonDetails("your", this.yourDetails, true);
         }
 
-        detailStage.consentForContact = $('input[name="consent_for_contact"]').is(":checked");    
+        this.consentForContact.val = $('input[name="consent_for_contact"]').is(":checked");
+  
     },
 
 
@@ -50,8 +51,8 @@ export var detailStage = {
         this.getLatestValues(onBehalf);
         $('.error').hide();
         let valid = await validateYourDetails(onBehalf);
-        if (detailStage.consentForContact.val == false) {
-            $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
+        if (this.consentForContact.val == false) {
+            $('#' + this.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
             valid = false;
         }
         if (onBehalf == true) {

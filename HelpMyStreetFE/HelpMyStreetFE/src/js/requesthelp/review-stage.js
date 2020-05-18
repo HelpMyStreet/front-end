@@ -49,7 +49,13 @@ var loadDescripton = function (request) {
 
 var loadPersonalDetails = function (detail) {
     $('#review-your-name').text(detail.yourDetails.firstname.val + " " + detail.yourDetails.lastname.val);
-    $('#review-your-address').text(detail.yourDetails.address.addressLine1.val + ", " + detail.yourDetails.address.locality.val + ", " + detail.yourDetails.address.postcode.val)
+
+    let address = ""
+    if (detail.yourDetails.addressLine1) {
+        address = detail.yourDetails.address.addressLine1.val + ", " + detail.yourDetails.address.locality.val + ", ";
+    }
+
+    $('#review-your-address').text(address +  detail.yourDetails.address.postcode.val)
     $('#review-your-email').text(detail.yourDetails.email.val)
     $('#review-your-mobile').text(detail.yourDetails.mobilenumber.val ? detail.yourDetails.mobilenumber.val : "Not Provided")
     $('#review-your-alternate').text(detail.yourDetails.altnumber.val ? detail.yourDetails.altnumber.val : "Not Provided");
