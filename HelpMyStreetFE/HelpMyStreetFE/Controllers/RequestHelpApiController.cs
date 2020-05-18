@@ -27,11 +27,15 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                int userId = 0;
-                if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated){
-                    userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                }
-                return await _requestService.LogRequestAsync(model, userId);
+                if (!ModelState.IsValid)
+                    throw new Exception("Server side model validation failed");
+                
+                    int userId = 0;
+                    if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
+                    {
+                        userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    }
+                    return await _requestService.LogRequestAsync(model, userId);                
             }catch(Exception ex)
             {
                 _logger.LogError("an error occured requesting help", ex);
