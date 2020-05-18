@@ -15,7 +15,7 @@
             $('#' + requestStage.selectedActivity.errorSpan).show().text("Please select at least one task type");
             valid = false;
         } else if (requestStage.selectedActivity.val == "Other" && (requestStage.additonalHelpDetail.val == "" || !requestStage.additonalHelpDetail.val)) {
-            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please enter some additional details");
+            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please provide a brief description of the help you need");
             valid = false;
         }
 
@@ -68,8 +68,7 @@ var intialiseRequestTiles = function () {
 }
 var handleRequestFor = function (el) {
     $('*[data-type="request-for"]').removeClass("selected");
-    el.addClass("selected");
-  
+    el.addClass("selected");  
     requestStage.selectedFor.val = el.attr("id");    
 }
 var handleTimeFrame = function (el) {
@@ -93,7 +92,10 @@ var handleActivity = function (el) {
     el.addClass("selected");
     requestStage.selectedActivity.val = el.attr("id");    
 }
-var intialiseHealthWellBeingCheckbox = function () {
+var intialiseHealthWellBeingCheckbox = function () {    
+    $('input[name=volunteer_medical_condition]').parent().removeClass("selected");
+    $('input[name=volunteer_medical_condition]').prop('checked', false);
+
     $('input[name="volunteer_medical_condition"]').change(function (el) {
         let selected = $('input[name=volunteer_medical_condition]:checked');
         $('input[name=volunteer_medical_condition]').parent().removeClass("selected");
@@ -101,12 +103,17 @@ var intialiseHealthWellBeingCheckbox = function () {
         requestStage.selectedHealthWellBeing.val = selected.val();       
     })
 }
-var intialiseAdditonalDetail = function (){
+var intialiseAdditonalDetail = function () {
+    $('textarea[name="additional-help-detail"]').val("");
+
     $('textarea[name="additional-help-detail"]').blur(function () {        
         requestStage.additonalHelpDetail.val = $(this).val();
     });
 }
 var intialiseAgreeToTerms = function () {
+    $('input[name="privacy_notice"]').prop('checked', false);
+    $('input[name="terms_and_conditions"]').prop('checked', false);
+
     $('input[name="privacy_notice"]').change(function () {
         requestStage.agreeToTerms.privacy = $(this).is(":checked");
     })

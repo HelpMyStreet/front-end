@@ -88,18 +88,27 @@ var HideorShowFindAddress = function(hide, postfix){
 }
 
 var intialiseFormFields = function (postfix, obj) {
+    $('input[name="first_name_' + postfix + '"]').val('');
     $('input[name="first_name_' + postfix + '"]').blur(function () {
         obj.firstname.val = $(this).val();
     });
+
+    $('input[name="last_name_' + postfix + '"]').val('');
     $('input[name="last_name_' + postfix + '"]').blur(function () {
         obj.lastname.val = $(this).val();
     });
+
+    $('input[name="mobile_number_' + postfix + '"]').val('');
     $('input[name="mobile_number_' + postfix + '"]').blur(function () {
         obj.mobilenumber.val = $(this).val();
     });
+
+    $('input[name="alt_number_' + postfix + '"]').val('');
     $('input[name="alt_number_' + postfix + '"]').blur(function () {
         obj.altnumber.val = $(this).val();
     });
+
+    $('input[name="email_' + postfix + '"]').val('');
     $('input[name="email_' + postfix + '"]').blur(function () {
         obj.email.val = $(this).val();
     });
@@ -107,25 +116,31 @@ var intialiseFormFields = function (postfix, obj) {
 }
 
 var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
-
+    $('input[name="address_line_1_' + postfix + '"]').val('');
     $('input[name="address_line_1_' + postfix + '"]').blur(function () {
         obj.address.addressLine1.val = $(this).val();
     });
+    $('input[name="address_line_2_' + postfix + '"]').val('');
     $('input[name="address_line_2_' + postfix + '"]').blur(function () {
         obj.address.addressLine2.val = $(this).val();
     });
+
+    $('input[name="city_' + postfix + '"]').val('');
     $('input[name="city_' + postfix + '"]').blur(function () {
         obj.address.locality.val = $(this).val();
     });
+    $('input[name="county_' + postfix + '"]').val('');
     $('input[name="county_' + postfix + '"]').blur(function () {
         obj.address.county.val = $(this).val();
     });
 
     if (!bindPostcodeSearch) {
+        $('input[name="postcode_' + postfix + '"]').val('');
         $('input[name="postcode_' + postfix + '"]').blur(function () {
             obj.address.postcode.val = $(this).val();
         });
     } else {        
+        $('input[name="postcode_search_' + postfix + '"]').val('');
         $('input[name="postcode_search_' + postfix + '"]').blur(function () {
             obj.address.postcode.val = $(this).val();
         });

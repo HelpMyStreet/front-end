@@ -74,9 +74,12 @@ var loadPersonalDetails = function (detail) {
 
 
 var intialiseTextAreas = function () {
+    $('textarea[name="communication-needs"]').val('');
     $('textarea[name="communication-needs"]').blur(function () {
         reviewStage.communicationNeeds.val = $(this).val();
     });
+
+    $('textarea[name="helper-additional-details"]').val('');
     $('textarea[name="helper-additional-details"]').blur(function () {
         reviewStage.helperAdditionalDetails.val = $(this).val();
     });

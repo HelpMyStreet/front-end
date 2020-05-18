@@ -33,53 +33,53 @@
 
         .edit-address {
             font-weight: 500;
-            font-size: 1rem;                  
+            font-size: 1rem;
             float: right;
-            display:none;
+            display: none;
         }
-    
 
-    select:focus {
-        outline-color: $light-orange;
-    }
 
-    &.input--checkbox,
-    &.input--radio {
+        select:focus {
+            outline-color: $light-orange;
+        }
+
+        &.input--checkbox,
+        &.input--radio {
+            label {
+                font-weight: 500;
+                color: $black;
+
+                &.selected {
+                    font-weight: 600;
+                }
+            }
+        }
+
+        &.input--checkbox {
+            .mdi {
+                &.mdi-check {
+                    font-size: 20px;
+                }
+            }
+        }
+
         label {
-            font-weight: 500;
-            color: $black;
+            display: block;
+            font-weight: 600;
+            position: relative;
+            font-size: 1.2em;
+            top: 0;
+            margin-bottom: 10px;
+        }
 
-            &.selected {
-                font-weight: 600;
-            }
+
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            font-size: 1.2em;
         }
     }
-
-    &.input--checkbox {
-        .mdi {
-            &.mdi-check {
-                font-size: 20px;
-            }
-        }
-    }
-
-    label {
-        display: block;
-        font-weight: 600;
-        position: relative;
-        font-size: 1.2em;
-        top: 0;
-        margin-bottom: 10px;
-    }
-
-
-
-    textarea {
-        width: 100%;
-        min-height: 150px;
-        font-size: 1.2em;
-    }
-}
 
     .btn-wrapper {
         margin-top: 20px;
@@ -92,12 +92,22 @@
 
         .btnBack {
             display: none;
+            width: 130px;
+
+            @media screen and (min-width: $sm-screen) {
+                width: 250px;
+            }
         }
 
         .btnSubmit,
         .btnNext {
             background: $orange;
-            min-width: 250px;
+            width: 151px;
+            padding: 13px 25px;
+
+            @media screen and (min-width: $sm-screen) {
+                width: 250px;
+            }
         }
 
         .clear-button {
