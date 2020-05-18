@@ -10,46 +10,110 @@
   padding: 5px;
   overflow: hidden;
 
-  &__header {
-    height: 50px;
-    margin: -5px -5px 5px;
-    background-color: rgba(30, 145, 214, 0.5);
-
-    &--critical {
-      background-color: rgba(255, 143, 18, 0.5);
-    }
-
-    @media (min-width: $med-screen) {
-      display: none;
-    }
-  }
-
   &__info {
     min-height: 100px;
-  }
-
-  &__footer {
-    text-align: center;
-    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
 
     @media (min-width: $med-screen) {
-      text-align: right;
+      grid-template-columns: 1fr 2fr 1fr;
     }
 
-    a {
-      &.open {
-        display: inline;
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .column {
+      flex-direction: column;
+    }
+
+    &__urgency {
+      color: $dark-blue;
+      height: 50px;
+      margin: -5px -5px 5px;
+      background-color: $washed-blue;
+
+      span {
+        padding: 0 5px;
       }
 
-      &.close {
-        display: none;
+      @media (min-width: $med-screen) {
+        height: auto;
+        background-color: white;
+        flex-direction: column;
+        justify-content: center;
       }
 
-      &.disabled {
-        color: grey;
+      .critical {
+        font-weight: bold;
+      }
 
-        &:hover {
-          cursor: not-allowed;
+      .critical-icon {
+        margin: 5px;
+        display: inline-block;
+        text-align: center;
+        height: 25px;
+        width: 25px;
+        background-color: $orange;
+        border-radius: 25px;
+        color: white;
+      }
+    }
+
+    &__activity {
+      .activity__title {
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+
+        img {
+          display: inline-block;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    &__actions {
+      padding: 10px 0 0;
+
+      button[disabled] {
+        background-color: $gray-8;
+      }
+
+      a {
+        margin: 10px 0 0;
+
+        &.open {
+          display: inline;
+        }
+
+        &.close {
+          display: none;
+        }
+
+        &.disabled {
+          color: $gray-8;
+
+          &:hover {
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+
+  &--critical {
+    .job__info {
+      &__urgency {
+        background-color: $washed-orange;
+        color: $orange;
+
+        @media (min-width: $med-screen) {
+          background-color: white;
+          color: $light-orange;
         }
       }
     }
@@ -66,15 +130,13 @@
   }
 
   &.open {
-    .job__footer {
-      a {
-        &.open {
-          display: none;
-        }
+    a {
+      &.open {
+        display: none;
+      }
 
-        &.close {
-          display: inline;
-        }
+      &.close {
+        display: inline;
       }
     }
   }
