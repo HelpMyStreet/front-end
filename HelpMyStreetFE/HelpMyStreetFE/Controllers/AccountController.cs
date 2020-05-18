@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Yoti;
+using HelpMyStreetFE.Repositories;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -27,12 +28,14 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
+        private readonly IRequestService _requestService;
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
             IAddressService addressService,
             IConfiguration configuration,
-            IOptions<YotiOptions> yotiOptions
+            IOptions<YotiOptions> yotiOptions,
+            IRequestService requestService
             )
         {
             _logger = logger;
@@ -40,6 +43,7 @@ namespace HelpMyStreetFE.Controllers
             _addressService = addressService;
             _configuration = configuration;
             _yotiOptions = yotiOptions;
+            _requestService = requestService;
         }
 
   
@@ -140,12 +144,8 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel<List<Job>>(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-            viewModel.PageModel = new List<Job>
-            {
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = false },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
-            };
+            
+            viewModel.PageModel = await _requestService.GetOpenJobs("", 0.0);
 
             return View("Index", viewModel);
         }
@@ -156,11 +156,32 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel<List<Job>>(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
-            viewModel.PageModel = new List<Job>
+            viewModel.PageModel = new List<JobSummary>
             {
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = false },
-                new Job { UniqueIdentifier = Guid.NewGuid(), HealthCritical = true },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Shopping,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = false,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.CollectingPrescriptions,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Other,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
             };
 
             return View("Index", viewModel);

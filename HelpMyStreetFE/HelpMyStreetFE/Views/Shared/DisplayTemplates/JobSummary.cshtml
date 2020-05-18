@@ -1,0 +1,64 @@
+﻿@using HelpMyStreetFE;
+@using HelpMyStreet.Utils.Enums;
+
+@model HelpMyStreet.Utils.Models.JobSummary
+
+@{
+    bool UserIsVerified = (bool)ViewData["UserIsVerified"];
+}
+
+<script>
+    function open(guid) {
+        console.log('hey hey');
+        $(`#${guid}`).addClass('open');
+    }
+
+    function close(guid) {
+        $(`#${guid}`).removeClass('open');
+    }
+</script>
+
+<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@Model.UniqueIdentifier">
+    <div class="job__info">
+        <div class="job__info__urgency">
+            @if (Model.IsHealthCritical)
+            {
+                <span class="critical-icon">!</span>
+                <span class="critical">Critical</span>
+            }
+            else
+            {
+                <span>&#128197</span>
+            }
+            <span>Due @Model.DueDate.ToShortDateString()</span>
+        </div>
+        <div class="job__info__activity column">
+            <span class="activity__title @Model.SupportActivity.Class()">
+                @if(Model.SupportActivity != SupportActivities.Other)
+                {
+                    <img src="~/img/icons/@Model.SupportActivity.Icon()" />
+                }
+                @Model.SupportActivity.FriendlyName()
+            </span>
+            <span class="activity__detail">@Model.PostCode (@Model.DistanceInMiles miles away)</span>
+        </div>
+        <div class="job__info__actions column">
+            <button class="btn cta large fill" @(UserIsVerified ? "" : "disabled")>
+                <span class="text">Accept</span>
+            </button>
+            @if (UserIsVerified)
+            {
+                <a href="#" data-guid="@Model.UniqueIdentifier" class="open">View more info&#9660;</a>
+                <a href="#" data-guid="@Model.UniqueIdentifier" class="close">View less info&#9650;</a>
+            }
+            else
+            {
+                <a href="#" class="disabled">View more info&#9660;</a>
+            }
+        </div>
+    </div>
+    <div class="job__detail">
+        <hr />
+        <p>More info here</p>
+    </div>
+</div>
