@@ -29,8 +29,7 @@ var loadSelectedFor = function (id) {
 }
 
 
-var loadDescripton = function (request) {
-    console.log(request);
+var loadDescripton = function (request) {    
     if (request.additonalHelpDetail.val) {
         $('#review-additional-info').text(request.additonalHelpDetail.val);
     } else {

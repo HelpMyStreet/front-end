@@ -76,9 +76,7 @@ var initaliseProgressButtons = function () {
 
 async function validateTab(currentTab){
     $('#hasErrors').hide();
-    let valid = true;
-    console.log(currentTab);
-
+    let valid = true;    
     switch (currentTab) {
         case "request":
             if (requestStage.validate() == false) {
@@ -167,9 +165,7 @@ var intialiseSubmit = function () {
             Details: requestStage.additonalHelpDetail.val,
             DueDays: parseInt(requestStage.selectedTime.val),
             HealthCritical: (requestStage.selectedHealthWellBeing.val == "true")
-        }
-        
-        console.log(jobRequest);
+        }                
 
         let data = {
             HelpRequest: helpRequest,
