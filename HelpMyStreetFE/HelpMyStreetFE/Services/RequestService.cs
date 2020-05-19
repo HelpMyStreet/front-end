@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
+using HelpMyStreet.Contracts.RequestService.Request;
 
 namespace HelpMyStreetFE.Services
 {
@@ -94,6 +95,46 @@ namespace HelpMyStreetFE.Services
                 .ToList();
 
             return jobs;
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId)
+        {
+            return await _requestHelpRepository.GetJobsAllocatedToUserAsync(volunteerUserId);
+        }
+        
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
+        {
+            return await _requestHelpRepository.GetJobDetailsAsync(jobId);
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(string postCode, double distanceInMiles)
+        {
+            return await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles);
+        }
+        public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId)
+        {
+            return await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()
+            {
+                JobID = jobID,
+                CreatedByUserID = createdByUserId
+            });
+        }
+        public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId)
+        {
+            return await _requestHelpRepository.UpdateJobStatusToOpenAsync(new PutUpdateJobStatusToOpenRequest()
+            {
+                CreatedByUserID = createdByUserId,
+                JobID = jobID
+            });
+        }
+        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId)
+        {
+            return await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
+            {
+                CreatedByUserID = createdByUserId,
+                VolunteerUserID = volunteerUserId,
+                JobID = jobID
+            });
         }
     }
 }
