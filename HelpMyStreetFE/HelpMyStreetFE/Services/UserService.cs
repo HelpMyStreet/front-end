@@ -146,7 +146,7 @@ namespace HelpMyStreetFE.Services
         public UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
         {
             var personalDetails = user.UserPersonalDetails;
-            string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
+            string initials = personalDetails.FirstName.Substring(0, 1).ToUpper() + personalDetails.LastName.Substring(0, 1).ToUpper();
             string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
           
             string gender = "Unknown";
