@@ -37,7 +37,8 @@ steps:
   displayName: DotNetCore test
   inputs:
     command: 'test'
-    arguments: '--projects "HelpMyStreetFE\HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj" --configuration $(buildConfiguration) --collect "Code coverage"'
+    projects: 'HelpMyStreetFE\HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: Npm@1
   displayName: npm install
