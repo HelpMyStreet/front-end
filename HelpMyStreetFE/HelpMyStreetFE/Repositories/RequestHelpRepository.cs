@@ -88,7 +88,7 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(string postCode, double distanceInMiles)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter?postcode=${postCode}&distanceInMiles=${distanceInMiles}");
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter?postcode={postCode}&distanceInMiles={distanceInMiles}");
 
             return response.Content.JobSummaries;
         }
