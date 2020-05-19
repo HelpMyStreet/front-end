@@ -29,12 +29,13 @@
     <div class="row">
         <div class="input sm6">
             <label>@Model.LabelPrefix email Address</label>
-            <input name="email_@Model.NamePostfix" type="text" placeholder="e.g. somone@example.com" />
+            <input name="email_@Model.NamePostfix" type="text" placeholder="e.g. someone@example.com" />
             <span id="e-email_@Model.NamePostfix" class="error"></span>
         </div>
         <div class="input sm3">
             <label>@Model.LabelPrefix postcode</label>
-            <input name="postcode_search_@Model.NamePostfix" type="text" placeholder="e.g. NG1 1PS" />            
+            <input name="postcode_search_@Model.NamePostfix" type="text" placeholder="e.g. NG1 1PS" />
+            <span id="e-postcode_search_@Model.NamePostfix" class="error"></span>
         </div>
         <div class="input sm3 find-address">
             <button class="btn large border-blue blue fill" id="address_finder_@Model.NamePostfix">
@@ -48,7 +49,7 @@
 
     <div class="row">
         <div class="input sm6 dnone" id="address_selector_@Model.NamePostfix">
-            <label>Select address  <a class="input__link manual-entry edit-address">Edit <span class="lowercase">@Model.LabelPrefix</span> address</a></label>
+            <label>Select address  <a id="edit_address_@Model.NamePostfix"  class="input__link manual-entry edit-address">Edit <span class="lowercase">@Model.LabelPrefix</span> address</a></label>
             <select name="address_selector_@Model.NamePostfix">
             </select>
 

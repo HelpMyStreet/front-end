@@ -1,7 +1,10 @@
 ﻿import { intialiseRequestStage, requestStage } from "./request-stage";
 import { initaliseDetailStage, detailStage } from "./detail-stage";
-import { intialiseReviewStage, reviewStage } from "./review-stage";
+import { intialiseReviewStage, reviewStage, onDirectToRequestClick, onDirectToDetailClick } from "./review-stage";
 import { buttonLoad, buttonUnload } from "../shared/btn";
+
+
+
 
 $(() => {
     initaliseProgressButtons();
@@ -20,12 +23,11 @@ var initaliseProgressButtons = function () {
             btn.hide();
             $('.btnSubmit').show();
         } 
-
         
         $('.btnBack').show();
     }
     var changeProgressPrev = function (btn) {
-        let activeTab = $('.progress-bar').find('.is-active');
+        let activeTab = $('.progress-bar').find('.is-active');        
         activeTab.removeClass("is-active");
         let prevTab = activeTab.prev();
         prevTab.removeClass("is-complete");
@@ -47,17 +49,40 @@ var initaliseProgressButtons = function () {
             }
         });
     });
+
     $('.btnBack').click(function () {
+        goBack();
+    });  
+
+    onDirectToDetailClick(function () {
+        goBack();
+    })
+
+    onDirectToRequestClick(function () {
+        goBack();
+        goBack();
+    })
+
+    var goBack = function(){
         let activeTab = $('.progress-bar').find('.is-active');
         let currentTab = activeTab.attr("data-tab");
         let previousTab = activeTab.prev().attr("data-tab");
         _moveTab(currentTab, previousTab);
-        changeProgressPrev($(this));
-    });   
+        changeProgressPrev($('.btnBack'));
+    }
 }
+
+
+
+
+
+
+
+
 async function validateTab(currentTab){
     $('#hasErrors').hide();
     let valid = true;
+    console.log(currentTab);
 
     switch (currentTab) {
         case "request":
@@ -76,7 +101,11 @@ async function validateTab(currentTab){
                 requestHelp.detail = detailStage;
                 intialiseReviewStage(requestHelp);
                 intialiseSubmit();
-            }      
+            }
+            break;
+        default:
+            valid = true;
+            break;        
     }
 
     if (!valid) {
@@ -93,13 +122,14 @@ function _moveTab(currentTab, nextTab) {
         $([document.documentElement, document.body]).animate({
             scrollTop: ($(".progress-bar").offset().top - 50)
         }, 500);
-
     }
 }
 
 
 var intialiseSubmit = function () {
     $('.btnSubmit').click(async function () {
+        reviewStage.getLatestValues();
+
         let requestor = {
             firstname: detailStage.yourDetails.firstname.val,
             lastname: detailStage.yourDetails.lastname.val,
@@ -133,7 +163,7 @@ var intialiseSubmit = function () {
             AcceptedTerms: requestStage.agreeToTerms.terms,
             Requestor: requestor,
             Recipient: recipient,
-            ConsentForContact: detailStage.consentForContact,
+            ConsentForContact: detailStage.consentForContact.val,
             SpecialCommunicationNeeds: reviewStage.communicationNeeds.val,
             OtherDetails: reviewStage.helperAdditionalDetails.val,
         }
@@ -148,6 +178,7 @@ var intialiseSubmit = function () {
             HelpRequest: helpRequest,
             JobRequest: jobRequest
         };
+
 
         $('.retryError').hide();
 
@@ -167,7 +198,7 @@ var intialiseSubmit = function () {
                     if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6 || respData.content.fulfillable == 2 ) {
                         window.location.href = "/requesthelp/success?fulfillable=" + respData.content.fulfillable + "&onBehalf=" + detailStage.onBehalf;
                     } else if (respData.content.fulfillable == 1 || respData.content.fulfillable == 3) {
-                        throw 'The Request for helphad an error, this could be due to an invalid postcodee';
+                        throw 'The Request for help had an error, this could be due to an invalid postcodee';
                     }
                 } else {
                     throw 'error occured from within the request service';

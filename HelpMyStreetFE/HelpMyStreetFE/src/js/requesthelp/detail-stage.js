@@ -33,12 +33,26 @@ export var detailStage = {
         }
     },
 
+    getLatestValues: function (onBehalf) {
+        if (onBehalf) {
+            getPersonDetails("your", this.yourDetails, true);
+            getPersonDetails("their", this.theirDetails, false);            
+        } else {
+            getPersonDetails("your", this.yourDetails, true);
+        }
+
+        this.consentForContact.val = $('input[name="consent_for_contact"]').is(":checked");
+  
+    },
+
+
     validate: async function (requestFor) {
         let onBehalf = requestFor.val == "someone-else" ? true : false;
+        this.getLatestValues(onBehalf);
         $('.error').hide();
-        let valid = await validateYourDetails();
-        if (detailStage.consentForContact.val == false) {
-            $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
+        let valid = await validateYourDetails(onBehalf);
+        if (this.consentForContact.val == false) {
+            $('#' + this.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
             valid = false;
         }
         if (onBehalf == true) {
@@ -52,123 +66,135 @@ export var detailStage = {
 
 export function initaliseDetailStage(requestFor) {
     detailStage.onBehalf = requestFor.val == "someone-else" ? true : false;
-    $('#their-details').hide()
-    intialiseConsentForContact();
+    $('#their-details').hide()    
     if (detailStage.onBehalf == true) {
         $('#their-details').show();
-        initaliseAddressFinder("their", detailStage.theirDetails);
-        initaliseAddressFinder("your", detailStage.yourDetails);
-        intialiseFormFields("their", detailStage.theirDetails);
-        intialiseFormFields("your", detailStage.yourDetails);        
+        initaliseAddressFinder("their", detailStage.theirDetails, false);
+        initaliseAddressFinder("your", detailStage.yourDetails, true);
+        HideorShowFindAddress(true, "your")     
     } else {
-        initaliseAddressFinder("your", detailStage.yourDetails);
-        intialiseFormFields("your", detailStage.yourDetails); 
+        HideorShowFindAddress(false, "your")
+        initaliseAddressFinder("your", detailStage.yourDetails, false);
     } 
 }
 
+var HideorShowFindAddress = function(hide, postfix){
+    if (hide) {
+        let inputClassforPostcodeSearch = $('input[name="postcode_search_' + postfix + '"]').parent();
+        inputClassforPostcodeSearch.removeClass("sm3");
+        inputClassforPostcodeSearch.addClass("sm6");
+        let inputClassforAddressFine = $('#address_finder_' + postfix + '').parent();
+        inputClassforAddressFine.addClass("dnone");
+        detailStage.yourDetails.address.addressLine1.val = null;
+        detailStage.yourDetails.address.addressLine2.val = null;
+        detailStage.yourDetails.address.county.val = null;
+        detailStage.yourDetails.address.locality.val = null;
+    } else {
+        let inputClassforPostcodeSearch = $('input[name="postcode_search_' + postfix + '"]').parent();
+        inputClassforPostcodeSearch.addClass("sm3");
+        inputClassforPostcodeSearch.removeClass("sm6");
+        let inputClassforAddressFine = $('#address_finder_' + postfix + '').parent();
+        inputClassforAddressFine.removeClass("dnone");
+    }
 
 
-var intialiseFormFields = function (postfix, obj) {
-    $('input[name="first_name_' + postfix + '"]').blur(function () {
-        obj.firstname.val = $(this).val();
-    });
-    $('input[name="last_name_' + postfix + '"]').blur(function () {
-        obj.lastname.val = $(this).val();
-    });
-    $('input[name="mobile_number_' + postfix + '"]').blur(function () {
-        obj.mobilenumber.val = $(this).val();
-    });
-    $('input[name="alt_number_' + postfix + '"]').blur(function () {
-        obj.altnumber.val = $(this).val();
-    });
-    $('input[name="email_' + postfix + '"]').blur(function () {
-        obj.email.val = $(this).val();
-    });
 
 }
 
-var initaliseAddressFinder = function (postfix, obj) {
+var getPersonDetails = function (postfix, obj, postcodeOnly) {    
 
-    $('input[name="address_line_1_' + postfix + '"]').blur(function () {
-        obj.address.addressLine1.val = $(this).val();
-    });
-    $('input[name="address_line_2_' + postfix + '"]').blur(function () {
-        obj.address.addressLine2.val = $(this).val();
-    });
-    $('input[name="city_' + postfix + '"]').blur(function () {
-        obj.address.locality.val = $(this).val();
-    });
-    $('input[name="county_' + postfix + '"]').blur(function () {
-        obj.address.county.val = $(this).val();
-    });
-    
-    $('input[name="postcode_' + postfix + '"]').blur(function () {
-        obj.address.postcode.val = $(this).val();
-    });
-
-    $('.manual-entry').click(function () {
-        $("#expander_" + postfix).slideDown();
-    })
-
-    $("#address_finder_" + postfix).on("click", async function (evt) {
-        evt.preventDefault();
-        buttonLoad($(this));
-        $("#address_selector_" + postfix).unbind("change");
-
-        const postcode = $("input[name=postcode_search_" + postfix + "]").val();
-
-        try {
-            const resp = await fetch(`/api/postcode/${postcode}`);
-            if (resp.ok) {
-                const { hasContent, isSuccessful, content } = await resp.json();
-
-                if (hasContent && isSuccessful) {
-                    $("select[name=address_selector_" + postfix + "]").html(
-                        content.addressDetails.reduce((acc, cur, i) => {
-                            const text = Object.keys(cur).reduce((tAcc, tCur) => {
-                                if (cur[tCur] != null) {
-                                    tAcc += tAcc === "" ? "" : ", ";
-                                    tAcc += `${cur[tCur]}`;
-                                }
-
-                                return tAcc;
-                            }, "");
-
-                            acc += `<option value="${i}">${text}</option>`;
-                            return acc;
-                        }, '<option value="" selected disabled hidden>Choose here</option>')
-                    );
-
-                    $("#address_selector_" + postfix).slideDown();
-                    $("select[name=address_selector_" + postfix + "]").on("change", function () {
-                        const id = $(this).children("option:selected").val();
-                        let address = content.addressDetails[id];
-                        obj.address.addressLine1.val = address.addressLine1;                 
-                        obj.address.addressLine2.val = address.addressLine2;
-                        obj.address.locality.val = address.locality;
-                        obj.address.postcode.val = address.postcode;
-
-                        $(this).parent().find(".edit-address").show();
-                        $("input[name=address_line_1_" + postfix + "]").val(obj.address.addressLine1.val);
-                        $("input[name=address_line_2_" + postfix + "]").val(obj.address.addressLine2.val);
-                        $("input[name=city_" + postfix + "]").val(obj.address.locality.val);
-                        $("input[name=postcode_" + postfix + "]").val(obj.address.postcode.val);
-                        //$("#expander_" + postfix).slideDown();                        
-                    });
-                }
-            }
-        } catch (ex) {
-            console.error(ex);
+    let GetLatestAddressData = function (postfix, obj, postcodeOnly) {
+        if (postcodeOnly) {
+            obj.address.postcode.val = $('input[name="postcode_search_' + postfix + '"]').val();
+        } else {
+            obj.address.addressLine1.val = $('input[name="address_line_1_' + postfix + '"]').val();
+            obj.address.addressLine2.val = $('input[name="address_line_2_' + postfix + '"]').val();
+            obj.address.locality.val = $('input[name="city_' + postfix + '"]').val();
+            obj.address.county.val = $('input[name="county_' + postfix + '"]').val();
+            obj.address.postcode.val = $('input[name="postcode_' + postfix + '"]').val();
         }
-        buttonUnload($(this));
-    });
+    }
+
+    obj.firstname.val = $('input[name="first_name_' + postfix + '"]').val();            
+    obj.lastname.val = $('input[name="last_name_' + postfix + '"]').val();            
+    obj.mobilenumber.val = $('input[name="mobile_number_' + postfix + '"]').val();             
+    obj.altnumber.val = $('input[name="alt_number_' + postfix + '"]').val();            
+    obj.email.val =  $('input[name="email_' + postfix + '"]').val();
+
+    GetLatestAddressData(postfix, obj, postcodeOnly)
 }
 
-var intialiseConsentForContact = function () {
-    $('input[name="consent_for_contact"]').change(function () {
-        detailStage.consentForContact = $(this).is(":checked");
-    })
+
+
+
+var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {    
+    if (bindPostcodeSearch) {
+        $("#expander_" + postfix).slideUp();
+        $('#address_selector_' + postfix).hide();
+    } else {       
+        $('#manual_address_' + postfix).click(function () {
+            $("#expander_" + postfix).slideDown();
+        }),
+        $('#edit_address_' + postfix).click(function () {
+            $("#expander_" + postfix).slideDown();
+        })
+
+        $("#address_finder_" + postfix).on("click", async function (evt) {
+            evt.preventDefault();
+            buttonLoad($(this));
+            $("#address_selector_" + postfix).unbind("change");
+
+            const postcode = $("input[name=postcode_search_" + postfix + "]").val();
+
+            try {
+                const resp = await fetch(`/api/postcode/${postcode}`);
+                if (resp.ok) {
+                    const { hasContent, isSuccessful, content } = await resp.json();
+
+                    if (hasContent && isSuccessful) {
+                        $("select[name=address_selector_" + postfix + "]").html(
+                            content.addressDetails.reduce((acc, cur, i) => {
+                                const text = Object.keys(cur).reduce((tAcc, tCur) => {
+                                    if (cur[tCur] != null) {
+                                        tAcc += tAcc === "" ? "" : ", ";
+                                        tAcc += `${cur[tCur]}`;
+                                    }
+
+                                    return tAcc;
+                                }, "");
+
+                                acc += `<option value="${i}">${text}</option>`;
+                                return acc;
+                            }, '<option value="" selected disabled hidden>Choose here</option>')
+                        );
+
+                        $("#address_selector_" + postfix).slideDown();
+                        $("select[name=address_selector_" + postfix + "]").on("change", function () {
+                            const id = $(this).children("option:selected").val();
+                            let address = content.addressDetails[id];
+                            obj.address.addressLine1.val = address.addressLine1;
+                            obj.address.addressLine2.val = address.addressLine2;
+                            obj.address.locality.val = address.locality;
+                            obj.address.postcode.val = address.postcode;
+
+                            $(this).parent().find(".edit-address").show();
+                            $("input[name=address_line_1_" + postfix + "]").val(obj.address.addressLine1.val);
+                            $("input[name=address_line_2_" + postfix + "]").val(obj.address.addressLine2.val);
+                            $("input[name=city_" + postfix + "]").val(obj.address.locality.val);
+                            $("input[name=postcode_" + postfix + "]").val(obj.address.postcode.val);
+                            //$("#expander_" + postfix).slideDown();                        
+                        });
+                    }
+                }
+            } catch (ex) {
+                console.error(ex);
+            }
+            buttonUnload($(this));
+        });
+    }
 }
+
+
 
 
 var validatePersonalDetails = function (obj) {
@@ -215,26 +241,22 @@ var validateAddress = async function (obj, expanderPostfix) {
         $("#expander_" + expanderPostfix).slideDown();
         valid = false;
     } else {
-        try {
-            buttonLoad($('#btnNext'))
-            let validPostcode = await validatePostCode(obj.address.postcode.val)
-            if (!validPostcode) {
-                valid = false;
-                $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
-                $("#expander_" + expanderPostfix).slideDown();
-            }
-        } catch  {
-            $('#' + obj.address.postcode.errorSpan).show().text("an error occured trying to validate your postcode, please try again.");
+        buttonLoad($('#btnNext'))
+        var postcodeValid = await validatePostCode(obj.address.postcode.val);
+        if (!postcodeValid) {
             valid = false;
-        } finally {
-            buttonUnload($('#btnNext'));
+            $('#' + obj.address.postcode.errorSpan).show().text("Please enter a valid UK postcode");
+            $("#expander_" + expanderPostfix).slideDown();
         }
-
+        buttonUnload($('#btnNext'));
     }
     return valid;
 }
 
-var validateYourDetails = async function () {
+
+
+
+var validateYourDetails = async function (onBehalf) {
     let valid = true;
 
     if (!validatePersonalDetails(detailStage.yourDetails))
@@ -244,8 +266,17 @@ var validateYourDetails = async function () {
         $('#' + detailStage.yourDetails.email.errorSpan).show().text("Please enter a valid email address");
         valid = false;
     }
-    if (!await validateAddress(detailStage.yourDetails, "your"))
-        valid = false;
+
+    // if they have requested for somoene else, they dont need to find their address. they just need to enter a postcode
+    if (onBehalf == false) {
+        if (!await validateAddress(detailStage.yourDetails, "your"))
+            valid = false;
+    } else {
+        if (!await validatePostCode(detailStage.yourDetails.address.postcode.val)) {
+            valid = false;
+            $('#e-postcode_search_your').show().text("Please enter a valid UK postcode");
+        }
+    }
 
     return valid;
 }

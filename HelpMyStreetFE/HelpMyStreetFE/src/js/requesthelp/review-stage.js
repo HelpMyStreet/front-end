@@ -2,6 +2,11 @@
 export var reviewStage = {
     communicationNeeds: { val: null, errorSpan: "e-communication-needs" },
     helperAdditionalDetails: { val: null, errorSpan: "e-helper-additional-details" },
+
+    getLatestValues: function () {          
+        this.communicationNeeds.val = $('textarea[name="communication-needs"]').val();                
+        this.helperAdditionalDetails.val = $('textarea[name="helper-additional-details"]').val();        
+    },
     validate: function () {
         return true;
     }
@@ -12,8 +17,7 @@ export function intialiseReviewStage(obj) {
     loadSelectedActivity(obj.request.selectedActivity.val);
     loadSelectedFor(obj.request.selectedFor.val);
     loadDescripton(obj.request)
-    loadPersonalDetails(obj.detail);
-    intialiseTextAreas();
+    loadPersonalDetails(obj.detail);   
 }
 
 var loadSelectedActivity = function (id) {    
@@ -23,7 +27,6 @@ var loadSelectedActivity = function (id) {
 var loadSelectedFor = function (id) {
     $('#selected-request-for').html($('#' + id).parent().html()).find("#" + id).removeClass("selected");
 }
-
 
 
 var loadDescripton = function (request) {
@@ -46,7 +49,17 @@ var loadDescripton = function (request) {
 
 var loadPersonalDetails = function (detail) {
     $('#review-your-name').text(detail.yourDetails.firstname.val + " " + detail.yourDetails.lastname.val);
-    $('#review-your-address').text(detail.yourDetails.address.addressLine1.val + ", " + detail.yourDetails.address.locality.val + ", " + detail.yourDetails.address.postcode.val)
+
+    let address = ""
+    if (detail.yourDetails.address.addressLine1.val) {
+        $($('#address-label_your')).text("Address:")
+        
+        address = detail.yourDetails.address.addressLine1.val + ", " + detail.yourDetails.address.locality.val + ", ";
+    } else {
+        $($('#address-label_your')).text("Postcode: ")
+    }
+
+    $('#review-your-address').text(address +  detail.yourDetails.address.postcode.val)
     $('#review-your-email').text(detail.yourDetails.email.val)
     $('#review-your-mobile').text(detail.yourDetails.mobilenumber.val ? detail.yourDetails.mobilenumber.val : "Not Provided")
     $('#review-your-alternate').text(detail.yourDetails.altnumber.val ? detail.yourDetails.altnumber.val : "Not Provided");
@@ -73,11 +86,19 @@ var loadPersonalDetails = function (detail) {
 }
 
 
-var intialiseTextAreas = function () {
-    $('textarea[name="communication-needs"]').blur(function () {
-        reviewStage.communicationNeeds.val = $(this).val();
+
+
+
+export function onDirectToRequestClick(callback) {
+    return $('.to-request').click(function () {
+        callback();
     });
-    $('textarea[name="helper-additional-details"]').blur(function () {
-        reviewStage.helperAdditionalDetails.val = $(this).val();
+         
+}
+
+export function onDirectToDetailClick(callback) {
+    return $('.to-details').click(function () {
+        callback();
     });
 }
+

@@ -8,14 +8,22 @@
         privacy: false,
         terms: false,
     },
-    validate:function () {
+    getLatestValues: function () {
+        this.agreeToTerms.privacy = $('input[name="privacy_notice"]').is(":checked");
+        this.agreeToTerms.terms = $('input[name="terms_and_conditions"]').is(":checked");
+        this.additonalHelpDetail.val = $('textarea[name="additional-help-detail"]').val()
+        this.selectedHealthWellBeing.val = $('input[name="volunteer_medical_condition"]').val();
+
+    },
+    validate: function () {
+        this.getLatestValues();
         $('.error').hide();
         let valid = true;
         if (!requestStage.selectedActivity.val) {
             $('#' + requestStage.selectedActivity.errorSpan).show().text("Please select at least one task type");
             valid = false;
         } else if (requestStage.selectedActivity.val == "Other" && (requestStage.additonalHelpDetail.val == "" || !requestStage.additonalHelpDetail.val)) {
-            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please enter some additional details");
+            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please provide a brief description of the help you need");
             valid = false;
         }
 
@@ -45,8 +53,10 @@
 export function intialiseRequestStage() {
     intialiseRequestTiles();
     intialiseHealthWellBeingCheckbox();
-    intialiseAgreeToTerms();
-    intialiseAdditonalDetail();
+
+    $('form').submit(function (e) {
+        e.preventDefault();
+    })
 }
 
 var intialiseRequestTiles = function () {
@@ -68,8 +78,7 @@ var intialiseRequestTiles = function () {
 }
 var handleRequestFor = function (el) {
     $('*[data-type="request-for"]').removeClass("selected");
-    el.addClass("selected");
-  
+    el.addClass("selected");  
     requestStage.selectedFor.val = el.attr("id");    
 }
 var handleTimeFrame = function (el) {
@@ -93,28 +102,18 @@ var handleActivity = function (el) {
     el.addClass("selected");
     requestStage.selectedActivity.val = el.attr("id");    
 }
-var intialiseHealthWellBeingCheckbox = function () {
+
+
+var intialiseHealthWellBeingCheckbox = function () {    
     $('input[name="volunteer_medical_condition"]').change(function (el) {
         let selected = $('input[name=volunteer_medical_condition]:checked');
         $('input[name=volunteer_medical_condition]').parent().removeClass("selected");
-        selected.parent().addClass("selected");
-        requestStage.selectedHealthWellBeing.val = selected.val();       
+        selected.parent().addClass("selected");    
     })
 }
-var intialiseAdditonalDetail = function (){
-    $('textarea[name="additional-help-detail"]').blur(function () {        
-        requestStage.additonalHelpDetail.val = $(this).val();
-    });
-}
-var intialiseAgreeToTerms = function () {
-    $('input[name="privacy_notice"]').change(function () {
-        requestStage.agreeToTerms.privacy = $(this).is(":checked");
-    })
 
-    $('input[name="terms_and_conditions"]').change(function () {
-        requestStage.agreeToTerms.terms = $(this).is(":checked");
-    })    
-}
+
+
 function validatePrivacyAndTerms() {
     // requires checking of two or more inputs at the same time, so cant use the validateFormData.
     $('#e-terms-privacy').hide();

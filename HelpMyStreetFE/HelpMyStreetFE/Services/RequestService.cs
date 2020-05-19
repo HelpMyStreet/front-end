@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Utils;
 using System.Linq;
 
 namespace HelpMyStreetFE.Services
@@ -48,7 +49,7 @@ namespace HelpMyStreetFE.Services
                             AddressLine1 = viewModel.HelpRequest.Recipient.Address.Addressline1,
                             AddressLine2 = viewModel.HelpRequest.Recipient.Address.Addressline2,
                             Locality = viewModel.HelpRequest.Recipient.Address.Locality,
-                            Postcode = viewModel.HelpRequest.Recipient.Address.Postcode,
+                            Postcode = PostcodeFormatter.FormatPostcode(viewModel.HelpRequest.Recipient.Address.Postcode),
                         }
                     },
                     Requestor = new RequestPersonalDetails
@@ -63,7 +64,7 @@ namespace HelpMyStreetFE.Services
                             AddressLine1 = viewModel.HelpRequest.Requestor.Address.Addressline1,
                             AddressLine2 = viewModel.HelpRequest.Requestor.Address.Addressline2,
                             Locality = viewModel.HelpRequest.Requestor.Address.Locality,
-                            Postcode = viewModel.HelpRequest.Requestor.Address.Postcode,
+                            Postcode = PostcodeFormatter.FormatPostcode(viewModel.HelpRequest.Requestor.Address.Postcode),
                         }
                     }
                 },
