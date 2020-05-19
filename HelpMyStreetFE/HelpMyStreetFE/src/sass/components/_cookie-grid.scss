@@ -2,9 +2,7 @@
     overflow: auto;
     display: grid;
     grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
-    grid-template-rows: repeat(11, 0.2fr);
-    gap: 1px 1px;
-    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cCookieControlPrefs ProviderName pCookieControlPrefs eCookieControlPrefs" "Neccesary cOptOutStats ProviderName pOptOutStats eOptOutStats" "Statistics c_ga tppGoogle tp_ga te_ga" "Statistics c_gat tppGoogle tp_gat te_gat" "Statistics c_gid tppGoogle tp_gid te_gid" "Statistics tc_hjid tpp_Hotjar tp_hjid te_hjid" "Statistics tc_hjRecordingLastActivity tpp_Hotjar tp_hjRecordingLastActivity te_hjRecordingLastActivity" "Statistics tc_hjTLDTest tpp_Hotjar PurposeSix te_hjTLDTest" "Statistics tc_hjIncludedInSample tpp_Hotjar tp_hjIncludedInSample te_hjIncludedInSample" "Statistics tc_hjRecordingEnabled tpp_Hotjar tp_hjRecordingEnabled te_hjRecordingEnabled";
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cCookieControlPrefs ProviderName pCookieControlPrefs eCookieControlPrefs" "Neccesary cOptOutStats ProviderName pOptOutStats eOptOutStats" "Statistics c_ga tppGoogle tp_ga te_ga" "Statistics c_gat tppGoogle tp_gat te_gat" "Statistics c_gid tppGoogle tp_gid te_gid" "Statistics c_jSessionId tpp_NewRelic tp_jSessionId te_jSessionId" "Statistics c_nreum tpp_NewRelic tp_nreum te_nreum" "Statistics tc_hjid tpp_Hotjar tp_hjid te_hjid" "Statistics tc_hjRecordingLastActivity tpp_Hotjar tp_hjRecordingLastActivity te_hjRecordingLastActivity" "Statistics tc_hjTLDTest tpp_Hotjar PurposeSix te_hjTLDTest" "Statistics tc_hjIncludedInSample tpp_Hotjar tp_hjIncludedInSample te_hjIncludedInSample" "Statistics tc_hjRecordingEnabled tpp_Hotjar tp_hjRecordingEnabled te_hjRecordingEnabled";
     border-top: 1px solid black;
     border-left: 1px solid black;
 
@@ -15,6 +13,7 @@
         align-items: center;
         justify-content: center;
         text-align: center;
+        padding: 3px;
     }
 
 
@@ -131,6 +130,14 @@
         grid-area: c_ga;
     }
 
+    .c_jSessionId {
+        grid-area: c_jSessionId;
+    }
+
+    .c_nreum {
+        grid-area: c_nreum;
+    }
+
     .ThirdPartyCookie2 {
         grid-area: ThirdPartyCookie2;
     }
@@ -175,6 +182,14 @@
         }
     }
 
+    .tpp_NewRelic {
+        grid-area: tpp_NewRelic;
+
+        a {
+            display: contents;
+        }
+    }
+
     .tp_ga {
         grid-area: tp_ga;
     }
@@ -185,6 +200,14 @@
 
     .tp_gid {
         grid-area: tp_gid;
+    }
+
+    .tp_jSessionId {
+        grid-area: tp_jSessionId;
+    }
+
+    .tp_nreum {
+        grid-area: tp_nreum;
     }
 
     .tp_hjid {
@@ -217,6 +240,14 @@
 
     .te_gid {
         grid-area: te_gid;
+    }
+
+    .te_jSessionId {
+        grid-area: te_jSessionId;
+    }
+
+    .te_nreum {
+        grid-area: te_nreum;
     }
 
     .te_hjid {
