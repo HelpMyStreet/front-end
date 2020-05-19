@@ -1,11 +1,8 @@
-using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Enums.Validation;
-using HelpMyStreetFE.Helpers;
-using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Validation;
 using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Services;
@@ -97,7 +94,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                var queryStringUserId = Base64Helpers.Base64Decode(encodedQueryStringUserId);
+                var queryStringUserId = Base64Utils.Base64Decode(encodedQueryStringUserId);
 
                 var authenticatedUserIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
 

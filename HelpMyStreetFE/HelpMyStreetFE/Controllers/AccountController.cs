@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Yoti;
-using HelpMyStreetFE.Repositories;
+using HelpMyStreet.Utils.Utils;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -76,7 +76,7 @@ namespace HelpMyStreetFE.Controllers
             var userDetails = _userService.GetUserDetails(user);
 
             //Assume the registration page has been fully completed
-            var viewModel = GetAccountViewModel<UserDetails>(user);
+            var viewModel = GetAccountViewModel(user);
 
             viewModel.CurrentPage = MenuPage.UserDetails;
             viewModel.PageModel = userDetails;
@@ -86,7 +86,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ComingSoon()
         {
-            var viewModel = GetAccountViewModel<dynamic>(await GetCurrentUser());
+            var viewModel = GetAccountViewModel(await GetCurrentUser());
             viewModel.Notifications = new List<NotificationModel>();
             viewModel.CurrentPage = MenuPage.ComingSoon;
             return View("Index", viewModel);
@@ -96,7 +96,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Streets()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel<StreetsViewModel>(currentUser);
+            var viewModel = GetAccountViewModel(currentUser);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -142,7 +142,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> OpenRequests()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel<List<Job>>(currentUser);
+            var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             
             viewModel.PageModel = await _requestService.GetOpenJobs("", 0.0);
@@ -154,7 +154,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> AcceptedRequests()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel<List<Job>>(currentUser);
+            var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
             viewModel.PageModel = new List<JobSummary>
             {
@@ -203,7 +203,7 @@ namespace HelpMyStreetFE.Controllers
              return user;
         }
 
-        private AccountViewModel GetAccountViewModel<TPageModel>(User user)
+        private AccountViewModel GetAccountViewModel(User user)
         {
             var viewModel = new AccountViewModel();
 
@@ -231,7 +231,7 @@ namespace HelpMyStreetFE.Controllers
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
-                    EncodedUserID = Base64Helpers.Base64Encode(user.ID.ToString()),
+                    EncodedUserID = Base64Utils.Base64Encode(user.ID.ToString()),
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
