@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Yoti;
+using HelpMyStreetFE.Repositories;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -27,12 +28,14 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
+        private readonly IRequestService _requestService;
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
             IAddressService addressService,
             IConfiguration configuration,
-            IOptions<YotiOptions> yotiOptions
+            IOptions<YotiOptions> yotiOptions,
+            IRequestService requestService
             )
         {
             _logger = logger;
@@ -40,6 +43,7 @@ namespace HelpMyStreetFE.Controllers
             _addressService = addressService;
             _configuration = configuration;
             _yotiOptions = yotiOptions;
+            _requestService = requestService;
         }
 
   
@@ -72,7 +76,7 @@ namespace HelpMyStreetFE.Controllers
             var userDetails = _userService.GetUserDetails(user);
 
             //Assume the registration page has been fully completed
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = GetAccountViewModel<UserDetails>(user);
 
             viewModel.CurrentPage = MenuPage.UserDetails;
             viewModel.PageModel = userDetails;
@@ -82,7 +86,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ComingSoon()
         {
-            AccountViewModel viewModel = GetAccountViewModel(await GetCurrentUser());
+            var viewModel = GetAccountViewModel<dynamic>(await GetCurrentUser());
             viewModel.Notifications = new List<NotificationModel>();
             viewModel.CurrentPage = MenuPage.ComingSoon;
             return View("Index", viewModel);
@@ -92,7 +96,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Streets()
         {
             var currentUser = await GetCurrentUser();
-            var viewModel = GetAccountViewModel(currentUser);
+            var viewModel = GetAccountViewModel<StreetsViewModel>(currentUser);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -134,6 +138,55 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> OpenRequests()
+        {
+            var currentUser = await GetCurrentUser();
+            var viewModel = GetAccountViewModel<List<Job>>(currentUser);
+            viewModel.CurrentPage = MenuPage.OpenRequests;
+            
+            viewModel.PageModel = await _requestService.GetOpenJobs("", 0.0);
+
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AcceptedRequests()
+        {
+            var currentUser = await GetCurrentUser();
+            var viewModel = GetAccountViewModel<List<Job>>(currentUser);
+            viewModel.CurrentPage = MenuPage.AcceptedRequests;
+            viewModel.PageModel = new List<JobSummary>
+            {
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Shopping,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = false,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.CollectingPrescriptions,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+                new JobSummary {
+                    UniqueIdentifier = Guid.NewGuid(),
+                    IsHealthCritical = true,
+                    DueDate = new DateTime(2020, 05, 22),
+                    SupportActivity = SupportActivities.Other,
+                    PostCode = "AB1 2CD",
+                    DistanceInMiles = 1.23
+                },
+            };
+
+            return View("Index", viewModel);
+        }
+
         [HttpPut]
         public async Task<IActionResult> CloseNotification(Guid id)
         {
@@ -150,7 +203,7 @@ namespace HelpMyStreetFE.Controllers
              return user;
         }
 
-        private AccountViewModel GetAccountViewModel(User user)
+        private AccountViewModel GetAccountViewModel<TPageModel>(User user)
         {
             var viewModel = new AccountViewModel();
 

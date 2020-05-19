@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Enums;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -8,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
+using System.Linq;
+
 namespace HelpMyStreetFE.Services
 {
     public class RequestService : IRequestService
@@ -21,9 +24,7 @@ namespace HelpMyStreetFE.Services
             _logger = logger;
         }
 
-
-
-        public Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
+        public Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
         {
             _logger.LogInformation($"Logging Request");
             var request = new HelpMyStreet.Contracts.RequestService.Request.PostNewRequestForHelpRequest
@@ -82,6 +83,17 @@ namespace HelpMyStreetFE.Services
                 }
             };
             return _requestHelpRepository.LogRequest(request);
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetOpenJobs(string pc, double distance)
+        {
+            var jobs = (await _requestHelpRepository.GetJobSummariesAsync(pc, distance))
+                .OrderBy(j => j.DistanceInMiles)
+                .ThenBy(j => j.DueDate)
+                .ThenByDescending(j => j.IsHealthCritical)
+                .ToList();
+
+            return jobs;
         }
     }
 }
