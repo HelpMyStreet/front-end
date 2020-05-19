@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Repositories
 			return new List<JobSummary>
             {
                 new JobSummary {
-                    UniqueIdentifier = Guid.NewGuid(),
+                    JobID = 0,
                     IsHealthCritical = false,
                     DueDate = new DateTime(2020, 05, 24), // should be last
                     SupportActivity = SupportActivities.CollectingPrescriptions,
@@ -47,7 +47,7 @@ namespace HelpMyStreetFE.Repositories
                     DistanceInMiles = 1.23
                 },
                 new JobSummary {
-                    UniqueIdentifier = Guid.NewGuid(),
+                    JobID = 1,
                     IsHealthCritical = false,
                     DueDate = new DateTime(2020, 05, 22), // should be 2nd
                     SupportActivity = SupportActivities.Shopping,
@@ -55,7 +55,7 @@ namespace HelpMyStreetFE.Repositories
                     DistanceInMiles = 1.23
                 },
                 new JobSummary {
-                    UniqueIdentifier = Guid.NewGuid(),
+                    JobID = 2,
                     IsHealthCritical = false,
                     DueDate = new DateTime(2020, 05, 25),
                     SupportActivity = SupportActivities.Other,
@@ -63,7 +63,7 @@ namespace HelpMyStreetFE.Repositories
                     DistanceInMiles = 1 // should be first
                 },
                 new JobSummary {
-                    UniqueIdentifier = Guid.NewGuid(),
+                    JobID = 3,
                     IsHealthCritical = true, // should be 3rd
                     DueDate = new DateTime(2020, 05, 24),
                     SupportActivity = SupportActivities.Other,

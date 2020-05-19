@@ -1,10 +1,12 @@
 ﻿@using HelpMyStreetFE;
 @using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
 
 @model HelpMyStreet.Utils.Models.JobSummary
 
 @{
     bool UserIsVerified = (bool)ViewData["UserIsVerified"];
+    var id = Base64Utils.Base64Encode(Model.JobID.ToString());
 }
 
 <script>
@@ -18,7 +20,7 @@
     }
 </script>
 
-<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@Model.UniqueIdentifier">
+<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="job-@id">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.IsHealthCritical)
@@ -28,7 +30,7 @@
             }
             else
             {
-                <span>&#128197</span>
+                <img src="~/img/icons/calendar.svg" />
             }
             <span>Due @Model.DueDate.ToShortDateString()</span>
         </div>
@@ -48,8 +50,8 @@
             </button>
             @if (UserIsVerified)
             {
-                <a href="#" data-guid="@Model.UniqueIdentifier" class="open">View more info&#9660;</a>
-                <a href="#" data-guid="@Model.UniqueIdentifier" class="close">View less info&#9650;</a>
+                <a href="#" data-id="@id" class="open">View more info&#9660;</a>
+                <a href="#" data-id="@id" class="close">View less info&#9650;</a>
             }
             else
             {
