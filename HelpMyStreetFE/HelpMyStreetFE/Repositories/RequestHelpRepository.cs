@@ -16,39 +16,13 @@ namespace HelpMyStreetFE.Repositories
 		public RequestHelpRepository(HttpClient client, IConfiguration config, ILogger<RequestHelpRepository> logger) : base(client, config, logger, "Services:Request")
 		{ }
 
-		public async Task<LogRequestResponse> LogRequest(string postcode)
+	
+
+		public async Task<LogRequestResponse> LogRequest(PostNewRequestForHelpRequest request)
 		{
-			postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
-			var response = await PostAsync<LogRequestResponse>($"/api/logrequest", new
-			{
-				postcode
-			});
-
-			return response;
-    }
-
-		public async Task<UpdateRequestResponse> UpdateRequest(RequestHelpFormModel requestHelpFormModel)
-		{
-
-			var response = await PostAsync<UpdateRequestResponse>($"/api/updaterequest",
-
-				new UpdateRequestRequest
-				{
-					RequestID = requestHelpFormModel.RequestId,
-					FurtherDetails = requestHelpFormModel.Message ?? string.Empty,
-					HealthOrWellbeingConcern = requestHelpFormModel.HealthConcern,
-					OnBehalfOfAnother = requestHelpFormModel.OnBehalfOfAnother,
-					RequestorEmailAddress = requestHelpFormModel.Email ?? string.Empty,
-					RequestorFirstName = requestHelpFormModel.FirstName,
-					RequestorLastName = requestHelpFormModel.LastName ?? string.Empty,
-					RequestorPhoneNumber = requestHelpFormModel.PhoneNumber ?? string.Empty,
-					SupportActivitiesRequired = new SupportActivityRequest
-					{
-						SupportActivities = requestHelpFormModel.HelpNeeded
-					}					
-				});
-
+			var response = await PostAsync<LogRequestResponse>($"/api/PostNewRequestForHelp", request);
 			return response;
 		}
+
 	}
 }

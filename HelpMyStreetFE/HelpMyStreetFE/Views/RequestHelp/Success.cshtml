@@ -1,0 +1,33 @@
+﻿@model List<HelpMyStreetFE.Models.NotificationModel>;
+
+
+
+@{
+	ViewData["Title"] = "Thank you";
+}
+
+
+
+	<div class="container">
+		<div class="row mt-md">
+			<div class="sm12 text-center">
+				<h2>Your Request</h2>
+			</div>
+		</div>
+		<div class="row justify-center mt72">
+			<div class="sm10">
+				<partial name="_NotificationHandler" for="@Model" />
+			</div>
+		</div>
+		<div class="row mt-md">
+			<div class="sm12 text-center">
+				<a href="/request-help">New Request for help</a>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+

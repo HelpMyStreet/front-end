@@ -1,121 +1,228 @@
-﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validateEmail, validatePhoneNumber } from "../shared/validator";
+﻿import { intialiseRequestStage, requestStage } from "./request-stage";
+import { initaliseDetailStage, detailStage } from "./detail-stage";
+import { intialiseReviewStage, reviewStage, onDirectToRequestClick, onDirectToDetailClick } from "./review-stage";
+import { buttonLoad, buttonUnload } from "../shared/btn";
 
-function validatePrivacyAndTerms() {
-	// requires checking of two or more inputs at the same time, so cant use the validateFormData.
-	$('.termsprivacy').hide();
-	let privacy = $("input[name='privacy_notice']").is(":checked");
-	let terms = $("input[name='terms_and_conditions']").is(":checked");
-	var errorText = "";
-	privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
-	privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
-	privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";
 
-	$('.termsprivacy').show();
-	$('.termsprivacy').html(errorText);
 
-	if (errorText !== "") {
-		return false;
-	}
-	return true;
-}
 
 $(() => {
-
-	$("#postcode_button").on("click", async function (evt) {
-		evt.preventDefault();
-
-		$(".postcode__info, #postcode_invalid").hide();		
-		$(".postcode__info, #postcode_error").hide();
-		$(".postcode__info, #postcode_invalid").hide();
-		$(".postcode__info, #streetchampionCoverage").hide();
-		
-		$(".expanderDetails").slideUp();
-
-		buttonLoad($(this));
-
-		const postcode = $("input[name=postcode_search]").val();
-
-		try {
-
-			const responseLogResponse = await fetch(`/api/requesthelpapi/logRequest/${postcode}`);
-			if (responseLogResponse.ok) {
-			
-				const responseLogResponseJson = await responseLogResponse.json();
-				var logRequestValid = responseLogResponseJson.isSuccessful && responseLogResponseJson.hasContent;				
-				if (logRequestValid === false) {
-					$("#postcode_invalid").show();
-				}
-				else if (responseLogResponseJson.content.fulfillable == 1) {					
-					$("#postcode_invalid").show();
-				}
-				else {
-
-					if (responseLogResponseJson.content.fulfillable == 4 || responseLogResponseJson.content.fulfillable == 6) {// pass to street champion or // manuel defer
-						var hasStreetChamp = responseLogResponseJson.content.fulfillable == 4;
-						$("#streetchampionCoverage").show();
-						if (hasStreetChamp) {
-							$("#streetchampionCoverage .postcode-checker__validation__message--text").html("<p>Great! There are volunteers in that area! Please go ahead and tell us a little more.</p>");
-						} else {
-							$("#streetchampionCoverage .postcode-checker__validation__message--text").html("<p>We've just launched HelpMyStreet and we're building our network across the country. We're working hard to ensure we have local volunteers in this area who can get the right help to the right people.</p>"
-								+ "<p>We'll do all we can to find someone to complete your request, but this may take a few days. Can we go ahead and do that for you?</p>");
-						}
-						$("#streetchampionCoverage").show();
-						$('#continueRequest').click(function () {
-							$('#hasStreetChampion').val(hasStreetChamp);
-							$(".postcode__info, #streetchampionCoverage").hide();
-							$("#requestId").val(responseLogResponseJson.content.requestID);
-							$("#postcode").val(postcode);
-							$(".expanderDetails").slideDown();
-						})
-					} 
-
-					
-				}
-			}
-		} catch (ex) {
-			console.error(ex);
-			$(".postcode__info, #postcode_error").show();
-		}
-		buttonUnload($(this));
-	});
-
-	$("#requesthelp_form").on("submit", function (event) {
-
-		event.preventDefault();
-		buttonLoad($("#submit_button"));
-		let validHelpNeeded = true;
-
-		var obj = $(this).serializeArray().reduce(function (acc, cur) {
-			acc[cur.name] = cur.value;
-			return acc;
-		}, {});
-		$(".error").hide();
-
-		if (!obj["help-needed-array"]) {
-			validHelpNeeded = false;
-			$("#help-needed-array-error").show();
-		}
-		
-		const valid = validateFormData($(this), {
-			firstname: (v) => v !== "" || "Please enter a first name",				
-			phonenumber: (v, d) =>
-				(v !== "") || (d.email !== "") || "Please enter an email address or a phone number",		
-		});
-		var phone = $('input[name=phonenumber')
-		var email = $('input[name=email')
-			
-		let validForm = (valid && validHelpNeeded && validateEmail(email, "Please enter a valid email address") && validatePhoneNumber(phone, "Please enter a valid phone number"));
-		
-		if (!validForm || !validatePrivacyAndTerms()) {
-			if (!validForm) {
-				$("#general-error").show();
-			}
-			buttonUnload($("#submit_button"));
-		} else {
-			$("#requesthelp_form").unbind('submit').submit(); // continue the submit unbind preventDefault
-		}
-	});
+    initaliseProgressButtons();
+    intialiseRequestStage();
 });
 
 
+var initaliseProgressButtons = function () {
+    let changeProgressNext = function (btn) {
+        let activeTab = $('.progress-bar').find('.is-active');
+        activeTab.removeClass("is-active");
+        activeTab.addClass("is-complete");
+        let nextTab = activeTab.next();
+        nextTab.addClass("is-active");       
+        if (nextTab.next().length == 0) {
+            btn.hide();
+            $('.btnSubmit').show();
+        } 
+        
+        $('.btnBack').show();
+    }
+    var changeProgressPrev = function (btn) {
+        let activeTab = $('.progress-bar').find('.is-active');        
+        activeTab.removeClass("is-active");
+        let prevTab = activeTab.prev();
+        prevTab.removeClass("is-complete");
+        prevTab.addClass("is-active");
+        if (prevTab.prev().length == 0) {
+            btn.hide();           
+        }
+        $('.btnSubmit').hide();
+        $('.btnNext').show();
+    }
+    $('.btnNext').click(function () {
+        let activeTab = $('.progress-bar').find('.is-active');
+        let currentTab = activeTab.attr("data-tab");
+        let nextTab = activeTab.next().attr("data-tab");
+        validateTab(currentTab).then(function (valid) {
+            if (valid == true) {
+                _moveTab(currentTab, nextTab)
+                changeProgressNext($('.btnNext'));
+            }
+        });
+    });
+
+    $('.btnBack').click(function () {
+        goBack();
+    });  
+
+    onDirectToDetailClick(function () {
+        goBack();
+    })
+
+    onDirectToRequestClick(function () {
+        goBack();
+        goBack();
+    })
+
+    var goBack = function(){
+        let activeTab = $('.progress-bar').find('.is-active');
+        let currentTab = activeTab.attr("data-tab");
+        let previousTab = activeTab.prev().attr("data-tab");
+        _moveTab(currentTab, previousTab);
+        changeProgressPrev($('.btnBack'));
+    }
+}
+
+
+
+
+
+
+
+
+async function validateTab(currentTab){
+    $('#hasErrors').hide();
+    let valid = true;
+    console.log(currentTab);
+
+    switch (currentTab) {
+        case "request":
+            if (requestStage.validate() == false) {
+                valid = false;
+            } else {
+                initaliseDetailStage(requestStage.selectedFor)
+            }
+            break;
+        case "details":
+            if (await detailStage.validate(requestStage.selectedFor) == false) {
+                valid = false;
+            } else {
+                let requestHelp = new Object();
+                requestHelp.request = requestStage;
+                requestHelp.detail = detailStage;
+                intialiseReviewStage(requestHelp);
+                intialiseSubmit();
+            }
+            break;
+        default:
+            valid = true;
+            break;        
+    }
+
+    if (!valid) {
+        $('#hasErrors').show();        
+    }
+    return valid;
+}
+
+function _moveTab(currentTab, nextTab) {    
+    $('*[data-tab-page="' + currentTab +'"]').hide();
+    $('[data-tab-page="' + nextTab + '"]').show();
+
+    if ($('.progress-bar').isInViewport() == false) {
+        $([document.documentElement, document.body]).animate({
+            scrollTop: ($(".progress-bar").offset().top - 50)
+        }, 500);
+    }
+}
+
+
+var intialiseSubmit = function () {
+    $('.btnSubmit').click(async function () {
+        reviewStage.getLatestValues();
+
+        let requestor = {
+            firstname: detailStage.yourDetails.firstname.val,
+            lastname: detailStage.yourDetails.lastname.val,
+            email: detailStage.yourDetails.email.val,
+            mobile: detailStage.yourDetails.mobilenumber.val ? detailStage.yourDetails.mobilenumber.val : '',
+            altNumber: detailStage.yourDetails.altnumber.val ? detailStage.yourDetails.altnumber.val : '',
+            address: {
+                addressline1: detailStage.yourDetails.address.addressLine1.val,
+                addressline2: detailStage.yourDetails.address.addressLine2.val ? detailStage.yourDetails.address.addressLine2.val : '',
+                locality: detailStage.yourDetails.address.locality.val,
+                postcode: detailStage.yourDetails.address.postcode.val
+            }
+        }
+        let recipient = !detailStage.onBehalf ? requestor : {
+            firstname: detailStage.theirDetails.firstname.val,
+            lastname: detailStage.theirDetails.lastname.val,
+            email: detailStage.theirDetails.email.val,
+            mobile: detailStage.theirDetails.mobilenumber.val,
+            altNumber: detailStage.theirDetails.altnumber.val,
+            address: {
+                addressline1: detailStage.theirDetails.address.addressLine1.val,
+                addressline2: detailStage.theirDetails.address.addressLine2.val,
+                locality: detailStage.theirDetails.address.locality.val,
+                postcode: detailStage.theirDetails.address.postcode.val,
+            }
+        }
+
+        let helpRequest = {
+            ForRequestor: !detailStage.onBehalf,
+            ReadPrivacyNotice: requestStage.agreeToTerms.privacy,
+            AcceptedTerms: requestStage.agreeToTerms.terms,
+            Requestor: requestor,
+            Recipient: recipient,
+            ConsentForContact: detailStage.consentForContact.val,
+            SpecialCommunicationNeeds: reviewStage.communicationNeeds.val,
+            OtherDetails: reviewStage.helperAdditionalDetails.val,
+        }
+        let jobRequest = {
+            SupportActivity: requestStage.selectedActivity.val,
+            Details: requestStage.additonalHelpDetail.val,
+            DueDays: parseInt(requestStage.selectedTime.val),
+            HealthCritical: (requestStage.selectedHealthWellBeing.val == "true")
+        }
+
+        let data = {
+            HelpRequest: helpRequest,
+            JobRequest: jobRequest
+        };
+
+
+        $('.retryError').hide();
+
+        try {
+            buttonLoad($("#btnSubmit"));
+            let resp = await fetch('api/requesthelp', {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (resp.ok) {
+                let respData = await resp.json()                
+                if (respData.hasContent == true & respData.isSuccessful == true) {
+                    if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6 || respData.content.fulfillable == 2 ) {
+                        window.location.href = "/requesthelp/success?fulfillable=" + respData.content.fulfillable + "&onBehalf=" + detailStage.onBehalf;
+                    } else if (respData.content.fulfillable == 1 || respData.content.fulfillable == 3) {
+                        throw 'The Request for help had an error, this could be due to an invalid postcodee';
+                    }
+                } else {
+                    throw 'error occured from within the request service';
+                }
+            } else {
+                throw 'error calling the request service'
+            }
+        } catch(e) {
+            $('.retryError').show();
+            console.error(e);
+        } finally {
+            buttonUnload($("#btnSubmit"));
+        }
+
+    });
+}
+
+
+$.fn.isInViewport = function () {
+    let elementTop = $(this).offset().top;
+    let elementBottom = elementTop + $(this).outerHeight();
+
+    let viewportTop = $(window).scrollTop();
+    let viewportBottom = viewportTop + $(window).height();
+
+    return elementBottom > viewportTop && elementTop < viewportBottom;
+};

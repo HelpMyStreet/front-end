@@ -1,0 +1,53 @@
+﻿@using HelpMyStreetFE.Models.RequestHelp;
+@{
+            var viewModel = Model;
+            var timeframes = new List<RequestHelpTimeViewModel>
+{
+     new RequestHelpTimeViewModel{ID = 1, TimeDescription = "Today", Days = 0},
+     new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
+     new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
+     new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 14},
+     new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
+    };
+}
+
+    <div class="tiles">
+        <div class="row">
+            <div class="sm4">
+                <div id="myself" data-type="request-for" class="tiles__tile tiles__tile--large orange">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon">
+                            <div class="cirlce">
+                                <img class="no-selected" src="~/img/icons/request-myself.svg" />
+                                <img class="on-selected" src="~/img/icons/request-myself-white.svg" />
+                            </div>
+                        </div>
+                        <div class="tiles__tile__content__header pt-xs">I am requesting help for myself</div>
+                        <div class="tiles__tile__content__description">I'm the person in need of help</div>
+                    </div>
+                </div>
+            </div>
+            <div class="sm4">
+                <div id="someone-else" data-type="request-for" class="tiles__tile tiles__tile--large dark-blue">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon ">
+                            <div class="cirlce double-line-alignment">
+                                <img class="no-selected " src="~/img/icons/request-behalf.svg" />
+                                <img class="on-selected" src="~/img/icons/request-behalf-white.svg" />
+                            </div>
+                        </div>
+                        <div class="tiles__tile__content__header pt-xs">On behalf of someone else</div>
+                        <div class="tiles__tile__content__description">I'm looking for help for a relative, neighbour or friend</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span id="e-help-for" class="error"></span>
+    </div>
+
+
+
+
+
+
+

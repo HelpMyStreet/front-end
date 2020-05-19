@@ -1,0 +1,58 @@
+﻿<div data-tab-page="request">
+    <h2>What type of help are you looking for?</h2>
+    <div class="row">
+        <div class="sm12">
+            <p>People across the country are amazing. From collecting prescriptions to picking up groceries, walking dogs to sewing face coverings, they’re helping their neighbours and community to stay safe.</p>
+            <p>If you need ANYTHING, from a pint of milk to picking up a weekly shop, we have people who can help.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="sm12 input">
+            <label>Please select one of the categories below</label>
+            <span>If you need more than one type of help please submit separate requests</span>
+            <partial name="_Activties" />    
+            <hr class="input--separator" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="sm12 input">
+            <label for="additional-help-detail">Please tell us more about the help or support you're requesting</label>
+            <textarea name="additional-help-detail" placeholder="Please don't include any sensitve details that aren't needed in order for us to help you"></textarea>
+            <span id="e-additional-help" class="error"></span>
+            <hr class="input--separator" />
+        </div>
+    </div>
+    <h2>Help Description</h2>
+    <div class="row">
+        <div class="sm12 input">
+            <label>Who is the help for?</label>        
+            <partial name="_RequestFor">       
+             <hr class="input--separator" />
+</div>
+    </div>
+    <div class="row">
+        <div class="sm12 input">
+            <label>When is the help needed?</label>          
+            <partial name="_Timeframe">            
+            <hr class="input--separator" />
+</div>
+    </div>
+
+
+    <div class="row mt-md">
+        <div class="sm8 input mt-md">
+            <label>Is this request critical to someone’s health or wellbeing?</label>      
+            <partial name="_HealthWelbeing">      
+                <hr class="input--separator" />
+</div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="sm10">
+            <partial name="_AgreeToTerms" />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿
+    <div class="btn-wrapper">
+        
+        <div class="row">
+            <div class="sm12">
+                <span class="error retryError">Oops! an error occured, please try again.</span>
+                <span id="hasErrors" class="error">Please check the form for any errors</span>
+            </div>
+        </div>
+          
+        <div class="row">
+            <div class="sm12">
+                <button  id="btnBack" class="btn cta large  btnBack  left clear-button" type="button">Back</button>
+                <button id="btnNext" class="btn btnNext cta large  right" type="button">
+                    <span class="text">Continue</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Validating..."}' /></div>
+                </button>
+
+                <button id="btnSubmit" class="btn btnSubmit cta large  dnone right" type="button">
+                    <span class="text">Submit</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
+                </button>
+            </div>
+        </div>
+        
+    </div>
