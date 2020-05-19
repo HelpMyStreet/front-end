@@ -182,7 +182,7 @@ namespace HelpMyStreetFE.Services
 
         public string FormatName(string name)
         {
-            return string.Join(' ', name.Trim().Split(' ').Select(word => char.ToUpper(word[0]) + word.Substring(1)));
+            return string.Join(' ', name.Trim().Split(' ').Where(word => word.Length > 0).Select(word => char.ToUpper(word[0]) + word.Substring(1)));
         }
     }
 
