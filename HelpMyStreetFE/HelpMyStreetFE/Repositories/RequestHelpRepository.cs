@@ -72,5 +72,46 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 		}
-	}
+        public async Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId)
+        {
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobsAllocatedToUserResponse>>($"/api/GetJobsAllocatedToUser?volunteerUserID=${volunteerUserId}");
+
+            return response.Content.JobSummaries;
+        }
+
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
+        {
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID=${jobId}");
+
+            return response.Content;
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(string postCode, double distanceInMiles)
+        {
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter?postcode=${postCode}&distanceInMiles=${distanceInMiles}");
+
+            return response.Content.JobSummaries;
+        }
+
+        public async Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request)
+        {
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToDoneResponse>>($"/api/PutUpdateJobStatusToDone", request);
+
+            return response.Content.Success;
+        }
+
+        public async Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request)
+        {
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToOpenResponse>>($"/api/PutUpdateJobStatusToOpen", request);
+
+            return response.Content.Success;
+        }
+
+        public async Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request)
+        {
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToInProgressResponse>>($"/api/PutUpdateJobStatusToInProgress", request);
+
+            return response.Content.Success;
+        }
+    }
 }

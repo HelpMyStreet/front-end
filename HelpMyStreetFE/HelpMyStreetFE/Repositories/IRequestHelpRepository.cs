@@ -12,6 +12,12 @@ namespace HelpMyStreetFE.Repositories
 	{
         Task<IEnumerable<JobSummary>> GetJobSummariesAsync(string postCode, double distanceInMiles);
         Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequest(PostNewRequestForHelpRequest request);
+        Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId);
+        Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId);
+        Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(string postCode, double distanceInMiles);
+        Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request);
+        Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request);
+        Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request);
     }
 }
 
