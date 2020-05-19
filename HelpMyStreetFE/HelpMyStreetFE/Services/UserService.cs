@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace HelpMyStreetFE.Services
 {
@@ -55,8 +56,8 @@ namespace HelpMyStreetFE.Services
             {
                 UserID = id,
                 PostalCode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postCode),
-                FirstName = firstName,
-                LastName = lastName,
+                FirstName = FormatName(firstName),
+                LastName = FormatName(lastName),
                 Address = new Address
                 {
                     AddressLine1 = addressLine1,
@@ -68,7 +69,7 @@ namespace HelpMyStreetFE.Services
                 MobilePhone = mobile,
                 OtherPhone = otherPhone ?? "",
                 DateOfBirth = dob,
-                DisplayName = $"{firstName}"
+                DisplayName = FormatName(firstName)
             });
         }
 
@@ -177,6 +178,11 @@ namespace HelpMyStreetFE.Services
                 isStreetChampion,
                 isVerified
                 );
+        }
+
+        public string FormatName(string name)
+        {
+            return string.Join(' ', name.Trim().Split(' ').Select(word => char.ToUpper(word[0]) + word.Substring(1)));
         }
     }
 
