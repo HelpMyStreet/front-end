@@ -74,14 +74,14 @@ namespace HelpMyStreetFE.Repositories
 		}
         public async Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobsAllocatedToUserResponse>>($"/api/GetJobsAllocatedToUser?volunteerUserID=${volunteerUserId}");
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobsAllocatedToUserResponse>>($"/api/GetJobsAllocatedToUser?volunteerUserID={volunteerUserId}");
 
             return response.Content.JobSummaries;
         }
 
         public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID=${jobId}");
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID={jobId}");
 
             return response.Content;
         }
