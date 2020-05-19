@@ -41,7 +41,8 @@ export var detailStage = {
             getPersonDetails("your", this.yourDetails, true);
         }
 
-        detailStage.consentForContact = $('input[name="consent_for_contact"]').is(":checked");    
+        this.consentForContact.val = $('input[name="consent_for_contact"]').is(":checked");
+  
     },
 
 
@@ -50,8 +51,8 @@ export var detailStage = {
         this.getLatestValues(onBehalf);
         $('.error').hide();
         let valid = await validateYourDetails(onBehalf);
-        if (detailStage.consentForContact.val == false) {
-            $('#' + detailStage.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
+        if (this.consentForContact.val == false) {
+            $('#' + this.consentForContact.errorSpan).show().text("Please check to confirm that you have read and understood this");
             valid = false;
         }
         if (onBehalf == true) {
@@ -84,6 +85,10 @@ var HideorShowFindAddress = function(hide, postfix){
         inputClassforPostcodeSearch.addClass("sm6");
         let inputClassforAddressFine = $('#address_finder_' + postfix + '').parent();
         inputClassforAddressFine.addClass("dnone");
+        detailStage.yourDetails.address.addressLine1.val = null;
+        detailStage.yourDetails.address.addressLine2.val = null;
+        detailStage.yourDetails.address.county.val = null;
+        detailStage.yourDetails.address.locality.val = null;
     } else {
         let inputClassforPostcodeSearch = $('input[name="postcode_search_' + postfix + '"]').parent();
         inputClassforPostcodeSearch.addClass("sm3");
@@ -128,6 +133,9 @@ var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
         $('#address_selector_' + postfix).hide();
     } else {       
         $('#manual_address_' + postfix).click(function () {
+            $("#expander_" + postfix).slideDown();
+        }),
+        $('#edit_address_' + postfix).click(function () {
             $("#expander_" + postfix).slideDown();
         })
 

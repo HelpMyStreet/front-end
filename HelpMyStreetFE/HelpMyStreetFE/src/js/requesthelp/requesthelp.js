@@ -163,7 +163,7 @@ var intialiseSubmit = function () {
             AcceptedTerms: requestStage.agreeToTerms.terms,
             Requestor: requestor,
             Recipient: recipient,
-            ConsentForContact: detailStage.consentForContact,
+            ConsentForContact: detailStage.consentForContact.val,
             SpecialCommunicationNeeds: reviewStage.communicationNeeds.val,
             OtherDetails: reviewStage.helperAdditionalDetails.val,
         }
