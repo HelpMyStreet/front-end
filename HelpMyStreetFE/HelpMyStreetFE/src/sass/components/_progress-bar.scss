@@ -95,6 +95,7 @@
     z-index: 2;
     border-width: 8px;
     border-top-style: solid;
+    -webkit-border-after: 0px;
     
 }
 
@@ -120,7 +121,7 @@
 
 .progress-bar .is-complete:last-child:after,
 .progress-bar .is-active:last-child:after {
-    width: 200%;
+    width: 193%;
     left: -100%;
 }
 
