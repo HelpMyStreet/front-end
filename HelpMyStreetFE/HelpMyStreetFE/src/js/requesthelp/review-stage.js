@@ -29,13 +29,13 @@ var loadSelectedFor = function (id) {
 }
 
 
-var loadDescripton = function (request) {
+var loadDescripton = function (request) {    
     if (request.additonalHelpDetail.val) {
         $('#review-additional-info').text(request.additonalHelpDetail.val);
     } else {
         $('#review-additional-info').text("No additional information supplied");
     }    
-    $('#review-critical-request').text(request.selectedHealthWellBeing.val == true ? "Yes" : "No");
+    $('#review-critical-request').text(request.selectedHealthWellBeing.val == "true" ? "Yes" : "No");
     if (request.selectedTime.id == "time_5") {
         let plural = "s"
         if (request.selectedTime.val == 1) {
@@ -59,7 +59,7 @@ var loadPersonalDetails = function (detail) {
         $($('#address-label_your')).text("Postcode: ")
     }
 
-    $('#review-your-address').text(address +  detail.yourDetails.address.postcode.val)
+    $('#review-your-address').text(address + detail.yourDetails.address.postcode.val.toUpperCase())
     $('#review-your-email').text(detail.yourDetails.email.val)
     $('#review-your-mobile').text(detail.yourDetails.mobilenumber.val ? detail.yourDetails.mobilenumber.val : "Not Provided")
     $('#review-your-alternate').text(detail.yourDetails.altnumber.val ? detail.yourDetails.altnumber.val : "Not Provided");
@@ -84,9 +84,6 @@ var loadPersonalDetails = function (detail) {
 
 
 }
-
-
-
 
 
 export function onDirectToRequestClick(callback) {

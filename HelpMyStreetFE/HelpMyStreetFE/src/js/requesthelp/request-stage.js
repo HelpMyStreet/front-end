@@ -12,8 +12,7 @@
         this.agreeToTerms.privacy = $('input[name="privacy_notice"]').is(":checked");
         this.agreeToTerms.terms = $('input[name="terms_and_conditions"]').is(":checked");
         this.additonalHelpDetail.val = $('textarea[name="additional-help-detail"]').val()
-        this.selectedHealthWellBeing.val = $('input[name="volunteer_medical_condition"]').val();
-
+        this.selectedHealthWellBeing.val = $('input[name="volunteer_medical_condition"]:checked').val();        
     },
     validate: function () {
         this.getLatestValues();
