@@ -70,3 +70,7 @@ export function validatePhoneNumber(phoneNumberEl, errorMessage) {
     }
     return valid;
 }
+
+export function  hasNumber(myString) {
+    return /\d/.test(myString);
+}
