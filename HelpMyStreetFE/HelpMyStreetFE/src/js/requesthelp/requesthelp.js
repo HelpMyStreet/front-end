@@ -74,11 +74,6 @@ var initaliseProgressButtons = function () {
 
 
 
-
-
-
-
-
 async function validateTab(currentTab){
     $('#hasErrors').hide();
     let valid = true;
@@ -173,6 +168,8 @@ var intialiseSubmit = function () {
             DueDays: parseInt(requestStage.selectedTime.val),
             HealthCritical: (requestStage.selectedHealthWellBeing.val == "true")
         }
+        
+        console.log(jobRequest);
 
         let data = {
             HelpRequest: helpRequest,
