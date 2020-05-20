@@ -67,6 +67,8 @@ export function initialiseRequests() {
                         $(this).attr("data-accepted", "true");
                     }
                     return hasUpdated;
+                } else {
+                    return false;
                 }
             })
         }
