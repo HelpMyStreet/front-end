@@ -11,7 +11,6 @@ using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models;
 using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
@@ -146,8 +145,7 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             
-            //viewModel.PageModel = await _requestService.GetOpenJobs("", 0.0);
-            viewModel.PageModel = await _requestService.GetJobsByFilterAsync(currentUser.PostalCode, 20);
+            viewModel.PageModel = await _requestService.GetOpenJobs(currentUser.PostalCode, 20);
 
             return View("Index", viewModel);
         }
@@ -158,34 +156,7 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
-            viewModel.PageModel = await _requestService.GetJobsAllocatedToUserAsync(currentUser.ID);
-            //viewModel.PageModel = new List<JobSummary>
-            //{
-            //    new JobSummary {
-            //        UniqueIdentifier = Guid.NewGuid(),
-            //        IsHealthCritical = true,
-            //        DueDate = new DateTime(2020, 05, 22),
-            //        SupportActivity = SupportActivities.Shopping,
-            //        PostCode = "AB1 2CD",
-            //        DistanceInMiles = 1.23
-            //    },
-            //    new JobSummary {
-            //        UniqueIdentifier = Guid.NewGuid(),
-            //        IsHealthCritical = false,
-            //        DueDate = new DateTime(2020, 05, 22),
-            //        SupportActivity = SupportActivities.CollectingPrescriptions,
-            //        PostCode = "AB1 2CD",
-            //        DistanceInMiles = 1.23
-            //    },
-            //    new JobSummary {
-            //        UniqueIdentifier = Guid.NewGuid(),
-            //        IsHealthCritical = true,
-            //        DueDate = new DateTime(2020, 05, 22),
-            //        SupportActivity = SupportActivities.Other,
-            //        PostCode = "AB1 2CD",
-            //        DistanceInMiles = 1.23
-            //    },
-            //};
+            viewModel.PageModel = await _requestService.GetJobsForUser(currentUser.ID);
 
             return View("Index", viewModel);
         }
