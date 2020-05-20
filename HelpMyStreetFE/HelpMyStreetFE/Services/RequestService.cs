@@ -24,11 +24,10 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
         }
-
         public Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
         {
             _logger.LogInformation($"Logging Request");
-            var request = new HelpMyStreet.Contracts.RequestService.Request.PostNewRequestForHelpRequest
+            var request = new PostNewRequestForHelpRequest
             {
                 HelpRequest = new HelpRequest {                                     
                     AcceptedTerms = viewModel.HelpRequest.AcceptedTerms,
@@ -69,7 +68,7 @@ namespace HelpMyStreetFE.Services
                         }
                     }
                 },
-                NewJobsRequest = new HelpMyStreet.Contracts.RequestService.Request.NewJobsRequest
+                NewJobsRequest = new NewJobsRequest
                 {
                     Jobs = new List<Job>
                     {
@@ -83,12 +82,11 @@ namespace HelpMyStreetFE.Services
                     }
                 }
             };
-            return _requestHelpRepository.LogRequest(request);
+            return _requestHelpRepository.PostNewRequestForHelpAsync(request);
         }
-
-        public async Task<IEnumerable<JobSummary>> GetOpenJobs(string pc, double distance)
+        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(string postCode, double distanceInMiles)
         {
-            var jobs = (await _requestHelpRepository.GetJobSummariesAsync(pc, distance))
+            var jobs = (await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles))
                 .OrderBy(j => j.DistanceInMiles)
                 .ThenBy(j => j.DueDate)
                 .ThenByDescending(j => j.IsHealthCritical)
@@ -96,20 +94,18 @@ namespace HelpMyStreetFE.Services
 
             return jobs;
         }
-
-        public async Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId)
+        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId)
         {
-            return await _requestHelpRepository.GetJobsAllocatedToUserAsync(volunteerUserId);
+            var jobs = (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
+                .OrderBy(j => j.DueDate)
+                .ThenByDescending(j => j.IsHealthCritical)
+                .ToList();
+
+            return jobs;
         }
-        
         public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
         {
             return await _requestHelpRepository.GetJobDetailsAsync(jobId);
-        }
-
-        public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(string postCode, double distanceInMiles)
-        {
-            return await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles);
         }
         public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId)
         {
@@ -136,15 +132,6 @@ namespace HelpMyStreetFE.Services
                 JobID = jobID
             });
         }
-
-        public async Task<IEnumerable<JobSummary>> GetJobsForUser(int userId)
-        {
-            var jobs = (await _requestHelpRepository.GetJobSummariesAsync(userId))
-                .OrderBy(j => j.DueDate)
-                .ThenByDescending(j => j.IsHealthCritical)
-                .ToList();
-
-            return jobs;
-        }
+        
     }
 }
