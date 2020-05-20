@@ -11,6 +11,7 @@ using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models;
 using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
@@ -233,7 +234,7 @@ namespace HelpMyStreetFE.Controllers
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
-                    EncodedUserID = Base64Helpers.Base64Encode(user.ID.ToString()),
+                    EncodedUserID = Base64Utils.Base64Encode(user.ID.ToString()),
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
