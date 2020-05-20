@@ -31,9 +31,16 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
+                if (!ModelState.IsValid)
+                    throw new Exception("Job ID has not been supplied");
+
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 int jobId = -1;
-                int.TryParse(Base64Utils.Base64Decode(Job.JobID.Replace("job-", "")), out jobId);
+                int.TryParse(Base64Utils.Base64Decode(Job.JobID), out jobId);
+
+                if (jobId == -1)
+                    throw new Exception("Could not decode Job ID: " + Job.JobID);                                
+
                 return await _requestService.UpdateJobStatusToOpenAsync(jobId, userId);
             }
             catch (Exception ex)
