@@ -45,7 +45,7 @@
             <span class="activity__detail">@Model.PostCode (@Model.DistanceInMiles miles away)</span>
         </div>
         <div class="job__info__actions column">
-            <button class="btn cta large fill" @(UserIsVerified ? "" : "disabled")>
+            <button  class="btn cta large fill accept-request" @(UserIsVerified ? "" : "disabled")>
                 <span class="text">Accept</span>
             </button>
             @if (UserIsVerified)

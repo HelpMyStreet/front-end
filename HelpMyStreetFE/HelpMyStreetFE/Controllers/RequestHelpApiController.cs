@@ -23,6 +23,9 @@ namespace HelpMyStreetFE.Controllers {
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
         }
 
+
+
+
         [HttpPost]        
         public async Task<ActionResult<BaseRequestHelpResponse<LogRequestResponse>>> RequestHelp([FromBody] RequestHelpViewModel model)
         {

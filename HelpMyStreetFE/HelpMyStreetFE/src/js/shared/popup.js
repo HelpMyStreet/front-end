@@ -1,10 +1,21 @@
 
-export function showPopup(header, htmlContent) {
+export function showPopup(header, htmlContent, acceptCallback) {
     var popup = $('#popup');
+    popup.find(".popup__content").centerPopup();
     popup.find(".popup__content__header").first().text(header);
-    popup.centerPopup();
+    
     popup.find(".popup__content__text").first().html(htmlContent);
     popup.fadeIn(200);     
+
+    $('#popup-accept').click(function (evt) {
+        evt.stopImmediatePropagation();
+        acceptCallback();
+        popup.fadeOut(100);    
+    })
+    $('.popup-close').click(function () {
+        evt.stopImmediatePropagation();
+        popup.fadeOut(100);    
+    })
 }
 
 
