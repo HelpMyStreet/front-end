@@ -96,6 +96,7 @@
         img {
           display: inline-block;
           margin-right: 10px;
+          max-width: 32px;
         }
       }
     }
@@ -154,11 +155,25 @@
 
   &__detail {
     display: none;
+    padding: 10px 20px;
 
-    hr {
+    &:before {
+      content: " ";
+      position: relative;
+      display: block;
+      margin: auto;
       border: none;
       border-top: 1px solid $gray-8;
       width: 75%;
+    }
+
+    h4 {
+      color: $dark-blue;
+      font-size: 1.2rem;
+    }
+
+    p {
+      line-height: 1.25;
     }
   }
 

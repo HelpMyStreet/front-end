@@ -43,7 +43,7 @@
                 }
                 @Model.SupportActivity.FriendlyName()
             </span>
-            <span class="activity__detail">@Model.PostCode (@Model.DistanceInMiles miles away)</span>
+            <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
         </div>
         <div class="job__info__actions column">
             @if (IsAccepted)
@@ -73,9 +73,13 @@
                 <a href="#" class="disabled">View more info&#9660;</a>
             }
         </div>
-        </div>
-        <div class="job__detail">
-            <hr />
-            <p>More info here</p>
-        </div>
     </div>
+    <div class="job__detail">
+        <h4>Request Description</h4>
+        <p>@Model.Details</p>
+        <h4>Further Details</h4>
+        <p>@Model.OtherDetails</p>
+        <h4>Communication Needs</h4>
+        <p>@Model.SpecialCommunicationNeeds</p>
+    </div>
+</div>
