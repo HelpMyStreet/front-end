@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validatePostCode, validatePhoneNumber } from "../shared/validator";
+import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
 
 export function initialiseStepTwo() {
@@ -61,8 +61,8 @@ export function initialiseStepTwo() {
     $("#registration_form").on("submit", function (event) {
         $(".expander").slideDown();        
         const valid = validateFormData($(this), {
-            first_name: (v) => v !== "" || "Please enter a first name",
-            last_name: (v) => v !== "" || "Please enter a last name",
+            first_name: (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
+            last_name: (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             postcode: (v) => v !== "" ||
                 "Please enter a postcode",
             dob: (v) => v !== "" || "Please enter a valid date of birth",          
@@ -104,6 +104,8 @@ export function initialiseStepTwo() {
         })
   });
 }
+
+
 
 var runAdditionalValidation = async function(form) {
     let dob = form.find("input[name='dob']");    
