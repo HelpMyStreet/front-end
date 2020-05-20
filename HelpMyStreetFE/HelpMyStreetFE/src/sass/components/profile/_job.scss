@@ -1,5 +1,15 @@
 @import "../../mixins/effects";
 
+@keyframes highlight {
+  50% {
+    background-color:$light-blue;
+  }
+
+  100% {
+    background-color: white;
+  }
+}
+
 .job {
   @include shadow-xs;
   width: 100%;
@@ -9,6 +19,10 @@
   margin: 10px 0;
   padding: 5px;
   overflow: hidden;
+
+  &.highlight {
+    animation: highlight 2s;
+  }
 
   &__info {
     min-height: 100px;
@@ -35,13 +49,18 @@
       margin: -5px -5px 5px;
       background-color: $washed-blue;
 
-      span {
+      span, img {
         padding: 0 5px;
+      }
+
+      img {
+        height:25px;
+        margin: 5px;
       }
 
       @media (min-width: $med-screen) {
         height: auto;
-        background-color: white;
+        background-color: transparent;
         flex-direction: column;
         justify-content: center;
       }

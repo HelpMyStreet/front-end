@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace HelpMyStreetFE.Services
 {
@@ -55,8 +56,8 @@ namespace HelpMyStreetFE.Services
             {
                 UserID = id,
                 PostalCode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postCode),
-                FirstName = firstName,
-                LastName = lastName,
+                FirstName = FormatName(firstName),
+                LastName = FormatName(lastName),
                 Address = new Address
                 {
                     AddressLine1 = addressLine1,
@@ -68,7 +69,7 @@ namespace HelpMyStreetFE.Services
                 MobilePhone = mobile,
                 OtherPhone = otherPhone ?? "",
                 DateOfBirth = dob,
-                DisplayName = $"{firstName}"
+                DisplayName = FormatName(firstName)
             });
         }
 
@@ -146,7 +147,7 @@ namespace HelpMyStreetFE.Services
         public UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
         {
             var personalDetails = user.UserPersonalDetails;
-            string initials = personalDetails.FirstName.Substring(0, 1) + personalDetails.LastName.Substring(0, 1);
+            string initials = personalDetails.FirstName.Substring(0, 1).ToUpper() + personalDetails.LastName.Substring(0, 1).ToUpper();
             string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
           
             string gender = "Unknown";
@@ -177,6 +178,11 @@ namespace HelpMyStreetFE.Services
                 isStreetChampion,
                 isVerified
                 );
+        }
+
+        public string FormatName(string name)
+        {
+            return string.Join(' ', name.Trim().Split(' ').Where(word => word.Length > 0).Select(word => char.ToUpper(word[0]) + word.Substring(1)));
         }
     }
 
