@@ -9,8 +9,13 @@ namespace HelpMyStreetFE.Services
 {
     public interface IRequestService
     {
-        Task<IEnumerable<JobSummary>> GetOpenJobs(string pc, double distance);
+        Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId);
+        Task<IEnumerable<JobSummary>> GetOpenJobsAsync(string postCode, double distanceInMiles);
         Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel request, int userId);
+        Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId);
+        Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId);
+        Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId);
+        Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId);
 
     }
 }

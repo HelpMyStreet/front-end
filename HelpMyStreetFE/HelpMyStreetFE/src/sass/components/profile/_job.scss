@@ -2,7 +2,7 @@
 
 @keyframes highlight {
   50% {
-    background-color:$light-blue;
+    background-color: $light-blue;
   }
 
   100% {
@@ -19,6 +19,10 @@
   margin: 10px 0;
   padding: 5px;
   overflow: hidden;
+
+  @media (min-width: $med-screen) {
+    padding: 10px 5px;
+  }
 
   &.highlight {
     animation: highlight 2s;
@@ -49,12 +53,13 @@
       margin: -5px -5px 5px;
       background-color: $washed-blue;
 
-      span, img {
+      span,
+      img {
         padding: 0 5px;
       }
 
       img {
-        height:25px;
+        height: 25px;
         margin: 5px;
       }
 
@@ -91,13 +96,23 @@
         img {
           display: inline-block;
           margin-right: 10px;
+          max-width: 32px;
         }
       }
     }
 
     &__actions {
-      padding: 10px 0 0;
+      .btn {
+        width: 170px;
+        padding: 5px 0;
+      }
+    }
 
+    &__footer {
+      @media (min-width: $med-screen) {
+        grid-column-start: 3;
+        grid-column-end: 3;
+      }
       button[disabled] {
         background-color: $gray-8;
       }
@@ -140,11 +155,25 @@
 
   &__detail {
     display: none;
+    padding: 10px 20px;
 
-    hr {
+    &:before {
+      content: " ";
+      position: relative;
+      display: block;
+      margin: auto;
       border: none;
       border-top: 1px solid $gray-8;
       width: 75%;
+    }
+
+    h4 {
+      color: $dark-blue;
+      font-size: 1.2rem;
+    }
+
+    p {
+      line-height: 1.25;
     }
   }
 
