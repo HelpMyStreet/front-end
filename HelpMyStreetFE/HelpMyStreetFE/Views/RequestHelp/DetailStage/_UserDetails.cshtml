@@ -5,12 +5,12 @@
     <div class="row">
         <div class="input sm6">
             <label> @Model.LabelPrefix first name</label>
-            <input name="first_name_@Model.NamePostfix" type="text" placeholder="e.g. John" />
+            <input name="first_name_@Model.NamePostfix" type="text" maxlength="50" placeholder="e.g. John" />
             <span id="e-firstname_@Model.NamePostfix" class="error"></span>
         </div>
         <div class="input sm6">
             <label>@Model.LabelPrefix last name</label>
-            <input name="last_name_@Model.NamePostfix" type="text" placeholder="e.g. Smith" />
+            <input name="last_name_@Model.NamePostfix" type="text" maxlength="50" placeholder="e.g. Smith" />
             <span id="e-lastname_@Model.NamePostfix" class="error"></span>
         </div>
     </div>

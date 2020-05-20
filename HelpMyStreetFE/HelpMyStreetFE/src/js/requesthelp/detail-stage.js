@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validatePostCode } from "../shared/validator";
+import { validatePostCode, hasNumber } from "../shared/validator";
 
 export var detailStage = {
     onBehalf: false,
@@ -199,14 +199,16 @@ var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
 
 var validatePersonalDetails = function (obj) {
     let valid = true;
-    if (!obj.firstname.val) {
-        $('#' + obj.firstname.errorSpan).show().text("Please enter a first name");
+    if (!obj.firstname.val || obj.firstname.val.length < 2 || hasNumber(obj.firstname.val) ) {
+        $('#' + obj.firstname.errorSpan).show().text("Please enter a name of at least 2 characters (letters and common punctuation marks only)");
+        valid = false;
+    } 
+
+    if (!obj.lastname.val || obj.lastname.val.length < 2 || hasNumber(obj.lastname.val)) {
+        $('#' + obj.lastname.errorSpan).show().text("Please enter a name of at least 2 characters (letters and common punctuation marks only)");
         valid = false;
     }
-    if (!obj.lastname.val) {
-        $('#' + obj.lastname.errorSpan).show().text("Please enter a last name");
-        valid = false;
-    }
+
     if (!obj.mobilenumber.val && !obj.altnumber.val) {
         $('#' + obj.mobilenumber.errorSpan).show().text("Please enter either a mobile or an alternative phone number");
         valid = false;
