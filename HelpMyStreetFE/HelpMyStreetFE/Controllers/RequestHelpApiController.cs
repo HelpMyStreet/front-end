@@ -41,7 +41,7 @@ namespace HelpMyStreetFE.Controllers {
                 if (jobId == -1)
                     throw new Exception("Could not decode Job ID: " + Job.JobID);                                
 
-                return await _requestService.UpdateJobStatusToOpenAsync(jobId, userId);
+                return await _requestService.UpdateJobStatusToInProgressAsync(jobId, userId, userId);
             }
             catch (Exception ex)
             {
