@@ -2,12 +2,13 @@
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
+using HelpMyStreet.Utils.Utils;
 namespace HelpMyStreetFE.Controllers { 
 
 
@@ -24,6 +25,23 @@ namespace HelpMyStreetFE.Controllers {
         }
 
 
+        [Authorize]
+        [HttpPost("accept-request")]
+        public async Task<ActionResult<bool>> AcceptRequest([FromBody]UpdateJobRequest Job)
+        {
+            try
+            {
+                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                int jobId = -1;
+                int.TryParse(Base64Utils.Base64Decode(Job.JobID.Replace("job-", "")), out jobId);
+                return await _requestService.UpdateJobStatusToOpenAsync(jobId, userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("an error occured accepting help", ex);
+                return StatusCode(500);
+            }
+        }
 
 
         [HttpPost]        

@@ -6,8 +6,12 @@
            
         </div>
         <div class="popup__content__buttons">
+            <span class="error"></span>
             <div class="popup__content__buttons__button">
-                <button id="popup-accept" class="btn cta  wide "> Accept</button>
+                <button id="popup-accept" class="btn cta  wide ">                    
+                    <span class="text">Accept</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Accepting..."}' /></div>
+                </button>
             </div>
             <div class="popup__content__buttons__button">
                 <button  class="btn clear  wide popup-close"> Cancel</button>

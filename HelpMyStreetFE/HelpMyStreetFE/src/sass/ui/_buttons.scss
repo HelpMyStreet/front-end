@@ -26,7 +26,7 @@
   }
 
   &.wide{
-      min-width:200px;
+      min-width:250px;
   }
 
   &:hover {
@@ -38,7 +38,7 @@
 
 
 .clear{
-    border: 1px solid $green;
+    border: 2px solid $green;
     background: $white;
     color: $green;
 }

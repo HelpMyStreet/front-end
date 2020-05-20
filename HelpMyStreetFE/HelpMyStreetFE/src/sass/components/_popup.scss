@@ -8,12 +8,17 @@
     height: 100%;
     z-index: 3;
     display: none;
-
+    
     &__content {
+
+        .error{
+            color: red;
+            line-height:2.5;
+        }
         position: inherit;
         top: 30%;
         left: 53%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -28%);
         min-width: 300px;
         width: 50%;
         background: white;
@@ -22,6 +27,10 @@
         text-align: center;
         @include shadow-md;
         padding: 20px;
+
+        @media screen and (min-width: $sm-screen) {
+            transform: translate(-50%, -50%);
+        }
 
         &__header {
             color: $dark-blue;
