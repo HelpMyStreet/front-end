@@ -8,13 +8,13 @@ export function initialiseRequests() {
   if (job) {
     $("html, body").animate(
       {
-        scrollTop: $(`#job-${job}`).offset().top,
+        scrollTop: $(`#${job}`).offset().top,
       },
       {
         duration: 1000,
         complete: () => {
-          $(`#job-${job}`).addClass("open highlight");
-          $(`#job-${job} .job__detail`).slideDown();
+          $(`#${job}`).addClass("open highlight");
+          $(`#${job} .job__detail`).slideDown();
         },
       }
     );
@@ -27,8 +27,8 @@ export function initialiseRequests() {
       e.preventDefault();
 
       updateQueryStringParam('j', id);
-      $(`#job-${id}`).addClass("open");
-      $(`#job-${id} .job__detail`).slideToggle();
+      $(`#${id}`).addClass("open");
+      $(`#${id} .job__detail`).slideToggle();
     });
   });
 
@@ -38,8 +38,8 @@ export function initialiseRequests() {
     el.on("click", (e) => {
       e.preventDefault();
 
-      $(`#job-${id}`).removeClass("open");
-      $(`#job-${id} .job__detail`).slideToggle();
+      $(`#${id}`).removeClass("open");
+      $(`#${id} .job__detail`).slideToggle();
     });
   });
 
