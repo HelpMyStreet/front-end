@@ -2,7 +2,7 @@
 
 @keyframes highlight {
   50% {
-    background-color:$light-blue;
+    background-color: $light-blue;
   }
 
   100% {
@@ -19,6 +19,10 @@
   margin: 10px 0;
   padding: 5px;
   overflow: hidden;
+
+  @media (min-width: $med-screen) {
+    padding: 10px 5px;
+  }
 
   &.highlight {
     animation: highlight 2s;
@@ -49,12 +53,13 @@
       margin: -5px -5px 5px;
       background-color: $washed-blue;
 
-      span, img {
+      span,
+      img {
         padding: 0 5px;
       }
 
       img {
-        height:25px;
+        height: 25px;
         margin: 5px;
       }
 
@@ -96,8 +101,17 @@
     }
 
     &__actions {
-      padding: 10px 0 0;
+      .btn {
+        width: 170px;
+        padding: 5px 0;
+      }
+    }
 
+    &__footer {
+      @media (min-width: $med-screen) {
+        grid-column-start: 3;
+        grid-column-end: 3;
+      }
       button[disabled] {
         background-color: $gray-8;
       }

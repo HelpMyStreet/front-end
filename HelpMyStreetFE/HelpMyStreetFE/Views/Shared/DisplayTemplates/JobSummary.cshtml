@@ -6,6 +6,7 @@
 
 @{
     bool UserIsVerified = (bool)ViewData["UserIsVerified"];
+    bool IsAccepted = ViewData["IsAccepted"] is bool ? (bool)ViewData["IsAccepted"] : false;
     var id = Base64Utils.Base64Encode(Model.JobID.ToString());
 }
 
@@ -36,7 +37,7 @@
         </div>
         <div class="job__info__activity column">
             <span class="activity__title @Model.SupportActivity.Class()">
-                @if(Model.SupportActivity != SupportActivities.Other)
+                @if (Model.SupportActivity != SupportActivities.Other)
                 {
                     <img src="~/img/icons/@Model.SupportActivity.Icon()" />
                 }
@@ -45,9 +46,23 @@
             <span class="activity__detail">@Model.PostCode (@Model.DistanceInMiles miles away)</span>
         </div>
         <div class="job__info__actions column">
-            <button class="btn cta large fill" @(UserIsVerified ? "" : "disabled")>
-                <span class="text">Accept</span>
-            </button>
+            @if (IsAccepted)
+            {
+                <button class="btn cta large fill">
+                    <span class="text">Done</span>
+                </button>
+                <button class="btn border-green green large bg-white mt-sm">
+                    <span class="text">Release</span>
+                </button>
+            }
+            else
+            {
+                <button class="btn cta large fill" @(UserIsVerified ? "" : "disabled")>
+                    <span class="text">Accept</span>
+                </button>
+            }
+        </div>
+        <div class="job__info__footer">
             @if (UserIsVerified)
             {
                 <a href="#" data-id="@id" class="open">View more info&#9660;</a>
@@ -58,9 +73,9 @@
                 <a href="#" class="disabled">View more info&#9660;</a>
             }
         </div>
+        </div>
+        <div class="job__detail">
+            <hr />
+            <p>More info here</p>
+        </div>
     </div>
-    <div class="job__detail">
-        <hr />
-        <p>More info here</p>
-    </div>
-</div>

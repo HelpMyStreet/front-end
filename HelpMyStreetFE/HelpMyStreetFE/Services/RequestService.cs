@@ -95,5 +95,15 @@ namespace HelpMyStreetFE.Services
 
             return jobs;
         }
+
+        public async Task<IEnumerable<JobSummary>> GetJobsForUser(int userId)
+        {
+            var jobs = (await _requestHelpRepository.GetJobSummariesAsync(userId))
+                .OrderBy(j => j.DueDate)
+                .ThenByDescending(j => j.IsHealthCritical)
+                .ToList();
+
+            return jobs;
+        }
     }
 }
