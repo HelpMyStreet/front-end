@@ -52,9 +52,8 @@ export function initialiseRequests() {
             <p>You should call the person in need as soon as you can - they may be depending on you!</p>
             <p>Thank you for your help!</p>`
 
-        showPopup("Accept?", popupMessage, "We couldn't accept this request at the moment, please try again later", async () => {
-                
-            var jobId = $(this).parentsUntil(".job").parent().attr("id");   
+        var jobId = $(this).parentsUntil(".job").parent().attr("id");            
+        showPopup("Accept?", popupMessage, "We couldn't accept this request at the moment, please try again later", async () => {                   
                 let resp = await fetch('/api/requesthelp/accept-request', {
                     method: 'post',
                     headers: {
@@ -73,7 +72,6 @@ export function initialiseRequests() {
                 } else {
                     return false;
                 }
-            })
-        
+            })        
     });
 }

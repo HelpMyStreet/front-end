@@ -8,16 +8,14 @@ export function showPopup(header, htmlContent, messageOnFalse, acceptCallbackAsy
     popup.find(".popup__content__text").first().html(htmlContent);
     popup.fadeIn(200);     
 
-    $('#popup-accept').click(async function (evt) {
-        evt.stopImmediatePropagation();
+    $('#popup-accept').unbind().bind("click", async function (evt) {
         buttonLoad($(this));
         $('.popup-close').off('click');
         var result = await acceptCallbackAsync();
-
+        buttonUnload($(this));
         if (result == true) {
-            popup.fadeOut(100);
-        } else {
-            buttonUnload($(this));
+            popup.fadeOut(100);     
+        } else {            
             bindCloseClick(popup);
             $('.error').show().text(messageOnFalse);
         }
