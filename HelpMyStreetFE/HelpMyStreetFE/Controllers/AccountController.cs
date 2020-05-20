@@ -145,7 +145,7 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             
-            viewModel.PageModel = await _requestService.GetOpenJobs(currentUser.PostalCode, 20);
+            viewModel.PageModel = await _requestService.GetOpenJobsAsync(currentUser.PostalCode, 20);
 
             return View("Index", viewModel);
         }
@@ -156,7 +156,7 @@ namespace HelpMyStreetFE.Controllers
             var currentUser = await GetCurrentUser();
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
-            viewModel.PageModel = await _requestService.GetJobsForUser(currentUser.ID);
+            viewModel.PageModel = await _requestService.GetJobsForUserAsync(currentUser.ID);
 
             return View("Index", viewModel);
         }
