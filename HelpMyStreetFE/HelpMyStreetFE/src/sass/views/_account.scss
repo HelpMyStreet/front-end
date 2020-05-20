@@ -15,7 +15,7 @@
         &__body {
             display: grid;
             display: -ms-grid;
-            grid-template-columns: 13rem 1fr;
+            grid-template-columns: 0.3fr 1fr;
             -ms-grid-columns: 13rem 1fr;
             grid-template-areas: "nav verificationpanel" "nav profilepanel";
             grid-template-rows: auto auto;

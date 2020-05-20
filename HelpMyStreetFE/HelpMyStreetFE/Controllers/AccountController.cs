@@ -78,7 +78,18 @@ namespace HelpMyStreetFE.Controllers
             //Assume the registration page has been fully completed
             var viewModel = GetAccountViewModel(user);
 
-            viewModel.CurrentPage = MenuPage.UserDetails;
+            
+            if (user.IsVerified.HasValue && user.IsVerified.Value)
+            {
+                return await OpenRequests();
+            }
+            else
+            {
+                viewModel.CurrentPage = MenuPage.UserDetails;
+                viewModel.PageModel = userDetails;
+            }
+
+            
             viewModel.PageModel = userDetails;
             return View(viewModel);
         }
