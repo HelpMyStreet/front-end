@@ -53,7 +53,7 @@ export function showReleasePopup(btn) {
     showPopup({
         header: "Release?",
         htmlContent: popupMessage,
-        messageOnFalse: "We couldn't complete this request at the moment, please try again later",
+        messageOnFalse: "We couldn't release this request at the moment, please try again later",
         actionBtnText: "Confirm",
         acceptCallbackAsync: async () => {
             let resp = await fetch('/api/requesthelp/release-request', {
