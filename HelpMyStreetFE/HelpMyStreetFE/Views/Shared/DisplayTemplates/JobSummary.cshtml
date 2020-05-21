@@ -21,7 +21,7 @@
     }
 </script>
 
-<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="job-@id">
+<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@id">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.IsHealthCritical)
@@ -57,7 +57,7 @@
             }
             else
             {
-                <button class="btn cta large fill" @(UserIsVerified ? "" : "disabled")>
+                <button class="btn cta large fill accept-request" @(UserIsVerified ? "" : "disabled")>
                     <span class="text">Accept</span>
                 </button>
             }

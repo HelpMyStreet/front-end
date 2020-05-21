@@ -25,11 +25,22 @@
     }
   }
 
+  &.wide{
+      min-width:250px;
+  }
+
   &:hover {
     cursor: pointer;
   }
 
 
+}
+
+
+.clear{
+    border: 2px solid $green;
+    background: $white;
+    color: $green;
 }
 
 .cta {

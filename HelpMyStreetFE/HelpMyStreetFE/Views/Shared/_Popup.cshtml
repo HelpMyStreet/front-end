@@ -1,0 +1,21 @@
+﻿<div id="popup" class="popup">
+    <div class="popup__backdrop popup-close"></div>
+    <div class="popup__content">
+        <div class="popup__content__header">Accept?</div>
+        <div class="popup__content__text">
+           
+        </div>
+        <div class="popup__content__buttons">
+            <span class="error"></span>
+            <div class="popup__content__buttons__button">
+                <button id="popup-accept" class="btn cta  wide ">                    
+                    <span class="text">Accept</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Accepting..."}' /></div>
+                </button>
+            </div>
+            <div class="popup__content__buttons__button">
+                <button  class="btn clear  wide popup-close"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
