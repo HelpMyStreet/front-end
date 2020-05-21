@@ -106,11 +106,17 @@
                 width: 170px;
                 padding: 5px 0;
 
-                &.accepted {
+                &.actioned {
                     background: none;
                     border: none;
                     color: $green;
                 }
+
+                .loader,
+                &.undo-request{
+                    display:none;
+                }
+
             }
         }
 
@@ -121,8 +127,8 @@
                 grid-column-end: 3;
             }
 
-            &.accepted{
-                display:none;
+            &.actioned {
+                display: none;
             }
 
             button[disabled] {

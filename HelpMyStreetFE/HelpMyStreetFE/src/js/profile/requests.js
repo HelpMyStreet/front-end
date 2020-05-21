@@ -1,10 +1,11 @@
 import { getParameterByName, updateQueryStringParam } from "../shared/querystring-helper";
-import { showVerifiedAcceptPopup, showUnVerifiedAcceptPopup } from "./requests-popup-helper/open-requests"
-
+import { showVerifiedAcceptPopup, showUnVerifiedAcceptPopup, SetRequestToOpen } from "./requests-popup-helper/open-requests"
+import { showCompletePopup,  } from "./requests-popup-helper/accepted-requests"
+import { buttonLoad, buttonUnload } from "../shared/btn";
 
 export function initialiseRequests() {
   const job = getParameterByName("j");
-
+  const isVerified = (initObj && initObj.isVerified == "True");
   if (job) {
     $("html, body").animate(
       {
@@ -25,10 +26,13 @@ export function initialiseRequests() {
     const id = el.attr("data-id");
     el.on("click", (e) => {
       e.preventDefault();
-
-      updateQueryStringParam('j', id);
-      $(`#${id}`).addClass("open");
-      $(`#${id} .job__detail`).slideToggle();
+        if (isVerified) {            
+            updateQueryStringParam('j', id);
+            $(`#${id}`).addClass("open");
+            $(`#${id} .job__detail`).slideToggle();
+        } else {
+            showUnVerifiedAcceptPopup();
+        }
     });
   });
 
@@ -37,7 +41,6 @@ export function initialiseRequests() {
     const id = el.attr("data-id");
     el.on("click", (e) => {
       e.preventDefault();
-
       $(`#${id}`).removeClass("open");
       $(`#${id} .job__detail`).slideToggle();
     });
@@ -46,11 +49,34 @@ export function initialiseRequests() {
 
     $('.accept-request').click(function (evt) {
         evt.preventDefault();        
-        if (initObj && initObj.isVerified == "True") {
+        if (isVerified) {
             showVerifiedAcceptPopup($(this));
         } else {
             showUnVerifiedAcceptPopup();
         }
-
     });
+
+    $('.complete-request').click(function (evt) {
+        evt.preventDefault();
+        showCompletePopup($(this));
+    })
+
+
+    $('.undo-request').click(async function (evt) {
+        evt.preventDefault();  
+        let jobId = $(this).parentsUntil(".job").parent().attr("id");
+        buttonLoad($(this));
+        let hasUpdated = await SetRequestToOpen(jobId)  
+        if (hasUpdated) {
+            let releaseButton = $(this).prev(".release-request");
+            let doneButton = releaseButton.prev(".complete-request");
+            releaseButton.show();
+            doneButton.text("Done");
+            doneButton.removeClass("actioned");
+            doneButton.attr("disabled", false);
+            $(this).hide();
+            $(this).parent().next(".job__info__footer").show();
+        }
+        buttonUnload($(this));
+    })
 }
