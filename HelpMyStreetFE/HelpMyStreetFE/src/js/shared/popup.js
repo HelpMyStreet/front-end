@@ -1,25 +1,31 @@
 import { buttonLoad, buttonUnload } from "./btn";
-export function showPopup(header, htmlContent, messageOnFalse, acceptCallbackAsync) {
+
+
+
+export function showPopup(settings) {
+    
     $('.error').hide();
     var popup = $('#popup');
     popup.find(".popup__content").centerPopup();
-    popup.find(".popup__content__header").first().text(header);
-    
-    popup.find(".popup__content__text").first().html(htmlContent);
+    popup.find(".popup__content__header").first().text(settings.header);
+    popup.find(".popup__content__text").first().html(settings.htmlContent);
+    popup.find("#popup-accept > .text").text(settings.actionBtnText);
+    if (settings.cssClass) {
+        popup.find(".popup__content").addClass(settings.cssClass);
+    }
     popup.fadeIn(200);     
 
     $('#popup-accept').unbind().bind("click", async function (evt) {
-        buttonLoad($(this));
-        $('.popup-close').off('click');
-        var result = await acceptCallbackAsync();
+        buttonLoad($(this));    
+        $('.popup-close').off('click');      
+        var result = await settings.acceptCallbackAsync();                
         buttonUnload($(this));
         if (result == true) {
             popup.fadeOut(100);     
         } else {            
             bindCloseClick(popup);
-            $('.error').show().text(messageOnFalse);
-        }
-        
+            $('.error').show().text(settings.messageOnFalse);
+        }        
     })
 
     bindCloseClick(popup);
