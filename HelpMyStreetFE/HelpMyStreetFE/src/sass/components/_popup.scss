@@ -8,7 +8,7 @@
     height: 100%;
     z-index: 3;
     display: none;
-    
+    top:0;
     &__content {
 
         .error{
@@ -27,6 +27,10 @@
         text-align: center;
         @include shadow-md;
         padding: 20px;
+
+        &.warning{
+            border-color: $orange
+        }
 
         @media screen and (min-width: $sm-screen) {
             transform: translate(-50%, -50%);

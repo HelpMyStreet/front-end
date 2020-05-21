@@ -4,7 +4,7 @@ import { initialiseRequests } from "./requests";
 
 $(document).ready(function () {
   initialiseMyStreet();
-  initialiseVerification();
-  initialiseRequests();
+    initialiseVerification();
+    initialiseRequests();
 });
 
