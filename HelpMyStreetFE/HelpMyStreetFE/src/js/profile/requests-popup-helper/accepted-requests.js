@@ -23,12 +23,11 @@ export function showCompletePopup(btn) {
             
             if (resp.ok) {
                 let hasUpdated = await resp.json()                      
-                if (hasUpdated == true) {
-                    btn.text("Complete");
-                    btn.addClass("actioned");
-                    btn.attr("disabled", "true");
+                if (hasUpdated == true) {                         
+                    _modifyButton(btn, "Complete");
                     let releaseButton = btn.next(".release-request");
                     let undoButton = releaseButton.next(".undo-request");
+                    undoButton.attr("data-undo", "complete")
                     releaseButton.hide();
                     undoButton.show();      
                 }
@@ -67,10 +66,12 @@ export function showReleasePopup(btn) {
             if (resp.ok) {
                 let hasUpdated = await resp.json()
                 if (hasUpdated == true) {
-                    btn.text("Released");
-                    btn.addClass("actioned");
-                    btn.attr("disabled", "true");
+                    _modifyButton(btn, "Released");
+            
                     let completeButton = btn.prev(".complete-request");
+                    let undoButton = btn.next(".undo-request");
+                    undoButton.attr("data-undo", "release")
+                    undoButton.show();      
                     completeButton.hide();
                     let moreInfo = btn.parent().next(".job__info__footer")
                     moreInfo.hide();
@@ -81,3 +82,9 @@ export function showReleasePopup(btn) {
     })
 }
 
+
+function _modifyButton(btn, text) {
+    btn.text(text);
+    btn.addClass("actioned");
+    btn.attr("disabled", "true");
+}
