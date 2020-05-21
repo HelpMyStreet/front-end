@@ -30,8 +30,7 @@ export function showCompletePopup(btn) {
                     let releaseButton = btn.next(".release-request");
                     let undoButton = releaseButton.next(".undo-request");
                     releaseButton.hide();
-                    undoButton.show();
-                    btn.parent().next(".job__info__footer").hide();    
+                    undoButton.show();      
                 }
                 return hasUpdated;
             } else {

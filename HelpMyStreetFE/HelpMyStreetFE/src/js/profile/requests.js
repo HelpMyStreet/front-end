@@ -97,8 +97,7 @@ export function initialiseRequests() {
             doneButton.text("Done");
             doneButton.removeClass("actioned");
             doneButton.attr("disabled", false);
-            $(this).hide();
-            $(this).parent().next(".job__info__footer").show();
+            $(this).hide();            
         }
         buttonUnload($(this));
     })
