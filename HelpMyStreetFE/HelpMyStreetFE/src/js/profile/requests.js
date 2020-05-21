@@ -1,6 +1,11 @@
-import { getParameterByName, updateQueryStringParam } from "../shared/querystring-helper";
-import { showVerifiedAcceptPopup, showUnVerifiedAcceptPopup } from "./requests-popup-helper/open-requests"
-
+import {
+  getParameterByName,
+  updateQueryStringParam,
+} from "../shared/querystring-helper";
+import {
+  showVerifiedAcceptPopup,
+  showUnVerifiedAcceptPopup,
+} from "./requests-popup-helper/open-requests";
 
 export function initialiseRequests() {
   const job = getParameterByName("j");
@@ -26,7 +31,7 @@ export function initialiseRequests() {
     el.on("click", (e) => {
       e.preventDefault();
 
-      updateQueryStringParam('j', id);
+      updateQueryStringParam("j", id);
       $(`#${id}`).addClass("open");
       $(`#${id} .job__detail`).slideToggle();
     });
@@ -43,14 +48,23 @@ export function initialiseRequests() {
     });
   });
 
+  $(".accept-request").click(function (evt) {
+    evt.preventDefault();
+    if (initObj && initObj.isVerified == "True") {
+      showVerifiedAcceptPopup($(this));
+    } else {
+      showUnVerifiedAcceptPopup();
+    }
+  });
 
-    $('.accept-request').click(function (evt) {
-        evt.preventDefault();        
-        if (initObj && initObj.isVerified == "True") {
-            showVerifiedAcceptPopup($(this));
-        } else {
-            showUnVerifiedAcceptPopup();
-        }
+  $(".job__expander h5").each((_, a) => {
+    const el = $(a);
 
+    el.on("click", (e) => {
+      e.preventDefault();
+
+      el.toggleClass("open");
+      el.next().slideToggle();
     });
+  });
 }

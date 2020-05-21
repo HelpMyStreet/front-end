@@ -10,17 +10,6 @@
     var id = Base64Utils.Base64Encode(Model.JobID.ToString());
 }
 
-<script>
-    function open(guid) {
-        console.log('hey hey');
-        $(`#${guid}`).addClass('open');
-    }
-
-    function close(guid) {
-        $(`#${guid}`).removeClass('open');
-    }
-</script>
-
 <div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@id">
     <div class="job__info">
         <div class="job__info__urgency">
@@ -71,21 +60,88 @@
         <div class="job__info__footer">
             @if (UserIsVerified)
             {
-                <a href="#" data-id="@id" class="open">View more info&#9660;</a>
-                <a href="#" data-id="@id" class="close">View less info&#9650;</a>
+                <a href="#" data-id="@id" class="open">View more info &#9660;</a>
+                <a href="#" data-id="@id" class="close">View less info &#9650;</a>
             }
             else
             {
-                <a href="#" class="disabled">View more info&#9660;</a>
+                <a href="#" class="disabled">View more info &#9660;</a>
             }
         </div>
     </div>
-        <div class="job__detail">
+    <div class="job__detail">
+        @if (IsAccepted)
+        {
+            var (recipient, requestor, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
+
+            <h4>Contact Details</h4>
+            <div class="job__expander">
+                <h5>Peson in need</h5>
+                <dl>
+                    <dt>Name</dt>
+                    <dd>@recipient.FirstName @recipient.LastName</dd>
+                    <dt>Email</dt>
+                    <dd>@recipient.EmailAddress</dd>
+                    <dt>Phone number(s)</dt>
+                    <dd>
+                        @recipient.MobileNumber
+                        @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(recipient.OtherNumber) ? "" : " / ")
+                        @recipient.OtherNumber
+                    </dd>
+                    <dt>Address</dt>
+                    <dd>
+                        @Html.DisplayFor(x => recipient.Address)
+                    </dd>
+                </dl>
+            </div>
+            <div class="job__expander">
+                <h5>Requester</h5>
+                @if (forRequestor)
+                {
+                    <p><i>Request made by person in need</i></p>
+                }else
+                {
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@requestor.FirstName @requestor.LastName</dd>
+                        <dt>Email</dt>
+                        <dd>@requestor.EmailAddress</dd>
+                        <dt>Phone number(s)</dt>
+                        <dd>
+                            @requestor.MobileNumber
+                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(requestor.OtherNumber) ? "" : " / ")
+                            @requestor.OtherNumber
+                        </dd>
+                        <dt>Address</dt>
+                        <dd>
+                            @requestor.Address.Postcode
+                        </dd>
+                    </dl>
+                }
+            </div>
+            <div class="job__expander">
+                <h5>Communication Needs</h5>
+                <p>@Model.SpecialCommunicationNeeds</p>
+            </div>
+
+            <h4>Contact Details</h4>
+            <div class="job__expander">
+                <h5>Request Description</h5>
+                <p>@Model.Details</p>
+            </div>
+            <div class="job__expander">
+                <h5>Further Details</h5>
+                <p>@Model.OtherDetails</p>
+            </div>
+        }
+        else
+        {
             <h4>Request Description</h4>
             <p>@Model.Details</p>
             <h4>Further Details</h4>
             <p>@Model.OtherDetails</p>
             <h4>Communication Needs</h4>
             <p>@Model.SpecialCommunicationNeeds</p>
-        </div>
+        }
     </div>
+</div>

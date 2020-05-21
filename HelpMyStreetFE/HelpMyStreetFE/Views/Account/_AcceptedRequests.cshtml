@@ -1,10 +1,9 @@
-﻿@using HelpMyStreet.Utils.Models
-@using HelpMyStreetFE.Models.Account
+﻿@using HelpMyStreetFE.Models.Account
 
 @model AccountViewModel
 
 @{
-    var Jobs = (List<JobSummary>)Model.PageModel;
+    var PageModel = (AcceptedRequestsViewModel)Model.PageModel;
 }
 
 ﻿<div class="verification-panel">
@@ -17,7 +16,7 @@
         <div class="profile">
             @if (Model.UserDetails.IsVerified)
             {
-                @if (Model.PageModel.Count == 0)
+                @if (PageModel.Jobs.Count() == 0)
                 {
                     <div class="profile__empty">
                         <p class="profile__empty__title">
@@ -34,7 +33,15 @@
                 }
                 else
                 {
-                    @Html.DisplayFor(x => Jobs, new { UserIsVerified = true, IsAccepted = true });
+                    foreach (var job in PageModel.Jobs)
+                    {
+                        @Html.DisplayFor(x => job, new
+                        {
+                            UserIsVerified = true,
+                            IsAccepted = true,
+                            ContactInformation = PageModel.ContactInformation[job.JobID]
+                        });
+                    }
                 }
             }
             else

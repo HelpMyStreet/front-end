@@ -14,6 +14,20 @@ using HelpMyStreet.Contracts.RequestService.Request;
 
 namespace HelpMyStreetFE.Services
 {
+    public class RequestContactInformation
+    {
+        public int JobID { get; set; }
+        public RequestPersonalDetails Requestor { get; set; }
+        public RequestPersonalDetails Recipient { get; set; }
+        public bool ForRequestor { get; set; }
+        public void Deconstruct(out RequestPersonalDetails requestor, out RequestPersonalDetails recipient, out bool forRequestor)
+        {
+            requestor = Requestor;
+            recipient = Recipient;
+            forRequestor = ForRequestor;
+        }
+    }
+
     public class RequestService : IRequestService
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
@@ -86,23 +100,42 @@ namespace HelpMyStreetFE.Services
         }
         public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(string postCode, double distanceInMiles)
         {
-            var jobs = (await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles))
+            return (await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles))
                 .OrderBy(j => j.DistanceInMiles)
                 .ThenBy(j => j.DueDate)
                 .ThenByDescending(j => j.IsHealthCritical)
                 .ToList();
-
-            return jobs;
         }
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId)
         {
-            var jobs = (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
+            return (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
                 .OrderBy(j => j.DueDate)
                 .ThenByDescending(j => j.IsHealthCritical)
                 .ToList();
-
-            return jobs;
         }
+
+        public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
+        {
+            List<GetJobDetailsResponse> details = new List<GetJobDetailsResponse>();
+
+            foreach (var id in ids) {
+                details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
+            }
+
+            return details.Aggregate(new Dictionary<int, RequestContactInformation>(), (acc, cur) =>
+            {
+                acc[cur.JobID] = new RequestContactInformation
+                {
+                    ForRequestor = cur.ForRequestor,
+                    JobID = cur.JobID,
+                    Recipient = cur.Recipient,
+                    Requestor = cur.Requestor
+                };
+
+                return acc;
+            });
+        }
+
         public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
         {
             return await _requestHelpRepository.GetJobDetailsAsync(jobId);

@@ -98,15 +98,6 @@ namespace HelpMyStreetFE.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> ComingSoon()
-        {
-            var viewModel = GetAccountViewModel(await GetCurrentUser());        
-            viewModel.Notifications = new List<NotificationModel>();
-            viewModel.CurrentPage = MenuPage.ComingSoon;
-            return View("Index", viewModel);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Streets()
         {          
             var currentUser = await GetCurrentUser();
@@ -189,7 +180,15 @@ namespace HelpMyStreetFE.Controllers
             }
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
-            viewModel.PageModel = await _requestService.GetJobsForUserAsync(currentUser.ID);
+
+            var jobs = await _requestService.GetJobsForUserAsync(currentUser.ID);
+            var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
+
+            viewModel.PageModel = new AcceptedRequestsViewModel
+            {
+                Jobs = jobs,
+                ContactInformation = contactInformation
+            };
 
             return View("Index", viewModel);
         }
