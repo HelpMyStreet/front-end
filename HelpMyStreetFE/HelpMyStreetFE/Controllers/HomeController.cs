@@ -54,6 +54,7 @@ namespace HelpMyStreetFE.Controllers
             return View(model);
         }
 
+        
         [HttpGet]
         public async Task<IActionResult> FirebaseAccountAction(string mode, string oobCode, string apiKey, string continueUrl)
         {

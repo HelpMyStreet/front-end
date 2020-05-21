@@ -39,7 +39,7 @@ export function showUnVerifiedAcceptPopup() {
         `<p>To see more details of requests for help and to start accepting them, you need to be <strong>verified.</strong></p>
             <p>In order to protect everyone who uses this site, we need to make sure that everyone is who they say they are.</p>
             <p>Our partner Yoti provides a verification service that compares your face to your photo on an ID document (passport or driving license) and verifies that you’re you. It only takes a few minutes.</p>
-            <p>Visit your <a href="/account">My Profile page</a> now to begin the process.</p>`
+            <p>Visit your <a href="/account/profile">My Profile page</a> now to begin the process.</p>`
     showPopup({
         header: "Get Verified",
         htmlContent: popupMessage,
@@ -47,7 +47,7 @@ export function showUnVerifiedAcceptPopup() {
         messageOnFalse: "an error occured, please close the popup.",
         actionBtnText: "Get Verified",
         acceptCallbackAsync: () => {
-            window.location.href = "/account"
+            window.location.href = "/account/profile"
             return true;
         }
 
