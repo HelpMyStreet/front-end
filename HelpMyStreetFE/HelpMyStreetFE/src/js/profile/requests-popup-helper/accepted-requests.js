@@ -56,7 +56,6 @@ export function showReleasePopup(btn) {
         messageOnFalse: "We couldn't complete this request at the moment, please try again later",
         actionBtnText: "Confirm",
         acceptCallbackAsync: async () => {
-
             let resp = await fetch('/api/requesthelp/release-request', {
                 method: 'post',
                 headers: {
@@ -64,6 +63,7 @@ export function showReleasePopup(btn) {
                 },
                 body: JSON.stringify({ jobId })
             });
+
             if (resp.ok) {
                 let hasUpdated = await resp.json()
                 if (hasUpdated == true) {
