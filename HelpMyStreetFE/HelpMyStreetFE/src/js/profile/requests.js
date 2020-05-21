@@ -8,7 +8,8 @@ import {
     SetRequestToOpen
 } from "./requests-popup-helper/open-requests"
 import {
-    showCompletePopup
+    showCompletePopup,
+    showReleasePopup
 } from "./requests-popup-helper/accepted-requests"
 import {
     buttonLoad,
@@ -100,5 +101,9 @@ export function initialiseRequests() {
             $(this).hide();            
         }
         buttonUnload($(this));
+    })
+
+    $('.release-request').click(function () {
+        showReleasePopup($(this))
     })
 }
