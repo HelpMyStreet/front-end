@@ -1,7 +1,19 @@
-import { getParameterByName, updateQueryStringParam } from "../shared/querystring-helper";
-import { showVerifiedAcceptPopup, showUnVerifiedAcceptPopup, SetRequestToOpen } from "./requests-popup-helper/open-requests"
-import { showCompletePopup,  } from "./requests-popup-helper/accepted-requests"
-import { buttonLoad, buttonUnload } from "../shared/btn";
+import {
+    getParameterByName,
+    updateQueryStringParam
+} from "../shared/querystring-helper";
+import {
+    showVerifiedAcceptPopup,
+    showUnVerifiedAcceptPopup,
+    SetRequestToOpen
+} from "./requests-popup-helper/open-requests"
+import {
+    showCompletePopup
+} from "./requests-popup-helper/accepted-requests"
+import {
+    buttonLoad,
+    buttonUnload
+} from "../shared/btn";
 
 export function initialiseRequests() {
   const job = getParameterByName("j");
@@ -61,6 +73,17 @@ export function initialiseRequests() {
         showCompletePopup($(this));
     })
 
+
+  $(".job__expander h5").each((_, a) => {
+    const el = $(a);
+
+    el.on("click", (e) => {
+      e.preventDefault();
+
+      el.toggleClass("open");
+      el.next().slideToggle();
+    });
+  });
 
     $('.undo-request').click(async function (evt) {
         evt.preventDefault();  
