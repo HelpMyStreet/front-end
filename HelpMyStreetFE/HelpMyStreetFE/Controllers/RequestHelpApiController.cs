@@ -27,21 +27,15 @@ namespace HelpMyStreetFE.Controllers {
 
         [Authorize]
         [HttpPost("accept-request")]
-        public async Task<ActionResult<bool>> AcceptRequest([FromBody]UpdateJobRequest Job)
+        public async Task<ActionResult<bool>> AcceptRequest([FromBody]UpdateJobRequest job)
         {
             try
             {
                 if (!ModelState.IsValid)
-                    throw new Exception("Job ID has not been supplied");
+                    return BadRequest(job);
 
-                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                int jobId = -1;
-                int.TryParse(Base64Utils.Base64Decode(Job.JobID), out jobId);
-
-                if (jobId == -1)
-                    throw new Exception("Could not decode Job ID: " + Job.JobID);                                
-
-                return await _requestService.UpdateJobStatusToInProgressAsync(jobId, userId, userId);
+                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);                             
+                return await _requestService.UpdateJobStatusToInProgressAsync(DecodeJobID(job.JobID), userId, userId);
             }
             catch (Exception ex)
             {
@@ -50,6 +44,37 @@ namespace HelpMyStreetFE.Controllers {
             }
         }
 
+        [Authorize]
+        [HttpPost("complete-request")]
+        public async Task<ActionResult<bool>> CompleteRequest([FromBody]UpdateJobRequest job)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(job);
+
+                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                return await _requestService.UpdateJobStatusToDoneAsync(DecodeJobID(job.JobID), userId);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("an error occured completing job", ex);
+                return StatusCode(500);
+            }
+        }
+
+
+        private int DecodeJobID(string encodedJobId)
+        {
+            int jobId;
+            if (!int.TryParse(Base64Utils.Base64Decode(encodedJobId), out jobId))
+            {
+                throw new Exception("Could not decode Job ID: " + encodedJobId);
+            }
+            return jobId;
+
+        }
 
         [HttpPost]        
         public async Task<ActionResult<BaseRequestHelpResponse<LogRequestResponse>>> RequestHelp([FromBody] RequestHelpViewModel model)
@@ -57,9 +82,9 @@ namespace HelpMyStreetFE.Controllers {
             try
             {
                 if (!ModelState.IsValid)
-                    throw new Exception("Server side model validation failed");
-                
-                    int userId = 0;
+                    return BadRequest(model);
+
+                int userId = 0;
                     if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
                     {
                         userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);

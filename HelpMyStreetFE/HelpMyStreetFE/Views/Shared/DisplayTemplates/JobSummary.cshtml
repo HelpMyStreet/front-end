@@ -37,11 +37,17 @@
         <div class="job__info__actions column">
             @if (IsAccepted)
             {
-                <button class="btn cta large fill">
+                <button class="btn cta large fill complete-request">
                     <span class="text">Done</span>
                 </button>
-                <button class="btn border-green green large bg-white mt-sm">
+                <button class="btn border-green green large bg-white mt-sm release-request">
                     <span class="text">Release</span>
+                </button>
+                <button class="btn border-green green large bg-white mt-sm undo-request">
+                    <span class="text">Undo</span>
+                    <div class="loader">
+                    <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..."}' />
+                    </div>
                 </button>
             }
             else
@@ -51,9 +57,13 @@
                 </button>
             }
         </div>
+
+        
+
+
         @if (!IsAccepted)
         {
-            <div class="job__info__footer accepted">
+            <div class="job__info__footer actioned">
                 <a href="/account/acceptedrequests">Go to My Accepted Requests</a>
             </div>
         }

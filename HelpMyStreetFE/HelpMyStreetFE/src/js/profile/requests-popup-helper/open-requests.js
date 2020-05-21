@@ -13,28 +13,17 @@ export function showVerifiedAcceptPopup(acceptBtn) {
         messageOnFalse: "We couldn't accept this request at the moment, please try again later",
         actionBtnText: "Accept",
         acceptCallbackAsync: async () => {
-            let resp = await fetch('/api/requesthelp/accept-request', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({ jobId })
-            });
-            if (resp.ok) {
-                let hasUpdated = await resp.json()      
+            let hasUpdated = await SetRequestToOpen(jobId);   
                 if (hasUpdated == true) {
                     acceptBtn.text("Accepted");
-                    acceptBtn.addClass("accepted");
+                    acceptBtn.addClass("actioned");
                     acceptBtn.attr("disabled", "true");
-                    let acceptLink = acceptBtn.parent().next(".job__info__footer.accepted")
+                    let acceptLink = acceptBtn.parent().next(".job__info__footer.actioned")
                     acceptLink.show();
                     acceptLink.next(".job__info__footer").hide();
                 }
                 return hasUpdated;
-            } else {
-                return false;
-            }
-        }
+            }        
     })
 }
 
@@ -58,3 +47,24 @@ export function showUnVerifiedAcceptPopup() {
     })
 }
 
+
+export async function SetRequestToOpen(jobId) {
+    try {
+        let resp = await fetch('/api/requesthelp/accept-request', {
+            method: 'post',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({ jobId })
+        });
+
+        if (resp.ok) {
+            return resp.json();
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}

@@ -106,13 +106,19 @@
         width: 170px;
         padding: 5px 0;
 
-        &.accepted {
-          background: none;
-          border: none;
-          color: $green;
+                &.actioned {
+                    background: none;
+                    border: none;
+                    color: $green;
+                }
+
+                .loader,
+                &.undo-request{
+                    display:none;
+                }
+
+            }
         }
-      }
-    }
 
     &__footer {
       @media (min-width: $med-screen) {
@@ -120,9 +126,9 @@
         grid-column-end: 3;
       }
 
-      &.accepted {
-        display: none;
-      }
+            &.actioned {
+                display: none;
+            }
 
       button[disabled] {
         background-color: $gray-8;
