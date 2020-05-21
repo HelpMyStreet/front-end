@@ -62,6 +62,12 @@
                 </button>
             }
         </div>
+        @if (!IsAccepted)
+        {
+            <div class="job__info__footer accepted">
+                <a href="/account/acceptedrequests">Go to My Accepted Requests</a>
+            </div>
+        }
         <div class="job__info__footer">
             @if (UserIsVerified)
             {
@@ -74,12 +80,12 @@
             }
         </div>
     </div>
-    <div class="job__detail">
-        <h4>Request Description</h4>
-        <p>@Model.Details</p>
-        <h4>Further Details</h4>
-        <p>@Model.OtherDetails</p>
-        <h4>Communication Needs</h4>
-        <p>@Model.SpecialCommunicationNeeds</p>
+        <div class="job__detail">
+            <h4>Request Description</h4>
+            <p>@Model.Details</p>
+            <h4>Further Details</h4>
+            <p>@Model.OtherDetails</p>
+            <h4>Communication Needs</h4>
+            <p>@Model.SpecialCommunicationNeeds</p>
+        </div>
     </div>
-</div>

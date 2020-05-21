@@ -21,10 +21,14 @@ export function showVerifiedAcceptPopup(acceptBtn) {
                 body: JSON.stringify({ jobId })
             });
             if (resp.ok) {
-                var hasUpdated = await resp.json()
+                let hasUpdated = await resp.json()      
                 if (hasUpdated == true) {
                     acceptBtn.text("Accepted");
+                    acceptBtn.addClass("accepted");
                     acceptBtn.attr("disabled", "true");
+                    let acceptLink = acceptBtn.parent().next(".job__info__footer.accepted")
+                    acceptLink.show();
+                    acceptLink.next(".job__info__footer").hide();
                 }
                 return hasUpdated;
             } else {

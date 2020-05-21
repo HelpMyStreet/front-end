@@ -45,8 +45,7 @@ export function initialiseRequests() {
 
 
     $('.accept-request').click(function (evt) {
-        evt.preventDefault();
-        console.log(initObj);
+        evt.preventDefault();        
         if (initObj && initObj.isVerified == "True") {
             showVerifiedAcceptPopup($(this));
         } else {
