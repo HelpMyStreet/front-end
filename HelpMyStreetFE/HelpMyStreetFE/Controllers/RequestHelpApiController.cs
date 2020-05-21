@@ -59,7 +59,7 @@ namespace HelpMyStreetFE.Controllers {
             }
             catch (Exception ex)
             {
-                _logger.LogError("an error occured completeing job", ex);
+                _logger.LogError("an error occured completing job", ex);
                 return StatusCode(500);
             }
         }
