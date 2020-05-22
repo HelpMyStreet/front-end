@@ -1,9 +1,11 @@
 ﻿import { initialiseYoti } from "./yoti";
 import { updateQueryStringParam, getParameterByName } from "../shared/querystring-helper";
 
-export function initialiseVerification() {
+export function initialiseVerification(isVerified) {
 
-    updateQueryStringParam("u", initObj.userId);
+    if (!isVerified) {
+        updateQueryStringParam("u", initObj.userId);
+    }
     if ($("#verification-panel").is(":visible")) {
         var maxStep = 3;
 
