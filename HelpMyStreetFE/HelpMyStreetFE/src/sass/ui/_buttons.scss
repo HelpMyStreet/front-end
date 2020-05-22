@@ -1,39 +1,44 @@
 .btn {
-  border-radius: 24px;
-  border: 2px solid transparent;
-  font-size: 1rem;
-  line-height: 1.222;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  padding: 13px 40px;
-  text-decoration: none;
+    border-radius: 24px;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    line-height: 1.222;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    padding: 13px 40px;
+    text-decoration: none;
 
-  &.border-blue {
-    border: 2px solid $blue;
-  }
-
-  &.border-green {
-    border: 2px solid $green;
-  }
-
-  &.large {
-    border-radius: 32px;
-    line-height: 1.8;
-
-    @media screen and (max-width: $sm-screen) {
-      width: 100%;
+    .text {
+        font-size: 1rem;
+        line-height: 1.222;
+        font-weight: bold;
     }
-  }
 
-  &.wide{
-      min-width:250px;
-  }
+    &.border-blue {
+        border: 2px solid $blue;
+    }
 
-  &:hover {
-    cursor: pointer;
-  }
+    &.border-green {
+        border: 2px solid $green;
+    }
 
+    &.large {
+        border-radius: 32px;
+        line-height: 1.8;
 
+        @media screen and (max-width: $sm-screen) {
+            width: 100%;
+        }
+    }
+
+    &.wide {
+        min-width: 250px;
+        border-radius: 32px;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 
