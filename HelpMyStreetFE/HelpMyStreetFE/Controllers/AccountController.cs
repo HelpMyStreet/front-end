@@ -19,8 +19,9 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreet.Utils.Utils;
 
 namespace HelpMyStreetFE.Controllers
-{
+{    
     [Authorize]
+
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
@@ -149,7 +150,7 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
-        [HttpGet]
+        [HttpGet]  
         public async Task<IActionResult> OpenRequests()
         {
            
@@ -167,6 +168,7 @@ namespace HelpMyStreetFE.Controllers
 
             return View("Index", viewModel);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> AcceptedRequests()
