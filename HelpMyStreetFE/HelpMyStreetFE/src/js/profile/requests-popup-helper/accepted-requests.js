@@ -2,13 +2,12 @@
 
 export function showCompletePopup(btn) {
     let popupMessage =
-        `<p>Thank you!</p>
-         <p>This request will be reported as completed and removed from your "My Accepted Tasks" list</p>
-         <p>Thanks!</p>`;
+        `<p>We’ll move this request from your Accepted Requests page.</p>
+         <p>Thank you for helping people in your community stay safe.</p>`;
     
     var jobId = btn.parentsUntil(".job").parent().attr("id");    
     showPopup({
-        header: "Done!",
+        header: "Completed?",
         htmlContent: popupMessage,
         messageOnFalse: "We couldn't complete this request at the moment, please try again later",
         actionBtnText: "Confirm",
@@ -42,15 +41,14 @@ export function showCompletePopup(btn) {
 
 export function showReleasePopup(btn) {
     let popupMessage =
-        `<p>Not able to do the task? No problem.</p>
-         <p>We will return the task to the "Open Requests" list so that other Volunteers can pick it up.</p>
-         <p>Problem with the task? (e.g. contact details don't work) <br />
-         Please let us know by emailing <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>
-        <p>Thanks!</p>`;
+        `<p>Not able to complete the request?</p>
+         <p>If you're not able to complete a request for help, we can return it to the 'Open Requests' list so that other volunteers can accept it.</p>
+         <p>If there's a problem (e.g. incorrect contact details) please let us know:
+         <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>`;
 
     let jobId = btn.parentsUntil(".job").parent().attr("id");
     showPopup({
-        header: "Release?",
+        header: "Can't do?",
         htmlContent: popupMessage,
         messageOnFalse: "We couldn't release this request at the moment, please try again later",
         actionBtnText: "Confirm",
