@@ -52,6 +52,7 @@ export function showReleasePopup(btn) {
         htmlContent: popupMessage,
         messageOnFalse: "We couldn't release this request at the moment, please try again later",
         actionBtnText: "Confirm",
+        buttonCssClass: "bg-dark-blue",
         acceptCallbackAsync: async () => {
             let resp = await fetch('/api/requesthelp/release-request', {
                 method: 'post',
