@@ -1,21 +1,20 @@
-﻿@using HelpMyStreet.Utils.Enums; 
-@using HelpMyStreetFE.Models.RequestHelp;
+﻿@using HelpMyStreetFE.Models.RequestHelp;
 @{
-    var viewModel = Model;
-    var activties = new List<RequestActivityViewModel>
-        {
-            new RequestActivityViewModel{ Activity = SupportActivities.Shopping, Description = "Picking up essential groceries" },
-            new RequestActivityViewModel{ Activity = SupportActivities.FaceMask, Description = "Providing a washable and reusable fabric face covering", IconClass = "icon-size-sm"},
-            new RequestActivityViewModel{ Activity = SupportActivities.CheckingIn, Description = "Check that someone is OK" },
-            new RequestActivityViewModel{ Activity = SupportActivities.CollectingPrescriptions ,Description = "Collecting from a local pharmacy" },
-            new RequestActivityViewModel{ Activity = SupportActivities.Errands, Description = "Essential local errands (e.g. posting mail)" },
-            new RequestActivityViewModel{ Activity = SupportActivities.DogWalking, Description = "Walking a calm dog" },
-            new RequestActivityViewModel{ Activity = SupportActivities.MealPreparation, Description = "Getting a hot / pre-prepared meal" },
-            new RequestActivityViewModel{ Activity = SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone" },
-            new RequestActivityViewModel{ Activity = SupportActivities.PhoneCalls_Anxious, Description = "Someone to talk through some challenges over the phone", IconClass="double-line-alignment" },
-            new RequestActivityViewModel{ Activity = SupportActivities.HomeworkSupport, Description = "Support for children being homeschooled", IconClass="double-line-alignment"},
-            new RequestActivityViewModel{ Activity = SupportActivities.Other, Description= "Please tell us more below" }
-        };
+                var viewModel = Model;
+                var activties = new List<RequestActivityViewModel>
+{
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ,Description = "A washable and reusable fabric face covering", IconClass = "icon-size-sm"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn,  Description = "Check that someone is OK"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy", },
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking, Description = "Walking a calm dog",},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation, Description = "Getting a hot / pre-prepared meal", },
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious, Description = "Some extra support over the phone",  IconClass="double-line-alignment" },
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled", IconClass="double-line-alignment"},
+        new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"}
+    };
 }
 
     <div class="tiles">
