@@ -16,9 +16,8 @@ import {
     buttonUnload
 } from "../shared/btn";
 
-export function initialiseRequests() {
-  const job = getParameterByName("j");
-  const isVerified = (initObj && initObj.isVerified == "True");
+export function initialiseRequests(isVerified) {
+  const job = getParameterByName("j");  
   if (job) {
     $("html, body").animate(
       {
