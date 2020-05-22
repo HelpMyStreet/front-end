@@ -120,9 +120,10 @@ function _moveTab(currentTab, nextTab) {
 
 
 var intialiseSubmit = function () {
-    $('.btnSubmit').click(async function () {
+    $('.btnSubmit').click(async function (evt) {
+        evt.stopImmediatePropagation();
+        
         reviewStage.getLatestValues();
-
         let requestor = {
             firstname: detailStage.yourDetails.firstname.val,
             lastname: detailStage.yourDetails.lastname.val,
