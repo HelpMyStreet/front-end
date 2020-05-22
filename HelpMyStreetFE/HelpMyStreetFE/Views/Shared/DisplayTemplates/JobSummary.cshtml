@@ -84,7 +84,7 @@
 
             <h4>Contact Details</h4>
             <div class="job__expander">
-                <h5>Person in need</h5>
+                <h5>Person in need<span></span></h5>
                 <dl>
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
@@ -103,7 +103,7 @@
                 </dl>
             </div>
             <div class="job__expander">
-                <h5>Requester</h5>
+                <h5>Requester<span></span></h5>
                 @if (forRequestor)
                 {
                     <p><i>Request made by person in need</i></p>
@@ -128,18 +128,18 @@
                     </dl>
                 }
             </div>
-            <div class="job__expander">
-                <h5>Communication Needs</h5>
+            <div class="job__expander add-line">
+                <h5>Communication Needs<span></span></h5>
                 <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
             </div>
 
             <h4>Request Details</h4>
             <div class="job__expander">
-                <h5>Request Description</h5>
+                <h5>Request Description<span></span></h5>
                 <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
             </div>
             <div class="job__expander">
-                <h5>Further Details</h5>
+                <h5>Further Details<span></span></h5>
                 <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
             </div>
         }

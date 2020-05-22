@@ -46,14 +46,16 @@
         .column {
             flex-direction: column;
         }
-      .flex-end {
-                  margin-top: 0.4rem;
 
-                  @media (min-width: $sm-screen) {
-                      justify-content: flex-end;
-                      margin-top:0px;
-                  }
-              }
+        .flex-end {
+            margin-top: 0.4rem;
+
+            @media (min-width: $sm-screen) {
+                justify-content: flex-end;
+                margin-top: 0px;
+            }
+        }
+
         &__urgency {
             color: $dark-blue;
             height: 50px;
@@ -166,21 +168,21 @@
 
                     span {
                         @include arrow( 8px, 3px, $dark-blue, up, $white);
-                        height: 10px;                        
-                        margin: 0 0 3px 12px;                    
+                        height: 10px;
+                        margin: 0 0 3px 12px;
                     }
                 }
 
-            &.disabled {
-                color: $gray-8;
+                &.disabled {
+                    color: $gray-8;
 
-                &:hover {
-                    cursor: not-allowed;
+                    &:hover {
+                        cursor: not-allowed;
+                    }
                 }
             }
         }
     }
-}
 
     &--critical {
         .job__info {
@@ -199,6 +201,7 @@
     &__detail {
         display: none;
         padding: 10px 20px;
+
 
         &:before {
             content: " ";
@@ -221,6 +224,7 @@
     }
 
     &__expander {
+        &.add-line:after,
         &:before {
             content: " ";
             position: relative;
@@ -238,21 +242,22 @@
             padding: 10px 40px 10px 10px;
             margin: 0;
 
+            span {
+
+                @include arrow( 8px, 3px, $dark-blue, down, $white);
+                float: right;
+                margin-top:10px;
+            }
+
             &:hover {
                 cursor: pointer;
             }
 
-            &:after {
-                padding: 10px;
-                content: "\2304";
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
-
             &.open {
-                &:after {
-                    content: "\2303";
+                span {
+                    @include arrow( 8px, 3px, $dark-blue, up, $white);
+                    float: right;
+                
                 }
             }
         }
