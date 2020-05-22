@@ -159,21 +159,21 @@
 
                     span {
                         @include arrow( 8px, 3px, $dark-blue, up, $white);
-                        height: 10px;
-                        margin-left: 12px;
+                        height: 10px;                        
+                        margin: 0 0 3px 12px;                    
                     }
                 }
 
-                &.disabled {
-                    color: $gray-8;
+            &.disabled {
+                color: $gray-8;
 
-                    &:hover {
-                        cursor: not-allowed;
-                    }
+                &:hover {
+                    cursor: not-allowed;
                 }
             }
         }
     }
+}
 
     &--critical {
         .job__info {
