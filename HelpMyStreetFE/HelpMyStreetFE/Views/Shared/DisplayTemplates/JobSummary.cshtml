@@ -34,7 +34,7 @@
             </span>
             <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
         </div>
-        <div class="job__info__actions column">
+        <div class="job__info__actions column flex-end">
             @if (IsAccepted)
             {
                 <button class="btn cta large fill complete-request">
@@ -46,7 +46,7 @@
                 <button class="btn border-green green large bg-white mt-sm undo-request">
                     <span class="text">Undo</span>
                     <div class="loader">
-                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..."}' />
+                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..." }' />
                     </div>
                 </button>
             }
@@ -61,6 +61,7 @@
                         <a href="/account/acceptedrequests">Go to My Accepted Requests</a>
                     </div>
                 }
+            }
                 <div class="job__info__footer">
                     @if (UserIsVerified)
                     {
@@ -72,7 +73,7 @@
                         <a href="#" class="disabled">View more info &#9660;</a>
                     }
                 </div>
-            }
+          
         </div>
 
         
