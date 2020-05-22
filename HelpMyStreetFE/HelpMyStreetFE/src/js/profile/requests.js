@@ -5,10 +5,11 @@ import {
 import {
     showVerifiedAcceptPopup,
     showUnVerifiedAcceptPopup,
-    SetRequestToOpen
+    SetRequestToInProgress
 } from "./requests-popup-helper/open-requests"
 import {
-    showCompletePopup
+    showCompletePopup,
+    showReleasePopup
 } from "./requests-popup-helper/accepted-requests"
 import {
     buttonLoad,
@@ -89,16 +90,43 @@ export function initialiseRequests() {
         evt.preventDefault();  
         let jobId = $(this).parentsUntil(".job").parent().attr("id");
         buttonLoad($(this));
-        let hasUpdated = await SetRequestToOpen(jobId)  
+        let hasUpdated = await SetRequestToInProgress(jobId)  
         if (hasUpdated) {
+            let type = $(this).attr("data-undo");
             let releaseButton = $(this).prev(".release-request");
             let doneButton = releaseButton.prev(".complete-request");
-            releaseButton.show();
-            doneButton.text("Done");
-            doneButton.removeClass("actioned");
-            doneButton.attr("disabled", false);
+
+            switch (type) {
+                case "complete":
+                    _undoCompleteButtons(releaseButton, doneButton)
+                    break;
+                case "release":
+                    _undoReleaseButtons(releaseButton, doneButton);
+                    break;
+            }
+           
             $(this).hide();            
         }
         buttonUnload($(this));
     })
+
+    $('.release-request').click(function () {
+        showReleasePopup($(this))
+    })
+}
+
+
+function _undoCompleteButtons(releaseButton, doneButton) {
+
+    releaseButton.show();
+    doneButton.text("Done");
+    doneButton.removeClass("actioned");
+    doneButton.attr("disabled", false);
+}
+
+function _undoReleaseButtons(releaseButton, doneButton) {
+    doneButton.show();
+    releaseButton.text("Release");
+    releaseButton.removeClass("actioned");
+    releaseButton.attr("disabled", false);
 }

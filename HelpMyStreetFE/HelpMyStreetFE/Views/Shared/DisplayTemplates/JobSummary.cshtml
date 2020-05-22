@@ -22,7 +22,7 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span>Due @Model.DueDate.ToShortDateString()</span>
+            <span>Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title @Model.SupportActivity.Class()">
@@ -87,7 +87,7 @@
 
             <h4>Contact Details</h4>
             <div class="job__expander">
-                <h5>Peson in need</h5>
+                <h5>Person in need</h5>
                 <dl>
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
@@ -135,7 +135,7 @@
                 <p>@Model.SpecialCommunicationNeeds</p>
             </div>
 
-            <h4>Contact Details</h4>
+            <h4>Request Details</h4>
             <div class="job__expander">
                 <h5>Request Description</h5>
                 <p>@Model.Details</p>
