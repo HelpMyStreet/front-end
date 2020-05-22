@@ -18,18 +18,17 @@
             {
                 @if (PageModel.Jobs.Count() == 0)
                 {
-                    <div class="profile__empty">
-                        <p class="profile__empty__title">
-                            All Clear – for now!
-                        </p>
-                        <p class="profile__empty__text">
-                            When you accept requests for help, they’ll move from the Open
-                            Requests tab in to here. From here you’ll be able to access
-                            the contact details you’ll need to complete the tasks by
-                            clicking on “More info”
-                        </p>
-                        <p class="profile__empty__title">Visit the <a href="/account/openrequests">Open Requests</a> tab now to look for help that’s needed in your area</p>
-                    </div>
+            <div class="profile__empty">
+                <p class="profile__empty__title">
+                    Can you help?
+                </p>
+                <p class="profile__empty__text">
+                    Please check the <a href="/account/openrequests">Open Requests</a> page to see new requests for help and support - they're being added all the time
+                </p>
+                <p class="profile__empty__text">
+                    Once you accept a request for help or support on the <a href="/account/openrequests">Open Requests</a> page, they'll appear on this page.
+                </p>
+            </div>
                 }
                 else
                 {
@@ -48,12 +47,12 @@
             {
                 <div class="profile__empty">
                     <p class="profile__empty__title">
-                        <a href="/account">Get verified</a> to start accepting requests
+                        Start helping
                     </p>
                     <p class="profile__empty__text">
-                        Once you’re verified, you’ll be able to start accepting requests for help from your local community
+                        <a href="/account">Complete your ID verification</a> today so that you can start helping people!
                     </p>
-                    <p class="profile__empty__title">Thanks</p>
+                    <p class="profile__empty__title">You're currently registered as an Unverified volunteer.  As soon as you've completed your ID Verification, you'll be a Verified volunteer on HelpMyStreet.org and will be able to help people in your local area.</p>
                 </div>
             }
         </div>
