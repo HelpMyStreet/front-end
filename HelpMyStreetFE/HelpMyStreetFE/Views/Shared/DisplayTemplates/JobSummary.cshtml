@@ -22,7 +22,7 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span>Due @Model.DueDate.ToShortDateString()</span>
+            <span>Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title @Model.SupportActivity.Class()">
