@@ -220,7 +220,7 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
 
                 endpoints.MapControllerRoute(
-                 name: "OpenRequest",
+                 name: "OpenRequests",
                  pattern: "account/open-requests",
                  defaults: new { controller = "Account", action = "OpenRequests" });
 
