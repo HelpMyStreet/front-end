@@ -13,7 +13,7 @@ export function showVerifiedAcceptPopup(acceptBtn) {
         messageOnFalse: "We couldn't accept this request at the moment, please try again later",
         actionBtnText: "Accept",
         acceptCallbackAsync: async () => {
-            let hasUpdated = await SetRequestToOpen(jobId);   
+            let hasUpdated = await SetRequestToInProgress(jobId);   
                 if (hasUpdated == true) {
                     acceptBtn.text("Accepted");
                     acceptBtn.addClass("actioned");
@@ -48,7 +48,7 @@ export function showUnVerifiedAcceptPopup() {
 }
 
 
-export async function SetRequestToOpen(jobId) {
+export async function SetRequestToInProgress(jobId) {
     try {
         let resp = await fetch('/api/requesthelp/accept-request', {
             method: 'post',
@@ -68,3 +68,4 @@ export async function SetRequestToOpen(jobId) {
         return false;
     }
 }
+
