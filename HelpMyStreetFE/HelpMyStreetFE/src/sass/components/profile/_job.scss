@@ -48,7 +48,12 @@
         }
 
         .flex-end {
-            justify-content: flex-end;
+            margin-top: 0.4rem;
+
+            @media (min-width: $sm-screen) {
+                justify-content: flex-end;
+                margin-top:0px;
+            }
         }
 
         &__urgency {
