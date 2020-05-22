@@ -75,11 +75,7 @@
                 </div>
           
         </div>
-
-        
-
-
-
+       
     </div>
     <div class="job__detail">
         @if (IsAccepted)
@@ -111,7 +107,8 @@
                 @if (forRequestor)
                 {
                     <p><i>Request made by person in need</i></p>
-                }else
+                }
+                else
                 {
                     <dl>
                         <dt>Name</dt>
@@ -133,27 +130,27 @@
             </div>
             <div class="job__expander">
                 <h5>Communication Needs</h5>
-                <p>@Model.SpecialCommunicationNeeds</p>
+                <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
             </div>
 
             <h4>Request Details</h4>
             <div class="job__expander">
                 <h5>Request Description</h5>
-                <p>@Model.Details</p>
+                <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
             </div>
             <div class="job__expander">
                 <h5>Further Details</h5>
-                <p>@Model.OtherDetails</p>
+                <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
             </div>
         }
         else
         {
             <h4>Request Description</h4>
-            <p>@Model.Details</p>
-            <h4>Further Details</h4>
-            <p>@Model.OtherDetails</p>
-            <h4>Communication Needs</h4>
-            <p>@Model.SpecialCommunicationNeeds</p>
+            <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
+            <h4>Further Details</h4>            
+            <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+            <h4>Communication Needs</h4>            
+            <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
         }
     </div>
 </div>

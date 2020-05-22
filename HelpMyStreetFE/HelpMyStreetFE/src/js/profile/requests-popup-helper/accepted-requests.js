@@ -45,7 +45,7 @@ export function showReleasePopup(btn) {
         `<p>Not able to do the task? No problem.</p>
          <p>We will return the task to the "Open Requests" list so that other Volunteers can pick it up.</p>
          <p>Problem with the task? (e.g. contact details don't work) <br />
-         Please let us know by emailing <a href="mailto:request@helpmystreet.org">request@helpmystreet.org</a></p>
+         Please let us know by emailing <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>
         <p>Thanks!</p>`;
 
     let jobId = btn.parentsUntil(".job").parent().attr("id");
