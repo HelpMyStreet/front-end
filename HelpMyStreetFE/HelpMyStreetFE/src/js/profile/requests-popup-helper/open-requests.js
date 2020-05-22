@@ -18,7 +18,7 @@ export function showVerifiedAcceptPopup(acceptBtn) {
                     acceptBtn.text("Accepted");
                     acceptBtn.addClass("actioned");
                     acceptBtn.attr("disabled", "true");
-                    let acceptLink = acceptBtn.parent().next(".job__info__footer.actioned")
+                    let acceptLink = acceptBtn.next(".job__info__footer.actioned")
                     acceptLink.show();
                     acceptLink.next(".job__info__footer").hide();
                 }

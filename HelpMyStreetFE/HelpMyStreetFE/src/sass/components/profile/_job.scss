@@ -121,11 +121,6 @@
         }
 
     &__footer {
-      @media (min-width: $med-screen) {
-        grid-column-start: 3;
-        grid-column-end: 3;
-      }
-
             &.actioned {
                 display: none;
             }

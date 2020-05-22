@@ -46,7 +46,7 @@
                 <button class="btn border-green green large bg-white mt-sm undo-request">
                     <span class="text">Undo</span>
                     <div class="loader">
-                    <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..."}' />
+                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..."}' />
                     </div>
                 </button>
             }
@@ -55,29 +55,30 @@
                 <button class="btn cta large fill accept-request" @(UserIsVerified ? "" : "disabled")>
                     <span class="text">Accept</span>
                 </button>
+                @if (!IsAccepted)
+                {
+                    <div class="job__info__footer actioned">
+                        <a href="/account/acceptedrequests">Go to My Accepted Requests</a>
+                    </div>
+                }
+                <div class="job__info__footer">
+                    @if (UserIsVerified)
+                    {
+                        <a href="#" data-id="@id" class="open">View more info &#9660;</a>
+                        <a href="#" data-id="@id" class="close">View less info &#9650;</a>
+                    }
+                    else
+                    {
+                        <a href="#" class="disabled">View more info &#9660;</a>
+                    }
+                </div>
             }
         </div>
 
         
 
 
-        @if (!IsAccepted)
-        {
-            <div class="job__info__footer actioned">
-                <a href="/account/acceptedrequests">Go to My Accepted Requests</a>
-            </div>
-        }
-        <div class="job__info__footer">
-            @if (UserIsVerified)
-            {
-                <a href="#" data-id="@id" class="open">View more info &#9660;</a>
-                <a href="#" data-id="@id" class="close">View less info &#9650;</a>
-            }
-            else
-            {
-                <a href="#" class="disabled">View more info &#9660;</a>
-            }
-        </div>
+
     </div>
     <div class="job__detail">
         @if (IsAccepted)
