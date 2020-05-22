@@ -118,14 +118,14 @@ export function initialiseRequests(isVerified) {
 function _undoCompleteButtons(releaseButton, doneButton) {
 
     releaseButton.show();
-    doneButton.text("Done");
+    doneButton.text("Completed");
     doneButton.removeClass("actioned");
     doneButton.attr("disabled", false);
 }
 
 function _undoReleaseButtons(releaseButton, doneButton) {
     doneButton.show();
-    releaseButton.text("Release");
+    releaseButton.text("Can't Do");
     releaseButton.removeClass("actioned");
     releaseButton.attr("disabled", false);
 }
