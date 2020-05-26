@@ -2,7 +2,7 @@
 
 export function showVerifiedAcceptPopup(acceptBtn) {
     let popupMessage =
-        `<p>It will appear on your "My Accepted Requests" page you’ll be able to view more information about it.</p>
+           `<p>It will appear on your "My Accepted Requests" page you’ll be able to view more information about it.</p>
             <p>Please call the person who’s requested help as soon as you can - they may be depending on you.</p>
             <p>Thank you for helping people in your community to stay safe</p>`
     var jobId = acceptBtn.parentsUntil(".job").parent().attr("id");
