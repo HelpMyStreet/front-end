@@ -17,20 +17,24 @@ import {
 } from "../shared/btn";
 
 export function initialiseRequests(isVerified) {
-  const job = getParameterByName("j");  
-  if (job) {
-    $("html, body").animate(
-      {
-        scrollTop: $(`#${job}`).offset().top,
-      },
-      {
-        duration: 1000,
-        complete: () => {
-          $(`#${job}`).addClass("open highlight");
-          $(`#${job} .job__detail`).slideDown();
-        },
-      }
-    );
+    const job = getParameterByName("j");  
+
+    if (job) {
+        var jobEl = $(`#${job}`);
+        if (jobEl.length) {
+            $("html, body").animate(
+                {
+                    scrollTop: jobEl.offset().top,
+                },
+                {
+                    duration: 1000,
+                    complete: () => {
+                        $(`#${job}`).addClass("open highlight");
+                        $(`#${job} .job__detail`).slideDown();
+                    },
+                }
+            );
+        }
   }
 
   $(".job a.open").each((_, a) => {
