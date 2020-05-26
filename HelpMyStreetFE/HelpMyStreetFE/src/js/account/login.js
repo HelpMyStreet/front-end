@@ -1,6 +1,6 @@
 import firebase from "../firebase";
 import { showLoadingSpinner, hideLoadingSpinner } from "../states/loading";
-
+import { getParameterByName } from "../shared/querystring-helper";
 const handleErrorResponse = response => {
   if (response) {
     switch (response.code) {
@@ -42,8 +42,17 @@ export const login = async (email, password) => {
         body: JSON.stringify({ token })
       });
 
+
       //TODO: Actually decide where the user should go after logging in
-      window.location.href = "/account";
+        var returnUrl = getParameterByName("ReturnUrl");
+        console.log(returnUrl);
+        if (returnUrl) {
+            window.location.href = returnUrl;
+        } else {
+            window.location.href = "/account";
+        }
+
+
     } catch (e) {
       hideLoadingSpinner('.header-login__form');
       return handleErrorResponse(e);
