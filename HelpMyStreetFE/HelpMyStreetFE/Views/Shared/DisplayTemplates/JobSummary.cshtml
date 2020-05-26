@@ -38,7 +38,7 @@
             @if (IsAccepted)
             {
                 <button class="btn cta large fill complete-request">
-                    <span class="text">Completed</span>
+                    <span class="text">Mark As Done</span>
                 </button>
                 <button class="btn border-dark-blue dark-blue large bg-white mt-sm release-request">
                     <span class="text">Can't do</span>
@@ -52,28 +52,21 @@
             }
             else
             {
-                <button class="btn cta large fill accept-request" @(UserIsVerified ? "" : "disabled")>
+                <button class="btn cta large fill accept-request  @(UserIsVerified ? "" : "disabled")">
                     <span class="text">Accept</span>
                 </button>
                 @if (!IsAccepted)
                 {
                     <div class="job__info__footer actioned">
-                        <a href="/account/acceptedrequests">Go to My Accepted Requests</a>
+                        <a href="/account/accepted-requests">Go to My Accepted Requests</a>
                     </div>
                 }
             }
                 <div class="job__info__footer">
-                    @if (UserIsVerified)
-                    {
-                        <a href="#" data-id="@id" class="open">View more info <span></span></a>
-                        <a href="#" data-id="@id" class="close">View less info <span></span></a>
-                    }
-                    else
-                    {
-                        <a href="#" class="disabled">View more info <span></span></a>
-                    }
-                </div>
-          
+      
+                        <a href="#" data-id="@id" class="open @(UserIsVerified ? "" : "disabled") ">View more info <span></span></a>
+                        <a href="#" data-id="@id" class="close">View less info <span></span></a>                                                      
+                </div>          
         </div>
        
     </div>
