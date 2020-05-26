@@ -13,6 +13,9 @@ export function showPopup(settings) {
     if (settings.cssClass) {
         popup.find(".popup__content").addClass(settings.cssClass);
     }
+    if (settings.buttonCssClass) {
+        popup.find("#popup-accept").addClass(settings.buttonCssClass)
+    }
     popup.fadeIn(200);     
 
     $('#popup-accept').unbind().bind("click", async function (evt) {

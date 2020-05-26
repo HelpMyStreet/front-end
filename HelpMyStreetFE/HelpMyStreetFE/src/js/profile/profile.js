@@ -3,8 +3,9 @@ import { initialiseVerification } from "./verification";
 import { initialiseRequests } from "./requests";
 
 $(document).ready(function () {
-  initialiseMyStreet();
-    initialiseVerification();
-    initialiseRequests();
+    const isVerified = (initObj && initObj.isVerified == "True");
+    initialiseMyStreet();
+    initialiseVerification(isVerified);
+    initialiseRequests(isVerified);
 });
 

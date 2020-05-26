@@ -8,13 +8,24 @@
     height: 100%;
     z-index: 3;
     display: none;
-    top:0;
+    top: 0;
+
     &__content {
 
-        .error{
-            color: red;
-            line-height:2.5;
+
+        .cross-button {
+            float: right;
+            font-weight: 600;
+            cursor: pointer;
+            color: $gray-10;
+            font-size: 1.3rem;          
         }
+
+        .error {
+            color: red;
+            line-height: 2.5;
+        }
+
         position: inherit;
         top: 30%;
         left: 53%;
@@ -28,7 +39,7 @@
         @include shadow-md;
         padding: 20px;
 
-        &.warning{
+        &.warning {
             border-color: $orange
         }
 
