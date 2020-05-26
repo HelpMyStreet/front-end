@@ -121,6 +121,10 @@
                     color: $green;
                 }
 
+                &.disabled {
+                    background-color: $gray-8;
+                }
+
                 .loader,
                 &.undo-request {
                     display: none;
@@ -136,10 +140,10 @@
 
             &.actioned {
                 display: none;
-                text-align:center;
+                text-align: center;
             }
 
-            button[disabled] {
+            button.disabled {
                 background-color: $gray-8;
             }
 
@@ -156,9 +160,16 @@
                 &.open {
                     display: inline;
 
+                    &.disabled {
+                        span {
+                            @include arrow( 8px, 3px, $gray-8, down, $white);
+                            height: 10px;
+                            vertical-align: middle;
+                        }
+                    }
+
                     span {
                         vertical-align: middle;
-
                         @include arrow( 8px, 3px, $dark-blue, down, $white);
                         height: 10px;
                     }
@@ -247,7 +258,7 @@
 
                 @include arrow( 8px, 3px, $dark-blue, down, $white);
                 float: right;
-                margin-top:10px;
+                margin-top: 10px;
             }
 
             &:hover {
@@ -258,7 +269,6 @@
                 span {
                     @include arrow( 8px, 3px, $dark-blue, up, $white);
                     float: right;
-                
                 }
             }
         }

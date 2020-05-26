@@ -28,7 +28,7 @@
             }
             else
             {
-                @Html.DisplayFor(x => Jobs, new { UserIsVerified = true });
+                @Html.DisplayFor(x => Jobs, new { UserIsVerified = Model.UserDetails.IsVerified });
             }
         </div>
     </div>
