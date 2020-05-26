@@ -1,0 +1,45 @@
+﻿/* $class outputs the selector, do not place mixin within a rule
+   $dir == up, down, left or right,
+   $bg == background-color of arrow container 
+*/
+
+@mixin arrow($size, $weight, $color, $dir, $bg) {
+    @if $dir == up {
+        $dir: bottom;
+    }
+    @elseif $dir == down {
+        $dir: top;
+    }
+    @elseif $dir == right {
+        $dir: left;
+    }
+    @else {
+        $dir: right;
+    }
+
+    position: relative;
+    height: $size * 2;
+
+    &::before,
+    &::after {
+        position: absolute;
+        display: block;
+        content: "";
+        /*Size*/
+        border: $size solid transparent;
+    }
+
+    &::before {
+        #{$dir}: 0;
+        /*Arrow Color*/
+        border-#{$dir}-color: $color;
+      
+    }
+
+    &::after {
+        /*Thickness*/
+        #{$dir}: -$weight;
+        border-#{$dir}-color: $bg;
+       
+    }
+}

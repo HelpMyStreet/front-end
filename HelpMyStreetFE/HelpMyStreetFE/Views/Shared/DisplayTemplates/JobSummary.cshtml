@@ -1,0 +1,156 @@
+﻿@using HelpMyStreetFE;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
+
+@model HelpMyStreet.Utils.Models.JobSummary
+
+@{
+    bool UserIsVerified = (bool)ViewData["UserIsVerified"];
+    bool IsAccepted = ViewData["IsAccepted"] is bool ? (bool)ViewData["IsAccepted"] : false;
+    var id = Base64Utils.Base64Encode(Model.JobID.ToString());
+}
+
+<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@id">
+    <div class="job__info">
+        <div class="job__info__urgency">
+            @if (Model.IsHealthCritical)
+            {
+                <span class="critical-icon">!</span>
+                <span class="critical">Critical</span>
+            }
+            else
+            {
+                <img src="~/img/icons/calendar.svg" />
+            }
+            <span>Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
+        </div>
+        <div class="job__info__activity column">
+            <span class="activity__title @Model.SupportActivity.Class()">
+                @if (Model.SupportActivity != SupportActivities.Other)
+                {
+                    <img src="~/img/icons/@Model.SupportActivity.Icon()" />
+                }
+                @Model.SupportActivity.FriendlyName()
+            </span>
+            <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
+        </div>
+        <div class="job__info__actions column flex-end">
+            @if (IsAccepted)
+            {
+                <button class="btn cta large fill complete-request">
+                    <span class="text">Completed</span>
+                </button>
+                <button class="btn border-dark-blue dark-blue large bg-white mt-sm release-request">
+                    <span class="text">Can't do</span>
+                </button>
+                <button class="btn border-green green large bg-white mt-sm undo-request">
+                    <span class="text">Undo</span>
+                    <div class="loader">
+                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..." }' />
+                    </div>
+                </button>
+            }
+            else
+            {
+                <button class="btn cta large fill accept-request" @(UserIsVerified ? "" : "disabled")>
+                    <span class="text">Accept</span>
+                </button>
+                @if (!IsAccepted)
+                {
+                    <div class="job__info__footer actioned">
+                        <a href="/account/accepted-requests">Go to My Accepted Requests</a>
+                    </div>
+                }
+            }
+                <div class="job__info__footer">
+                    @if (UserIsVerified)
+                    {
+                        <a href="#" data-id="@id" class="open">View more info <span></span></a>
+                        <a href="#" data-id="@id" class="close">View less info <span></span></a>
+                    }
+                    else
+                    {
+                        <a href="#" class="disabled">View more info <span></span></a>
+                    }
+                </div>
+          
+        </div>
+       
+    </div>
+    <div class="job__detail">
+        @if (IsAccepted)
+        {
+            var (recipient, requestor, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
+
+            <h4>Contact Details</h4>
+            <div class="job__expander">
+                <h5>Person in need<span></span></h5>
+                <dl>
+                    <dt>Name</dt>
+                    <dd>@recipient.FirstName @recipient.LastName</dd>
+                    <dt>Email</dt>
+                    <dd>@recipient.EmailAddress</dd>
+                    <dt>Phone number(s)</dt>
+                    <dd>
+                        @recipient.MobileNumber
+                        @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(recipient.OtherNumber) ? "" : " / ")
+                        @recipient.OtherNumber
+                    </dd>
+                    <dt>Address</dt>
+                    <dd>
+                        @Html.DisplayFor(x => recipient.Address)
+                    </dd>
+                </dl>
+            </div>
+            <div class="job__expander">
+                <h5>Requester<span></span></h5>
+                @if (forRequestor)
+                {
+                    <p><i>Request made by person in need</i></p>
+                }
+                else
+                {
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@requestor.FirstName @requestor.LastName</dd>
+                        <dt>Email</dt>
+                        <dd>@requestor.EmailAddress</dd>
+                        <dt>Phone number(s)</dt>
+                        <dd>
+                            @requestor.MobileNumber
+                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(requestor.OtherNumber) ? "" : " / ")
+                            @requestor.OtherNumber
+                        </dd>
+                        <dt>Address</dt>
+                        <dd>
+                            @requestor.Address.Postcode
+                        </dd>
+                    </dl>
+                }
+            </div>
+            <div class="job__expander add-line">
+                <h5>Communication Needs<span></span></h5>
+                <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+            </div>
+
+            <h4>Request Details</h4>
+            <div class="job__expander">
+                <h5>Request Description<span></span></h5>
+                <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
+            </div>
+            <div class="job__expander">
+                <h5>Further Details<span></span></h5>
+                <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+            </div>
+        }
+        else
+        {
+            <h4>Request Description</h4>
+            <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
+            <h4>Further Details</h4>            
+            <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+            <h4>Communication Needs</h4>            
+            <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+        }
+    </div>
+</div>

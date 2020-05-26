@@ -4,6 +4,8 @@
 @import "../../mixins/typography/copy";
 @import "./my-street";
 @import "./verification";
+@import "./job";
+
 .profile-panel {
   background-color: white;
   border-radius: 4px;
@@ -26,24 +28,31 @@
     border: none;
     border-top: 1px solid $gray-10;
   }
-
-
 }
 
-.profile{
-   &__text{
-            ul{
-                li {color: $p-color;}
-            }
-        }
-   }
-
-@media screen and (min-width: $med-screen){
-    .profile {
-        margin-top: 20px;
-     
+.profile {
+  &__text {
+    ul {
+      li {
+        color: $p-color;
+      }
     }
+  }
 
-    
+  &__empty {
+    text-align: center;
+    &__title {
+      color: $blue;
+      font-weight: bold;
+    }
+    &__text {
+      font-style: italic;
+    }
+  }
 }
 
+@media screen and (min-width: $med-screen) {
+  .profile {
+    margin-top: 20px;
+  }
+}

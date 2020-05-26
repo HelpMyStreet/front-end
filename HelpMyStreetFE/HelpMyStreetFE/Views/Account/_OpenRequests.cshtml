@@ -1,0 +1,35 @@
+﻿@using HelpMyStreet.Utils.Models
+@using HelpMyStreetFE.Models.Account
+
+@model AccountViewModel
+
+@{
+    var Jobs = (List<JobSummary>)Model.PageModel;
+}
+
+<div class="verification-panel">
+    <div class="user-profile profile-panel p-md">
+        <header class="profile-panel__header">
+            <h3 class="profile-panel__title">Open Requests</h3>
+            <p>Help that’s needed near you</p>
+        </header>
+
+        <div class="profile">
+            @if (Model.PageModel.Count == 0)
+            {
+                <div class="profile__empty">
+                    <p class="profile__empty__title">Everyone's taken care of!</p>
+                    <p class="profile__empty__text">
+                        Please come back later to check for new Open Requests for help and support - they’re being added all the time.
+                        We’ll also send you email notifications of new requests.
+                    </p>
+                    <p class="profile__empty__title">Thank You!</p>
+                </div>
+            }
+            else
+            {
+                @Html.DisplayFor(x => Jobs, new { UserIsVerified = true });
+            }
+        </div>
+    </div>
+</div>

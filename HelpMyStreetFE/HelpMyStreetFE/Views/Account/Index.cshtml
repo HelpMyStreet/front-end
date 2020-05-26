@@ -5,8 +5,11 @@
     <script src="~/profile.js" asp-append-version="true"></script>
     <script>
         const initObj = {
-            domId: '@Model.VerificationViewModel.YotiOptions.DomId', scenarioId: '@Model.VerificationViewModel.YotiOptions.ScenarioId', clientSdkId: '@Model.VerificationViewModel.YotiOptions.ClientSdkId',
-            userId: '@Model.VerificationViewModel.EncodedUserID'
+            domId: '@Model.VerificationViewModel.YotiOptions.DomId',
+            scenarioId: '@Model.VerificationViewModel.YotiOptions.ScenarioId',
+            clientSdkId: '@Model.VerificationViewModel.YotiOptions.ClientSdkId',
+            userId: '@Model.VerificationViewModel.EncodedUserID',
+            isVerified: '@Model.UserDetails.IsVerified'
        };
     </script>    
 }
@@ -33,6 +36,12 @@
 
                 @switch (Model.CurrentPage)
                 {
+                    case MenuPage.OpenRequests:
+                        <partial name="_OpenRequests" for="@Model" />
+                        break;
+                    case MenuPage.AcceptedRequests:
+                        <partial name="_AcceptedRequests" for="@Model" />
+                        break;
                     case MenuPage.MyStreets:
                         <partial name="_MyStreets" for="@Model.PageModel" />
                         break;

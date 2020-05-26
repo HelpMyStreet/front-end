@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Enums;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -8,8 +9,25 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
+using System.Linq;
+using HelpMyStreet.Contracts.RequestService.Request;
+
 namespace HelpMyStreetFE.Services
 {
+    public class RequestContactInformation
+    {
+        public int JobID { get; set; }
+        public RequestPersonalDetails Requestor { get; set; }
+        public RequestPersonalDetails Recipient { get; set; }
+        public bool ForRequestor { get; set; }
+        public void Deconstruct(out RequestPersonalDetails requestor, out RequestPersonalDetails recipient, out bool forRequestor)
+        {
+            requestor = Requestor;
+            recipient = Recipient;
+            forRequestor = ForRequestor;
+        }
+    }
+
     public class RequestService : IRequestService
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
@@ -20,13 +38,10 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
         }
-
-
-
-        public Task<LogRequestResponse> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
+        public Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
         {
             _logger.LogInformation($"Logging Request");
-            var request = new HelpMyStreet.Contracts.RequestService.Request.PostNewRequestForHelpRequest
+            var request = new PostNewRequestForHelpRequest
             {
                 HelpRequest = new HelpRequest {                                     
                     AcceptedTerms = viewModel.HelpRequest.AcceptedTerms,
@@ -67,7 +82,7 @@ namespace HelpMyStreetFE.Services
                         }
                     }
                 },
-                NewJobsRequest = new HelpMyStreet.Contracts.RequestService.Request.NewJobsRequest
+                NewJobsRequest = new NewJobsRequest
                 {
                     Jobs = new List<Job>
                     {
@@ -81,7 +96,75 @@ namespace HelpMyStreetFE.Services
                     }
                 }
             };
-            return _requestHelpRepository.LogRequest(request);
+            return _requestHelpRepository.PostNewRequestForHelpAsync(request);
         }
+        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(string postCode, double distanceInMiles)
+        {
+            return (await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles))
+                .OrderBy(j => j.DistanceInMiles)
+                .ThenBy(j => j.DueDate)
+                .ThenByDescending(j => j.IsHealthCritical)
+                .ToList();
+        }
+        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId)
+        {
+            return (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
+                .OrderBy(j => j.DueDate)
+                .ThenByDescending(j => j.IsHealthCritical)
+                .ToList();
+        }
+
+        public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
+        {
+            List<GetJobDetailsResponse> details = new List<GetJobDetailsResponse>();
+
+            foreach (var id in ids) {
+                details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
+            }
+
+            return details.Aggregate(new Dictionary<int, RequestContactInformation>(), (acc, cur) =>
+            {
+                acc[cur.JobID] = new RequestContactInformation
+                {
+                    ForRequestor = cur.ForRequestor,
+                    JobID = cur.JobID,
+                    Recipient = cur.Recipient,
+                    Requestor = cur.Requestor
+                };
+
+                return acc;
+            });
+        }
+
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
+        {
+            return await _requestHelpRepository.GetJobDetailsAsync(jobId);
+        }
+        public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId)
+        {
+            return await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()
+            {
+                JobID = jobID,
+                CreatedByUserID = createdByUserId
+            });
+        }
+        public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId)
+        {
+            return await _requestHelpRepository.UpdateJobStatusToOpenAsync(new PutUpdateJobStatusToOpenRequest()
+            {
+                CreatedByUserID = createdByUserId,
+                JobID = jobID
+            });
+        }
+        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId)
+        {
+            return await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
+            {
+                CreatedByUserID = createdByUserId,
+                VolunteerUserID = volunteerUserId,
+                JobID = jobID
+            });
+        }
+        
     }
 }

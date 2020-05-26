@@ -16,10 +16,12 @@ using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Yoti;
+using HelpMyStreet.Utils.Utils;
 
 namespace HelpMyStreetFE.Controllers
-{
+{    
     [Authorize]
+
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
@@ -27,12 +29,14 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
+        private readonly IRequestService _requestService;
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
             IAddressService addressService,
             IConfiguration configuration,
-            IOptions<YotiOptions> yotiOptions
+            IOptions<YotiOptions> yotiOptions,
+            IRequestService requestService
             )
         {
             _logger = logger;
@@ -40,6 +44,7 @@ namespace HelpMyStreetFE.Controllers
             _addressService = addressService;
             _configuration = configuration;
             _yotiOptions = yotiOptions;
+            _requestService = requestService;
         }
 
   
@@ -60,38 +65,49 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUser();
-
             string correctPage = RegistrationController.GetCorrectPage(user);
-
             if (correctPage.Length > 0)
             {
                 //Registration journey is not complete
                 return Redirect(correctPage);
             }
-
-            var userDetails = _userService.GetUserDetails(user);
-
-            //Assume the registration page has been fully completed
-            var viewModel = GetAccountViewModel(user);
-
-            viewModel.CurrentPage = MenuPage.UserDetails;
-            viewModel.PageModel = userDetails;
-            return View(viewModel);
+            if (user.IsVerified.HasValue && user.IsVerified.Value)
+            {
+                return await OpenRequests();
+            }
+            else
+            {
+                return await Profile();
+            }  
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ComingSoon()
+        public async Task<IActionResult> Profile()
         {
-            AccountViewModel viewModel = GetAccountViewModel(await GetCurrentUser());
-            viewModel.Notifications = new List<NotificationModel>();
-            viewModel.CurrentPage = MenuPage.ComingSoon;
+            var user = await GetCurrentUser();
+            string correctPage = RegistrationController.GetCorrectPage(user);
+            if (correctPage.Length > 0)
+            {
+                //Registration journey is not complete
+                return Redirect(correctPage);
+            }
+            var viewModel = GetAccountViewModel(user);
+            viewModel.CurrentPage = MenuPage.UserDetails;
+            var userDetails = _userService.GetUserDetails(user);
+            viewModel.PageModel = userDetails;            
             return View("Index", viewModel);
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Streets()
-        {
+        {          
             var currentUser = await GetCurrentUser();
+            string correctPage = RegistrationController.GetCorrectPage(currentUser);
+            if (correctPage.Length > 0)
+            {
+                //Registration journey is not complete
+                return Redirect(correctPage);
+            }
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
@@ -134,6 +150,51 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [HttpGet]  
+        public async Task<IActionResult> OpenRequests()
+        {
+           
+            var currentUser = await GetCurrentUser();
+            string correctPage = RegistrationController.GetCorrectPage(currentUser);
+            if (correctPage.Length > 0)
+            {
+                //Registration journey is not complete
+                return Redirect(correctPage);
+            }
+            var viewModel = GetAccountViewModel(currentUser);
+            viewModel.CurrentPage = MenuPage.OpenRequests;
+            
+            viewModel.PageModel = await _requestService.GetOpenJobsAsync(currentUser.PostalCode, 20);
+
+            return View("Index", viewModel);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> AcceptedRequests()
+        {
+            var currentUser = await GetCurrentUser();
+            string correctPage = RegistrationController.GetCorrectPage(currentUser);
+            if (correctPage.Length > 0)
+            {
+                //Registration journey is not complete
+                return Redirect(correctPage);
+            }
+            var viewModel = GetAccountViewModel(currentUser);
+            viewModel.CurrentPage = MenuPage.AcceptedRequests;
+
+            var jobs = await _requestService.GetJobsForUserAsync(currentUser.ID);
+            var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
+
+            viewModel.PageModel = new AcceptedRequestsViewModel
+            {
+                Jobs = jobs,
+                ContactInformation = contactInformation
+            };
+
+            return View("Index", viewModel);
+        }
+
         [HttpPut]
         public async Task<IActionResult> CloseNotification(Guid id)
         {
@@ -145,9 +206,11 @@ namespace HelpMyStreetFE.Controllers
         private async Task<User> GetCurrentUser()
         {              
              var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-             var  user = await _userService.GetUserAsync(id);
-             HttpContext.Session.SetObjectAsJson("User", user);   
-             return user;
+             var  user = await _userService.GetUserAsync(id);                
+            HttpContext.Session.SetObjectAsJson("User", user);
+           
+      
+            return user;
         }
 
         private AccountViewModel GetAccountViewModel(User user)
@@ -178,7 +241,7 @@ namespace HelpMyStreetFE.Controllers
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
-                    EncodedUserID = Base64Helpers.Base64Encode(user.ID.ToString()),
+                    EncodedUserID = Base64Utils.Base64Encode(user.ID.ToString()),
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
