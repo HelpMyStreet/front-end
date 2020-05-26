@@ -41,11 +41,8 @@ export const login = async (email, password) => {
         },
         body: JSON.stringify({ token })
       });
-
-
-      //TODO: Actually decide where the user should go after logging in
-        var returnUrl = getParameterByName("ReturnUrl");
-        console.log(returnUrl);
+      
+        var returnUrl = getParameterByName("ReturnUrl");        
         if (returnUrl) {
             window.location.href = returnUrl;
         } else {
