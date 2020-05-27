@@ -18,6 +18,7 @@
         grid-area: auth;
         display: flex;
         justify-content: center;
+        align-content: center;
         padding: .5rem 0 .75rem 0;
     
         @media screen and (min-width: $breakpointSm) {
