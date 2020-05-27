@@ -4,6 +4,7 @@
 @import "./help.scss";
 @import "./stats.scss";
 
+
 .btn--sign-up {
     white-space: nowrap;
     display: block;
@@ -21,11 +22,7 @@
     padding: 1rem;
 }
 
-.home-map-container {
-    @media screen and (max-width: $med-screen) {
-        min-height: 500px
-    }
-}
+
 
 
 .home-link {
