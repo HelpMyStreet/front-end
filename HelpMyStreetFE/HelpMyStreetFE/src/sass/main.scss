@@ -120,6 +120,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .flex {
   display: flex;
+  flex-direction: column;
 
   &.justifycontent {
       &-center {
@@ -137,6 +138,7 @@ input[type=number]::-webkit-outer-spin-button {
 .inline-flex {
   @extend .flex;
   display: inline-flex;
+  flex-direction: column;
 }
 
 .bold {
