@@ -2,12 +2,12 @@
 
 export function showVerifiedAcceptPopup(acceptBtn) {
     let popupMessage =
-        `<p>It will appear on your "<a href="/account/accepted-requests" target="_blank">My Accepted Requests</a>" page you’ll be able to view more information about it.</p>
-            <p>Please call the person who’s requested help as soon as you can - they may be depending on you.</p>
+        `<p>It will appear on your "My Accepted Requests" page and you’ll be able to view more information about it.</p>
+            <p>Please call the person who needs help as soon as you can - they may be depending on you.</p>
             <p>Thank you for helping people in your community to stay safe</p>`
     var jobId = acceptBtn.parentsUntil(".job").parent().attr("id");
     showPopup({
-        header: "Accept the request for help?",
+        header: "Accept this Request for Help?",
         htmlContent: popupMessage,
         messageOnFalse: "We couldn't accept this request at the moment, please try again later",
         actionBtnText: "Accept",
