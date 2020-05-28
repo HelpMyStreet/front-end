@@ -108,11 +108,20 @@ window.initGoogleMap = async function () {
 
     googleMap = new google.maps.Map(document.getElementById('map'), {
         center: { lat: initialLat, lng: initialLng },
-        zoom: initialUKZoomNumber
+        mapTypeControl: false,
+        zoom: initialUKZoomNumber,
+        mapTypeId: 'roadmap'
     });
 
     googleMap.setOptions({ styles: noPoi });
 
+
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+    searchBox.setBounds(googleMap.getBounds());
+    //searchBox.style.paddingTop = "0px";
+
+    googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     //if (navigator.geolocation) {
     //    navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
@@ -128,6 +137,31 @@ window.initGoogleMap = async function () {
         let neLng = ne.lng();
         updateMap(swLat, swLng, neLat, neLng);
     });
+
+ 
+    searchBox.addListener('places_changed', function () {
+        var places = searchBox.getPlaces();
+        var bounds = new google.maps.LatLngBounds();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        places.forEach(place => {
+            if (!place.geometry) {
+                console.log("No geometry for this place");
+                return
+            }
+
+            if (place.geometry.viewport) {
+                bounds.union(place.geometry.viewport);
+            } else {
+                bounds.extend(place.geometry.location);
+            }
+        });
+        googleMap.fitBounds(bounds);
+    })
+
 
     //$("#postcode_button").click(async function (evt) {
     //    let postcode = $("#postcode").val();
