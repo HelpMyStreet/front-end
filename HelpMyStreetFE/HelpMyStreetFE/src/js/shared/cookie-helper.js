@@ -1,4 +1,6 @@
-﻿export function intialiseCookieConsent() {
+﻿
+
+export function intialiseCookieConsent() {
     $('body').ihavecookies({
         // Optional callback function when 'Accept' button is clicked
         onAccept: function () {
@@ -6,9 +8,13 @@
             if (acceptedStatsCookie == false) {
                 deleteUneccsaryCookies(setCookie); // delete all cookies (GTM will add any back in based on the below cookies that are set)              
             }
-            
+
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ 'event': 'cookie_clicked' });
+
+        },
+        // Optional callback function when modal appears
+        onLoad: function () {
         },
         // Array of cookie types for which to show checkboxes.
         // - type: Type of cookie. This is also the label that is displayed.
@@ -19,7 +25,7 @@
         title: 'This website uses cookies',
         message: ' We use cookies to help make our website usable and to understand how visitors interact with us. More information can be found in our <a href="/privacy-policy" target="_blank">Privacy Policy</a>. <br /> You can change or withdraw your consent at any time by changing your browser settings.',
         expires: 365,
-        delay: 2000,
+        delay: 1000,
         moreInfoLabel: '',
         acceptBtnLabel: 'Accept All Cookies',
         cookieTypesTitle: 'Select cookies to accept:',
@@ -36,6 +42,7 @@
     setTimeout(function () {
         $('#gdpr-cookie-advanced').click(function () {
             $('#gdpr-cookie-accept').html("Allow Selection")
+         
         });
     },2300);
 }
