@@ -52,7 +52,7 @@
             }
             else
             {
-                <button class="btn cta large fill accept-request" @(UserIsVerified ? "" : "disabled")>
+                <button class="btn cta large fill accept-request  @(UserIsVerified ? "" : "disabled")">
                     <span class="text">Accept</span>
                 </button>
                 @if (!IsAccepted)

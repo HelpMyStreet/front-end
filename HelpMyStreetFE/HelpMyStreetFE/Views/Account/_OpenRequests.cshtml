@@ -28,8 +28,13 @@
             }
             else
             {
-                @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = true });
+                <div class="profile__section">
+                    <p>Requests meeting the critera you set when you signed up</p>
+                    @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = false });
+                </div>
             }
+
+
 
             @if (Jobs.OtherJobs.Count() == 0)
             {
@@ -44,7 +49,11 @@
             }
             else
             {
-                @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = true });
+                <div class="profile__section">
+                    <p>Other Requests</p>
+                    @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = false });
+                </div>
+
             }
         </div>
     </div>
