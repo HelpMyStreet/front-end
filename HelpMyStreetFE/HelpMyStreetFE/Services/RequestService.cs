@@ -164,14 +164,3 @@ namespace HelpMyStreetFE.Services
 }
 
 
-public static class RequestServiceOrderExtension
-{
-    public static IOrderedEnumerable<JobSummary> OrderOpenJobsForDisplay(this IEnumerable<JobSummary> input)
-    {
-        return
-          input
-          .OrderBy(j => j.DistanceInMiles)
-          .ThenBy(j => j.DueDate)
-          .ThenByDescending(j => j.IsHealthCritical);
-    }
-}

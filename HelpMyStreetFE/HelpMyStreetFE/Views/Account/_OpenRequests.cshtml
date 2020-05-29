@@ -15,7 +15,8 @@
         </header>
 
         <div class="profile">
-            @if (Jobs.CriteriaJobs.Count() == 0)
+
+            @if (Jobs.HasNoJobs)
             {
                 <div class="profile__empty">
                     <p class="profile__empty__title">Everyone's taken care of!</p>
@@ -28,28 +29,36 @@
             }
             else
             {
-                <div class="profile__section">
-                    <p>Requests meeting the critera you set when you signed up</p>
-                    @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = false });
-                </div>
-            }
+                <p>Requests meeting the criteria you set when you signed up</p>
+                @if (Jobs.CriteriaJobs.Count() == 0)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__text--left">
+                            There are no open requests at present which meet the criteria you specified when you signed up
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = Model.UserDetails.IsVerified })
+                }
 
 
-
-            @if (Jobs.OtherJobs.Count() == 0)
-            {
-                <div class="profile__empty">
-                    <p class="profile__empty__title">Everyone's taken care of!</p>
-                    <p class="profile__empty__text">
-                        Please come back later to check for new Open Requests for help and support - they’re being added all the time.
-                        We’ll also send you email notifications of new requests.
-                    </p>
-                    <p class="profile__empty__title">Thank You!</p>
-                </div>
-            }
-            else
-            {
-                @Html.DisplayFor(x => Jobs, new { UserIsVerified = Model.UserDetails.IsVerified });
+                <p>Other Requests</p>
+                @if (Jobs.OtherJobs.Count() == 0)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__text--left">
+                            There are no further open requests nearby at present
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="profile__section">
+                        @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = Model.UserDetails.IsVerified })
+                    </div>
+                }
             }
         </div>
     </div>
