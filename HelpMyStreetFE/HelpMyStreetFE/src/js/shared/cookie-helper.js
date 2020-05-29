@@ -4,7 +4,7 @@ export function intialiseCookieConsent() {
     $('body').ihavecookies({
         // Optional callback function when 'Accept' button is clicked
         onAccept: function () {
-            var acceptedStatsCookie = $.fn.ihavecookies.preference('Statistics');  
+            var acceptedStatsCookie = $.fn.ihavecookies.preference('Statistics');
             if (acceptedStatsCookie == false) {
                 deleteUneccsaryCookies(setCookie); // delete all cookies (GTM will add any back in based on the below cookies that are set)              
             }
@@ -12,9 +12,11 @@ export function intialiseCookieConsent() {
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ 'event': 'cookie_clicked' });
 
+            $("body").css("overflow", "visible");
         },
         // Optional callback function when modal appears
         onLoad: function () {
+            $("body").css("overflow", "hidden");
         },
         // Array of cookie types for which to show checkboxes.
         // - type: Type of cookie. This is also the label that is displayed.
@@ -25,37 +27,37 @@ export function intialiseCookieConsent() {
         title: 'This website uses cookies',
         message: ' We use cookies to help make our website usable and to understand how visitors interact with us. More information can be found in our <a href="/privacy-policy" target="_blank">Privacy Policy</a>. <br /> You can change or withdraw your consent at any time by changing your browser settings.',
         expires: 365,
-        delay: 1000,
+        delay: 0,
         moreInfoLabel: '',
         acceptBtnLabel: 'Accept All Cookies',
         cookieTypesTitle: 'Select cookies to accept:',
-        cookieTypes: [         
+        cookieTypes: [
             {
                 type: 'Statistics',
                 value: 'Statistics',
                 description: 'Cookies related to site visits, browser types, etc.'
             },
-        
+
         ],
 
     });
     setTimeout(function () {
         $('#gdpr-cookie-advanced').click(function () {
             $('#gdpr-cookie-accept').html("Allow Selection")
-         
+
         });
-    },2300);
+    }, 2300);
 }
 
 function deleteUneccsaryCookies(setCookieAfterDelete) {
-    var neccesaryCookies = ['ARRAffinity','cookieControl','cookieControlPrefs','.AspNetCore']
+    var neccesaryCookies = ['ARRAffinity', 'cookieControl', 'cookieControlPrefs', '.AspNetCore']
 
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i];
         var eqPos = cookie.indexOf("=");
         var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        var isNeccesary = (neccesaryCookies.find(x => name.trim().startsWith(x.trim())) != undefined);        
+        var isNeccesary = (neccesaryCookies.find(x => name.trim().startsWith(x.trim())) != undefined);
         if (cookie && !isNeccesary)
             document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
