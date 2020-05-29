@@ -80,7 +80,7 @@
     <div class="job__detail">
         @if (IsAccepted)
         {
-            var (recipient, requestor, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
+            var (requestor, recipient, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
 
             <h4>Contact Details</h4>
             <div class="job__expander">
