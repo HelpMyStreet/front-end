@@ -136,7 +136,7 @@
                 <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
             </div>
         }
-        else
+        else if(UserIsVerified)
         {
             <h4>Request Description</h4>
             <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
