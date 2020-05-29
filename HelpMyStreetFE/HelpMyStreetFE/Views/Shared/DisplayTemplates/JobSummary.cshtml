@@ -38,7 +38,7 @@
             @if (IsAccepted)
             {
                 <button class="btn cta large fill complete-request">
-                    <span class="text">Completed</span>
+                    <span class="text">Mark As Done</span>
                 </button>
                 <button class="btn border-dark-blue dark-blue large bg-white mt-sm release-request">
                     <span class="text">Can't do</span>
@@ -63,24 +63,17 @@
                 }
             }
                 <div class="job__info__footer">
-                    @if (UserIsVerified)
-                    {
-                        <a href="#" data-id="@id" class="open">View more info <span></span></a>
-                        <a href="#" data-id="@id" class="close">View less info <span></span></a>
-                    }
-                    else
-                    {
-                        <a href="#" class="disabled">View more info <span></span></a>
-                    }
-                </div>
-          
+      
+                        <a href="#" data-id="@id" class="open @(UserIsVerified ? "" : "disabled") ">View more info <span></span></a>
+                        <a href="#" data-id="@id" class="close">View less info <span></span></a>                                                      
+                </div>          
         </div>
        
     </div>
     <div class="job__detail">
         @if (IsAccepted)
         {
-            var (requestor,recipient, forRequestor) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
+            var (requestor, recipient, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
 
             <h4>Contact Details</h4>
             <div class="job__expander">
@@ -143,7 +136,7 @@
                 <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
             </div>
         }
-        else
+        else if(UserIsVerified)
         {
             <h4>Request Description</h4>
             <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>

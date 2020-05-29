@@ -49,11 +49,7 @@
             }
             else
             {
-                <div class="profile__section">
-                    <p>Other Requests</p>
-                    @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = false });
-                </div>
-
+                @Html.DisplayFor(x => Jobs, new { UserIsVerified = Model.UserDetails.IsVerified });
             }
         </div>
     </div>
