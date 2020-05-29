@@ -30,7 +30,7 @@
 
         .row {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             flex-wrap: wrap;
 
             @for $i from 1 through 12 {
@@ -56,6 +56,8 @@
     .container {
         width: calc(100vw - 64px);
         margin: auto;
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -63,5 +65,7 @@
     .container {
         width: calc(100vw - 32px);
         margin: auto;
+        display: flex;
+        flex-direction: column;
     }
 }
