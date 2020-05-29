@@ -48,6 +48,7 @@ namespace HelpMyStreetFE.Controllers
             };
 
             int totalStreets = reqs[3].Result;
+            model.isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated);
 
             model.PostCodesCoveredPercentage = (int)Math.Ceiling(100.0 * model.NumStreetsCovered / (totalStreets));
 

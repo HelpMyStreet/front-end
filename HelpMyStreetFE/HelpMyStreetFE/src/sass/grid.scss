@@ -30,7 +30,6 @@
 
         .row {
             display: flex;
-            flex-direction: column;
             flex-wrap: wrap;
 
             @for $i from 1 through 12 {
@@ -47,6 +46,10 @@
 
             &.justify-center {
                 justify-content: center;
+            }
+
+            &.align-center {
+                align-content: center;
             }
         }
     }
