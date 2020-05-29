@@ -4,7 +4,7 @@
 @model AccountViewModel
 
 @{
-    var Jobs = (List<JobSummary>)Model.PageModel;
+    var Jobs = (OpenJobsViewModel)Model.PageModel;
 }
 
 <div class="verification-panel">
@@ -15,7 +15,7 @@
         </header>
 
         <div class="profile">
-            @if (Model.PageModel.Count == 0)
+            @if (Jobs.CriteriaJobs.Count() == 0)
             {
                 <div class="profile__empty">
                     <p class="profile__empty__title">Everyone's taken care of!</p>
@@ -28,7 +28,23 @@
             }
             else
             {
-                @Html.DisplayFor(x => Jobs, new { UserIsVerified = true });
+                @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = true });
+            }
+
+            @if (Jobs.OtherJobs.Count() == 0)
+            {
+                <div class="profile__empty">
+                    <p class="profile__empty__title">Everyone's taken care of!</p>
+                    <p class="profile__empty__text">
+                        Please come back later to check for new Open Requests for help and support - they’re being added all the time.
+                        We’ll also send you email notifications of new requests.
+                    </p>
+                    <p class="profile__empty__title">Thank You!</p>
+                </div>
+            }
+            else
+            {
+                @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = true });
             }
         </div>
     </div>
