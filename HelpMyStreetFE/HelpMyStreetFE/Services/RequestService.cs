@@ -12,7 +12,8 @@ using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreetFE.Models.Account;
-
+using HelpMyStreet.Utils.Extensions;
+using HelpMyStreet.Contracts.RequestService.Extensions;
 namespace HelpMyStreetFE.Services
 {
     public class RequestService : IRequestService
@@ -89,13 +90,12 @@ namespace HelpMyStreetFE.Services
         {
            var all = await _requestHelpRepository.GetJobsByFilterAsync(user.PostalCode, distanceInMiles);
 
-            var criteriaJobs = all.Where(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles).OrderOpenJobsForDisplay();
-            var otherJobs = all.Where(x => !criteriaJobs.Contains(x)).OrderOpenJobsForDisplay();
-
+           var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
+            
             var viewModel = new OpenJobsViewModel
             {
-                CriteriaJobs = criteriaJobs,
-                OtherJobs = otherJobs
+                CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
+                OtherJobs = otherJobs.OrderOpenJobsForDisplay()
             };
             return viewModel;          
         }
