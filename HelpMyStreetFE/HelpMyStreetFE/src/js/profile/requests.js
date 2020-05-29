@@ -28,9 +28,13 @@ export function initialiseRequests(isVerified) {
                 },
                 {
                     duration: 1000,
-                    complete: () => {
-                        $(`#${job}`).addClass("open highlight");
-                        $(`#${job} .job__detail`).slideDown();
+                    complete: () => {                        
+                        if (isVerified) {
+                            $(`#${job} .job__detail`).slideDown();
+                            $(`#${job}`).addClass("open highlight");
+                        } else {
+                            $(`#${job}`).addClass("highlight");
+                        }
                     },
                 }
             );
