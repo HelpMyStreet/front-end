@@ -260,7 +260,10 @@ dd {
         margin-right:10px;
     }
 }
-
+.map {
+    min-width: 80%;
+    min-height: 500px;
+}
 .sticky-nav {
     display: none;
     opacity: 1;
