@@ -11,23 +11,11 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
-
+using HelpMyStreetFE.Models.Account;
+using HelpMyStreet.Utils.Extensions;
+using HelpMyStreet.Contracts.RequestService.Extensions;
 namespace HelpMyStreetFE.Services
 {
-    public class RequestContactInformation
-    {
-        public int JobID { get; set; }
-        public RequestPersonalDetails Requestor { get; set; }
-        public RequestPersonalDetails Recipient { get; set; }
-        public bool ForRequestor { get; set; }
-        public void Deconstruct(out RequestPersonalDetails requestor, out RequestPersonalDetails recipient, out bool forRequestor)
-        {
-            requestor = Requestor;
-            recipient = Recipient;
-            forRequestor = ForRequestor;
-        }
-    }
-
     public class RequestService : IRequestService
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
@@ -98,14 +86,20 @@ namespace HelpMyStreetFE.Services
             };
             return _requestHelpRepository.PostNewRequestForHelpAsync(request);
         }
-        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(string postCode, double distanceInMiles)
+        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user)
         {
-            return (await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles))
-                .OrderBy(j => j.DistanceInMiles)
-                .ThenBy(j => j.DueDate)
-                .ThenByDescending(j => j.IsHealthCritical)
-                .ToList();
+           var all = await _requestHelpRepository.GetJobsByFilterAsync(user.PostalCode, distanceInMiles);
+
+           var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
+            
+            var viewModel = new OpenJobsViewModel
+            {
+                CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
+                OtherJobs = otherJobs.OrderOpenJobsForDisplay()
+            };
+            return viewModel;          
         }
+  
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId)
         {
             return (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
@@ -168,3 +162,5 @@ namespace HelpMyStreetFE.Services
         
     }
 }
+
+

@@ -8,9 +8,20 @@
     bool UserIsVerified = (bool)ViewData["UserIsVerified"];
     bool IsAccepted = ViewData["IsAccepted"] is bool ? (bool)ViewData["IsAccepted"] : false;
     var id = Base64Utils.Base64Encode(Model.JobID.ToString());
+
+    var className = "";
+    if(Model.DueDate.Date <= DateTime.Today)
+    {
+        className = "job--hot";
+    }
+    
+    if(Model.DueDate.Date == DateTime.Today.AddDays(1))
+    {
+        className = "job--warm";
+    }
 }
 
-<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@id">
+<div class="job @className" id="@id">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.IsHealthCritical)
@@ -22,7 +33,7 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span>Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
+            <span class="due-date">Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title @Model.SupportActivity.Class()">
@@ -73,7 +84,7 @@
     <div class="job__detail">
         @if (IsAccepted)
         {
-            var (requestor, recipient, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
+            var (requestor, recipient, forRequestor) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
 
             <h4>Contact Details</h4>
             <div class="job__expander">

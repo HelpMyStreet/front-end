@@ -45,10 +45,7 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
             _yotiOptions = yotiOptions;
             _requestService = requestService;
-        }
-
-  
-
+        }  
 
         [HttpGet]
         [AllowAnonymous]
@@ -164,7 +161,7 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = GetAccountViewModel(currentUser);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             
-            viewModel.PageModel = await _requestService.GetOpenJobsAsync(currentUser.PostalCode, 20);
+            viewModel.PageModel = await _requestService.GetOpenJobsAsync(20, currentUser);
 
             return View("Index", viewModel);
         }
