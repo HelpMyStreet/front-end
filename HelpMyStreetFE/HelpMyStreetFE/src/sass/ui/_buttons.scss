@@ -31,6 +31,16 @@
         }
     }
 
+    &.small {
+        border-radius: 16px;
+        padding: 10px 10px;
+        font-size: 0.7rem;
+
+        @media screen and (max-width: $sm-screen) {
+            width: 100%;
+        }
+    }
+
     &.wide {
         min-width: 250px;
         border-radius: 32px;
