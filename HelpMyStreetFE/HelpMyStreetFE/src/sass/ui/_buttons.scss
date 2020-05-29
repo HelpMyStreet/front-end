@@ -7,6 +7,7 @@
     letter-spacing: 0.5px;
     padding: 13px 40px;
     text-decoration: none;
+    text-align:center
 
     .text {
         font-size: 1rem;
@@ -44,6 +45,9 @@
     &.wide {
         min-width: 250px;
         border-radius: 32px;
+    }
+    &.fixed-width {
+        width: 220px;
     }
 
     &:hover {

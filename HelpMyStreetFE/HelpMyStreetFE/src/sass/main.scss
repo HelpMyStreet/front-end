@@ -120,7 +120,6 @@ input[type=number]::-webkit-outer-spin-button {
 
 .flex {
   display: flex;
-  flex-direction: column;
 
   &.justifycontent {
       &-center {
@@ -138,7 +137,6 @@ input[type=number]::-webkit-outer-spin-button {
 .inline-flex {
   @extend .flex;
   display: inline-flex;
-  flex-direction: column;
 }
 
 .bold {
@@ -262,6 +260,35 @@ dd {
         margin-right:10px;
     }
 }
+.map {
+    min-width: 80%;
+    min-height: 500px;
+}
+.sticky-nav {
+    display: none;
+    opacity: 1;
+    background: #555;
+    color: #f1f1f1;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 12;
+    justify-content: center;
+}
+@media screen and (min-width: $sm-screen) and (max-width: $med-screen) {
+    .show {
+        display:inline-flex;
+        opacity: 0.95;
+        transition: 1s;
+    }
+
+    .hide {
+        display: none;
+        visibility: hidden;
+        transition: 1s;
+    }
+}
+
 
 
 #overlay {
@@ -315,3 +342,4 @@ dd {
 #pac-input:focus {
     border-color: #4d90fe;
 }
+

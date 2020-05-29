@@ -19,6 +19,20 @@ $(function () {
     intialiseCookieConsent();
     intialiseForgottonForm(firebase, account);
 
+    window.onscroll = function () {
+        var stickyNav = document.getElementById("sticky-nav");
+        var firstButton = document.getElementById("street-map");
+        var buttonLocation = firstButton.offsetTop;
+        if (window.innerWidth < 1024) {
+            if (window.pageYOffset > buttonLocation) {
+                console.log("Hmm");
+                $("#sticky-nav").fadeIn(500);
+            } else if (window.pageYOffset < buttonLocation) {
+                $("#sticky-nav").fadeOut(500);
+            }
+        }
+    }
+
   $("#postcode_button").click(function(evt) {
     const postCode = $("#postcode").val();
 

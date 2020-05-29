@@ -7,21 +7,62 @@
     <script src="~/coverageMap.js" asp-append-version="true"></script>
 }
 
-
+@if (!Model.isLoggedIn)
+{
+<div class="sticky-nav" id="sticky-nav">
+<div class="flex justify-center align-center" style="flex-direction:column">
+    <div>
+    <a href="/registration/stepone" class="btn cta mb-sm mt-sm btn--sign-up mr-sm">Sign Up Now</a>
+    <a href="/request-help" class="btn cta fill mb-sm mt-sm btn--request-help cta--orange">Request Help</a>
+    </div>
+</div>
+</div>
+}
 <div class="container">
-    <div class="row flex text-center justify-center">
-            <h2>Bringing together communities</h2>
-            <p>We help local people look after each other, safely and securely.
-            </p>
+    <div class="row hero flex sm12 mb-sm">
 
-        <div class="sm8 home-video-container" id="video">
-            <iframe style="min-width:80%; height:500px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="row sm6 align-center">
+            <h2 class="row mb0">Helping local people to look after one another</h2>
+            <p class="text-left mt-sm mb-sm">
+                HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
+            </p>
+            <div class="row mb-md">
+                <div class="row flex sm12 align-center">
+                    <p class="flex sm6">It's OK to ask for a little help:</p>
+                    <div class="flex sm4" style="text-align:center">
+
+                        <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange">Request Help</a>
+                    </div>
+                </div>
+                <div class="row flex sm12 align-center">
+                    <div class="flex sm6" style="flex-direction:column">
+                        <p class="mb0 mt0">Help your neighbours in need:</p>
+                        <ul class="mt0">
+                            <li>Shopping for Essentials</li>
+                            <li>Cooking a Hot Meal</li>
+                            <li>Sewing a Face Covering</li>
+                            <li>Help with Home Schooling</li>
+                            <li>A Friendly Chat</li>
+                        </ul>
+                    </div>
+                    <div class="flex sm4" style="text-align:center">
+                        @if (!Model.isLoggedIn)
+                        {
+                            <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                        }
+                        else
+                        {
+                            <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="row sm9 text-center">From collecting prescriptions to picking up groceries, helping with homework to sewing face coverings, people across the country are amazing, helping their neighbours and community stay safe.</p>
-        <div>
-            <a href="/registration/stepone" class="btn cta large btn--sign-up mr-sm">Sign Up Now</a>
-            <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
+
+        <div class="flex sm6 home-video-container justify-center align-center text-right" id="video">
+            <iframe style="min-width:100%; height:350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
+
     </div>
 
 
@@ -41,54 +82,16 @@
         </div>
     </div>
 
-    <div class="row card street-check text-center justify-center">
+    <div class="row card street-check text-center justify-center" id="street-map">
         <h3>Is your street covered?</h3>
         <input id="pac-input" class="controls" type="text" placeholder="Type here to check coverage...">
-        <div class="row sm6 text-right" id="map" style="min-height:500px;min-width:80%">
+        <div class="row sm12 map" id="map">
         </div>
         <p class="row sm9 text-center justify-center">Use our mapping tool to explore the UK and see if your area is covered. You can search for postcodes, counties or even places. Can't see anyone in your area? Why not sign up and be the first!</p>
-       
-        <div class="postcode__info dnone">
-            <div id="postcode_covered" class="dnone postcode__info__message">
-                <div class="postcode__info__message__text">
-                    Yes! Your street is covered - but we need more Helpers and Street Champions to help people in need!
-                </div>
-                <div>
-                    <a href="/registration/stepone" class="btn cta large fill btn--sign-up">Sign Up Now</a>
-                </div>
-                <div>
-                    <a href="/request-help" id="#requestHelp" class="requesthelp_link"> Request Help</a>
-                </div>
-            </div>
-            <div id="postcode_notcovered" class="dnone postcode__info__message">
-
-                <div class="postcode__info__message__text">
-                    Your street is not yet covered. Sign up as a Street Champion or Helper and help people in need
-                </div>
-                <div>
-                    <a href="/registration/stepone" class="btn cta large fill btn--sign-up">Sign Up Now</a>
-                </div>
-                <div>
-                    <a href="/request-help" id="#requestHelp" class="requesthelp_link"> Request Help</a>
-                </div>
-
-            </div>
-            <div id="postcode_invalid" class="dnone postcode__info__message">
-                <div class="row">
-                    <div class="sm12 postcode__info__message__text__warning">
-                        Sorry - that’s not quite right. Please enter a valid UK postcode.
-                    </div>
-                </div>
-            </div>
-            <div id="postcode_error" class="dnone postcode__info__message__text__warning">
-                We're currently experiencing issues finding coverage, please try again later.
-            </div>
-        </div>
     </div>
 
-
     <div class="row mt72 justify-center">
-        <div class="sm8 text-center">
+        <div class="sm8 text-center justify-center">
             <h2>Help people shelter safely at home …</h2>
             <p>
                 HelpMyStreet.org supports community organisers and  makes volunteering in your local community simple, safe and effective for everyone. Sign up today to help people in your street shelter safely at home:
@@ -117,9 +120,17 @@
             </p>
         </div>
     </div>
+
     <div class="row justify-center text-center">
         <div>
-            <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+            @if (!Model.isLoggedIn)
+            {
+                <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+            }
+            else
+            {
+                <a href="/account" class="btn cta large fill mt16 btn--sign-up">View Profile</a>
+            }
         </div>
     </div>
     <div class="row justify-center text-center mt72 help">
@@ -166,12 +177,21 @@
             </span>
             <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
             <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
-            <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrive burden</span> - taking care of processes and paperwork</span>
+            <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
         </div>
     </div>
     <div class="row justify-center text-center">
-        <div>
-            <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
-        </div>
+        @if (Model.isLoggedIn)
+        {
+            <div>
+                <a href="/account" class="btn cta large fill mt16 btn--sign-up">View Profile</a>
+            </div>
+        }
+        else
+        {
+            <div>
+                <a href="/registration/stepone" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+            </div>
+        }
     </div>
 </div>
