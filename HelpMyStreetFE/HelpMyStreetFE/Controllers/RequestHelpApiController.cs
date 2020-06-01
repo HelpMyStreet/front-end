@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Controllers {
                     return BadRequest(job);
 
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);                             
-                return await _requestService.UpdateJobStatusToInProgressAsync(DecodeJobID(job.JobID), userId, userId);
+                return await _requestService.UpdateJobStatusToInProgressAsync(DecodeJobID(job.JobID), userId, userId, HttpContext);
             }
             catch (Exception ex)
             {
@@ -55,7 +55,7 @@ namespace HelpMyStreetFE.Controllers {
 
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                return await _requestService.UpdateJobStatusToDoneAsync(DecodeJobID(job.JobID), userId);
+                return await _requestService.UpdateJobStatusToDoneAsync(DecodeJobID(job.JobID), userId, HttpContext);
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@ namespace HelpMyStreetFE.Controllers {
                     return BadRequest(job);
 
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                return await _requestService.UpdateJobStatusToOpenAsync(DecodeJobID(job.JobID), userId);
+                return await _requestService.UpdateJobStatusToOpenAsync(DecodeJobID(job.JobID), userId, HttpContext);
             }
             catch (Exception ex)
             {

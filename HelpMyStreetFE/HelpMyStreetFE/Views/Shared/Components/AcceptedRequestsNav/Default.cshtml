@@ -1,0 +1,4 @@
+@model CountNavViewModel
+@using HelpMyStreetFE.Enums.Account;
+
+    <a href="/account/accepted-requests" class="@(Model.CurrentPage == MenuPage.AcceptedRequests ? "selected" : string.Empty)">My Accepted Requests <span class="count">@Model.Count</span></a>
