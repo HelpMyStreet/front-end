@@ -107,7 +107,7 @@ namespace HelpMyStreetFE.Controllers {
                     {
                         userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     }
-                    return await _requestService.LogRequestAsync(model, userId);                
+                    return await _requestService.LogRequestAsync(model, userId, HttpContext);                
             }catch(Exception ex)
             {
                 _logger.LogError("an error occured requesting help", ex);

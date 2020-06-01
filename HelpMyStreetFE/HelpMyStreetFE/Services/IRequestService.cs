@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Services
     {
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, HttpContext ctx); 
         Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx);
-        Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel request, int userId);
+        Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel request, int userId, HttpContext ctx);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId);
         Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx);
