@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Services
             _logger = logger;
             _requestSettings = requestSettings;
         }
-        public Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
+        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId, HttpContext ctx)
         {
             _logger.LogInformation($"Logging Request");
             var request = new PostNewRequestForHelpRequest
@@ -90,7 +90,13 @@ namespace HelpMyStreetFE.Services
                     }
                 }
             };
-            return _requestHelpRepository.PostNewRequestForHelpAsync(request);
+
+            var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
+            if (response.HasContent & response.IsSuccessful)
+                TriggerCacheRefresh(ctx);
+
+
+            return response;
         }
         public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
         {               
@@ -129,6 +135,7 @@ namespace HelpMyStreetFE.Services
             return jobs;
     }
 
+
         public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
         {
             List<GetJobDetailsResponse> details = new List<GetJobDetailsResponse>();
@@ -164,11 +171,8 @@ namespace HelpMyStreetFE.Services
             });
 
             if (success)
-            {
-                int triggerSessionMinutes = (_requestSettings.Value.RequestsSessionExpiryInMinutes + 1) * -1;
-                ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-                ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-            }
+                TriggerCacheRefresh(ctx);
+
             return success;
         }
         public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx)
@@ -178,12 +182,10 @@ namespace HelpMyStreetFE.Services
                 CreatedByUserID = createdByUserId,
                 JobID = jobID
             });
+
             if (success)
-            {
-                int triggerSessionMinutes = (_requestSettings.Value.RequestsSessionExpiryInMinutes + 1) * -1;
-                ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-                ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-            }
+                TriggerCacheRefresh(ctx);
+
             return success;
         }
         public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx)
@@ -197,14 +199,19 @@ namespace HelpMyStreetFE.Services
             });
 
             if (success)
-            {
-                int triggerSessionMinutes = (_requestSettings.Value.RequestsSessionExpiryInMinutes + 1) *-1;
-                ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-                ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-            }
+             TriggerCacheRefresh(ctx);
+            
             return success;
         }
-        
+
+
+        private void TriggerCacheRefresh(HttpContext ctx)
+        {
+            int triggerSessionMinutes = (_requestSettings.Value.RequestsSessionExpiryInMinutes + 1) * -1;            
+            ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
+            ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
+        }
+
     }
 }
 
