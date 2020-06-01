@@ -103,7 +103,7 @@ namespace HelpMyStreetFE.Services
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId)
         {
             return (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
-                .OrderBy(j => j.DueDate)
+                .OrderBy(j => j.DueDate.Date)
                 .ThenByDescending(j => j.IsHealthCritical)
                 .ToList();
         }
