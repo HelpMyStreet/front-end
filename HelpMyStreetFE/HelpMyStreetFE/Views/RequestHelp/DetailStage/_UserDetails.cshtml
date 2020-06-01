@@ -40,7 +40,7 @@
         <div class="input sm3 find-address">
             <button class="btn large border-blue blue fill" id="address_finder_@Model.NamePostfix">
                 <span class="text">Find address</span>
-                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching..."}' /></div>
+                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
             </button>
             <a id="manual_address_@Model.NamePostfix" class="input__link manual-entry">Or enter <span class="lowercase">@Model.LabelPrefix</span> address manually</a>
         </div>
