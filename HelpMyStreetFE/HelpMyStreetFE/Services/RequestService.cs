@@ -120,10 +120,8 @@ namespace HelpMyStreetFE.Services
             var jobs = ctx.Session.GetObjectFromJson<IEnumerable<JobSummary>>("acceptedJobs");                        
             DateTime lastUpdated;
             DateTime.TryParse(ctx.Session.GetString("acceptedJobsLastUpdated"), out lastUpdated);
-            if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now) {                               
-                jobs = (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
-                .OrderBy(j => j.DueDate.Date)
-                .ThenByDescending(j => j.IsHealthCritical);
+            if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now) {
+                jobs = (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId)).OrderOpenJobsForDisplay();           
                 ctx.Session.SetObjectAsJson("acceptedJobs", jobs);
                 ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.ToString());
             }
