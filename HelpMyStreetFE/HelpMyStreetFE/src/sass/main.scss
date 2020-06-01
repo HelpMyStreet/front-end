@@ -264,9 +264,12 @@ dd {
     min-width: 80%;
     min-height: 500px;
 }
+.force-width {
+    flex-basis: 50%
+}
 .sticky-nav {
     display: none;
-    opacity: 1;
+    opacity: 0.95;
     background: #555;
     color: #f1f1f1;
     position: fixed;
@@ -336,7 +339,7 @@ dd {
     margin-left: 12px;
     padding: 2px 11px 2px 13px;
     text-overflow: ellipsis;
-    width: 400px;
+    width: 75%;
 }
 
 #pac-input:focus {

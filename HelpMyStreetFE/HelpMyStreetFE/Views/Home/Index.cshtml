@@ -10,12 +10,19 @@
 @if (!Model.isLoggedIn)
 {
 <div class="sticky-nav" id="sticky-nav">
-<div class="flex justify-center align-center" style="flex-direction:column">
-    <div>
-    <a href="/registration/stepone" class="btn cta mb-sm mt-sm btn--sign-up mr-sm">Sign Up Now</a>
-    <a href="/request-help" class="btn cta fill mb-sm mt-sm btn--request-help cta--orange">Request Help</a>
+    <div class="row sm12 justify-center">
+        <div class="flex row">
+            <div class="sm6 mr-sm">
+                <a href="/registration/stepone" class="btn cta small mb-sm mt-sm btn--sign-up">Sign Up Now</a>
+                <span>  </span>
+
+            </div><div class="sm6">
+
+                <span>  </span>
+                <a href="/request-help" class="btn cta small mb-sm mt-sm btn--request-help cta--orange">Request Help</a>
+            </div>
+        </div>
     </div>
-</div>
 </div>
 }
 <div class="container">
@@ -27,43 +34,38 @@
                 HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
             </p>
             <div class="row mb-md">
-                <div class="row flex sm12 align-center">
-                    <p class="flex sm6">It's OK to ask for a little help:</p>
-                    <div class="flex sm4" style="text-align:center">
+                <div class="row sm12 flex text-center">
+                    <p class="force-width sm6">It's OK to ask for a little help:</p>
 
-                        <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange">Request Help</a>
-                    </div>
+                    <p class="force-width sm6">Help people in need:</p>
                 </div>
-                <div class="row flex sm12 align-center">
-                    <div class="flex sm6" style="flex-direction:column">
-                        <p class="mb0 mt0">Help your neighbours in need:</p>
-                        <ul class="mt0">
-                            <li>Shopping for Essentials</li>
-                            <li>Cooking a Hot Meal</li>
-                            <li>Sewing a Face Covering</li>
-                            <li>Help with Home Schooling</li>
-                            <li>A Friendly Chat</li>
-                        </ul>
+                <div class="row flex sm12" style="text-align:center">
+                    <div class="force-width sm6">
+                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
                     </div>
-                    <div class="flex sm4" style="text-align:center">
-                        @if (!Model.isLoggedIn)
-                        {
-                            <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Provide Help</a>
-                        }
-                        else
-                        {
-                            <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
-                        }
-                    </div>
+                    @if (!Model.isLoggedIn)
+                    {
+                        <div class="force-width sm6"><a id="first-button" href="/registration/stepone" class="btn cta small btn--sign-up">Sign-up Now</a></div>
+                    }
+                    else
+                    {
+                        <div class="force-width sm6"><a id="first-button" href="/account" class="btn cta  btn--sign-up">View Profile</a></div>
+
+                    }
+                </div><div class="row flex sm6 align-center">
+
+
                 </div>
             </div>
         </div>
-
         <div class="flex sm6 home-video-container justify-center align-center text-right" id="video">
             <iframe style="min-width:100%; height:350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-
     </div>
+
+
+
+    
 
 
 
@@ -84,7 +86,7 @@
 
     <div class="row card street-check text-center justify-center" id="street-map">
         <h3>Is your street covered?</h3>
-        <input id="pac-input" class="controls" type="text" placeholder="Type here to check coverage...">
+        <input id="pac-input" class="controls" type="text" placeholder="Type to check coverage...">
         <div class="row sm12 map" id="map">
         </div>
         <p class="row sm9 text-center justify-center">Use our mapping tool to explore the UK and see if your area is covered. You can search for postcodes, counties or even places. Can't see anyone in your area? Why not sign up and be the first!</p>
