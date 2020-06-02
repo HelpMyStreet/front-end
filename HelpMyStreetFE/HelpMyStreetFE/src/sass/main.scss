@@ -349,3 +349,26 @@ dd {
     border-color: #4d90fe;
 }
 
+.pac-item {
+    padding-top: 2px;
+    line-height: 26px;
+
+    .pac-icon {
+        margin-top: 4px;
+    }
+
+    span {
+        font-size: 13px;
+
+        &.pac-item-query {
+            font-size: 15px;
+
+            .pac-matched {
+                font-size: 15px;
+            }
+        }
+    }
+}
+
+
+
