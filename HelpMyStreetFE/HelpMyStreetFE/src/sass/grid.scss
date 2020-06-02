@@ -47,7 +47,9 @@
             &.justify-center {
                 justify-content: center;
             }
-
+            &.justify-right {
+                justify-content: flex-end;
+            }
             &.align-center {
                 align-content: center;
             }

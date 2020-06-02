@@ -25,8 +25,8 @@ $(function () {
         var buttonLocation = firstButton.offsetTop;
         if (window.innerWidth < 1024) {
             if (window.pageYOffset > buttonLocation) {
-                console.log("Hmm");
-                $("#sticky-nav").fadeIn(500);
+                $("#sticky-nav").fadeIn(500).css({ display: 'flex' });
+               
             } else if (window.pageYOffset < buttonLocation) {
                 $("#sticky-nav").fadeOut(500);
             }

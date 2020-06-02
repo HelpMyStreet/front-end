@@ -31,6 +31,18 @@
 .gdpr-cookie__button-container {
     display: flex;
     justify-content: center;
+
+    button {
+        &.small {
+            border-radius: 16px;
+            padding: 10px 10px;
+            font-size: 0.7rem;
+
+            @media screen and (max-width: $sm-screen) {
+                width: 100%;
+            }
+        }
+    }
 }
 
 #gdpr-cookie-message h4 {
@@ -102,3 +114,4 @@ button#ihavecookiesBtn {
     margin-right: 5px;
     font-size: 15px;
 }
+

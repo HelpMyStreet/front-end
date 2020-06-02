@@ -7,8 +7,8 @@
     letter-spacing: 0.5px;
     padding: 13px 40px;
     text-decoration: none;
-    text-align:center
 
+    text-align: center;
     .text {
         font-size: 1rem;
         line-height: 1.222;
@@ -33,12 +33,11 @@
     }
 
     &.small {
-        border-radius: 16px;
-        padding: 10px 10px;
-        font-size: 0.7rem;
-
         @media screen and (max-width: $sm-screen) {
-            width: 100%;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        padding: 8px 14px;
+        line-height: 1;
         }
     }
 
@@ -46,6 +45,7 @@
         min-width: 250px;
         border-radius: 32px;
     }
+
     &.fixed-width {
         width: 220px;
     }
