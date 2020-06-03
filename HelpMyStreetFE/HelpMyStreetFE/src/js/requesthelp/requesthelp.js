@@ -186,7 +186,6 @@ var intialiseSubmit = function () {
                 body: JSON.stringify(data)
             });
 
-            console.log(resp);
             if (resp.ok) {
                 let respData = await resp.json()                         
                 if (respData.hasContent == true & respData.isSuccessful == true) {
