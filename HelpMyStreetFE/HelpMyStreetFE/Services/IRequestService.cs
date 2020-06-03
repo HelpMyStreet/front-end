@@ -5,6 +5,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
+using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace HelpMyStreetFE.Services
@@ -19,5 +20,7 @@ namespace HelpMyStreetFE.Services
         Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx);
         Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids);
+
+        List<TasksViewModel> GetRequestHelpTasks();
     }
 }

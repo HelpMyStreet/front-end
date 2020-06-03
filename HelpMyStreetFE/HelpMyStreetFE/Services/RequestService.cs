@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
 
 namespace HelpMyStreetFE.Services
 {
@@ -212,7 +213,54 @@ namespace HelpMyStreetFE.Services
             ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
         }
 
+        public List<TasksViewModel> GetRequestHelpTasks()
+        {
+            return new List<TasksViewModel>
+                {
+                    new TasksViewModel
+                    {
+                        ID = 1,
+                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask,
+                        Questions = new List<RequestHelpQuestion>
+                        {
+                            new RequestHelpQuestion
+                            {
+                                ID=1,
+                                Label = "Question 1",
+                                InputType = InputType.Textarea
+                                },
+                            new RequestHelpQuestion
+                            {
+                                ID = 2,
+                                Label = "Question 2",
+                                InputType = InputType.Number
+                            }
+                        }
+                    },
+                    new TasksViewModel
+                    {
+                        ID = 2,
+                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking,
+                        Questions = new List<RequestHelpQuestion>
+                        {
+                            new RequestHelpQuestion
+                            {
+                                ID= 2,
+                                Label = "Question 2",
+                                InputType = InputType.Textarea
+                            },
+                            new RequestHelpQuestion
+                            {
+                                ID = 4,
+                                Label = "Question 3",
+                                InputType = InputType.Number
+                            }
+                        }
+                    }
+                };
+            }
+        }
     }
-}
+
 
 

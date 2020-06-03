@@ -1,0 +1,46 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models.RequestHelpNewViewModel;
+
+
+@section Scripts {
+    <script src="~/requesthelp.js" asp-append-version="true"></script>
+}
+
+@{
+    ViewData["Title"] = "Request Help";
+    var currentStep = Model.Steps[Model.CurrentStepIndex];
+}
+
+
+
+<div class="container request-help">
+    <div class="row mt-md">
+        <div class="sm12">
+            <partial name="_ProgressBar" model="Model" />
+        </div>
+    </div>
+    @using (Html.BeginForm("RequestHelpNew", "RequestHelp"))
+    {
+
+        @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
+        
+        @Html.EditorFor(x => currentStep, currentStep.TemplateName);
+
+        <input type="submit" value="Finish" name="finish" />
+        if (Model.CurrentStepIndex > 0)
+        {
+            <input type="submit" value="Previous" name="prev" />
+        }
+
+        if (Model.CurrentStepIndex < Model.Steps.Count - 1)
+        {
+            <input type="submit" value="Next" name="next" />
+        }
+        else
+        {
+            <input type="submit" value="Finish" name="finish" />
+        }
+    }
+
+</div>
+
+

@@ -1,0 +1,20 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models.TasksViewModel
+
+
+
+<input type="hidden" name="currentStep_SelectedTask_QuestionCount" value="@Model.Questions.Count" />
+@for (int i = 0; i < Model.Questions.Count; i++)
+{
+    var name = $"currentStep_SelectedTask_Questions_[{i}]_Model";
+    var id = $"currentStep_SelectedTask_Questions_[{i}]_Id";
+    <input type="hidden" name="@id" value="@Model.Questions[i].ID" />
+    <div class="row">
+        <div class="sm12 input">
+            <label>@Model.Questions[i].Label</label>
+            <textarea type="text" name="@name"></textarea>
+            <span class="error"></span>
+            <hr class="input--separator" />
+        </div>
+    </div>
+}
+  

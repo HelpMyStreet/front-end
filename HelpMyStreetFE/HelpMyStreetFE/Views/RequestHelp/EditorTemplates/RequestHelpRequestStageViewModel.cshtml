@@ -1,0 +1,67 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
+
+    <input type="hidden" name="Step" value='@Json.Serialize(Model)' />
+    <div class="tiles">        
+        <input type="hidden" name="currentStep_SelectedTask_Id" />
+
+        <div class="row">
+            @foreach (var task in Model.Tasks)
+            {
+                @Html.DisplayFor(x => task, "TaskTile")
+            }
+
+        </div>
+        <span class="error"></span>
+    </div>
+
+<div id="questions">
+
+</div>
+
+
+<div class="tiles">    
+    <input type="hidden" name="currentStep_SelectedRequestor_Id" />
+    <div class="row">
+        @foreach (var requestor in Model.Requestors)
+        {
+            @Html.DisplayFor(x => requestor, "RequestForTile")
+        }
+
+    </div>
+    <span class="error"></span>
+</div>
+
+
+<div class="tiles">    
+    <input type="hidden" name="currentStep_SelectedTimeFrame_Id" />
+
+    <div class="row">
+        @foreach (var time in Model.Timeframes)
+        {
+            @Html.DisplayFor(x => time, "TimeFrameTile")
+        }
+    </div>
+    <span class="error"></span>
+</div>
+
+<div class="row">
+    <input type="hidden" name="currentStep_SelectedTimeFrame_CustomDays" />
+    <div class="sm6 input dnone" id="CustomTime">
+        <span>Within</span>
+        <select>
+            <option value="" disabled selected>Please select</option>
+            @for (int i = 1; i <= 30; ++i)
+            {
+
+                if (i == 1)
+                {
+                    <option value="@i.ToString()">@i Day</option>
+                }
+                else
+                {
+                    <option value="@i.ToString()">@i Days</option>
+                }
+            }
+        </select>
+    </div>
+</div>

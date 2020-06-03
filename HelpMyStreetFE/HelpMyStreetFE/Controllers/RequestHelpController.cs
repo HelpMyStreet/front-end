@@ -1,7 +1,10 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
+using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Interface;
+using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -16,13 +20,86 @@ namespace HelpMyStreetFE.Controllers
 
     public class RequestHelpController : Controller
     {        
-        private readonly ILogger<RequestHelpController> _logger;    
-        public RequestHelpController(ILogger<RequestHelpController> logger)
+        private readonly ILogger<RequestHelpController> _logger;
+        private readonly IRequestService _requestService;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService)
         {                  
             _logger = logger;
+            _requestService = requestService;
          }
 
-        public IActionResult RequestHelp()
+        public IActionResult RequestHelpNew()
+        {
+            _logger.LogInformation("request-help");
+
+            Models.RequestHelp.NewMVCForm.Models.RequestHelpNewViewModel model = new Models.RequestHelp.NewMVCForm.Models.RequestHelpNewViewModel
+            {
+
+                CurrentStepIndex = 0,
+                Steps = new List<Models.RequestHelp.NewMVCForm.Interface.IRequestHelpStepsViewModel>
+                {
+                    new Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
+                    {
+                        Tasks = _requestService.GetRequestHelpTasks(), 
+                        Requestors = new List<RequestorViewModel>
+                        {
+                            new RequestorViewModel
+                            {
+                                ID = 1,
+                                ColourCode = "orange",
+                                Title = "I am requesting help for myself",
+                                Text = "I'm the person in need of help",
+                                IconDark = "request-myself.svg",
+                                IconLight = "request-myself-white.svg",
+                            },
+                            new RequestorViewModel
+                            {
+                                ID = 2,
+                                ColourCode = "dark-blue",
+                                Title = "On behalf of someone else",
+                                Text = "I'm looking for help for a relative, neighbour or friend",
+                                IconDark = "request-behalf.svg",
+                                IconLight = "request-behalf-white.svg.svg",
+                            }
+                        },
+                        Timeframes =  new List<RequestHelpTimeViewModel>
+                        {
+                            new RequestHelpTimeViewModel{ID = 1, TimeDescription = "Today", Days = 0},
+                            new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
+                            new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
+                            new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
+                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
+                        },
+                    },  
+                    
+                    new Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
+                    {
+                        Tasks  = _requestService.GetRequestHelpTasks(),
+                    }
+                }
+                
+            };
+            HttpContext.Session.SetObjectAsJson("request-help", model);
+            return View("RequestHelpNew/RequestHelpNew", model);
+        }
+
+        [HttpPost]
+        public ActionResult RequestHelpNew(        
+        [ModelBinder(BinderType = typeof(Models.RequestHelp.NewMVCForm.Models.RequestHelpStepsViewModelBinder))] Models.RequestHelp.NewMVCForm.Interface.IRequestHelpStepsViewModel step)
+        {
+            RequestHelpNewViewModel requestHelp = HttpContext.Session.GetObjectFromJson<RequestHelpNewViewModel>("request-help");            
+            requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
+            requestHelp.CurrentStepIndex++;
+            if (ModelState.IsValid)
+            {
+              
+            }
+            HttpContext.Session.SetObjectAsJson("request-help", requestHelp);
+            return View("RequestHelpNew/RequestHelpNew", requestHelp);
+        }
+    
+
+    public IActionResult RequestHelp()
         {
             _logger.LogInformation("request-help");           
             return View();
@@ -60,5 +137,11 @@ namespace HelpMyStreetFE.Controllers
             return View(notifications);
         }
 
+
+        public async Task<ActionResult> Questions(int taskID)
+        {         
+            TasksViewModel model = _requestService.GetRequestHelpTasks().Where(x => x.ID == taskID).First();
+            return PartialView("_Questions", model);
+        }
     }
 }
