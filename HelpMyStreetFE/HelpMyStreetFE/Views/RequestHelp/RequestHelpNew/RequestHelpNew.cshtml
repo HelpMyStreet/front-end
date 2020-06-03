@@ -21,6 +21,7 @@
     @using (Html.BeginForm("RequestHelpNew", "RequestHelp"))
     {
 
+        @Html.Hidden("requestHelp", Model.ToJson())
         @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
         
         @Html.EditorFor(x => currentStep, currentStep.TemplateName);

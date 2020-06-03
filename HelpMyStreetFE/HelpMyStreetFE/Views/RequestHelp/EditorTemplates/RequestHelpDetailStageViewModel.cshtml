@@ -1,0 +1,16 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models.RequestHelpDetailStageViewModel
+@using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
+<input type="hidden" name="DetailStep" value='@Json.Serialize(Model)' />
+
+
+
+@switch (Model.Type)
+{
+    case RequestorType.Myself:
+        @Html.EditorFor(x => x.Recipient);
+        break;
+    case RequestorType.OnBehalf:
+        @Html.EditorFor(x => x.Requestor)
+        @Html.EditorFor(x => x.Recipient)
+        break;
+}

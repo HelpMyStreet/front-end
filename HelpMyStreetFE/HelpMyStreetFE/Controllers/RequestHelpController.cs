@@ -1,5 +1,6 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -40,7 +41,7 @@ namespace HelpMyStreetFE.Controllers
                 {
                     new Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
                     {
-                        Tasks = _requestService.GetRequestHelpTasks(), 
+                        Tasks = _requestService.GetRequestHelpTasks(),
                         Requestors = new List<RequestorViewModel>
                         {
                             new RequestorViewModel
@@ -70,12 +71,8 @@ namespace HelpMyStreetFE.Controllers
                             new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
                             new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
                         },
-                    },  
-                    
-                    new Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
-                    {
-                        Tasks  = _requestService.GetRequestHelpTasks(),
-                    }
+                    },
+                    new RequestHelpDetailStageViewModel(),                           
                 }
                 
             };
@@ -84,17 +81,21 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpPost]
-        public ActionResult RequestHelpNew(        
-        [ModelBinder(BinderType = typeof(Models.RequestHelp.NewMVCForm.Models.RequestHelpStepsViewModelBinder))] Models.RequestHelp.NewMVCForm.Interface.IRequestHelpStepsViewModel step)
-        {
-            RequestHelpNewViewModel requestHelp = HttpContext.Session.GetObjectFromJson<RequestHelpNewViewModel>("request-help");            
+        public ActionResult RequestHelpNew(
+        [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpNewViewModel requestHelp,
+        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] Models.RequestHelp.NewMVCForm.Interface.IRequestHelpStepsViewModel step)
+        {            
             requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
-            requestHelp.CurrentStepIndex++;
+            requestHelp.CurrentStepIndex++;          
             if (ModelState.IsValid)
             {
-              
-            }
-            HttpContext.Session.SetObjectAsJson("request-help", requestHelp);
+              if(step is RequestHelpRequestStageViewModel)
+                {
+                    var requestStep = (RequestHelpRequestStageViewModel)step;                    
+                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                    detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                }
+            }            
             return View("RequestHelpNew/RequestHelpNew", requestHelp);
         }
     

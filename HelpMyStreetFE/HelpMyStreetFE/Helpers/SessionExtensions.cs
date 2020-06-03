@@ -11,21 +11,14 @@ namespace HelpMyStreetFE.Helpers
     {
         public static void SetObjectAsJson(this ISession session, string key, object value)
         {
-            session.SetString(key, JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-            }));
+            session.SetString(key, JsonConvert.SerializeObject(value));
         }
 
         public static T GetObjectFromJson<T>(this ISession session, string key)
         {
             var value = session.GetString(key);
 
-            return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            });
+            return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
         }
     }
 }
