@@ -1,4 +1,4 @@
-﻿@import "./variables.scss";
+@import "./variables.scss";
 @import "./colours.scss";
 @import "./grid.scss";
 @import "./header.scss";
@@ -263,6 +263,10 @@ dd {
 .map {
     min-width: 80%;
     min-height: 500px;
+
+    div.gm-svpc {
+        display: none;
+    }
 }
 .force-width {
     flex-basis: 50%
