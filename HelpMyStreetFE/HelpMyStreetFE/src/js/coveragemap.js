@@ -1,12 +1,12 @@
-﻿import "isomorphic-fetch";
+import "isomorphic-fetch";
 
 const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
 const closeUpZoomNumber = 16; // zoom level when postcode is entered
-let initialUKZoomNumber = 6; // zoom level of the UK when geo location is not enabled
+let initialUKZoomNumber = 5.3; // zoom level of the UK when geo location is not enabled
 const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 
-let initialLat = 54.383618;
-let initialLng = -3.821280;
+let initialLat = 55.0;
+let initialLng = -10.0;
 
 let script = document.createElement('script');
 script.src = 'api/Maps/js';
@@ -68,11 +68,9 @@ let geolocationState = {
 
 window.initGoogleMap = async function () {
 
-    // zoom out one step if on a mobile and change centre of map
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-        initialUKZoomNumber -= 1;
-        initialLat = 55.841264;
-        initialLng = -4.119149;
+    // re-center map for narrow screens/mobile
+    if (window.innerWidth <= 1000) {
+        initialLng = -4.5;
     }
 
     let noPoi = [
@@ -154,6 +152,8 @@ window.initGoogleMap = async function () {
     googleMap = new google.maps.Map(document.getElementById('map'), {
         center: { lat: initialLat, lng: initialLng },
         mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false,
         zoom: initialUKZoomNumber,
         mapTypeId: 'roadmap'
     });
@@ -161,12 +161,11 @@ window.initGoogleMap = async function () {
     googleMap.setOptions({ styles: noPoi });
 
 
-    var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
-    searchBox.setBounds(googleMap.getBounds());
-    //searchBox.style.paddingTop = "0px";
+    var autocompleteInput = document.getElementById('pac-input');
+    googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(autocompleteInput);
 
-    googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    var geolocateButton = document.getElementById('your-location');
+    googleMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(geolocateButton);
 
     geolocateButton.addEventListener('click', function () {
         if (navigator.geolocation) {
@@ -201,19 +200,23 @@ window.initGoogleMap = async function () {
     });
 
  
-    searchBox.addListener('places_changed', function () {
-        var places = searchBox.getPlaces();
-        var bounds = new google.maps.LatLngBounds();
+    var autocomplete = new google.maps.places.Autocomplete(autocompleteInput);
+    autocomplete.setComponentRestrictions({ 'country': 'uk' });
 
-        if (places.length == 0) {
-            return;
+    autocomplete.addListener('place_changed', function () {
+        var place = autocomplete.getPlace();
+
+        if (!place.geometry) {
+            console.log("No geometry for this place");
+            return
         }
 
-        places.forEach(place => {
-            if (!place.geometry) {
-                console.log("No geometry for this place");
-                return
-            }
+        if (place.geometry.viewport) {
+            googleMap.fitBounds(place.geometry.viewport);
+        } else {
+            googleMap.setCenter(place.geometry.location);
+            googleMap.setZoom(closeUpZoomNumber);
+        }
 
         geolocationState.setActive(false);
     })
