@@ -353,5 +353,29 @@ dd {
     }
 }
 
-
+#street-map {
+    #your-location {
+        button {
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+            border: none;
+            border-radius: 2px;
+            height: 40px;
+            width: 75%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            padding: 0px;
+            margin: 10px;
+            outline: none;
+            #your-location-image {
+                margin: 8px;
+                width: 24px;
+                height: 24px;
+                background: url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png) no-repeat;
+                background-size: auto 100%;
+            }
+        }
+    }
+}
 

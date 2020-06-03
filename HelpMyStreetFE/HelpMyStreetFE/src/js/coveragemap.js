@@ -108,6 +108,7 @@ window.initGoogleMap = async function () {
         center: { lat: initialLat, lng: initialLng },
         mapTypeControl: false,
         streetViewControl: false,
+        fullscreenControl: false,
         zoom: initialUKZoomNumber,
         mapTypeId: 'roadmap'
     });
@@ -115,15 +116,21 @@ window.initGoogleMap = async function () {
     googleMap.setOptions({ styles: noPoi });
 
 
-    var input = document.getElementById('pac-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.setComponentRestrictions({ 'country': 'uk' });
+    var autocompleteInput = document.getElementById('pac-input');
+    googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(autocompleteInput);
 
-    googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    var geolocateButton = document.getElementById('your-location');
+    googleMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(geolocateButton);
 
-    //if (navigator.geolocation) {
-    //    navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { }, { enableHighAccuracy: true });
-    //}
+    geolocateButton.addEventListener('click', function () {
+        if (navigator.geolocation) {
+            setGeolocationIcon('pending');
+            navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { setGeolocationIcon('failure'); }, { enableHighAccuracy: true });
+        } else {
+            setGeolocationIcon('failure');
+        }
+    });
+
 
     googleMap.addListener('idle', function () {
         let bounds = googleMap.getBounds();
@@ -136,7 +143,14 @@ window.initGoogleMap = async function () {
         updateMap(swLat, swLng, neLat, neLng);
     });
 
+    googleMap.addListener('dragend', function () {
+        setGeolocationIcon('default');
+    });
+
  
+    var autocomplete = new google.maps.places.Autocomplete(autocompleteInput);
+    autocomplete.setComponentRestrictions({ 'country': 'uk' });
+
     autocomplete.addListener('place_changed', function () {
         var place = autocomplete.getPlace();
 
@@ -151,6 +165,8 @@ window.initGoogleMap = async function () {
             googleMap.setCenter(place.geometry.location);
             googleMap.setZoom(closeUpZoomNumber);
         }
+
+        setGeolocationIcon('default');
     })
 
 
@@ -185,8 +201,21 @@ function removedMarkerForPostcodeLookup() {
     }
 }
 
+function setGeolocationIcon(state) {
+    let icon = 0;
+    switch (state) {
+        case 'success': icon = 8; break;
+        case 'failure': icon = 1; break;
+        case 'pending': icon = 3; break;
+        default: icon = 0;
+    }
+    let offset = icon * -24;
+    $('#your-location-image').css('background-position', offset + 'px 0px');
+}
+
 function geoLocationSuccess(position) {
     setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
+    setGeolocationIcon('success');
 }
 
 function setMapCentre(latitude, longitude, zoomLevel) {
