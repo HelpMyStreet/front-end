@@ -21,6 +21,8 @@ let postcodeMarker = null;
 
 let previousZoomLevel = -1;
 
+let previousGeoLocationIconState = 'default';
+
 window.initGoogleMap = async function () {
 
     // re-center map for narrow screens/mobile
@@ -131,6 +133,15 @@ window.initGoogleMap = async function () {
         }
     });
 
+    geolocateButton.addEventListener('mouseover', function () {
+        if (previousGeoLocationIconState != 'success') {
+            setGeolocationIcon('hover');
+        }
+    });
+
+    geolocateButton.addEventListener('mouseout', function () {
+        setGeolocationIcon(previousGeoLocationIconState);
+    });
 
     googleMap.addListener('idle', function () {
         let bounds = googleMap.getBounds();
@@ -204,13 +215,18 @@ function removedMarkerForPostcodeLookup() {
 function setGeolocationIcon(state) {
     let icon = 0;
     switch (state) {
+        case 'hover': icon = 2; break;
+        case 'pending': icon = 3; break;
         case 'success': icon = 8; break;
         case 'failure': icon = 1; break;
-        case 'pending': icon = 3; break;
         default: icon = 0;
     }
     let offset = icon * -24;
     $('#your-location-image').css('background-position', offset + 'px 0px');
+
+    if (state != 'hover') {
+        previousGeoLocationIconState = state;
+    }
 }
 
 function geoLocationSuccess(position) {
