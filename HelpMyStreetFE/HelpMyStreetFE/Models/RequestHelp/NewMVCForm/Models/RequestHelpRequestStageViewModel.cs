@@ -17,6 +17,9 @@ namespace HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models
 
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public List<RequestHelpTimeViewModel> Timeframes { get; set; }
+        public bool? IsHealthCritical { get; set; }
+        public bool AgreeToTerms { get; set; }
+        public bool AgreeToPrivacy { get; set; }
 
     }
 
@@ -82,31 +85,56 @@ namespace HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models
         {
             RequestHelpRequestStageViewModel model = JsonConvert.DeserializeObject<RequestHelpRequestStageViewModel>(bindingContext.ValueProvider.GetValue("step").FirstValue);
 
-            int selectedTaskId = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTask_Id").FirstValue);
-            int selectedRequestorId = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedRequestor_Id").FirstValue); 
-            int selectedTimeId = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTimeFrame_Id").FirstValue);
+            int selectedTaskId, selectedRequestorId, selectedTimeId = -1;
 
-            var requestor = model.Requestors.Where(x => x.ID == selectedRequestorId).First();
-            requestor.IsSelected = true;
+            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask.Id").FirstValue, out selectedTaskId);
+            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor.Id").FirstValue, out selectedRequestorId); 
+            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Id").FirstValue, out selectedTimeId);
 
-            var task = model.Tasks.Where(x => x.ID == selectedTaskId).First();
-            task.IsSelected = true;
-
-            var time = model.Timeframes.Where(x => x.ID == selectedTimeId).First();
-            time.IsSelected = true;
-
-            if (time.AllowCustom){
-                time.Days = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTimeFrame_CustomDays").FirstValue);
+            var requestor = model.Requestors.Where(x => x.ID == selectedRequestorId).FirstOrDefault();
+            if (requestor != null)
+            {
+                requestor.IsSelected = true;
             }
-             
-            int questionCount = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTask_QuestionCount").FirstValue);                               
+
+            var task = model.Tasks.Where(x => x.ID == selectedTaskId).FirstOrDefault();
+            if (task != null)
+            {
+                task.IsSelected = true;
+            }
+
+            var time = model.Timeframes.Where(x => x.ID == selectedTimeId).FirstOrDefault();
+            if (time != null)
+            {
+                time.IsSelected = true;
+                if (time.AllowCustom)
+                {
+                    int selectedDays = -1;
+                    int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
+                    time.Days = selectedDays;
+                }
+            }
+
+            int questionCount = -1;
+            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask.QuestionCount").FirstValue, out questionCount);                               
 
             for(int i = 0; i < questionCount; i++)
-            {
-                int questionID = Convert.ToInt32(bindingContext.ValueProvider.GetValue($"currentStep_SelectedTask_Questions_[{i}]_Id").FirstValue);
-                var question = task.Questions.Where(x => x.ID == questionID).First();
-                question.Model = bindingContext.ValueProvider.GetValue($"currentStep_SelectedTask_Questions_[{i}]_Model").FirstValue;                                    
+            {                
+                int questionID = -1;
+                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask_Questions_[{i}]_Id").FirstValue, out questionID);
+                var question = task.Questions.Where(x => x.ID == questionID).FirstOrDefault();
+                if (question != null)
+                {
+                    question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
+                }
             }
+            
+            bool IsHealthCritical, AgreeToTerms, AgreeToPrivacy = false;
+            model.IsHealthCritical = bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep.IsHealthCritical").FirstValue, out IsHealthCritical) ? IsHealthCritical : (bool?)null;            
+            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep.AgreeToPrivacy").FirstValue, out AgreeToPrivacy);
+            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep.AgreeToTerms").FirstValue, out AgreeToTerms);
+            model.AgreeToPrivacy = AgreeToPrivacy;
+            model.AgreeToTerms = AgreeToTerms;
 
             return model;
 

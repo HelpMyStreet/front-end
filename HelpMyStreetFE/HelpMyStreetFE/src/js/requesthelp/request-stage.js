@@ -28,7 +28,7 @@ var intialiseRequestTiles = function () {
 var handleRequestFor = function (el) {
     $('*[data-type="request-for"]').removeClass("selected");
     el.addClass("selected");      
-    $('input[name="currentStep_SelectedRequestor_Id"]').val(el.attr("data-Id"));
+    $('input[name="currentStep.SelectedRequestor.Id"]').val(el.attr("data-Id"));
 }
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
@@ -36,19 +36,19 @@ var handleTimeFrame = function (el) {
     if (allowCustomEntry == "True") {
         $("#CustomTime").show();
         $("#CustomTime").find("select").change(function () {              
-            $('input[name="currentStep_SelectedTimeFrame_CustomDays"]').val($(this).val());
+            $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
         });
     } else {
         $("#CustomTime").hide();
     }
     el.addClass("selected");   
-    $('input[name="currentStep_SelectedTimeFrame_Id"]').val(el.attr("data-id"));
+    $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
 }
 
 var handleActivity = function (el) {
     $('*[data-type="activities"]').removeClass("selected");
     el.addClass("selected");
-    $('input[name="currentStep_SelectedTask_Id"]').val(el.attr("data-id"));
+    $('input[name="currentStep.SelectedTask.Id"]').val(el.attr("data-id"));
 
     $.ajax({
         url: "/RequestHelp/Questions?taskId=" + el.attr("data-id") ,
