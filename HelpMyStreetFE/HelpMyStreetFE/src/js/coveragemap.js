@@ -117,9 +117,8 @@ window.initGoogleMap = async function () {
 
 
     var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
-    searchBox.setBounds(googleMap.getBounds());
-    //searchBox.style.paddingTop = "0px";
+    var autocomplete = new google.maps.places.Autocomplete(input);
+    autocomplete.setComponentRestrictions({ 'country': 'uk' });
 
     googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -139,27 +138,20 @@ window.initGoogleMap = async function () {
     });
 
  
-    searchBox.addListener('places_changed', function () {
-        var places = searchBox.getPlaces();
-        var bounds = new google.maps.LatLngBounds();
+    autocomplete.addListener('place_changed', function () {
+        var place = autocomplete.getPlace();
 
-        if (places.length == 0) {
-            return;
+        if (!place.geometry) {
+            console.log("No geometry for this place");
+            return
         }
 
-        places.forEach(place => {
-            if (!place.geometry) {
-                console.log("No geometry for this place");
-                return
-            }
-
-            if (place.geometry.viewport) {
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
-        });
-        googleMap.fitBounds(bounds);
+        if (place.geometry.viewport) {
+            googleMap.fitBounds(place.geometry.viewport);
+        } else {
+            googleMap.setCenter(place.geometry.location);
+            googleMap.setZoom(closeUpZoomNumber);
+        }
     })
 
 
