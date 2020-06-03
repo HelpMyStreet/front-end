@@ -1,4 +1,6 @@
-﻿<div data-tab-page="request">
+﻿@model HelpMyStreetFE.Models.RequestHelp.RequestHelpQuerysViewModel;
+
+<div data-tab-page="request">
     <h2>What type of help are you looking for?</h2>
     <div class="row">
         <div class="sm12">
@@ -8,7 +10,7 @@
     <div class="row">
         <div class="sm12 input">
             <label>What’s the main thing you need help with? </label>            
-            <partial name="_Activties" />    
+            <partial name="_Activties" model="Model" />    
             <hr class="input--separator" />
         </div>
     </div>

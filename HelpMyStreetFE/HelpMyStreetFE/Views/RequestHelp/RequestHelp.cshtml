@@ -1,6 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.RequestHelp;
 @using HelpMyStreet.Utils.Enums
-
+@model HelpMyStreetFE.Models.RequestHelp.RequestHelpQuerysViewModel;
 
 @section Scripts {
     <script src="~/requesthelp.js" asp-append-version="true"></script>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <form>
-        <partial name="_RequestStage">
+        <partial name="_RequestStage" model="Model">
         <partial name="_DetailStage">
         <partial name="_ReviewStage">
         <partial name="_NextPrevButtons" />

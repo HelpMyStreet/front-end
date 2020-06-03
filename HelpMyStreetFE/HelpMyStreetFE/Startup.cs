@@ -210,7 +210,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                name: "request-help",
                pattern: "request-help",
-               defaults: new { controller = "RequestHelp", action = "RequestHelp" });
+               defaults: new { controller = "RequestHelp", action = "RequestHelp" });       
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
