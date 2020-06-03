@@ -267,6 +267,16 @@ dd {
     div.gm-svpc {
         display: none;
     }
+
+    div.gm-style-cc {
+        div:nth-child(1) {
+            top: 6px;
+        }
+
+        div:nth-child(2) {
+            top: -6px;
+        }
+    }
 }
 .force-width {
     flex-basis: 50%
