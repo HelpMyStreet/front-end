@@ -207,6 +207,10 @@ namespace HelpMyStreetFE
                     name: "contact",
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
+                        endpoints.MapControllerRoute(
+                    name: "request-help/v4v",
+                    pattern: "request-help/v4v",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "v4v"  });
                 endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
