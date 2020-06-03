@@ -21,6 +21,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models
         public string AlternatePhoneNumber { get; set; }
         public string Email { get; set; }
 
+        public string Postcode { get; set; }
     }
 
     public class RequestorDetails : Person
@@ -32,7 +33,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string Town { get; set; }
-        public string Postcode { get; set; }
+        public string County { get; set; }
     }
 
     

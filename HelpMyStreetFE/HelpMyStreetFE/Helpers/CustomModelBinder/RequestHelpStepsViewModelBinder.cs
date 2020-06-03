@@ -25,12 +25,47 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 case nameof(RequestHelpRequestStageViewModel):
                     bindingContext.Result = ModelBindingResult.Success(BindRequestStage(bindingContext));
                     break;
+                case nameof(RequestHelpDetailStageViewModel):
+                    bindingContext.Result = ModelBindingResult.Success(BuildDetailStage(bindingContext));
+                    break;
             }
 
             return Task.CompletedTask;
         }
 
 
+        private RequestHelpDetailStageViewModel BuildDetailStage(ModelBindingContext bindingContext)
+        {
+            RequestHelpDetailStageViewModel model = JsonConvert.DeserializeObject<RequestHelpDetailStageViewModel>(bindingContext.ValueProvider.GetValue("DetailStep").FirstValue);
+            var recpientnamePrefix = "currentStep.Recipient.";
+            model.Recipient = new RecipientDetails
+            {
+                Firstname = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Firstname)).FirstValue ?? "",
+                Lastname = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Lastname)).FirstValue ?? "",
+                MobileNumber = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.MobileNumber)).FirstValue ?? "",
+                AlternatePhoneNumber = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.AlternatePhoneNumber)).FirstValue ?? "",
+                AddressLine1 = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.AddressLine1)).FirstValue ?? "",
+                AddressLine2 = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.AddressLine2)).FirstValue ?? "",
+                County = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.County)).FirstValue ?? "",
+                Postcode = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Postcode)).FirstValue ?? "",
+                Email = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Email)).FirstValue ?? "",
+                Town = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Town)).FirstValue ?? "",
+            };
+
+            var requestorPrefix = "currentStep.Requestor";
+            model.Requestor = new RequestorDetails
+            {
+                Firstname = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Firstname)).FirstValue ?? "",
+                Lastname = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Lastname)).FirstValue ?? "",
+                MobileNumber = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.MobileNumber)).FirstValue ?? "",
+                AlternatePhoneNumber = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.AlternatePhoneNumber)).FirstValue ?? "",         
+                Postcode = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Postcode)).FirstValue ?? "",
+                Email = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Email)).FirstValue ?? "",     
+            };
+
+            return model;
+
+        }
 
         private RequestHelpRequestStageViewModel BindRequestStage(ModelBindingContext bindingContext)
         {
@@ -81,9 +116,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             }
 
             bool IsHealthCritical, AgreeToTerms, AgreeToPrivacy = false;
-            model.IsHealthCritical = bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep.IsHealthCritical").FirstValue, out IsHealthCritical) ? IsHealthCritical : (bool?)null;
-            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep.AgreeToPrivacy").FirstValue, out AgreeToPrivacy);
-            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep.AgreeToTerms").FirstValue, out AgreeToTerms);
+            model.IsHealthCritical = bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.IsHealthCritical)).FirstValue, out IsHealthCritical) ? IsHealthCritical : (bool?)null;
+            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToPrivacy)).FirstValue, out AgreeToPrivacy);
+            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToTerms)).FirstValue, out AgreeToTerms);
             model.AgreeToPrivacy = AgreeToPrivacy;
             model.AgreeToTerms = AgreeToTerms;
 

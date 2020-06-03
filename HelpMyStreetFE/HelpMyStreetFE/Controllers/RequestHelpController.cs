@@ -52,6 +52,7 @@ namespace HelpMyStreetFE.Controllers
                                 Text = "I'm the person in need of help",
                                 IconDark = "request-myself.svg",
                                 IconLight = "request-myself-white.svg",
+                                Type = RequestorType.Myself
                             },
                             new RequestorViewModel
                             {
@@ -61,6 +62,7 @@ namespace HelpMyStreetFE.Controllers
                                 Text = "I'm looking for help for a relative, neighbour or friend",
                                 IconDark = "request-behalf.svg",
                                 IconLight = "request-behalf-white.svg.svg",
+                                Type = RequestorType.OnBehalf
                             }
                         },
                         Timeframes =  new List<RequestHelpTimeViewModel>
