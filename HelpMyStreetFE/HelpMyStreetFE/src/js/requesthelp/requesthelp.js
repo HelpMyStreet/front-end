@@ -178,16 +178,17 @@ var intialiseSubmit = function () {
 
         try {
             buttonLoad($("#btnSubmit"));
-            let resp = await fetch('api/requesthelp', {
+            let resp = await fetch('/api/requesthelp', {
                 method: 'post',
                 headers: {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
-            
+
+            console.log(resp);
             if (resp.ok) {
-                let respData = await resp.json()                
+                let respData = await resp.json()                         
                 if (respData.hasContent == true & respData.isSuccessful == true) {
                     if (respData.content.fulfillable == 4 || respData.content.fulfillable == 5 || respData.content.fulfillable == 6 || respData.content.fulfillable == 2 ) {
                         window.location.href = "/requesthelp/success?fulfillable=" + respData.content.fulfillable + "&onBehalf=" + detailStage.onBehalf;
