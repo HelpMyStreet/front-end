@@ -21,7 +21,50 @@ let postcodeMarker = null;
 
 let previousZoomLevel = -1;
 
-let previousGeoLocationIconState = 'default';
+let geolocationState = {
+    'hover': false,
+    'pending': false,
+    'failed': false,
+    'active': false,
+
+    'setHover': function (value) {
+        this.hover = value;
+        this.updateIcon();
+    },
+
+    'geoLocationInProgress': function () {
+        this.pending = true;
+        this.updateIcon();
+    },
+
+    'geolocationComplete': function (success) {
+        this.active = success;
+        this.failed = !success;
+        this.pending = false;
+        this.hover = false;
+        this.updateIcon();
+    },
+
+    'setActive': function (value) {
+        this.active = value;
+        this.updateIcon();
+    },
+
+    'updateIcon': function () {
+        let icon = 0;
+        if (this.pending === true) {
+            icon = 3;
+        } else if (this.failed === true) {
+            icon = 1;
+        } else if (this.active === true) {
+            icon = 8;
+        } else if (this.hover === true) {
+            icon = 2;
+        }
+        let offset = icon * -24;
+        $('#your-location-image').css('background-position', offset + 'px 0px');
+    }
+};
 
 window.initGoogleMap = async function () {
 
@@ -126,21 +169,19 @@ window.initGoogleMap = async function () {
 
     geolocateButton.addEventListener('click', function () {
         if (navigator.geolocation) {
-            setGeolocationIcon('pending');
-            navigator.geolocation.getCurrentPosition(geoLocationSuccess, (error) => { setGeolocationIcon('failure'); }, { enableHighAccuracy: true });
+            geolocationState.geoLocationInProgress();
+            navigator.geolocation.getCurrentPosition(geoLocationSuccess, geolocationState.geolocationComplete(false), { enableHighAccuracy: true });
         } else {
-            setGeolocationIcon('failure');
+            geolocationState.geolocationComplete(false)
         }
     });
 
     geolocateButton.addEventListener('mouseover', function () {
-        if (previousGeoLocationIconState != 'success') {
-            setGeolocationIcon('hover');
-        }
+        geolocationState.setHover(true);
     });
 
     geolocateButton.addEventListener('mouseout', function () {
-        setGeolocationIcon(previousGeoLocationIconState);
+        geolocationState.setHover(false);
     });
 
     googleMap.addListener('idle', function () {
@@ -154,8 +195,8 @@ window.initGoogleMap = async function () {
         updateMap(swLat, swLng, neLat, neLng);
     });
 
-    googleMap.addListener('dragend', function () {
-        setGeolocationIcon('default');
+    googleMap.addListener('dragstart', function () {
+        geolocationState.setActive(false);
     });
 
  
@@ -177,7 +218,7 @@ window.initGoogleMap = async function () {
             googleMap.setZoom(closeUpZoomNumber);
         }
 
-        setGeolocationIcon('default');
+        geolocationState.setActive(false);
     })
 
 
@@ -212,26 +253,9 @@ function removedMarkerForPostcodeLookup() {
     }
 }
 
-function setGeolocationIcon(state) {
-    let icon = 0;
-    switch (state) {
-        case 'hover': icon = 2; break;
-        case 'pending': icon = 3; break;
-        case 'success': icon = 8; break;
-        case 'failure': icon = 1; break;
-        default: icon = 0;
-    }
-    let offset = icon * -24;
-    $('#your-location-image').css('background-position', offset + 'px 0px');
-
-    if (state != 'hover') {
-        previousGeoLocationIconState = state;
-    }
-}
-
 function geoLocationSuccess(position) {
     setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
-    setGeolocationIcon('success');
+    geolocationState.geolocationComplete(true);
 }
 
 function setMapCentre(latitude, longitude, zoomLevel) {
