@@ -220,31 +220,7 @@ window.initGoogleMap = async function () {
 
         geolocationState.setActive(false);
     })
-
-
-    //$("#postcode_button").click(async function (evt) {
-    //    let postcode = $("#postcode").val();
-    //    if (postcode) {
-    //        let postcodeCoordinates = await getPostcodeCoordinates(postcode);
-    //        if (postcodeCoordinates.isSuccessful && postcodeCoordinates.content.postcodeCoordinates.length > 0) {
-    //            let postcodeCoordinate = postcodeCoordinates.content.postcodeCoordinates[0];
-    //            setMapCentre(postcodeCoordinate.latitude, postcodeCoordinate.longitude, closeUpZoomNumber);
-
-    //            postcodeMarker = new google.maps.Marker({
-    //                position: { lat: postcodeCoordinate.latitude, lng: postcodeCoordinate.longitude },
-    //                title: postcodeCoordinate.postcode,
-    //            });
-
-    //            addMarkerForPostcodeLookup();
-
-    //        }
-    //    }
-    //});
 };
-
-function addMarkerForPostcodeLookup() {
-    postcodeMarker.setMap(googleMap);
-}
 
 function removedMarkerForPostcodeLookup() {
     if (postcodeMarker) {
@@ -368,11 +344,4 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
     const content = await fetch(endpoint);
     const users = await content.json();
     return users.volunteerCoordinates;
-}
-
-async function getPostcodeCoordinates(postcode) {
-    let endpoint = 'api/Maps/postcodeCoordinate?postcode=' + postcode;
-    const content = await fetch(endpoint);
-    const coordinates = await content.json();
-    return coordinates;
 }
