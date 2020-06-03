@@ -95,7 +95,6 @@ namespace HelpMyStreetFE.Services
             if (response.HasContent & response.IsSuccessful)
                 TriggerCacheRefresh(ctx);
 
-
             return response;
         }
         public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
