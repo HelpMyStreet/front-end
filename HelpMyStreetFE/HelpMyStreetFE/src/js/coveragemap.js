@@ -2,11 +2,11 @@
 
 const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
 const closeUpZoomNumber = 16; // zoom level when postcode is entered
-let initialUKZoomNumber = 6; // zoom level of the UK when geo location is not enabled
+let initialUKZoomNumber = 5.3; // zoom level of the UK when geo location is not enabled
 const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 
-let initialLat = 54.383618;
-let initialLng = -3.821280;
+let initialLat = 55.0;
+let initialLng = -10.0;
 
 let script = document.createElement('script');
 script.src = 'api/Maps/js';
@@ -23,11 +23,9 @@ let previousZoomLevel = -1;
 
 window.initGoogleMap = async function () {
 
-    // zoom out one step if on a mobile and change centre of map
-    if (/Mobi|Android/i.test(navigator.userAgent)) {
-        initialUKZoomNumber -= 1;
-        initialLat = 55.841264;
-        initialLng = -4.119149;
+    // re-center map for narrow screens/mobile
+    if (window.innerWidth <= 1000) {
+        initialLng = -4.5;
     }
 
     let noPoi = [
