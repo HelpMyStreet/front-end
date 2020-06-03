@@ -99,9 +99,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models
                 time.Days = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTimeFrame_CustomDays").FirstValue);
             }
              
-            int questionCount = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTask_QuestionCount").FirstValue);                    
-           
-
+            int questionCount = Convert.ToInt32(bindingContext.ValueProvider.GetValue("currentStep_SelectedTask_QuestionCount").FirstValue);                               
 
             for(int i = 0; i < questionCount; i++)
             {
