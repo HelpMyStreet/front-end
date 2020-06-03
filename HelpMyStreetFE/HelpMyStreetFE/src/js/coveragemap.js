@@ -107,6 +107,7 @@ window.initGoogleMap = async function () {
     googleMap = new google.maps.Map(document.getElementById('map'), {
         center: { lat: initialLat, lng: initialLng },
         mapTypeControl: false,
+        streetViewControl: false,
         zoom: initialUKZoomNumber,
         mapTypeId: 'roadmap'
     });
