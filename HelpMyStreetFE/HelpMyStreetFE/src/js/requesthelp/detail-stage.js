@@ -8,8 +8,7 @@ export function initaliseDetailStage() {
 }
 var validateForm = function (validateRequestor) {
     
-    $("form").on("submit", function (evt) {
-
+    $("form").on("submit", function (evt) {        
         if ($(document.activeElement).attr("id") == "btnBack") 
             return true;
         
@@ -19,19 +18,33 @@ var validateForm = function (validateRequestor) {
             "currentStep.Recipient.MobileNumber": (v, d) => ((d["currentStep.Recipient.AlternatePhoneNumber"] !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
             "currentStep.Recipient.Email": (v) => {
                 if (!validateRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
-                    return "Please enter a valid email address";                                        
-                }     
+                    return "Please enter a valid email address";
+                }
                 return true;
             },
-            "currentStep.Recipient.Town": (v) =>
-                (v.length > 2) ||
-                "Please enter a valid town / city",
-            "currentStep.Recipient.AddressLine1": (v) =>
-                (v.length > 2) ||
-                "Please enter a valid first line of your address",
-            "currentStep.Recipient.Postcode": (v) => (v !== "") || "Please enter a postcode",
+            "currentStep.Recipient.Town": (v) => {
+                if (v.length <= 2) {
+                    $('.expander').slideDown();
+                    return "Please enter a valid town / city";
+                }
+                return true;
+            },
 
-
+            "currentStep.Recipient.AddressLine1": (v) => {
+                if (v.length <= 2) {
+                    $('.expander').slideDown();
+                    return "Please enter a valid first line of your address";
+                }
+                return true;
+            },
+            "currentStep.Recipient.Postcode": (v) => {
+                if (v == "") {
+                    $('.expander').slideDown();
+                    return "Please enter a postcode";
+                }
+                return true;
+            },
+                                            
             "currentStep.Requestor.Firstname": (v) => ((v.length >= 2 && !hasNumber(v))) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Requestor.Lastname": (v) => ((v.length >= 2 && !hasNumber(v))) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Requestor.MobileNumber": (v, d) => ((d["currentStep.Requestor.AlternatePhoneNumber"] !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
@@ -63,7 +76,8 @@ var validateForm = function (validateRequestor) {
                             validForm = (validForm && !postcodeValid.includes(false));
                             
                             if (validForm) {
-                                $('form').unbind('submit').submit(); // continue the submit unbind preventDefault
+                                $('form').unbind('submit') // continue the submit unbind preventDefault
+                                $('#btnNext').click();
                             }
                         }
                     }).catch(function () {

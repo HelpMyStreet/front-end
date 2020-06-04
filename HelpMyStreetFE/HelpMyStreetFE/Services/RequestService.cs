@@ -22,6 +22,7 @@ using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 
 namespace HelpMyStreetFE.Services
 {
@@ -217,7 +218,7 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public RequestHelpNewViewModel GetRequestHelpSteps()
+        public RequestHelpNewViewModel GetRequestHelpSteps(string source)
         {
             return new RequestHelpNewViewModel
             {
@@ -227,7 +228,7 @@ namespace HelpMyStreetFE.Services
                 {
                     new RequestHelpRequestStageViewModel
                     {
-                        Tasks = GetRequestHelpTasks(),
+                        Tasks = GetRequestHelpTasks(source),
                         Requestors = new List<RequestorViewModel>
                         {
                             new RequestorViewModel
@@ -261,14 +262,19 @@ namespace HelpMyStreetFE.Services
                         },
                     },
                     new RequestHelpDetailStageViewModel(),
+                    new RequestHelpReviewStageViewModel(),
                 }
 
             };
         }
-        private List<TasksViewModel> GetRequestHelpTasks()
+        private List<TasksViewModel> GetRequestHelpTasks(string source)
         {
-            return new List<TasksViewModel>
-                {
+            var tasks = new List<TasksViewModel>();
+            if (source == "v4v")
+                tasks.Add(new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage });
+
+            tasks.AddRange(new List<TasksViewModel>
+            {
                     new TasksViewModel
                     {
                         ID = 1,
@@ -298,8 +304,9 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Other },                
-                };
-            }
+             });
+            return tasks;
+         }
         }
     }
 

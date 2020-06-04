@@ -1,9 +1,7 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RequestHelpDetailStageViewModel
 @using HelpMyStreetFE.Models.RequestHelp.Enum;
+
 <input type="hidden" name="DetailStep" value='@Json.Serialize(Model)' />
-
-
-
 @switch (Model.Type)
 {
     case RequestorType.Myself:               

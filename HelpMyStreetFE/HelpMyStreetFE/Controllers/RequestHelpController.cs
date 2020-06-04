@@ -8,6 +8,7 @@ using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace HelpMyStreetFE.Controllers
             _requestService = requestService;
          }
         
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult RequestHelp(
         [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpNewViewModel requestHelp,
@@ -42,7 +43,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 requestHelp.CurrentStepIndex--;
                 return View(requestHelp);
-            }
+            }        
             
             if (ModelState.IsValid)
             {
@@ -55,22 +56,36 @@ namespace HelpMyStreetFE.Controllers
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
                     }
+                    if(step is RequestHelpDetailStageViewModel)
+                    {
+                        var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();                        
+                        var detailStage = (RequestHelpDetailStageViewModel)step;
+                        var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
+                        reviewStage.Recipient = detailStage.Recipient;
+                        reviewStage.Requestor = detailStage.Requestor;
+                        reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.HealthCritical = requestStage.IsHealthCritical.Value;
+                        reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
+                        reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
+                    }
+
+
+                    if (requestHelp.Action == "finish")
+                    {
+                        // call api;
+                    }
                 }
 
-                if(requestHelp.Action == "finish")
-                {
-                    // call api;
-                }
                 
             }            
             return View(requestHelp);
         }
     
 
-    public IActionResult RequestHelp()
+    public IActionResult RequestHelp(string source)
         {
             _logger.LogInformation("request-help");
-             var model = _requestService.GetRequestHelpSteps();
+             var model = _requestService.GetRequestHelpSteps(source);
             return View(model);
         }
 

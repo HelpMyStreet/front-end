@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             {
                 TypeNameHandling = TypeNameHandling.Objects
             });
-            model.Action = bindingContext.ValueProvider.GetValue("action").FirstValue;
+            model.Action = bindingContext.ValueProvider.GetValue("formAction").FirstValue;
             var type = Type.GetType(model.ToString());
             bindingContext.ModelMetadata = _provider.GetMetadataForType(type);
             bindingContext.Result = ModelBindingResult.Success(model);
