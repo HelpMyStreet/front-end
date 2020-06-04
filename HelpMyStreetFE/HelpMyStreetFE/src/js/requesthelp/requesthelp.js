@@ -6,7 +6,6 @@ import { intialiseReviewStage,  } from "./review-stage";
 
 
 $(() => {   
-    console.log(stepIndex);
     switch (stepIndex) {
         case 0:
             intialiseRequestStage();

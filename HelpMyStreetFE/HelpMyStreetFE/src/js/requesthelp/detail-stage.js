@@ -9,7 +9,10 @@ export function initaliseDetailStage() {
 var validateForm = function (validateRequestor) {
     
     $("form").on("submit", function (evt) {
-       
+
+        if ($(document.activeElement).attr("id") == "btnBack") 
+            return true;
+        
         const valid = validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.Lastname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",

@@ -38,15 +38,30 @@ namespace HelpMyStreetFE.Controllers
         [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
         {            
             requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
-            requestHelp.CurrentStepIndex++;          
+            if(requestHelp.Action == "back")
+            {
+                requestHelp.CurrentStepIndex--;
+                return View(requestHelp);
+            }
+            
             if (ModelState.IsValid)
             {
-              if(step is RequestHelpRequestStageViewModel)
+                if (requestHelp.Action == "next")
                 {
-                    var requestStep = (RequestHelpRequestStageViewModel)step;                    
-                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                    detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                    requestHelp.CurrentStepIndex++;
+                    if (step is RequestHelpRequestStageViewModel)
+                    {
+                        var requestStep = (RequestHelpRequestStageViewModel)step;
+                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                        detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                    }
                 }
+
+                if(requestHelp.Action == "finish")
+                {
+                    // call api;
+                }
+                
             }            
             return View(requestHelp);
         }
@@ -135,11 +150,17 @@ namespace HelpMyStreetFE.Controllers
             return View(notifications);
         }
 
-
-        public async Task<ActionResult> Questions(int taskID)
-        {         
-            TasksViewModel model = _requestService.GetRequestHelpTasks().Where(x => x.ID == taskID).First();
+        [HttpPost]
+        public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
+        {
+            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
             return PartialView("_Questions", model);
+        }
+        
+        public class QuestionRequest
+        {
+            public RequestHelpRequestStageViewModel Step { get; set; }
+            public int TaskID { get; set; }
         }
     }
 }

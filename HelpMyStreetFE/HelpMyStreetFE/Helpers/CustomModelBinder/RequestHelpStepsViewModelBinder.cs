@@ -77,18 +77,21 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor.Id").FirstValue, out selectedRequestorId);
             int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Id").FirstValue, out selectedTimeId);
 
+            model.Requestors.ForEach(x => x.IsSelected = false);
             var requestor = model.Requestors.Where(x => x.ID == selectedRequestorId).FirstOrDefault();
             if (requestor != null)
             {
                 requestor.IsSelected = true;
             }
 
+            model.Tasks.ForEach(x => x.IsSelected = false);
             var task = model.Tasks.Where(x => x.ID == selectedTaskId).FirstOrDefault();
             if (task != null)
             {
                 task.IsSelected = true;
             }
 
+            model.Timeframes.ForEach(x => x.IsSelected = false);
             var time = model.Timeframes.Where(x => x.ID == selectedTimeId).FirstOrDefault();
             if (time != null)
             {
@@ -107,7 +110,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             for (int i = 0; i < questionCount; i++)
             {
                 int questionID = -1;
-                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask_Questions_[{i}]_Id").FirstValue, out questionID);
+                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
                 var question = task.Questions.Where(x => x.ID == questionID).FirstOrDefault();
                 if (question != null)
                 {

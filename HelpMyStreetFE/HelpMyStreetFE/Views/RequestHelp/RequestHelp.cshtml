@@ -27,10 +27,7 @@
 
         @Html.Hidden("requestHelp", Model.ToJson())
         @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
-
         @Html.EditorFor(x => currentStep, currentStep.TemplateName);
-
-
 
         <div class="btn-wrapper">
             <div class="row">
@@ -44,19 +41,19 @@
                 <div class="sm12">
                     @if (Model.CurrentStepIndex > 0)
                     {
-                        <button id="btnBack" name="back" class="btn cta large  left clear-button" type="submit">Back</button>
+                        <button id="btnBack" name="action" class="btn cta large left clear-button" value="back" type="submit">Back</button>
                     }
 
                     @if (Model.CurrentStepIndex < Model.Steps.Count - 1)
                     {
-                        <button id="btnNext" class="btn btnNext cta large  right" name="next" type="submit">
+                        <button id="btnNext" class="btn btnNext cta large  right" name="action" value="next" type="submit">
                             <span class="text">Continue</span>
                             <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Validating..."}' /></div>
                         </button>
                     }
                     else
                     {
-                        <button id="btnSubmit" class="btn btnSubmit cta large right" name="finish" type="submit">
+                        <button id="btnSubmit" class="btn btnSubmit cta large right" name="action" value="finish" type="submit">
                             <span class="text">Submit</span>
                             <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
                         </button>

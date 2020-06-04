@@ -2,6 +2,14 @@
 export function intialiseRequestStage() {
     intialiseRequestTiles();
     validateForm();
+
+    var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+    $("#CustomTime").find("select").change(function () {
+        $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
+    });
+    if (taskId != "") {
+        LoadQuestions(taskId);
+    }   
 }
 
 
@@ -49,9 +57,7 @@ var handleTimeFrame = function (el) {
     let allowCustomEntry = el.attr("data-allowcustom");    
     if (allowCustomEntry == "True") {
         $("#CustomTime").show();
-        $("#CustomTime").find("select").change(function () {              
-            $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
-        });
+
     } else {
         $("#CustomTime").hide();
     }
@@ -62,18 +68,30 @@ var handleTimeFrame = function (el) {
 var handleActivity = function (el) {
     $('*[data-type="activities"]').removeClass("selected");
     el.addClass("selected");
-    $('input[name="currentStep.SelectedTask.Id"]').val(el.attr("data-id"));
-
-    $.ajax({
-        url: "/RequestHelp/Questions?taskId=" + el.attr("data-id") ,
-        type: "GET",
-        dataType: "html",  
-        success: function (data) {
-            $('#questions').html(data);
-        }       
-    });
+    let taskId = el.attr("data-id");
+    $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
+    LoadQuestions(taskId);
 }
 
 
 
+var LoadQuestions = function (taskId){
+    var qRequest = {
+        taskId: Number(taskId),
+        step: JSON.parse($('input[name="RequestStep"]').val())
+    };
 
+    $.ajax({
+        url: "/RequestHelp/Questions",
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        dataType: "html",
+        data: JSON.stringify(qRequest),
+        success: function (data) {
+            $('#questions').html(data);
+        }
+    });
+    }

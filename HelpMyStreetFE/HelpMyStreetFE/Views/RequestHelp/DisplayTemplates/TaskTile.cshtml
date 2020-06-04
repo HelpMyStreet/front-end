@@ -24,7 +24,7 @@
 
     <div class="sm4">
 
-        <div id="task_@Model.ID" data-type="activities" data-id='@Model.ID' data-json='@Json.Serialize(Model)' class="tiles__tile tiles__tile--large  @activity.Activity.Class()">
+        <div id="task_@Model.ID" data-type="activities" data-id='@Model.ID' data-json='@Json.Serialize(Model)' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected ? "selected" : "" )">
             <div class="tiles__tile__content ">
                 @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
                 {

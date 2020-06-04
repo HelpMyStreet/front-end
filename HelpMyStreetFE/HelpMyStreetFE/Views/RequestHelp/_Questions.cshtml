@@ -4,13 +4,13 @@
 <input type="hidden" name="currentStep.SelectedTask.QuestionCount" value="@Model.Questions.Count" />
 @for (int i = 0; i < Model.Questions.Count; i++)
 {
-    var name = $"currentStep.SelectedTask_Questions.[{i}].Model";
-    var id = $"currentStep.SelectedTask_Questions.[{i}].Id";
+    var name = $"currentStep.SelectedTask.Questions.[{i}].Model";
+    var id = $"currentStep.SelectedTask.Questions.[{i}].Id";
     <input type="hidden" name="@id" value="@Model.Questions[i].ID" />
     <div class="row">
         <div class="sm12 input">
-            <label>@Model.Questions[i].Label</label>
-            <textarea type="text" name="@name"></textarea>
+            <label>@Model.Questions[i].Label</label>            
+            <textarea name="@name">@Model.Questions[i].Model</textarea>
             <span class="error"></span>
             <hr class="input--separator" />
         </div>
