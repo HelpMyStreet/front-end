@@ -1,129 +1,139 @@
-﻿@model HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
+﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpRequestStageViewModel
 
 <input type="hidden" name="RequestStep" value='@Json.Serialize(Model)' />
 <div class="tiles">
-    <input type="hidden" name="currentStep.SelectedTask.Id" />
-
-    <div class="row">
-        @foreach (var task in Model.Tasks)
-        {
-            @Html.DisplayFor(x => task, "TaskTile")
-        }
-
-    </div>
-    <span class="error"></span>
-</div>
-
-<div id="questions">
-
-</div>
+    <div class="input">
+        <input type="hidden" name="currentStep.SelectedTask.Id" />
 
 
-<div class="tiles">
-    <input type="hidden" name="currentStep.SelectedRequestor.Id" />
-    <div class="row">
-        @foreach (var requestor in Model.Requestors)
-        {
-            @Html.DisplayFor(x => requestor, "RequestForTile")
-        }
-
-    </div>
-    <span class="error"></span>
-</div>
-
-
-<div class="tiles">
-    <input type="hidden" name="currentStep.SelectedTimeFrame.Id" />
-
-    <div class="row">
-        @foreach (var time in Model.Timeframes)
-        {
-            @Html.DisplayFor(x => time, "TimeFrameTile")
-        }
-    </div>
-    <span class="error"></span>
-</div>
-
-<div class="row">
-    <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" />
-    <div class="sm6 input dnone" id="CustomTime">
-        <span>Within</span>
-        <select>
-            <option value="" disabled selected>Please select</option>
-            @for (int i = 1; i <= 30; ++i)
+        <div class="row">
+            @foreach (var task in Model.Tasks)
             {
-
-                if (i == 1)
-                {
-                    <option value="@i.ToString()">@i Day</option>
-                }
-                else
-                {
-                    <option value="@i.ToString()">@i Days</option>
-                }
+                @Html.DisplayFor(x => task, "TaskTile")
             }
-        </select>
+
+        </div>
+        <span class="error"></span>
     </div>
 </div>
+    <div id="questions">
+
+    </div>
 
 
+    <div class="tiles">
+        <div class="input">
+            <input type="hidden" name="currentStep.SelectedRequestor.Id" />
 
-<div class="row mt-md">
-    <div class="sm8 input mt-md">
-        <label>Is this request critical to someone’s health or wellbeing?</label>
+            <div class="row">
+                @foreach (var requestor in Model.Requestors)
+                {
+                    @Html.DisplayFor(x => requestor, "RequestForTile")
+                }
 
-        <div class="input input--radio">
-            <label>
-                @Html.RadioButtonFor(x => x.IsHealthCritical, "true", new { hidden = true })
-                <span class="input--radio__radio">
-                    <span class="input--radio__radio__inner"></span>
-                </span>
-                Yes
-            </label>
+            </div>
+            <span class="error"></span>
         </div>
-        <hr class="input--separator" />
-        <div class="input input--radio">            
+    </div>
+
+
+    <div class="tiles">
+        <div class="input">
+            <input type="hidden" name="currentStep.SelectedTimeFrame.Id" />
+
+            <div class="row">
+                @foreach (var time in Model.Timeframes)
+                {
+                    @Html.DisplayFor(x => time, "TimeFrameTile")
+                }
+            </div>
+            <span class="error"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" />
+        <div class="sm6 input dnone" id="CustomTime">
+            <span>Within</span>
+            <select>
+                <option value="" disabled selected>Please select</option>
+                @for (int i = 1; i <= 30; ++i)
+                {
+
+                    if (i == 1)
+                    {
+                        <option value="@i.ToString()">@i Day</option>
+                    }
+                    else
+                    {
+                        <option value="@i.ToString()">@i Days</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+
+
+    <div class="row mt-md">
+        <div class="sm8 input mt-md">
+            <label>Is this request critical to someone’s health or wellbeing?</label>
+            <div class="input--radio">       
                 <label>
-                    @Html.RadioButtonFor(x => x.IsHealthCritical, "false", new { hidden = true } )
+                    @Html.RadioButtonFor(x => x.IsHealthCritical, "true", new { hidden = true })
+                    <span class="input--radio__radio">
+                        <span class="input--radio__radio__inner"></span>
+                    </span>
+                    Yes
+                </label>
+
+            </div>
+            <hr class="input--separator" />
+            <div class="input--radio">
+             
+                <label>
+                    @Html.RadioButtonFor(x => x.IsHealthCritical, "false", new { hidden = true })
                     <span class="input--radio__radio">
                         <span class="input--radio__radio__inner"></span>
                     </span>
                     No
+                    <span class="error"></span>
                 </label>
-            <span class="error"></span>
-        </div>
+        
 
-        <hr class="input--separator" />
-    </div>
-</div>
-
-
-
-<div class="row">
-    <div class="sm10">
-        <p>
-            The information you provide will be shared with Street Champions in your local area to help organise volunteers.
-            You can read more in out <a href="/privacy-policy">Privacy Notice</a>
-        </p>
-        <div class="input input--checkbox">
-            <label class="small">                
-                @Html.CheckBoxFor(x => x.AgreeToPrivacy, new { hidden = true })
-                <span class="input--checkbox__checkbox">
-                    <span class="mdi mdi-check"></span>
-                </span>
-                I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
-            </label>
-        </div>
-        <div class="input input--checkbox">
-            <label class="small">
-                @Html.CheckBoxFor(x => x.AgreeToTerms, new { hidden = true })
-                <span class="input--checkbox__checkbox">
-                    <span class="mdi mdi-check"></span>
-                </span>
-                I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
-
-            </label>
-            <span class="error"></span>
+            </div>
+        
+            <hr class="input--separator" />
         </div>
     </div>
-</div>
+
+
+
+    <div class="row">
+        <div class="sm10">
+            <p>
+                The information you provide will be shared with Street Champions in your local area to help organise volunteers.
+                You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+            </p>
+            <div class="input input--checkbox">
+                <label class="small">
+                    @Html.CheckBoxFor(x => x.AgreeToPrivacy, new { hidden = true })
+                    <span class="input--checkbox__checkbox">
+                        <span class="mdi mdi-check"></span>
+                    </span>
+                    I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+                </label>
+            </div>
+            <div class="input input--checkbox">
+                <label class="small">
+                    @Html.CheckBoxFor(x => x.AgreeToTerms, new { hidden = true })
+                    <span class="input--checkbox__checkbox">
+                        <span class="mdi mdi-check"></span>
+                    </span>
+                    I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
+
+                </label>
+                <span class="termsprivacy error"></span>
+            </div>
+        </div>
+    </div>

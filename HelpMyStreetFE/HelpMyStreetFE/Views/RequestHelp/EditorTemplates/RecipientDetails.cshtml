@@ -1,4 +1,4 @@
-﻿@model HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models.RecipientDetails
+﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RecipientDetails
 
 
 
@@ -21,19 +21,19 @@
     <div class="row">
         <div class="input sm6">
             <label>@prefix mobile number</label>
-              @Html.TextBoxFor(x => x.MobileNumber)
+              @Html.TextBoxFor(x => x.MobileNumber, new { type = "number"})
         <span class="error"></span>
         </div>
         <div class="input sm6">
             <label>@prefix  alternative phone number</label>
-            @Html.TextBoxFor(x => x.AlternatePhoneNumber)
+            @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { type = "number"})
             <span class="error"></span>
         </div>
     </div>
     <div class="row">
         <div class="input sm6">
             <label>@prefix email address</label>
-            @Html.TextBoxFor(x => x.AlternatePhoneNumber)
+            @Html.TextBoxFor(x => x.Email)
         <span class="error"></span>
         </div>
         <div class="input sm3">
@@ -42,19 +42,19 @@
             <span class="error"></span>
         </div>
         <div class="input sm3 find-address">
-            <button class="btn large border-blue blue fill">
+            <button id="address_finder" type="button" class="btn large border-blue blue fill">
                 <span class="text">Find address</span>
                 <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
             </button>
-            <a class="input__link manual-entry">Or enter <span class="lowercase">@prefix</span> address manually</a>
+            <a class="input__link manual_entry">Or enter <span class="lowercase">@prefix</span> address manually</a>
         </div>
 
     </div>
 
-    <div class="row">
-        <div class="input sm6 dnone">
-            <label>Select address <a  class="input__link manual-entry edit-address">Edit <span class="lowercase">@prefix</span> address</a></label>
-            <select name="address_selector">
+    <div class="row" >
+        <div class="input sm6 dnone" id="address_selector">
+            <label>Select address <a  class="input__link manual_entry edit-address">Edit <span class="lowercase">@prefix</span> address</a></label>
+            <select  name="address_selector">
             </select>
         </div>
     </div>
@@ -63,17 +63,17 @@
             <h5>Please enter <span class="lowercase">@prefix</span> address</h5>
             <div class="input">
                 <label>@prefix address line 1</label>
-                @Html.TextAreaFor(x => x.AddressLine1)
+                @Html.TextBoxFor(x => x.AddressLine1)
                 <span class="error"></span>
             </div>
             <div class="input">
                 <label>@prefix address line 2</label>
-                @Html.TextAreaFor(x => x.AddressLine2)
+                @Html.TextBoxFor(x => x.AddressLine2)
                 <span class="error"></span>
             </div>
             <div class="input">
                 <label>@prefix town / city</label>
-                @Html.TextAreaFor(x => x.Town)
+                @Html.TextBoxFor(x => x.Town)
                 <span class="error"></span>
             </div>
             <div class="input">
@@ -83,7 +83,7 @@
             </div>
             <div class="input">
                 <label>@prefix postcode</label>                
-                @Html.TextAreaFor(x => x.Postcode)
+                @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input"})
                 <span class="error"></span>
             </div>
         </div>

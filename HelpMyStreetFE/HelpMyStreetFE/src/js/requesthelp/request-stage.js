@@ -1,12 +1,27 @@
-﻿
+﻿import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
 export function intialiseRequestStage() {
     intialiseRequestTiles();
-    intialiseHealthWellBeingCheckbox();
-
-    //$('form').submit(function (e) {
-    //    e.preventDefault();
-    //})
+    validateForm();
 }
+
+
+
+var validateForm = function () {
+    $("form").on("submit", function (evt) {        
+        const valid = validateFormData($(this), {
+            "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select a task",   
+            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please Health Critical or not", 
+            "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please select Timeframe",
+            "currentStep.IsHealthCritical": (v) => v !== undefined || "Please select if its health critical or not", 
+            "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
+        });
+
+        return valid;
+
+    });
+}
+
+
 
 var intialiseRequestTiles = function () {
     $('.tiles__tile').click(function () {
@@ -21,7 +36,6 @@ var intialiseRequestTiles = function () {
             case "request-for":
                 handleRequestFor($(this));
                 break;
-
         }
     })
 }
@@ -56,39 +70,10 @@ var handleActivity = function (el) {
         dataType: "html",  
         success: function (data) {
             $('#questions').html(data);
-        }
-       
+        }       
     });
 }
 
 
-var intialiseHealthWellBeingCheckbox = function () {    
-    $('input[name="volunteer_medical_condition"]').change(function (el) {
-        let selected = $('input[name=volunteer_medical_condition]:checked');
-        $('input[name=volunteer_medical_condition]').parent().removeClass("selected");
-        selected.parent().addClass("selected");    
-    })
-}
-
-
-
-function validatePrivacyAndTerms() {
-    // requires checking of two or more inputs at the same time, so cant use the validateFormData.
-    $('#e-terms-privacy').hide();
-    let privacy = $("input[name='privacy_notice']").is(":checked");
-    let terms = $("input[name='terms_and_conditions']").is(":checked");
-    let errorText = "";
-    privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
-    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
-    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";
-
-    $('#e-terms-privacy').show();
-    $('#e-terms-privacy').html(errorText);
-
-    if (errorText !== "") {
-        return false;
-    }
-    return true;
-}
 
 

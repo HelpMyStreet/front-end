@@ -4,8 +4,10 @@ using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Interface;
-using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
+using HelpMyStreetFE.Models.RequestHelp.Stages;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,18 +30,38 @@ namespace HelpMyStreetFE.Controllers
             _logger = logger;
             _requestService = requestService;
          }
+        
 
-        public IActionResult RequestHelpNew()
+        [HttpPost]
+        public ActionResult RequestHelp(
+        [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpNewViewModel requestHelp,
+        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
+        {            
+            requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
+            requestHelp.CurrentStepIndex++;          
+            if (ModelState.IsValid)
+            {
+              if(step is RequestHelpRequestStageViewModel)
+                {
+                    var requestStep = (RequestHelpRequestStageViewModel)step;                    
+                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                    detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                }
+            }            
+            return View(requestHelp);
+        }
+    
+
+    public IActionResult RequestHelp()
         {
             _logger.LogInformation("request-help");
-
-            Models.RequestHelp.NewMVCForm.Models.RequestHelpNewViewModel model = new Models.RequestHelp.NewMVCForm.Models.RequestHelpNewViewModel
+           RequestHelpNewViewModel model = new RequestHelpNewViewModel
             {
 
                 CurrentStepIndex = 0,
-                Steps = new List<Models.RequestHelp.NewMVCForm.Interface.IRequestHelpStepsViewModel>
+                Steps = new List<IRequestHelpStageViewModel>
                 {
-                    new Models.RequestHelp.NewMVCForm.Models.RequestHelpRequestStageViewModel
+                    new RequestHelpRequestStageViewModel
                     {
                         Tasks = _requestService.GetRequestHelpTasks(),
                         Requestors = new List<RequestorViewModel>
@@ -74,38 +96,11 @@ namespace HelpMyStreetFE.Controllers
                             new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
                         },
                     },
-                    new RequestHelpDetailStageViewModel(),                           
+                    new RequestHelpDetailStageViewModel(),
                 }
-                
+
             };
-            HttpContext.Session.SetObjectAsJson("request-help", model);
-            return View("RequestHelpNew/RequestHelpNew", model);
-        }
-
-        [HttpPost]
-        public ActionResult RequestHelpNew(
-        [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpNewViewModel requestHelp,
-        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] Models.RequestHelp.NewMVCForm.Interface.IRequestHelpStepsViewModel step)
-        {            
-            requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
-            requestHelp.CurrentStepIndex++;          
-            if (ModelState.IsValid)
-            {
-              if(step is RequestHelpRequestStageViewModel)
-                {
-                    var requestStep = (RequestHelpRequestStageViewModel)step;                    
-                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                    detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
-                }
-            }            
-            return View("RequestHelpNew/RequestHelpNew", requestHelp);
-        }
-    
-
-    public IActionResult RequestHelp()
-        {
-            _logger.LogInformation("request-help");           
-            return View();
+            return View(model);
         }
 
         public IActionResult Success(Fulfillable fulfillable, bool onBehalf)

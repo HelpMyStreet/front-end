@@ -13,30 +13,43 @@ input[type="date"]::-webkit-inner-spin-button {
         left: 0;
     }
 
-    input {
-        @include input-default;
-    }
+    &--radio {
+        label {
 
-    textarea {
-        @include textarea-default;
-    }
+            .error {
+                display: block;
+                font-size: 1rem;
+                font-weight: normal;
+                left: -42px;
+                position: relative;
+                bottom: -10px;
+            }
+         }
+        }
 
-    a.input__link {
-        display: block;
-        line-height: 22px;
-        color: var(--p-color);
-        position: absolute;
-        left: 0;
-        bottom: -22px;
+        input {
+            @include input-default;
+        }
+
+        textarea {
+            @include textarea-default;
+        }
+
+        a.input__link {
+            display: block;
+            line-height: 22px;
+            color: var(--p-color);
+            position: absolute;
+            left: 0;
+            bottom: -22px;
+        }
+
+        select {
+            width: 100%;
+            height: 64px;
+        }
     }
-    
+    //hack to make safari use the set font-size
     select {
-        width: 100%;
-        height: 64px;
+        background: $white;
     }
-}
-
-//hack to make safari use the set font-size
-select{
-    background: $white;
-}

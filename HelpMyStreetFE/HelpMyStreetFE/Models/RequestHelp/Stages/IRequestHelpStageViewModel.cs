@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Interface
+namespace HelpMyStreetFE.Models.RequestHelp.Stages
 {
-    public interface IRequestHelpStepsViewModel
+    public interface IRequestHelpStageViewModel
     {
         public string TemplateName { get; set; }
     }

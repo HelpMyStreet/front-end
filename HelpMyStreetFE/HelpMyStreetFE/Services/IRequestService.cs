@@ -5,7 +5,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using Microsoft.AspNetCore.Http;
 
 namespace HelpMyStreetFE.Services
@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Services
     {
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, HttpContext ctx); 
         Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx);
-        Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel request, int userId, HttpContext ctx);
+        //Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel request, int userId, HttpContext ctx);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId);
         Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx);

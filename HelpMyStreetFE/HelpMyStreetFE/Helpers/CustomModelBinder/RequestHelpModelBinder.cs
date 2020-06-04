@@ -1,4 +1,4 @@
-﻿using HelpMyStreetFE.Models.RequestHelp.NewMVCForm.Models;
+﻿using HelpMyStreetFE.Models.RequestHelp;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using System;
