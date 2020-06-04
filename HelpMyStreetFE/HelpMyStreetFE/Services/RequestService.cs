@@ -284,15 +284,23 @@ namespace HelpMyStreetFE.Services
                             new RequestHelpQuestion
                             {
                                 ID=1,
-                                Label = "Question 1",
-                                InputType = InputType.Textarea
-                                },
+                                Label = "Which Shop do you prefer?",
+                                InputType = InputType.Textbox,
+                                Placeholder = "Everybody loves Aldi"                                
+                            },
                             new RequestHelpQuestion
                             {
                                 ID = 2,
-                                Label = "Question 2",
-                                InputType = InputType.Number
-                            }
+                                Label = "What's the budget? ",
+                                InputType = InputType.Number,
+                                Placeholder = "Max limit on Shopping in £"                                
+                            },
+                            new RequestHelpQuestion {
+                                ID= 3,
+                                Label = "Any Allergies or more information we should know?",
+                                InputType = InputType.Textarea,
+                                Placeholder = "Are you allergic to da milk?"
+                            },
                         }
                     },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask },

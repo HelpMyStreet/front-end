@@ -1,5 +1,5 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.TasksViewModel
-
+@using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 <input type="hidden" name="currentStep.SelectedTask.QuestionCount" value="@Model.Questions?.Count" />
 @for (int i = 0; i < Model.Questions?.Count; i++)
@@ -9,8 +9,20 @@
     <input type="hidden" name="@id" value="@Model.Questions[i].ID" />
     <div class="row">
         <div class="sm12 input">
-            <label>@Model.Questions[i].Label</label>            
-            <textarea name="@name">@Model.Questions[i].Model</textarea>
+            <label>@Model.Questions[i].Label</label>
+            @switch (Model.Questions[i].InputType)
+            {
+                case HelpMyStreetFE.Models.RequestHelp.Enum.InputType.Textarea:
+                    <textarea placeholder="@Model.Questions[i].Placeholder" name="@name">@Model.Questions[i].Model</textarea>
+                    break;
+                case HelpMyStreetFE.Models.RequestHelp.Enum.InputType.Textbox:
+                    <input type="text" placeholder="@Model.Questions[i].Placeholder" value="@Model.Questions[i].Model" name="@name">
+                    break;
+                case HelpMyStreetFE.Models.RequestHelp.Enum.InputType.Number:
+                    <input type="number" placeholder="@Model.Questions[i].Placeholder" value="@Model.Questions[i].Model" name="@name">
+                    break;
+            }
+
             <span class="error"></span>
             <hr class="input--separator" />
         </div>

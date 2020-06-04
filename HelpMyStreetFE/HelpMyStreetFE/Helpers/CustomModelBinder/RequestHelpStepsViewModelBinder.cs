@@ -1,5 +1,6 @@
 ﻿using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using System;
@@ -29,11 +30,19 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 case nameof(RequestHelpDetailStageViewModel):
                     bindingContext.Result = ModelBindingResult.Success(BuildDetailStage(bindingContext));
                     break;
+                case nameof(RequestHelpReviewStageViewModel):
+                    bindingContext.Result = ModelBindingResult.Success(BuildReviewStage(bindingContext));
+                    break;
             }
 
             return Task.CompletedTask;
         }
 
+        private RequestHelpReviewStageViewModel BuildReviewStage(ModelBindingContext bindingContext)
+        {
+            RequestHelpReviewStageViewModel model = JsonConvert.DeserializeObject<RequestHelpReviewStageViewModel>(bindingContext.ValueProvider.GetValue("ReviewStep").FirstValue);
+            return model;
+        }
 
         private RequestHelpDetailStageViewModel BuildDetailStage(ModelBindingContext bindingContext)
         {
@@ -53,7 +62,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 Town = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Town)).FirstValue,
             };
 
-            var requestorPrefix = "currentStep.Requestor";
+            var requestorPrefix = "currentStep.Requestor.";
             model.Requestor = new RequestorDetails
             {
                 Firstname = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Firstname)).FirstValue ,

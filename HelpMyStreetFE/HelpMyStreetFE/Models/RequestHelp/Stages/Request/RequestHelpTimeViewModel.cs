@@ -12,5 +12,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public int? Days { get; set; } = null;
         public bool AllowCustom { get; set; }
         public bool IsSelected { get; set; }
+
+ 
     }
 }

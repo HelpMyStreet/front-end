@@ -15,6 +15,31 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RequestorDetails Requestor { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
         public bool HealthCritical { get; set; }
+
+        public string HealthCriticalReviewString { get
+            {
+                if (HealthCritical)
+                    return "Yes";
+                        return "No";
+            }
+        }
+
+        public string TimeRequestedReviewString
+        {
+            get
+            {
+                if (TimeRequested == null) return "";
+                if (TimeRequested.AllowCustom)
+                {
+                    if (TimeRequested.Days == 1) return $"{TimeRequested.Days} Day";
+                    return $"{TimeRequested.Days} Days";
+                }
+                else
+                {
+                    return TimeRequested.TimeDescription;
+                }
+            }
+        }
         public string TemplateName { get; set; } = "RequestHelpReviewStageViewModel";
     }
 }

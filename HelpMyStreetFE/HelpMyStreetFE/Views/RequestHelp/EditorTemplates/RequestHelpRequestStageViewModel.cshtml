@@ -5,6 +5,7 @@
     var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();
 
 }
+<input type="hidden" name="RequestStep" value='@Json.Serialize(Model)' />
 
 <h2>What type of help are you looking for?</h2>
 <div class="row">
@@ -16,7 +17,7 @@
 <div class="row">
     <div class="sm12 input">
         <label>What's the main thing you need help with? </label>
-        <input type="hidden" name="RequestStep" value='@Json.Serialize(Model)' />
+
         <div class="tiles">
             <div class="input">
                 <input type="hidden" name="currentStep.SelectedTask.Id" value="@Model.Tasks.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
