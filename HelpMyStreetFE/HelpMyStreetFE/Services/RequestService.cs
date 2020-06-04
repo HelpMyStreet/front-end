@@ -20,6 +20,8 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
+using HelpMyStreetFE.Models.RequestHelp.Stages;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 
 namespace HelpMyStreetFE.Services
 {
@@ -214,14 +216,63 @@ namespace HelpMyStreetFE.Services
             ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
         }
 
-        public List<TasksViewModel> GetRequestHelpTasks()
+
+        public RequestHelpNewViewModel GetRequestHelpSteps()
+        {
+            return new RequestHelpNewViewModel
+            {
+
+                CurrentStepIndex = 0,
+                Steps = new List<IRequestHelpStageViewModel>
+                {
+                    new RequestHelpRequestStageViewModel
+                    {
+                        Tasks = GetRequestHelpTasks(),
+                        Requestors = new List<RequestorViewModel>
+                        {
+                            new RequestorViewModel
+                            {
+                                ID = 1,
+                                ColourCode = "orange",
+                                Title = "I am requesting help for myself",
+                                Text = "I'm the person in need of help",
+                                IconDark = "request-myself.svg",
+                                IconLight = "request-myself-white.svg",
+                                Type = RequestorType.Myself
+                            },
+                            new RequestorViewModel
+                            {
+                                ID = 2,
+                                ColourCode = "dark-blue",
+                                Title = "On behalf of someone else",
+                                Text = "I'm looking for help for a relative, neighbour or friend",
+                                IconDark = "request-behalf.svg",
+                                IconLight = "request-behalf-white.svg",
+                                Type = RequestorType.OnBehalf
+                            }
+                        },
+                        Timeframes =  new List<RequestHelpTimeViewModel>
+                        {
+                            new RequestHelpTimeViewModel{ID = 1, TimeDescription = "Today", Days = 0},
+                            new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
+                            new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
+                            new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
+                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
+                        },
+                    },
+                    new RequestHelpDetailStageViewModel(),
+                }
+
+            };
+        }
+        private List<TasksViewModel> GetRequestHelpTasks()
         {
             return new List<TasksViewModel>
                 {
                     new TasksViewModel
                     {
                         ID = 1,
-                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask,
+                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping,
                         Questions = new List<RequestHelpQuestion>
                         {
                             new RequestHelpQuestion
@@ -238,26 +289,15 @@ namespace HelpMyStreetFE.Services
                             }
                         }
                     },
-                    new TasksViewModel
-                    {
-                        ID = 2,
-                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking,
-                        Questions = new List<RequestHelpQuestion>
-                        {
-                            new RequestHelpQuestion
-                            {
-                                ID= 2,
-                                Label = "Question 2",
-                                InputType = InputType.Textarea
-                            },
-                            new RequestHelpQuestion
-                            {
-                                ID = 4,
-                                Label = "Question 3",
-                                InputType = InputType.Number
-                            }
-                        }
-                    }
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Errands },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport },
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Other },                
                 };
             }
         }

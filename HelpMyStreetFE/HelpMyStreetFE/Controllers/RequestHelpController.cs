@@ -70,51 +70,7 @@ namespace HelpMyStreetFE.Controllers
     public IActionResult RequestHelp()
         {
             _logger.LogInformation("request-help");
-           RequestHelpNewViewModel model = new RequestHelpNewViewModel
-            {
-
-                CurrentStepIndex = 0,
-                Steps = new List<IRequestHelpStageViewModel>
-                {
-                    new RequestHelpRequestStageViewModel
-                    {
-                        Tasks = _requestService.GetRequestHelpTasks(),
-                        Requestors = new List<RequestorViewModel>
-                        {
-                            new RequestorViewModel
-                            {
-                                ID = 1,
-                                ColourCode = "orange",
-                                Title = "I am requesting help for myself",
-                                Text = "I'm the person in need of help",
-                                IconDark = "request-myself.svg",
-                                IconLight = "request-myself-white.svg",
-                                Type = RequestorType.Myself
-                            },
-                            new RequestorViewModel
-                            {
-                                ID = 2,
-                                ColourCode = "dark-blue",
-                                Title = "On behalf of someone else",
-                                Text = "I'm looking for help for a relative, neighbour or friend",
-                                IconDark = "request-behalf.svg",
-                                IconLight = "request-behalf-white.svg.svg",
-                                Type = RequestorType.OnBehalf
-                            }
-                        },
-                        Timeframes =  new List<RequestHelpTimeViewModel>
-                        {
-                            new RequestHelpTimeViewModel{ID = 1, TimeDescription = "Today", Days = 0},
-                            new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
-                            new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
-                            new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
-                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
-                        },
-                    },
-                    new RequestHelpDetailStageViewModel(),
-                }
-
-            };
+             var model = _requestService.GetRequestHelpSteps();
             return View(model);
         }
 
