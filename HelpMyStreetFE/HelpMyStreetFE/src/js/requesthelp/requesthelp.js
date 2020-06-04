@@ -13,5 +13,8 @@ $(() => {
         case 1:
             initaliseDetailStage();
             break;
+        case 2:
+            intialiseReviewStage();
+            break;
     }        
 });
