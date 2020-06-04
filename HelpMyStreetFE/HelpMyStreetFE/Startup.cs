@@ -207,18 +207,32 @@ namespace HelpMyStreetFE
                     name: "contact",
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
+                        endpoints.MapControllerRoute(
+                    name: "request-help/v4v",
+                    pattern: "request-help/v4v",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "v4v"  });
                 endpoints.MapControllerRoute(
-               name: "request-help",
-               pattern: "request-help",
-               defaults: new { controller = "RequestHelp", action = "RequestHelp" });
+                    name: "request-help",
+                    pattern: "request-help",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp" });
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
                     defaults: new { controller = "Account", action = "Login" });
-                    endpoints.MapControllerRoute(
+                endpoints.MapControllerRoute(
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
+
+                // Community placeholders
+                endpoints.MapControllerRoute(
+                    name: "Kimberley",
+                    pattern: "kimberley",
+                    defaults: new { controller = "Home", action = "Index" });
+                endpoints.MapControllerRoute(
+                    name: "Tankersley",
+                    pattern: "tankersley",
+                    defaults: new { controller = "Home", action = "Index" });
 
                 endpoints.MapControllerRoute(
                  name: "OpenRequests",

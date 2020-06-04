@@ -24,6 +24,7 @@ namespace HelpMyStreetFE
                 SupportActivities.PhoneCalls_Friendly => "Friendly chat",
                 SupportActivities.PhoneCalls_Anxious => "Supportive chat",
                 SupportActivities.HomeworkSupport => "Homework",
+                SupportActivities.WellbeingPackage => "Wellbeing Package",
                 _ => "Other"
             };
         }
@@ -42,6 +43,7 @@ namespace HelpMyStreetFE
                 SupportActivities.PhoneCalls_Friendly => "friendlychat.svg",
                 SupportActivities.PhoneCalls_Anxious => "supportivechat.svg",
                 SupportActivities.HomeworkSupport => "homework.svg",
+                SupportActivities.WellbeingPackage => "vitalsforveterans.png",
                 _ => "question-mark.svg"
             };
         }
@@ -60,6 +62,7 @@ namespace HelpMyStreetFE
                 SupportActivities.PhoneCalls_Friendly => "light-purple",
                 SupportActivities.PhoneCalls_Anxious => "light-purple",
                 SupportActivities.HomeworkSupport => "dark-blue",
+                SupportActivities.WellbeingPackage => "light-purple",
                 _ => ""
             };
         }
