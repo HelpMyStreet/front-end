@@ -7,6 +7,7 @@ namespace HelpMyStreetFE.Models.Community
         public bool IsLoggedIn{ get; set; }
         public string CommunityName { get; set; }
         public string LogoImageLocation { get; set; }
+        public string ImageLocation { get; set; }
         public string TopPanelHeader { get; set; }
 
         public string CommunityVolunteersHeader { get; set; }
@@ -20,5 +21,6 @@ namespace HelpMyStreetFE.Models.Community
         public string ProvideHelpText { get; set; }
 
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
+        public IEnumerable<string> UsefulLinks { get; set; }
     }
 }

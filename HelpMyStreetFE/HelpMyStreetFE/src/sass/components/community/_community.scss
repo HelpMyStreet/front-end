@@ -1,7 +1,23 @@
 
+.community-banner {
+    max-height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+    }
+}
+
+
+.commmunity-map-container {
+    margin-top: 10px;
+}
 
 .community-volunteers-container {
-    /*display: flex;*/
+    display: flex;
     justify-content: center;
     flex-wrap: wrap;
 
@@ -13,7 +29,7 @@
             display: flex;
             width: 250px;
             justify-content: center;
-            overflow:hidden;
+            overflow: hidden;
 
             img {
                 max-height: 250px;
@@ -25,6 +41,12 @@
         }
     }
 }
-#community-volunteers-text{
-    overflow:hidden;
+
+#community-volunteers-text {
+    overflow: hidden;
+}
+
+.community-useful-links {
+    padding-left: 40px;
+    padding-right: 40px;
 }
