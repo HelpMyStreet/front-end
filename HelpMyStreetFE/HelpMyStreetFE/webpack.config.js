@@ -9,6 +9,7 @@ module.exports = {
     requesthelp: "./js/requesthelp/requesthelp.js",
     profile: "./js/profile/profile.js",
     coveragemap: "./js/coveragemap.js",
+    stickynav: "./js/stickynav.js",
   },
   devtool: "inline-source-map",
   output: {
