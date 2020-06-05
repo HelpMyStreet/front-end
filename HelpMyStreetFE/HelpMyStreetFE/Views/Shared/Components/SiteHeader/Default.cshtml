@@ -14,7 +14,8 @@
         <div class="outer-container nav-holder">
             <div class="container-fluid page-header align-center">
                 <div class="page-header__logo">
-                    <a href="/"><img class="logo" src="~/img/logos/HelpMyStreet_logo.svg" alt="Help My Street Logo" /></a>
+                    @*<a href="/"><img class="logo" src="~/img/logos/HelpMyStreet_logo.svg" alt="Help My Street Logo" /></a>*@
+                    <a href="/"><img class="logo" src="@(ViewData["LogoImageLocation"] == null ? "/img/logos/HelpMyStreet_logo.svg" : ViewData["LogoImageLocation"])" alt="Help My Street Logo" /></a>
                 </div>
                 <div class="page-header__nav">
                     <partial name="_SiteNavigation" />

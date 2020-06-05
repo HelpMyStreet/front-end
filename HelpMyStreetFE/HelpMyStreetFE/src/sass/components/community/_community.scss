@@ -1,0 +1,30 @@
+
+
+.community-volunteers-container {
+    /*display: flex;*/
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .volunteer {
+        padding: 10px;
+        margin: 10px;
+
+        .volunteer-image {
+            display: flex;
+            width: 250px;
+            justify-content: center;
+            overflow:hidden;
+
+            img {
+                max-height: 250px;
+            }
+        }
+
+        .volunteer-text {
+            text-align: center;
+        }
+    }
+}
+#community-volunteers-text{
+    overflow:hidden;
+}

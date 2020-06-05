@@ -1,0 +1,106 @@
+﻿@model HelpMyStreetFE.Models.Community.CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["LogoImageLocation"] = Model.LogoImageLocation;
+}
+@section Scripts {
+    <script src="/coverageMap.js" asp-append-version="true"></script>
+    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>*
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="container">
+    <div class="row flex  hero">
+        <div class="sm6 mb15">
+            <h1>@Model.TopPanelHeader</h1>
+            <p class="subtitle">
+                From collecting prescriptions to picking up groceries, helping with homework to sewing face coverings, people across the country are amazing,
+                helping their neighbours and community stay safe. If you need ANYTHING, please <a href="/request-help" class="orange home-link">Request Help</a>. If you can provide help and support, please <a href="/registration/stepone" class="green home-link">Sign Up Now</a>.
+            </p>
+            <a href="/registration/stepone" class="btn cta large btn--sign-up">Sign Up Now</a>
+            <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
+        </div>
+        
+
+        <div class="sm6 text-right home-map-container" id="map" style="min-height: 500px">
+        </div>
+    </div>
+
+
+    <div class="row flex justify-center">
+        <h1 class="mb15">@Model.CommunityVolunteersHeader</h1>
+    </div>
+
+    <div class="row flex justify-center">
+        <div class="community-volunteers-container flex justify-center">
+            @{
+                foreach (var volunteer in Model.CommunityVolunteers)
+                {
+                    <div class="volunteer">
+
+                        <div class="volunteer-image">
+                            <img src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+                        </div>
+                        <div class="volunteer-text">
+                            <p>@volunteer.Name</p>
+                            <p>@volunteer.Title</p>
+                        </div>
+                    </div>
+                }
+
+
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="sm12">
+            <div class="" id="community-volunteers-text">
+                @Model.CommunityVolunteersText
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row hero flex mb-sm mt-lg ">
+
+        <div class="  card">
+
+            <h2>@Model.RequestHelpHeading</h2>
+            <p class="text-left mt-sm mb-sm">
+                @Model.RequestHelpText
+            </p>
+
+            <div class=" " style="text-align: center">
+                <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange">Request Help</a>
+            </div>
+         
+        </div>
+
+        <div class=" card">
+
+
+            <h2>@Model.ProvideHelpHeading</h2>
+            <p class="text-left mt-sm mb-sm">
+                @Model.ProvideHelpText
+            </p>
+
+            <div class=" " style="text-align:center">
+                @if (!Model.IsLoggedIn)
+                {
+                    <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                }
+                else
+                {
+                    <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                }
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
