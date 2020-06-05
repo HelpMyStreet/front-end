@@ -1,5 +1,11 @@
 @model LoadingSpinnerViewModel
 <div class="loading-spinner hidden">
-  <img src="~/img/loading_spinner.svg" alt="Loading ..." />
+    @if (Model.ShowDarkSpinner)
+    {
+        <img src="~/img/loading_spinner.svg" alt="Loading ..." />
+    }else
+    {
+    <img src="~/img/loading_spinner-white.svg" alt="Loading ..." />      
+    }
   <div class="loading-spinner__label">@Model.Text</div>
 </div>

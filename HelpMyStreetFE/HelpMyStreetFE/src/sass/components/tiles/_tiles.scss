@@ -107,7 +107,9 @@
 
             &__icon {
                 margin-bottom: 5px;
-
+                .limit-width{
+                    max-width:80px;
+                }
                 .cirlce {
                     background: $background-main;
                     border-radius: 50%;

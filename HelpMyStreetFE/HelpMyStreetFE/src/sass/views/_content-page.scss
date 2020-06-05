@@ -114,6 +114,12 @@
             @extend p;
             margin-bottom: $xxs-margin;
         }
+
+        &.compact-list{
+            li{
+                margin-bottom: 0;
+            }
+        }
     }
 
     .cta {

@@ -35,82 +35,91 @@
 @import "./views/style-guide";
 @import "./views/request-help";
 * {
-  font-family: "Montserrat", sans-serif;
-  font-size: 18px;
-  line-height: 27px;
-  position: relative;
-  box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    line-height: 27px;
+    position: relative;
+    box-sizing: border-box;
 }
 
 
 html,
 body {
-  background-color: $background-main;
-  margin: 0;
+    background-color: $background-main;
+    margin: 0;
 }
 
 
 p {
-  @include copy-sz-md;
-  color: $p-color;
+    @include copy-sz-md;
+    color: $p-color;
 
-  &.subtitle {
-    @include copy-sz-lg;
-  }
+    &.subtitle {
+        @include copy-sz-lg;
+    }
 }
 
 a {
-  color: $blue;
-  transition: color 0.5s;
+    color: $blue;
+    transition: color 0.5s;
 
-  &:hover {
-      color: $green;
-      transition: color 0.1s;
-  }
+    &:hover {
+        color: $green;
+        transition: color 0.1s;
+    }
 }
 
 h1 {
-  @include title-sz-1;
-  color: $dark-blue;
-  letter-spacing: 1px;
-  font-weight: bold;
+    @include title-sz-1;
+    color: $dark-blue;
+    letter-spacing: 1px;
+    font-weight: bold;
 }
 
 h2 {
-  @extend h1;
-  @include title-sz-2;
-  letter-spacing: 0.5px;
-  margin: 0 0 0px;
+    @extend h1;
+    @include title-sz-2;
+    letter-spacing: 0.5px;
+    margin: 0 0 0px;
 }
 
 h3 {
-  @extend h2;
-  @include title-sz-3;
-  color: black;
-  letter-spacing: 0.5px;
+    @extend h2;
+    @include title-sz-3;
+    color: black;
+    letter-spacing: 0.5px;
 }
 
 h4 {
-  @extend h2;
-  @include title-sz-4;
-  color: black;
-  margin: 15px 0;
+    @extend h2;
+    @include title-sz-4;
+    color: black;
+    margin: 15px 0;
 }
 
 h5 {
-  @extend h2;
-  @include title-sz-5;
-  color: $black;
+    @extend h2;
+    @include title-sz-5;
+    color: $black;
 }
 
 h6 {
-  @extend h4;
-  @include title-sz-6;
-  margin-bottom: 0;
+    @extend h4;
+    @include title-sz-6;
+    margin-bottom: 0;
 }
 
 h6 + p {
-  margin-top:0;
+    margin-top: 0;
+}
+
+ul.tick-list {
+    list-style: none;
+    padding-left: 0.5em;
+    li:before {
+        content: '\2714';
+        margin-right: 0.5em;
+    }
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -120,110 +129,111 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .flex {
-  display: flex;
+    display: flex;
 
-  &.justifycontent {
-      &-center {
-          justify-content: center;
-      }
-  }
-
-  &.align {
-    &-center {
-      align-items: center;
+    &.justifycontent {
+        &-center {
+            justify-content: center;
+        }
     }
-  }
+
+    &.align {
+        &-center {
+            align-items: center;
+        }
+    }
 }
 
 .inline-flex {
-  @extend .flex;
-  display: inline-flex;
+    @extend .flex;
+    display: inline-flex;
 }
 
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .fullwidth {
     width: 100% !important;
 }
 .dnone {
-  display: none;
+    display: none;
 }
 
 .logo {
-  width: 280px;
+    width: 280px;
 }
 
 .circle {
-  margin: 8px auto;
-  display: block;
-  background-color: $dark-blue;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-  font-weight: bold;
-  border-radius: 50%;
+    margin: 8px auto;
+    display: block;
+    background-color: $dark-blue;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-weight: bold;
+    border-radius: 50%;
 
-  @media screen and (min-width: $sm-screen) {
-    font-size: 32px;
-    line-height: 39px;
-    height: 64px;
-    width: 64px;
-    min-height: 64px;
-    min-width: 64px;
-  }
+    @media screen and (min-width: $sm-screen) {
+        font-size: 32px;
+        line-height: 39px;
+        height: 64px;
+        width: 64px;
+        min-height: 64px;
+        min-width: 64px;
+    }
 
-  @media screen and (max-width: $sm-screen) {
-    font-size: 20px;
-    line-height: 24px;
-    height: 40px;
-    width: 40px;
-    min-height: 40px;
-    min-width: 40px;
-  }
+    @media screen and (max-width: $sm-screen) {
+        font-size: 20px;
+        line-height: 24px;
+        height: 40px;
+        width: 40px;
+        min-height: 40px;
+        min-width: 40px;
+    }
 }
 
 .fab {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $dark-blue;
-  color: white;
-  border-radius: 50%;
-  font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $dark-blue;
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
 
-  @media screen and (max-width: $med-screen) {
-    font-size: 20px;
-    line-height: 24px;
-    height: 40px;
-    width: 40px;
-  }
+    @media screen and (max-width: $med-screen) {
+        font-size: 20px;
+        line-height: 24px;
+        height: 40px;
+        width: 40px;
+    }
 
-  @media screen and (min-width: $med-screen) {
-    font-size: 40px;
-    line-height: 49px;
-    height: 80px;
-    width: 80px;
-  }
+    @media screen and (min-width: $med-screen) {
+        font-size: 40px;
+        line-height: 49px;
+        height: 80px;
+        width: 80px;
+    }
 }
 
 .text {
-  &-right {
-    text-align: right;
-  }
+    &-right {
+        text-align: right;
+    }
 
-  &-center {
-    text-align: center;
-  }
+    &-center {
+        text-align: center;
+    }
 }
 
 .loader {
     text-align: center;
-    display:none;
+    display: none;
 }
+
 .card {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -231,7 +241,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: white;
 
     @media screen and (min-width: $med-screen) {
-        padding: 24px;        
+        padding: 24px;
     }
 
     @media screen and (max-width: $med-screen) {
@@ -240,34 +250,50 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .fill {
-  @media screen and (max-width: $sm-screen) {
-    width: 100%;
-  }
+    @media screen and (max-width: $sm-screen) {
+        width: 100%;
+    }
 }
 
 .mdi-check {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 dl,
 dt,
 dd {
-  margin: 0;
+    margin: 0;
 }
 
 
 .privacy {
-    a{
-        margin-right:10px;
+    a {
+        margin-right: 10px;
     }
 }
+
 .map {
     min-width: 80%;
     min-height: 500px;
+
+    div.gm-style-cc {
+        div:nth-child(1) {
+            top: 6px;
+        }
+
+        div:nth-child(2) {
+            top: -6px;
+        }
+    }
 }
+
+.force-width {
+    flex-basis: 50%
+}
+
 .sticky-nav {
     display: none;
-    opacity: 1;
+    opacity: 0.95;
     background: #555;
     color: #f1f1f1;
     position: fixed;
@@ -276,9 +302,10 @@ dd {
     z-index: 12;
     justify-content: center;
 }
+
 @media screen and (min-width: $sm-screen) and (max-width: $med-screen) {
     .show {
-        display:inline-flex;
+        display: inline-flex;
         opacity: 0.95;
         transition: 1s;
     }
@@ -293,54 +320,77 @@ dd {
 
 
 #overlay {
-    position:absolute;
-    width:100vw;
-    height:100vh;
-    cursor:not-allowed;
-    z-index:100;
-    display:none;
-}
-
-.pac-card {
-    margin: 10px 10px 0 0;
-    border-radius: 2px 0 0 2px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    outline: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    background-color: #fff;
-    font-family: Roboto;
-}
-
-#pac-container {
-    padding-bottom: 12px;
-    margin-right: 12px;
-}
-
-.pac-controls {
-    display: inline-block;
-    padding: 5px 11px;
-}
-
-.pac-controls label {
-    font-family: Roboto;
-    font-size: 13px;
-    font-weight: 300;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    cursor: not-allowed;
+    z-index: 100;
+    display: none;
 }
 
 #pac-input {
     background-color: #fff;
-    font-family: Roboto;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+    border: none;
+    border-radius: 2px;
     font-size: 18px;
     font-weight: 400;
-    margin-top: 12px;
-    margin-left: 12px;
+    margin-top: 10px;
+    margin-left: 10px;
     padding: 2px 11px 2px 13px;
     text-overflow: ellipsis;
-    width: 400px;
+    height: 40px;
+    width: 75%;
+
+    &:focus {
+        border-color: #4d90fe;
+    }
 }
 
-#pac-input:focus {
-    border-color: #4d90fe;
+.pac-item {
+    padding-top: 2px;
+    line-height: 26px;
+
+    .pac-icon {
+        margin-top: 4px;
+    }
+
+    span {
+        font-size: 13px;
+
+        &.pac-item-query {
+            font-size: 15px;
+
+            .pac-matched {
+                font-size: 15px;
+            }
+        }
+    }
 }
 
+#street-map {
+    #your-location {
+        button {
+            background-color: #fff;
+            box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+            border: none;
+            border-radius: 2px;
+            height: 40px;
+            width: 75%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            padding: 0px;
+            margin: 10px;
+            outline: none;
+
+            #your-location-image {
+                margin: 8px;
+                width: 24px;
+                height: 24px;
+                background: url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png) no-repeat;
+                background-size: auto 100%;
+            }
+        }
+    }
+}
