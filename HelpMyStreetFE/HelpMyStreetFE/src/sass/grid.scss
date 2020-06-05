@@ -53,6 +53,9 @@
             &.align-center {
                 align-content: center;
             }
+            &.small-screen-only {
+                display: none;
+            }
         }
     }
 }
@@ -63,6 +66,10 @@
         margin: auto;
         display: flex;
         flex-direction: column;
+
+        .row.large-screen-only {
+            display: none;
+        }
     }
 }
 
@@ -72,5 +79,9 @@
         margin: auto;
         display: flex;
         flex-direction: column;
+
+       .row.large-screen-only {
+            display: none;
+        }
     }
 }

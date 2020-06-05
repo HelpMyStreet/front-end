@@ -27,35 +27,51 @@
     </div>
 }
 <div class="container">
-    <div class="row hero flex sm12 mb-sm">
+    <div class="row hero flex sm12 mb-sm content-page">
 
         <div class="row sm6 align-center">
             <header class="content-page__header">
-                <h2 class="row mb0">Helping local people look after each another</h2>
-           </header>
-            <p class="text-left mt-sm mb-sm">
+                <h2 class="row sm12 mb0">Helping local people look after each another</h2>
+            </header>
+            <p class="row sm12 text-left mt-sm mb-xs">
                 HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
             </p>
-            <div class="row mb-md">
-                <div class="row sm12 text-left">
-                    <p class="sm12">It's OK to ask for a little help:</p>
-
-                    <div class="row sm12 text-center justify-center">
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                    </div>
-                </div>
-                <div class="row sm12 text-left" style="">
-                    @if (!Model.isLoggedIn)
-                    {
-                        <p class="sm12">Help your neighbours in need:</p><div class="row sm12 text-center justify-center"><a href="/registration/stepone" class="btn cta small btn--sign-up">Sign-up Now</a></div>
-                    }
-                    else
-                    {
-                        <p class="sm12">Help your neighbours in need:</p><div class="row sm12 text-center justify-center"><a href="/account" class="btn cta small btn--sign-up">Provide Help</a></div>
-
-                    }
-                </div>
+            <div class="row sm12">
+                <ul class="tick-list mt-xs mb-sm compact-list">
+                    <li>Shopping for essentials</li>
+                    <li>Cooking a hot meal</li>
+                    <li>Home-sewn face coverings</li>
+                    <li>Help with home-schooling</li>
+                    <li>A friendly chat</li>
+                </ul>
             </div>
+            <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
+
+            <div class="row sm12 text-center justify-center small-screen-only mb-md">
+                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+            </div>
+
+            <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
+
+            <div class="row sm12 large-screen-only mb-sm"></div>
+
+            <div class="row sm6 text-center justify-center mb-md">
+                @if (!Model.isLoggedIn)
+                {
+                    <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign-up Now</a>
+
+                }
+                else
+                {
+                    <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
+
+                }
+            </div>
+
+            <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+            </div>
+
         </div>
         <div class="flex sm6 home-video-container justify-center align-center text-right" id="video">
             <iframe style="min-width:100%; height:350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

@@ -112,6 +112,15 @@ h6 + p {
     margin-top: 0;
 }
 
+ul.tick-list {
+    list-style: none;
+    padding-left: 0.5em;
+    li:before {
+        content: '\2714';
+        margin-right: 0.5em;
+    }
+}
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
