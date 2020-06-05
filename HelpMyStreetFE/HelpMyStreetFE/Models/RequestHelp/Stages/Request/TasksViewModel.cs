@@ -8,6 +8,11 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
     public class TasksViewModel
     {
+        public TasksViewModel()
+        {
+            Questions = new List<RequestHelpQuestion>();
+        }
+
         public int ID { get; set; }
         public SupportActivities SupportActivity { get; set; }
         public List<RequestHelpQuestion> Questions { get; set; }

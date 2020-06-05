@@ -2,11 +2,11 @@
 
 @{
 
-    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();
+    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();    
 
 }
 <input type="hidden" name="RequestStep" value='@Json.Serialize(Model)' />
-
+<input type="hidden" name="selectAction" />
 <h2>What type of help are you looking for?</h2>
 <div class="row">
     <div class="sm12">
@@ -38,13 +38,20 @@
 
 <div class="row">
     <div class="sm12">
-        <div id="questions"></div>
+        <div class="questions" data-position="pos1"></div>
     </div>
 </div>
 
 <hr class="input--separator" />
 
 <h2>Help Description</h2>
+
+<div class="row">
+    <div class="sm12">
+        <div class="questions" data-position="pos2"></div>
+    </div>
+</div>
+
 <div class="row">
     <div class="sm12 input">
         <label>Who is the help for?</label>
@@ -113,6 +120,12 @@
 
 <hr class="input--separator" />
 
+<div class="row">
+    <div class="sm12">
+        <div class="questions" data-position="pos3"></div>
+    </div>
+</div>
+
 <div class="row mt-md">
     <div class="sm8 input mt-md">
         <label>Is this request critical to someone’s health or wellbeing?</label>
@@ -124,7 +137,6 @@
                 </span>
                 Yes
             </label>
-
         </div>
         <hr class="input--separator" />
         <div class="input--radio">

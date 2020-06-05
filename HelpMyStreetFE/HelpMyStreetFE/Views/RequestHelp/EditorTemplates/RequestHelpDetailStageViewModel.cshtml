@@ -4,7 +4,7 @@
 <input type="hidden" name="DetailStep" value='@Json.Serialize(Model)' />
 @switch (Model.Type)
 {
-    case RequestorType.Myself:               
+    case RequestorType.Myself:
         <h2>Your details</h2>
         @Html.EditorFor(x => x.Recipient, new { Prefix = "Your" });
         break;
@@ -14,6 +14,25 @@
         <hr class="input--separator" />
         <h2>Your details</h2>
         @Html.EditorFor(x => x.Requestor)
-
         break;
 }
+
+<hr class="input--separator" />
+<h2>Is there anything more you would like to tell us?</h2>
+<div class="row">
+    <div class="sm12 input">
+        <label>Are there any communication needs that volunteers need to know about before they contact you or the person who needs help?</label>
+        @Html.TextAreaFor(x => x.CommunicationNeeds, new { placeholder = "For example, do you have any specific language requirements, or hearing issues that we should know about?" })
+        <span class="error"></span>
+    </div>
+</div>
+
+<hr class="input--separator" />
+
+<div class="row">
+    <div class="sm12 input">
+        <label>Is there anything else you would like to tell us about the request?</label>
+        @Html.TextAreaFor(x => x.OtherDetails, new { placeholder = "For example, if it's a request for some shopping and you know what you want, you could give us the list." })
+        <span class="error"></span>
+    </div>
+</div>

@@ -18,3 +18,8 @@ $(() => {
             break;
     }        
 });
+
+
+function validateQuestion(el) {
+    console.log(el);
+}

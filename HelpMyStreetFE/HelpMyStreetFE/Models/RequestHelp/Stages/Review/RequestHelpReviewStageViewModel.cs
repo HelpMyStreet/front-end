@@ -15,12 +15,14 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RequestorDetails Requestor { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
         public bool HealthCritical { get; set; }
+        public string CommunicationNeeds { get; set; }
+        public string OtherDetails { get; set; }
 
         public string HealthCriticalReviewString { get
             {
                 if (HealthCritical)
-                    return "Yes";
-                        return "No";
+                    return "Health Critical";
+                        return "Not Health Critical";
             }
         }
 
@@ -31,8 +33,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
                 if (TimeRequested == null) return "";
                 if (TimeRequested.AllowCustom)
                 {
-                    if (TimeRequested.Days == 1) return $"{TimeRequested.Days} Day";
-                    return $"{TimeRequested.Days} Days";
+                    if (TimeRequested.Days == 1) return $"Within {TimeRequested.Days} Day";
+                    return $"Within {TimeRequested.Days} Days";
                 }
                 else
                 {

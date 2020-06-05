@@ -4,7 +4,7 @@
 
 .request-help {
 
-    
+
     span,
     a {
         font-size: 1em;
@@ -15,17 +15,17 @@
     }
 
     .to-details,
-    .to-request{
-        text-decoration:underline;
-        cursor:pointer;
-        float:right;
+    .to-request {
+        text-decoration: underline;
+        cursor: pointer;
+        float: right;
     }
 
- 
-        .min-height{
-            min-height:280px;
-        }
-    
+
+    .min-height {
+        min-height: 280px;
+    }
+
     h2 {
         text-align: center;
         margin: 30px 0;
@@ -34,6 +34,10 @@
     .input {
         margin-top: 20px;
 
+
+        input.small[type="number"]{
+            max-width:60px;
+        }
         select {
             font-size: 1.2rem;
             padding-left: 10px;
@@ -47,7 +51,7 @@
         .edit-address {
             font-weight: 500;
             font-size: 1rem;
-            float: right;            
+            float: right;
         }
 
 
@@ -82,6 +86,13 @@
             font-size: 1.2em;
             top: 0;
             margin-bottom: 10px;
+
+            .sub-text {
+                font-size: 1rem;
+                color: $p-color;
+                display: block;
+                font-weight: 500;
+            }
         }
 
 

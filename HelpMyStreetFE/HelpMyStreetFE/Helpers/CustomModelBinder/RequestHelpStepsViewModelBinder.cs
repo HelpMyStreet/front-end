@@ -62,6 +62,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 Town = bindingContext.ValueProvider.GetValue(recpientnamePrefix + nameof(model.Recipient.Town)).FirstValue,
             };
 
+
             var requestorPrefix = "currentStep.Requestor.";
             model.Requestor = new RequestorDetails
             {
@@ -72,6 +73,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 Postcode = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Postcode)).FirstValue,
                 Email = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Email)).FirstValue,                     
             };
+
+            model.CommunicationNeeds = bindingContext.ValueProvider.GetValue("currentStep.CommunicationNeeds").FirstValue;
+            model.OtherDetails = bindingContext.ValueProvider.GetValue("currentStep.OtherDetails").FirstValue;
 
             return model;
         }

@@ -8,6 +8,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Enum
     public enum RequestorType
     {
         OnBehalf,
-        Myself
+        Myself,
+        Organisation,
     }
 }

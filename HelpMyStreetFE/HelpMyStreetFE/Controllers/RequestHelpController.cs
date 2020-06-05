@@ -67,6 +67,9 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.HealthCritical = requestStage.IsHealthCritical.Value;
                         reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
+                        reviewStage.OtherDetails = detailStage.OtherDetails;
+                        
                     }
 
 
@@ -82,11 +85,11 @@ namespace HelpMyStreetFE.Controllers
         }
     
 
-    public IActionResult RequestHelp(string source)
+    public async Task<IActionResult> RequestHelp(string source)
         {
             _logger.LogInformation("request-help");
-             var model = _requestService.GetRequestHelpSteps(source);
-            return View(model);
+             var model = await  _requestService.GetRequestHelpSteps(source);
+           return View(model);
         }
 
         public IActionResult Success(Fulfillable fulfillable, bool onBehalf)
@@ -125,6 +128,12 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
         {
             TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
+            foreach(var question in model.Questions)
+            {
+                if (question.QuestionLocation() != request.Position)
+                    question.DontShow = true;
+            }
+
             return PartialView("_Questions", model);
         }
         
@@ -132,6 +141,8 @@ namespace HelpMyStreetFE.Controllers
         {
             public RequestHelpRequestStageViewModel Step { get; set; }
             public int TaskID { get; set; }
+
+            public string Position { get; set; }
         }
     }
 }

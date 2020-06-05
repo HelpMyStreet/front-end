@@ -11,6 +11,8 @@ var validateForm = function (validateRequestor) {
     $("form").on("submit", function (evt) {        
         if ($(document.activeElement).attr("id") == "btnBack") 
             return true;
+
+        buttonLoad($("#btnNext"));
         
         const valid = validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
@@ -29,7 +31,6 @@ var validateForm = function (validateRequestor) {
                 }
                 return true;
             },
-
             "currentStep.Recipient.AddressLine1": (v) => {
                 if (v.length <= 2) {
                     $('.expander').slideDown();
@@ -43,14 +44,12 @@ var validateForm = function (validateRequestor) {
                     return "Please enter a postcode";
                 }
                 return true;
-            },
-                                            
+            },                                            
             "currentStep.Requestor.Firstname": (v) => ((v.length >= 2 && !hasNumber(v))) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Requestor.Lastname": (v) => ((v.length >= 2 && !hasNumber(v))) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Requestor.MobileNumber": (v, d) => ((d["currentStep.Requestor.AlternatePhoneNumber"] !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
             "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "Please enter a valid email address",
             "currentStep.Requestor.Postcode": (v) => (v != "") || "Please enter a postcode"
-
         });         
         
         runAdditionalValidation($(this)).then(function (additonalChecks) {
@@ -62,31 +61,33 @@ var validateForm = function (validateRequestor) {
 
             if (validForm) { // avoid calling service when possible, so check if the form is valid first
                 //btnload
-                postcodeInputs.each(function (i) {   
+                postcodeInputs.each(function (i) {
                     var postcodeEl = $(this);
                     validatePostCode($(this).val()).then(function (response) {
                         postcodeValid.push(response);
-                        if (!response) {                            
+                        if (!response) {
                             postcodeEl.next(".error").text("We could not validate that postcode, please check what you've entered and try again").show();
-                            //btn unload
+                            throw error("postcode val failed");
                         } else {
                             postcodeEl.next(".error").hide();
-                        }                        
+                        }
                         if (postcodeValid.length == (i + 1)) { // if we've checked all the postcodes, its now time to check their values and sumbit if they passed
                             validForm = (validForm && !postcodeValid.includes(false));
-                            
                             if (validForm) {
                                 $('form').unbind('submit') // continue the submit unbind preventDefault
                                 $('#btnNext').click();
                             }
                         }
-                    }).catch(function () {
-                      //btn unload
+                    }).catch(function (e) {
+                        console.error(e);
+                        buttonUnload($("#btnNext"));
                     })
-                })             
+                })
+            } else {
+                buttonUnload($("#btnNext"));
             }
         })
-
+        
         return false;
     });
 }

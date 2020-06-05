@@ -218,8 +218,9 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public RequestHelpNewViewModel GetRequestHelpSteps(string source)
+        public async Task<RequestHelpNewViewModel> GetRequestHelpSteps(string source)
         {
+            
             return new RequestHelpNewViewModel
             {
 
@@ -228,7 +229,7 @@ namespace HelpMyStreetFE.Services
                 {
                     new RequestHelpRequestStageViewModel
                     {
-                        Tasks = GetRequestHelpTasks(source),
+                        Tasks = await GetRequestHelpTasks(source),
                         Requestors = new List<RequestorViewModel>
                         {
                             new RequestorViewModel
@@ -250,6 +251,16 @@ namespace HelpMyStreetFE.Services
                                 IconDark = "request-behalf.svg",
                                 IconLight = "request-behalf-white.svg",
                                 Type = RequestorType.OnBehalf
+                            },
+                                        new RequestorViewModel
+                            {
+                                ID = 3,
+                                ColourCode = "dark-blue",
+                                Title = "On behalf of an organisation",
+                                Text = "I'm looking for help for an organisation",
+                                IconDark = "request-behalf.svg",
+                                IconLight = "request-behalf-white.svg",
+                                Type = RequestorType.OnBehalf
                             }
                         },
                         Timeframes =  new List<RequestHelpTimeViewModel>
@@ -267,7 +278,7 @@ namespace HelpMyStreetFE.Services
 
             };
         }
-        private List<TasksViewModel> GetRequestHelpTasks(string source)
+        private async Task<List<TasksViewModel>> GetRequestHelpTasks(string source)
         {
             var tasks = new List<TasksViewModel>();
             if (source == "v4v")
@@ -278,31 +289,8 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel
                     {
                         ID = 1,
-                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping,
-                        Questions = new List<RequestHelpQuestion>
-                        {
-                            new RequestHelpQuestion
-                            {
-                                ID=1,
-                                Label = "Which Shop do you prefer?",
-                                InputType = InputType.Textbox,
-                                Placeholder = "Everybody loves Aldi"                                
-                            },
-                            new RequestHelpQuestion
-                            {
-                                ID = 2,
-                                Label = "What's the budget? ",
-                                InputType = InputType.Number,
-                                Placeholder = "Max limit on Shopping in £"                                
-                            },
-                            new RequestHelpQuestion {
-                                ID= 3,
-                                Label = "Any Allergies or more information we should know?",
-                                InputType = InputType.Textarea,
-                                Placeholder = "Are you allergic to da milk?"
-                            },
-                        }
-                    },
+                        SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping,                       
+                      },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions },
@@ -311,11 +299,32 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious },
                     new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport },
-                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Other },                
+                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Other },
              });
+
+            
+            var questions = await _requestHelpRepository.GetQuestionsByActivity(new GetQuestionsByActivitiesRequest
+            {
+               ActivitesRequest = new ActivitesRequest
+               {
+                   Activities = tasks.Select(x => x.SupportActivity).ToList()
+               }
+            });
+
+            tasks.ForEach(x => x.Questions = questions.SupportActivityQuestions[x.SupportActivity].Select(x => new RequestHelpQuestion
+            {
+                ID = x.Id,
+                InputType = x.Type,
+                Label = x.Name,                
+                Required = x.Required,
+                AdditionalData = x.AddtitonalData                
+            }).ToList()) ;
+
             return tasks;
          }
-        }
+
+    }
+
     }
 
 

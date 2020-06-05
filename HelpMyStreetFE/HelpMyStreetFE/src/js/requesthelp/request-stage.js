@@ -1,4 +1,5 @@
 ﻿import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
+import { buttonLoad, buttonUnload } from "../shared/btn";
 export function intialiseRequestStage() {
     intialiseRequestTiles();
     validateForm();
@@ -16,6 +17,7 @@ export function intialiseRequestStage() {
 
 var validateForm = function () {
     $("form").on("submit", function (evt) {        
+        buttonLoad($("#btnNext"));
         const valid = validateFormData($(this), {
             "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select a task",   
             "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please Health Critical or not", 
@@ -24,8 +26,10 @@ var validateForm = function () {
             "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
         });
 
+        if (valid == false) {
+            buttonUnload($("#btnNext"));;
+        }
         return valid;
-
     });
 }
 
@@ -81,17 +85,28 @@ var LoadQuestions = function (taskId){
         step: JSON.parse($('input[name="RequestStep"]').val())
     };
 
-    $.ajax({
-        url: "/RequestHelp/Questions",
-        type: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        dataType: "html",
-        data: JSON.stringify(qRequest),
-        success: function (data) {
-            $('#questions').html(data);
-        }
-    });
+    $('.questions').each(function () {
+        qRequest.position = $(this).attr("data-position");
+        var el = $(this);
+        $.ajax({
+            url: "/RequestHelp/Questions",
+            type: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            dataType: "html",
+            data: JSON.stringify(qRequest),
+            success: function (data) {
+                el.html(data);
+                if (taskId == 2) {
+                    $('#requestorFor_3').show();
+                } else {
+                    $('#requestorFor_3').hide();
+                }
+            }
+        });
+    })
+
+
     }
