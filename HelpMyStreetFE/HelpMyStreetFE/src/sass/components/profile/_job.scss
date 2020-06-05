@@ -81,6 +81,7 @@
 
             .critical {
                 font-weight: bold;
+                color: $light-orange;
             }
 
             .critical-icon {
@@ -106,6 +107,10 @@
                     display: inline-block;
                     margin-right: 10px;
                     max-width: 32px;
+
+                    &.limit-width{
+                        max-width:80px;
+                    }
                 }
             }
         }
@@ -196,19 +201,23 @@
         }
     }
 
-    &--critical {
+    &--hot {
         .job__info {
-            &__urgency {
-                background-color: $washed-orange;
+            .due-date {
                 color: $orange;
-
-                @media (min-width: $med-screen) {
-                    background-color: white;
-                    color: $light-orange;
-                }
+                font-weight: 600;
             }
         }
     }
+
+    &--warm {
+        .job__info {
+            .due-date {                
+                color: $orange;
+            }
+        }
+    }
+
 
     &__detail {
         display: none;

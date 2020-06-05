@@ -11,34 +11,28 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
+using HelpMyStreetFE.Models.Account;
+using HelpMyStreet.Utils.Extensions;
+using HelpMyStreet.Contracts.RequestService.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Services
 {
-    public class RequestContactInformation
-    {
-        public int JobID { get; set; }
-        public RequestPersonalDetails Requestor { get; set; }
-        public RequestPersonalDetails Recipient { get; set; }
-        public bool ForRequestor { get; set; }
-        public void Deconstruct(out RequestPersonalDetails requestor, out RequestPersonalDetails recipient, out bool forRequestor)
-        {
-            requestor = Requestor;
-            recipient = Recipient;
-            forRequestor = ForRequestor;
-        }
-    }
-
     public class RequestService : IRequestService
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
         private readonly ILogger<RequestService> _logger;
-
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger)
+        private readonly IOptions<RequestSettings> _requestSettings;
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
+            _requestSettings = requestSettings;
         }
-        public Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId)
+        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId, HttpContext ctx)
         {
             _logger.LogInformation($"Logging Request");
             var request = new PostNewRequestForHelpRequest
@@ -96,23 +90,50 @@ namespace HelpMyStreetFE.Services
                     }
                 }
             };
-            return _requestHelpRepository.PostNewRequestForHelpAsync(request);
+
+            var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
+            if (response.HasContent & response.IsSuccessful)
+                TriggerCacheRefresh(ctx);
+
+            return response;
         }
-        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(string postCode, double distanceInMiles)
-        {
-            return (await _requestHelpRepository.GetJobsByFilterAsync(postCode, distanceInMiles))
-                .OrderBy(j => j.DistanceInMiles)
-                .ThenBy(j => j.DueDate)
-                .ThenByDescending(j => j.IsHealthCritical)
-                .ToList();
+        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
+        {               
+                var jobs = ctx.Session.GetObjectFromJson<OpenJobsViewModel>("openJobs");
+                DateTime lastUpdated;
+                DateTime.TryParse(ctx.Session.GetString("openJobsLastUpdated"), out lastUpdated);
+                if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now)                
+                {
+                    var all = await _requestHelpRepository.GetJobsByFilterAsync(user.PostalCode, distanceInMiles);
+
+                    var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
+
+                    jobs = new OpenJobsViewModel
+                    {
+                        CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
+                        OtherJobs = otherJobs.OrderOpenJobsForDisplay()
+                    };
+                    ctx.Session.SetObjectAsJson("openJobs", jobs);
+                    ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());
+                }
+                                           
+            return jobs;          
         }
-        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId)
-        {
-            return (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId))
-                .OrderBy(j => j.DueDate)
-                .ThenByDescending(j => j.IsHealthCritical)
-                .ToList();
-        }
+  
+        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, HttpContext ctx)
+        {                           
+            var jobs = ctx.Session.GetObjectFromJson<IEnumerable<JobSummary>>("acceptedJobs");                        
+            DateTime lastUpdated;
+            DateTime.TryParse(ctx.Session.GetString("acceptedJobsLastUpdated"), out lastUpdated);
+            if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now) {
+                jobs = (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId)).OrderOpenJobsForDisplay();           
+                ctx.Session.SetObjectAsJson("acceptedJobs", jobs);
+                ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.ToString());
+            }
+
+            return jobs;
+    }
+
 
         public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
         {
@@ -140,31 +161,57 @@ namespace HelpMyStreetFE.Services
         {
             return await _requestHelpRepository.GetJobDetailsAsync(jobId);
         }
-        public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId)
+        public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx)
         {
-            return await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()
+            var success =  await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()
             {
                 JobID = jobID,
                 CreatedByUserID = createdByUserId
             });
+
+            if (success)
+                TriggerCacheRefresh(ctx);
+
+            return success;
         }
-        public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId)
+        public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx)
         {
-            return await _requestHelpRepository.UpdateJobStatusToOpenAsync(new PutUpdateJobStatusToOpenRequest()
+            var success =  await _requestHelpRepository.UpdateJobStatusToOpenAsync(new PutUpdateJobStatusToOpenRequest()
             {
                 CreatedByUserID = createdByUserId,
                 JobID = jobID
             });
+
+            if (success)
+                TriggerCacheRefresh(ctx);
+
+            return success;
         }
-        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId)
+        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx)
         {
-            return await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
+            
+            var success = await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
             {
                 CreatedByUserID = createdByUserId,
                 VolunteerUserID = volunteerUserId,
                 JobID = jobID
             });
+
+            if (success)
+             TriggerCacheRefresh(ctx);
+            
+            return success;
         }
-        
+
+
+        private void TriggerCacheRefresh(HttpContext ctx)
+        {
+            int triggerSessionMinutes = (_requestSettings.Value.RequestsSessionExpiryInMinutes + 1) * -1;            
+            ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
+            ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
+        }
+
     }
 }
+
+

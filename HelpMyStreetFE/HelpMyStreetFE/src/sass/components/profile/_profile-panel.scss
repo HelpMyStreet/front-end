@@ -31,24 +31,31 @@
 }
 
 .profile {
-  &__text {
-    ul {
-      li {
-        color: $p-color;
-      }
-    }
-  }
-
-  &__empty {
-    text-align: center;
-    &__title {
-      color: $blue;
-      font-weight: bold;
-    }
     &__text {
-      font-style: italic;
+        ul {
+            li {
+                color: $p-color;
+            }
+        }
     }
-  }
+
+    &__empty {
+        text-align: center;
+
+        &__title {
+            color: $blue;
+            font-weight: bold;
+        }
+
+        &__text {
+            font-style: italic;
+
+            &--left {
+                text-align: left;
+                font-style: italic;
+            }
+        }
+    }
 }
 
 @media screen and (min-width: $med-screen) {
