@@ -14,13 +14,15 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RecipientDetails Recipient  { get; set; }
         public RequestorDetails Requestor { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
-        public bool HealthCritical { get; set; }
+        public bool? HealthCritical { get; set; }
         public string CommunicationNeeds { get; set; }
         public string OtherDetails { get; set; }
 
+        public bool ShowOtherDetails { get; set; }
+
         public string HealthCriticalReviewString { get
             {
-                if (HealthCritical)
+                if (HealthCritical.HasValue && HealthCritical.Value)
                     return "Health Critical";
                         return "Not Health Critical";
             }

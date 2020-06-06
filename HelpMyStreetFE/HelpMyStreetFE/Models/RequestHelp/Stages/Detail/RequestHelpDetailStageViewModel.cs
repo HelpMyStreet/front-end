@@ -13,6 +13,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
         public RequestorType Type { get; set; }
         public string CommunicationNeeds { get; set; }
         public string OtherDetails { get; set; }
+        public bool ShowOtherDetails { get; set; } = true;
     }    
 }
 

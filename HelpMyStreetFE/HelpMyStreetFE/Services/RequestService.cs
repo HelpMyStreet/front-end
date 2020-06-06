@@ -260,7 +260,7 @@ namespace HelpMyStreetFE.Services
                                 Text = "I'm looking for help for an organisation",
                                 IconDark = "request-behalf.svg",
                                 IconLight = "request-behalf-white.svg",
-                                Type = RequestorType.OnBehalf
+                                Type = RequestorType.Organisation
                             }
                         },
                         Timeframes =  new List<RequestHelpTimeViewModel>

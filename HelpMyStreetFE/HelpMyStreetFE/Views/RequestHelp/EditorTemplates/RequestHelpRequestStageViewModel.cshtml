@@ -75,49 +75,49 @@
 
 <hr class="input--separator" />
 
-<div class="row" id="WhenNeeded">
-    <div class="sm12 input">
-        <label>When is the help needed?</label>
+<div id="WhenNeeded">
+    <div class="row">
+        <div class="sm12 input">
+            <label>When is the help needed?</label>
 
-        <div class="tiles">
-            <div class="input">
-                <input type="hidden" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+            <div class="tiles">
+                <div class="input">
+                    <input type="hidden" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
 
-                <div class="row">
-                    @foreach (var time in Model.Timeframes)
-                    {
-                        @Html.DisplayFor(x => time, "TimeFrameTile")
-                    }
+                    <div class="row">
+                        @foreach (var time in Model.Timeframes)
+                        {
+                            @Html.DisplayFor(x => time, "TimeFrameTile")
+                        }
+                    </div>
+                    <span class="error"></span>
                 </div>
-                <span class="error"></span>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
-    <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
-        <span>Within</span>
-        <select>
-            <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
-            @for (int i = 1; i <= 30; ++i)
-            {
-                if (i == 1)
+    <div class="row">
+        <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
+        <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
+            <span>Within</span>
+            <select>
+                <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
+                @for (int i = 1; i <= 30; ++i)
                 {
-                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
+                    if (i == 1)
+                    {
+                        <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
+                    }
+                    else
+                    {
+                        <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
+                    }
                 }
-                else
-                {
-                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
-                }
-            }
-        </select>
+            </select>
 
+        </div>
     </div>
-
 </div>
-
 <hr class="input--separator" />
 
 <div class="row">

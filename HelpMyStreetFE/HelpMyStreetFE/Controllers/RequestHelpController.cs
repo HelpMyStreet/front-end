@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
@@ -52,9 +53,48 @@ namespace HelpMyStreetFE.Controllers
                     requestHelp.CurrentStepIndex++;
                     if (step is RequestHelpRequestStageViewModel)
                     {
+
                         var requestStep = (RequestHelpRequestStageViewModel)step;
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                        if(requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
+                        {
+                            detailStage.ShowOtherDetails = false;
+                        }
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+
+                        if (HttpContext.Session.Keys.Contains("User"))
+                        {
+                            var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
+                            switch (detailStage.Type)
+                            {
+                                case RequestorType.Myself:
+                                    detailStage.Recipient = new RecipientDetails
+                                    {
+                                        Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                        Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                        AddressLine1 = loggedInUser.UserPersonalDetails.Address.AddressLine1,
+                                        AddressLine2 = loggedInUser.UserPersonalDetails.Address.AddressLine2,
+                                        AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                        MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                        Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                        Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                        Town = loggedInUser.UserPersonalDetails.Address.Locality
+                                    };
+                                    break;
+                                case RequestorType.OnBehalf:
+                                    detailStage.Requestor = new RequestorDetails
+                                    {
+                                        Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                        Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                        AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                        MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                        Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                        Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                    };
+                                    break;
+                            }
+                        }
+                        
                     }
                     if(step is RequestHelpDetailStageViewModel)
                     {
@@ -64,12 +104,12 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.Recipient = detailStage.Recipient;
                         reviewStage.Requestor = detailStage.Requestor;
                         reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.HealthCritical = requestStage.IsHealthCritical.Value;
+                        reviewStage.HealthCritical = requestStage.IsHealthCritical;
                         reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
                         reviewStage.OtherDetails = detailStage.OtherDetails;
-                        
+                        reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
                     }
 
 
