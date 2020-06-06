@@ -131,8 +131,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
             }
 
-            bool IsHealthCritical, AgreeToTerms, AgreeToPrivacy = false;
-            model.IsHealthCritical = bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.IsHealthCritical)).FirstValue, out IsHealthCritical) ? IsHealthCritical : (bool?)null;
+            bool AgreeToTerms, AgreeToPrivacy = false;            
             bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToPrivacy)).FirstValue, out AgreeToPrivacy);
             bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToTerms)).FirstValue, out AgreeToTerms);
             model.AgreeToPrivacy = AgreeToPrivacy;

@@ -73,11 +73,13 @@ namespace HelpMyStreetFE
         
         public static string QuestionLocation(this RequestHelpQuestion question)
         {
+            
             return question.ID switch
-            {            
-                4 => "pos2",
-                5 => "pos3",
-                3 => "pos3",
+            {
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Recipient => "pos2",
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Cost => "pos3",
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Amount => "pos3",
+                (int)HelpMyStreet.Utils.Enums.Questions.IsHealthCritical => "pos3",
                 _ => "pos1"
             };        
         }
@@ -85,8 +87,8 @@ namespace HelpMyStreetFE
         {
             return question.ID switch
             {
-                3 => "Remember they’re washable and reusable, so only request what you need between washes.",
-                5 => "Volunteers are providing their time and skills free of charge.",
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Amount => "Remember they’re washable and reusable, so only request what you need between washes.",
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Cost => "Volunteers are providing their time and skills free of charge.",
                 _ => string.Empty
             };
         }
@@ -95,8 +97,8 @@ namespace HelpMyStreetFE
         {
             return question.ID switch
             {
-                2 => "If you have very specific requirements, it may take longer to find a volunteer to help with your request. Please don’t include any personal information, such as name or address in this box. We’ll ask for that later.",
-                1 => "Please don’t include any sensitive details that aren’t needed in order for us to help you",                
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_SpecificRequirements => "If you have very specific requirements, it may take longer to find a volunteer to help with your request. Please don’t include any personal information, such as name or address in this box. We’ll ask for that later.",
+                (int)HelpMyStreet.Utils.Enums.Questions.SupportRequesting => "Please don’t include any sensitive details that aren’t needed in order for us to help you",                
                 _ => string.Empty
             };
         }

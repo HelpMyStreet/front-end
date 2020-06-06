@@ -17,6 +17,18 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public bool Required { get; set; }        
         public List<AdditonalQuestionData> AdditionalData { get; set; }
         public bool DontShow { get; set; }
+
+        public string DataValidationMessage { get
+            {
+                return InputType switch
+                {
+                    QuestionType.Radio => "Please select from one of the available options",
+                    QuestionType.Number => "Please enter a number",
+                    QuestionType.Text => "Please enter a value",
+                    QuestionType.MultiLineText => "Please enter a value",
+                };                                
+            } 
+        }
     }
 
  

@@ -20,19 +20,59 @@ var validateForm = function () {
         buttonLoad($("#btnNext"));
         const valid = validateFormData($(this), {
             "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select a task",   
-            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please Health Critical or not", 
-            "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please select Timeframe",
-            "currentStep.IsHealthCritical": (v) => v !== undefined || "Please select if its health critical or not", 
+            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please Health Critical or not",                    
+            "currentStep.SelectedTimeFrame.Id": (v) => {                
+                if ($("#WhenNeeded").is(":visible")) {
+                    if (v == "") {
+                        $('.expander').slideDown();
+                        return "Please select Timeframe";
+                    }
+                }
+                return true;
+            },   
             "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
         });
 
-        if (valid == false) {
+        const validForm = validateQuestions() && valid;        
+
+        if (validForm == false) {
             buttonUnload($("#btnNext"));;
         }
-        return valid;
+
+        return validForm;
     });
 }
 
+
+var validateQuestions = function(){
+    var validQuestions = [];
+    $('.question').each(function () {
+        var type = $(this).attr("type");
+        let errorField = $(this).find("~ .error");
+        if (type == "radio") {
+            errorField = $(this).parentsUntil(".input").parent().find(".error");            
+        }
+        errorField.hide();
+        var isRequired = $(this).attr("data-required");
+    
+        var val = $(this).val();
+        if (type == "radio") {
+            val = $(`input[name="${$(this).attr("name")}"]:checked`).val();
+        }                
+        if (isRequired == "True") {            
+            if (val == undefined || val == "") {
+                validQuestions.push(false);           
+                errorField.text($(this).attr("data-val-message")).show();
+            } else {
+                validQuestions.push(true);
+            }
+        } else {
+            validQuestions.push(true);
+        }        
+    });
+
+    return !validQuestions.includes(false);
+}
 
 
 var intialiseRequestTiles = function () {
@@ -101,8 +141,10 @@ var LoadQuestions = function (taskId){
                 el.html(data);
                 if (taskId == 2) {
                     $('#requestorFor_3').show();
+                    $('#WhenNeeded').hide();
                 } else {
                     $('#requestorFor_3').hide();
+                    $('#WhenNeeded').show();
                 }
             }
         });

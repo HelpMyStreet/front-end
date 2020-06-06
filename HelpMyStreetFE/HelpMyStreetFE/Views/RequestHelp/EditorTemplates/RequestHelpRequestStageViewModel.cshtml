@@ -75,7 +75,7 @@
 
 <hr class="input--separator" />
 
-<div class="row">
+<div class="row" id="WhenNeeded">
     <div class="sm12 input">
         <label>When is the help needed?</label>
 
@@ -126,34 +126,7 @@
     </div>
 </div>
 
-<div class="row mt-md">
-    <div class="sm8 input mt-md">
-        <label>Is this request critical to someone’s health or wellbeing?</label>
-        <div class="input--radio">
-            <label>
-                @Html.RadioButtonFor(x => x.IsHealthCritical, "true", new { hidden = true })
-                <span class="input--radio__radio">
-                    <span class="input--radio__radio__inner"></span>
-                </span>
-                Yes
-            </label>
-        </div>
-        <hr class="input--separator" />
-        <div class="input--radio">
 
-            <label>
-                @Html.RadioButtonFor(x => x.IsHealthCritical, "false", new { hidden = true })
-                <span class="input--radio__radio">
-                    <span class="input--radio__radio__inner"></span>
-                </span>
-                No
-                <span class="error"></span>
-            </label>
-
-
-        </div>
-    </div>
-</div>
 
 
 
