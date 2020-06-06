@@ -5,6 +5,7 @@
 }
 @section Scripts {
     <script src="~/coverageMap.js" asp-append-version="true"></script>
+    <script src="~/stickynav.js" asp-append-version="true"></script>
 }
 
 @if (!Model.isLoggedIn)
@@ -26,42 +27,60 @@
     </div>
 }
 <div class="container">
-    <div class="row hero flex sm12 mb-sm">
+    <div class="row hero flex sm12 mb-sm content-page">
 
         <div class="row sm6 align-center">
-            <h2 class="row mb0">Helping local people to look after one another</h2>
-            <p class="text-left mt-sm mb-sm">
+            <header class="content-page__header">
+                <h2 class="row sm12 mb0">Helping local people look after each another</h2>
+            </header>
+            <p class="row sm12 text-left mt-sm mb-xs">
                 HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
             </p>
-            <div class="row mb-md">
-                <div class="row sm12 text-left">
-                    <p class="sm12">It's OK to ask for a little help:</p>
-
-                    <div class="row sm12 text-center justify-center">
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                    </div>
-                </div>
-                <div class="row sm12 text-left" style="">
-                    @if (!Model.isLoggedIn)
-                    {
-                        <p class="sm12">Help your neighbours in need:</p><div class="row sm12 text-center justify-center"><a id="first-button" href="/registration/stepone" class="btn cta small btn--sign-up">Sign-up Now</a></div>
-                    }
-                    else
-                    {
-                        <p class="sm12">Help your neighbours in need:</p><div class="row sm12 text-center justify-center"><a id="first-button" href="/account" class="btn cta small btn--sign-up">View Profile</a></div>
-
-                    }
-                </div>
+            <div class="row sm12">
+                <ul class="tick-list mt-xs mb-sm compact-list">
+                    <li>Shopping for essentials</li>
+                    <li>Cooking a hot meal</li>
+                    <li>Home-sewn face coverings</li>
+                    <li>Help with home-schooling</li>
+                    <li>A friendly chat</li>
+                </ul>
             </div>
+            <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
+
+            <div class="row sm12 text-center justify-center small-screen-only mb-sm">
+                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+            </div>
+
+            <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
+
+            <div class="row sm12 large-screen-only mb-sm"></div>
+
+            <div class="row sm6 text-center justify-center mb-md">
+                @if (!Model.isLoggedIn)
+                {
+                    <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up Now</a>
+
+                }
+                else
+                {
+                    <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
+
+                }
+            </div>
+
+            <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+            </div>
+
         </div>
         <div class="flex sm6 home-video-container justify-center align-center text-right" id="video">
             <iframe style="min-width:100%; height:350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 
-    <div class="row card street-check text-center justify-center" id="street-map">
-        <h3>Is your street covered?</h3>
-        <input id="pac-input" class="controls" type="text" placeholder="Type to check coverage...">
+    <div class="row card street-check" id="street-map">
+        <h2 class="mb-sm">Is your street covered?</h2>
+        <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
         <div id="your-location">
             <button title="Your location">
                 <div id="your-location-image"></div>
@@ -111,7 +130,7 @@
             }
             else
             {
-                <a href="/account" class="btn cta large fill mt16 btn--sign-up">View Profile</a>
+                <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
             }
         </div>
     </div>
@@ -166,7 +185,7 @@
         @if (Model.isLoggedIn)
         {
             <div>
-                <a href="/account" class="btn cta large fill mt16 btn--sign-up">View Profile</a>
+                <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
             </div>
         }
         else
