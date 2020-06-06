@@ -8,5 +8,7 @@ namespace HelpMyStreetFE.Models
     public class LoadingSpinnerViewModel
     {
         public string Text { get; set; }
+
+        public bool ShowDarkSpinner { get; set; } = false;
     }
 }

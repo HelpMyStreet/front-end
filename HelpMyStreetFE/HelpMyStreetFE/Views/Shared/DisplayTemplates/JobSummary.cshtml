@@ -8,9 +8,22 @@
     bool UserIsVerified = (bool)ViewData["UserIsVerified"];
     bool IsAccepted = ViewData["IsAccepted"] is bool ? (bool)ViewData["IsAccepted"] : false;
     var id = Base64Utils.Base64Encode(Model.JobID.ToString());
+
+    var className = "";
+    if(Model.DueDate.Date <= DateTime.Today)
+    {
+        className = "job--hot";
+    }
+
+    if(Model.DueDate.Date == DateTime.Today.AddDays(1))
+    {
+        className = "job--warm";
+    }
+    var AgeUk = Model.SupportActivity == SupportActivities.WellbeingPackage;
+    string iconClass = AgeUk ? "limit-width" : "";
 }
 
-<div class="job @(@Model.IsHealthCritical ? "job--critical" : "")" id="@id">
+<div class="job @className" id="@id">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.IsHealthCritical)
@@ -22,14 +35,16 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span>Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
+            <span class="due-date">Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title @Model.SupportActivity.Class()">
                 @if (Model.SupportActivity != SupportActivities.Other)
                 {
-                    <img src="~/img/icons/@Model.SupportActivity.Icon()" />
+                    <img src="~/img/icons/@Model.SupportActivity.Icon()" class="@iconClass" />
+
                 }
+               
                 @Model.SupportActivity.FriendlyName()
             </span>
             <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
@@ -46,7 +61,7 @@
                 <button class="btn border-green green large bg-white mt-sm undo-request">
                     <span class="text">Undo</span>
                     <div class="loader">
-                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing..." }' />
+                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
                     </div>
                 </button>
             }
@@ -73,7 +88,7 @@
     <div class="job__detail">
         @if (IsAccepted)
         {
-            var (recipient, requestor, forRequestor) = (HelpMyStreetFE.Services.RequestContactInformation)ViewData["ContactInformation"];
+            var (requestor, recipient, forRequestor) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
 
             <h4>Contact Details</h4>
             <div class="job__expander">

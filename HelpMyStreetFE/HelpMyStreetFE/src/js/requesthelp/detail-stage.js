@@ -65,6 +65,7 @@ export var detailStage = {
  }
 
 export function initaliseDetailStage(requestFor) {
+    disableSpaces();
     detailStage.onBehalf = requestFor.val == "someone-else" ? true : false;
     $('#their-details').hide()    
     if (detailStage.onBehalf == true) {
@@ -196,7 +197,13 @@ var initaliseAddressFinder = function (postfix, obj, bindPostcodeSearch) {
 
 
 
-
+var disableSpaces = function () {
+    $('input[type="number"]').on('keypress', function (e) {
+        if (e.which == 32) {   
+            return false;
+        }
+    });
+}
 var validatePersonalDetails = function (obj) {
     let valid = true;
     if (!obj.firstname.val || obj.firstname.val.length < 2 || hasNumber(obj.firstname.val) ) {

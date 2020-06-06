@@ -1,25 +1,38 @@
 .account__nav {
-    @media screen and (max-width: $med-screen){
+    @media screen and (max-width: $med-screen) {
         margin-bottom: 20px;
     }
+
     &__item {
         list-style: none;
+
         a {
-            display: block; 
-            
+            display: block;
             border: 1px solid $gray-10;
             border-radius: 4px;
-
-            margin-bottom: 0.5rem;   
+            margin-bottom: 0.5rem;
             padding: 0.5rem 1rem;
-
             color: $black;
             font-weight: 600;
             text-decoration: none;
+
+            .count {
+                position: absolute;
+                right: -12px;
+                top: -9px;
+                font-size: 12px;
+                background: $green;
+                border-radius: 50%;
+                padding: 1px;
+                color: $white;
+                height: 29px;
+                width: 29px;
+                text-align: center;
+            }
         }
 
         a.selected {
-            background-color: white;            
+            background-color: white;
         }
-    } 
+    }
 }

@@ -17,6 +17,8 @@ using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Models.Email;
+using Microsoft.AspNetCore.Http;
 
 namespace HelpMyStreetFE.Controllers
 {    
@@ -29,6 +31,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
+        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestService _requestService;
         public AccountController(
             ILogger<AccountController> logger,
@@ -36,6 +39,7 @@ namespace HelpMyStreetFE.Controllers
             IAddressService addressService,
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
+            IOptions<RequestSettings>  requestSettings,
             IRequestService requestService
             )
         {
@@ -45,10 +49,8 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
             _yotiOptions = yotiOptions;
             _requestService = requestService;
-        }
-
-  
-
+            _requestSettings = requestSettings;
+        }  
 
         [HttpGet]
         [AllowAnonymous]
@@ -162,10 +164,8 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
             var viewModel = GetAccountViewModel(currentUser);
-            viewModel.CurrentPage = MenuPage.OpenRequests;
-            
-            viewModel.PageModel = await _requestService.GetOpenJobsAsync(currentUser.PostalCode, 20);
-
+            viewModel.CurrentPage = MenuPage.OpenRequests;            
+            viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, currentUser, HttpContext);   
             return View("Index", viewModel);
         }
 
@@ -181,9 +181,8 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
             var viewModel = GetAccountViewModel(currentUser);
-            viewModel.CurrentPage = MenuPage.AcceptedRequests;
-
-            var jobs = await _requestService.GetJobsForUserAsync(currentUser.ID);
+            viewModel.CurrentPage = MenuPage.AcceptedRequests;            
+            var jobs = await _requestService.GetJobsForUserAsync(currentUser.ID, HttpContext);        
             var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
 
             viewModel.PageModel = new AcceptedRequestsViewModel
