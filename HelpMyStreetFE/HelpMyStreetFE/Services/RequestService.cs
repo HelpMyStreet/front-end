@@ -36,74 +36,7 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
             _requestSettings = requestSettings;
-        }
-        //public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpViewModel viewModel, int userId, HttpContext ctx)
-        //{
-        //    _logger.LogInformation($"Logging Request");
-        //    var request = new PostNewRequestForHelpRequest
-        //    {
-        //        HelpRequest = new HelpRequest {                                     
-        //            AcceptedTerms = viewModel.HelpRequest.AcceptedTerms,
-        //            OtherDetails = viewModel.HelpRequest.OtherDetails,
-        //            ConsentForContact = viewModel.HelpRequest.ConsentForContact,
-        //            SpecialCommunicationNeeds = viewModel.HelpRequest.SpecialCommunicationNeeds,
-        //            ForRequestor = viewModel.HelpRequest.ForRequestor,
-        //            ReadPrivacyNotice = viewModel.HelpRequest.ReadPrivacyNotice,
-        //            CreatedByUserId = userId,
-        //            Recipient = new RequestPersonalDetails
-        //            {
-        //                FirstName = viewModel.HelpRequest.Recipient.Firstname,
-        //                LastName = viewModel.HelpRequest.Recipient.Lastname,
-        //                MobileNumber = viewModel.HelpRequest.Recipient.Mobile,
-        //                OtherNumber = viewModel.HelpRequest.Recipient.AltNumber,
-        //                EmailAddress = viewModel.HelpRequest.Recipient.Email,
-        //                Address = new Address
-        //                {
-        //                    AddressLine1 = viewModel.HelpRequest.Recipient.Address.Addressline1,
-        //                    AddressLine2 = viewModel.HelpRequest.Recipient.Address.Addressline2,
-        //                    Locality = viewModel.HelpRequest.Recipient.Address.Locality,
-        //                    Postcode = PostcodeFormatter.FormatPostcode(viewModel.HelpRequest.Recipient.Address.Postcode),
-        //                }
-        //            },
-        //            Requestor = new RequestPersonalDetails
-        //            {
-        //                FirstName = viewModel.HelpRequest.Requestor.Firstname,
-        //                LastName = viewModel.HelpRequest.Requestor.Lastname,
-        //                MobileNumber = viewModel.HelpRequest.Requestor.Mobile,
-        //                OtherNumber = viewModel.HelpRequest.Requestor.AltNumber,
-        //                EmailAddress = viewModel.HelpRequest.Requestor.Email,
-        //                Address = new Address
-        //                {
-        //                    AddressLine1 = viewModel.HelpRequest.Requestor.Address.Addressline1,
-        //                    AddressLine2 = viewModel.HelpRequest.Requestor.Address.Addressline2,
-        //                    Locality = viewModel.HelpRequest.Requestor.Address.Locality,
-        //                    Postcode = PostcodeFormatter.FormatPostcode(viewModel.HelpRequest.Requestor.Address.Postcode),
-        //                }
-        //            }
-        //        },
-        //        NewJobsRequest = new NewJobsRequest
-        //        {
-        //            Jobs = new List<Job>
-        //            {
-        //                new Job
-        //                {
-        //                    DueDays = viewModel.JobRequest.DueDays,
-        //                    Details = viewModel.JobRequest.Details,
-        //                    HealthCritical = viewModel.JobRequest.HealthCritical,
-        //                    SupportActivity = (SupportActivities)Enum.Parse(typeof(SupportActivities), viewModel.JobRequest.SupportActivity),
-        //                }
-        //            }
-        //        }
-        //    };
-
-        //    var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
-        //    if (response.HasContent & response.IsSuccessful)
-        //        TriggerCacheRefresh(ctx);
-
-
-        //    return response;
-        //}
-
+        }    
         public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage)
         {
             return new RequestPersonalDetails

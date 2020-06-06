@@ -96,29 +96,5 @@ namespace HelpMyStreetFE.Controllers {
 
         }
 
-        //[HttpPost]        
-        //public async Task<ActionResult<BaseRequestHelpResponse<LogRequestResponse>>> RequestHelp([FromBody] RequestHelpViewModel model)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(model);
-
-        //        int userId = 0;
-        //            if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
-        //            {
-        //                userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-        //            }
-        //            return await _requestService.LogRequestAsync(model, userId, HttpContext);                
-        //    }catch(Exception ex)
-        //    {
-        //        _logger.LogError("an error occured requesting help", ex);
-        //        return StatusCode(500);
-        //    }            
-        //}
-
-
-        
-
     }
 }
