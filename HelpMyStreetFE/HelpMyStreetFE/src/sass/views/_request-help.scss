@@ -14,11 +14,13 @@
         font-size: 1.2em;
     }
 
-    .to-details,
-    .to-request {
+
+    .edit-button {
+        background: none;
+        border: none;
         text-decoration: underline;
-        cursor: pointer;
         float: right;
+        cursor: pointer;        
     }
 
 
@@ -35,9 +37,10 @@
         margin-top: 20px;
 
 
-        input.small[type="number"]{
-            max-width:60px;
+        input.small[type="number"] {
+            max-width: 60px;
         }
+
         select {
             font-size: 1.2rem;
             padding-left: 10px;

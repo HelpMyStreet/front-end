@@ -1,5 +1,5 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Review.RequestHelpReviewStageViewModel;
-@using HelpMyStreetFE.Models.RequestHelp.Enum;
+@using HelpMyStreet.Utils.Enums;
 
 @{
     var onBehalf = Model.RequestedFor.Type == RequestorType.OnBehalf;
@@ -11,7 +11,7 @@
     <div class="row justify-center  ">
         <div class="sm8">
             <label class="tiles__label--large"> Request For</label>
-            <a class="to-request">Edit</a>
+            <button class="edit-button" name="formAction" type="submit" value="EditRequest">Edit</button>
         </div>
     </div>
 
@@ -26,7 +26,7 @@
     <hr class="input--separator" />
     <div class="row mt-md justify-center">
         <div class="sm8">
-            <label class="tiles__label--large"> Description</label> <a class="to-request">Edit</a>
+            <label class="tiles__label--large"> Description</label> <button class="edit-button" name="formAction"  type="submit" value="EditRequest">Edit</button>
         </div>
     </div>
 
@@ -83,7 +83,8 @@
                                     string answer = @question.Model;
                                     if (question.InputType == HelpMyStreet.Utils.Enums.QuestionType.Radio)
                                     {
-                                        answer = question.AdditionalData.Where(x => x.Key == question.Model).First().Value;
+                                        var radioInput = question.AdditionalData.Where(x => x.Key == question.Model).FirstOrDefault();
+                                        answer = radioInput != null ? radioInput.Value : "Not Answered";
                                     }
                                 }
                                     @answer
@@ -91,6 +92,7 @@
                                 
 
                             </div>
+                            <hr class="input--separator" />
                         }                      
                         @*<div class="tiles__tile__content__description tiles__tile__content--top__description"><strong>Is this request critical to someone’s health or wellbeing?</strong> - <span class="header-text">@Model.HealthCriticalReviewString</span></div>*@
                         @*<div class="tiles__tile__content__description tiles__tile__content--top__description"><strong>When is the help needed?</strong> -  <span class="header-text">@Model.TimeRequestedReviewString</span></div>*@
@@ -103,7 +105,7 @@
         <hr class="input--separator" />
         <div class="row mt-md justify-center">
             <div class="sm8">
-                <label class="tiles__label--large"> Personal Details</label> <a class="to-details">Edit</a>
+                <label class="tiles__label--large"> Personal Details</label> <button class="edit-button"  type="submit" name="formAction" value="EditDetails">Edit</button>
             </div>
         </div>
         <div class="row justify-center ">

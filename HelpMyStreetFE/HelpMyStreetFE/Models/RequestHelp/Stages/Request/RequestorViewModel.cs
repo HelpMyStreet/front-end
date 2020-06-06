@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models.RequestHelp.Enum;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;

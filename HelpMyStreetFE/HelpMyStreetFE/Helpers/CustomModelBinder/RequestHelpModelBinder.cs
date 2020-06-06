@@ -18,7 +18,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
         Task IModelBinder.BindModelAsync(ModelBindingContext bindingContext)
         {
 
-            RequestHelpNewViewModel model = JsonConvert.DeserializeObject<RequestHelpNewViewModel>(bindingContext.ValueProvider.GetValue("requestHelp").FirstValue, new JsonSerializerSettings
+            RequestHelpViewModel model = JsonConvert.DeserializeObject<RequestHelpViewModel>(bindingContext.ValueProvider.GetValue("requestHelp").FirstValue, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Objects
             });

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models.RequestHelp
 {
-    public class RequestHelpNewViewModel
+    public class RequestHelpViewModel
     {
         public int CurrentStepIndex { get; set; }
         public IList<IRequestHelpStageViewModel> Steps { get; set; }

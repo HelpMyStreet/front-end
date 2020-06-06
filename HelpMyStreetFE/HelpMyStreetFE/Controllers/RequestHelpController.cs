@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
@@ -18,6 +19,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -35,12 +37,23 @@ namespace HelpMyStreetFE.Controllers
         
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult RequestHelp(
-        [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpNewViewModel requestHelp,
+        public async Task<ActionResult> RequestHelp(
+        [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpViewModel requestHelp,
         [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
         {            
             requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
-            if(requestHelp.Action == "back")
+
+            if(requestHelp.Action == "EditRequest")
+            {
+                requestHelp.CurrentStepIndex = 0;
+                return View(requestHelp);
+            }
+            if (requestHelp.Action == "EditDetails")
+            {
+                requestHelp.CurrentStepIndex = 1;
+                return View(requestHelp);
+            }
+            if (requestHelp.Action == "back")
             {
                 requestHelp.CurrentStepIndex--;
                 return View(requestHelp);
@@ -48,6 +61,7 @@ namespace HelpMyStreetFE.Controllers
             
             if (ModelState.IsValid)
             {
+
                 if (requestHelp.Action == "next")
                 {
                     requestHelp.CurrentStepIndex++;
@@ -59,6 +73,7 @@ namespace HelpMyStreetFE.Controllers
                         if(requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
                         {
                             detailStage.ShowOtherDetails = false;
+                            requestStep.Timeframes.ForEach(x => x.IsSelected = false);
                         }
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
 
@@ -110,16 +125,25 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
                         reviewStage.OtherDetails = detailStage.OtherDetails;
                         reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
-                    }
-
-
-                    if (requestHelp.Action == "finish")
+                    } 
+                }
+                if (requestHelp.Action == "finish")
+                {
+                    var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                    int userId = 0;
+                    if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
                     {
-                        // call api;
+                        userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    }
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
+                    if (response.HasContent && response.IsSuccessful)
+                    {
+                        return View("Success",
+                            new { fulfillable = response.Content.Fulfillable, onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false });
                     }
                 }
 
-                
             }            
             return View(requestHelp);
         }

@@ -103,6 +103,94 @@ namespace HelpMyStreetFE.Services
 
         //    return response;
         //}
+
+        public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage)
+        {
+            return new RequestPersonalDetails
+            {
+                FirstName = detailStage.Recipient.Firstname,
+                LastName = detailStage.Recipient.Lastname,
+                MobileNumber = detailStage.Recipient.MobileNumber,
+                OtherNumber = detailStage.Recipient.AlternatePhoneNumber,
+                EmailAddress = detailStage.Recipient.Email,
+                Address = new Address
+                {
+                    AddressLine1 = detailStage.Recipient.AddressLine1,
+                    AddressLine2 = detailStage.Recipient.AddressLine2,
+                    Locality = detailStage.Recipient.Town,
+                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode),
+                }
+            };
+        }
+
+        public RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage)
+        {
+            return new RequestPersonalDetails
+            {
+                FirstName = detailStage.Requestor.Firstname,
+                LastName = detailStage.Requestor.Lastname,
+                MobileNumber = detailStage.Requestor.MobileNumber,
+                OtherNumber = detailStage.Requestor.AlternatePhoneNumber,
+                EmailAddress = detailStage.Requestor.Email,
+                Address = new Address
+                {            
+                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode),
+                }
+            };
+        }
+
+        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int userId, HttpContext ctx)
+        {
+            _logger.LogInformation($"Logging Request");
+            var recipient = MapRecipient(detailStage);
+            var requestor = detailStage.Type == RequestorType.OnBehalf ? MapRequestor(detailStage) : recipient;
+            var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
+            var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
+            var request = new PostNewRequestForHelpRequest
+            {
+                HelpRequest = new HelpRequest
+                {
+                    AcceptedTerms = requestStage.AgreeToTerms,
+                    OtherDetails = detailStage.OtherDetails,
+                    ConsentForContact = requestStage.AgreeToTerms,
+                    SpecialCommunicationNeeds = detailStage.CommunicationNeeds,
+                    RequestorType = detailStage.Type,
+                    ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
+                    ReadPrivacyNotice = requestStage.AgreeToPrivacy,
+                    CreatedByUserId = userId,
+                    Recipient = recipient,
+                    Requestor = requestor,
+                },
+                NewJobsRequest = new NewJobsRequest
+                {
+                    Jobs = new List<Job>
+                    {
+                        new Job
+                        {
+                            DueDays = selectedTime != null ? selectedTime.Days : 30,
+                            Details = "",
+                            HealthCritical = requestStage.IsHealthCritical.HasValue ? requestStage.IsHealthCritical.Value : false,
+                            SupportActivity = selectedTask.SupportActivity,
+                            Questions = selectedTask.Questions.Select(x => new Question {
+                                Id = x.ID,
+                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Value ?? "" : x.Model,
+                                Name = x.Label,
+                                Required = x.Required,
+                                AddtitonalData = x.AdditionalData,
+                                Type  = x.InputType}).ToList()
+                        }
+                    }
+                }
+            };
+
+
+            var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
+               if (response.HasContent & response.IsSuccessful)
+                    TriggerCacheRefresh(ctx);
+
+
+               return response;
+        }
         public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
         {               
                 var jobs = ctx.Session.GetObjectFromJson<OpenJobsViewModel>("openJobs");
@@ -218,10 +306,10 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public async Task<RequestHelpNewViewModel> GetRequestHelpSteps(string source)
+        public async Task<RequestHelpViewModel> GetRequestHelpSteps(string source)
         {
             
-            return new RequestHelpNewViewModel
+            return new RequestHelpViewModel
             {
 
                 CurrentStepIndex = 0,
@@ -318,6 +406,7 @@ namespace HelpMyStreetFE.Services
             return tasks;
          }
 
+    
     }
 
     }

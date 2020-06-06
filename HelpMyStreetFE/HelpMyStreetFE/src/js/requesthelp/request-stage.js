@@ -19,13 +19,12 @@ var validateForm = function () {
     $("form").on("submit", function (evt) {        
         buttonLoad($("#btnNext"));
         const valid = validateFormData($(this), {
-            "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select a task",   
-            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please Health Critical or not",                    
+            "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",   
+            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",                    
             "currentStep.SelectedTimeFrame.Id": (v) => {                
                 if ($("#WhenNeeded").is(":visible")) {
-                    if (v == "") {
-                        $('.expander').slideDown();
-                        return "Please select Timeframe";
+                    if (v == "") {                     
+                        return "Please tell us when you need this to be done by";
                     }
                 }
                 return true;
