@@ -128,13 +128,13 @@
                     <div class="tiles__tile__content--top ">
                         <div class="tiles__tile__content--top__header  pt-xs">Are there any communication needs that volunteers need to know about before they contact you or the person who needs help?</div>
                         <div class="tiles__tile__content__description tiles__tile__content--top__description">
-
-                            <div>@Model.CommunicationNeeds</div>
+                             
+                            <div>@(string.IsNullOrEmpty(Model.CommunicationNeeds) ? "None Entered" : Model.CommunicationNeeds)</div>
                         </div>
                         @if (Model.ShowOtherDetails) {
                             <div class="tiles__tile__content--top__header mt-md  pt-xs">Is there anything else you would like to tell us about the request?</div>
-                            <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                                <div> @Model.OtherDetails</div>
+                            <div class="tiles__tile__content__description tiles__tile__content--top__description">                                
+                                <div>@(string.IsNullOrEmpty(Model.OtherDetails) ? "None Entered" : Model.OtherDetails)</div>
                             </div>
                         }
                     </div>

@@ -145,6 +145,10 @@ var LoadQuestions = function (taskId){
                     $('#WhenNeeded').hide();
                 } else {
                     $('#requestorFor_3').hide();
+                    var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();                    
+                    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+                        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+                    }                    
                     $('#WhenNeeded').show();
                 }
             }

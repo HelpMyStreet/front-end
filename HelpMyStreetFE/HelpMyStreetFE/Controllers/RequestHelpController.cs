@@ -73,13 +73,14 @@ namespace HelpMyStreetFE.Controllers
 
                             var requestStep = (RequestHelpRequestStageViewModel)step;
                             var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                            
                             if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
                             {
                                 detailStage.ShowOtherDetails = false;
                                 requestStep.Timeframes.ForEach(x => x.IsSelected = false);
-                            }
-                            detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                            }                            
 
+                            detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;                            
                             if (HttpContext.Session.Keys.Contains("User"))
                             {
                                 var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
@@ -206,7 +207,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
         {
-            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
+            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();            
             foreach(var question in model.Questions)
             {
                 if (question.Location() != request.Position)
