@@ -120,6 +120,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
@@ -191,7 +192,7 @@ namespace HelpMyStreetFE
 
                 endpoints.MapControllerRoute(
                     name: "community",
-                    pattern: "community/{community}",
+                    pattern: "community/{communityName}",
                     defaults: new { controller = "Community", action = "Index" });
 
                 endpoints.MapControllerRoute(

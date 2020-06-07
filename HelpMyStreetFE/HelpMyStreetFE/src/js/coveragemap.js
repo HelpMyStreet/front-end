@@ -9,7 +9,7 @@ let initialLat = 55.0;
 let initialLng = -10.0;
 
 let script = document.createElement('script');
-script.src = 'api/Maps/js';
+script.src = '/api/Maps/js';
 script.defer = false;
 script.async = false;
 
@@ -271,14 +271,14 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.lat, lng: coord.lng },
                 title: null,
-                icon: { url: "./img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
+                icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
             });
 
         } else {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.lat, lng: coord.lng },
                 title: coord.pc,
-                icon: { url: "./img/logos/markers/hms5.png", scaledSize: new google.maps.Size(35, 35) }
+                icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(35, 35) }
             });
         }
         addMarker(thisMarker);
@@ -340,7 +340,7 @@ function deleteMarkers() {
 }
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
-    let endpoint = 'api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
+    let endpoint = '/api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
     const content = await fetch(endpoint);
     const users = await content.json();
     return users.volunteerCoordinates;

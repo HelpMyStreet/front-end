@@ -13,7 +13,7 @@
 
 
 .commmunity-map-container {
-    margin-top: 10px;
+    min-height: 400px
 }
 
 .community-volunteers-container {
@@ -21,18 +21,17 @@
     justify-content: center;
     flex-wrap: wrap;
 
-    .volunteer {
-        padding: 10px;
-        margin: 10px;
+    .volunteer {        
+        margin: 15px;
 
         .volunteer-image {
             display: flex;
-            width: 250px;
+            width: 200px;
             justify-content: center;
             overflow: hidden;
 
             img {
-                max-height: 250px;
+                max-height: 200px;
             }
         }
 
@@ -42,11 +41,15 @@
     }
 }
 
-#community-volunteers-text {
+.community-volunteers-text {
     overflow: hidden;
 }
 
 .community-useful-links {
-    padding-left: 40px;
-    padding-right: 40px;
+
+}
+
+
+.outer-container--padding {
+    padding: 2rem 0 2rem 0;
 }
