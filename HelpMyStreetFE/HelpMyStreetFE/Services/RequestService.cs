@@ -303,7 +303,7 @@ namespace HelpMyStreetFE.Services
         {
             var tasks = new List<TasksViewModel>();
             if (source == "v4v")
-                tasks.Add(new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage });
+                tasks.Add(new TasksViewModel { ID = 11, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage });
 
             tasks.AddRange(new List<TasksViewModel>
             {

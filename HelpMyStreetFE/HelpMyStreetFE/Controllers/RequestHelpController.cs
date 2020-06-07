@@ -38,7 +38,7 @@ namespace HelpMyStreetFE.Controllers
         
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<ActionResult> RequestHelp(
+        public async Task<IActionResult> RequestHelp(
         [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpViewModel requestHelp,
         [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
         {
@@ -131,22 +131,25 @@ namespace HelpMyStreetFE.Controllers
                             reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
                         }
                     }
-                    if (requestHelp.Action == "finish")
+                if (requestHelp.Action == "finish")
+                {
+                    var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                    int userId = 0;
+                    if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
                     {
-                        var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
-                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                        int userId = 0;
-                        if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
-                        {
-                            userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                        }
-                        var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
-                        if (response.HasContent && response.IsSuccessful)
-                        {
-                            return View("Success",
-                                new { fulfillable = response.Content.Fulfillable, onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false });
-                        }
+                        userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     }
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
+                    if (response.HasContent && response.IsSuccessful)
+                    {                        
+                        return RedirectToAction("Success", new
+                        {
+                            fulfillable = response.Content.Fulfillable,
+                            onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false
+                        });
+                    }
+                }
                  
                 
             }
