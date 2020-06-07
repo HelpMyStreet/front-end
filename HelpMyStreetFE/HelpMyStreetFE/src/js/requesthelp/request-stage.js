@@ -142,6 +142,9 @@ var LoadQuestions = function (taskId){
                 el.html(data);
                 if (taskId == 2) {
                     $('#requestorFor_3').show();
+                    if ($('#requestorFor_3').hasClass("selected")) {
+                        $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
+                    }
                     $('#WhenNeeded').hide();
                 } else {
                     $('#requestorFor_3').hide();
