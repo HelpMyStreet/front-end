@@ -13,6 +13,7 @@ namespace HelpMyStreetFE.Models.RequestHelp
         public int CurrentStepIndex { get; set; }
         public IList<IRequestHelpStageViewModel> Steps { get; set; }
         public string Action { get; set; }
+        public List<string> Errors { get; set; } = new List<string>();
         public string ToJson() {             
                 return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings
                 {

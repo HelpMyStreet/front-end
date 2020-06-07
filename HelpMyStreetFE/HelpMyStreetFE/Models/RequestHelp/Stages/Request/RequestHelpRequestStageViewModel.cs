@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
                 if (selectedTask == null) return null;
                 var healthCriticalQuestion = selectedTask.Questions.Where(x => x.ID == (int)HelpMyStreet.Utils.Enums.Questions.IsHealthCritical).FirstOrDefault();
                 if (healthCriticalQuestion == null) return null; 
-                return "yes".Equals(healthCriticalQuestion.Model.ToLower()); // if we dont ask the question then its not health critical;
+                return bool.Parse(healthCriticalQuestion.Model); // if we dont ask the question then its not health critical;
 
             }
         }

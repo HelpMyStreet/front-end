@@ -1,4 +1,4 @@
-﻿import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
+﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 export function intialiseRequestStage() {
     intialiseRequestTiles();
@@ -36,8 +36,10 @@ var validateForm = function () {
 
         if (validForm == false) {
             buttonUnload($("#btnNext"));;
+            scrollToFirstError();
         }
 
+        
         return validForm;
     });
 }
@@ -151,3 +153,5 @@ var LoadQuestions = function (taskId){
 
 
     }
+
+

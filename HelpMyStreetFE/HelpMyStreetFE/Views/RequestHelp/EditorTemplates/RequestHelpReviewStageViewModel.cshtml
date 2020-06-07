@@ -32,31 +32,10 @@
 
 
     <div class="row justify-center">
-        @if (Model.HealthCritical.HasValue)
-        {
-            <div class="@(Model.TimeRequested != null ? "sm4" : "sm8")">
-                <div class="tiles__tile tiles__tile--large">
-                    <div class="tiles__tile__content @(Model.HealthCritical.Value ? "orange" : "")">
-
-                        <div class="tiles__tile__content__icon ">
-                            @if (Model.HealthCritical.Value)
-                            {
-                                <span class="text-icon orange">!</span>
-                            }
-                            else
-                            {
-
-                            }
-                        </div>
-                        <div class="tiles__tile__content__header">@Model.HealthCriticalReviewString</div>
-                        <div class="tiles__tile__content__description"></div>
-                    </div>
-                </div>
-            </div>
-        }
+    
         @if (Model.TimeRequested != null)
         {
-            <div class="@(Model.HealthCritical.HasValue ? "sm4" : "sm8" )">
+            <div class="sm8">
                 <div class="tiles__tile tiles__tile--large">
                     <div class="tiles__tile__content ">
                         <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>

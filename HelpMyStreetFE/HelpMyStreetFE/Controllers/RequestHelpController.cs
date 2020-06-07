@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -40,111 +41,125 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> RequestHelp(
         [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpViewModel requestHelp,
         [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
-        {            
-            requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
-
-            if(requestHelp.Action == "EditRequest")
+        {
+            try
             {
-                requestHelp.CurrentStepIndex = 0;
-                return View(requestHelp);
-            }
-            if (requestHelp.Action == "EditDetails")
-            {
-                requestHelp.CurrentStepIndex = 1;
-                return View(requestHelp);
-            }
-            if (requestHelp.Action == "back")
-            {
-                requestHelp.CurrentStepIndex--;
-                return View(requestHelp);
-            }        
-            
-            if (ModelState.IsValid)
-            {
-
-                if (requestHelp.Action == "next")
+                requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
+                if (requestHelp.Action == "EditRequest")
                 {
-                    requestHelp.CurrentStepIndex++;
-                    if (step is RequestHelpRequestStageViewModel)
+                    requestHelp.CurrentStepIndex = 0;
+                    return View(requestHelp);
+                }
+                if (requestHelp.Action == "EditDetails")
+                {
+                    requestHelp.CurrentStepIndex = 1;
+                    return View(requestHelp);
+                }
+                if (requestHelp.Action == "back")
+                {
+                    requestHelp.CurrentStepIndex--;
+                    return View(requestHelp);
+                }
+
+                if (!ModelState.IsValid) 
+                    throw new ValidationException("Model Validation failed");
+                
+
+                    if (requestHelp.Action == "next")
                     {
-
-                        var requestStep = (RequestHelpRequestStageViewModel)step;
-                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                        if(requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
+                        requestHelp.CurrentStepIndex++;
+                        if (step is RequestHelpRequestStageViewModel)
                         {
-                            detailStage.ShowOtherDetails = false;
-                            requestStep.Timeframes.ForEach(x => x.IsSelected = false);
-                        }
-                        detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
 
-                        if (HttpContext.Session.Keys.Contains("User"))
-                        {
-                            var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
-                            switch (detailStage.Type)
+                            var requestStep = (RequestHelpRequestStageViewModel)step;
+                            var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                            if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
                             {
-                                case RequestorType.Myself:
-                                    detailStage.Recipient = new RecipientDetails
-                                    {
-                                        Firstname = loggedInUser.UserPersonalDetails.FirstName,
-                                        Lastname = loggedInUser.UserPersonalDetails.LastName,
-                                        AddressLine1 = loggedInUser.UserPersonalDetails.Address.AddressLine1,
-                                        AddressLine2 = loggedInUser.UserPersonalDetails.Address.AddressLine2,
-                                        AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
-                                        MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
-                                        Email = loggedInUser.UserPersonalDetails.EmailAddress,
-                                        Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
-                                        Town = loggedInUser.UserPersonalDetails.Address.Locality
-                                    };
-                                    break;
-                                case RequestorType.OnBehalf:
-                                    detailStage.Requestor = new RequestorDetails
-                                    {
-                                        Firstname = loggedInUser.UserPersonalDetails.FirstName,
-                                        Lastname = loggedInUser.UserPersonalDetails.LastName,
-                                        AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
-                                        MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
-                                        Email = loggedInUser.UserPersonalDetails.EmailAddress,
-                                        Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
-                                    };
-                                    break;
+                                detailStage.ShowOtherDetails = false;
+                                requestStep.Timeframes.ForEach(x => x.IsSelected = false);
                             }
-                        }
-                        
-                    }
-                    if(step is RequestHelpDetailStageViewModel)
-                    {
-                        var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();                        
-                        var detailStage = (RequestHelpDetailStageViewModel)step;
-                        var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
-                        reviewStage.Recipient = detailStage.Recipient;
-                        reviewStage.Requestor = detailStage.Requestor;
-                        reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.HealthCritical = requestStage.IsHealthCritical;
-                        reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
-                        reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
-                        reviewStage.OtherDetails = detailStage.OtherDetails;
-                        reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
-                    } 
-                }
-                if (requestHelp.Action == "finish")
-                {
-                    var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
-                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                    int userId = 0;
-                    if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
-                    {
-                        userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                    }
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
-                    if (response.HasContent && response.IsSuccessful)
-                    {
-                        return View("Success",
-                            new { fulfillable = response.Content.Fulfillable, onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false });
-                    }
-                }
+                            detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
 
-            }            
+                            if (HttpContext.Session.Keys.Contains("User"))
+                            {
+                                var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
+                                switch (detailStage.Type)
+                                {
+                                    case RequestorType.Myself:
+                                        detailStage.Recipient = new RecipientDetails
+                                        {
+                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                            AddressLine1 = loggedInUser.UserPersonalDetails.Address.AddressLine1,
+                                            AddressLine2 = loggedInUser.UserPersonalDetails.Address.AddressLine2,
+                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                            Town = loggedInUser.UserPersonalDetails.Address.Locality
+                                        };
+                                        break;
+                                    case RequestorType.OnBehalf:
+                                        detailStage.Requestor = new RequestorDetails
+                                        {
+                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                        };
+                                        break;
+                                }
+                            }
+
+                        }
+                        if (step is RequestHelpDetailStageViewModel)
+                        {
+                            var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+                            var detailStage = (RequestHelpDetailStageViewModel)step;
+                            var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
+                            reviewStage.Recipient = detailStage.Recipient;
+                            reviewStage.Requestor = detailStage.Requestor;
+                            reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
+                            reviewStage.HealthCritical = requestStage.IsHealthCritical;
+                            reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
+                            reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
+                            reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
+                            reviewStage.OtherDetails = detailStage.OtherDetails;
+                            reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
+                        }
+                    }
+                    if (requestHelp.Action == "finish")
+                    {
+                        var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                        int userId = 0;
+                        if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
+                        {
+                            userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                        }
+                        var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
+                        if (response.HasContent && response.IsSuccessful)
+                        {
+                            return View("Success",
+                                new { fulfillable = response.Content.Fulfillable, onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false });
+                        }
+                    }
+                 
+                
+            }
+            catch (ValidationException vex)
+            {
+                _logger.LogError(vex, "a validation error occured in request help form action");   
+             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "an error occured in request help form action");
+                requestHelp.Errors.Add("Oops! an error occured sumbitting your request, please try again later.");
+            }
+        
+
             return View(requestHelp);
         }
     
@@ -194,7 +209,7 @@ namespace HelpMyStreetFE.Controllers
             TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
             foreach(var question in model.Questions)
             {
-                if (question.QuestionLocation() != request.Position)
+                if (question.Location() != request.Position)
                     question.DontShow = true;
             }
 

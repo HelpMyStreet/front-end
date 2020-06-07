@@ -24,7 +24,6 @@
         &--large {
             min-height: 200px;
             height: 200px;
-            padding: 0px;
         }
 
 
@@ -94,6 +93,8 @@
                 }
 
                 &__description {
+                    padding-bottom: 10px;
+
                     div {
                         line-height: 1.8rem;
                     }

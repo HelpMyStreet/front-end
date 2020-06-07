@@ -1,5 +1,5 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber } from "../shared/validator";
+import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
 
 export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
@@ -80,10 +80,12 @@ var validateForm = function (validateRequestor) {
                         }
                     }).catch(function (e) {
                         console.error(e);
+                        scrollToFirstError();
                         buttonUnload($("#btnNext"));
                     })
                 })
             } else {
+                scrollToFirstError();
                 buttonUnload($("#btnNext"));
             }
         })

@@ -71,7 +71,7 @@ namespace HelpMyStreetFE
 
     public static class RequestHelpQuestionExtensions {
         
-        public static string QuestionLocation(this RequestHelpQuestion question)
+        public static string Location(this RequestHelpQuestion question)
         {
             
             return question.ID switch
@@ -83,7 +83,17 @@ namespace HelpMyStreetFE
                 _ => "pos1"
             };        
         }
-        public static string Subtext(this RequestHelpQuestion question)
+
+        public static string Class(this RequestHelpQuestion question)
+        {
+
+            return question.ID switch
+            {
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Amount => "small-width",
+                _ => ""
+            };
+        }
+            public static string Subtext(this RequestHelpQuestion question)
         {
             return question.ID switch
             {

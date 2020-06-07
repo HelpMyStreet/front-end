@@ -20,7 +20,7 @@
         border: none;
         text-decoration: underline;
         float: right;
-        cursor: pointer;        
+        cursor: pointer;
     }
 
 
@@ -37,8 +37,9 @@
         margin-top: 20px;
 
 
-        input.small[type="number"] {
-            max-width: 60px;
+        .small-width {
+            width: 149px;
+            margin-bottom: 14px;
         }
 
         select {

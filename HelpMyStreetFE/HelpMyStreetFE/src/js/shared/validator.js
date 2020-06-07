@@ -86,3 +86,22 @@ export function validatePrivacyAndTerms(privacyName, termsName) {
     }
     return true;
 }
+
+
+export function scrollToFirstError() {
+    $('.error').each(function () {
+        if ($(this).is(":visible")) {
+            let visibleElement = $(this); 
+            $("html, body").animate(
+                {
+                    scrollTop: visibleElement.parent().offset().top,
+                },
+                {
+                    duration: 300,                
+                }
+            );       
+            return false;
+        }
+    })
+   
+}
