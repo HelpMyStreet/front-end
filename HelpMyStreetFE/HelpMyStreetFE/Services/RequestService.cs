@@ -279,8 +279,8 @@ namespace HelpMyStreetFE.Services
                                 ColourCode = "dark-blue",
                                 Title = "On behalf of an organisation",
                                 Text = "I'm looking for help for an organisation",
-                                IconDark = "request-behalf.svg",
-                                IconLight = "request-behalf-white.svg",
+                                IconDark = "question-mark.svg",
+                                IconLight = "question-mark.svg",
                                 Type = RequestorType.Organisation
                             }
                         },
