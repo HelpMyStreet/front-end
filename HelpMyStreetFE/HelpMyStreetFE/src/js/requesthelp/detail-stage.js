@@ -127,16 +127,13 @@ var SetupAddressFinder = function () {
         evt.preventDefault();
         buttonLoad($(this));
         $("select[name=address_selector]").unbind("change");
-
-        const postcode = $("input[name=postcode_search]").val();
-        console.log(postcode);
+        const postcode = $("input[name=postcode_search]").val();        
         try {
             const resp = await fetch(`/api/postcode/${postcode}`);
             if (resp.ok) {
                 const { hasContent, isSuccessful, content } = await resp.json();
 
-                if (hasContent && isSuccessful) {
-                    console.log("success");
+                if (hasContent && isSuccessful) {                    
                     $("select[name=address_selector]").html(
                         content.addressDetails.reduce((acc, cur, i) => {
                             const text = Object.keys(cur).reduce((tAcc, tCur) => {
