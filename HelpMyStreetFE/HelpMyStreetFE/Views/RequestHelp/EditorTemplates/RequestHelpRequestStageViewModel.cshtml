@@ -1,0 +1,160 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpRequestStageViewModel
+
+@{
+
+    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();    
+
+}
+<input type="hidden" name="RequestStep" value='@Json.Serialize(Model)' />
+<input type="hidden" name="selectAction" />
+<h2>What type of help are you looking for?</h2>
+<div class="row">
+    <div class="sm12">
+        <p>People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm12 input">
+        <label>What's the main thing you need help with? </label>
+
+        <div class="tiles">
+            <div class="input">
+                <input type="hidden" name="currentStep.SelectedTask.Id" value="@Model.Tasks.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+                <div class="row">
+                    @foreach (var task in Model.Tasks)
+                    {
+                        @Html.DisplayFor(x => task, "TaskTile")
+                    }
+                </div>
+                <span class="error"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr class="input--separator" />
+
+<div class="row">
+    <div class="sm12">
+        <div class="questions" data-position="pos1"></div>
+    </div>
+</div>
+
+<hr class="input--separator" />
+
+<h2>Help Description</h2>
+
+<div class="row">
+    <div class="sm12">
+        <div class="questions" data-position="pos2"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm12 input">
+        <label>Who is the help for?</label>
+        <div class="tiles">
+            <div class="input">
+                <input type="hidden" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+
+                <div class="row">
+                    @foreach (var requestor in Model.Requestors)
+                    {
+                        @Html.DisplayFor(x => requestor, "RequestForTile")
+                    }
+
+                </div>
+                <span class="error"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr class="input--separator" />
+
+<div id="WhenNeeded">
+    <div class="row">
+        <div class="sm12 input">
+            <label>When is the help needed?</label>
+
+            <div class="tiles">
+                <div class="input">
+                    <input type="hidden" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+
+                    <div class="row">
+                        @foreach (var time in Model.Timeframes)
+                        {
+                            @Html.DisplayFor(x => time, "TimeFrameTile")
+                        }
+                    </div>
+                    <span class="error"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
+        <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
+            <span>Within</span>
+            <select>
+                <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
+                @for (int i = 1; i <= 30; ++i)
+                {
+                    if (i == 1)
+                    {
+                        <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
+                    }
+                    else
+                    {
+                        <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
+                    }
+                }
+            </select>
+
+        </div>
+    </div>
+</div>
+<hr class="input--separator" />
+
+<div class="row">
+    <div class="sm12">
+        <div class="questions" data-position="pos3"></div>
+    </div>
+</div>
+
+
+
+
+
+<div class="row">
+    <div class="sm10">
+        <p>
+            The information you provide will be shared with Street Champions in your local area to help organise volunteers.
+            You can read more in out <a href="/privacy-policy">Privacy Notice</a>
+        </p>
+        <div class="input input--checkbox">
+            <label class="small">
+                @Html.CheckBoxFor(x => x.AgreeToPrivacy, new { hidden = true })
+                <span class="input--checkbox__checkbox">
+                    <span class="mdi mdi-check"></span>
+                </span>
+                I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+            </label>
+        </div>
+        <div class="input input--checkbox">
+            <label class="small">
+                @Html.CheckBoxFor(x => x.AgreeToTerms, new { hidden = true })
+                <span class="input--checkbox__checkbox">
+                    <span class="mdi mdi-check"></span>
+                </span>
+                I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
+
+            </label>
+            <span class="termsprivacy error"></span>
+        </div>
+    </div>
+</div>

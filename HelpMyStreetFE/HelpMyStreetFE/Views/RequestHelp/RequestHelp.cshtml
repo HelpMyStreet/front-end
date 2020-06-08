@@ -1,13 +1,17 @@
-﻿@using HelpMyStreetFE.Models.RequestHelp;
-@using HelpMyStreet.Utils.Enums
-@model HelpMyStreetFE.Models.RequestHelp.RequestHelpQuerysViewModel;
+﻿@model HelpMyStreetFE.Models.RequestHelp.RequestHelpViewModel;
+
 
 @section Scripts {
+
     <script src="~/requesthelp.js" asp-append-version="true"></script>
+    <script>
+    var stepIndex = @Model.CurrentStepIndex;
+    </script>
 }
 
 @{
     ViewData["Title"] = "Request Help";
+    var currentStep = Model.Steps[Model.CurrentStepIndex];
 }
 
 
@@ -15,15 +19,53 @@
 <div class="container request-help">
     <div class="row mt-md">
         <div class="sm12">
-            <partial name="_ProgressBar" />
+            <partial name="_ProgressBar" model="Model" />
         </div>
     </div>
-    <form>
-        <partial name="_RequestStage" model="Model">
-        <partial name="_DetailStage">
-        <partial name="_ReviewStage">
-        <partial name="_NextPrevButtons" />
-</form>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken();
+        @Html.Hidden("requestHelp", Model.ToJson())
+        @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
+        @Html.EditorFor(x => currentStep, currentStep.TemplateName);
+
+<div class="btn-wrapper">
+    <div class="row">
+        <div class="sm12">
+            <span class="error retryError">Oops! an error occured, please try again.</span>
+            <span id="hasErrors" class="error">Please check the form for any errors</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="sm12">
+            @if (Model.CurrentStepIndex > 0)
+            {
+                <button id="btnBack" name="formAction" class="btn cta large left clear-button" value="back" type="submit">Back</button>
+            }
+
+            @if (Model.CurrentStepIndex < Model.Steps.Count - 1)
+            {
+                <button id="btnNext" class="btn btnNext cta large  right" name="formAction" value="next" type="submit">
+                    <span class="text">Continue</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Validating..."}' /></div>
+                </button>
+            }
+            else
+            {
+                <button id="btnSubmit" class="btn btnSubmit cta large right" name="formAction" value="finish" type="submit">
+                    <span class="text">Submit</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+    }
+
+
+
 
 </div>
 

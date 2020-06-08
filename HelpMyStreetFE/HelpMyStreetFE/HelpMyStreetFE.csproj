@@ -24,8 +24,8 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
-    <PackageReference Include="HelpMyStreet.Contracts" Version="1.1.166" />
-    <PackageReference Include="HelpMyStreet.Utils" Version="1.1.166" />
+    <PackageReference Include="HelpMyStreet.Contracts" Version="1.1.190" />
+    <PackageReference Include="HelpMyStreet.Utils" Version="1.1.190" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
@@ -36,7 +36,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0-preview1.19506.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
     <PackageReference Include="NewRelic.Agent" Version="8.26.630" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />

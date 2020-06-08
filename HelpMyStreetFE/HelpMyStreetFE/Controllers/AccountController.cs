@@ -206,9 +206,7 @@ namespace HelpMyStreetFE.Controllers
         {              
              var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
              var  user = await _userService.GetUserAsync(id);                
-            HttpContext.Session.SetObjectAsJson("User", user);
-           
-      
+             HttpContext.Session.SetObjectAsJson("User", user);                 
             return user;
         }
 
