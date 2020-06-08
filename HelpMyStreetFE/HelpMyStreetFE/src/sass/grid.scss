@@ -31,13 +31,16 @@
         max-width: 1400px + 24px;
         margin:auto;
     }
- 
+
     .container {
         max-width: 1224px + 24px;
         margin: auto;
 
         .row {
-            display: flex;
+            &:not(.small-screen-only) {
+                display: flex;
+            }
+
             flex-wrap: wrap;
 
             @for $i from 1 through 12 {
@@ -55,16 +58,18 @@
             &.justify-center {
                 justify-content: center;
             }
+
             &.justify-right {
                 justify-content: flex-end;
             }
+
             &.align-center {
                 align-content: center;
             }
-            &.small-screen-only {
-                display: none;
-            }
         }
+    }
+    .small-screen-only {
+        display: none;
     }
 }
 
@@ -74,10 +79,9 @@
         margin: auto;
         display: flex;
         flex-direction: column;
-
-        .row.large-screen-only {
-            display: none;
-        }
+    }
+    .large-screen-only {
+        display: none;
     }
 }
 
@@ -87,9 +91,8 @@
         margin: auto;
         display: flex;
         flex-direction: column;
-
-       .row.large-screen-only {
+    }
+    .large-screen-only {
             display: none;
-        }
     }
 }
