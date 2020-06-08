@@ -145,14 +145,14 @@ var LoadQuestions = function (taskId){
                     if ($('#requestorFor_3').hasClass("selected")) {
                         $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
                     }
-                    $('#WhenNeeded').hide();
+                    displayTodayHelpNeededOptions(false);
                 } else {
                     $('#requestorFor_3').hide();
                     var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();                    
                     if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
                         $('input[name="currentStep.SelectedRequestor.Id"]').val("");
                     }                    
-                    $('#WhenNeeded').show();
+                    displayTodayHelpNeededOptions(true)
                 }
             }
         });
@@ -162,3 +162,12 @@ var LoadQuestions = function (taskId){
     }
 
 
+function displayTodayHelpNeededOptions(show) {
+    if (!show) {
+        $('#time_1').parent().hide();
+        $('#time_2').parent().hide();        
+    } else {
+        $('#time_1').parent().show();
+        $('#time_2').parent().show();        
+    }
+}

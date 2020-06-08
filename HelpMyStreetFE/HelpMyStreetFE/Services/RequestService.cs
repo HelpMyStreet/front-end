@@ -100,7 +100,7 @@ namespace HelpMyStreetFE.Services
                     {
                         new Job
                         {
-                            DueDays = selectedTime != null ? selectedTime.Days : 30,
+                            DueDays = selectedTime.Days,
                             Details = "",
                             HealthCritical = requestStage.IsHealthCritical.HasValue ? requestStage.IsHealthCritical.Value : false,
                             SupportActivity = selectedTask.SupportActivity,
@@ -174,7 +174,7 @@ namespace HelpMyStreetFE.Services
             {
                 acc[cur.JobID] = new RequestContactInformation
                 {
-                    ForRequestor = cur.ForRequestor,
+                    RequestorType = cur.RequestorType,
                     JobID = cur.JobID,
                     Recipient = cur.Recipient,
                     Requestor = cur.Requestor

@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,7 @@ namespace HelpMyStreetFE
             return activity switch
             {
                 SupportActivities.Shopping => "Shopping",
-                SupportActivities.FaceMask => "Face Covering",
+                SupportActivities.FaceMask => "Homemade Face Coverings",
                 SupportActivities.CheckingIn => "Check in",
                 SupportActivities.CollectingPrescriptions => "Prescriptions",
                 SupportActivities.Errands => "Errands",
@@ -67,6 +68,33 @@ namespace HelpMyStreetFE
                 _ => ""
             };
         }
+    }
+
+
+    public static class JobSummaryQuestionExtensions
+    {
+        public static bool  ShowOnTaskManagement(this Question question)
+        {
+            return question.Id switch
+            {
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Recipient => true,
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Cost => true,
+                (int)HelpMyStreet.Utils.Enums.Questions.SupportRequesting => true,
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_SpecificRequirements => true,
+                _ => false
+            };
+        }
+
+        public static string FriendlyName(this Question question)
+        {
+            return question.Id switch
+            {
+                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_SpecificRequirements => "Request Description",
+                (int)HelpMyStreet.Utils.Enums.Questions.SupportRequesting => "Request Description",                
+                _ => question.Name
+            };
+        }
+
     }
 
     public static class RequestHelpQuestionExtensions {

@@ -17,7 +17,7 @@
         break;
     case RequestorType.Organisation:
         <h2>Recipient</h2>
-        @Html.EditorFor(x => x.Recipient);
+        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their" });
         break;
 }
 
