@@ -86,7 +86,7 @@
                 <div id="your-location-image"></div>
             </button>
         </div>
-        <div class="row sm12 map" id="map">
+        <div class="row sm12 map homepage-map" id="map">
         </div>
         <p class="row sm9 text-center justify-center">Use our mapping tool to explore the UK and see if your area is covered. You can search for postcodes, counties or even places. Can't see anyone in your area? Why not sign up and be the first!</p>
     </div>
@@ -134,29 +134,11 @@
             }
         </div>
     </div>
-    <div class="row justify-center text-center mt72 help">
-        <div class="sm12 mb-lg">
-            <h2>Getting the right help to the right people&hellip;</h2>
-        </div>
-        <div class="sm4">
-            <div class="card pt32">
-                <img src="~/img/people-icon--orange.svg" alt="human icon" width="86" />
-                <h6 class="mb0">Collect prescription for 73 year old grandmother</h6>
-            </div>
-        </div>
-        <div class="sm4">
-            <div class="card pt32">
-                <img src="~/img/people-icon--blue.svg" alt="human icon" width="86" />
-                <h6 class="mb0">Grocery shopping for a pregnant young mum</h6>
-            </div>
-        </div>
-        <div class="sm4">
-            <div class="card pt32">
-                <img src="~/img/people-icon--orange.svg" alt="human icon" width="86" />
-                <h6 class="mb0">Post items for an 88 year old grandad</h6>
-            </div>
-        </div>
+
+    <div class="row mt72">
+        <partial name="_HelpExampleCards" />
     </div>
+
     <div class="row justify-center text-center mt-lg">
         <div class="sm4">
             <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>

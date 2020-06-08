@@ -1,0 +1,55 @@
+
+.community-banner {
+    max-height: 300px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 100%;
+    }
+}
+
+
+.commmunity-map-container {
+    min-height: 400px
+}
+
+.community-volunteers-container {
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+
+    .volunteer {        
+        margin: 15px;
+
+        .volunteer-image {
+            display: flex;
+            width: 200px;
+            justify-content: center;
+            overflow: hidden;
+
+            img {
+                max-height: 200px;
+            }
+        }
+
+        .volunteer-text {
+            text-align: center;
+        }
+    }
+}
+
+.community-volunteers-text {
+    overflow: hidden;
+}
+
+.community-useful-links {
+
+}
+
+
+.outer-container--padding {
+    padding: 2rem 0 2rem 0;
+}

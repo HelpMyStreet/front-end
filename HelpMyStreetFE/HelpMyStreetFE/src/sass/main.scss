@@ -21,6 +21,7 @@
 
 @import "./components/authentication/header-login";
 @import "./components/authentication/yoti-loading-mobile";
+@import "./components/community/community";
 @import "./components/cookie-consent";
 @import "./components/loading-spinner";
 @import "./components/notification-card/notification";
@@ -159,10 +160,6 @@ input[type=number]::-webkit-outer-spin-button {
     display: none;
 }
 
-.logo {
-    width: 280px;
-}
-
 .circle {
     margin: 8px auto;
     display: block;
@@ -272,8 +269,15 @@ dd {
 }
 
 .map {
+    &.homepage-map {
     min-width: 80%;
-    min-height: 500px;
+    min-height: 500px;}
+
+    &.static-map {
+        div {
+            cursor: default !important;
+        }
+    }
 
     div.gm-style-cc {
         div:nth-child(1) {
@@ -285,6 +289,7 @@ dd {
         }
     }
 }
+
 
 .force-width {
     flex-basis: 50%

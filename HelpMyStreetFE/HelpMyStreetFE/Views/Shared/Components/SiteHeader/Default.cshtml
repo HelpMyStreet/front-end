@@ -13,9 +13,7 @@
         }    
         <div class="outer-container nav-holder">
             <div class="container-fluid page-header align-center">
-                <div class="page-header__logo">
-                    <a href="/"><img class="logo" src="~/img/logos/HelpMyStreet_logo.svg" alt="Help My Street Logo" /></a>
-                </div>
+                <partial name="_HMSLogo" model="@ViewData["HMSLogoViewModel"] != null ? @ViewData["HMSLogoViewModel"] : new HMSLogoViewModel()" />
                 <div class="page-header__nav">
                     <partial name="_SiteNavigation" />
                 </div>

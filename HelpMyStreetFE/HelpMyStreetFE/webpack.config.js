@@ -10,6 +10,7 @@ module.exports = {
     profile: "./js/profile/profile.js",
     coveragemap: "./js/coveragemap.js",
     stickynav: "./js/stickynav.js",
+    community: "./js/community/community.js", 
   },
   devtool: "inline-source-map",
   output: {

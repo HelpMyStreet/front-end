@@ -1,12 +1,18 @@
 import "isomorphic-fetch";
 
-const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
-const closeUpZoomNumber = 16; // zoom level when postcode is entered
-let initialUKZoomNumber = 5.3; // zoom level of the UK when geo location is not enabled
-const geolocationZoomNumber = 14; // zoom level when geo location is enabled
+$(document).ready(function () {
+    $('#community-volunteers-text').readmore({
+        moreLink: '<a href="#">Read more</a>',
+        lessLink: '<a href="#">Read less</a>',
+        collapsedHeight: 200
+    });
+});
 
-let initialLat = 55.0;
-let initialLng = -10.0;
+
+//  Maps TODO: refactor the common code in this and coveragemap.js into a separate file
+
+const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
+
 
 let script = document.createElement('script');
 script.src = '/api/Maps/js';
@@ -21,57 +27,11 @@ let postcodeMarker = null;
 
 let previousZoomLevel = -1;
 
-let geolocationState = {
-    'hover': false,
-    'pending': false,
-    'failed': false,
-    'active': false,
-
-    'setHover': function (value) {
-        this.hover = value;
-        this.updateIcon();
-    },
-
-    'geoLocationInProgress': function () {
-        this.pending = true;
-        this.updateIcon();
-    },
-
-    'geolocationComplete': function (success) {
-        this.active = success;
-        this.failed = !success;
-        this.pending = false;
-        this.hover = false;
-        this.updateIcon();
-    },
-
-    'setActive': function (value) {
-        this.active = value;
-        this.updateIcon();
-    },
-
-    'updateIcon': function () {
-        let icon = 0;
-        if (this.pending === true) {
-            icon = 3;
-        } else if (this.failed === true) {
-            icon = 1;
-        } else if (this.active === true) {
-            icon = 8;
-        } else if (this.hover === true) {
-            icon = 2;
-        }
-        let offset = icon * -24;
-        $('#your-location-image').css('background-position', offset + 'px 0px');
-    }
-};
-
 window.initGoogleMap = async function () {
 
-    // re-center map for narrow screens/mobile
-    if (window.innerWidth <= 1000) {
-        initialLng = -4.5;
-    }
+    let initialLat = parseFloat($("#Latitude").val());
+    let initialLng = parseFloat($("#Longitude").val());
+    let zoomLevel = parseFloat($("#ZoomLevel").val());
 
     let noPoi = [
         {
@@ -154,35 +114,14 @@ window.initGoogleMap = async function () {
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
-        zoom: initialUKZoomNumber,
-        mapTypeId: 'roadmap'
+        zoom: zoomLevel,
+        mapTypeId: 'roadmap',
+        gestureHandling: 'none',
+        zoomControl: false
     });
 
     googleMap.setOptions({ styles: noPoi });
 
-
-    var autocompleteInput = document.getElementById('pac-input');
-    googleMap.controls[google.maps.ControlPosition.TOP_LEFT].push(autocompleteInput);
-
-    var geolocateButton = document.getElementById('your-location');
-    googleMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(geolocateButton);
-
-    geolocateButton.addEventListener('click', function () {
-        if (navigator.geolocation) {
-            geolocationState.geoLocationInProgress();
-            navigator.geolocation.getCurrentPosition(geoLocationSuccess, geolocationState.geolocationComplete(false), { enableHighAccuracy: true });
-        } else {
-            geolocationState.geolocationComplete(false)
-        }
-    });
-
-    geolocateButton.addEventListener('mouseover', function () {
-        geolocationState.setHover(true);
-    });
-
-    geolocateButton.addEventListener('mouseout', function () {
-        geolocationState.setHover(false);
-    });
 
     googleMap.addListener('idle', function () {
         let bounds = googleMap.getBounds();
@@ -192,34 +131,10 @@ window.initGoogleMap = async function () {
         let swLng = sw.lng();
         let neLat = ne.lat();
         let neLng = ne.lng();
+
         updateMap(swLat, swLng, neLat, neLng);
     });
 
-    googleMap.addListener('dragstart', function () {
-        geolocationState.setActive(false);
-    });
-
- 
-    var autocomplete = new google.maps.places.Autocomplete(autocompleteInput);
-    autocomplete.setComponentRestrictions({ 'country': 'uk' });
-
-    autocomplete.addListener('place_changed', function () {
-        var place = autocomplete.getPlace();
-
-        if (!place.geometry) {
-            console.log("No geometry for this place");
-            return
-        }
-
-        if (place.geometry.viewport) {
-            googleMap.fitBounds(place.geometry.viewport);
-        } else {
-            googleMap.setCenter(place.geometry.location);
-            googleMap.setZoom(closeUpZoomNumber);
-        }
-
-        geolocationState.setActive(false);
-    })
 };
 
 function removedMarkerForPostcodeLookup() {
@@ -229,10 +144,6 @@ function removedMarkerForPostcodeLookup() {
     }
 }
 
-function geoLocationSuccess(position) {
-    setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
-    geolocationState.geolocationComplete(true);
-}
 
 function setMapCentre(latitude, longitude, zoomLevel) {
     googleMap.setCenter({ lat: latitude, lng: longitude });
