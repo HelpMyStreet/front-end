@@ -350,4 +350,5 @@ MigrationBackup/
 .ionide/
 
 HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.js
+HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.css
 HelpMyStreetFE/HelpMyStreetFE/appsettings.Development.json
