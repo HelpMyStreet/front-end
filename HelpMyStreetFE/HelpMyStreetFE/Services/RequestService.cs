@@ -174,7 +174,7 @@ namespace HelpMyStreetFE.Services
             {
                 acc[cur.JobID] = new RequestContactInformation
                 {
-                    ForRequestor = cur.ForRequestor,
+                    RequestorType = cur.RequestorType,
                     JobID = cur.JobID,
                     Recipient = cur.Recipient,
                     Requestor = cur.Requestor

@@ -21,6 +21,16 @@
     }
     var AgeUk = Model.SupportActivity == SupportActivities.WellbeingPackage;
     string iconClass = AgeUk ? "limit-width" : "";
+
+    var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
+
+    var friendlyNamePrefix = forFaceMask  ?
+        Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).First().Answer  : "";
+
+    var friendlyNamePostfix = forFaceMask ?
+     Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).First().Answer == "1" ? "" : "s" : "";
+
+    bool showOtherDetails = !forFaceMask;
 }
 
 <div class="job @className" id="@id">
@@ -44,8 +54,9 @@
                     <img src="~/img/icons/@Model.SupportActivity.Icon()" class="@iconClass" />
 
                 }
-               
-                @Model.SupportActivity.FriendlyName()
+
+                @($"{friendlyNamePrefix} {Model.SupportActivity.FriendlyName()}{friendlyNamePostfix}")
+
             </span>
             <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
         </div>
@@ -88,11 +99,11 @@
     <div class="job__detail">
         @if (IsAccepted)
         {
-            var (requestor, recipient, forRequestor) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
+            var (requestor, recipient, requestorType) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
 
             <h4>Contact Details</h4>
             <div class="job__expander">
-                <h5>Person in need<span></span></h5>
+                <h5>@(forFaceMask ? "Recipient" : "Person in need" )<span></span></h5>
                 <dl>
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
@@ -112,9 +123,9 @@
             </div>
             <div class="job__expander">
                 <h5>Requester<span></span></h5>
-                @if (forRequestor)
-                {
-                    <p><i>Request made by person in need</i></p>
+                @if (requestorType != RequestorType.OnBehalf)
+                {                    
+                    <p><i>@(forFaceMask ? "Request made by recipient" : "Request made by person in need"  ) </i></p>
                 }
                 else
                 {
@@ -142,23 +153,45 @@
             </div>
 
             <h4>Request Details</h4>
-            <div class="job__expander">
-                <h5>Request Description<span></span></h5>
-                <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
+
+            @foreach (var question in Model.Questions)
+            {
+
+                if (question.ShowOnTaskManagement())
+                {
+                        <div class="job__expander">
+                            <h5>@question.FriendlyName()<span></span></h5>
+                            <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
+                        </div>
+                       }
+              }
+                    
+                @if (showOtherDetails)
+                {
+                    <div class="job__expander">
+                        <h5>Further Details<span></span></h5>
+                        <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+                    </div>
+                }
+                }
+                else if (UserIsVerified)
+                {
+                    @foreach (var question in Model.Questions)
+                    {
+                        if (question.ShowOnTaskManagement())
+                        {
+                            <h4>@question.FriendlyName()</h4>
+                            <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
+                        }
+                    }
+                    @if (showOtherDetails)
+                    {
+                        <h4>Further Details</h4>
+                        <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+                    }
+
+                    <h4>Communication Needs</h4>
+                    <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+                }
             </div>
-            <div class="job__expander">
-                <h5>Further Details<span></span></h5>
-                <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
-            </div>
-        }
-        else if(UserIsVerified)
-        {
-            <h4>Request Description</h4>
-            <p>@(String.IsNullOrEmpty(Model.Details) ? "None entered" : Model.Details)</p>
-            <h4>Further Details</h4>            
-            <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
-            <h4>Communication Needs</h4>            
-            <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
-        }
-    </div>
 </div>
