@@ -273,8 +273,15 @@ dd {
 }
 
 .map {
+    &.homepage-map {
     min-width: 80%;
-    min-height: 500px;
+    min-height: 500px;}
+
+    &.static-map {
+        div {
+            cursor: default !important;
+        }
+    }
 
     div.gm-style-cc {
         div:nth-child(1) {
@@ -286,6 +293,7 @@ dd {
         }
     }
 }
+
 
 .force-width {
     flex-basis: 50%
