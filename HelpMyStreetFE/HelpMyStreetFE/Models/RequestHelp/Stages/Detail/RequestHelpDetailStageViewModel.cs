@@ -1,18 +1,21 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
+using HelpMyStreetFE.Models.Validation;
 using System.Collections.Generic;
 
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
 {
+    [DetailStageValidation]
     public class RequestHelpDetailStageViewModel : IRequestHelpStageViewModel
     {                
         public RequestorDetails Requestor { get; set; }
-        public RecipientDetails Recipient { get; set; } // always will have a recipient, just will be the same as the requestor if forRequestor = true;
+        public RecipientDetails Recipient { get; set; } 
         public string TemplateName { get; set; } = "RequestHelpDetailStageViewModel";
         public RequestorType Type { get; set; }
         public string CommunicationNeeds { get; set; }
         public string OtherDetails { get; set; }
+
         public bool ShowOtherDetails { get; set; } = true;
     }    
 }

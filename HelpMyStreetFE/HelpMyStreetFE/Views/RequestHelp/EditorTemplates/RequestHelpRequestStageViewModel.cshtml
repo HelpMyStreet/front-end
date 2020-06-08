@@ -99,7 +99,7 @@
         <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
         <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
             <span>Within</span>
-            <select id="customTime">
+            <select>
                 <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
                 @for (int i = 1; i <= 30; ++i)
                 {
