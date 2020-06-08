@@ -76,8 +76,7 @@ namespace HelpMyStreetFE.Controllers
                             
                             if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
                             {
-                                detailStage.ShowOtherDetails = false;
-                                requestStep.Timeframes.ForEach(x => x.IsSelected = false);
+                                detailStage.ShowOtherDetails = false;                              
                             }                            
 
                             detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;                            
