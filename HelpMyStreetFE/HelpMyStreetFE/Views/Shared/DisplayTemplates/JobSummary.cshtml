@@ -25,10 +25,10 @@
     var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
 
     var friendlyNamePrefix = forFaceMask  ?
-        Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).First().Answer  : "";
+        Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
 
     var friendlyNamePostfix = forFaceMask ?
-     Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).First().Answer == "1" ? "" : "s" : "";
+     Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1" ? "" : "s" : "";
 
     bool showOtherDetails = !forFaceMask;
 }
