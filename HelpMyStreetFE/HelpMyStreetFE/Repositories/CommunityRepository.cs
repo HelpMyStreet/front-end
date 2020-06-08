@@ -56,35 +56,35 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
-                    ImageLocation = "https://picsum.photos/300/300?1"
+                    ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
-                    ImageLocation = "https://picsum.photos/250/300?2"
+                    ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
-                    ImageLocation = "https://picsum.photos/250/250?3"
+                    ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
-                    ImageLocation = "https://picsum.photos/350/250?4"
+                    ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
-                    ImageLocation = "https://picsum.photos/200/300?5"
+                    ImageLocation = "/img/icons/anonymous-user.png"
                 },
             };
 
