@@ -108,11 +108,20 @@
 
     ul,
     ol {
+        counter-reset: item;
         margin-bottom: $xs-margin;
 
         li {
             @extend p;
             margin-bottom: $xxs-margin;
+        }
+
+        li:before {
+            content: counters(item);
+            counter-increment: item;
+        }
+        .insert{
+            margin-bottom: 0px;
         }
     }
 

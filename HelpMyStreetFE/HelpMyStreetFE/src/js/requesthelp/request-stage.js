@@ -21,14 +21,7 @@ var validateForm = function () {
         const valid = validateFormData($(this), {
             "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",   
             "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",                    
-            "currentStep.SelectedTimeFrame.Id": (v) => {                
-                if ($("#WhenNeeded").is(":visible")) {
-                    if (v == "") {                     
-                        return "Please tell us when you need this to be done by";
-                    }
-                }
-                return true;
-            },   
+            "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",        
             "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
         });
 
