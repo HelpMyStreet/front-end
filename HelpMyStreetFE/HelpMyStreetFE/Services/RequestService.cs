@@ -290,7 +290,7 @@ namespace HelpMyStreetFE.Services
                                 Title = "On behalf of someone else",
                                 Text = "I'm looking for help for a relative, neighbour or friend",
                                 IconDark = "request-behalf.svg",
-                                IconLight = "request-behalf-white.svg",
+                                IconLight = "request-behalf-white.svg",                                
                                 Type = RequestorType.OnBehalf
                             },
                                         new RequestorViewModel
@@ -299,8 +299,8 @@ namespace HelpMyStreetFE.Services
                                 ColourCode = "dark-blue",
                                 Title = "On behalf of an organisation",
                                 Text = "I'm looking for help for an organisation",
-                                IconDark = "question-mark.svg",
-                                IconLight = "question-mark.svg",
+                                IconDark = "request-organisation.svg",
+                                IconLight = "request-organisation-white.svg",                               
                                 Type = RequestorType.Organisation
                             }
                         },
