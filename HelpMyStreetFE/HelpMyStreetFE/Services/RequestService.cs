@@ -58,25 +58,44 @@ namespace HelpMyStreetFE.Services
 
         public RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage)
         {
-            return new RequestPersonalDetails
+            switch (detailStage.Type)
             {
-                FirstName = detailStage.Requestor.Firstname,
-                LastName = detailStage.Requestor.Lastname,
-                MobileNumber = detailStage.Requestor.MobileNumber,
-                OtherNumber = detailStage.Requestor.AlternatePhoneNumber,
-                EmailAddress = detailStage.Requestor.Email,
-                Address = new Address
-                {            
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode),
-                }
-            };
+                case RequestorType.OnBehalf:
+                    return new RequestPersonalDetails
+                    {
+                        FirstName = detailStage.Requestor.Firstname,
+                        LastName = detailStage.Requestor.Lastname,
+                        MobileNumber = detailStage.Requestor.MobileNumber,
+                        OtherNumber = detailStage.Requestor.AlternatePhoneNumber,
+                        EmailAddress = detailStage.Requestor.Email,
+                        Address = new Address
+                        {
+                            Postcode = PostcodeFormatter.FormatPostcode(detailStage.Requestor.Postcode),
+                        }
+                    };
+                    
+                case RequestorType.Organisation:
+                    return new RequestPersonalDetails
+                    {
+                        FirstName = detailStage.OrganisationRequestor.Firstname,
+                        LastName = detailStage.OrganisationRequestor.Lastname,
+                        MobileNumber = detailStage.OrganisationRequestor.MobileNumber,
+                        OtherNumber = detailStage.OrganisationRequestor.AlternatePhoneNumber,
+                        EmailAddress = detailStage.OrganisationRequestor.Email,
+                        Address = new Address
+                        {
+                            Postcode = PostcodeFormatter.FormatPostcode(detailStage.OrganisationRequestor.Postcode),
+                        }
+                    };                    
+            }
+            return new RequestPersonalDetails();
         }
 
         public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int userId, HttpContext ctx)
         {
             _logger.LogInformation($"Logging Request");
             var recipient = MapRecipient(detailStage);
-            var requestor = detailStage.Type == RequestorType.OnBehalf ? MapRequestor(detailStage) : recipient;
+            var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? MapRequestor(detailStage) : recipient;            
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
             var request = new PostNewRequestForHelpRequest
@@ -87,6 +106,7 @@ namespace HelpMyStreetFE.Services
                     OtherDetails = detailStage.OtherDetails,
                     ConsentForContact = requestStage.AgreeToTerms,
                     SpecialCommunicationNeeds = detailStage.CommunicationNeeds,
+                    OrganisationName = detailStage.OrganisationRequestor.OrganisationName ?? "",
                     RequestorType = detailStage.Type,
                     ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
                     ReadPrivacyNotice = requestStage.AgreeToPrivacy,

@@ -86,7 +86,11 @@ namespace HelpMyStreetFE.Controllers
                                 var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
                                 switch (detailStage.Type)
                                 {
+
+
                                     case RequestorType.Myself:
+                                    if (detailStage.Recipient == null)
+                                    {
                                         detailStage.Recipient = new RecipientDetails
                                         {
                                             Firstname = loggedInUser.UserPersonalDetails.FirstName,
@@ -99,9 +103,11 @@ namespace HelpMyStreetFE.Controllers
                                             Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
                                             Town = loggedInUser.UserPersonalDetails.Address.Locality
                                         };
+                                    }
                                         break;
                                     case RequestorType.OnBehalf:
-                                        
+                                    if (detailStage.Requestor == null)
+                                    {
                                         detailStage.Requestor = new RequestorDetails
                                         {
                                             Firstname = loggedInUser.UserPersonalDetails.FirstName,
@@ -111,7 +117,22 @@ namespace HelpMyStreetFE.Controllers
                                             Email = loggedInUser.UserPersonalDetails.EmailAddress,
                                             Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
                                         };
+                                    }
                                         break;
+                                case RequestorType.Organisation:
+                                    if (detailStage.OrganisationRequestor == null)
+                                    {
+                                        detailStage.OrganisationRequestor = new OrganisationDetails
+                                        {
+                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                        };
+                                    }
+                                    break;
                                 }
                             }
 
@@ -123,6 +144,7 @@ namespace HelpMyStreetFE.Controllers
                             var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
                             reviewStage.Recipient = detailStage.Recipient;
                             reviewStage.Requestor = detailStage.Requestor;
+                            reviewStage.OrganisationRequestor = detailStage.OrganisationRequestor;
                             reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                             reviewStage.HealthCritical = requestStage.IsHealthCritical;
                             reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();

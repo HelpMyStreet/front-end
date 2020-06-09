@@ -24,12 +24,12 @@
 
     var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
 
-    var friendlyNamePrefix = forFaceMask  ?
-        Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
+    var friendlyNamePrefix = forFaceMask  ?                                           
+    Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
+      
+    bool removePluralisation = forFaceMask &&  Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
 
-    var friendlyNamePostfix = forFaceMask ?
-     Model.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1" ? "" : "s" : "";
-
+    var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.SupportActivity.FriendlyName().Remove(Model.SupportActivity.FriendlyName().Length - 1) : Model.SupportActivity.FriendlyName());
     bool showOtherDetails = !forFaceMask;
 }
 
@@ -55,7 +55,7 @@
 
                 }
 
-                @($"{friendlyNamePrefix} {Model.SupportActivity.FriendlyName()}{friendlyNamePostfix}")
+              @friendlyName
 
             </span>
             <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
