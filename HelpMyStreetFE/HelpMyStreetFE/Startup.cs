@@ -236,11 +236,17 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "Kimberley",
                     pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index" });
+                    defaults: new { controller = "Home", action = "Index",  });
+
                 endpoints.MapControllerRoute(
                     name: "Tankersley",
                     pattern: "tankersley",
                     defaults: new { controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute(
+                   name: "face-masks",
+                   pattern: "face-masks",
+                   defaults: new { controller = "Community", action = "FaceMasks" });
 
                 endpoints.MapControllerRoute(
                  name: "OpenRequests",
