@@ -1,5 +1,13 @@
-﻿<ol class="progress-bar">
-    <li class="is-active" data-tab="request"><span>Request</span></li>
-    <li data-tab="details"><span>Details</span></li>
-    <li data-tab="review" ><span>Review</span></li>    
+﻿@model HelpMyStreetFE.Models.RequestHelp.RequestHelpViewModel;
+
+<ol class="progress-bar">
+    <li class="@(Model.CurrentStepIndex == 0 ? "is-active" : "") @(Model.CurrentStepIndex > 0 ? "is-complete" : "")">
+        <span>Request</span>
+    </li>
+    <li class="@(Model.CurrentStepIndex == 1 ? "is-active" : "") @(Model.CurrentStepIndex > 1 ? "is-complete" : "") ">
+        <span>Details</span>
+    </li>
+    <li class="@(Model.CurrentStepIndex == 2 ? "is-active" : "")">
+        <span>Review</span>
+    </li>
 </ol>

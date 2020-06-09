@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace HelpMyStreetFE.Models.Account
         public int JobID { get; set; }
         public RequestPersonalDetails Requestor { get; set; }
         public RequestPersonalDetails Recipient { get; set; }
-        public bool ForRequestor { get; set; }
-        public void Deconstruct(out RequestPersonalDetails requestor, out RequestPersonalDetails recipient, out bool forRequestor)
+        public RequestorType RequestorType { get; set; }
+        public void Deconstruct(out RequestPersonalDetails requestor, out RequestPersonalDetails recipient, out RequestorType requestorType)
         {
             requestor = Requestor;
             recipient = Recipient;
-            forRequestor = ForRequestor;
+            requestorType = RequestorType;
         }
     }
 

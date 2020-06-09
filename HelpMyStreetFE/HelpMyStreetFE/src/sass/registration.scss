@@ -44,177 +44,181 @@
 }
 
 form {
-  a {
-    color: $p-color;
-  }
-
-  h5 {
-    font-size: 27px;
-    line-height: 36px;
-    margin: 40px 0 0;
-  }
-
-  .error {
-    display: none;
-    color: red;
-  }
-.termsprivacy{
-    color:$orange;
-}
-
-  .input {
-    width: 100%;
-    margin: 64px 0 0;
-
-    label {
-      font-weight: bold;
-      font-size: 18px;
-      line-height: 27px;
+    a {
+        color: $p-color;
     }
 
-    &__hint {
-      font-weight: normal;
-      color: $p-color;
+    h5 {
+        font-size: 27px;
+        line-height: 36px;
+        margin: 40px 0 0;
     }
 
-    input,
-    select {
-      width: 100%;
-      height: 64px;
+    .error {
+        display: none;
+        color: red;
     }
 
-    textarea {
+    .termsprivacy {
+        color: $orange;
+    }
+
+    .input {
         width: 100%;
-        height: 128px;
+        margin: 64px 0 0;
+
+        label {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 27px;
+        }
+
+        &__hint {
+            font-weight: normal;
+            color: $p-color;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 64px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 128px;
+        }
+
+        &--separator {
+            border: none;
+            border-top: 1px dashed #ddd;
+            margin: 0;
+        }
+
+        &--radio {
+            margin: 20px 0;
+
+            label {
+                position: relative;
+                margin: 0;
+                padding-left: 40px;
+                font-weight: normal;
+                color: $p-color;
+                top: 0;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            input:checked {
+                & ~ .input--radio__radio {
+                    border: 1px solid $blue;
+
+                    span {
+                        display: block;
+                        color: white;
+                        line-height: 23px;
+                        background-color: $blue;
+                    }
+                }
+            }
+
+            &__radio {
+                background-color: #fff;
+                border: 1px solid lightgrey;
+                background-color: white;
+                width: 25px;
+                height: 25px;
+                left: 0px;
+                top: 0px;
+                border-radius: 13px;
+                position: absolute;
+                padding-top: 5px;
+                padding-left: 5px;
+
+                span {
+                    display: none;
+                    text-align: center;
+                    width: 13px;
+                    height: 13px;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        &--checkbox {
+            margin: 20px 0;
+
+            label {
+                position: relative;
+                margin: 0;
+                padding-left: 40px;
+                font-weight: normal;
+                color: $p-color;
+                top: 0;
+
+                span.message {
+                    float: right;
+                    color: $blue;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            input:checked {
+                & ~ .input--checkbox__checkbox {
+                    background-color: $blue;
+
+                    span {
+                        display: block;
+                        color: white;
+                        line-height: 23px;
+                    }
+                }
+            }
+
+            &__checkbox {
+                background-color: #fff;
+                border: 1px solid lightgrey;
+                background-color: white;
+                width: 25px;
+                height: 25px;
+                left: 0px;
+                top: 0px;
+                border-radius: 2px;
+                position: absolute;
+
+                span {
+                    display: none;
+                    text-align: center;
+                }
+            }
+        }
     }
 
-    &--separator {
-      border: none;
-      border-top: 1px dashed #ddd;
-      margin: 0;
+    .controls {
+        text-align: right;
+        margin-top: 40px;
     }
 
-    &--radio {
-      margin: 20px 0;
-
-      label {
-        position: relative;
-        margin: 0;
-        padding-left: 40px;
-        font-weight: normal;
-        color: $p-color;
-        top: 0;
-
-        &:hover {
-          cursor: pointer;
+    .btn {
+        &.fill {
+            width: 100%;
         }
-      }
-
-      input:checked {
-        & ~ .input--radio__radio {
-          border: 1px solid $blue;
-
-          span {
-            display: block;
-            color: white;
-            line-height: 23px;
-            background-color: $blue;
-          }
-        }
-      }
-
-      &__radio {
-        background-color: #fff;
-        border: 1px solid lightgrey;
-        background-color: white;
-        width: 25px;
-        height: 25px;
-        left: 0px;
-        top: 0px;
-        border-radius: 13px;
-        position: absolute;
-        padding-top: 5px;
-        padding-left: 5px;
-
-        span {
-          display: none;
-          text-align: center;
-          width: 13px;
-          height: 13px;
-          border-radius: 10px;
-        }
-      }
     }
 
-    &--checkbox {
-      margin: 20px 0;
-
-      label {
-        position: relative;
-        margin: 0;
-        padding-left: 40px;
-        font-weight: normal;
-        color: $p-color;
-        top: 0;
-
-        span.message {
-          float: right;
-          color: $blue;
+    .expander {
+        background-color: #eeebe5;
+        margin-top: 10px;
+        padding: 48px 0 56px;
+        display: none;
+        &.dblock{
+            display:  block;
         }
-
-        &:hover {
-          cursor: pointer;
-        }
-      }
-
-      input:checked {
-        & ~ .input--checkbox__checkbox {
-          background-color: $blue;
-
-          span {
-            display: block;
-            color: white;
-            line-height: 23px;
-          }
-        }
-      }
-
-      &__checkbox {
-        background-color: #fff;
-        border: 1px solid lightgrey;
-        background-color: white;
-        width: 25px;
-        height: 25px;
-        left: 0px;
-        top: 0px;
-        border-radius: 2px;
-        position: absolute;
-
-        span {
-          display: none;
-          text-align: center;
-        }
-      }
     }
-  }
-
-  .controls {
-    text-align: right;
-    margin-top: 40px;
-  }
-
-  .btn {
-    &.fill {
-      width: 100%;
-    }
-  }
-
-  .expander {
-    background-color: #eeebe5;
-    margin-top: 10px;
-    padding: 48px 0 56px;
-    display: none;
-  }
 }
 
 .list__item {

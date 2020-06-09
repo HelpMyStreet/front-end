@@ -69,5 +69,11 @@ namespace HelpMyStreetFE.Repositories
 
             return response.Content.Success;
         }
+
+        public async Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetQuestionsByActivtiesResponse>>($"/api/GetQuestionsByActivity", request);
+            return response.Content;
+        }
     }
 }
