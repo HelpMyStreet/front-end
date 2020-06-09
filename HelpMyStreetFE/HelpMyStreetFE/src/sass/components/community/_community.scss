@@ -1,3 +1,4 @@
+@import "../../mixins/effects";
 
 .community-banner {
     max-height: 300px;
@@ -52,4 +53,45 @@
 
 .outer-container--padding {
     padding: 2rem 0 2rem 0;
+}
+
+
+.card {
+    &.min-height {
+        min-height: 280px;
+    }
+}
+
+.help-examples{
+    .card{
+        min-height:260px;
+    }
+}
+
+.mask-of-the-week {
+    background: $white;
+    max-width: 400px;
+    margin: auto;
+    padding: 10px;
+    @include shadow-md;
+    .img {
+        
+        margin: 10px auto;
+        width: 95%;
+        text-align:center;
+        img{
+            width:95%;
+        }
+        
+    }
+
+    .header {
+        font-size:1.2rem;
+        text-align: center;
+        font-weight:600;
+    }
+
+    .text {
+        text-align:left;
+    }
 }
