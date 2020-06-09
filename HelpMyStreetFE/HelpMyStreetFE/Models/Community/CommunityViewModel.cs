@@ -12,8 +12,6 @@ namespace HelpMyStreetFE.Models.Community
 
         public string CommunityName { get; set; }
 
-        public string LogoImageLocation { get; set; }
-
         public string BannerImageLocation { get; set; }
 
         public string Header { get; set; }
