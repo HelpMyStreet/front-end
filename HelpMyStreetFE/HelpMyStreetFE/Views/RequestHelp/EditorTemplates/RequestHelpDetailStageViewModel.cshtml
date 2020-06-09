@@ -17,9 +17,16 @@
         break;
     case RequestorType.Organisation:
         <h2>Recipient Details</h2>
+        <div class="row">
+            <div class="input sm12">            
+                <label>Organisation</label>
+                @Html.TextBoxFor(x => x.Organisation)
+                <span class="error"></span>
+            </div>
+        </div>
         @Html.EditorFor(x => x.Recipient, new { Prefix = "Their" });
         <h2>Your Details</h2>
-        @Html.EditorFor(x => x.OrganisationRequestor);
+        @Html.EditorFor(x => x.Requestor);
         break;
 }
 

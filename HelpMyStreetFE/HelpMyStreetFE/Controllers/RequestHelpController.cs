@@ -105,6 +105,7 @@ namespace HelpMyStreetFE.Controllers
                                         };
                                     }
                                         break;
+                                    case RequestorType.Organisation:
                                     case RequestorType.OnBehalf:
                                     if (detailStage.Requestor == null)
                                     {
@@ -118,21 +119,7 @@ namespace HelpMyStreetFE.Controllers
                                             Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
                                         };
                                     }
-                                        break;
-                                case RequestorType.Organisation:
-                                    if (detailStage.OrganisationRequestor == null)
-                                    {
-                                        detailStage.OrganisationRequestor = new OrganisationDetails
-                                        {
-                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
-                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
-                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
-                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
-                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
-                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
-                                        };
-                                    }
-                                    break;
+                                        break;                  
                                 }
                             }
 
@@ -143,9 +130,9 @@ namespace HelpMyStreetFE.Controllers
                             var detailStage = (RequestHelpDetailStageViewModel)step;
                             var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
                             reviewStage.Recipient = detailStage.Recipient;
-                            reviewStage.Requestor = detailStage.Requestor;
-                            reviewStage.OrganisationRequestor = detailStage.OrganisationRequestor;
+                            reviewStage.Requestor = detailStage.Requestor;                            
                             reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
+                            reviewStage.OrganisationName = detailStage.Organisation;
                             reviewStage.HealthCritical = requestStage.IsHealthCritical;
                             reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
                             reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
