@@ -50,13 +50,7 @@ var validateForm = function (validateRequestor) {
             "currentStep.Requestor.MobileNumber": (v, d) => ((d["currentStep.Requestor.AlternatePhoneNumber"] !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
             "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "Please enter a valid email address",
             "currentStep.Requestor.Postcode": (v) => (v != "") || "Please enter a postcode",
-
-            "currentStep.OrganisationRequestor.OrganisationName": (v) => v != "" || "Please enter an organisation name",
-            "currentStep.OrganisationRequestor.Firstname": (v) => ((v.length >= 2 && !hasNumber(v))) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
-            "currentStep.OrganisationRequestor.Lastname": (v) => ((v.length >= 2 && !hasNumber(v))) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
-            "currentStep.OrganisationRequestor.MobileNumber": (v, d) => ((d["currentStep.OrganisationRequestor.AlternatePhoneNumber"] !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
-            "currentStep.OrganisationRequestor.Email": (v) => (validateEmail(v)) || "Please enter a valid email address",
-            "currentStep.OrganisationRequestor.Postcode": (v) => (v != "") || "Please enter a postcode"
+          
         });         
         
         runAdditionalValidation($(this)).then(function (additonalChecks) {
