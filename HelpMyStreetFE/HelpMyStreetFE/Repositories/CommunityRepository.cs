@@ -29,8 +29,6 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
 
-            communityViewModel.LogoImageLocation = @"/img/community/kimberley/kimberley-and-district-logo.png";
-
             communityViewModel.Header = "Pilley and Tankersley people taking care of each other";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome from Pilley and Tankersley Community Helpers";

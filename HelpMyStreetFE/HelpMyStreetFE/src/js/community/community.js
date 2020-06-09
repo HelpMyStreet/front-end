@@ -221,10 +221,6 @@ function addMarker(marker) {
 
     if (!googleMapMarkers.has(key)) {
 
-        marker.addListener('click', function () {
-            setMapCentre(marker.getPosition().lat(), marker.getPosition().lng(), googleMap.getZoom() + 1);
-        });
-
         googleMapMarkers.set(key, marker);
     }
 }
