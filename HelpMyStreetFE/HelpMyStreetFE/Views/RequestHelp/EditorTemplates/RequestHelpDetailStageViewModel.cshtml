@@ -16,8 +16,10 @@
         @Html.EditorFor(x => x.Requestor)
         break;
     case RequestorType.Organisation:
-        <h2>Recipient</h2>
+        <h2>Recipient Details</h2>
         @Html.EditorFor(x => x.Recipient, new { Prefix = "Their" });
+        <h2>Your Details</h2>
+        @Html.EditorFor(x => x.OrganisationRequestor);
         break;
 }
 
@@ -34,7 +36,7 @@
 @if (Model.ShowOtherDetails)
 {
     <hr class="input--separator" />
-    <div class="row" >
+    <div class="row">
         <div class="sm12 input">
             <label>Is there anything else you would like to tell us about the request?</label>
             @Html.TextAreaFor(x => x.OtherDetails, new { placeholder = "For example, if it's a request for some shopping and you know what you want, you could give us the list." })

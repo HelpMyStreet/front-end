@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
 {
     public class RequestHelpDetailStageViewModel : IRequestHelpStageViewModel
-    {                
+    {
+        public OrganisationDetails OrganisationRequestor { get; set; }
         public RequestorDetails Requestor { get; set; }
         public RecipientDetails Recipient { get; set; } // always will have a recipient, just will be the same as the requestor if forRequestor = true;
         public string TemplateName { get; set; } = "RequestHelpDetailStageViewModel";

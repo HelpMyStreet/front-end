@@ -74,6 +74,18 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 Email = bindingContext.ValueProvider.GetValue(requestorPrefix + nameof(model.Recipient.Email)).FirstValue,                     
             };
 
+            var organisationPrefix = "currentStep.OrganisationRequestor.";
+            model.OrganisationRequestor = new OrganisationDetails
+            {
+                Firstname = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.Firstname)).FirstValue,
+                Lastname = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.Lastname)).FirstValue,
+                MobileNumber = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.MobileNumber)).FirstValue,
+                AlternatePhoneNumber = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.AlternatePhoneNumber)).FirstValue,
+                Postcode = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.Postcode)).FirstValue,
+                Email = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.Email)).FirstValue,
+                OrganisationName = bindingContext.ValueProvider.GetValue(organisationPrefix + nameof(model.OrganisationRequestor.OrganisationName)).FirstValue,
+            };
+
             model.CommunicationNeeds = bindingContext.ValueProvider.GetValue("currentStep.CommunicationNeeds").FirstValue;
             model.OtherDetails = bindingContext.ValueProvider.GetValue("currentStep.OtherDetails").FirstValue;
 

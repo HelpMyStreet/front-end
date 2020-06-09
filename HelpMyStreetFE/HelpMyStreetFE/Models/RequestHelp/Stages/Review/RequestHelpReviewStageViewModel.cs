@@ -13,6 +13,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RequestorViewModel RequestedFor { get; set; }        
         public RecipientDetails Recipient  { get; set; }
         public RequestorDetails Requestor { get; set; }
+        public OrganisationDetails OrganisationRequestor { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
         public bool? HealthCritical { get; set; }
         public string CommunicationNeeds { get; set; }

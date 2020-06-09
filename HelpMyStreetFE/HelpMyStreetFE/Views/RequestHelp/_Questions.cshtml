@@ -27,7 +27,7 @@
                     <input type="text" placeholder="@Model.Questions[i].Placeholder()" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
                     break;
                 case QuestionType.Number:
-                    <input type="number" placeholder="@Model.Questions[i].Placeholder()" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
+                    <input type="number" min="1" placeholder="@Model.Questions[i].Placeholder()" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
                     break;
                 case QuestionType.Radio:
 
