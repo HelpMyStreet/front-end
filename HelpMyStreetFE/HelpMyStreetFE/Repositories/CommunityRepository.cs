@@ -10,9 +10,7 @@ namespace HelpMyStreetFE.Repositories
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return GetTankersley();
-                case "facemasks":
-                    return GetTankersley();
+                    return GetTankersley();     
                 default:
                     return null;
             }
