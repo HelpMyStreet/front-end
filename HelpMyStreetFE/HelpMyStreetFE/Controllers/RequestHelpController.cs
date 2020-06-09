@@ -88,6 +88,8 @@ namespace HelpMyStreetFE.Controllers
 
 
                                     case RequestorType.Myself:
+                                    if (detailStage.Recipient == null)
+                                    {
                                         detailStage.Recipient = new RecipientDetails
                                         {
                                             Firstname = loggedInUser.UserPersonalDetails.FirstName,
@@ -100,8 +102,11 @@ namespace HelpMyStreetFE.Controllers
                                             Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
                                             Town = loggedInUser.UserPersonalDetails.Address.Locality
                                         };
+                                    }
                                         break;
                                     case RequestorType.OnBehalf:
+                                    if (detailStage.Requestor == null)
+                                    {
                                         detailStage.Requestor = new RequestorDetails
                                         {
                                             Firstname = loggedInUser.UserPersonalDetails.FirstName,
@@ -111,17 +116,21 @@ namespace HelpMyStreetFE.Controllers
                                             Email = loggedInUser.UserPersonalDetails.EmailAddress,
                                             Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
                                         };
+                                    }
                                         break;
                                 case RequestorType.Organisation:
-                                    detailStage.OrganisationRequestor = new OrganisationDetails
+                                    if (detailStage.OrganisationRequestor == null)
                                     {
-                                        Firstname = loggedInUser.UserPersonalDetails.FirstName,
-                                        Lastname = loggedInUser.UserPersonalDetails.LastName,
-                                        AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
-                                        MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
-                                        Email = loggedInUser.UserPersonalDetails.EmailAddress,
-                                        Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
-                                    };
+                                        detailStage.OrganisationRequestor = new OrganisationDetails
+                                        {
+                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                        };
+                                    }
                                     break;
                                 }
                             }
