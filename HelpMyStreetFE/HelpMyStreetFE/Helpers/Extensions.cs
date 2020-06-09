@@ -17,7 +17,7 @@ namespace HelpMyStreetFE
             return activity switch
             {
                 SupportActivities.Shopping => "Shopping",
-                SupportActivities.FaceMask => "Homemade Face Covering",
+                SupportActivities.FaceMask => "Homemade Face Coverings",
                 SupportActivities.CheckingIn => "Check in",
                 SupportActivities.CollectingPrescriptions => "Prescriptions",
                 SupportActivities.Errands => "Errands",
