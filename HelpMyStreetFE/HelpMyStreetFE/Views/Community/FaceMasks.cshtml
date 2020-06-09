@@ -1,7 +1,6 @@
-﻿@model HelpMyStreetFE.Models.Community.CommunityViewModel;
-
-@{
+﻿@{
     ViewData["Title"] = "Community Sew";
+    var isLoggedIn = User.Identity.IsAuthenticated;
 }
 
 @section Scripts {
@@ -19,7 +18,7 @@
             <div class="row flex hero">
                 <div class="row sm6 align-center content-page">
                     <header class="">
-                        <h2 class="row sm12 mb0">@Model.Header</h2>
+                        <h2 class="row sm12 mb0">Help My Street's Community Sewr</h2>
                     </header>
                     <p class="row sm12 text-left mt-sm mb-xs">We launched HelpMyStreet.org to ensure everybody in the il can find the help they need, when they need it - and this now includes face coverings!</p>
                     <p class="row sm12 text-left mt-sm mb-xs">If you need a face covering, make a request to find a home sewer near you.</p>
@@ -44,7 +43,7 @@
                     <div class="row sm12 large-screen-only mb-sm"></div>
 
                     <div class="row sm6 text-center justify-center mb-md">
-                        @if (!Model.IsLoggedIn)
+                        @if (isLoggedIn)
                         {
                             <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up to Sew</a>
 
@@ -63,7 +62,7 @@
                 </div>
 
                 <div class="sm6 text-right commmunity-map-container">
-                    <img src="~/img/community/tankersley/tankersley-st-peters-church.jpeg" />
+                    <img src="" />
                 </div>
             </div>
 
@@ -114,9 +113,9 @@
                 <div class="sm6 mb-md">
                     <div class="card">
 
-                        <h2>@Model.RequestHelpHeading</h2>
+                        <h2>Do you need a face covering?</h2>
                         <p class="text-left mt-sm mb-md">
-                            @Model.RequestHelpText
+                            If you need face coverings for yourself, your family or your organisation request help now, wheter 1 or 100 we'll do our best to help.
                         </p>
 
                         <div class="" style="text-align: center">
@@ -128,13 +127,13 @@
 
                 <div class="sm6">
                     <div class="card">
-                        <h2>@Model.ProvideHelpHeading</h2>
+                        <h2>Volunteer with us!</h2>
                         <p class="text-left mt-sm mb-md">
-                            @Model.ProvideHelpText
+                            If you're a home-sewer and able to make face coverings as a donation or the cost of materials, join us to help your neighbours. You can choose to help a little, or to help a lot! We're grateful for every contribution
                         </p>
 
                         <div class="" style="text-align: center">
-                            @if (!Model.IsLoggedIn)
+                            @if (isLoggedIn)
                             {
                                 <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Sign Up to Sew</a>
                             }
@@ -157,12 +156,10 @@
             <div class="row flex justify-center">
                 <div class="sm12 community-useful-links">
                     <strong>Patterns and Inspiration</strong>
-                    @{
-                        foreach (var usefulLink in Model.UsefulLinksHtml)
-                        {
-                            <p> @Html.Raw(usefulLink)</p>
-                        }
-                    }
+                                        
+                        <p><a href=''> The Big Community Sew </a> </p>
+                        <p><a href=''> Downloadable florence fitted facemask pattern from freesewing.org</a></p>
+                        <p><a href=''> Video: Pleated facemask with fabric ties from jenny Doan or missouri star quit company</a></p>                    
                 </div>
             </div>
         </div>
@@ -211,10 +208,9 @@
             <div class="row hero flex text-center">
                 <div class="sm6 mb-md">
                     <div class="card">
-
-                        <h2>@Model.RequestHelpHeading</h2>
+                        <h2>Do you need a face covering?</h2>
                         <p class="text-left mt-sm mb-md">
-                            @Model.RequestHelpText
+                            If you need face coverings for yourself, your family or your organisation request help now, wheter 1 or 100 we'll do our best to help.
                         </p>
 
                         <div class="" style="text-align: center">
@@ -226,13 +222,13 @@
 
                 <div class="sm6">
                     <div class="card">
-                        <h2>@Model.ProvideHelpHeading</h2>
+                        <h2>Volunteer with us!</h2>
                         <p class="text-left mt-sm mb-md">
-                            @Model.ProvideHelpText
+                            If you're a home-sewer and able to make face coverings as a donation or the cost of materials, join us to help your neighbours. You can choose to help a little, or to help a lot! We're grateful for every contribution
                         </p>
 
                         <div class="" style="text-align: center">
-                            @if (!Model.IsLoggedIn)
+                            @if (isLoggedIn)
                             {
                                 <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Sign Up to Sew</a>
                             }
