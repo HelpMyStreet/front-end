@@ -22,6 +22,15 @@
             <partial name="_ProgressBar" model="Model" />
         </div>
     </div>
+    
+        @foreach(var error in Model.Errors)
+        {
+            <div>
+                <span class="error">error</span>
+            </div>
+        }
+      
+
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken();

@@ -24,9 +24,9 @@
 
     var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
 
-    var friendlyNamePrefix = forFaceMask  ?
-        Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
-
+    var friendlyNamePrefix = forFaceMask  ?                                           
+    Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
+      
     bool removePluralisation = forFaceMask &&  Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
 
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.SupportActivity.FriendlyName().Remove(Model.SupportActivity.FriendlyName().Length - 1) : Model.SupportActivity.FriendlyName());

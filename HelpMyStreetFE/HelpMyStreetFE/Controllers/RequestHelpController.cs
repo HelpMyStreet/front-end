@@ -68,19 +68,20 @@ namespace HelpMyStreetFE.Controllers
                     if (requestHelp.Action == "next")
                     {
                         requestHelp.CurrentStepIndex++;
-                        if (step is RequestHelpRequestStageViewModel)
+                    if (step is RequestHelpRequestStageViewModel)
+                    {
+
+                        var requestStep = (RequestHelpRequestStageViewModel)step;
+                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+
+                        if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
                         {
+                            detailStage.ShowOtherDetails = false;
+                        }
 
-                            var requestStep = (RequestHelpRequestStageViewModel)step;
-                            var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                            
-                            if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
-                            {
-                                detailStage.ShowOtherDetails = false;                              
-                            }                            
-
-                            detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;                            
-                            if (HttpContext.Session.Keys.Contains("User"))
+                        detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                        
+                        if (HttpContext.Session.Keys.Contains("User"))
                             {
                                 var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
                                 switch (detailStage.Type)
@@ -102,6 +103,7 @@ namespace HelpMyStreetFE.Controllers
                                         };
                                         break;
                                     case RequestorType.OnBehalf:
+                                        
                                         detailStage.Requestor = new RequestorDetails
                                         {
                                             Firstname = loggedInUser.UserPersonalDetails.FirstName,
