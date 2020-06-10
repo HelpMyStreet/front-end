@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Models.Validation
                        break;
                     case HelpMyStreet.Utils.Enums.RequestorType.Organisation:
                     case HelpMyStreet.Utils.Enums.RequestorType.OnBehalf:
-                        ValiadteRecipient(vm, errors, false);
+                        ValidateRecipient(vm, errors, false);
                         ValidateRequestor(vm, errors);
                         break;                                                                                            
                 }                    
