@@ -118,8 +118,7 @@
             float: right;
         }
 
-        .btnBack {
-            display: none;
+        .btnBack {            
             width: 130px;
 
             @media screen and (min-width: $sm-screen) {
