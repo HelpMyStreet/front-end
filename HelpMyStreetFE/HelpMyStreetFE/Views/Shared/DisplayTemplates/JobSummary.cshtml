@@ -123,9 +123,9 @@
             </div>
             <div class="job__expander">
                 <h5>Requester<span></span></h5>
-                @if (requestorType != RequestorType.OnBehalf)
+                @if (requestorType ==  RequestorType.Myself)
                 {                    
-                    <p><i>@(forFaceMask ? "Request made by recipient" : "Request made by person in need"  ) </i></p>
+                    <p><i>Request made by recipient </i></p>
                 }
                 else
                 {
