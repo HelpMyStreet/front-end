@@ -19,6 +19,11 @@ namespace HelpMyStreetFE.Repositories
         Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request);
         Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request);
         Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request);
+
+        Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
+        
+
+        
     }
 }
 
