@@ -1,62 +1,73 @@
-﻿export var requestStage = {
-    selectedActivity:{ val: null, errorSpan: "e-activity" },
-    selectedTime: { val: null, id: null, errorSpan: "e-time-frame" },
-    selectedFor: { val: null, errorSpan: "e-help-for" },
-    selectedHealthWellBeing: { val: null, errorSpan: "e-critcal" },
-    additonalHelpDetail: { val: null, errorSpan: "e-additional-help" },
-    agreeToTerms: {
-        privacy: false,
-        terms: false,
-    },
-    getLatestValues: function () {
-        this.agreeToTerms.privacy = $('input[name="privacy_notice"]').is(":checked");
-        this.agreeToTerms.terms = $('input[name="terms_and_conditions"]').is(":checked");
-        this.additonalHelpDetail.val = $('textarea[name="additional-help-detail"]').val()
-        this.selectedHealthWellBeing.val = $('input[name="volunteer_medical_condition"]:checked').val();        
-    },
-    validate: function () {
-        this.getLatestValues();
-        $('.error').hide();
-        let valid = true;
-        if (!requestStage.selectedActivity.val) {
-            $('#' + requestStage.selectedActivity.errorSpan).show().text("Please select at least one task type");
-            valid = false;
-        } else if (requestStage.selectedActivity.val == "Other" && (requestStage.additonalHelpDetail.val == "" || !requestStage.additonalHelpDetail.val)) {
-            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Please provide a brief description of the help you need");
-            valid = false;
-        }
-
-        if (requestStage.additonalHelpDetail.val && requestStage.additonalHelpDetail.val.length >= 1000) {
-            $('#' + requestStage.additonalHelpDetail.errorSpan).show().text("Sorry, we can only accept up to 1000 characters");
-        }
-
-        if (!requestStage.selectedTime.val) {
-            $('#' + requestStage.selectedTime.errorSpan).show().text("Please tell us when you need this to be done by");
-            valid = false;
-        }
-        if (!requestStage.selectedFor.val) {
-            $('#' + requestStage.selectedFor.errorSpan).show().text("Please select from one of the available options");
-            valid = false;
-        }
-        if (!requestStage.selectedHealthWellBeing.val) {
-            $('#' + requestStage.selectedHealthWellBeing.errorSpan).show().text("Please select from one of the available options");
-            valid = false;
-        }
-        if (!validatePrivacyAndTerms())
-            valid = false;
-
-        return valid;
-    }
-}
-
+﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
+import { buttonLoad, buttonUnload } from "../shared/btn";
 export function intialiseRequestStage() {
     intialiseRequestTiles();
-    intialiseHealthWellBeingCheckbox();
+    validateForm();
 
-    $('form').submit(function (e) {
-        e.preventDefault();
-    })
+    var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+    $("#CustomTime").find("select").change(function () {
+        $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
+    });
+    if (taskId != "") {
+        LoadQuestions(taskId);
+    }   
 }
+
+
+
+var validateForm = function () {
+    $("form").on("submit", function (evt) {        
+        buttonLoad($("#btnNext"));
+        const valid = validateFormData($(this), {
+            "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",   
+            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",                    
+            "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",        
+            "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
+        });
+
+        const validForm = validateQuestions() && valid;        
+
+        if (validForm == false) {
+            buttonUnload($("#btnNext"));;
+            scrollToFirstError();
+        }
+
+        
+        return validForm;
+    });
+}
+
+
+var validateQuestions = function(){
+    var validQuestions = [];
+    $('.question').each(function () {
+        var type = $(this).attr("type");
+        let errorField = $(this).find("~ .error");
+        if (type == "radio") {
+            errorField = $(this).parentsUntil(".input").parent().find(".error");            
+        }
+        errorField.hide();
+        var isRequired = $(this).attr("data-required");
+    
+        var val = $(this).val();
+        if (type == "radio") {
+            val = $(`input[name="${$(this).attr("name")}"]:checked`).val();
+        }                
+        if (isRequired == "True") {            
+            if (val == undefined || val == "") {
+                validQuestions.push(false);           
+                errorField.text($(this).attr("data-val-message")).show();
+            } else {
+                validQuestions.push(true);
+            }
+        } else {
+            validQuestions.push(true);
+        }        
+    });
+
+    return !validQuestions.includes(false);
+}
+
 
 var intialiseRequestTiles = function () {
     $('.tiles__tile').click(function () {
@@ -71,65 +82,85 @@ var intialiseRequestTiles = function () {
             case "request-for":
                 handleRequestFor($(this));
                 break;
-
         }
     })
 }
 var handleRequestFor = function (el) {
     $('*[data-type="request-for"]').removeClass("selected");
-    el.addClass("selected");  
-    requestStage.selectedFor.val = el.attr("id");    
+    el.addClass("selected");      
+    $('input[name="currentStep.SelectedRequestor.Id"]').val(el.attr("data-Id"));
 }
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
-    let allowCustomEntry = el.attr("data-allowcustom");
-    let selectedValue = el.attr("data-val");
-    requestStage.selectedTime.val = selectedValue
-    requestStage.selectedTime.id = el.attr("id");
+    let allowCustomEntry = el.attr("data-allowcustom");    
     if (allowCustomEntry == "True") {
         $("#CustomTime").show();
-        $("#CustomTime").find("select").change(function () {
-            requestStage.selectedTime.val = $(this).val();                      
-        });
+
     } else {
         $("#CustomTime").hide();
     }
     el.addClass("selected");   
+    $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
 }
+
 var handleActivity = function (el) {
     $('*[data-type="activities"]').removeClass("selected");
     el.addClass("selected");
-    requestStage.selectedActivity.val = el.attr("id");    
+    let taskId = el.attr("data-id");
+    $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
+    LoadQuestions(taskId);
 }
 
 
-var intialiseHealthWellBeingCheckbox = function () {    
-    $('input[name="volunteer_medical_condition"]').change(function (el) {
-        let selected = $('input[name=volunteer_medical_condition]:checked');
-        $('input[name=volunteer_medical_condition]').parent().removeClass("selected");
-        selected.parent().addClass("selected");    
+
+var LoadQuestions = function (taskId){
+    var qRequest = {
+        taskId: Number(taskId),
+        step: JSON.parse($('input[name="RequestStep"]').val())
+    };
+
+    $('.questions').each(function () {
+        qRequest.position = $(this).attr("data-position");
+        var el = $(this);
+        $.ajax({
+            url: "/RequestHelp/Questions",
+            type: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            dataType: "html",
+            data: JSON.stringify(qRequest),
+            success: function (data) {
+                el.html(data);
+                if (taskId == 2) {
+                    $('#requestorFor_3').show();
+                    if ($('#requestorFor_3').hasClass("selected")) {
+                        $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
+                    }
+                    displayTodayHelpNeededOptions(false);
+                } else {
+                    $('#requestorFor_3').hide();
+                    var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();                    
+                    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+                        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+                    }                    
+                    displayTodayHelpNeededOptions(true)
+                }
+            }
+        });
     })
-}
 
 
-
-function validatePrivacyAndTerms() {
-    // requires checking of two or more inputs at the same time, so cant use the validateFormData.
-    $('#e-terms-privacy').hide();
-    let privacy = $("input[name='privacy_notice']").is(":checked");
-    let terms = $("input[name='terms_and_conditions']").is(":checked");
-    let errorText = "";
-    privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
-    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
-    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";
-
-    $('#e-terms-privacy').show();
-    $('#e-terms-privacy').html(errorText);
-
-    if (errorText !== "") {
-        return false;
     }
-    return true;
+
+
+function displayTodayHelpNeededOptions(show) {
+    if (!show) {
+        $('#time_1').parent().hide();
+        $('#time_2').parent().hide();        
+    } else {
+        $('#time_1').parent().show();
+        $('#time_2').parent().show();        
+    }
 }
-
-

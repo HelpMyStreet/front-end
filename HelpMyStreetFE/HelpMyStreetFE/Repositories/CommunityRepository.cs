@@ -10,12 +10,12 @@ namespace HelpMyStreetFE.Repositories
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return GetTankersley();
+                    return GetTankersley();     
                 default:
                     return null;
             }
         }
-
+        
 
         private CommunityViewModel GetTankersley()
         {
@@ -28,8 +28,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = "Pilley and Tankersley";
 
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
-
-            communityViewModel.LogoImageLocation = @"/img/community/kimberley/kimberley-and-district-logo.png";
 
             communityViewModel.Header = "Pilley and Tankersley people taking care of each other";
 

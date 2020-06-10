@@ -160,6 +160,7 @@ input[type=number]::-webkit-outer-spin-button {
     display: none;
 }
 
+
 .circle {
     margin: 8px auto;
     display: block;
@@ -243,6 +244,8 @@ input[type=number]::-webkit-outer-spin-button {
     @media screen and (max-width: $med-screen) {
         padding: $med-margin 16px;
     }
+
+ 
 }
 
 .fill {

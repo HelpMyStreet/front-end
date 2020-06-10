@@ -3,6 +3,7 @@ using HelpMyStreetFE.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -35,6 +36,13 @@ namespace HelpMyStreetFE.Controllers
             communityViewModel.IsLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated);
 
             return View(communityViewModel);
+        }
+
+
+        public async Task<IActionResult> FaceMasks()
+        {
+          
+            return View();
         }
     }
 }

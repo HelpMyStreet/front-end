@@ -39,6 +39,7 @@
         .row {
             &:not(.small-screen-only) {
                 display: flex;
+                flex:1;
             }
 
             flex-wrap: wrap;

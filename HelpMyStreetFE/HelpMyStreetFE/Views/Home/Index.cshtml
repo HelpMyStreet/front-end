@@ -31,7 +31,7 @@
 
         <div class="row sm6 align-center">
             <header class="content-page__header">
-                <h2 class="row sm12 mb0">Helping local people look after each another</h2>
+                <h2 class="row sm12 mb0">Helping local people look after each other</h2>
             </header>
             <p class="row sm12 text-left mt-sm mb-xs">
                 HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
@@ -47,30 +47,26 @@
             </div>
             <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
 
-            <div class="row sm12 text-center justify-center small-screen-only mb-sm">
-                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+            <div class="row sm12 text-center justify-center mb-sm">
+                <a href="/request-help" class="btn cta btn--request-help cta--orange">Request Help</a>
             </div>
 
             <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
 
-            <div class="row sm12 large-screen-only mb-sm"></div>
 
-            <div class="row sm6 text-center justify-center mb-md">
+            <div class="row sm12 text-center justify-center mb-md">
                 @if (!Model.isLoggedIn)
                 {
-                    <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up Now</a>
+                    <a href="/registration/stepone" class="btn cta btn--sign-up">Sign Up Now</a>
 
                 }
                 else
                 {
-                    <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
+                    <a href="/account" class="btn cta btn--sign-up">Provide Help</a>
 
                 }
             </div>
-
-            <div class="row sm6 text-center justify-center mb-md large-screen-only">
-                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-            </div>
+ 
 
         </div>
         <div class="flex sm6 home-video-container justify-center align-center text-right" id="video">
@@ -88,12 +84,27 @@
         </div>
         <div class="row sm12 map homepage-map" id="map">
         </div>
-        <p class="row sm9 text-center justify-center">Use our mapping tool to explore the UK and see if your area is covered. You can search for postcodes, counties or even places. Can't see anyone in your area? Why not sign up and be the first!</p>
+        <div class="row sm12 text-center justify-center">
+            <p><strong>From Cardiff to Cambridge, Dover to Dundee, HelpMyStreet gets help to people in need.</strong></p>
+            <div>
+                <h5 class="orange mb-xs text-center">How can we help?</h5>
+                <p class="mt-sm">We've got Shoppers, Sewers and Hot-Meal Makers; Walkers, Talkers and Home-Work Helpers. All ready and waiting to help you!</p>
+                <h5 class="green text-center">Join Our Volunteers</h5>
+                <p class="mt-sm">Help people stay safe - on your street or across your community. Just let us know when, where and how you can help.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt72 justify-center">
+        <div class="sm6 text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" width="350" /></a></div>
+        <div class="sm6 text-center justify-center"><a  href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" width="190" /></a></div>
+        
     </div>
 
     <div class="row mt72 justify-center">
         <div class="sm8 text-center justify-center">
-            <h2>Help people shelter safely at home …</h2>
+            <h2>Help people shelter safely at home…</h2>
             <p>
                 HelpMyStreet.org supports community organisers and  makes volunteering in your local community simple, safe and effective for everyone. Sign up today to help people in your street shelter safely at home:
             </p>

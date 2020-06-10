@@ -23,8 +23,7 @@
 
         &--large {
             min-height: 200px;
-            height:200px;
-            padding: 0px;
+            height: 200px;
         }
 
 
@@ -63,8 +62,8 @@
 
 
 
-   
-        
+
+
 
         &__content {
             display: table-cell;
@@ -83,11 +82,19 @@
                 }
 
                 &__header {
-                    font-weight: 600;
                     font-size: 1.2rem;
+                    font-weight: 600;
+
+
+                    span.header-text {
+                        font-size: 1rem;
+                        font-weight: normal;
+                    }
                 }
 
                 &__description {
+                    padding-bottom: 10px;
+
                     div {
                         line-height: 1.8rem;
                     }
@@ -107,9 +114,25 @@
 
             &__icon {
                 margin-bottom: 5px;
-                .limit-width{
-                    max-width:80px;
+
+                .limit-width {
+                    max-width: 80px;
                 }
+
+
+
+                .text-icon {
+                    margin: 5px;
+                    display: inline-block;
+                    text-align: center;
+                    height: 25px;
+                    width: 25px;
+                    border-radius: 25px;
+                    font-size: 2.2rem;
+                    font-weight: 600;
+                }
+
+
                 .cirlce {
                     background: $background-main;
                     border-radius: 50%;
@@ -120,7 +143,7 @@
                     display: inline-block;
 
                     img {
-                        vertical-align: middle;                        
+                        vertical-align: middle;
                     }
                 }
 
@@ -129,23 +152,24 @@
                     margin-top: 18px;
                     vertical-align: bottom;
                 }
-                .double-line-alignment{
-                    margin-top:22px;
+
+                .double-line-alignment {
+                    margin-top: 22px;
                 }
             }
-        
 
 
 
-        &__description {
-            color: $black;
-            width: 95%;
-            margin: auto;
 
-            &.left {
-                text-align: left;
+            &__description {
+                color: $black;
+                width: 95%;
+                margin: auto;
+
+                &.left {
+                    text-align: left;
+                }
             }
         }
     }
-}
 }

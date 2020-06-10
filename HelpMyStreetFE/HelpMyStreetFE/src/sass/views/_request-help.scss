@@ -4,7 +4,7 @@
 
 .request-help {
 
-    
+
     span,
     a {
         font-size: 1em;
@@ -14,18 +14,20 @@
         font-size: 1.2em;
     }
 
-    .to-details,
-    .to-request{
-        text-decoration:underline;
-        cursor:pointer;
-        float:right;
+
+    .edit-button {
+        background: none;
+        border: none;
+        text-decoration: underline;
+        float: right;
+        cursor: pointer;
     }
 
- 
-        .min-height{
-            min-height:280px;
-        }
-    
+
+    .min-height {
+        min-height: 280px;
+    }
+
     h2 {
         text-align: center;
         margin: 30px 0;
@@ -34,12 +36,19 @@
     .input {
         margin-top: 20px;
 
+
+        .small-width {
+            width: 149px;
+            margin-bottom: 14px;
+            display:block;
+        }
+
         select {
             font-size: 1.2rem;
             padding-left: 10px;
         }
 
-        .manual-entry {
+        .manual_entry {
             text-decoration: underline;
             cursor: pointer;
         }
@@ -48,7 +57,6 @@
             font-weight: 500;
             font-size: 1rem;
             float: right;
-            display: none;
         }
 
 
@@ -83,6 +91,13 @@
             font-size: 1.2em;
             top: 0;
             margin-bottom: 10px;
+
+            .sub-text {
+                font-size: 1rem;
+                color: $p-color;
+                display: block;
+                font-weight: 500;
+            }
         }
 
 
