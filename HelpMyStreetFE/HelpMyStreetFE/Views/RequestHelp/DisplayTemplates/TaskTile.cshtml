@@ -1,0 +1,56 @@
+﻿@using HelpMyStreetFE.Models.RequestHelp;
+@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.TasksViewModel
+
+@{
+    var activties = new List<RequestActivityViewModel>
+{
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, Description = "Collection and delivery of an Age UK \"Vitals for Veterans\" wellbeing package", IconClass="limit-width"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ,Description = "Finding someone to provide washable fabric face coverings", IconClass = "icon-size-sm"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn,  Description = "Check that someone is OK"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy", },
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking, Description = "Walking a calm dog",},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation, Description = "Getting a hot / pre-prepared meal", },
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious, Description = "Some extra support over the phone",  IconClass="double-line-alignment" },
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled", IconClass="double-line-alignment"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"}
+        };
+
+    var activity = activties.Where(x => x.Activity == Model.SupportActivity).First();
+
+
+        var ForReview = ViewData["ForReview"] is bool ? (bool)ViewData["ForReview"] : false;
+ 
+}
+
+
+<div class="sm4">
+
+    <div id="task_@Model.ID" data-type="activities" data-id='@Model.ID' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
+        <div class="tiles__tile__content ">
+            @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
+            {
+                <div class="tiles__tile__content__icon"><img class="@activity.IconClass" src="~/img/icons/@activity.Activity.Icon()" /> </div>
+            }
+            else
+            {
+                <div class="mt-md"></div>
+            }
+            <div class="tiles__tile__content__header">@activity.Activity.FriendlyName()</div>
+            <div class="tiles__tile__content__description">@activity.Description</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
