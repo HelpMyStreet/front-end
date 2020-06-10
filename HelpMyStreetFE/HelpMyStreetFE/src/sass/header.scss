@@ -39,7 +39,7 @@
 
     @media screen and (max-width: $breakpointSm) {
         grid-template-areas: "logo toggle" "userDetails userDetails";
-        grid-template-columns: auto 1fr;
+        grid-template-columns: auto 0.5fr;
     }
 
     &__account {
