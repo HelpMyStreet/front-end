@@ -24,15 +24,13 @@ namespace HelpMyStreetFE.Models.Validation
                     
                 switch (vm.Type)
                 {
-                    case HelpMyStreet.Utils.Enums.RequestorType.Organisation:
+   
                     case HelpMyStreet.Utils.Enums.RequestorType.Myself:
                         ValidateRecipient(vm, errors, true);
 
-
                        break;
+                    case HelpMyStreet.Utils.Enums.RequestorType.Organisation:
                     case HelpMyStreet.Utils.Enums.RequestorType.OnBehalf:
-                        if (vm.Recipient == null) errors.Add($"Recipient cannot be null");
-                        if (vm.Requestor == null) errors.Add($"Requestor cannot be null");
                         ValidateRecipient(vm, errors, false);
                         ValidateRequestor(vm, errors);
                         break;                                                                                            

@@ -118,24 +118,8 @@
             float: right;
         }
 
-        .btnBack {
-            display: none;
-            width: 130px;
-
-            @media screen and (min-width: $sm-screen) {
-                width: 250px;
-            }
-        }
-
-        .btnSubmit,
-        .btnNext {
-            background: $orange;
-            width: 151px;
-            padding: 13px 25px;
-
-            @media screen and (min-width: $sm-screen) {
-                width: 250px;
-            }
+        button{
+            min-width:250px;
         }
 
         .clear-button {
