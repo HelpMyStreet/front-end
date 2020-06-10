@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Controllers
         {
             return View();            
         }
-        public IActionResult Community()
+        public IActionResult CommunityOrganisers()
         {    
             return View();
         }

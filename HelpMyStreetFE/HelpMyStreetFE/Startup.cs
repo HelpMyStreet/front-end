@@ -120,6 +120,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
@@ -183,10 +184,17 @@ namespace HelpMyStreetFE
                     name: "about",
                     pattern: "about-us",
                     defaults: new { controller = "Pages", action = "AboutUs" });
+
+                endpoints.MapControllerRoute(
+                    name: "community-organisers",
+                    pattern: "community-organisers",
+                    defaults: new { controller = "Pages", action = "CommunityOrganisers" });
+
                 endpoints.MapControllerRoute(
                     name: "community",
-                    pattern: "community",
-                    defaults: new { controller = "Pages", action = "Community" });
+                    pattern: "community/{communityName}",
+                    defaults: new { controller = "Community", action = "Index" });
+
                 endpoints.MapControllerRoute(
                     name: "privacy",
                     pattern: "privacy-policy",
@@ -228,11 +236,17 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "Kimberley",
                     pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index" });
+                    defaults: new { controller = "Home", action = "Index",  });
+
                 endpoints.MapControllerRoute(
                     name: "Tankersley",
                     pattern: "tankersley",
                     defaults: new { controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute(
+                   name: "face-masks",
+                   pattern: "face-masks",
+                   defaults: new { controller = "Community", action = "FaceMasks" });
 
                 endpoints.MapControllerRoute(
                  name: "OpenRequests",

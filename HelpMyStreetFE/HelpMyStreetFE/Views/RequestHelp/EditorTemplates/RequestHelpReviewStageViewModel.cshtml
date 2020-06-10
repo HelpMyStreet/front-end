@@ -4,6 +4,18 @@
 @{
     var onBehalf = Model.RequestedFor.Type == RequestorType.OnBehalf;
     var forOrg = Model.RequestedFor.Type == RequestorType.Organisation;
+
+
+    var requestor = Model.Requestor;
+    var recipient = Model.Recipient;
+    requestor.AlternatePhoneNumber = string.IsNullOrEmpty(requestor.AlternatePhoneNumber) ? "None Provided" : requestor.AlternatePhoneNumber;
+    requestor.MobileNumber = string.IsNullOrEmpty(requestor.MobileNumber) ? "None Provided" : requestor.MobileNumber;
+    requestor.Email = string.IsNullOrEmpty(requestor.MobileNumber) ? "None Provided" : requestor.MobileNumber;
+
+    recipient.Email = string.IsNullOrEmpty(recipient.Email) ? "None Provided" : recipient.Email;
+    recipient.MobileNumber = string.IsNullOrEmpty(recipient.MobileNumber) ? "None Provided" : recipient.MobileNumber;
+    recipient.AlternatePhoneNumber = string.IsNullOrEmpty(recipient.AlternatePhoneNumber) ? "None Provided" : recipient.AlternatePhoneNumber;
+
 }
     <input type="hidden" name="ReviewStep" value='@Json.Serialize(Model)' />
 
@@ -86,16 +98,16 @@
         </div>
         <div class="row justify-center ">
                    
-            <div class="@(onBehalf || forOrg ? "sm4" : "sm8")">
-                <div class="tiles__tile tiles__tile--large min-height">
+            <div  class="@(onBehalf || forOrg ? "sm4" : "sm8")">
+                <div  id="requestor" class="tiles__tile">
                     <div class="tiles__tile__content--top ">
                         <div class="tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Your" : "Their") Details</div>
                         <div class="tiles__tile__content__description tiles__tile__content--top__description">                            
-                            <div><strong>Name: </strong> @(onBehalf || forOrg ? Model.Requestor.Firstname : Model.Recipient.Firstname)  </div>
-                            <div><strong>Address: </strong> @(onBehalf || forOrg ? Model.Requestor.Postcode : $"{Model.Recipient.AddressLine1}, {Model.Recipient.Town},{Model.Recipient.Postcode}") </div>
-                            <div><strong>Email:</strong> @(onBehalf || forOrg ? Model.Requestor.Email : Model.Recipient.Email) </div>
-                            <div><strong>Mobile Number: </strong> @(onBehalf || forOrg ? Model.Requestor.MobileNumber : Model.Recipient.MobileNumber)</div>
-                            <div><strong>Alternate Number:</strong> @(onBehalf || forOrg ? Model.Requestor.AlternatePhoneNumber : Model.Recipient.AlternatePhoneNumber) </div>
+                            <div><strong>Name: </strong> @(onBehalf || forOrg ? requestor.Firstname : recipient.Firstname)  </div>
+                            <div><strong>Address: </strong> @(onBehalf || forOrg ? requestor.Postcode : $"{recipient.AddressLine1}, {recipient.Town},{recipient.Postcode}") </div>
+                            <div><strong>Email:</strong> @(onBehalf || forOrg ? requestor.Email : recipient.Email) </div>
+                            <div><strong>Mobile Number: </strong> @(onBehalf || forOrg ? requestor.MobileNumber : recipient.MobileNumber)</div>
+                            <div><strong>Alternate Number:</strong> @(onBehalf || forOrg ? requestor.AlternatePhoneNumber : recipient.AlternatePhoneNumber) </div>
                         </div>
                     </div>
                 </div>
@@ -103,8 +115,8 @@
             
             @if (onBehalf || forOrg)
             {
-                <div class="sm4">
-                    <div class="tiles__tile tiles__tile--large min-height">
+                <div  class="sm4">
+                    <div id="recipient" class="tiles__tile">
                         <div class="tiles__tile__content--top">
                             <div class=" tiles__tile__content--top__header  pt-xs left">Their Details</div>
                             <div class="tiles__tile__content__description tiles__tile__content--top__description">
@@ -112,11 +124,11 @@
                                 {
                                     <div><strong>Organisation: </strong> @Model.OrganisationName</div>
                                 }
-                                <div><strong>Name: </strong> @Model.Recipient.Firstname</div>
-                                <div><strong>Address: </strong> @($"{Model.Recipient.AddressLine1}, {Model.Recipient.Town},{Model.Recipient.Postcode}")  </div>
-                                <div><strong>Email: </strong> @Model.Recipient.Email </div>
-                                <div><strong>Mobile Number: </strong>  @Model.Recipient.MobileNumber</div>
-                                <div><strong>Alternate Number:</strong> @Model.Recipient.AlternatePhoneNumber </div>
+                            <div><strong>Name: </strong> @recipient.Firstname</div>
+                                <div><strong>Address: </strong> @($"{recipient.AddressLine1}, {recipient.Town},{recipient.Postcode}")  </div>
+                                <div><strong>Email: </strong> @recipient.Email </div>
+                                <div><strong>Mobile Number: </strong>  @recipient.MobileNumber</div>
+                                <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
                             </div>
                         </div>
                     </div>

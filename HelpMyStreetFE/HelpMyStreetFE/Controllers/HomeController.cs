@@ -30,26 +30,10 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("Get home");
 
-            var reqs = new List<Task<int>>
-            {
-                _userService.GetStreetChampions(),
-                _userService.GetStreetsCovered(),
-                _userService.GetVolunteers(),
-                _addressService.GetTotalStreets()
-            };
-
-            await Task.WhenAll(reqs);
-
             var model = new HomeViewModel
             {
-                NumStreetChampions = reqs[0].Result,
-                NumStreetsCovered = reqs[1].Result,
-                NumVolunteers = reqs[2].Result,                
+                isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated)
             };
-
-            int totalStreets = reqs[3].Result;
-
-            model.PostCodesCoveredPercentage = (int)Math.Ceiling(100.0 * model.NumStreetsCovered / (totalStreets));
 
             return View(model);
         }

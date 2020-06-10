@@ -41,7 +41,7 @@ namespace HelpMyStreetFE.Services
         {
             string key = _configuration.GetValue<string>("GoogleMap:Key");
             string scriptSource = _configuration.GetValue<string>("GoogleMap:ScriptSource");
-            string scriptSouceWithKey = $"{scriptSource}?key={key}&callback=initGoogleMap";
+            string scriptSouceWithKey = $"{scriptSource}?key={key}&libraries=places&callback=initGoogleMap";
 
             HttpResponseMessage response = await _client.GetAsync(scriptSouceWithKey);
             string str = await response.Content.ReadAsStringAsync();

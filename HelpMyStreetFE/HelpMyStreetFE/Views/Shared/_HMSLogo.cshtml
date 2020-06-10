@@ -1,0 +1,32 @@
+﻿@model HelpMyStreetFE.Models.HMSLogoViewModel
+
+    <div class="page-header__logo">
+        @if (Model.RenderLink)
+        {
+            <a href="/">
+                <div>
+                    <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
+                    <div class="logo-text">
+                        <div class="primary-logo-text">@Model.PrimaryText.Replace(' ','\u00A0')</div>
+                        @if (Model.ShowSecondaryText)
+                        {
+                            <div class="secondary-logo-text">@Model.SecondaryText.Replace(' ','\u00A0')</div>
+                        }
+                    </div>
+                </div>
+            </a>
+        }
+        else
+        {
+            <div>
+                <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
+                <div class="logo-text">
+                    <div class="primary-logo-text">@Model.PrimaryText.Replace(' ','\u00A0')</div>
+                    @if (Model.ShowSecondaryText)
+                    {
+                        <div class="secondary-logo-text">@Model.SecondaryText.Replace(' ','\u00A0')</div>
+                    }
+                </div>
+            </div>
+        }
+    </div>

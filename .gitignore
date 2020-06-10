@@ -348,3 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.js
+HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.css
+HelpMyStreetFE/HelpMyStreetFE/appsettings.Development.json

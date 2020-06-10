@@ -26,12 +26,12 @@ namespace HelpMyStreetFE.Models.Validation
                 {
    
                     case HelpMyStreet.Utils.Enums.RequestorType.Myself:
-                        ValiadteRecipient(vm, errors, true);
+                        ValidateRecipient(vm, errors, true);
 
                        break;
                     case HelpMyStreet.Utils.Enums.RequestorType.Organisation:
                     case HelpMyStreet.Utils.Enums.RequestorType.OnBehalf:
-                        ValiadteRecipient(vm, errors, false);
+                        ValidateRecipient(vm, errors, false);
                         ValidateRequestor(vm, errors);
                         break;                                                                                            
                 }                    
@@ -46,15 +46,15 @@ namespace HelpMyStreetFE.Models.Validation
         }
 
 
-        private void ValiadteRecipient(RequestHelpDetailStageViewModel vm, List<string> errors, bool validateEmail)
+        private void ValidateRecipient(RequestHelpDetailStageViewModel vm, List<string> errors, bool onlyRecipient)
         {
             if (vm.Recipient == null) errors.Add($"Recipient cannot be null");
             else
             {
                 if (string.IsNullOrEmpty(vm.Recipient.Firstname)) errors.Add("Recipients firstname must be supplied");
                 if (string.IsNullOrEmpty(vm.Recipient.Lastname)) errors.Add("Recipients lastname must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.MobileNumber) && string.IsNullOrEmpty(vm.Requestor.AlternatePhoneNumber)) errors.Add("Recipients contact number must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.Email) && validateEmail) errors.Add("Recipients email must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.MobileNumber) && string.IsNullOrEmpty(vm.Requestor.AlternatePhoneNumber) && onlyRecipient) errors.Add("Recipients contact number must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.Email) && onlyRecipient) errors.Add("Recipients email must be supplied");
                 if (string.IsNullOrEmpty(vm.Recipient.AddressLine1)) errors.Add("Recipients Address Line 1 must be supplied");
                 if (string.IsNullOrEmpty(vm.Recipient.Town)) errors.Add("Recipients Town must be supplied");                
                 if (string.IsNullOrEmpty(vm.Recipient.Postcode)) errors.Add("Recipients postcode must be supplied");

@@ -30,6 +30,7 @@
     "core-js": "^3.6.4",
     "firebase": "^7.13.1",
     "isomorphic-fetch": "^2.2.1",
-    "jquery-ajax-unobtrusive": "^3.2.6"
+    "jquery-ajax-unobtrusive": "^3.2.6",
+    "readmore-js": "^2.2.1"
   }
 }

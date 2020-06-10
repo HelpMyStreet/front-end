@@ -1,24 +1,52 @@
 @import "../colours.scss";
 @import "../mixins/effects";
 
+/* Provides background that prevents site from being interacted with while the cookie modal is displayed*/
+#gdpr-cookie-message-outer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
 /* Cookie Dialog */
 #gdpr-cookie-message {
     @include shadow-md;
     position: fixed;
-    right: 30px;
-    bottom: 30px;
-    max-width: 375px;
+    max-width: 500px;
     background-color: $light-blue;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 6px 6px rgba(0,0,0,0.25);
-    margin-left: 30px;
     font-family: system-ui;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.gdpr-cookie__button-container {
+    display: flex;
+    justify-content: center;
+
+    button {
+        &.small {
+            border-radius: 16px;
+            padding: 10px 10px;
+            font-size: 0.7rem;
+
+            @media screen and (max-width: $sm-screen) {
+                width: 100%;
+            }
+        }
+    }
 }
 
 #gdpr-cookie-message h4 {
     color: $dark-blue;
-
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -26,7 +54,6 @@
 
 #gdpr-cookie-message h5 {
     color: $dark-blue;
-
     font-size: 15px;
     font-weight: 500;
     margin-bottom: 10px;
@@ -64,27 +91,11 @@
 
 #gdpr-cookie-message button,
 button#ihavecookiesBtn {
-    border: none;
-    background: $dark-blue;
-    color: white;
-    opacity:0.8;
-    font-size: 15px;
-    padding: 7px;
-    border-radius: 3px;
-    margin-left: 12px;
-    cursor: pointer;
     transition: all 0.3s ease-in;
 }
 
 #gdpr-cookie-message button:hover {
     opacity:1;
-  
-
-}
-
-button#gdpr-cookie-advanced {
-    background: white;
-    color: $dark-blue;
 }
 
 #gdpr-cookie-message button:disabled {
@@ -95,12 +106,12 @@ button#gdpr-cookie-advanced {
     float: none;
     margin-top: 0;
     margin-right: 5px;
-
-
 }
+
 #gdpr-cookie-message label {
     float: none;
     margin-top: 0;
     margin-right: 5px;
     font-size: 15px;
 }
+

@@ -18,6 +18,7 @@
         grid-area: auth;
         display: flex;
         justify-content: center;
+        align-content: center;
         padding: .5rem 0 .75rem 0;
     
         @media screen and (min-width: $breakpointSm) {
@@ -263,8 +264,7 @@
 
                                 .count {
                                     top: 7px;
-                                    right:0;
-                          
+                                    right: 0;
                                 }
                             }
                         }
@@ -285,13 +285,46 @@
         padding: .5rem .5rem;
         align-self: center;
 
+        a, a:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+        div {
+            font-family: 'Raleway', sans-serif;
+            line-height: normal;
+
+            &.logo-text {
+                position: absolute;
+                top: 0;
+                left: 60px;
+
+                .primary-logo-text {
+                    top: 5px;
+                    font-size: 27px;
+                    transform-origin: left;
+                    transform: scaleX(0.975);
+                }
+
+                .secondary-logo-text {
+                    top: 4px;
+                    left: 1px;
+                    font-size: 10px;
+                    transform-origin: left;
+                    transform: scaleX(0.975);
+                }
+            }
+        }
+
         @media screen and (min-width: $breakpointSm) {
             padding: 0 1rem;
         }
 
         .logo {
-            width: 64vw;
-            max-width: 280px;
+            height: 51px;
+            top: 0;
+            left: 0;
+            width:51px;
         }
     }
 

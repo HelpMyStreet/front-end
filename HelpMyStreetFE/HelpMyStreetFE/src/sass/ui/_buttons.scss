@@ -8,6 +8,7 @@
     padding: 13px 40px;
     text-decoration: none;
 
+    text-align: center;
     .text {
         font-size: 1rem;
         line-height: 1.222;
@@ -31,9 +32,22 @@
         }
     }
 
+    &.small {
+        @media screen and (max-width: $sm-screen) {
+        border-radius: 12px;
+        font-size: 0.9rem;
+        padding: 8px 14px;
+        line-height: 1;
+        }
+    }
+
     &.wide {
         min-width: 250px;
         border-radius: 32px;
+    }
+
+    &.fixed-width {
+        width: 220px;
     }
 
     &:hover {
