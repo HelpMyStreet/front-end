@@ -9,7 +9,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
     [DetailStageValidation]
     public class RequestHelpDetailStageViewModel : IRequestHelpStageViewModel
     {
-        public OrganisationDetails OrganisationRequestor { get; set; }
+        public string Organisation { get; set; }
         public RequestorDetails Requestor { get; set; }
         public RecipientDetails Recipient { get; set; } 
         public string TemplateName { get; set; } = "RequestHelpDetailStageViewModel";

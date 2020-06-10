@@ -40,6 +40,10 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("[controller]/stepone")]
         public ActionResult StepOne()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("/account");
+            }
             return View(new RegistrationViewModel
             {
                 ActiveStep = 1,
