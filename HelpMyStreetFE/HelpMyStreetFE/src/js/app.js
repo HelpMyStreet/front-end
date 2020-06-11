@@ -17,6 +17,7 @@ $(function () {
     if (typeof configuration !== 'undefined') {
         firebase.init(JSON.parse(configuration.firebase));
     }
+ 
     window.account = account;
 
     intialiseCookieConsent();
@@ -69,20 +70,20 @@ $(function () {
     }
   });
 
-    $("#login-submit").click(async () => {        
-        buttonLoad($(this));
+    $("#login-submit").click(async () => {   
+        buttonLoad($(this));   
     try {
-        $("#login-submit")[0].disabled = true;
+        $(this).disabled = true;
         const email = $("#email").val();
         const password = $("#password").val();
-        const response = await account.login.login(email, password);
+        const response = await account.login.login(email, password);        
         if (!response.success) {
         $("#login-fail-message").text(response.message);
-        $("#login-submit")[0].disabled = false;
+        $(this).disabled = false;
       }
     } finally {
         buttonUnload($(this));
-        $("#login-submit")[0].disabled = false;
+        $(this).disabled = false;
         }
     });
 });
