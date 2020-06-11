@@ -1,8 +1,8 @@
 import firebase from "../firebase";
 import { showLoadingSpinner, hideLoadingSpinner } from "../states/loading";
 import { getParameterByName } from "../shared/querystring-helper";
-const handleErrorResponse = response => {
-  if (response) {
+const handleErrorResponse = response => {    
+    if (response) {    
     switch (response.code) {
       case "auth/wrong-password":
         return { success: false, message: "Incorrect username or password provided, please try again" };
@@ -41,6 +41,10 @@ export const login = async (email, password) => {
         },
         body: JSON.stringify({ token })
       });
+                   
+        if (authResp.status == 500) {                        
+            throw ({ code: "auth/internal-server-error" });            
+        }
       
         var returnUrl = getParameterByName("ReturnUrl");        
         if (returnUrl) {
@@ -49,14 +53,12 @@ export const login = async (email, password) => {
             window.location.href = "/account";
         }
 
-
-    } catch (e) {
+    } catch (e) {              
       hideLoadingSpinner('.header-login__form');
       return handleErrorResponse(e);
     }
   } else {
-    hideLoadingSpinner('.header-login__form');
-  
+    hideLoadingSpinner('.header-login__form');  
     return validationResponse;
   }
 };
