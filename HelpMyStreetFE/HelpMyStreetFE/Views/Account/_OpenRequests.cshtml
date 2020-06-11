@@ -7,59 +7,82 @@
     var Jobs = (OpenJobsViewModel)Model.PageModel;
 }
 
-<div class="verification-panel">
-    <div class="user-profile profile-panel p-md">
-        <header class="profile-panel__header">
-            <h3 class="profile-panel__title">Open Requests</h3>
-            <p>Help that’s needed near you</p>
-        </header>
+    <div class="verification-panel">
+        <div class="user-profile profile-panel p-md">
+            <header class="profile-panel__header">
+                <h3 class="profile-panel__title">Open Requests</h3>
+                <p>Help that’s needed near you</p>
+            </header>
 
-        <div class="profile">
+            <div class="profile">
 
-            @if (Jobs.HasNoJobs)
-            {
-                <div class="profile__empty">
-                    <p class="profile__empty__title">Everyone's taken care of!</p>
-                    <p class="profile__empty__text">
-                        Please come back later to check for new Open Requests for help and support - they’re being added all the time.
-                        We’ll also send you email notifications of new requests.
-                    </p>
-                    <p class="profile__empty__title">Thank You!</p>
-                </div>
-            }
-            else
-            {
-                <p>Requests meeting the criteria you set when you signed up</p>
-                @if (Jobs.CriteriaJobs.Count() == 0)
+                @if (Jobs.HasNoJobs)
                 {
                     <div class="profile__empty">
-                        <p class="profile__empty__text--left">
-                            There are no open requests at present which meet the criteria you specified when you signed up
+                        <p class="profile__empty__title">Everyone's taken care of!</p>
+                        <p class="profile__empty__text">
+                            Please come back later to check for new Open Requests for help and support - they’re being added all the time.
+                            We’ll also send you email notifications of new requests.
                         </p>
+                        <p class="profile__empty__title">Thank You!</p>
                     </div>
                 }
                 else
                 {
-                    @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = Model.UserDetails.IsVerified })
-                }
+                    <p>Requests meeting the criteria you set when you signed up</p>
+                    @if (Jobs.CriteriaJobs.Count() == 0)
+                    {
+                        <div class="profile__empty">
+                            <p class="profile__empty__text--left">
+                                There are no open requests at present which meet the criteria you specified when you signed up
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = Model.UserDetails.IsVerified })
+                    }
 
 
-                <p>Other Requests</p>
-                @if (Jobs.OtherJobs.Count() == 0)
-                {
-                    <div class="profile__empty">
-                        <p class="profile__empty__text--left">
-                            There are no further open requests nearby at present
-                        </p>
-                    </div>
+                    <p>Other Requests</p>
+                    @if (Jobs.OtherJobs.Count() == 0)
+                    {
+                        <div class="profile__empty">
+                            <p class="profile__empty__text--left">
+                                There are no further open requests nearby at present
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="profile__section">
+                            @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = Model.UserDetails.IsVerified })
+                        </div>
+                    }
                 }
-                else
-                {
-                    <div class="profile__section">
-                        @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = Model.UserDetails.IsVerified })
-                    </div>
-                }
-            }
+            </div>
         </div>
+
+
+        <div class=" mt-lg user-profile profile-panel p-md">
+            <header class="profile-panel__header">
+                <h3 class="profile-panel__title">Log your requests</h3>                
+            </header>
+            <div class="profile">
+
+
+                <p>Have you received any requests for help from outside HelpMyStreet?</p>
+                <p>
+                    Please come back later to check for new Open Requests for help and support - they’re being added all the time.
+                    We’ll also send you email notifications of new requests.
+                </p>
+                <div class="profile__empty mt-md">
+                    <a href="/request-help/diy" class="btn cta large fill">
+                        <span class="text">Log Request</span>
+                    </a>
+                </div>
+
+                </div>
+            </div>
     </div>
-</div>
+
