@@ -17,10 +17,8 @@ var validateForm = function (validateRequestor) {
         const valid = validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.Lastname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
-            "currentStep.Recipient.MobileNumber": (v, d) => {
-                console.log(v, d, validateRequestor);
-                if (!validateRequestor && (d["currentStep.Recipient.AlternatePhoneNumber"] == "" && v == "")) {
-                    console.log("hit");
+            "currentStep.Recipient.MobileNumber": (v, d) => {                
+                if (!validateRequestor && (d["currentStep.Recipient.AlternatePhoneNumber"] == "" && v == "")) {                    
                     return "Please enter a mobile number or an alternative phone number"
                 }
                 return true;
