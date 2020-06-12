@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
@@ -44,6 +45,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
+                requestHelp.Errors = new List<string>();
                 requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
                 if (requestHelp.Action == "EditRequest")
                 {
@@ -86,8 +88,6 @@ namespace HelpMyStreetFE.Controllers
                                 var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
                                 switch (detailStage.Type)
                                 {
-
-
                                     case RequestorType.Myself:
                                     if (detailStage.Recipient == null)
                                     {
@@ -122,7 +122,6 @@ namespace HelpMyStreetFE.Controllers
                                         break;                  
                                 }
                             }
-
                         }
                         if (step is RequestHelpDetailStageViewModel)
                         {
@@ -150,7 +149,15 @@ namespace HelpMyStreetFE.Controllers
                     {
                         userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     }
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
+
+                    // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
+                    if(requestHelp.Source == RequestHelpSource.DIY && userId == 0)
+                    {
+                        requestHelp.Errors.Add("To submit a DIY Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
+                        throw new ValidationException("User tired to submit DIY Request without being logged in");
+                    }
+
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.Source, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
                     {                        
                         return RedirectToAction("Success", new
@@ -178,7 +185,7 @@ namespace HelpMyStreetFE.Controllers
         }
     
 
-    public async Task<IActionResult> RequestHelp(string source)
+    public async Task<IActionResult> RequestHelp(RequestHelpSource source)
         {
             _logger.LogInformation("request-help");
              var model = await  _requestService.GetRequestHelpSteps(source);
@@ -220,22 +227,27 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
         {
-            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();            
-            foreach(var question in model.Questions)
+            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
+            RequestorType? requestorType = null;
+            if (request.RequestorId.HasValue)
             {
-                if (question.Location() != request.Position)
-                    question.DontShow = true;
+                requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
+            }
+            
+            foreach (var question in model.Questions)
+            {
+                question.Show = question.Show(request.Position, requestorType);
             }
 
             return PartialView("_Questions", model);
         }
-        
+
         public class QuestionRequest
         {
             public RequestHelpRequestStageViewModel Step { get; set; }
             public int TaskID { get; set; }
-
             public string Position { get; set; }
+            public int? RequestorId  {get;set;}
         }
     }
 }
