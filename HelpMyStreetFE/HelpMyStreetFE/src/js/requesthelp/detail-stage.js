@@ -84,6 +84,10 @@ var validateForm = function (validateRequestor) {
                             if (validForm) {
                                 $('form').unbind('submit') // continue the submit unbind preventDefault
                                 $('#btnNext').click();
+                                postcodeEl.next(".error").hide();
+                            } else {
+                                postcodeEl.next(".error").text("We could not validate the postcode you've entered").show();
+                                throw new error("postcode validation failed");
                             }
                         }
                     }).catch(function (e) {
