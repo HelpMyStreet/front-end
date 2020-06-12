@@ -151,7 +151,7 @@ namespace HelpMyStreetFE.Controllers
                     }
 
                     // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
-                    if(requestHelp.Source == RequestHelpSource.DIY && userId == 0)
+                    if(requestHelp.Source == RequestHelpSource.DIY && userId == 0 && detailStage.Type != RequestorType.Myself)
                     {
                         requestHelp.Errors.Add("To submit a DIY Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
                         throw new ValidationException("User tired to submit DIY Request without being logged in");

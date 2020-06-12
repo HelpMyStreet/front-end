@@ -85,12 +85,12 @@ namespace HelpMyStreetFE.Services
             };
         }
 
-        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage, RequestorType requestorType,  RequestHelpSource source, int userId)
+        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestHelpSource source, int userId)
         {
             if (source == RequestHelpSource.DIY &&  (requestStage.Tasks
                                                     .Where(x => x.IsSelected).FirstOrDefault()
                                                     ?.Questions.Where(x => x.ID == (int)Questions.WillYouCompleteYourself)
-                                                    .FirstOrDefault()?.Model == "Yes" || requestorType == RequestorType.Myself))
+                                                    .FirstOrDefault()?.Model == "true"))
             {
                 return userId;
             }
