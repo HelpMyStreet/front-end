@@ -8,7 +8,7 @@ export function intialiseRequestStage() {
     $("#CustomTime").find("select").change(function () {
         $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
     });
-    if (taskId != "") {
+    if (taskId != "") {        
         LoadQuestions(taskId);
     }   
 }
@@ -89,6 +89,12 @@ var handleRequestFor = function (el) {
     $('*[data-type="request-for"]').removeClass("selected");
     el.addClass("selected");      
     $('input[name="currentStep.SelectedRequestor.Id"]').val(el.attr("data-Id"));
+
+
+    var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+    if (taskId != "") {
+        LoadQuestions(taskId);
+    }
 }
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
@@ -113,10 +119,15 @@ var handleActivity = function (el) {
 
 
 
-var LoadQuestions = function (taskId){
+var LoadQuestions = function (taskId) {
+    var requestorId = $('input[name="currentStep.SelectedRequestor.Id"]').val();
+    requestorId = requestorId == "" ? null : Number(requestorId);
+    console.log(requestorId);
+
     var qRequest = {
         taskId: Number(taskId),
-        step: JSON.parse($('input[name="RequestStep"]').val())
+        step: JSON.parse($('input[name="RequestStep"]').val()),
+        requestorId: requestorId
     };
 
     $('.questions').each(function () {
@@ -133,8 +144,8 @@ var LoadQuestions = function (taskId){
             data: JSON.stringify(qRequest),
             success: function (data) {
                 el.html(data);
-                if (taskId == 2) {
-                    $('#requestorFor_3').show();
+                if (taskId == 2) { // facemask
+                    $('#requestorFor_3').show(); // onbehalf of organisation
                     if ($('#requestorFor_3').hasClass("selected")) {
                         $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
                     }
@@ -142,7 +153,9 @@ var LoadQuestions = function (taskId){
                 } else {
                     $('#requestorFor_3').hide();
                     var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();                    
-                    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+                    // if they have previously selected On behalf of organisation,
+                    //set selected RequestorID as empty since that option is only available to facemasks
+                    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) { 
                         $('input[name="currentStep.SelectedRequestor.Id"]').val("");
                     }                    
                     displayTodayHelpNeededOptions(true)

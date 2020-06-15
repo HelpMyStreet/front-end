@@ -77,10 +77,10 @@ namespace HelpMyStreetFE
         {
             return question.Id switch
             {
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Recipient => true,
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Cost => true,
-                (int)HelpMyStreet.Utils.Enums.Questions.SupportRequesting => true,
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_SpecificRequirements => true,
+                (int)Questions.FaceMask_Recipient => true,
+                (int)Questions.FaceMask_Cost => true,
+                (int)Questions.SupportRequesting => true,
+                (int)Questions.FaceMask_SpecificRequirements => true,
                 _ => false
             };
         }
@@ -89,8 +89,8 @@ namespace HelpMyStreetFE
         {
             return question.Id switch
             {
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_SpecificRequirements => "Request Description",
-                (int)HelpMyStreet.Utils.Enums.Questions.SupportRequesting => "Request Description",                
+                (int)Questions.FaceMask_SpecificRequirements => "Request Description",
+                (int)Questions.SupportRequesting => "Request Description",                
                 _ => question.Name
             };
         }
@@ -104,12 +104,37 @@ namespace HelpMyStreetFE
             
             return question.ID switch
             {
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Recipient => "pos3",
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Cost => "pos3",
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Amount => "pos2",
-                (int)HelpMyStreet.Utils.Enums.Questions.IsHealthCritical => "pos3",
+                (int)Questions.FaceMask_Recipient => "pos3",
+                (int)Questions.FaceMask_Cost => "pos3",
+                (int)Questions.FaceMask_Amount => "pos2",
+                (int)Questions.IsHealthCritical => "pos3",
+                (int)Questions.WillYouCompleteYourself => "pos3",
                 _ => "pos1"
             };        
+        }
+
+        public static bool Show(this RequestHelpQuestion question , string position, RequestorType? requestorType)
+        {        
+            if (question.Location() == position)
+            {
+                //if the question has no configuration for RequestorTypes then show
+                if ( question.VisibleForRequestorTypes == null) return true;
+
+                // if no requestor type has been provided (they havent clicked that option yet) but the question has 
+                //configuration against it we want to hide the question
+                if (requestorType == null) return false; 
+
+                if (question.VisibleForRequestorTypes.Contains(requestorType.Value))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }                
+            }                        
+           
+            return false;           
         }
 
         public static string Class(this RequestHelpQuestion question)
@@ -117,7 +142,7 @@ namespace HelpMyStreetFE
 
             return question.ID switch
             {
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Amount => "small-width",
+                (int)Questions.FaceMask_Amount => "small-width",
                 _ => ""
             };
         }
@@ -125,8 +150,8 @@ namespace HelpMyStreetFE
         {
             return question.ID switch
             {
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Amount => "Remember they’re washable and reusable, so only request what you need between washes.",
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_Cost => "Volunteers are providing their time and skills free of charge.",
+                (int)Questions.FaceMask_Amount => "Remember they’re washable and reusable, so only request what you need between washes.",
+                (int)Questions.FaceMask_Cost => "Volunteers are providing their time and skills free of charge.",
                 _ => string.Empty
             };
         }
@@ -135,8 +160,8 @@ namespace HelpMyStreetFE
         {
             return question.ID switch
             {
-                (int)HelpMyStreet.Utils.Enums.Questions.FaceMask_SpecificRequirements => "If you have very specific requirements it may take longer to find a volunteer to help with your request. Please don’t include any personal information, such as name or address in this box. We’ll ask for that later.",
-                (int)HelpMyStreet.Utils.Enums.Questions.SupportRequesting => "Please don’t include any sensitive details that aren’t needed in order for us to help you",                
+                (int)Questions.FaceMask_SpecificRequirements => "If you have very specific requirements it may take longer to find a volunteer to help with your request. Please don’t include any personal information, such as name or address in this box. We’ll ask for that later.",
+                (int)Questions.SupportRequesting => "Please don’t include any sensitive details that aren’t needed in order for us to help you",                
                 _ => string.Empty
             };
         }
