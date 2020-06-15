@@ -200,7 +200,7 @@ namespace HelpMyStreetFE.Controllers
 
             string message = "<p>Your request will be passed to a local volunteer who should get in touch shortly.</p>";
 
-            string link = User.Identity.IsAuthenticated ? "/" : "/account";
+            string link = User.Identity.IsAuthenticated ? "/account" : "/";
 
             string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
             string requestLink = "/request-help";
