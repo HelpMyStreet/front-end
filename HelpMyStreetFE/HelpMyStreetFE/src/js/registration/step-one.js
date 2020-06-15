@@ -53,10 +53,10 @@ export function initialiseStepOne() {
             break;
           case "auth/weak-password":
             setError("password", err.message);
-            break;
-        }
-      })
-      .finally(() => buttonUnload(btn));
+            break;        
+          }
+          buttonUnload(btn);
+      })      
 
     return false;
   });

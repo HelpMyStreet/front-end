@@ -4,8 +4,16 @@
 }
 
 @section Scripts {
-    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>*
-    <script src="/community.js" asp-append-version="true"></script>
+    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {            
+            $('#read-more-text').readmore({
+        moreLink: '<a href="#">Read more</a>',
+        lessLink: '<a href="#">Read less</a>',
+        collapsedHeight: 200
+        })
+    });
+    </script>
 }
 
 <div class="container">
@@ -18,7 +26,7 @@
             <div class="row flex hero">
                 <div class="row sm8 align-center content-page">
                     <header class="">
-                        <h2 class="row sm12 mb0">Help My Street's Community Sew</h2>
+                        <h2 class="row sm12 mb0">HelpMyStreet's Community Sew</h2>
                     </header>
                     <p class="row sm12 text-left mt-sm mb-xs">HelpMyStreet.org works with communities to get the right help to the right people - and that now includes home-sewn fabric face masks!</p>                    
 
@@ -87,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="sm4 text-right commmunity-map-container">
+                <div class="sm4 text-right">
                     <div class="mask-of-the-week">
                         <div class="img"><img src="~/img/community/face-mask/face-mask-winner.jpg" /></div>
                         <div class="header">#MaskOfTheWeek Winner!</div>
@@ -111,7 +119,7 @@
       
             <div class="row">
                 <div class="sm12">
-                    <div class="community-volunteers-text" id="community-volunteers-text">
+                    <div class="community-volunteers-text" id="read-more-text">
                         <p>
                             Wearing a face covering can help protect everyone and reduce the spread of coronavirus, so face coverings are compulsory in some public spaces such as shops and public transport. We're all urged to use home-made fabric face coverings so we can save medical masks for the medics!
                         </p>
