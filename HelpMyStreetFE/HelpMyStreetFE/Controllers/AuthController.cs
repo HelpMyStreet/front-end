@@ -1,6 +1,7 @@
 ﻿using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -17,18 +18,26 @@ namespace HelpMyStreetFE.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-
-        public AuthController(IAuthService authService)
+        private readonly ILogger<AuthController> _logger;
+        public AuthController(IAuthService authService, ILogger<AuthController> logger)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _logger = logger;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)        
         {
-            await _authService.LoginWithTokenAsync(loginRequest.token, HttpContext);
-
-            return Ok();
+            try
+            {
+                await _authService.LoginWithTokenAsync(loginRequest.token, HttpContext);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("an error occured in login", ex);
+                return StatusCode(500);
+            }            
         }
 
         [Authorize]
