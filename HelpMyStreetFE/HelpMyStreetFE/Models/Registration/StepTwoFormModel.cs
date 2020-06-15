@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -35,5 +36,8 @@ namespace HelpMyStreetFE.Models.Registration
 
         [BindProperty(Name = "dob")]
         public DateTime DateOfBirth { get; set; }
+
+        [BindProperty(Name = "source")]
+        public RegistrationSource Source { get; set; }
     }
 }

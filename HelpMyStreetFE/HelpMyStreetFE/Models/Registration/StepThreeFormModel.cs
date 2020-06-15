@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,8 @@ namespace HelpMyStreetFE.Models.Registration
         public bool VolunteerPhoneContact { get; set; }
         [BindProperty(Name = "volunteer_medical_condition")]
         public bool VolunteerMedicalCondition { get; set; }
+
+        [BindProperty(Name = "source")]
+        public RegistrationSource Source { get; set; }
     }
 }

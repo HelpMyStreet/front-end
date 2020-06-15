@@ -6,6 +6,7 @@
 @section Scripts {
     <script>
         const activeStep = @Model.ActiveStep;
+        const source = '@Model.Source';
     </script>
     <script src="~/registration.js" asp-append-version="true"></script>
 }
@@ -14,142 +15,149 @@
     ViewData["Title"] = "Helpers - Registration";
     Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 
-    var volunteerOptions = new Dictionary<SupportActivities, string>
-{
-        { SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
-        { SupportActivities.FaceMask, "Supplying a homemade reusable fabric face covering" },
-        { SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy" },
-        { SupportActivities.Errands, "Running essential local errands (e.g. posting mail)" },
-        { SupportActivities.WellbeingPackage, "Collecting and delivering a pre-prepared wellbeing package" },
-        { SupportActivities.DogWalking, "Walking the dog" },
-        { SupportActivities.MealPreparation, "Delivering a hot / pre-prepared meal" },
-        { SupportActivities.PhoneCalls_Friendly, "Making / receiving phone calls for those in need of a friendly chat" },
-        { SupportActivities.PhoneCalls_Anxious, "Making / receiving phone calls for those who may be anxious" },
-        { SupportActivities.HomeworkSupport, "Remote support for parents and carers home-schooling their children" },
-        { SupportActivities.CheckingIn, "Reaching out to people in my area to check-in" },
-        
-        { SupportActivities.Other, "I may be able to help with other tasks. Please check with me." },
+    var volunteerOptions = new Dictionary<SupportActivities, string>();
+    if (Model.Source == HelpMyStreetFE.Models.RequestHelp.Enum.RegistrationSource.HLP)
+    {
+        volunteerOptions.Add(SupportActivities.CommunityConnector, "Being a <strong>COMMUNITY CONNECTOR</strong>");
+    }
 
-    };
+    volunteerOptions.Add(SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)");
+    volunteerOptions.Add(SupportActivities.FaceMask, "Supplying a homemade reusable fabric face covering");
+    volunteerOptions.Add(SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy");
+    volunteerOptions.Add(SupportActivities.Errands, "Running essential local errands (e.g. posting mail)");
+    volunteerOptions.Add(SupportActivities.WellbeingPackage, "Collecting and delivering a pre-prepared wellbeing package");
+    volunteerOptions.Add(SupportActivities.DogWalking, "Walking the dog");
+    volunteerOptions.Add(SupportActivities.MealPreparation, "Delivering a hot / pre-prepared meal");
+    volunteerOptions.Add(SupportActivities.PhoneCalls_Friendly, "Making / receiving phone calls for those in need of a friendly chat");
+    volunteerOptions.Add(SupportActivities.PhoneCalls_Anxious, "Making / receiving phone calls for those who may be anxious");
+    volunteerOptions.Add(SupportActivities.HomeworkSupport, "Remote support for parents and carers home-schooling their children");
+    volunteerOptions.Add(SupportActivities.CheckingIn, "Reaching out to people in my area to check-in");
+    volunteerOptions.Add(SupportActivities.Other, "I may be able to help with other tasks. Please check with me.");
+
+
 
     var distanceOptions = new Dictionary<double, string>
-{
-        { 0, "My street only" },
-        { 0.5, "Within 1/2 mile" },
-        { 1, "Within 1 mile" },
-        { 3, "Within 3 miles" }
+    {
+    { 0, "My street only" },
+    { 0.5, "Within 1/2 mile" },
+    { 1, "Within 1 mile" },
+    { 3, "Within 3 miles" }
     };
-}
+    }
 
 
-<div class="container">
+    <div class="container">
 
-    <partial name="_Stepper" for="ActiveStep" />
+        <partial name="_Stepper" for="ActiveStep" />
 
-    <div class="row justify-center mt72">
-        <div class="sm8">
-            <h2>Helpers</h2>
-            @if (Context.Request.Query["failure"] == "error")
-            {
-        <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
-            }
-        </div>
-    </div>
-    <form id="registration_form" method="post">
-        <div class="row justify-center">
+        <div class="row justify-center mt72">
             <div class="sm8">
-                <p>Helpers work with Street Champions by volunteering for specific requests, supporting people in need and keeping the Street Champions up to date.</p>
-                <h5>I can help people in need by:</h5>
-                <p>(Please tick as many as you like)</p>
-                <span class="error" id="volunteer-error">Please select at least one option</span>
-                @foreach (var option in volunteerOptions)
+                <h2>Helpers</h2>
+                @if (Context.Request.Query["failure"] == "error")
                 {
-                    <div class="input input--checkbox">
-                        <label>
-                            <input name="volunteer[]" type="checkbox" value="@option.Key" hidden />
-                            <span class="input--checkbox__checkbox">
-                                <span class="mdi mdi-check"></span>
-                            </span>
-                            @option.Value
-                        </label>
-                    </div>
-                    <hr class="input--separator" />
+                    <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
                 }
             </div>
-            <div class="sm8 mt40">
-                <h5>Within what distance are you able to help?</h5>
-                <span class="error" id="distance-error">Please select an option</span>
-                @foreach (var option in distanceOptions)
+        </div>
+        <form id="registration_form" method="post">
+            <input name="source" type="hidden" value="@Model.Source" />
+            <div class="row justify-center">
+                <div class="sm8">
+                    <p>Helpers work with Street Champions by volunteering for specific requests, supporting people in need and keeping the Street Champions up to date.</p>
+                    <h5>I can help people in need by:</h5>
+                    <p>(Please tick as many as you like)</p>
+                    <span class="error" id="volunteer-error">Please select at least one option</span>
+                    @foreach (var option in volunteerOptions)
+                    {
+                        <div class="input input--checkbox">
+                            <label>
+                                <input name="volunteer[]" type="checkbox" value="@option.Key" hidden />
+                                <span class="input--checkbox__checkbox">
+                                    <span class="mdi mdi-check"></span>
+                                </span>
+                                @Html.Raw(@option.Value)
+                            </label>
+                        </div>
+                        <hr class="input--separator" />
+                    }
+                </div>
+                <div class="sm8 mt40">
+                    <h5>Within what distance are you able to help?</h5>
+                    <span class="error" id="distance-error">Please select an option</span>
+                    @foreach (var option in distanceOptions)
+                    {
+                        <div class="input input--radio">
+                            <label>
+                                <input name="volunteer_distance" type="radio" value="@option.Key" hidden />
+                                <span class="input--radio__radio">
+                                    <span class="input--radio__radio__inner"></span>
+                                </span>
+                                @option.Value
+                            </label>
+                        </div>
+                        <hr class="input--separator" />
+                    }
+                </div>
+                @if (Model.Source != HelpMyStreetFE.Models.RequestHelp.Enum.RegistrationSource.HLP)
                 {
+                <div class="sm8 mt40">
+                    <h5>Are you happy to support other Helpers over the phone?</h5>
+                    <span class="error" id="contact-error">Please select an option</span>
                     <div class="input input--radio">
                         <label>
-                            <input name="volunteer_distance" type="radio" value="@option.Key" hidden />
+                            <input name="volunteer_phone_contact" type="radio" value="true" hidden />
                             <span class="input--radio__radio">
                                 <span class="input--radio__radio__inner"></span>
                             </span>
-                            @option.Value
+                            Yes
                         </label>
                     </div>
                     <hr class="input--separator" />
+                    <div class="input input--radio">
+                        <label>
+                            <input name="volunteer_phone_contact" type="radio" value="false" hidden />
+                            <span class="input--radio__radio">
+                                <span class="input--radio__radio__inner"></span>
+                            </span>
+                            No
+                        </label>
+                    </div>
+                    <hr class="input--separator" />
+                </div>
                 }
-            </div>
-            <div class="sm8 mt40">
-                <h5>Are you happy to support other Helpers over the phone?</h5>
-                <span class="error" id="contact-error">Please select an option</span>
-                <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_phone_contact" type="radio" value="true" hidden />
-                        <span class="input--radio__radio">
-                            <span class="input--radio__radio__inner"></span>
-                        </span>
-                        Yes
-                    </label>
+                <div class="sm8 mt40">
+                    <h5>Do you have any underlying medical condition(s) which may put you at higher risk of severe illness from COVID-19 / Coronavirus?</h5>
+                    <span class="error" id="medical-error">Please select an option</span>
+                    <div class="input input--radio">
+                        <label>
+                            <input name="volunteer_medical_condition" type="radio" value="true" hidden />
+                            <span class="input--radio__radio">
+                                <span class="input--radio__radio__inner"></span>
+                            </span>
+                            Yes
+                        </label>
+                    </div>
+                    <hr class="input--separator" />
+                    <div class="input input--radio">
+                        <label>
+                            <input name="volunteer_medical_condition" type="radio" value="false" hidden />
+                            <span class="input--radio__radio">
+                                <span class="input--radio__radio__inner"></span>
+                            </span>
+                            No
+                        </label>
+                    </div>
+                    <hr class="input--separator" />
                 </div>
-                <hr class="input--separator" />
-                <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_phone_contact" type="radio" value="false" hidden />
-                        <span class="input--radio__radio">
-                            <span class="input--radio__radio__inner"></span>
-                        </span>
-                        No
-                    </label>
-                </div>
-                <hr class="input--separator" />
-            </div>
-            <div class="sm8 mt40">
-                <h5>Do you have any underlying medical condition(s) which may put you at higher risk of severe illness from COVID-19 / Coronavirus?</h5>
-                <span class="error" id="medical-error">Please select an option</span>
-                <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_medical_condition" type="radio" value="true" hidden />
-                        <span class="input--radio__radio">
-                            <span class="input--radio__radio__inner"></span>
-                        </span>
-                        Yes
-                    </label>
-                </div>
-                <hr class="input--separator" />
-                <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_medical_condition" type="radio" value="false" hidden />
-                        <span class="input--radio__radio">
-                            <span class="input--radio__radio__inner"></span>
-                        </span>
-                        No
-                    </label>
-                </div>
-                <hr class="input--separator" />
-            </div>
 
-            <div class="sm8">
-                <div class="controls">
-                    <button class="btn large cta fill" id="submit_button" type="submit">
-                        <span class="text">Continue to next page &gt;</span>
-                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Taking you to next step…"}' /></div>
-                    </button>
+                <div class="sm8">
+                    <div class="controls">
+                        <button class="btn large cta fill" id="submit_button" type="submit">
+                            <span class="text">Continue to next page &gt;</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Taking you to next step…"}' /></div>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>

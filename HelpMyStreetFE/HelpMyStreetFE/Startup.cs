@@ -20,6 +20,7 @@ using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 namespace HelpMyStreetFE
 {
@@ -257,6 +258,11 @@ namespace HelpMyStreetFE
                  name: "AcceptedRequests",
                  pattern: "account/accepted-requests",
                  defaults: new { controller = "Account", action = "AcceptedRequests" });
+
+                endpoints.MapControllerRoute(
+                name: "registration/stepone/hlp",
+                pattern: "registration/stepone/hlp",
+                defaults: new { controller = "Registration", action = "StepOne", source  = RegistrationSource.HLP });
 
                 // Enable attribute routing
                 //endpoints.MapControllers();

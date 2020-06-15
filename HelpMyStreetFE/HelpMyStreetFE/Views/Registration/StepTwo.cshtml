@@ -14,10 +14,8 @@
     Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 }
 
-    <div class="container">
-
+    <div class="container">       
         <partial name="_Stepper" for="ActiveStep" />
-
         <div class="row justify-center mt72">
             <div class="sm8">
                 <h2>Your details</h2>
@@ -28,6 +26,7 @@
             </div>
         </div>
         <form id="registration_form" method="post">
+            <input name="source" type="hidden" value="@Model.Source" />
             <div class="row justify-center">
                 <div class="input sm4">
                     <label>First name</label>
@@ -41,7 +40,7 @@
                 </div>
                 <div class="input sm8">
                     <label>Date of birth</label>
-                    <input name="dob" type="text" id="datepicker"  placeholder="e.g. 11/12/1994" autocomplete="off" />
+                    <input name="dob" type="text" id="datepicker" placeholder="e.g. 11/12/1994" autocomplete="off" />
                     <span class="error"></span>
                 </div>
                 <div class="input sm5">
@@ -51,7 +50,7 @@
                 </div>
                 <div class="input sm3">
                     <button class="btn large border-blue blue fill" id="address_finder">
-                        <span class="text">Find address</span>                        
+                        <span class="text">Find address</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
                     </button>
                     <a id="manual_address" href="#" class="input__link">Or enter your address manually</a>
@@ -103,7 +102,7 @@
                 <div class="sm8">
                     <div class="controls">
                         <button class="btn large cta fill" id="submit_button" type="submit">
-                            <span class="text">Continue to next page &gt;</span>                            
+                            <span class="text">Continue to next page &gt;</span>
                             <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Taking you to next step…"}' /></div>
                         </button>
                     </div>

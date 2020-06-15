@@ -44,7 +44,7 @@ export function initialiseStepOne() {
             token,
           }),
         });          
-        window.location.href = "/registration/steptwo";
+          window.location.href = "/registration/steptwo?source=" + source;
       })
       .catch((err) => {
         switch (err.code) {
