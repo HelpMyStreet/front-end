@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
@@ -27,15 +28,15 @@ namespace HelpMyStreetFE.Controllers
 {
 
     public class RequestHelpController : Controller
-    {        
+    {
         private readonly ILogger<RequestHelpController> _logger;
         private readonly IRequestService _requestService;
         public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService)
-        {                  
+        {
             _logger = logger;
             _requestService = requestService;
-         }
-        
+        }
+
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> RequestHelp(
@@ -44,6 +45,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
+                requestHelp.Errors = new List<string>();
                 requestHelp.Steps[requestHelp.CurrentStepIndex] = step;
                 if (requestHelp.Action == "EditRequest")
                 {
@@ -61,13 +63,13 @@ namespace HelpMyStreetFE.Controllers
                     return View(requestHelp);
                 }
 
-                if (!ModelState.IsValid) 
+                if (!ModelState.IsValid)
                     throw new ValidationException("Model Validation failed");
-                
 
-                    if (requestHelp.Action == "next")
-                    {
-                        requestHelp.CurrentStepIndex++;
+
+                if (requestHelp.Action == "next")
+                {
+                    requestHelp.CurrentStepIndex++;
                     if (step is RequestHelpRequestStageViewModel)
                     {
 
@@ -80,15 +82,13 @@ namespace HelpMyStreetFE.Controllers
                         }
 
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
-                        
+
                         if (HttpContext.Session.Keys.Contains("User"))
+                        {
+                            var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
+                            switch (detailStage.Type)
                             {
-                                var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
-                                switch (detailStage.Type)
-                                {
-
-
-                                    case RequestorType.Myself:
+                                case RequestorType.Myself:
                                     if (detailStage.Recipient == null)
                                     {
                                         detailStage.Recipient = new RecipientDetails
@@ -104,9 +104,9 @@ namespace HelpMyStreetFE.Controllers
                                             Town = loggedInUser.UserPersonalDetails.Address.Locality
                                         };
                                     }
-                                        break;
-                                    case RequestorType.Organisation:
-                                    case RequestorType.OnBehalf:
+                                    break;
+                                case RequestorType.Organisation:
+                                case RequestorType.OnBehalf:
                                     if (detailStage.Requestor == null)
                                     {
                                         detailStage.Requestor = new RequestorDetails
@@ -119,28 +119,27 @@ namespace HelpMyStreetFE.Controllers
                                             Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
                                         };
                                     }
-                                        break;                  
-                                }
+                                    break;
                             }
-
-                        }
-                        if (step is RequestHelpDetailStageViewModel)
-                        {
-                            var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
-                            var detailStage = (RequestHelpDetailStageViewModel)step;
-                            var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
-                            reviewStage.Recipient = detailStage.Recipient;
-                            reviewStage.Requestor = detailStage.Requestor;                            
-                            reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
-                            reviewStage.OrganisationName = detailStage.Organisation;
-                            reviewStage.HealthCritical = requestStage.IsHealthCritical;
-                            reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
-                            reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
-                            reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
-                            reviewStage.OtherDetails = detailStage.OtherDetails;
-                            reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
                         }
                     }
+                    if (step is RequestHelpDetailStageViewModel)
+                    {
+                        var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+                        var detailStage = (RequestHelpDetailStageViewModel)step;
+                        var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
+                        reviewStage.Recipient = detailStage.Recipient;
+                        reviewStage.Requestor = detailStage.Requestor;
+                        reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.OrganisationName = detailStage.Organisation;
+                        reviewStage.HealthCritical = requestStage.IsHealthCritical;
+                        reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
+                        reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
+                        reviewStage.OtherDetails = detailStage.OtherDetails;
+                        reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
+                    }
+                }
                 if (requestHelp.Action == "finish")
                 {
                     var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
@@ -150,9 +149,17 @@ namespace HelpMyStreetFE.Controllers
                     {
                         userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     }
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, userId, HttpContext);
+
+                    // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
+                    if (requestHelp.Source == RequestHelpSource.DIY && userId == 0 )
+                    {
+                        requestHelp.Errors.Add("To submit a DIY Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
+                        throw new ValidationException("User tired to submit DIY Request without being logged in");
+                    }
+
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.Source, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
-                    {                        
+                    {
                         return RedirectToAction("Success", new
                         {
                             fulfillable = response.Content.Fulfillable,
@@ -160,47 +167,57 @@ namespace HelpMyStreetFE.Controllers
                         });
                     }
                 }
-                 
-                
+
+
             }
             catch (ValidationException vex)
             {
-                _logger.LogError(vex, "a validation error occured in request help form action");   
-             }
+                _logger.LogError(vex, "a validation error occured in request help form action");
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "an error occured in request help form action");
                 requestHelp.Errors.Add("Oops! an error occured sumbitting your request, please try again later.");
             }
-        
+
 
             return View(requestHelp);
         }
-    
 
-    public async Task<IActionResult> RequestHelp(string source)
+
+        public async Task<IActionResult> RequestHelp(RequestHelpSource source)
         {
             _logger.LogInformation("request-help");
-             var model = await  _requestService.GetRequestHelpSteps(source);
-           return View(model);
+            var model = await _requestService.GetRequestHelpSteps(source);
+            return View(model);
         }
 
         public IActionResult Success(Fulfillable fulfillable, bool onBehalf)
         {
-        
+
             string message = "<p>Your request will be passed to a local volunteer who should get in touch shortly.</p>";
-            string button = " <a href='/' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";                   
-            
- 
+
+            string link = User.Identity.IsAuthenticated ? "/" : "/account";
+
+            string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+            string requestLink = "/request-help";
+
             if (fulfillable == Fulfillable.Accepted_ManualReferral || fulfillable == Fulfillable.Rejected_Unfulfillable)
             {
-                message = "<p>We’ve just launched HelpMyStreet and we’re building our network across the country. We’re working hard to ensure we have local volunteers in your area who can get the right help to the right people. You’ll be contacted soon to progress your request.</p>";                
-            }            
+                message = "<p>We’ve just launched HelpMyStreet and we’re building our network across the country. We’re working hard to ensure we have local volunteers in your area who can get the right help to the right people. You’ll be contacted soon to progress your request.</p>";
+            }
 
             if (onBehalf)
             {
                 message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home </p>";
                 button = " <a href='/registration/stepone' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+            }
+
+            if (fulfillable == Fulfillable.Accepted_DiyRequest)
+            {
+                message = "Your request will now be available in the 'My Accepted Requests' area of your profile";
+                button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+                requestLink = "/request-help/diy";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {
@@ -213,29 +230,41 @@ namespace HelpMyStreetFE.Controllers
                 Button = button
             }
             };
-        
-            return View(notifications);
+
+            SuccessViewModel vm = new SuccessViewModel
+            {
+                Notifications = notifications,
+                RequestLink = requestLink
+            };
+
+            return View(vm);
         }
+ 
 
         [HttpPost]
         public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
         {
-            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();            
-            foreach(var question in model.Questions)
+            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
+            RequestorType? requestorType = null;
+            if (request.RequestorId.HasValue)
             {
-                if (question.Location() != request.Position)
-                    question.DontShow = true;
+                requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
+            }
+            
+            foreach (var question in model.Questions)
+            {
+                question.Show = question.Show(request.Position, requestorType);
             }
 
             return PartialView("_Questions", model);
         }
-        
+
         public class QuestionRequest
         {
             public RequestHelpRequestStageViewModel Step { get; set; }
             public int TaskID { get; set; }
-
             public string Position { get; set; }
+            public int? RequestorId  {get;set;}
         }
     }
 }

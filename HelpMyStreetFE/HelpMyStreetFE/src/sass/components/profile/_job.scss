@@ -35,6 +35,12 @@
 
         @media (min-width: $med-screen) {
             grid-template-columns: 1fr 2fr 1.3fr;
+
+            &.twoCol {
+                grid-template-columns: 0.3fr 2fr 0.6fr;
+                text-align:center;
+               
+            }
         }
 
         div {
@@ -108,8 +114,8 @@
                     margin-right: 10px;
                     max-width: 32px;
 
-                    &.limit-width{
-                        max-width:80px;
+                    &.limit-width {
+                        max-width: 80px;
                     }
                 }
             }
@@ -212,7 +218,7 @@
 
     &--warm {
         .job__info {
-            .due-date {                
+            .due-date {
                 color: $orange;
             }
         }

@@ -20,6 +20,7 @@ using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
+using HelpMyStreetFE.Enums.RequestHelp;
 
 namespace HelpMyStreetFE
 {
@@ -124,6 +125,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();            
             services.AddSingleton<IEmailService, EmailService>();
+            services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
 
@@ -218,11 +220,15 @@ namespace HelpMyStreetFE
                         endpoints.MapControllerRoute(
                     name: "request-help/v4v",
                     pattern: "request-help/v4v",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "v4v"  });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans  });
+                endpoints.MapControllerRoute(
+                name: "request-help/diy",
+                pattern: "request-help/diy",
+                defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
                 endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp" });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
