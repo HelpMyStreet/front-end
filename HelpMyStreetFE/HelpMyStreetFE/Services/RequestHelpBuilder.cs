@@ -85,9 +85,9 @@ namespace HelpMyStreetFE.Services
             };
         }
 
-        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestHelpSource source, int userId)
+        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestorType type,  RequestHelpSource source, int userId)
         {
-            if (source == RequestHelpSource.DIY &&  (requestStage.Tasks
+            if (source == RequestHelpSource.DIY && (type == RequestorType.Myself || requestStage.Tasks
                                                     .Where(x => x.IsSelected).FirstOrDefault()
                                                     ?.Questions.Where(x => x.ID == (int)Questions.WillYouCompleteYourself)
                                                     .FirstOrDefault()?.Model == "true"))
