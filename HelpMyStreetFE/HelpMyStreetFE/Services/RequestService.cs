@@ -105,6 +105,13 @@ namespace HelpMyStreetFE.Services
             {
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(user.PostalCode, distanceInMiles);
 
+
+                // if they dont have the community connector support activity, let remove any open requests in there.
+                if (!user.SupportActivities.Contains(SupportActivities.CommunityConnector))
+                {
+                    all = all.ToList().Where(x => x.SupportActivity != SupportActivities.CommunityConnector);
+                };
+
                 var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
 
                 jobs = new OpenJobsViewModel
@@ -112,9 +119,13 @@ namespace HelpMyStreetFE.Services
                     CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
                     OtherJobs = otherJobs.OrderOpenJobsForDisplay()
                 };
+                
                 ctx.Session.SetObjectAsJson("openJobs", jobs);
                 ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());
             }
+
+            
+
 
             return jobs;
         }
