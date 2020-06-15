@@ -67,6 +67,7 @@ namespace HelpMyStreetFE
                 SupportActivities.PhoneCalls_Anxious => "light-purple",
                 SupportActivities.HomeworkSupport => "dark-blue",
                 SupportActivities.WellbeingPackage => "light-purple",
+                SupportActivities.CommunityConnector => "green",
                 _ => ""
             };
         }
