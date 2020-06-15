@@ -27,6 +27,7 @@ namespace HelpMyStreetFE
                 SupportActivities.PhoneCalls_Anxious => "Supportive chat",
                 SupportActivities.HomeworkSupport => "Homework",
                 SupportActivities.WellbeingPackage => "Wellbeing Package",
+                SupportActivities.CommunityConnector => "Community Connector",
                 _ => "Other"
             };
         }
@@ -46,6 +47,7 @@ namespace HelpMyStreetFE
                 SupportActivities.PhoneCalls_Anxious => "supportivechat.svg",
                 SupportActivities.HomeworkSupport => "homework.svg",
                 SupportActivities.WellbeingPackage => "vitalsforveterans.png",
+                SupportActivities.CommunityConnector => "communityconnector.png",
                 _ => "question-mark.svg"
             };
         }
