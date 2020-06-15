@@ -20,6 +20,7 @@ using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
+using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 namespace HelpMyStreetFE
