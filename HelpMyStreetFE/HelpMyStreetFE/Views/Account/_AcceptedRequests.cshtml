@@ -13,74 +13,66 @@
              <p>Requests for help that you’ve accepted</p>
          </header>
 
-
+         <div class="profile">
+             @if (Model.UserDetails.IsVerified)
+             {
+                 @if (PageModel.Jobs.Count() == 0)
+                 {
+                     <div class="profile__empty">
+                         <p class="profile__empty__title">
+                             Can you help?
+                         </p>
+                         <p class="profile__empty__text">
+                             Please check the <a href="/account/open-requests">Open Requests</a> page to see new requests for help and support - they're being added all the time
+                         </p>
+                         <p class="profile__empty__text">
+                             Once you accept a request for help or support on the <a href="/account/open-requests">Open Requests</a> page, they'll appear on this page.
+                         </p>
+                     </div>
+                 }
+                 else
+                 {
+                     foreach (var job in PageModel.Jobs)
+                     {
+                         @Html.DisplayFor(x => job, new
+                         {
+                             UserIsVerified = true,
+                             IsAccepted = true,
+                             ContactInformation = PageModel.ContactInformation[job.JobID]
+                         });
+                     }
+                 }
+             }
+             else
+             {
+                 <div class="profile__empty">
+                     <p class="profile__empty__title">
+                         Start helping
+                     </p>
+                     <p class="profile__empty__text">
+                         <a href="/account">Complete your ID verification</a> today so that you can start helping people!
+                     </p>
+                     <p class="profile__empty__text">You're currently registered as an Unverified volunteer.  As soon as you've completed your ID Verification, you'll be a Verified volunteer on HelpMyStreet.org and will be able to help people in your local area.</p>
+                 </div>
+             }
+         </div>
 
 
          <div class="job">
              <div class="job__info twoCol">
                  <div class="job__info__activity column"></div>
-                     <div class="job__info__activity column p-sm">
-                         <p class="mt-xs mb-xs">
-                             <strong>Log your requests</strong>
-                         </p>
-                         <p class="mt-xs">
-                             Log any requests for help you've received from outside HelpMyStreet so you can keep track of them below!
-                         </p>
-                     </div>
-                     <div class="job__info__actions column">
-                         <a href="/request-help/diy" class="btn cta large fill">Log Request</a>                      
-                     </div>
+                 <div class="job__info__activity column p-sm">
+                     <p class="mt-xs mb-xs">
+                         <strong>Submit&Accept</strong>
+                     </p>
+                     <p class="mt-xs">
+                         If you have a request for help that you are going to complete yourself, you can use the Submit&Accept function to immediately accept the request when you submit it.
+                     </p>                
+                 </div>
+                 <div class="job__info__actions column">
+                     <a href="/request-help/diy" class=" btn cta p-md large cta--orange fill">Submit&Accept</a>
                  </div>
              </div>
-
-
-
-
-
-
-
-             <div class="profile">
-                 @if (Model.UserDetails.IsVerified)
-                 {
-                     @if (PageModel.Jobs.Count() == 0)
-                     {
-                         <div class="profile__empty">
-                             <p class="profile__empty__title">
-                                 Can you help?
-                             </p>
-                             <p class="profile__empty__text">
-                                 Please check the <a href="/account/open-requests">Open Requests</a> page to see new requests for help and support - they're being added all the time
-                             </p>
-                             <p class="profile__empty__text">
-                                 Once you accept a request for help or support on the <a href="/account/open-requests">Open Requests</a> page, they'll appear on this page.
-                             </p>
-                         </div>
-                     }
-                     else
-                     {
-                         foreach (var job in PageModel.Jobs)
-                         {
-                             @Html.DisplayFor(x => job, new
-                             {
-                                 UserIsVerified = true,
-                                 IsAccepted = true,
-                                 ContactInformation = PageModel.ContactInformation[job.JobID]
-                             });
-                         }
-                     }
-                 }
-                 else
-                 {
-                     <div class="profile__empty">
-                         <p class="profile__empty__title">
-                             Start helping
-                         </p>
-                         <p class="profile__empty__text">
-                             <a href="/account">Complete your ID verification</a> today so that you can start helping people!
-                         </p>
-                         <p class="profile__empty__text">You're currently registered as an Unverified volunteer.  As soon as you've completed your ID Verification, you'll be a Verified volunteer on HelpMyStreet.org and will be able to help people in your local area.</p>
-                     </div>
-                 }
-             </div>
          </div>
+     </div>
          </div>
