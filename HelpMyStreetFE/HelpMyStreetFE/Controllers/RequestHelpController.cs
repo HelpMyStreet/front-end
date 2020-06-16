@@ -212,13 +212,13 @@ namespace HelpMyStreetFE.Controllers
 
             if (onBehalf)
             {
-                message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home </p>";
+                message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home.</p>";
                 button = " <a href='/registration/stepone' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
 
             if (fulfillable == Fulfillable.Accepted_DiyRequest)
             {
-                message = "Your request will now be available in the 'My Accepted Requests' area of your profile";
+                message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
                 requestLink = "/request-help/diy";
             }
