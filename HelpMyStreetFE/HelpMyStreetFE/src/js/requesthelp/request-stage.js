@@ -150,7 +150,6 @@ var LoadQuestions = function (taskId) {
         requestorId: requestorId,
         answers: GetCurrentQuestionAnswers(),
     };
-    console.log(qRequest);
 
     $('.questions').each(function () {
         qRequest.position = $(this).attr("data-position");
