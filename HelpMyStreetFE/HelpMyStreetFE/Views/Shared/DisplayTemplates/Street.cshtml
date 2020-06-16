@@ -11,21 +11,22 @@
             <span class="desktop">
                 @if (String.IsNullOrEmpty(Model.FriendlyName))
                 {
-                    @Model.Name 
+                    @Model.Name
                 }
                 else
                 {
                     @Model.FriendlyName <span>(@Model.Name)</span>
                 }
+
+                @if (Model.Helpers.Count == 0)
+                {
+                    <span> - No helpers are currently covering this postcode</span>
+                }
+                else
+                {
+                    <span class="profile__mystreet__header__arrow"><span class="profile__mystreet__header__arrow--up"></span></span>
+                }
             </span>
-            @if (Model.Helpers.Count == 0)
-            {
-                <span> - No helpers are currently covering this postcode</span>
-            }
-            else
-            {
-                <span class="profile__mystreet__header__arrow"><span class="profile__mystreet__header__arrow--up"></span></span>
-            }
         </div>
         @if (Model.Helpers.Count > 0)
         {
