@@ -7,8 +7,8 @@ export function trackPageView(url) {
 
 function submitPageViewToGa(url, retryDelayMs, attemptsToMake) {
     if (typeof ga !== 'undefined') {
-        ga('set', 'page', url);
-        ga('send', 'pageview');
+        ga('gtm1.set', 'page', url);
+        ga('gtm1.send', 'pageview');
     } else {
         if (attemptsToMake > 0) {
             console.warn('ga not defined; retrying');
