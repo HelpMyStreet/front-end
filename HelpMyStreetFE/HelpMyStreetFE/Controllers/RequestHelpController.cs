@@ -256,6 +256,11 @@ namespace HelpMyStreetFE.Controllers
             
             foreach (var question in model.Questions)
             {
+                var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
+                if(matchedAnswer != null)
+                {
+                    question.Model = matchedAnswer.Answer;
+                }
                 question.Show = question.Show(request.Position, requestorType);
             }
 
@@ -268,6 +273,12 @@ namespace HelpMyStreetFE.Controllers
             public int TaskID { get; set; }
             public string Position { get; set; }
             public int? RequestorId  {get;set;}
+            public List<QuestionAnswer> Answers { get; set; }
+            public class QuestionAnswer
+            {
+                public int Id { get; set; }
+                public string Answer { get; set; }
+            }
         }
     }
 }
