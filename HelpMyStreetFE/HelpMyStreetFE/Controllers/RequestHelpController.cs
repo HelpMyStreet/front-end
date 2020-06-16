@@ -189,7 +189,7 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("request-help");
             if (source == RequestHelpSource.DIY && !User.Identity.IsAuthenticated)
-                source = RequestHelpSource.Default;
+                return Redirect("/login?ReturnUrl=request-help/diy");
 
             var model = await _requestService.GetRequestHelpSteps(source);
             return View(model);
