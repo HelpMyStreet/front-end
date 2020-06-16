@@ -93,7 +93,6 @@ namespace HelpMyStreetFE.Services
             if (response.HasContent & response.IsSuccessful)
                 TriggerCacheRefresh(ctx);
 
-
             return response;
         }
         public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
@@ -123,9 +122,6 @@ namespace HelpMyStreetFE.Services
                 ctx.Session.SetObjectAsJson("openJobs", jobs);
                 ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());
             }
-
-            
-
 
             return jobs;
         }
@@ -224,8 +220,7 @@ namespace HelpMyStreetFE.Services
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpSource source)
         {
             return await _requestHelpBuilder.GetSteps(source);
-        }
-
+        }1
     }
  }
 
