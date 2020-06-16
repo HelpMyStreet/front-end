@@ -10,14 +10,15 @@ $(() => {
     switch (stepIndex) {
         case 0:
             intialiseRequestStage();
+            trackPageView('/request-help/0.request');
             break;
         case 1:
             initaliseDetailStage();
+            trackPageView('/request-help/1.details');
             break;
         case 2:
             intialiseReviewStage();
+            trackPageView('/request-help/2.review');
             break;
     }
-
-    trackPageView('/request-help/step' + stepIndex);
 });
