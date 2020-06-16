@@ -212,13 +212,13 @@ namespace HelpMyStreetFE.Controllers
 
             if (onBehalf && !User.Identity.IsAuthenticated)
             {
-                message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home </p>";
+                message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home.</p>";
                 button = " <a href='/registration/stepone' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
 
             if (fulfillable == Fulfillable.Accepted_DiyRequest)
             {
-                message = "Your request will now be available in the 'My Accepted Requests' area of your profile";
+                message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
                 requestLink = "/request-help/diy";
             }
@@ -256,6 +256,11 @@ namespace HelpMyStreetFE.Controllers
             
             foreach (var question in model.Questions)
             {
+                var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
+                if(matchedAnswer != null)
+                {
+                    question.Model = matchedAnswer.Answer;
+                }
                 question.Show = question.Show(request.Position, requestorType);
             }
 
@@ -268,6 +273,12 @@ namespace HelpMyStreetFE.Controllers
             public int TaskID { get; set; }
             public string Position { get; set; }
             public int? RequestorId  {get;set;}
+            public List<QuestionAnswer> Answers { get; set; }
+            public class QuestionAnswer
+            {
+                public int Id { get; set; }
+                public string Answer { get; set; }
+            }
         }
     }
 }
