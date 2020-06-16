@@ -188,6 +188,9 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> RequestHelp(RequestHelpSource source)
         {
             _logger.LogInformation("request-help");
+            if (source == RequestHelpSource.DIY && !User.Identity.IsAuthenticated)
+                source = RequestHelpSource.Default;
+
             var model = await _requestService.GetRequestHelpSteps(source);
             return View(model);
         }
@@ -207,7 +210,7 @@ namespace HelpMyStreetFE.Controllers
                 message = "<p>We’ve just launched HelpMyStreet and we’re building our network across the country. We’re working hard to ensure we have local volunteers in your area who can get the right help to the right people. You’ll be contacted soon to progress your request.</p>";
             }
 
-            if (onBehalf)
+            if (onBehalf && !User.Identity.IsAuthenticated)
             {
                 message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home </p>";
                 button = " <a href='/registration/stepone' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
