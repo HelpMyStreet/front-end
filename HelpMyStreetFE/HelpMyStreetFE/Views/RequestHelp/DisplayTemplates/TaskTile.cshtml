@@ -28,7 +28,7 @@
 
 <div class="sm4">
 
-    <div id="task_@Model.ID" data-type="activities" data-id='@Model.ID' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
+    <div id="task_@Model.ID" data-type="activities" data-id='@Model.ID' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )" ga-on="click" ga-event-category="Task type selected" ga-event-action="@activity.Activity.FriendlyName()">
         <div class="tiles__tile__content ">
             @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
             {
