@@ -6,10 +6,6 @@
     <script src="~/requesthelp.js" asp-append-version="true"></script>
     <script>
         var stepIndex = @Model.CurrentStepIndex;
-        $(window).on("load", function () {
-            ga('set', 'page', '/request-help/step' + stepIndex);
-            ga('send', 'pageview');
-        });
     </script>
 }
 
