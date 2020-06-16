@@ -8,7 +8,7 @@
     if (!Model.Questions[i].Show) continue;
     var name = $"currentStep.SelectedTask.Questions.[{i}].Model";
     var id = $"currentStep.SelectedTask.Questions.[{i}].Id";
-    <input type="hidden" class="hiddenFieldId" name="@id" value="@Model.Questions[i].ID" />
+    <input type="hidden" name="@id" value="@Model.Questions[i].ID" />
 
 
     <div class="row">
