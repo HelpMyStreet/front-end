@@ -25,7 +25,7 @@ export function initialiseStepThree() {
       $("#distance-error").show();
     }
 
-    if (!obj["volunteer_phone_contact"]) {
+   if (source.toLowerCase() == "default" && !obj["volunteer_phone_contact"]) {
       valid = false;
       $("#contact-error").show();
     }

@@ -22,55 +22,56 @@
             <partial name="_ProgressBar" model="Model" />
         </div>
     </div>
-    
-        @foreach(var error in Model.Errors)
-        {
-            <div>
-                <span class="error">error</span>
-            </div>
-        }
-      
+
+
+    @foreach (var error in Model.Errors)
+    {
+
+        <span class="red">@error</span>
+
+    }
 
     @using (Html.BeginForm())
     {
+
         @Html.AntiForgeryToken();
         @Html.Hidden("requestHelp", Model.ToJson())
         @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
         @Html.EditorFor(x => currentStep, currentStep.TemplateName);
 
-<div class="btn-wrapper">
-    <div class="row">
-        <div class="sm12">
-            <span class="error retryError">Oops! an error occured, please try again.</span>
-            <span id="hasErrors" class="error">Please check the form for any errors</span>
+        <div class="btn-wrapper">
+            <div class="row">
+                <div class="sm12">
+                    <span class="error retryError">Oops! an error occured, please try again.</span>
+                    <span id="hasErrors" class="error">Please check the form for any errors</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="sm12">
+
+                    @if (Model.CurrentStepIndex < Model.Steps.Count - 1)
+                    {
+                        <button id="btnNext" class="btn cta large mb-sm   right" name="formAction" value="next" type="submit">
+                            <span class="text">Continue</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Validating..."}' /></div>
+                        </button>
+                    }
+                    else
+                    {
+                        <button id="btnSubmit" class="btn mb-sm  cta--orange cta large right" name="formAction" value="finish" type="submit">
+                            <span class="text">Submit</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
+                        </button>
+                    }
+                    @if (Model.CurrentStepIndex > 0)
+                    {
+                        <button id="btnBack" name="formAction" class="btn cta large left clear-button" value="back" type="submit">Back</button>
+                    }
+
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="sm12">
-
-            @if (Model.CurrentStepIndex < Model.Steps.Count - 1)
-            {
-                <button id="btnNext" class="btn cta large mb-sm   right" name="formAction" value="next" type="submit">
-                    <span class="text">Continue</span>
-                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Validating..."}' /></div>
-                </button>
-            }
-            else
-            {
-                <button id="btnSubmit" class="btn mb-sm  cta--orange cta large right" name="formAction" value="finish" type="submit">
-                    <span class="text">Submit</span>
-                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
-                </button>
-            }
-            @if (Model.CurrentStepIndex > 0)
-            {
-                <button id="btnBack" name="formAction" class="btn cta large left clear-button" value="back" type="submit">Back</button>
-            }
-
-        </div>
-    </div>
-</div>
 
     }
 

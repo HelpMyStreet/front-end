@@ -16,8 +16,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string Model { get; set; }
         public bool Required { get; set; }        
         public List<AdditonalQuestionData> AdditionalData { get; set; }
-        public bool DontShow { get; set; }
-
+        public bool Show { get; set; }
+        public List<RequestorType> VisibleForRequestorTypes { get; set; }
         public string DataValidationMessage { get
             {
                 return InputType switch

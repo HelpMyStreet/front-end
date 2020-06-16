@@ -23,12 +23,10 @@
     string iconClass = AgeUk ? "limit-width" : "";
 
     var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
-
-    var friendlyNamePrefix = forFaceMask  ?                                           
+    var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided"; 
+    var friendlyNamePrefix = forFaceMask  ?
     Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
-      
     bool removePluralisation = forFaceMask &&  Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
-
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.SupportActivity.FriendlyName().Remove(Model.SupportActivity.FriendlyName().Length - 1) : Model.SupportActivity.FriendlyName());
     bool showOtherDetails = !forFaceMask;
 }
@@ -107,17 +105,24 @@
                 <dl>
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
-                    <dt>Email</dt>
-                    <dd>@recipient.EmailAddress</dd>
+                    <dt>Email</dt>                    
+                    <dd>@(string.IsNullOrEmpty(recipient.EmailAddress) ? userDetailsNotProvidedText : recipient.EmailAddress) </dd>
                     <dt>Phone number(s)</dt>
                     <dd>
-                        @recipient.MobileNumber
-                        @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(recipient.OtherNumber) ? "" : " / ")
-                        @recipient.OtherNumber
+                        @if (String.IsNullOrEmpty(recipient.OtherNumber) && String.IsNullOrEmpty(recipient.OtherNumber))
+                        {
+                            @userDetailsNotProvidedText
+                        }
+                        else
+                        {
+                            @recipient.MobileNumber
+                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(recipient.MobileNumber) ? "" : " / ")
+                            @recipient.OtherNumber
+                        }
                     </dd>
                     <dt>Address</dt>
                     <dd>
-                        @Html.DisplayFor(x => recipient.Address)
+                        @Html.DisplayFor(x => recipient.Address, new  {  MaskAddress = AgeUk})
                     </dd>
                 </dl>
             </div>
@@ -137,7 +142,7 @@
                         <dt>Phone number(s)</dt>
                         <dd>
                             @requestor.MobileNumber
-                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(requestor.OtherNumber) ? "" : " / ")
+                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(requestor.MobileNumber) ? "" : " / ")
                             @requestor.OtherNumber
                         </dd>
                         <dt>Address</dt>

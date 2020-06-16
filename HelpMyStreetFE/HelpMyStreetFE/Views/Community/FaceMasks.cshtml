@@ -4,8 +4,16 @@
 }
 
 @section Scripts {
-    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>*
-    <script src="/community.js" asp-append-version="true"></script>
+    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {            
+            $('#read-more-text').readmore({
+        moreLink: '<a href="#">Read more</a>',
+        lessLink: '<a href="#">Read less</a>',
+        collapsedHeight: 200
+        })
+    });
+    </script>
 }
 
 <div class="container">
@@ -18,14 +26,14 @@
             <div class="row flex hero">
                 <div class="row sm8 align-center content-page">
                     <header class="">
-                        <h2 class="row sm12 mb0">Help My Street's Community Sew</h2>
+                        <h2 class="row sm12 mb0">HelpMyStreet's Community Sew</h2>
                     </header>
                     <p class="row sm12 text-left mt-sm mb-xs">HelpMyStreet.org works with communities to get the right help to the right people - and that now includes home-sewn fabric face masks!</p>                    
 
                     <div class="row sm12">
                         <p class="text-left mt-sm mb-xs">
 
-                            If you're a home-sewer who can help,
+                            If you're a home sewer who can help,
                             @if (isLoggedIn)
                             {
                                 <a href="/account" class="green  large-screen-only">Provide Help</a>
@@ -53,7 +61,7 @@
                     </div>
 
                     <div class="row sm12">
-                        <p class="text-left mt-sm mb-xs">If you need a fabric face covering, <a href="/request-help" class="orange">Request Help</a> to find a home-sewer near you. To keep everyone safe, it's recommended we all wear a fabric face covering when: </p>
+                        <p class="text-left mt-sm mb-xs">If you need a fabric face covering, <a href="/request-help" class="orange">Request Help</a> to find a home sewer near you. To keep everyone safe, it's recommended we all wear a fabric face covering when: </p>
                         <ul class="tick-list mt-xs mb-sm compact-list">
                             <li>Using public transport</li>
                             <li>Visiting hospitals or care homes</li>
@@ -67,27 +75,27 @@
                         <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
                     </div>
 
+                    <div class="row  large-screen-only text-center ">
+                        <div class="sm4 justify-center ">
+                            @if (isLoggedIn)
+                            {
 
-                    <div class="row sm4 text-center justify-center large-screen-only ">
-                        @if (isLoggedIn)
-                        {
+                                <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
+                            }
+                            else
+                            {
+                                <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up to Sew</a>
 
-                            <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
-                        }
-                        else
-                        {
-                            <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up to Sew</a>
+                            }
+                        </div>
 
-                        }
+                        <div class="sm7 justify-center">
+                            <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request a Face Covering</a>
+                        </div>
                     </div>
-
-                    <div class="row sm8 text-center large-screen-only">
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request a Face Covering</a>
-                    </div>
-
                 </div>
 
-                <div class="sm4 text-right commmunity-map-container">
+                <div class="sm4 text-right">
                     <div class="mask-of-the-week">
                         <div class="img"><img src="~/img/community/face-mask/face-mask-winner.jpg" /></div>
                         <div class="header">#MaskOfTheWeek Winner!</div>
@@ -111,17 +119,18 @@
       
             <div class="row">
                 <div class="sm12">
-                    <div class="community-volunteers-text" id="community-volunteers-text">
+                    <div class="community-volunteers-text" id="read-more-text">
                         <p>
                             Wearing a face covering can help protect everyone and reduce the spread of coronavirus, so face coverings are compulsory in some public spaces such as shops and public transport. We're all urged to use home-made fabric face coverings so we can save medical masks for the medics!
                         </p>
 
-                        <p>HelpMyStreet is bringing together home-sewers who are using their time and skills to help their neighbours.</p>
+                        <p>HelpMyStreet is bringing together home sewers who are using their time and skills to help their neighbours.</p>
                         <p>
-                            <strong>Will all of your masks look the same?</strong> Hopefully not! All of our volunteers are encouraged to find a pattern and materials that suit them.
-                            All we ask is that face coverings have at least two layers of fabric and will fit comfortably and securely - whether you opt for a fitted or pleated style,
-                            use ties or elastics, go for patterned or plain, it's completely up to you! If you're requesting face coverings and have a strong preference for a specific style
-                            make sure to include it on your request so volunteers know what you need.
+                            <strong>Will all of your masks look the same?</strong> Hopefully not! All of our volunteers are encouraged to find a pattern and materials
+                            that suit them. All we ask is that face coverings have at least two layers of fabric and will fit comfortably and securely
+                            - whether you opt for a fitted or pleated style, use ties or elastics, go for patterned or plain, it's completely up to you!
+                            If you're requesting face coverings and have a strong preference for a specific style make sure to include it on your request
+                            so our volunteers know what you need. We will do our best to keep our volunteers updated with the latest government advice.
                         </p>
 
                         <p>
@@ -144,7 +153,7 @@
 
 
         var provideHelpHead = "Volunteer with us!";
-        var provideHelpDesc = " If you're a home-sewer and able to make face coverings, either for the cost of materials or as a donation, join us to help your neighbours. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+        var provideHelpDesc = " If you're a home sewer and able to make face coverings, either for the cost of materials or as a donation, join us to help your neighbours. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
     }
 
     <div class="outer-container">

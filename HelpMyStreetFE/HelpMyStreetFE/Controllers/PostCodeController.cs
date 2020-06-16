@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("{postCode}")]
         public async Task<ActionResult<GetPostCodeResponse>> Get(string postCode)
         {
-            _logger.LogInformation($"PostCode {postCode}");            
+            _logger.LogInformation($"PostCode {postCode}");       
             return await _addressService.CheckPostCode(postCode);
         }
 

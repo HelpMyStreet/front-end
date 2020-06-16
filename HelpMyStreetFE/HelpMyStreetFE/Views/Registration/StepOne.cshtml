@@ -6,7 +6,7 @@
     <script>
         const activeStep = @Model.ActiveStep;
         const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
-
+        const source = '@Model.Source';
     </script>
     <script src="~/registration.js" asp-append-version="true"></script>
 }
@@ -78,8 +78,8 @@
                     <span class="termsprivacy error"></span>
                     <div class="controls">
                         <button class="btn cta large fill" id="submit_button" type="submit">
-                            <span class="text">Continue to next page &gt;</span>
-                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Creating account..."}' /></div>
+                            <span class="text">Continue <span class="large-screen-only">to next page</span> &gt;</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Next Step..."}' /></div>
                         </button>
                     </div>
                 </form>

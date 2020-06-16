@@ -10,7 +10,7 @@
     var recipient = Model.Recipient;
     requestor.AlternatePhoneNumber = string.IsNullOrEmpty(requestor.AlternatePhoneNumber) ? "None Provided" : requestor.AlternatePhoneNumber;
     requestor.MobileNumber = string.IsNullOrEmpty(requestor.MobileNumber) ? "None Provided" : requestor.MobileNumber;
-    requestor.Email = string.IsNullOrEmpty(requestor.MobileNumber) ? "None Provided" : requestor.MobileNumber;
+    requestor.Email = string.IsNullOrEmpty(requestor.Email) ? "None Provided" : requestor.Email;
 
     recipient.Email = string.IsNullOrEmpty(recipient.Email) ? "None Provided" : recipient.Email;
     recipient.MobileNumber = string.IsNullOrEmpty(recipient.MobileNumber) ? "None Provided" : recipient.MobileNumber;
