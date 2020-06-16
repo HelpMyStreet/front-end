@@ -15,43 +15,48 @@ export function initialiseStepTwo() {
     $("#address_selector").unbind("change");
 
     const postcode = $("input[name=postcode_search]").val();
-
     try {
-      const resp = await fetch(`/api/postcode/${postcode}`);
-      if (resp.ok) {
-        const { hasContent, isSuccessful, content } = await resp.json();
+        const resp = await fetch(`/api/postcode/${postcode}`);
+        if (resp.ok) {
+            const { hasContent, isSuccessful, content } = await resp.json();
 
-        if (hasContent && isSuccessful) {
-          $("select[name=address_selector]").html(
-            content.addressDetails.reduce((acc, cur, i) => {
-              const text = Object.keys(cur).reduce((tAcc, tCur) => {
-                if (cur[tCur] != null) {
-                  tAcc += tAcc === "" ? "" : ", ";
-                  tAcc += `${cur[tCur]}`;
-                }
+            if (hasContent && isSuccessful) {
+                let postcodeInput = $("input[name='postcode_search']");
+                postcodeInput.find("~ .error").hide();
 
-                return tAcc;
-              }, "");
+                $("select[name=address_selector]").html(
+                    content.addressDetails.reduce((acc, cur, i) => {
+                        const text = Object.keys(cur).reduce((tAcc, tCur) => {
+                            if (cur[tCur] != null) {
+                                tAcc += tAcc === "" ? "" : ", ";
+                                tAcc += `${cur[tCur]}`;
+                            }
 
-              acc += `<option value="${i}">${text}</option>`;
-              return acc;
-            }, '<option value="" selected disabled hidden>Choose here</option>')
-          );
+                            return tAcc;
+                        }, "");
 
-          $("#address_selector").slideDown();
-          $("select[name=address_selector]").on("change", function () {
-            const id = $(this).children("option:selected").val();
+                        acc += `<option value="${i}">${text}</option>`;
+                        return acc;
+                    }, '<option value="" selected disabled hidden>Choose here</option>')
+                );
 
-            const address = content.addressDetails[id];
+                $("#address_selector").slideDown();
+                $("select[name=address_selector]").on("change", function () {
+                    const id = $(this).children("option:selected").val();
 
-            $("input[name=address_line_1]").val(address.addressLine1);
-            $("input[name=address_line_2]").val(address.addressLine2);
-            $("input[name=city]").val(address.locality);
-            $("input[name=postcode]").val(address.postcode);
-            $(".expander").slideDown();
-          });
-        }
-      }
+                    const address = content.addressDetails[id];
+
+                    $("input[name=address_line_1]").val(address.addressLine1);
+                    $("input[name=address_line_2]").val(address.addressLine2);
+                    $("input[name=city]").val(address.locality);
+                    $("input[name=postcode]").val(address.postcode);
+                    $(".expander").slideDown();
+                });
+            } else {
+                let postcodeInput = $("input[name='postcode_search']");
+                postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+            }
+        } 
     } catch (ex) {
       console.error(ex);
     }
@@ -79,7 +84,7 @@ export function initialiseStepTwo() {
         runAdditionalValidation($(this)).then(function (additonalChecks) {
             let validForm = (additonalChecks && valid);            
             let postcodeValid;
-            let postcodeInput = $("input[name='postcode']");
+            let postcodeInput = $("input[name='postcode_search']");
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
             if (validForm) { // avoid calling service when possible, so check if the form is valid first
                 buttonLoad($('#submit_button'));
