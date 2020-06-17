@@ -63,7 +63,7 @@ namespace HelpMyStreetFE.Repositories
                                     <span class='input--checkbox__checkbox'>
                                         <span class='mdi mdi-check'></span>
                                     </span>
-                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; motivational interviewing; counselling, or an accredited form of therapy)
+                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; Motivational Interviewing; counselling, or an accredited form of therapy)
                                 </label>
                             </div>
                        </form>
@@ -77,7 +77,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityVolunteersTextHtml =
             @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners' health and wellbeing so everyone can live healthier lives.</p>
-            <p>Our partners include the NHS in London (Clinical Commisioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
+            <p>Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
             London, Public Health England and London Councils.</p>";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
