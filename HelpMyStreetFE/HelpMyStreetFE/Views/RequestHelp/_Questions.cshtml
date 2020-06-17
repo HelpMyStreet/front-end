@@ -21,13 +21,13 @@
             @switch (Model.Questions[i].InputType)
             {
                 case QuestionType.MultiLineText:
-                    <textarea placeholder="@Model.Questions[i].Placeholder()" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" name="@name">@Model.Questions[i].Model</textarea>
+                    <textarea placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" name="@name">@Model.Questions[i].Model</textarea>
                     break;
                 case QuestionType.Text:
-                    <input type="text" placeholder="@Model.Questions[i].Placeholder()" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
+                    <input type="text" placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
                     break;
                 case QuestionType.Number:
-                    <input type="number" min="1" placeholder="@Model.Questions[i].Placeholder()" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
+                    <input type="number" min="1" placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
                     break;
                 case QuestionType.Radio:
 
@@ -35,17 +35,17 @@
                     {
                         <div class="input--radio">
                             <label>
-                                <input type="radio" name="@name" value="@radio.Key" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" class="question @Model.Questions[i].Class()" @(Model.Questions[i].Model == radio.Key ? "checked" : "") hidden />
+                                <input type="radio" name="@name" value="@radio.Key" data-id="@Model.Questions[i].ID" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" class="question @Model.Questions[i].Class()" @(Model.Questions[i].Model == radio.Key ? "checked" : "") hidden />
                                 <span class="input--radio__radio">
                                     <span class="input--radio__radio__inner"></span>
                                 </span>
                                 @radio.Value
 
-                            </label>            
+                            </label>
                         </div>
-              }
-                break;
-       }
+                    }
+                    break;
+            }
 
             <span class="error"></span>
 

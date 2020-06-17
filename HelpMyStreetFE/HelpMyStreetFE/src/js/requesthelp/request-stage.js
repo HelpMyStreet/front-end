@@ -1,5 +1,8 @@
 ﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
+import { trackPageView, trackEvent } from "../shared/tracking-helper";
+
+
 export function intialiseRequestStage() {
     intialiseRequestTiles();
     validateForm();
@@ -25,7 +28,9 @@ var validateForm = function () {
             "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
         });
 
-        const validForm = validateQuestions() && valid;        
+        const validForm = validateQuestions() && valid;
+
+        trackEvent("Form interaction", "Click", "Continue", validForm ? 1 : 0);
 
         if (validForm == false) {
             buttonUnload($("#btnNext"));;
@@ -35,6 +40,27 @@ var validateForm = function () {
         
         return validForm;
     });
+}
+
+
+var GetCurrentQuestionAnswers = function () {
+    var questionAnswers = []
+
+    $('.question').each(function () {
+        var type = $(this).attr("type");   
+        var val = $(this).val();
+        if (type == "radio") {
+            val = $(`input[name="${$(this).attr("name")}"]:checked`).val();
+        }      
+        if (val != undefined) {
+            questionAnswers.push({
+                id: Number($(this).attr("data-id")),
+                answer: val
+            });
+        }
+    });
+
+    return questionAnswers;
 }
 
 
@@ -93,12 +119,13 @@ var handleRequestFor = function (el) {
 
     var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
     if (taskId != "") {
+        trackEvent("Form interaction", "Select", "RequestFor", parseInt(taskId));
         LoadQuestions(taskId);
     }
 }
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
-    let allowCustomEntry = el.attr("data-allowcustom");    
+    let allowCustomEntry = el.attr("data-allowcustom");
     if (allowCustomEntry == "True") {
         $("#CustomTime").show();
 
@@ -114,6 +141,7 @@ var handleActivity = function (el) {
     el.addClass("selected");
     let taskId = el.attr("data-id");
     $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
+    trackEvent("Form interaction", "Select", "Activity", parseInt(taskId));
     LoadQuestions(taskId);
 }
 
@@ -122,12 +150,12 @@ var handleActivity = function (el) {
 var LoadQuestions = function (taskId) {
     var requestorId = $('input[name="currentStep.SelectedRequestor.Id"]').val();
     requestorId = requestorId == "" ? null : Number(requestorId);
-    console.log(requestorId);
 
     var qRequest = {
         taskId: Number(taskId),
         step: JSON.parse($('input[name="RequestStep"]').val()),
-        requestorId: requestorId
+        requestorId: requestorId,
+        answers: GetCurrentQuestionAnswers(),
     };
 
     $('.questions').each(function () {
