@@ -85,8 +85,7 @@ namespace HelpMyStreetFE.Services
             };
             if (source == RequestHelpSource.DIY) {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);
-                requestStep.Requestors.Where(x => x.Type == RequestorType.OnBehalf).First().IsSelected = true;
+                requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
             }
             return model;
         }
