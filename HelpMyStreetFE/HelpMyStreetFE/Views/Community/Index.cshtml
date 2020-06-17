@@ -28,12 +28,12 @@
                     <div class="row sm6 text-center justify-center mb-md">
                         @if (!Model.IsLoggedIn)
                         {
-                            <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up Now</a>
+                            <a href="@Model.SignUpLink" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Sign Up Now</a>
 
                         }
                         else
                         {
-                            <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
+                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Provide Help</a>
 
                         }
                     </div>
@@ -41,7 +41,7 @@
                     @if (Model.ShowRequestHelp)
                     {
                     <div class="row sm6 text-center justify-center mb-md large-screen-only">
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+                        <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
                     </div>
                     }
 
@@ -112,13 +112,15 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange">Request Help</a>
+                                <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
                             </div>
 
                         </div>
                     </div>
                 }
 
+                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText))
+                {
                 <div class="sm6">
                     <div class="card">
                         <h2>@Model.ProvideHelpHeading</h2>
@@ -129,15 +131,16 @@
                         <div class="" style="text-align: center">
                             @if (!Model.IsLoggedIn)
                             {
-                                <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                                <a id="first-button" href="@Model.SignUpLink" class="btn cta fixed-width btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Sign Up</a>
                             }
                             else
                             {
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Provide Help</a>
                             }
                         </div>
                     </div>
                 </div>
+                }
             </div>
         </div>
     </div>
@@ -160,14 +163,16 @@
         </div>
     </div>
 
-    @if (Model.ShowHelpExampleCards)
-    {
+ 
     <div class="outer-container">
         <div class="inner-container">
-            <partial name="_HelpExampleCards" />
-        </div>
+            @if (Model.ShowHelpExampleCards)
+            {
+                <partial name="_HelpExampleCards" />
+                    }
+            </div>
     </div>
-    }
+
 
     <div class="outer-container outer-container--darker">
         <div class="inner-container">
