@@ -10,13 +10,94 @@ namespace HelpMyStreetFE.Repositories
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return GetTankersley();     
+                    return GetTankersley();
+                case "hlp":
+                    return GetHLP();
                 default:
                     return null;
             }
         }
         
+        private CommunityViewModel GetHLP()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
 
+            communityViewModel.Latitude = 51.5074;
+            communityViewModel.Longitude = 0.1278;
+            communityViewModel.ZoomLevel = 5;
+
+            communityViewModel.CommunityName = "Healthy London";
+
+            communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
+
+            communityViewModel.Header = "What are community Connectors";
+            communityViewModel.ShowRequestHelp = false;
+            communityViewModel.ShowHelpExampleCards = false;
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Healthy London Partnership";
+
+
+
+            communityViewModel.CommunityVolunteersTextHtml =
+ @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog. If you need anything, all you need to do is ask! Request help or sign-up to join us using the buttons below, or call us on XXX.</p>
+<p>Did you know... we also have a community fund to help people struggling to buy the essentials. If you need help paying for your shopping please don't go without - call us on XXXX for a confidential chat, we're here to help.</p>
+<p>If you want to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
+";
+                        
+
+            communityViewModel.ProvideHelpHeading = "Become a Community Connector";
+
+            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Volunteer Name",
+                    Role = "Role",
+                    Location = "Location",
+                    ImageLocation = "/img/icons/anonymous-user.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Volunteer Name",
+                    Role = "Role",
+                    Location = "Location",
+                    ImageLocation = "/img/icons/anonymous-user.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Volunteer Name",
+                    Role = "Role",
+                    Location = "Location",
+                    ImageLocation = "/img/icons/anonymous-user.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Volunteer Name",
+                    Role = "Role",
+                    Location = "Location",
+                    ImageLocation = "/img/icons/anonymous-user.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Volunteer Name",
+                    Role = "Role",
+                    Location = "Location",
+                    ImageLocation = "/img/icons/anonymous-user.png"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = new List<string>()
+            {
+                @"<a href=""https://www.healthylondon.org/"">Healthy London Partnership</a>",
+                @"Piley & Tankersley Community Fund - call XXX on XXX for a confidential chat",
+                @"<a href=""https://mhfaengland.org/"">MHFA England</a>",
+            };
+
+            return communityViewModel;
+
+        }
         private CommunityViewModel GetTankersley()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
@@ -30,6 +111,27 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
 
             communityViewModel.Header = "Pilley and Tankersley people taking care of each other";
+
+
+            communityViewModel.HeaderHTML = @"
+                    <p class='row sm12 text - left mt - sm mb - xs'>
+                        HelpMyStreet connects neighbours in need with people who can help -safely and securely.< br >
+                    </p>
+                   <div class='row sm12'>
+                        <ul class='tick-list mt-xs mb-sm compact-list'>
+                            <li>Shopping for essentials</li>
+                            <li>Cooking a hot meal</li>
+                            <li>Home-sewn face coverings</li>
+                            <li>Help with home-schooling</li>
+                            <li>A friendly chat</li>
+                        </ul>
+                    </div>
+                    <p class='row sm12 mt-sm mb-sm'>It's OK to ask for a little help</p>
+                    <div class='row sm12 text-center justify-center small-screen-only mb-sm'>
+                        <a href='/request-help' class='btn cta small btn--request-help cta--orange'>Request Help</a>
+                    </div>
+                    <p class='row sm12 mt-sm mb-sm'>Help your neighbours in need</p>";
+
 
             communityViewModel.CommunityVolunteersHeader = "Welcome from Pilley and Tankersley Community Helpers";
 

@@ -220,7 +220,7 @@ namespace HelpMyStreetFE.Services
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpSource source)
         {
             return await _requestHelpBuilder.GetSteps(source);
-        }1
+        }
     }
  }
 

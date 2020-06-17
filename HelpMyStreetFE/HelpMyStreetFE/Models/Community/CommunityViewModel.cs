@@ -15,11 +15,12 @@ namespace HelpMyStreetFE.Models.Community
         public string BannerImageLocation { get; set; }
 
         public string Header { get; set; }
-
+        public string HeaderHTML { get; set; }
         public string CommunityVolunteersHeader { get; set; }
         public string CommunityVolunteersTextHtml { get; set; }
 
-
+        public bool ShowRequestHelp { get; set; } = true;
+        public bool ShowHelpExampleCards {get;set;} = true;
         public string RequestHelpHeading { get; set; }
         public string RequestHelpText { get; set; }
 
