@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Models.Community
         {
             return @"
                     <p class='row sm12 text-left mt- sm mb-xs'>
-                        HelpMyStreet connects neighbours in need with people who can help -safely and securely.< br >
+                        HelpMyStreet connects neighbours in need with people who can help safely and securely.<br>
                     </p>
                    <div class='row sm12'>
                         <ul class='tick-list mt-xs mb-sm compact-list'>

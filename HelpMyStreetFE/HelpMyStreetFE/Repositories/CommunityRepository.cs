@@ -22,9 +22,9 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            communityViewModel.Latitude = 51.5074;
-            communityViewModel.Longitude = 0.1278;
-            communityViewModel.ZoomLevel = 5;
+            communityViewModel.Latitude = 51.507602;
+            communityViewModel.Longitude = -0.127816;
+            communityViewModel.ZoomLevel = 6;
 
             communityViewModel.CommunityName = "Healthy London";
 
