@@ -103,7 +103,16 @@ namespace HelpMyStreetFE.Services
             DateTime.TryParse(ctx.Session.GetString("openJobsLastUpdated"), out lastUpdated);
             if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now)
             {
-                var all = await _requestHelpRepository.GetJobsByFilterAsync(user.PostalCode, distanceInMiles);
+                var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly };
+                var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+                var jobsByFilterRequest = new GetJobsByFilterRequest()
+                {
+                    Postcode = user.PostalCode,
+                    DistanceInMiles = distanceInMiles,
+                    ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles
+                };
+
+                var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
 
                 var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
 
