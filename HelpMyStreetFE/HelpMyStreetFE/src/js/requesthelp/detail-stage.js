@@ -1,7 +1,7 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
 
-export async function initaliseDetailStage() {
+export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
     SetupAddressFinder();
 
