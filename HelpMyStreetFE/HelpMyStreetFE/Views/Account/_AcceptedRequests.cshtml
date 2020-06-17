@@ -57,22 +57,24 @@
              }
          </div>
 
-
-         <div class="job">
-             <div class="job__info twoCol">
-                 <div class="job__info__activity column"></div>
-                 <div class="job__info__activity column p-sm">
-                     <p class="mt-xs mb-xs">
-                         <strong>Submit&amp;Accept</strong>
-                     </p>
-                     <p class="mt-xs">
-                         If you have a request for help that you are going to complete yourself, you can use the Submit&amp;Accept function to immediately accept the request when you submit it.
-                     </p>                
-                 </div>
-                 <div class="job__info__actions column">
-                     <a href="/request-help/diy" class=" btn cta p-md large cta--orange fill">Submit&amp;Accept</a>
+         @if (Model.UserDetails.IsVerified)
+         {
+             <div class="job">
+                 <div class="job__info twoCol">
+                     <div class="job__info__activity column"></div>
+                     <div class="job__info__activity column p-sm">
+                         <p class="mt-xs mb-xs">
+                             <strong>Submit&amp;Accept</strong>
+                         </p>
+                         <p class="mt-xs">
+                             If you have a request for help that you are going to complete yourself, you can use the Submit&amp;Accept function to immediately accept the request when you submit it.
+                         </p>
+                     </div>
+                     <div class="job__info__actions column">
+                         <a href="/request-help/diy" class=" btn cta p-md large cta--orange fill">Submit&amp;Accept</a>
+                     </div>
                  </div>
              </div>
+         }
          </div>
-     </div>
          </div>
