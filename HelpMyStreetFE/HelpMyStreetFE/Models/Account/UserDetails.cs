@@ -15,8 +15,7 @@ namespace HelpMyStreetFE.Models.Account
             string mobileNumber,
             string otherNumber,
             string dateOfBirth,
-            string gender,
-            string underlyingMedicalConditions,
+            string gender,    
             List<string> championPostcodes,
             bool isStreetChampion,
             bool isVerified
@@ -32,8 +31,7 @@ namespace HelpMyStreetFE.Models.Account
             DateOfBirth = dateOfBirth;
             Gender = gender;
             Address = address;
-            StreetChampion = streetChampion;
-            UnderlyingMedicalConditions = underlyingMedicalConditions;
+            StreetChampion = streetChampion;   
             ChampionPostcodes = championPostcodes;
             IsStreetChampion = isStreetChampion;
             IsVerified = isVerified;
@@ -49,7 +47,6 @@ namespace HelpMyStreetFE.Models.Account
         public string OtherNumber { get; set; }
         public string DateOfBirth { get; set; }
         public string Gender { get; set; }
-        public string UnderlyingMedicalConditions { get; set; }
         public string StreetChampion { get; set; }
         public List<string> ChampionPostcodes { get; set; }
         public bool IsStreetChampion { get; set; }

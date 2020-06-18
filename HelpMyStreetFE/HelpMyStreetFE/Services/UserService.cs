@@ -76,17 +76,15 @@ namespace HelpMyStreetFE.Services
         public async Task CreateUserStepThreeAsync(
             int id,
             List<SupportActivities> activities,
-            float supportRadius,
-            bool supportContact,
-            bool medical)
+            float supportRadius)
         {
             await _userRepository.CreateUserStepThree(new RegistrationStepThree
             {
                 UserID = id,
                 Activities = activities,
                 SupportRadiusMiles = supportRadius,
-                SupportVolunteersByPhone = supportContact,
-                UnderlyingMedicalCondition = medical
+                SupportVolunteersByPhone = null,
+                UnderlyingMedicalCondition = null
             });
         }
 
@@ -144,7 +142,7 @@ namespace HelpMyStreetFE.Services
             return await _userRepository.GetVolunteerCoordinates(swLatitude, swLongitude, neLatitude, neLongitude, minDistanceBetweenInMetres);
         }
 
-        public UserDetails GetUserDetails(HelpMyStreet.Utils.Models.User user)
+        public UserDetails GetUserDetails(User user)
         {
             var personalDetails = user.UserPersonalDetails;
 
@@ -160,8 +158,7 @@ namespace HelpMyStreetFE.Services
                    "Not Set",
                    "Not Set",
                    "Not Set",
-                   "Not Set",
-                   "Not Set",
+                   "Not Set",                  
                    "Not Set",
                    new List<string>(),
                    false,
@@ -172,16 +169,10 @@ namespace HelpMyStreetFE.Services
 
             string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
           
-            string gender = "Unknown";
-            string underlyingMedicalConditions = "No";
+            string gender = "Unknown";            
             bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
             bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
-            string streetChampion = isStreetChampion ? "Street Champion" : "Helper";
-            
-            if (personalDetails.UnderlyingMedicalCondition.HasValue)
-            {
-                underlyingMedicalConditions = personalDetails.UnderlyingMedicalCondition.Value ? "Yes" : "No";
-            }
+            string streetChampion = isStreetChampion ? "Street Champion" : "Helper";         
 
             return new UserDetails(
                 initials,
@@ -194,8 +185,7 @@ namespace HelpMyStreetFE.Services
                 personalDetails.MobilePhone,
                 personalDetails.OtherPhone,
                 personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
-                gender,
-                underlyingMedicalConditions,
+                gender,                
                 user.ChampionPostcodes,
                 isStreetChampion,
                 isVerified

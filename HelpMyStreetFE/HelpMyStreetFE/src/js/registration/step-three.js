@@ -25,18 +25,9 @@ export function initialiseStepThree() {
       $("#distance-error").show();
     }
 
-   if (source.toLowerCase() == "default" && !obj["volunteer_phone_contact"]) {
-      valid = false;
-      $("#contact-error").show();
+    if (!valid) {
+        buttonUnload($('#submit_button'));
     }
-
-    if (!obj["volunteer_medical_condition"]) {
-      valid = false;
-      $("#medical-error").show();
-        }
-        if (!valid) {
-            buttonUnload($('#submit_button'));
-        }
 
     return valid;
   });

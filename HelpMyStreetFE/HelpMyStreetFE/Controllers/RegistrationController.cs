@@ -155,9 +155,7 @@ namespace HelpMyStreetFE.Controllers
                 await _userService.CreateUserStepThreeAsync(
                     userId,
                     form.VolunteerOptions,
-                    form.VolunteerDistance,
-                    form.VolunteerPhoneContact,
-                    form.VolunteerMedicalCondition);
+                    form.VolunteerDistance);
 
                 return Redirect("/registration/stepfour");
             }
