@@ -142,9 +142,6 @@ var handleActivity = function (el) {
     let taskId = el.attr("data-id");
     $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
     trackEvent("Form interaction", "Select", "Activity", parseInt(taskId));
-    LoadQuestions(taskId);
-
-
     
     if (taskId == 2) { // facemask   
         $('#requestorFor_3').show(); // onbehalf of organisation
@@ -166,11 +163,16 @@ var handleActivity = function (el) {
     // preselect value if theres only one
     if ($('.requestorFor:visible').length == 1) {
         $('.requestorFor:visible').addClass("selected");
-        $('input[name="currentStep.SelectedRequestor.Id"]').val($('.requestorFor:visible').attr("data-id"));
+        let selectedId = $('.requestorFor:visible').attr("data-id");
+        $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
+        LoadQuestions(taskId, selectedId);
     } else {
         $('.requestorFor:visible').removeClass("selected");
         $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+        LoadQuestions(taskId);
     }
+
+
 
 }
 
