@@ -24,7 +24,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
-            communityViewModel.ZoomLevel = 11;
+            communityViewModel.ZoomLevel = 10;
 
             communityViewModel.CommunityName = "Healthy London Partnership";
             communityViewModel.CommunityShortName = "Healthy London";
