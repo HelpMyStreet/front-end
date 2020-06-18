@@ -148,6 +148,11 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
 
+            if(form.HasCustomDistance)
+            {
+                form.VolunteerDistance = (float)form.CustomDistance;
+            }
+
             try
             {
                 _logger.LogInformation($"Step 3 submission for {userId}");
@@ -155,9 +160,7 @@ namespace HelpMyStreetFE.Controllers
                 await _userService.CreateUserStepThreeAsync(
                     userId,
                     form.VolunteerOptions,
-                    form.VolunteerDistance,
-                    form.VolunteerPhoneContact,
-                    form.VolunteerMedicalCondition);
+                    form.VolunteerDistance);
 
                 return Redirect("/registration/stepfour");
             }
