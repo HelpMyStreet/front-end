@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = Model.CommunityName;
-    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = Model.CommunityName, ShowSecondaryText = true };
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
 }
 
 @section Scripts {
