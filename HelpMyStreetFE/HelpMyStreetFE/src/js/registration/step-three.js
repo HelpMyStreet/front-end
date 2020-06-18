@@ -2,6 +2,19 @@ import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData } from "../shared/validator";
 
 export function initialiseStepThree() {
+
+
+
+    $("input[name='volunteer_distance'").change(function () {
+        let value = $(this).val()        
+        if (value == 999) {
+            $("input[name='custom_distance']").show();
+        } else {
+            $("input[name='custom_distance']").hide();
+        }
+        
+    })
+
     $("#registration_form").on("submit", function () {
         buttonLoad($('#submit_button'));
     let valid = true;
@@ -18,12 +31,20 @@ export function initialiseStepThree() {
     if (!obj["volunteer[]"]) {      
       valid = false;
       $("#volunteer-error").show();
-    }
-
-    if (!obj["volunteer_distance"]) {
-      valid = false;
-      $("#distance-error").show();
-    }
+        }
+      
+        if (!obj["volunteer_distance"]) {
+            valid = false;
+            $("#distance-error").show();
+        }
+        else if (obj["volunteer_distance"] == 999)
+        {
+            if (obj["custom_distance"] == "" || obj["custom_distance"] > 20 || obj["custom_distance"] < 0) {
+                $('#custom_distance-error').show();
+                valid = false;
+            }
+        }
+        
 
     if (!valid) {
         buttonUnload($('#submit_button'));

@@ -148,6 +148,11 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
 
+            if(form.HasCustomDistance)
+            {
+                form.VolunteerDistance = (float)form.CustomDistance;
+            }
+
             try
             {
                 _logger.LogInformation($"Step 3 submission for {userId}");

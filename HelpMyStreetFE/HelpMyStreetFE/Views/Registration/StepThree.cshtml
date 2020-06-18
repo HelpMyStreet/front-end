@@ -28,8 +28,8 @@
     volunteerOptions.Add(SupportActivities.WellbeingPackage, "Collecting and delivering a pre-prepared wellbeing package");
     volunteerOptions.Add(SupportActivities.DogWalking, "Walking the dog");
     volunteerOptions.Add(SupportActivities.MealPreparation, "Delivering a hot / pre-prepared meal");
-    volunteerOptions.Add(SupportActivities.PhoneCalls_Friendly, "Making / receiving phone calls for those in need of a friendly chat");
-    volunteerOptions.Add(SupportActivities.PhoneCalls_Anxious, "Making / receiving phone calls for those who may be anxious");
+    volunteerOptions.Add(SupportActivities.PhoneCalls_Friendly, "Calling someone in need of a friendly chat");
+    volunteerOptions.Add(SupportActivities.PhoneCalls_Anxious, "Providing support over the phone to someone who may be anxious (relevant experience required e.g. Samaritans)");
     volunteerOptions.Add(SupportActivities.HomeworkSupport, "Remote support for parents and carers home-schooling their children");
     volunteerOptions.Add(SupportActivities.CheckingIn, "Reaching out to people in my area to check-in");
     volunteerOptions.Add(SupportActivities.Other, "I may be able to help with other tasks. Please check with me.");
@@ -38,10 +38,11 @@
 
     var distanceOptions = new Dictionary<double, string>
     {
-    { 0, "My street only" },
+    { 0, "On my street only" },
     { 0.5, "Within 1/2 mile" },
     { 1, "Within 1 mile" },
-    { 3, "Within 3 miles" }
+    { 3, "Within 3 miles" },
+    { 999, "Other - please tell us the distance in miles" }
     };
     }
 
@@ -63,7 +64,8 @@
             <input name="source" type="hidden" value="@Model.Source" />
             <div class="row justify-center">
                 <div class="sm8">
-                    <p>Helpers work with Street Champions by volunteering for specific requests, supporting people in need and keeping the Street Champions up to date.</p>
+                    <p>HelpMyStreet will always try to match helpers to requests that are appropriate for them. Some requests are local in nature (e.g. picking up groceries),
+                    while others can be performed over a wider area (e.g. posting a fabric face covering, or supporting people over the phone).</p>
                     <h5>I can help people in need by:</h5>
                     <p>(Please tick as many as you like)</p>
                     <span class="error" id="volunteer-error">Please select at least one option</span>
@@ -82,7 +84,7 @@
                     }
                 </div>
                 <div class="sm8 mt40">
-                    <h5>Within what distance are you able to help?</h5>
+                    <h5>I can travel to perform tasks that are:</h5>
                     <span class="error" id="distance-error">Please select an option</span>
                     @foreach (var option in distanceOptions)
                     {
@@ -97,6 +99,13 @@
                         </div>
                         <hr class="input--separator" />
                     }
+                </div>
+
+                <div class="sm8 ">
+                    <div class="input input--radio mt-md ">
+                        <input name="custom_distance" class="dnone" type="number" placeholder="e.g. 10" />
+                        <span class="error" id="custom_distance-error">Please enter a number of miles (up to a maximum of 20)</span>
+                    </div>
                 </div>
                 
                 <div class="sm8">
