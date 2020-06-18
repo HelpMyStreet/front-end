@@ -250,6 +250,12 @@ namespace HelpMyStreetFE
                     pattern: "tankersley",
                     defaults: new { controller = "Home", action = "Index" });
 
+
+                endpoints.MapControllerRoute(
+                    name: "healthylondonpartnerships",
+                    pattern: "healthylondonpartnerships",
+                    defaults: new { controller = "Community", action = "Index", communityName = "hlp" });
+
                 endpoints.MapControllerRoute(
                    name: "face-masks",
                    pattern: "face-masks",

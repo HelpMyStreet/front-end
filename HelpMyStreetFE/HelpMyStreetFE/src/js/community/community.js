@@ -6,6 +6,19 @@ $(document).ready(function () {
         lessLink: '<a href="#">Read less</a>',
         collapsedHeight: 200
     });
+
+
+    $('.select-all').change(function () {
+        var values = []
+        $('.select-all').each(function () {
+            values.push($(this).is(":checked"));
+        })
+        if (!values.includes(false)) {
+            $('.btn').removeClass("disabled");
+        } else {
+            $('.btn').addClass("disabled");
+        }
+    })
 });
 
 
