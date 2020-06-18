@@ -11,7 +11,7 @@ namespace HelpMyStreetFE.Models.Community
         public int ZoomLevel { get; set; }
         public string SignUpLink { get; set; } = "/registration/stepone";
         public string CommunityName { get; set; }
-
+        public string CommunityShortName { get; set; }
         public string BannerImageLocation { get; set; }
 
         public string Header { get; set; }

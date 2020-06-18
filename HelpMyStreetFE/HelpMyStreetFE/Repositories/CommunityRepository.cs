@@ -26,7 +26,8 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = -0.127816;
             communityViewModel.ZoomLevel = 10;
 
-            communityViewModel.CommunityName = "Healthy London";
+            communityViewModel.CommunityName = "Healthy London Partnership";
+            communityViewModel.CommunityShortName = "Healthy London";
 
             communityViewModel.BannerImageLocation = "/img/community/hlp/hlp-banner.png";
 
@@ -50,7 +51,7 @@ namespace HelpMyStreetFE.Repositories
                        <form>
                             <div class='input input--checkbox'>
                                 <label class='small'>
-                                    <input type='checkbox' class='select-all' hidden />
+                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
                                     <span class='input--checkbox__checkbox'>
                                         <span class='mdi mdi-check'></span>
                                     </span>
@@ -59,7 +60,7 @@ namespace HelpMyStreetFE.Repositories
                             </div>
                             <div class='input input--checkbox'>
                                 <label class='small'>
-                                    <input type='checkbox' class='select-all' hidden />
+                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
                                     <span class='input--checkbox__checkbox'>
                                         <span class='mdi mdi-check'></span>
                                     </span>

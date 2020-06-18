@@ -1,5 +1,12 @@
 ﻿@model HelpMyStreetFE.Models.HMSLogoViewModel
 
+
+@{ 
+    if (string.IsNullOrEmpty(Model.PrimaryMobileText))
+    {
+        Model.PrimaryMobileText = Model.PrimaryText;
+    }
+}
     <div class="page-header__logo">
         @if (Model.RenderLink)
         {
@@ -7,7 +14,10 @@
                 <div>
                     <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
                     <div class="logo-text">
-                        <div class="primary-logo-text">@Model.PrimaryText.Replace(' ','\u00A0')</div>
+                        <div class="primary-logo-text">
+                            <span class="large-screen-only">@Model.PrimaryText.Replace(' ', '\u00A0')</span>
+                            <span class="small-screen-only">@Model.PrimaryMobileText.Replace(' ', '\u00A0')</span>
+                        </div>
                         @if (Model.ShowSecondaryText)
                         {
                             <div class="secondary-logo-text">@Model.SecondaryText.Replace(' ','\u00A0')</div>
@@ -21,7 +31,10 @@
             <div>
                 <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
                 <div class="logo-text">
-                    <div class="primary-logo-text">@Model.PrimaryText.Replace(' ','\u00A0')</div>
+                    <div class="primary-logo-text">
+                        <span class="large-screen-only">@Model.PrimaryText.Replace(' ', '\u00A0')</span>
+                        <span class="small-screen-only">@Model.PrimaryMobileText.Replace(' ', '\u00A0')</span>
+                    </div>
                     @if (Model.ShowSecondaryText)
                     {
                         <div class="secondary-logo-text">@Model.SecondaryText.Replace(' ','\u00A0')</div>
