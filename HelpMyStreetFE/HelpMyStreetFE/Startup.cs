@@ -168,7 +168,14 @@ namespace HelpMyStreetFE
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
             app.UseStaticFiles(new StaticFileOptions{
-                ContentTypeProvider = provider
+                ContentTypeProvider = provider,
+                OnPrepareResponse = ctx =>
+                {
+                    const int durationInSeconds = 60 * 60 * 24;
+                    ctx.Context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.CacheControl] =
+                        "public,max-age=" + durationInSeconds;
+                }
+
             });
             app.UseSession();
             app.UseRouting();
