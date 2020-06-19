@@ -150,7 +150,7 @@ namespace HelpMyStreetFE.Controllers
 
             if(form.HasCustomDistance)
             {
-                form.VolunteerDistance = (float)form.CustomDistance;
+                form.VolunteerDistance = form.CustomDistance;
             }
 
             try

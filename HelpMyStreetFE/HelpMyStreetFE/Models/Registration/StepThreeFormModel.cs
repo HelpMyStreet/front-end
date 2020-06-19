@@ -15,7 +15,7 @@ namespace HelpMyStreetFE.Models.Registration
         [BindProperty(Name = "volunteer_distance")]
         public float VolunteerDistance { get; set; }
         [BindProperty(Name = "custom_distance")]            
-        public int CustomDistance { get; set; }
+        public float CustomDistance { get; set; }
         [BindProperty(Name = "source")]
         public RegistrationSource Source { get; set; }
 
