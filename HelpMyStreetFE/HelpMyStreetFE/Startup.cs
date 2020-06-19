@@ -171,11 +171,11 @@ namespace HelpMyStreetFE
                 ContentTypeProvider = provider,
                 OnPrepareResponse = ctx =>
                 {
-                    const int durationInSeconds = 60 * 60 * 24;
+                   int durationInHours = Configuration.GetValue<int?>("StaticFileCacheInHours") ?? 24;                                        
+                   int durationInSeconds = 60 * 60 * durationInHours;
                     ctx.Context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.CacheControl] =
                         "public,max-age=" + durationInSeconds;
                 }
-
             });
             app.UseSession();
             app.UseRouting();
