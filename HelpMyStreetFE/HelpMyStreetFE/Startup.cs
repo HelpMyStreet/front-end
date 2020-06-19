@@ -252,8 +252,8 @@ namespace HelpMyStreetFE
 
 
                 endpoints.MapControllerRoute(
-                    name: "healthylondonpartnerships",
-                    pattern: "healthylondonpartnerships",
+                    name: "healthylondonpartnership",
+                    pattern: "healthylondonpartnership",
                     defaults: new { controller = "Community", action = "Index", communityName = "hlp" });
 
                 endpoints.MapControllerRoute(

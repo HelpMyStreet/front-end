@@ -8,15 +8,19 @@ $(document).ready(function () {
     });
 
 
+    if ($('.select-all').length > 0) {
+        $('.btn--sign-up').addClass("disabled");
+    }
+
     $('.select-all').change(function () {
         var values = []
         $('.select-all').each(function () {
             values.push($(this).is(":checked"));
         })
         if (!values.includes(false)) {
-            $('.btn').removeClass("disabled");
+            $('.btn--sign-up').removeClass("disabled");
         } else {
-            $('.btn').addClass("disabled");
+            $('.btn--sign-up').addClass("disabled");
         }
     })
 });

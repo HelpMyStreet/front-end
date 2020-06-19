@@ -33,7 +33,7 @@
                 <span class="text">Log In</span>
                 <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Log In", ShowDarkSpinner= true}' /></div>
             </button>
-            <a href="/registration/stepone" class="btn btn--sign-up cta">Sign Up Now</a>
+            <a href="@Model.SignUpURL" class="btn btn--sign-up cta">Sign Up Now</a>
         </div>
     </div>
 </article>

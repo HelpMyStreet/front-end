@@ -24,6 +24,12 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
+            var routeValues = Request.RouteValues;
+            if(routeValues["controller"] == "Community" && routeValues["action"] == "Index" && routeValues["CommunityName"] == "hlp")
+            {
+                model.SignUpURL = model.SignUpURL + "/hlp";
+            }
+         
             return View(model);
         }
    
