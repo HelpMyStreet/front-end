@@ -42,10 +42,10 @@ namespace HelpMyStreetFE.Repositories
                     </p>
                     <p class='row sm12 text-left mt-sm mb-xs'>
                       We are looking for volunteers who combine an understanding of mental health problems with previous training 
-                        and experience in one or more of these practical and ethical frameworks: coaching, Motivational Interviewing,
+                        and experience in one or more of these practical and ethical frameworks: coaching, motivational interviewing,
                         counselling or an accredited form of therapy.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer</p>
+                    <p class='row sm12 text-left mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer.</p>
                    <div class='row input sm12'>
                         <p class='mb-xs mt-sm'>Please confirm that:</p>
                        <form>
@@ -64,7 +64,7 @@ namespace HelpMyStreetFE.Repositories
                                     <span class='input--checkbox__checkbox'>
                                         <span class='mdi mdi-check'></span>
                                     </span>
-                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; Motivational Interviewing; counselling, or an accredited form of therapy)
+                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; motivational interviewing; counselling, or an accredited form of therapy)
                                 </label>
                             </div>
                        </form>

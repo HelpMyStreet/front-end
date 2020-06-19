@@ -164,8 +164,8 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
             var viewModel = GetAccountViewModel(currentUser);
-            viewModel.CurrentPage = MenuPage.OpenRequests;            
-            viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, currentUser, HttpContext);   
+            viewModel.CurrentPage = MenuPage.OpenRequests;
+            viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, currentUser, HttpContext); 
             return View("Index", viewModel);
         }
 

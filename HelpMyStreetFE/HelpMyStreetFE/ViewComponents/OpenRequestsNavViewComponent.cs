@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.ViewComponents
             if (((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated))
             {                
                 var user = HttpContext.Session.GetObjectFromJson<User>("User");
-                var jobs = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, user, HttpContext);
+                var jobs = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext);
                 viewModel.Count = jobs.CriteriaJobs.Count() + jobs.OtherJobs.Count();
             }
             return View(viewModel);

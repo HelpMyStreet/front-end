@@ -142,7 +142,38 @@ var handleActivity = function (el) {
     let taskId = el.attr("data-id");
     $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
     trackEvent("Form interaction", "Select", "Activity", parseInt(taskId));
-    LoadQuestions(taskId);
+    
+    if (taskId == 2) { // facemask   
+        $('#requestorFor_3').show(); // onbehalf of organisation
+        if ($('#requestorFor_3').hasClass("selected")) {
+            $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
+        }
+        displayTodayHelpNeededOptions(false);
+    } else {
+        $('#requestorFor_3').hide();
+        var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
+        // if they have previously selected On behalf of organisation,
+        //set selected RequestorID as empty since that option is only available to facemasks
+        if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+            $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+        }
+        displayTodayHelpNeededOptions(true)
+    }
+
+    // preselect value if theres only one
+    if ($('.requestorFor:visible').length == 1) {
+        $('.requestorFor:visible').addClass("selected");
+        let selectedId = $('.requestorFor:visible').attr("data-id");
+        $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
+        LoadQuestions(taskId, selectedId);
+    } else {
+        $('.requestorFor:visible').removeClass("selected");
+        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+        LoadQuestions(taskId);
+    }
+
+
+
 }
 
 
@@ -172,22 +203,6 @@ var LoadQuestions = function (taskId) {
             data: JSON.stringify(qRequest),
             success: function (data) {
                 el.html(data);
-                if (taskId == 2) { // facemask
-                    $('#requestorFor_3').show(); // onbehalf of organisation
-                    if ($('#requestorFor_3').hasClass("selected")) {
-                        $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
-                    }
-                    displayTodayHelpNeededOptions(false);
-                } else {
-                    $('#requestorFor_3').hide();
-                    var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();                    
-                    // if they have previously selected On behalf of organisation,
-                    //set selected RequestorID as empty since that option is only available to facemasks
-                    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) { 
-                        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-                    }                    
-                    displayTodayHelpNeededOptions(true)
-                }
             }
         });
     })

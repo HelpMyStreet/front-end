@@ -95,14 +95,23 @@ namespace HelpMyStreetFE.Services
 
             return response;
         }
-        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
+        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, int maxOtherJobsToDisplay, User user, HttpContext ctx)
         {
             var jobs = ctx.Session.GetObjectFromJson<OpenJobsViewModel>("openJobs");
             DateTime lastUpdated;
             DateTime.TryParse(ctx.Session.GetString("openJobsLastUpdated"), out lastUpdated);
             if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now)
             {
-                var all = await _requestHelpRepository.GetJobsByFilterAsync(user.PostalCode, distanceInMiles);
+                var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly };
+                var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+                var jobsByFilterRequest = new GetJobsByFilterRequest()
+                {
+                    Postcode = user.PostalCode,
+                    DistanceInMiles = distanceInMiles,
+                    ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles
+                };
+
+                var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
 
 
                 // if they dont have the community connector support activity, let remove any open requests in there.
@@ -116,7 +125,7 @@ namespace HelpMyStreetFE.Services
                 jobs = new OpenJobsViewModel
                 {
                     CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
-                    OtherJobs = otherJobs.OrderOpenJobsForDisplay()
+                    OtherJobs = otherJobs.OrderOpenJobsForDisplay().Take(maxOtherJobsToDisplay)
                 };
                 
                 ctx.Session.SetObjectAsJson("openJobs", jobs);
