@@ -96,7 +96,7 @@ namespace HelpMyStreetFE.Services
 
             return response;
         }
-        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx)
+        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, int maxOtherJobsToDisplay, User user, HttpContext ctx)
         {
             var jobs = ctx.Session.GetObjectFromJson<OpenJobsViewModel>("openJobs");
             DateTime lastUpdated;
@@ -119,7 +119,7 @@ namespace HelpMyStreetFE.Services
                 jobs = new OpenJobsViewModel
                 {
                     CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
-                    OtherJobs = otherJobs.OrderOpenJobsForDisplay()
+                    OtherJobs = otherJobs.OrderOpenJobsForDisplay().Take(maxOtherJobsToDisplay)
                 };
                 ctx.Session.SetObjectAsJson("openJobs", jobs);
                 ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());

@@ -187,7 +187,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> RequestHelp(RequestHelpSource source)
         {
             _logger.LogInformation("request-help");
-            if (source == RequestHelpSource.DIY && !User.Identity.IsAuthenticated)
+            if (source == RequestHelpSource.DIY && (!User.Identity.IsAuthenticated))
                 return Redirect("/login?ReturnUrl=request-help/diy");
 
             var model = await _requestService.GetRequestHelpSteps(source);
