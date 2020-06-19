@@ -19,7 +19,7 @@
         <h2>Recipient Details</h2>
         <div class="row">
             <div class="input sm12">            
-                <label>Organisation</label>
+                <label for="currentStep_Organisation">Organisation</label>
                 @Html.TextBoxFor(x => x.Organisation)
                 <span class="error"></span>
             </div>
@@ -34,7 +34,7 @@
 <h2>Is there anything more you would like to tell us?</h2>
 <div class="row">
     <div class="sm12 input">
-        <label>Are there any communication needs that volunteers need to know about before they contact you or the person who needs help?</label>
+        <label for="currentStep_CommunicationNeeds">Are there any communication needs that volunteers need to know about before they contact you or the person who needs help?</label>
         @Html.TextAreaFor(x => x.CommunicationNeeds, new { placeholder = "For example, do you have any specific language requirements, or hearing issues that we should know about?" })
         <span class="error"></span>
     </div>
@@ -45,7 +45,7 @@
     <hr class="input--separator" />
     <div class="row">
         <div class="sm12 input">
-            <label>Is there anything else you would like to tell us about the request?</label>
+            <label for="currentStep_OtherDetails">Is there anything else you would like to tell us about the request?</label>
             @Html.TextAreaFor(x => x.OtherDetails, new { placeholder = "For example, if it's a request for some shopping and you know what you want, you could give us the list." })
             <span class="error"></span>
         </div>
