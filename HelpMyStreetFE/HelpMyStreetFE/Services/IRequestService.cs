@@ -15,7 +15,7 @@ namespace HelpMyStreetFE.Services
     public interface IRequestService
     {
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, HttpContext ctx); 
-        Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, User user, HttpContext ctx);
+        Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, int maxOtherJobsToDisplay, User user, HttpContext ctx);
         Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, RequestHelpSource source, int userId, HttpContext ctx);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId);
         Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx);
