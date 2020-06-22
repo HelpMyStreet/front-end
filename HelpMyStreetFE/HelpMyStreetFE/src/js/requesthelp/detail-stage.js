@@ -6,7 +6,7 @@ export function initaliseDetailStage() {
     SetupAddressFinder();
 
 }
-var validateForm = function (validateRequestor) {
+var validateForm =  function (validateRequestor) {
     
     $("form").on("submit", function (evt) {        
         if ($(document.activeElement).attr("id") == "btnBack") 
@@ -58,49 +58,27 @@ var validateForm = function (validateRequestor) {
           
         });         
         
-        runAdditionalValidation($(this)).then(function (additonalChecks) {
+        runAdditionalValidation($(this)).then(async function (additonalChecks) {
             evt.preventDefault();
             let validForm = (additonalChecks && valid);
-            let postcodeValid =[];
-            let postcodeInputs = $(".postcode-input");
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
-
-            if (validForm) { // avoid calling service when possible, so check if the form is valid first
-                //btnload
-                postcodeInputs.each(function (i) {
-                    var postcodeEl = $(this);
-                    validatePostCode($(this).val()).then(function (response) {
-                        postcodeValid.push(response);
-                        if (!response) {
-                            postcodeEl.next(".error").text("We could not validate that postcode, please check what you've entered and try again").show();
-                            throw error("postcode val failed");
-                        } else {
-                            postcodeEl.next(".error").hide();
-                        }
-                        if (postcodeValid.length == (i + 1)) { // if we've checked all the postcodes, its now time to check their values and sumbit if they passed
-                            validForm = (validForm && !postcodeValid.includes(false));
-                            if (validForm) {
-                                $('form').unbind('submit') // continue the submit unbind preventDefault
-                                $('#btnNext').click();
-                                postcodeEl.next(".error").hide();
-                            } else {
-                                postcodeEl.next(".error").text("We could not validate the postcode you've entered").show();
-                                throw new error("postcode validation failed");
-                            }
-                        }
-                    }).catch(function (e) {
-                        console.error(e);
-                        scrollToFirstError();
-                        buttonUnload($("#btnNext"));
-                    })
-                })
-            } else {
+            // avoid calling service when possible, so check if the form is valid first
+            if (!validForm) {
+                scrollToFirstError();
+                buttonUnload($("#btnNext"));
+                return false;
+            }        
+            try {
+                let postcodeInputs = $(".postcode-input");    
+                await validatePostcodeInputs(postcodeInputs, 0); // recursive function, if postcode is invalid it throws an error
+                $('form').unbind('submit') // continue the submit unbind preventDefault
+                $('#btnNext').click();
+            } catch (e) {
+                console.error(e);
                 scrollToFirstError();
                 buttonUnload($("#btnNext"));
             }
-        })
-        
-        return false;
+        });             
     });
 }
 
@@ -163,9 +141,7 @@ var SetupAddressFinder = function () {
                     $("#address_selector").slideDown();
                     $("select[name=address_selector]").on("change", function () {
                         const id = $(this).children("option:selected").val();
-
                         const address = content.addressDetails[id];
-
                         $("input[name='currentStep.Recipient.AddressLine1']").val(address.addressLine1);
                         $("input[name='currentStep.Recipient.AddressLine2']").val(address.addressLine2);
                         $("input[name='currentStep.Recipient.Town']").val(address.locality);
@@ -178,4 +154,20 @@ var SetupAddressFinder = function () {
         }
         buttonUnload($(this));
     });
+}
+
+
+async function validatePostcodeInputs(arr, i) {     
+    if (i == arr.length) return false;    
+    var postcode = arr.eq(i);
+    let response = await validatePostCode(postcode.val());    
+     if (!response) {
+          postcode.next(".error").text("We could not validate that postcode, please check what you've entered and try again").show();
+          throw new Error("Postcode validation failed");
+        } else {
+           postcode.next(".error").hide();
+    }
+
+    i++;    
+    await validatePostcodeInputs(arr, i);
 }

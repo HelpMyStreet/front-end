@@ -114,7 +114,7 @@
                     <dd>@(string.IsNullOrEmpty(recipient.EmailAddress) ? userDetailsNotProvidedText : recipient.EmailAddress) </dd>
                     <dt>Phone number(s)</dt>
                     <dd>
-                        @if (String.IsNullOrEmpty(recipient.OtherNumber) && String.IsNullOrEmpty(recipient.OtherNumber))
+                        @if (String.IsNullOrEmpty(recipient.MobileNumber) && String.IsNullOrEmpty(recipient.OtherNumber))
                         {
                             @userDetailsNotProvidedText
                         }

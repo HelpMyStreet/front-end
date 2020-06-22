@@ -65,8 +65,8 @@
                 @foreach (var option in volunteerOptions)
                 {
                     <div class="input input--checkbox">
-                        <label>
-                            <input name="volunteer[]" type="checkbox" value="@option.Key" hidden />
+                        <label for="volunteer-@option.Key">
+                            <input name="volunteer[]" type="checkbox" id="volunteer-@option.Key" value="@option.Key" hidden />
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
@@ -82,8 +82,8 @@
                 @foreach (var option in distanceOptions)
                 {
                     <div class="input input--radio">
-                        <label>
-                            <input name="volunteer_distance" type="radio" value="@option.Key" hidden />
+                        <label for="volunteer-distance-@option.Key">
+                            <input name="volunteer_distance" id="volunteer-distance-@option.Key" type="radio" value="@option.Key" hidden />
                             <span class="input--radio__radio">
                                 <span class="input--radio__radio__inner"></span>
                             </span>
@@ -97,8 +97,8 @@
                 <h5>Are you happy to support other Helpers over the phone?</h5>
                 <span class="error" id="contact-error">Please select an option</span>
                 <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_phone_contact" type="radio" value="true" hidden />
+                    <label for="volunteer-contact-yes">
+                        <input name="volunteer_phone_contact" id="volunteer-contact-yes" type="radio" value="true" hidden />
                         <span class="input--radio__radio">
                             <span class="input--radio__radio__inner"></span>
                         </span>
@@ -107,8 +107,8 @@
                 </div>
                 <hr class="input--separator" />
                 <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_phone_contact" type="radio" value="false" hidden />
+                    <label for="volunteer-contact-no">
+                        <input name="volunteer_phone_contact" id="volunteer-contact-no" type="radio" value="false" hidden />
                         <span class="input--radio__radio">
                             <span class="input--radio__radio__inner"></span>
                         </span>
@@ -121,8 +121,8 @@
                 <h5>Do you have any underlying medical condition(s) which may put you at higher risk of severe illness from COVID-19 / Coronavirus?</h5>
                 <span class="error" id="medical-error">Please select an option</span>
                 <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_medical_condition" type="radio" value="true" hidden />
+                    <label for="medical-condition-yes">
+                        <input name="volunteer_medical_condition" id="medical-condition-yes" type="radio" value="true" hidden />
                         <span class="input--radio__radio">
                             <span class="input--radio__radio__inner"></span>
                         </span>
@@ -131,8 +131,8 @@
                 </div>
                 <hr class="input--separator" />
                 <div class="input input--radio">
-                    <label>
-                        <input name="volunteer_medical_condition" type="radio" value="false" hidden />
+                    <label for="medical-condition-yes">
+                        <input name="volunteer_medical_condition" id="medical-condition-no" type="radio" value="false" hidden />
                         <span class="input--radio__radio">
                             <span class="input--radio__radio__inner"></span>
                         </span>

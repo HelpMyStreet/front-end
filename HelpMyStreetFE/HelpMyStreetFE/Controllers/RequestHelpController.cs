@@ -76,10 +76,9 @@ namespace HelpMyStreetFE.Controllers
                         var requestStep = (RequestHelpRequestStageViewModel)step;
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
 
-                        if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
-                        {
-                            detailStage.ShowOtherDetails = false;
-                        }
+                        detailStage.ShowOtherDetails = 
+                            requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ? false : true;
+                   
 
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
 
@@ -188,7 +187,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> RequestHelp(RequestHelpSource source)
         {
             _logger.LogInformation("request-help");
-            if (source == RequestHelpSource.DIY && !User.Identity.IsAuthenticated)
+            if (source == RequestHelpSource.DIY && (!User.Identity.IsAuthenticated))
                 return Redirect("/login?ReturnUrl=request-help/diy");
 
             var model = await _requestService.GetRequestHelpSteps(source);

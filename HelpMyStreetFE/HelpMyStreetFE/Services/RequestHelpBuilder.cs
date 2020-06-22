@@ -27,7 +27,7 @@ namespace HelpMyStreetFE.Services
         public async Task<RequestHelpViewModel> GetSteps(RequestHelpSource source)
         {
 
-            return new RequestHelpViewModel
+            var model =  new RequestHelpViewModel
             {
                 Source = source,
                 CurrentStepIndex = 0,
@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.Services
                                 Text = "I'm looking for help for an organisation",
                                 IconDark = "request-organisation.svg",
                                 IconLight = "request-organisation-white.svg",
-                                Type = RequestorType.Organisation
+                                Type = RequestorType.Organisation                                
                             }
                         },
                         Timeframes =  new List<RequestHelpTimeViewModel>
@@ -83,14 +83,19 @@ namespace HelpMyStreetFE.Services
                 }
 
             };
+            if (source == RequestHelpSource.DIY) {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
+            }
+            return model;
         }
 
         public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestorType type,  RequestHelpSource source, int userId)
         {
-            if (source == RequestHelpSource.DIY && (type == RequestorType.Myself || requestStage.Tasks
+            if (source == RequestHelpSource.DIY && requestStage.Tasks
                                                     .Where(x => x.IsSelected).FirstOrDefault()
                                                     ?.Questions.Where(x => x.ID == (int)Questions.WillYouCompleteYourself)
-                                                    .FirstOrDefault()?.Model == "true"))
+                                                    .FirstOrDefault()?.Model == "true")
             {
                 return userId;
             }
