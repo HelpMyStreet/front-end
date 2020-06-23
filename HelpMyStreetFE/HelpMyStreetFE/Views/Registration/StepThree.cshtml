@@ -72,8 +72,8 @@
                     @foreach (var option in volunteerOptions)
                     {
                         <div class="input input--checkbox">
-                            <label>
-                                <input name="volunteer[]" type="checkbox" value="@option.Key" hidden />
+                            <label for="volunteer-@option.Key">
+                                <input name="volunteer[]" type="checkbox" id="volunteer-@option.Key" value="@option.Key" hidden />
                                 <span class="input--checkbox__checkbox">
                                     <span class="mdi mdi-check"></span>
                                 </span>
@@ -89,8 +89,8 @@
                     @foreach (var option in distanceOptions)
                     {
                         <div class="input input--radio">
-                            <label>
-                                <input name="volunteer_distance" type="radio" value="@option.Key" hidden />
+                            <label for="volunteer-distance-@option.Key">
+                                <input name="volunteer_distance" type="radio" id="volunteer-distance-@option.Key" value="@option.Key" hidden />
                                 <span class="input--radio__radio">
                                     <span class="input--radio__radio__inner"></span>
                                 </span>

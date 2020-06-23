@@ -29,23 +29,23 @@
             <input name="source" type="hidden" value="@Model.Source" />
             <div class="row justify-center">
                 <div class="input sm4">
-                    <label>First name</label>
-                    <input name="first_name" type="text" maxlength="50" placeholder="e.g. John" />
+                    <label for="first-name">First name</label>
+                    <input name="first_name" id="first-name" type="text" maxlength="50" placeholder="e.g. John" />
                     <span class="error"></span>
                 </div>
                 <div class="input sm4">
-                    <label>Last name</label>
-                    <input name="last_name" type="text" maxlength="50" placeholder="e.g. Smith" />
+                    <label for="last-name">Last name</label>
+                    <input name="last_name" id="last-name" type="text" maxlength="50" placeholder="e.g. Smith" />
                     <span class="error"></span>
                 </div>
                 <div class="input sm8">
-                    <label>Date of birth</label>
-                    <input name="dob" type="text" id="datepicker" placeholder="e.g. 11/12/1994" autocomplete="off" />
+                    <label for="datepicker">Date of birth</label>
+                    <input name="dob" type="text" id="datepicker"  placeholder="e.g. 11/12/1994" autocomplete="off" />
                     <span class="error"></span>
                 </div>
                 <div class="input sm5">
-                    <label>Postcode</label>
-                    <input name="postcode_search" type="text" placeholder="e.g. NG1 1PS" />
+                    <label for="postcode-search">Postcode</label>
+                    <input name="postcode_search" id="postcode-search" type="text" placeholder="e.g. NG1 1PS" />
                     <span class="error"></span>
                 </div>
                 <div class="input sm3">
@@ -56,46 +56,46 @@
                     <a id="manual_address" href="#" class="input__link">Or enter your address manually</a>
                 </div>
                 <div class="input sm8 dnone" id="address_selector">
-                    <label>Select address</label>
-                    <select name="address_selector">
+                    <label for="address-selector">Select address</label>
+                    <select id="address-selector" name="address_selector">
                     </select>
                 </div>
                 <div class="expander sm8">
                     <h5>Please enter your address</h5>
                     <div class="input">
-                        <label>Address line 1</label>
-                        <input name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
+                        <label for="add-line-1">Address line 1</label>
+                        <input id="add-line-1" name="address_line_1" type="text" placeholder="e.g. 170 High Street" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
-                        <label>Address line 2</label>
-                        <input name="address_line_2" type="text" placeholder="e.g. Hockley" />
+                        <label for="add-line-2">Address line 2</label>
+                        <input id="add-line-2" name="address_line_2" type="text" placeholder="e.g. Hockley" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
-                        <label>Town / City</label>
-                        <input name="city" type="text" placeholder="e.g. Nottingham" />
+                        <label for="city">Town / City</label>
+                        <input id="city" name="city" type="text" placeholder="e.g. Nottingham" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
-                        <label>County</label>
-                        <input name="county" type="text" placeholder="e.g. Nottinghamshire" />
+                        <label for="county">County</label>
+                        <input id="county" name="county" type="text" placeholder="e.g. Nottinghamshire" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
-                        <label>Postcode</label>
-                        <input name="postcode" type="text" placeholder="e.g. NG1 1PS" />
+                        <label for="postcode">Postcode</label>
+                        <input id="postcode" name="postcode" type="text" placeholder="e.g. NG1 1PS" />
                         <span class="error"></span>
                     </div>
                 </div>
                 <div class="input sm8">
-                    <label>Mobile number</label>
-                    <input name="mobile_number" type="number" placeholder="e.g. 07700112233" />
+                    <label for="mobile-num">Mobile number</label>
+                    <input id="mobile-num" name="mobile_number" type="number" placeholder="e.g. 07700112233" />
                     <span class="error"></span>
                 </div>
                 <div class="input sm8">
-                    <label>Alternative phone number</label>
-                    <input name="alt_number" type="number" placeholder="e.g. 01159232312" />
+                    <label for="alt-num">Alternative phone number</label>
+                    <input id="alt-num"name="alt_number" type="number" placeholder="e.g. 01159232312" />
                     <span class="error"></span>
                 </div>
 
