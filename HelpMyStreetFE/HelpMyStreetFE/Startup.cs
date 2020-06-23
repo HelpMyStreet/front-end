@@ -239,6 +239,10 @@ namespace HelpMyStreetFE
                     pattern: "request-help",
                     defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
                 endpoints.MapControllerRoute(
+                    name: "request-help/success",
+                    pattern: "request-help/success",
+                    defaults: new { controller = "RequestHelp", action = "Success" });
+                endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
                     defaults: new { controller = "Account", action = "Login" });
