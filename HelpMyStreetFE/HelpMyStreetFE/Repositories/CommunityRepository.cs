@@ -25,18 +25,27 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = -1.488587;
             communityViewModel.ZoomLevel = 14;
 
-            communityViewModel.CommunityName = "Pilley and Tankersley";
+            communityViewModel.CommunityName = "Tankersley & Pilley";
 
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
 
-            communityViewModel.Header = "Pilley and Tankersley people taking care of each other";
+            communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
+            communityViewModel.HeaderSubtitle = "In our community there’s always somebody here to help, there’s no need for anyone to struggle alone. We’re the Tankersley & Pilley Community Helpers, here to help with:";
+            communityViewModel.HeaderBullets = new List<string>
+            {
+                "Shopping for essentials",
+                "A friendly chat",
+                "Help at home",
+                "Cooking a hot meal"
+            };
 
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Pilley and Tankersley Community Helpers";
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Tankersley & Pilley Community Helpers";
+            
+
 
             communityViewModel.CommunityVolunteersTextHtml =
- @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog. If you need anything, all you need to do is ask! Request help or sign-up to join us using the buttons below, or call us on XXX.</p>
-<p>Did you know... we also have a community fund to help people struggling to buy the essentials. If you need help paying for your shopping please don't go without - call us on XXXX for a confidential chat, we're here to help.</p>
-<p>If you want to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
+ @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog.</p>
+<p>To join us or to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
 ";
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
@@ -51,47 +60,31 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    Name = "David",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/David.jpg"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    Name = "Kate",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/Kate.jpg"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    Name = "Helen",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/Helen.jpg"
                 },
             };
 
 
             communityViewModel.UsefulLinksHtml = new List<string>()
             {
-                @"<a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a>",
-                @"Piley & Tankersley Community Fund - call XXX on XXX for a confidential chat",
-                @"<a href=""https://www.gov.uk/coronavirus-extremely-vulnerable"">GOV.UK - Get coronavirus support as a clinically extremely vulnerable person</a>",
+                @"<a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a>"
             };
 
 

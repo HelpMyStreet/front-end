@@ -254,7 +254,7 @@ namespace HelpMyStreetFE
             endpoints.MapControllerRoute(
                 name: "Tankersley",
                 pattern: "tankersley",
-                defaults: new { controller = "Home", action = "Index" });
+                defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
 
             endpoints.MapControllerRoute(
                name: "face-masks",
