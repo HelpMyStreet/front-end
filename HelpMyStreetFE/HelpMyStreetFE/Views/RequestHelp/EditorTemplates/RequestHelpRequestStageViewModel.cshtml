@@ -16,11 +16,10 @@
 
 <div class="row">
     <div class="sm12 input">
-        <label>What's the main thing you need help with? </label>
-
+        <label for="selectedTask">What's the main thing you need help with? </label>
         <div class="tiles">
             <div class="input">
-                <input type="hidden" name="currentStep.SelectedTask.Id" value="@Model.Tasks.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+                <input id="selectedTask" type="hidden" name="currentStep.SelectedTask.Id" value="@Model.Tasks.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
                 <div class="row">
                     @foreach (var task in Model.Tasks)
                     {
@@ -54,10 +53,10 @@
 
 <div class="row">
     <div class="sm12 input">
-        <label>Who is the help for?</label>
+        <label for="selectedRequestor">Who is the help for?</label>
         <div class="tiles">
             <div class="input">
-                <input type="hidden" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+                <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
 
                 <div class="row">
                     @foreach (var requestor in Model.Requestors)
@@ -77,11 +76,11 @@
 
     <div class="row">
         <div class="sm12 input">
-            <label>When is the help needed?</label>
+            <label for="selectedTimeFrame">When is the help needed?</label>
 
             <div class="tiles">
                 <div class="input">
-                    <input type="hidden" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+                    <input type="hidden" id="selectedTimeFrame" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
 
                     <div class="row">
                         @foreach (var time in Model.Timeframes)
@@ -136,7 +135,7 @@
             You can read more in our <a href="/privacy-policy">Privacy Notice</a>
         </p>
         <div class="input input--checkbox">
-            <label class="small">
+            <label for="currentStep_AgreeToPrivacy" class="small">
                 @Html.CheckBoxFor(x => x.AgreeToPrivacy, new { hidden = true })
                 <span class="input--checkbox__checkbox">
                     <span class="mdi mdi-check"></span>
@@ -145,7 +144,7 @@
             </label>
         </div>
         <div class="input input--checkbox">
-            <label class="small">
+            <label for="currentStep_AgreeToTerms" class="small">
                 @Html.CheckBoxFor(x => x.AgreeToTerms, new { hidden = true })
                 <span class="input--checkbox__checkbox">
                     <span class="mdi mdi-check"></span>

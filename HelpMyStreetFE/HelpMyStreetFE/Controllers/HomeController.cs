@@ -72,6 +72,11 @@ namespace HelpMyStreetFE.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }       
+        }
+
+        public IActionResult HealthCheck()
+        {
+            return Ok(DateTime.Now.ToString("dd-MM-yyy hh:mmtt"));
+        }
     }
 }

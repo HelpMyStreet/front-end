@@ -53,8 +53,8 @@
             </div>
             <div class="sm8">
                 <div class="input input--radio">
-                    <label>
-                        <input name="street_champion" type="radio" value="true" hidden />
+                    <label for="street_champion_yes">
+                        <input name="street_champion" id="street_champion_yes" type="radio" value="true" hidden />
                         <span class="input--radio__radio">
                             <span class="input--radio__radio__inner"></span>
                         </span>
@@ -62,8 +62,8 @@
                     </label>
                 </div>
                 <div class="input input--radio">
-                    <label>
-                        <input name="street_champion" type="radio" value="false" hidden />
+                    <label  for="street_champion_no">
+                        <input name="street_champion" id="street_champion_no" type="radio" value="false" hidden />
                         <span class="input--radio__radio">
                             <span class="input--radio__radio__inner"></span>
                         </span>
@@ -78,8 +78,8 @@
                 @foreach (var pc in Model.NearbyPostCodes)
                 {
                     <div class="input input--checkbox">
-                        <label class="postcode_checkbox">
-                            <input name="postcodes[]" type="checkbox" value="@pc.Postcode" hidden />
+                        <label for="postcode_checkbox" class="postcode_checkbox">
+                            <input name="postcodes[]" id="postcode_checkbox" type="checkbox" value="@pc.Postcode" hidden />
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>

@@ -76,10 +76,9 @@ namespace HelpMyStreetFE.Controllers
                         var requestStep = (RequestHelpRequestStageViewModel)step;
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
 
-                        if (requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask)
-                        {
-                            detailStage.ShowOtherDetails = false;
-                        }
+                        detailStage.ShowOtherDetails = 
+                            requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ? false : true;
+                   
 
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
 
