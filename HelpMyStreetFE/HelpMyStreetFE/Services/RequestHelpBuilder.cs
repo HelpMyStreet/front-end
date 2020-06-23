@@ -120,7 +120,6 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel { ID = 5, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Errands },
                     new TasksViewModel { ID = 6, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation },
                     new TasksViewModel { ID = 7, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly },
-                    new TasksViewModel { ID = 8, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious },
                     new TasksViewModel { ID = 9, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport },
                     new TasksViewModel { ID = 10, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Other },
              });
