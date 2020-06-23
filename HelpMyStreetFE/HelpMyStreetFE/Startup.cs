@@ -185,81 +185,86 @@ namespace HelpMyStreetFE
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
-                endpoints.MapControllerRoute(
-                    name: "about",
-                    pattern: "about-us",
-                    defaults: new { controller = "Pages", action = "AboutUs" });
+            endpoints.MapControllerRoute(
+                name: "about",
+                pattern: "about-us",
+                defaults: new { controller = "Pages", action = "AboutUs" });
 
-                endpoints.MapControllerRoute(
-                    name: "community-organisers",
-                    pattern: "community-organisers",
-                    defaults: new { controller = "Pages", action = "CommunityOrganisers" });
+            endpoints.MapControllerRoute(
+                name: "community-organisers",
+                pattern: "community-organisers",
+                defaults: new { controller = "Pages", action = "CommunityOrganisers" });
 
-                endpoints.MapControllerRoute(
-                    name: "community",
-                    pattern: "community/{communityName}",
-                    defaults: new { controller = "Community", action = "Index" });
+            endpoints.MapControllerRoute(
+                name: "community",
+                pattern: "community/{communityName}",
+                defaults: new { controller = "Community", action = "Index" });
 
-                endpoints.MapControllerRoute(
-                    name: "privacy",
-                    pattern: "privacy-policy",
-                    defaults: new { controller = "Pages", action = "PrivacyPolicy" });
-                endpoints.MapControllerRoute(
-                    name: "terms",
-                    pattern: "terms-conditions",
-                    defaults: new { controller = "Pages", action = "Terms" });
-                endpoints.MapControllerRoute(
-                    name: "resources",
-                    pattern: "resources",
-                    defaults: new { controller = "Pages", action = "Resources" });
-                endpoints.MapControllerRoute(
-                    name: "questions",
-                    pattern: "questions",
-                    defaults: new { controller = "Pages", action = "Questions" });
-                endpoints.MapControllerRoute(
-                    name: "contact",
-                    pattern: "contact-us",
-                    defaults: new { controller = "Pages", action = "ContactUs" });
-                        endpoints.MapControllerRoute(
-                    name: "request-help/v4v",
-                    pattern: "request-help/v4v",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans  });
-                endpoints.MapControllerRoute(
-                name: "request-help/diy",
-                pattern: "request-help/diy",
-                defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
-                endpoints.MapControllerRoute(
-                    name: "request-help",
-                    pattern: "request-help",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
-                endpoints.MapControllerRoute(
-                    name: "login",
-                    pattern: "login",
-                    defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                    name: "ForgottenPassword",
-                    pattern: "forgotten-password",
-                    defaults: new { controller = "Home", action = "ForgottenPassword" });
+            endpoints.MapControllerRoute(
+                name: "privacy",
+                pattern: "privacy-policy",
+                defaults: new { controller = "Pages", action = "PrivacyPolicy" });
+            endpoints.MapControllerRoute(
+                name: "terms",
+                pattern: "terms-conditions",
+                defaults: new { controller = "Pages", action = "Terms" });
+            endpoints.MapControllerRoute(
+                name: "resources",
+                pattern: "resources",
+                defaults: new { controller = "Pages", action = "Resources" });
+            endpoints.MapControllerRoute(
+                name: "questions",
+                pattern: "questions",
+                defaults: new { controller = "Pages", action = "Questions" });
+            endpoints.MapControllerRoute(
+                name: "contact",
+                pattern: "contact-us",
+                defaults: new { controller = "Pages", action = "ContactUs" });
+            endpoints.MapControllerRoute(
+        name: "request-help/v4v",
+        pattern: "request-help/v4v",
+        defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans });
+            endpoints.MapControllerRoute(
+            name: "request-help/diy",
+            pattern: "request-help/diy",
+            defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
+            endpoints.MapControllerRoute(
+                name: "request-help",
+                pattern: "request-help",
+                defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
+            endpoints.MapControllerRoute(
+                name: "login",
+                pattern: "login",
+                defaults: new { controller = "Account", action = "Login" });
+            endpoints.MapControllerRoute(
+                name: "ForgottenPassword",
+                pattern: "forgotten-password",
+                defaults: new { controller = "Home", action = "ForgottenPassword" });
 
-                // Community placeholders
-                endpoints.MapControllerRoute(
-                    name: "Kimberley",
-                    pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index",  });
+            // Community placeholders
+            endpoints.MapControllerRoute(
+                name: "Kimberley",
+                pattern: "kimberley",
+                defaults: new { controller = "Home", action = "Index", });
 
-                endpoints.MapControllerRoute(
-                    name: "Tankersley",
-                    pattern: "tankersley",
-                    defaults: new { controller = "Home", action = "Index" });
+            endpoints.MapControllerRoute(
+                name: "Tankersley",
+                pattern: "tankersley",
+                defaults: new { controller = "Home", action = "Index" });
 
-                endpoints.MapControllerRoute(
-                   name: "face-masks",
-                   pattern: "face-masks",
-                   defaults: new { controller = "Community", action = "FaceMasks" });
+            endpoints.MapControllerRoute(
+               name: "face-masks",
+               pattern: "face-masks",
+               defaults: new { controller = "Community", action = "FaceMasks" });
+
+            endpoints.MapControllerRoute(
+                name: "fortheloveofscrubs",
+                pattern: "fortheloveofscrubs",
+                defaults: new { controller = "Community", action = "ForTheLoveOfScrubs" });
 
                 endpoints.MapControllerRoute(
                  name: "OpenRequests",

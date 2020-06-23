@@ -48,5 +48,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\community\tankersley\" />
+    <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
   </ItemGroup>
 </Project>
