@@ -1,6 +1,6 @@
 ﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
-import { trackPageView, trackEvent } from "../shared/tracking-helper";
+import { trackEvent } from "../shared/tracking-helper";
 
 
 export function intialiseRequestStage() {
@@ -14,6 +14,8 @@ export function intialiseRequestStage() {
     if (taskId != "") {        
         LoadQuestions(taskId);
     }   
+
+    trackEvent("Request form", "View 0.request", "", 0);
 }
 
 
@@ -30,7 +32,7 @@ var validateForm = function () {
 
         const validForm = validateQuestions() && valid;
 
-        trackEvent("Form interaction", "Click", "Continue", validForm ? 1 : 0);
+        trackEvent("Request form", "Submit 0.request", validForm ? "(Valid)" : "(Invalid)", 0);
 
         if (validForm == false) {
             buttonUnload($("#btnNext"));;
@@ -119,7 +121,9 @@ var handleRequestFor = function (el) {
 
     var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
     if (taskId != "") {
-        trackEvent("Form interaction", "Select", "RequestFor", parseInt(taskId));
+        let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+        trackEvent("Request form", "Select request for", selectedValue, 0);
+
         LoadQuestions(taskId);
     }
 }
@@ -134,6 +138,9 @@ var handleTimeFrame = function (el) {
     }
     el.addClass("selected");   
     $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
+
+    let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+    trackEvent("Request form", "Select timeframe", selectedValue, 0);
 }
 
 var handleActivity = function (el) {
@@ -141,7 +148,9 @@ var handleActivity = function (el) {
     el.addClass("selected");
     let taskId = el.attr("data-id");
     $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
-    trackEvent("Form interaction", "Select", "Activity", parseInt(taskId));
+
+    let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+    trackEvent("Request form", "Select activity", selectedValue, 0);
     
     if (taskId == 2) { // facemask   
         $('#requestorFor_3').show(); // onbehalf of organisation
