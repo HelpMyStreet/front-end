@@ -10,7 +10,9 @@ namespace HelpMyStreetFE.Repositories
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return GetTankersley();     
+                    return GetTankersley();
+                case "ageuk":
+                    return GetAgeUK();
                 default:
                     return null;
             }
@@ -78,6 +80,79 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     ImageLocation = "/img/community/tankersley/Helen.jpg"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = new List<string>()
+            {
+                @"<a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a>"
+            };
+
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetAgeUK()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            communityViewModel.Latitude = 53.236571;
+            communityViewModel.Longitude = -0.5398307;
+            communityViewModel.ZoomLevel = 14;
+
+            communityViewModel.CommunityName = "Age UK";
+
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
+
+            communityViewModel.Header = "Age UK, We're So Cool!";
+            communityViewModel.HeaderSubtitle = "If you love Age, and the UK then this is totally the page for you! We got:";
+            communityViewModel.HeaderBullets = new List<string>
+            {
+                "Dame Vera Lynn Recordings",
+                "Beef Dripping Sandwiches",
+                "A came first, then B, C would usually follow"
+            };
+
+            communityViewModel.CommunityVolunteersHeader = "Hi Guys - Welcome to our page";
+
+
+
+            communityViewModel.CommunityVolunteersTextHtml =
+ @"<p>Age UK - Vitals for Veterans is a new scheme from Age UK which provides PICU level Vital Sign monitoring for all veterans.</p>
+<p>To join us or to get in touch, email <a href = ""mailto: v4v4u@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
+";
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We've got shoppers, showers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Where",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/ofrench.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Is",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/ofrench.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Ollie",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/ofrench.jpg"
                 },
             };
 
