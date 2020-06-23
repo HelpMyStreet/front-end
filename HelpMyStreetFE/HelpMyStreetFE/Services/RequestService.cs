@@ -98,6 +98,11 @@ namespace HelpMyStreetFE.Services
         }
         public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, int maxOtherJobsToDisplay, User user, HttpContext ctx)
         {
+            if (user.PostalCode == null)
+            {
+                throw new Exception("Cannot identify jobs without user postcode");
+            }
+
             var jobs = ctx.Session.GetObjectFromJson<OpenJobsViewModel>("openJobs");
             DateTime lastUpdated;
             DateTime.TryParse(ctx.Session.GetString("openJobsLastUpdated"), out lastUpdated);
