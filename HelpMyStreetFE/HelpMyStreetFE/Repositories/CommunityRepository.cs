@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
 
-            communityViewModel.RequestHelpText = @"We've got shoppers, showers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+            communityViewModel.RequestHelpText = @"We've got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
