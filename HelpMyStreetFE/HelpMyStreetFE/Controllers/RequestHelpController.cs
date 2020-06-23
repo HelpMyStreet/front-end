@@ -159,7 +159,7 @@ namespace HelpMyStreetFE.Controllers
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.Source, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
                     {
-                        return RedirectToAction("Success", new
+                        return RedirectToRoute("request-help/success", new
                         {
                             fulfillable = response.Content.Fulfillable,
                             onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false

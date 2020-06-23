@@ -1,11 +1,14 @@
 ﻿import clientFirebase from "../firebase";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
+import { trackEvent } from "../shared/tracking-helper";
 
 
 export function initialiseStepOne() {
 
-    clientFirebase.init(JSON.parse(configuration.firebase));        
+  clientFirebase.init(JSON.parse(configuration.firebase));        
+
+  trackEvent("Registration flow", "View Step 1");
 
   $("#registration_form").on("submit", function (evt) {
     evt.preventDefault();
@@ -21,6 +24,8 @@ export function initialiseStepOne() {
           
     });      
     
+    trackEvent("Registration flow", "Submit Step 1", valid ? "(Valid)" : "(Invalid)");
+
     if (valid === false) return;
 
     const { email, password } = valid;

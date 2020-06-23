@@ -1,7 +1,10 @@
 import { showLoadingSpinner } from "../states/loading";
 import { buttonLoad, buttonUnload } from "../shared/btn";
+import { trackEvent } from "../shared/tracking-helper";
 
 export function initialiseStepFour() {
+    trackEvent("Registration flow", "View Step 4");
+
     $("#registration_form").on("submit", function (evt) {
         $('#championSelectError').hide();
         buttonLoad($('#submit_button'));        
@@ -10,6 +13,7 @@ export function initialiseStepFour() {
             $('#championSelectError').show();
             $('#championSelectError').text("Please select one of the options above")
             evt.preventDefault();
+            trackEvent("Registration flow", "Submit Step 4", "(Invalid)");
             return;
         } else {
             
@@ -19,15 +23,23 @@ export function initialiseStepFour() {
                     $('#championSelectError').show();
                     $('#championSelectError').text("Please select at least one postcode to cover as Street Champion")
                     evt.preventDefault();
+                    trackEvent("Registration flow", "Submit Step 4", "(Invalid)");
                     return;
                 }
             }             
         }
+        trackEvent("Registration flow", "Submit Step 4", "(Valid)");
     });
 
     $("input[name=street_champion]").on("change", function () {
-        if ($(this).val() == "true") $(".expander").slideDown();
-        else $(".expander").slideUp();
+        if ($(this).val() == "true") {
+            $(".expander").slideDown();
+            trackEvent("Registration flow", "Select street champion", "yes");
+        }
+        else {
+            $(".expander").slideUp();
+            trackEvent("Registration flow", "Select street champion", "no");
+        }
     });
 
     $(".postcode_checkbox").on("click", function (evt) {
