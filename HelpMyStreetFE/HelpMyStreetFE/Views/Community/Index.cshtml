@@ -22,61 +22,61 @@
                     <header class="">
                         <h2 class="row sm12 mb0">@Model.Header</h2>
                     </header>
+
+                    @if (Model.HeaderSubtitle != null)
+                    {
+                        <p class="row sm12 text-left mt-sm mb-xs">@Html.Raw(@Model.HeaderSubtitle)<br /></p>
+                    }
                     
-                        @if (Model.HeaderSubtitle != null)
+                    @if (Model.HeaderBullets != null)
                         {
-                            <p class="row sm12 text-left mt-sm mb-xs">@Model.HeaderSubtitle<br /></p>
-                        } else {
-                <p class="row sm12 text-left mt-sm mb-xs">HelpMyStreet connects neighbours in need with people who can help -safely and securely.<br /></p>}
+                            <div class="row sm12">
+                                <ul class="tick-list mt-xs mb-sm compact-list">
 
-                    <div class="row sm12">
-                        <ul class="tick-list mt-xs mb-sm compact-list">
-                            @{ if (Model.HeaderBullets != null) {
-                                    foreach (var bullet in Model.HeaderBullets) {
-                                        <li>@bullet</li>
-                                    } } else {
-
-                            <li>Shopping for essentials</li>
-                            <li>Cooking a hot meal</li>
-                            <li>Home-sewn face coverings</li>
-                            <li>Help with home-schooling</li>
-                            <li>A friendly chat</li>
+                                    @foreach (var bullet in Model.HeaderBullets) {
+                                    <li>@bullet</li>
                                     }
+                                    
+                                </ul>
+                            </div>
+                            }
+                    @if (!Model.HideHeaderButtons)
+                    {
+                        @if (!Model.HideHeaderHelpButton)
+                        {
+                            <div class="row sm12 text-center justify-center small-screen-only mb-sm">
+                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+                            </div>
+                        }
+
+
+
+                        @if (!Model.HideHeaderVolunteerButton) {
+                            <div class="row @(Model.HideHeaderHelpButton ? " sm12 " : " sm6 " ) text-center justify-center mb-md">
+                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
+                                @if (!Model.IsLoggedIn)
+                                {
+                                    <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up Now</a>
+
                                 }
-                        </ul>
-                    </div>
-                    
+                                else
+                                {
+                                    <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
 
-                    <div class="row sm12 text-center justify-center small-screen-only mb-sm">
-                        <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                    </div>
-
-                    
-
-                    <div class="row sm12 large-screen-only mb-sm"></div>
-
-                    <div class="row sm6 text-center justify-center mb-md">
-                        <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
-                        @if (!Model.IsLoggedIn)
+                                }
+                            </div>
+                    }
+                        @if (!Model.HideHeaderHelpButton)
                         {
-                            <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up Now</a>
-
+                            <div class="row @(Model.HideHeaderVolunteerButton ? " sm12 " : " sm6 " ) text-center justify-center mb-md large-screen-only">
+                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
+                            </div>
+                            }
                         }
-                        else
-                        {
-                            <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
-
-                        }
-                    </div>
-
-                    <div class="row sm6 text-center justify-center mb-md large-screen-only">
-                        <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                    </div>
-
-                </div>
-
+                        </div>
+                    
                 <div class="sm6 text-right commmunity-map-container map static-map" id="map">
                 </div>
             </div>
@@ -126,7 +126,7 @@
     </div>
 
 
-
+    @if (!Model.HideHelpPanel){
     <div class="outer-container">
         <div class="inner-container--no-side-padding">
             <div class="row hero flex text-center">
@@ -167,7 +167,7 @@
             </div>
         </div>
     </div>
-
+    }
     <div class="outer-container outer-container--darker">
         <div class="inner-container ">
             <div class="row justify-center">
