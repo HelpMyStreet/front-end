@@ -1,16 +1,20 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
+import { trackEvent } from "../shared/tracking-helper";
 
 export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
     SetupAddressFinder();
 
+    trackEvent("Request form", "View 1.details", "", 0);
 }
 var validateForm =  function (validateRequestor) {
     
     $("form").on("submit", function (evt) {        
-        if ($(document.activeElement).attr("id") == "btnBack") 
+        if ($(document.activeElement).attr("id") == "btnBack") {
+            trackEvent("Request form", "Click Back", "", 0);
             return true;
+        }
 
         buttonLoad($("#btnNext"));
         
@@ -63,6 +67,9 @@ var validateForm =  function (validateRequestor) {
             let validForm = (additonalChecks && valid);
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
             // avoid calling service when possible, so check if the form is valid first
+
+            trackEvent("Request form", "Submit 1.details", validForm ? "(Valid)" : "(Invalid)", 0);
+
             if (!validForm) {
                 scrollToFirstError();
                 buttonUnload($("#btnNext"));
@@ -105,13 +112,16 @@ var  runAdditionalValidation = async function (form) {
 
 var SetupAddressFinder = function () {
     $(".manual_entry").on("click", function (evt) {
+        trackEvent("Request form", "Click Manual entry");
+
         evt.preventDefault();
         $(".expander").slideDown();
     });
 
     
     $("#address_finder").on("click", async function (evt) {
-        
+        trackEvent("Request form", "Click Find address");
+       
         evt.preventDefault();
         buttonLoad($(this));
         $("select[name=address_selector]").unbind("change");
