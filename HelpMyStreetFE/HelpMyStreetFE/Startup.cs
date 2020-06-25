@@ -269,7 +269,7 @@ namespace HelpMyStreetFE
 
                 endpoints.MapControllerRoute(
                     name: "fortheloveofscrubs",
-                    pattern: "fortheloveofscrubs",
+                    pattern: "fortheloveofscrubs-landingpagedemo",
                     defaults: new { controller = "Community", action = "ForTheLoveOfScrubs" });
 
                 endpoints.MapControllerRoute(
