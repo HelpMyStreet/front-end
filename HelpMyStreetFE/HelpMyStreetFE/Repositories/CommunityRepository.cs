@@ -99,7 +99,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Latitude = 53.236571;
             communityViewModel.Longitude = -0.5398307;
-            communityViewModel.ZoomLevel = 14;
+            communityViewModel.ZoomLevel = 9;
 
             communityViewModel.CommunityName = "Age UK";
 
