@@ -144,14 +144,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
 
             communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
-            communityViewModel.HeaderSubtitle = "In our community there’s always somebody here to help, there’s no need for anyone to struggle alone. We’re the Tankersley & Pilley Community Helpers, here to help with:";
-            communityViewModel.HeaderBullets = new List<string>
-            {
-                "Shopping for essentials",
-                "A friendly chat",
-                "Help at home",
-                "Cooking a hot meal"
-            };
 
             communityViewModel.CommunityVolunteersHeader = "Welcome from Tankersley & Pilley Community Helpers";
             communityViewModel.HeaderHTML = @"
@@ -231,9 +223,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
 
             communityViewModel.Header = "Veterans need your help!";
-            communityViewModel.HeaderBullets = null;
-            communityViewModel.HideHeaderButtons = false;
-            communityViewModel.HideHeaderHelpButton = true;
             communityViewModel.HeaderHTML = @"
                     <p class='row sm12 text-left mt-sm mb-xs'>
                         We are pleased to announce the start of our new 'Vitals For Veterans' project.
