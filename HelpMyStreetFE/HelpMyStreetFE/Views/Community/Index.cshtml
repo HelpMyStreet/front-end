@@ -22,18 +22,24 @@
                     <header class="">
                         <h2 class="row sm12 mb0">@Model.Header</h2>
                     </header>
-                        @Html.Raw(@Model.HeaderHTML)
+
+                    @Html.Raw(@Model.HeaderHTML)
+
                     <div class="row sm12 large-screen-only mb-sm"></div>
 
                     <div class="row sm6 text-center justify-center mb-md">
+                        @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
+                        {
+                            <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
+                        }
                         @if (!Model.IsLoggedIn)
                         {
-                            <a href="@Model.SignUpLink" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Sign Up Now</a>
+                            <a href="@Model.SignUpLink" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">Sign Up Now</a>
 
                         }
                         else
                         {
-                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Provide Help</a>
+                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">Provide Help</a>
 
                         }
                     </div>
@@ -41,14 +47,17 @@
                     @if (Model.ShowRequestHelp)
                     {
                     <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                        @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                        {
+                            <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                        }
                         <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
                     </div>
                     }
-
                 </div>
+                    
+                <div class="sm6 text-right commmunity-map-container map static-map" id="map"></div>
 
-                <div class="sm6 text-right commmunity-map-container map static-map" id="map">
-                </div>
             </div>
 
         </div>
@@ -96,7 +105,7 @@
     </div>
 
 
-
+    @if (!Model.HideHelpPanel){
     <div class="outer-container">
         <div class="inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
@@ -144,7 +153,7 @@
             </div>
         </div>
     </div>
-
+    }
     <div class="outer-container outer-container--darker">
         <div class="inner-container ">
             <div class="row justify-center">
