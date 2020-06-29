@@ -93,28 +93,28 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Role",
                     Location = "Location",
                     ImageLocation = "/img/icons/anonymous-user.png"
-                },                
+                },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
                     ImageLocation = "/img/icons/anonymous-user.png"
-                },                
+                },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
                     ImageLocation = "/img/icons/anonymous-user.png"
-                },                
+                },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
                     Role = "Role",
                     Location = "Location",
                     ImageLocation = "/img/icons/anonymous-user.png"
-                },                
+                },
                 new CommunityVolunteer()
                 {
                     Name = "Volunteer Name",
