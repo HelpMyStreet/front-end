@@ -11,6 +11,8 @@ namespace HelpMyStreetFE.Repositories
             {
                 case "tankersley":
                     return GetTankersley();
+                case "ageuk":
+                    return GetAgeUK();
                 case "hlp":
                     return GetHLP();
                 default:
@@ -72,8 +74,10 @@ namespace HelpMyStreetFE.Repositories
                         
                             
             communityViewModel.ShowRequestHelp = false;
+            communityViewModel.HeaderVolunteerButtonText = null;
             communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.CommunityVolunteersHeader = "Welcome from Healthy London Partnership";
+
 
 
             communityViewModel.CommunityVolunteersTextHtml =
@@ -123,13 +127,14 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.UsefulLinksHtml = new List<string>()
             {
-                @"<a href=""https://www.healthylondon.org/"">Healthy London Partnership</a> - for more information on the work we do.",                
+                @"<a href=""https://www.healthylondon.org/"">Healthy London Partnership</a> - for more information on the work we do.",
                 @"<a href=""https://mhfaengland.org/"">MHFA England</a> - to learn more about mental health training",
             };
 
-            return communityViewModel;
 
+            return communityViewModel;
         }
+
         private CommunityViewModel GetTankersley()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
@@ -138,23 +143,37 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = -1.488587;
             communityViewModel.ZoomLevel = 14;
 
-            communityViewModel.CommunityName = "Pilley and Tankersley";
+            communityViewModel.CommunityName = "Tankersley & Pilley";
 
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
 
-            communityViewModel.Header = "Pilley and Tankersley people taking care of each other";
+            communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
 
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Pilley and Tankersley Community Helpers";
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Tankersley & Pilley Community Helpers";
+            communityViewModel.HeaderHTML = @"
+                    <p class='row sm12 text-left mt-sm mb-xs'>
+                        In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
+                        We’re the Tankersley &amp; Pilley Community Helpers, here to help with:
+                    </p>
+                    <div class='row sm12'>
+                        <ul class='tick-list mt-xs mb-sm compact-list'>
+                            <li>Shopping for essentials</li>
+                            <li>A friendly chat</li>
+                            <li>Help at home</li>
+                            <li>Cooking a hot meal</li>
+                        </ul>
+                    </div>";
+
+
 
             communityViewModel.CommunityVolunteersTextHtml =
- @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog. If you need anything, all you need to do is ask! Request help or sign-up to join us using the buttons below, or call us on XXX.</p>
-<p>Did you know... we also have a community fund to help people struggling to buy the essentials. If you need help paying for your shopping please don't go without - call us on XXXX for a confidential chat, we're here to help.</p>
-<p>If you want to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
+ @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog.</p>
+<p>To join us or to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
 ";
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
 
-            communityViewModel.RequestHelpText = @"We've got shoppers, showers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+            communityViewModel.RequestHelpText = @"We've got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
@@ -164,37 +183,92 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
+                    Name = "David",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/David.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Kate",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/Kate.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Helen",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/Helen.jpg"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = new List<string>()
+            {
+                @"<a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a>"
+            };
+
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetAgeUK()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            communityViewModel.Latitude = 53.236571;
+            communityViewModel.Longitude = -0.5398307;
+            communityViewModel.ZoomLevel = 9;
+
+            communityViewModel.CommunityName = "Age UK";
+
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
+
+            communityViewModel.Header = "Veterans need your help!";
+            communityViewModel.HeaderHTML = @"
+                    <p class='row sm12 text-left mt-sm mb-xs'>
+                        We are pleased to announce the start of our new 'Vitals For Veterans' project.
+                    </p>
+                    <p class='row sm12 text-left mt-sm mb-xs'>
+                        We are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire over the next 6 months because
+                        <i>veterans should not be forgotten</i>.
+                    </p>";
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
+            communityViewModel.HeaderVolunteerButtonText = "If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:";
+
+
+
+            communityViewModel.CommunityVolunteersTextHtml =
+ @"<p>Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people, their families and carers for over 61 years. We have over 200 dedicated staff and volunteers helping us to deliver services and activities for older people in Lincoln and across the county.</p>
+<p>Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across 17 departments for people countywide.</p>
+<p>Our support is varied and extensive, 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating opportunities for engagement through clubs and groups. Our day centre had 4700 attendances offering support to vulnerable older people who are otherwise alone during the day and allows us to provide respite for carers.</p>
+<p>To join us or to get in touch, email <a href = ""mailto: info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a></p> 
+";
+            communityViewModel.ShowRequestHelp = false;
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Nicki Lee",
+                    Role = "Senior Volunteer Coordinator",
+                    Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
+                    Name = "Susan Kellit",
+                    Role = "Head Of Charitable Services",
+                    Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
+                    Name = "Melanie Meik",
+                    Role = "Fundraising & Marketing Manager",
+                    Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
             };
@@ -202,9 +276,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.UsefulLinksHtml = new List<string>()
             {
-                @"<a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a>",
-                @"Piley & Tankersley Community Fund - call XXX on XXX for a confidential chat",
-                @"<a href=""https://www.gov.uk/coronavirus-extremely-vulnerable"">GOV.UK - Get coronavirus support as a clinically extremely vulnerable person</a>",
+                @"<a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/"">Age UK Lincoln and South Lincolnshire main site</a>",
+                @"<a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans/"">Vitals for Veterans page</a>"
             };
 
 

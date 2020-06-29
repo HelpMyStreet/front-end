@@ -15,6 +15,9 @@ namespace HelpMyStreetFE.Models.Community
         public string BannerImageLocation { get; set; }
 
         public string Header { get; set; }
+        public string HeaderHelpButtonText { get; set; } = "It's OK to ask for a little help";
+        public string HeaderVolunteerButtonText { get; set; } = "Help your neighbours in need";
+
         public string HeaderHTML { get; set; } = GetDefaultHeaderHtml();
         public string CommunityVolunteersHeader { get; set; }
         public string CommunityVolunteersTextHtml { get; set; }

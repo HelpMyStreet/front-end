@@ -290,7 +290,6 @@
             text-decoration: none;
         }
 
-        span,
         div {
             font-family: 'Raleway', sans-serif;
             line-height: normal;
@@ -313,6 +312,12 @@
                     font-size: 10px;
                     transform-origin: left;
                     transform: scaleX(0.975);
+                }
+
+                span {
+                    font-size: inherit;
+                    line-height: inherit;
+                    font-family: inherit;
                 }
             }
         }

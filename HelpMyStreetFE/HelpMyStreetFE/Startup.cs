@@ -39,10 +39,10 @@ namespace HelpMyStreetFE
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
-                {            
-                    options.Cookie.HttpOnly = true;                    
+                {
+                    options.Cookie.HttpOnly = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.Cookie.SameSite = SameSiteMode.Strict;                        
+                    options.Cookie.SameSite = SameSiteMode.Strict;
                 });
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
@@ -124,7 +124,7 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
-            services.AddSingleton<IAuthService, AuthService>();            
+            services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IEmailService, EmailService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
@@ -140,14 +140,15 @@ namespace HelpMyStreetFE
             services.AddControllers();
             services.AddRazorPages()
             .AddRazorRuntimeCompilation()
-            .AddRazorOptions(opt => {
+            .AddRazorOptions(opt =>
+            {
                 opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/RequestStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/DetailStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/ReviewStage/{0}.cshtml");
             });
-            
-            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -168,12 +169,13 @@ namespace HelpMyStreetFE
             app.UseRewriter(new RewriteOptions().AddRedirectToWwwPermanent("helpmystreet.org"));
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".webmanifest"] = "application/manifest+json";
-            app.UseStaticFiles(new StaticFileOptions{
+            app.UseStaticFiles(new StaticFileOptions
+            {
                 ContentTypeProvider = provider,
                 OnPrepareResponse = ctx =>
                 {
-                   int durationInHours = Configuration.GetValue<int?>("StaticFileCacheInHours") ?? 24;                                        
-                   int durationInSeconds = 60 * 60 * durationInHours;
+                    int durationInHours = Configuration.GetValue<int?>("StaticFileCacheInHours") ?? 24;
+                    int durationInSeconds = 60 * 60 * durationInHours;
                     ctx.Context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.CacheControl] =
                         "public,max-age=" + durationInSeconds;
                 }
@@ -225,18 +227,22 @@ namespace HelpMyStreetFE
                     name: "contact",
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
-                        endpoints.MapControllerRoute(
+                endpoints.MapControllerRoute(
                     name: "request-help/v4v",
                     pattern: "request-help/v4v",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans  });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans });
                 endpoints.MapControllerRoute(
-                name: "request-help/diy",
-                pattern: "request-help/diy",
-                defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
+                    name: "request-help/diy",
+                    pattern: "request-help/diy",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
                 endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
                     defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
+                endpoints.MapControllerRoute(
+                    name: "request-help/success",
+                    pattern: "request-help/success",
+                    defaults: new { controller = "RequestHelp", action = "Success" });
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
@@ -250,12 +256,12 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "Kimberley",
                     pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index",  });
+                    defaults: new { controller = "Home", action = "Index", });
 
                 endpoints.MapControllerRoute(
                     name: "Tankersley",
                     pattern: "tankersley",
-                    defaults: new { controller = "Home", action = "Index" });
+                    defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
 
 
                 endpoints.MapControllerRoute(
@@ -269,14 +275,19 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Community", action = "FaceMasks" });
 
                 endpoints.MapControllerRoute(
-                 name: "OpenRequests",
-                 pattern: "account/open-requests",
-                 defaults: new { controller = "Account", action = "OpenRequests" });
+                    name: "fortheloveofscrubs",
+                    pattern: "fortheloveofscrubs-landingpagedemo",
+                    defaults: new { controller = "Community", action = "ForTheLoveOfScrubs" });
 
                 endpoints.MapControllerRoute(
-                 name: "AcceptedRequests",
-                 pattern: "account/accepted-requests",
-                 defaults: new { controller = "Account", action = "AcceptedRequests" });
+                    name: "OpenRequests",
+                    pattern: "account/open-requests",
+                    defaults: new { controller = "Account", action = "OpenRequests" });
+
+                endpoints.MapControllerRoute(
+                   name: "AcceptedRequests",
+                   pattern: "account/accepted-requests",
+                   defaults: new { controller = "Account", action = "AcceptedRequests" });
 
                 endpoints.MapControllerRoute(
                 name: "registration/stepone/hlp",

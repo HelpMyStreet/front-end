@@ -122,8 +122,6 @@
 
 /*! ../internals/new-promise-capability */
 
-/*! ../internals/number-parse-int */
-
 /*! ../internals/object-create */
 
 /*! ../internals/object-define-properties */
@@ -271,8 +269,6 @@
 /*! core-js/modules/es.object.keys */
 
 /*! core-js/modules/es.object.to-string */
-
-/*! core-js/modules/es.parse-int */
 
 /*! core-js/modules/es.promise */
 
@@ -472,10 +468,6 @@
   !*** ../node_modules/core-js/internals/to-integer.js ***!
   \*******************************************************/
 
-/*!*******************************************************!*\
-  !*** ../node_modules/core-js/modules/es.parse-int.js ***!
-  \*******************************************************/
-
 /*!********************************************************!*\
   !*** ../node_modules/core-js/internals/an-instance.js ***!
   \********************************************************/
@@ -659,10 +651,6 @@
 /*!************************************************************!*\
   !*** ../node_modules/core-js/modules/es.string.replace.js ***!
   \************************************************************/
-
-/*!*************************************************************!*\
-  !*** ../node_modules/core-js/internals/number-parse-int.js ***!
-  \*************************************************************/
 
 /*!*************************************************************!*\
   !*** ../node_modules/core-js/internals/object-to-string.js ***!

@@ -1,18 +1,24 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
+import { trackEvent } from "../shared/tracking-helper";
 
 export function initialiseStepTwo() {
+
+  trackEvent("Registration flow", "View Step 2");
+
   $("#manual_address").on("click", function (evt) {
     evt.preventDefault();
     $(".expander").slideDown();
-  });
+    trackEvent("Registration flow", "Click Manual entry");
+ });
 
   datepickerLoad('datepicker');
   $("#address_finder").on("click", async function (evt) {
     evt.preventDefault();
     buttonLoad($(this));
     $("#address_selector").unbind("change");
+    trackEvent("Registration flow", "Click Find address");
 
     const postcode = $("input[name=postcode_search]").val();
     try {
@@ -86,6 +92,7 @@ export function initialiseStepTwo() {
             let postcodeValid;
             let postcodeInput = $("input[name='postcode_search']");
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
+            trackEvent("Registration flow", "Submit Step 2", validForm ? "(Valid)" : "(Invalid)");
             if (validForm) { // avoid calling service when possible, so check if the form is valid first
                 buttonLoad($('#submit_button'));
                 validatePostCode(postcodeInput.val()).then(function (response) {
