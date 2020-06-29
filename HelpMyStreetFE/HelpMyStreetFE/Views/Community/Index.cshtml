@@ -25,7 +25,16 @@
 
                     @Html.Raw(@Model.HeaderHTML)
 
-                    <div class="row sm12 large-screen-only mb-sm"></div>
+                    @if (Model.ShowRequestHelp)
+                    {
+                        <div class="row sm6 text-center justify-center mb-sm small-screen-only">
+                            @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                            {
+                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                            }
+                            <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                        </div>
+                    }
 
                     <div class="row sm6 text-center justify-center mb-md">
                         @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
@@ -46,13 +55,13 @@
 
                     @if (Model.ShowRequestHelp)
                     {
-                    <div class="row sm6 text-center justify-center mb-md large-screen-only">
-                        @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
-                        {
-                            <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
-                        }
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
-                    </div>
+                        <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                            @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                            {
+                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                            }
+                            <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                        </div>
                     }
                 </div>
                     
