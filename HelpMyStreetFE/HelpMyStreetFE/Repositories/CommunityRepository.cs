@@ -79,6 +79,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityVolunteersHeader = "Welcome from Healthy London Partnership";
 
 
+
             communityViewModel.CommunityVolunteersTextHtml =
             @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners' health and wellbeing so everyone can live healthier lives.</p>
             <p>Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
@@ -88,37 +89,88 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
+                    Name = "David",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/David.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Kate",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/Kate.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Helen",
+                    Role = "",
+                    Location = "",
+                    ImageLocation = "/img/community/tankersley/Helen.jpg"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = new List<string>()
+            {
+                @"<a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a>"
+            };
+
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetAgeUK()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            communityViewModel.Latitude = 53.236571;
+            communityViewModel.Longitude = -0.5398307;
+            communityViewModel.ZoomLevel = 14;
+
+            communityViewModel.CommunityName = "Age UK";
+
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
+
+            communityViewModel.Header = "Veterans need your help!";
+            communityViewModel.HeaderSubtitle = "We are pleased to announce the start of our new 'Vitals For Veterans' project.<br><br>We are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire over the next 6 months because <i>veterans should not be forgotten.</i><br>";
+            communityViewModel.HeaderBullets = null;
+            communityViewModel.HideHeaderButtons = false;
+            communityViewModel.HideHeaderHelpButton = true;
+            communityViewModel.HeaderVolunteerButtonText = "If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:";
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
+
+
+
+            communityViewModel.CommunityVolunteersTextHtml =
+ @"<p>Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people, their families and carers for over 61 years. We have over 200 dedicated staff and volunteers helping us to deliver services and activities for older people in Lincoln and across the county.</p>
+<p>Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across 17 departments for people countywide.</p>
+<p>Our support is varied and extensive, 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating opportunities for engagement through clubs and groups. Our day centre had 4700 attendances offering support to vulnerable older people who are otherwise alone during the day and allows us to provide respite for carers.</p>
+<p>To join us or to get in touch, email <a href = ""mailto: info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a></p> 
+";
+            communityViewModel.HideHelpPanel = true;
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Nicki Lee",
+                    Role = "Senior Volunteer Coordinator",
+                    Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
+                    Name = "Susan Kellit",
+                    Role = "Head Of Charitable Services",
+                    Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
+                    Name = "Melanie Meik",
+                    Role = "Fundraising & Marketing Manager",
+                    Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
             };

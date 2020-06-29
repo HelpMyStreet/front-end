@@ -1,7 +1,10 @@
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData } from "../shared/validator";
+import { trackEvent } from "../shared/tracking-helper";
 
 export function initialiseStepThree() {
+    trackEvent("Registration flow", "View Step 3");
+
 
 
 
@@ -50,6 +53,7 @@ export function initialiseStepThree() {
         buttonUnload($('#submit_button'));
     }
 
-    return valid;
+     trackEvent("Registration flow", "Submit Step 3", valid ? "(Valid)" : "(Invalid)");
+     return valid;
   });
 }

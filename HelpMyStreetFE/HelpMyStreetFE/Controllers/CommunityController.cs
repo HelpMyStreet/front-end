@@ -44,5 +44,10 @@ namespace HelpMyStreetFE.Controllers
           
             return View();
         }
+        public async Task<IActionResult> ForTheLoveOfScrubs()
+        {
+
+            return View();
+        }
     }
 }
