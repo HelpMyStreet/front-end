@@ -243,12 +243,12 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 
     let zoomLevel = googleMap.getZoom();
 
-    let distanceInMeters = getDistanceInMeters(swLat, swLng, neLat, neLng);
+    let northSouthDistanceInMeters = getDistanceInMeters(swLat, swLng, neLat, swLng);
     let minDistanceBetweenInMetres = 0;
 
     let isMapShowingLargeArea = false;
     if (zoomLevel <= largeAreaZoomNumber) {
-        minDistanceBetweenInMetres = Math.ceil(distanceInMeters / 30);
+        minDistanceBetweenInMetres = Math.ceil(northSouthDistanceInMeters / 30);
         isMapShowingLargeArea = true;
     }
 
