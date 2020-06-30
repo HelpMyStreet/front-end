@@ -23,15 +23,10 @@
     string iconClass = AgeUk ? "limit-width" : "";
 
     var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
-
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided"; 
-
-
     var friendlyNamePrefix = forFaceMask  ?
     Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
-
     bool removePluralisation = forFaceMask &&  Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
-
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.SupportActivity.FriendlyName().Remove(Model.SupportActivity.FriendlyName().Length - 1) : Model.SupportActivity.FriendlyName());
     bool showOtherDetails = !forFaceMask;
 }

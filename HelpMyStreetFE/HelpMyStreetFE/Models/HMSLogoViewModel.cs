@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Models
         public bool ShowSecondaryText { get; set; } = false;
 
         public string PrimaryText { get; set; } = "HelpMyStreet.org";
+        public string PrimaryMobileText { get; set; }
 
         public string SecondaryText { get; set; } = "HelpMyStreet.org";
     }

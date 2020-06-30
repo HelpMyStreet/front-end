@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HelpMyStreetFE.Models.RequestHelp.Enum;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,8 @@ namespace HelpMyStreetFE.Models.Registration
         public bool ChampionRoleUnderstood { get; set; }
         [BindProperty(Name = "postcodes[]")]
         public List<string> ChampionPostcodes { get; set; } = new List<string>();
+
+        [BindProperty(Name = "source")]
+        public RegistrationSource Source { get; set; }
     }
 }

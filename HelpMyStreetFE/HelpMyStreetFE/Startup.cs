@@ -21,6 +21,7 @@ using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
 using HelpMyStreetFE.Enums.RequestHelp;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 namespace HelpMyStreetFE
 {
@@ -262,6 +263,12 @@ namespace HelpMyStreetFE
                     pattern: "tankersley",
                     defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
 
+
+                endpoints.MapControllerRoute(
+                    name: "healthylondonpartnership",
+                    pattern: "healthylondonpartnership",
+                    defaults: new { controller = "Community", action = "Index", communityName = "hlp" });
+
                 endpoints.MapControllerRoute(
                    name: "face-masks",
                    pattern: "face-masks",
@@ -281,6 +288,11 @@ namespace HelpMyStreetFE
                    name: "AcceptedRequests",
                    pattern: "account/accepted-requests",
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
+
+                endpoints.MapControllerRoute(
+                name: "registration/stepone/hlp",
+                pattern: "registration/stepone/hlp",
+                defaults: new { controller = "Registration", action = "StepOne", source  = RegistrationSource.HLP });
 
                 // Enable attribute routing
                 //endpoints.MapControllers();

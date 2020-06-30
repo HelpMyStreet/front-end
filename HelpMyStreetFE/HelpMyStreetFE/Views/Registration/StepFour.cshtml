@@ -43,6 +43,7 @@
         </div>
     </div>
     <form id="registration_form" method="post">
+        <input name="source" type="hidden" value="@Model.Source" />
         <div class="row justify-center">
             <div class="sm8 list">
                 @foreach (var responsibility in responsibilities)
@@ -115,7 +116,7 @@
             <div class="sm8">
                 <span id="championSelectError" class="error"></span>
             </div>
-            
+
             <div class="sm8">
                 <div class="controls">
                     <button class="btn large cta fill" id="submit_button" type="submit">

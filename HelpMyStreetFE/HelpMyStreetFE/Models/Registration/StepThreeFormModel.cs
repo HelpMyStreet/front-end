@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,17 @@ namespace HelpMyStreetFE.Models.Registration
         public List<SupportActivities> VolunteerOptions { get; set; }
         [BindProperty(Name = "volunteer_distance")]
         public float VolunteerDistance { get; set; }
-        [BindProperty(Name = "volunteer_phone_contact")]
-        public bool VolunteerPhoneContact { get; set; }
-        [BindProperty(Name = "volunteer_medical_condition")]
-        public bool VolunteerMedicalCondition { get; set; }
+        [BindProperty(Name = "custom_distance")]            
+        public float CustomDistance { get; set; }
+        [BindProperty(Name = "source")]
+        public RegistrationSource Source { get; set; }
+
+        public bool HasCustomDistance
+        {
+            get
+            {
+                return VolunteerDistance == 999 && CustomDistance > 0;
+            }
+        }
     }
 }

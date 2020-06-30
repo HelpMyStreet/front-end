@@ -39,7 +39,7 @@
 
     @media screen and (max-width: $breakpointSm) {
         grid-template-areas: "logo toggle" "userDetails userDetails";
-        grid-template-columns: auto 0.5fr;
+        grid-template-columns: auto 0.5fr;  
     }
 
     &__account {
@@ -312,6 +312,12 @@
                     font-size: 10px;
                     transform-origin: left;
                     transform: scaleX(0.975);
+                }
+
+                span {
+                    font-size: inherit;
+                    line-height: inherit;
+                    font-family: inherit;
                 }
             }
         }

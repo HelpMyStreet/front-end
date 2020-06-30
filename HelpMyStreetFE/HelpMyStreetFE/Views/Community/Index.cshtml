@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = Model.CommunityName;
-    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = Model.CommunityName, ShowSecondaryText = true };
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
 }
 
 @section Scripts {
@@ -23,62 +23,50 @@
                         <h2 class="row sm12 mb0">@Model.Header</h2>
                     </header>
 
-                    @if (Model.HeaderSubtitle != null)
+                    @Html.Raw(@Model.HeaderHTML)
+
+                    @if (Model.ShowRequestHelp)
                     {
-                        <p class="row sm12 text-left mt-sm mb-xs">@Html.Raw(@Model.HeaderSubtitle)<br /></p>
-                    }
-                    
-                    @if (Model.HeaderBullets != null)
-                        {
-                            <div class="row sm12">
-                                <ul class="tick-list mt-xs mb-sm compact-list">
-
-                                    @foreach (var bullet in Model.HeaderBullets) {
-                                    <li>@bullet</li>
-                                    }
-                                    
-                                </ul>
-                            </div>
-                            }
-                    @if (!Model.HideHeaderButtons)
-                    {
-                        @if (!Model.HideHeaderHelpButton)
-                        {
-                            <div class="row sm12 text-center justify-center small-screen-only mb-sm">
+                        <div class="row sm6 text-center justify-center mb-sm small-screen-only">
+                            @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                            {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
-                                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                            </div>
-                        }
-
-
-
-                        @if (!Model.HideHeaderVolunteerButton) {
-                            <div class="row @(Model.HideHeaderHelpButton ? " sm12 " : " sm6 " ) text-center justify-center mb-md">
-                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
-                                @if (!Model.IsLoggedIn)
-                                {
-                                    <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up Now</a>
-
-                                }
-                                else
-                                {
-                                    <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
-
-                                }
-                            </div>
-                    }
-                        @if (!Model.HideHeaderHelpButton)
-                        {
-                            <div class="row @(Model.HideHeaderVolunteerButton ? " sm12 " : " sm6 " ) text-center justify-center mb-md large-screen-only">
-                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
-                                <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                            </div>
                             }
-                        }
+                            <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
                         </div>
-                    
-                <div class="sm6 text-right commmunity-map-container map static-map" id="map">
+                    }
+
+                    <div class="row sm6 text-center justify-center mb-md">
+                        @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
+                        {
+                            <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
+                        }
+                        @if (!Model.IsLoggedIn)
+                        {
+                            <a href="@Model.SignUpLink" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">Sign Up Now</a>
+
+                        }
+                        else
+                        {
+                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">Provide Help</a>
+
+                        }
+                    </div>
+
+                    @if (Model.ShowRequestHelp)
+                    {
+                        <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                            @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                            {
+                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                            }
+                            <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                        </div>
+                    }
                 </div>
+                    
+                <div class="sm6 text-right commmunity-map-container map static-map" id="map"></div>
+
             </div>
 
         </div>
@@ -126,25 +114,30 @@
     </div>
 
 
-    @if (!Model.HideHelpPanel){
     <div class="outer-container">
         <div class="inner-container--no-side-padding">
-            <div class="row hero flex text-center">
-                <div class="sm6 mb-md">
-                    <div class="card">
+            <div class="row hero flex text-center justify-center">
 
-                        <h2>@Model.RequestHelpHeading</h2>
-                        <p class="text-left mt-sm mb-md">
-                            @Model.RequestHelpText
-                        </p>
+                @if (Model.ShowRequestHelp)
+                {
+                    <div class="sm6 mb-md">
+                        <div class="card">
 
-                        <div class="" style="text-align: center">
-                            <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange">Request Help</a>
+                            <h2>@Model.RequestHelpHeading</h2>
+                            <p class="text-left mt-sm mb-md">
+                                @Model.RequestHelpText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                            </div>
+
                         </div>
-
                     </div>
-                </div>
+                }
 
+                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText))
+                {
                 <div class="sm6">
                     <div class="card">
                         <h2>@Model.ProvideHelpHeading</h2>
@@ -155,19 +148,20 @@
                         <div class="" style="text-align: center">
                             @if (!Model.IsLoggedIn)
                             {
-                                <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                                <a id="first-button" href="@Model.SignUpLink" class="btn cta fixed-width btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Sign Up</a>
                             }
                             else
                             {
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Provide Help</a>
                             }
                         </div>
                     </div>
                 </div>
+                }
             </div>
         </div>
     </div>
-    }
+
     <div class="outer-container outer-container--darker">
         <div class="inner-container ">
             <div class="row justify-center">
@@ -186,11 +180,16 @@
         </div>
     </div>
 
+ 
     <div class="outer-container">
         <div class="inner-container">
-            <partial name="_HelpExampleCards" />
-        </div>
+            @if (Model.ShowHelpExampleCards)
+            {
+                <partial name="_HelpExampleCards" />
+                    }
+            </div>
     </div>
+
 
     <div class="outer-container outer-container--darker">
         <div class="inner-container">

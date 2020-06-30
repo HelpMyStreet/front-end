@@ -6,6 +6,23 @@ $(document).ready(function () {
         lessLink: '<a href="#">Read less</a>',
         collapsedHeight: 200
     });
+
+
+    if ($('.select-all').length > 0) {
+        $('.btn--sign-up').addClass("disabled");
+    }
+
+    $('.select-all').change(function () {
+        var values = []
+        $('.select-all').each(function () {
+            values.push($(this).is(":checked"));
+        })
+        if (!values.includes(false)) {
+            $('.btn--sign-up').removeClass("disabled");
+        } else {
+            $('.btn--sign-up').addClass("disabled");
+        }
+    })
 });
 
 
