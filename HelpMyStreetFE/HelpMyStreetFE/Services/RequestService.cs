@@ -113,7 +113,11 @@ namespace HelpMyStreetFE.Services
                 {
                     Postcode = user.PostalCode,
                     DistanceInMiles = distanceInMiles,
-                    ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles
+                    ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
+                    JobStatuses = new JobStatusRequest()
+                    {
+                       JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
+                    }
                 };
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
