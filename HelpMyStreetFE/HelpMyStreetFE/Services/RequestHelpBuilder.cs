@@ -35,6 +35,8 @@ namespace HelpMyStreetFE.Services
                 {
                     new RequestHelpRequestStageViewModel
                     {
+                        PageHeading = GetHelpRequestPageTitle(source),
+                        IntoText = GetHelpRequestPageIntroText(source),
                         Tasks = await GetRequestHelpTasks(source),
                         Requestors = new List<RequestorViewModel>
                         {
@@ -101,6 +103,30 @@ namespace HelpMyStreetFE.Services
             }
 
             return null;
+        }
+
+        private string GetHelpRequestPageTitle(RequestHelpSource source)
+        {
+            if (source == RequestHelpSource.FtLOS)
+            {
+                return "How can For the Love of Scrubs help?";
+            }
+            else
+            {
+                return "What type of help are you looking for?";
+            }
+        }
+
+        private string GetHelpRequestPageIntroText(RequestHelpSource source)
+        {
+            if (source == RequestHelpSource.FtLOS)
+            {
+                return "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.";
+            }
+            else
+            {
+                return "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help.";
+            }
         }
 
         private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpSource source)
