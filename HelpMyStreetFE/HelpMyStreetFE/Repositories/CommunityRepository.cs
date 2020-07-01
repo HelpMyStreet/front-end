@@ -11,8 +11,8 @@ namespace HelpMyStreetFE.Repositories
             {
                 case "tankersley":
                     return GetTankersley();
-                case "ageuk":
-                    return GetAgeUK();
+                case "ageuklsl":
+                    return GetAgeUKLSL();
                 case "hlp":
                     return GetHLP();
                 default:
@@ -214,7 +214,7 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetAgeUK()
+        private CommunityViewModel GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
