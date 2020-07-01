@@ -1,4 +1,4 @@
-﻿using HelpMyStreetFE.Models.Community;
+using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Repositories
@@ -280,8 +280,9 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.UsefulLinksHtml = new List<string>()
             {
-                @"<a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/"">Age UK Lincoln and South Lincolnshire main site</a>",
-                @"<a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans/"">Vitals for Veterans page</a>"
+                @"<a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans"">Vitals for Veterans page</a> - Find out more about our incredible project reaching veterans in need across Lincoln and South Lincolnshire",
+                @"<a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services",
+                @"<a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire",
             };
 
 
