@@ -1,4 +1,4 @@
-﻿using HelpMyStreetFE.Models.Community;
+using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Repositories
@@ -222,7 +222,8 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = -0.5398307;
             communityViewModel.ZoomLevel = 9;
 
-            communityViewModel.CommunityName = "Age UK";
+            communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
+            communityViewModel.CommunityShortName = "Age UK LSL";
 
             communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
 
