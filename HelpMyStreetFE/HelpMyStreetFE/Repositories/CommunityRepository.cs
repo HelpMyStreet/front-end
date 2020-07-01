@@ -1,4 +1,4 @@
-using HelpMyStreetFE.Models.Community;
+﻿using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Repositories
@@ -218,8 +218,8 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            communityViewModel.Latitude = 53.236571;
-            communityViewModel.Longitude = -0.5398307;
+            communityViewModel.Latitude = 52.95;
+            communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = 9;
 
             communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
