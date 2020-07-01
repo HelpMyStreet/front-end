@@ -1,4 +1,4 @@
-using HelpMyStreetFE.Models.Community;
+﻿using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Repositories
@@ -245,11 +245,25 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.CommunityVolunteersTextHtml =
- @"<p>Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people, their families and carers for over 61 years. We have over 200 dedicated staff and volunteers helping us to deliver services and activities for older people in Lincoln and across the county.</p>
-<p>Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across 17 departments for people countywide.</p>
-<p>Our support is varied and extensive, 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating opportunities for engagement through clubs and groups. Our day centre had 4700 attendances offering support to vulnerable older people who are otherwise alone during the day and allows us to provide respite for carers.</p>
-<p>To join us or to get in touch, email <a href = ""mailto: info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a></p> 
-";
+                 @"<p>
+                    Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people,
+                    their families and carers for over 61 years. We have over 400 dedicated staff and volunteers helping us to deliver services and activities
+                    for older people in Lincoln and across the county.
+                </p>
+                <p>
+                    Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across
+                    17 departments for people countywide.
+                </p>
+                <p>
+                    Our support is varied and extensive; 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating
+                    opportunities for engagement through clubs and groups. Age UK Lincoln & South Lincolnshire exist to support older people to love later life and
+                    where possible remain independent in their own homes. We continually work towards ending loneliness and isolation in older people, many of whom were 
+                    isolated and living in a form of lockdown before the recent pandemic and sadly for whom there is no ""new normal"".  Their reality is loneliness and isolation still now.
+                </p>
+                <p>
+                    For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a> or call us on 03455 564 144.
+                </p> 
+                ";
             communityViewModel.ShowRequestHelp = false;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
