@@ -235,9 +235,12 @@ namespace HelpMyStreetFE.Repositories
                     <p class='row sm12 text-left mt-sm mb-xs'>
                         We are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire over the next 6 months because
                         <i>veterans should not be forgotten</i>.
+                    </p>
+                    <p class='row sm12 text-left mt-sm mb-s'>
+                        If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
-            communityViewModel.HeaderVolunteerButtonText = "If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:";
+            communityViewModel.HeaderVolunteerButtonText = null;
 
 
 
