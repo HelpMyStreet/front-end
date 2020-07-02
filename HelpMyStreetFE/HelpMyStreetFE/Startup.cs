@@ -280,8 +280,8 @@ namespace HelpMyStreetFE
 
                 endpoints.MapControllerRoute(
                     name: "fortheloveofscrubs",
-                    pattern: "fortheloveofscrubs-landingpagedemo",
-                    defaults: new { controller = "Community", action = "ForTheLoveOfScrubs" });
+                    pattern: "fortheloveofscrubs",
+                    defaults: new { controller = "Community", action = "Index", communityName = "ftlos" });
 
                 endpoints.MapControllerRoute(
                     name: "OpenRequests",

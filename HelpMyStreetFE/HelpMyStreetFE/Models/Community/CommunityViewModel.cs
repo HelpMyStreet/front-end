@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Models.Community
 {
@@ -6,6 +7,7 @@ namespace HelpMyStreetFE.Models.Community
     {
         public bool IsLoggedIn { get; set; }
 
+        public bool ShowMap { get; set; } = true;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int ZoomLevel { get; set; }
@@ -24,14 +26,19 @@ namespace HelpMyStreetFE.Models.Community
 
         public bool ShowRequestHelp { get; set; } = true;
         public bool ShowHelpExampleCards {get;set;} = true;
+        public HelpExampleCardsViewModel HelpExampleCards { get; set; } = new HelpExampleCardsViewModel();
+
         public bool DisableButtons { get; set; }
         public string RequestHelpHeading { get; set; }
         public string RequestHelpText { get; set; }
+        public string RequestHelpButtonText { get; set; } = "Request Help";
+        public string ProvideHelpLoggedOutButtonText { get; set; } = "Sign Up Now";
+        public string ProvideHelpLoggedInButtonText { get; set; } = "Provide Help";
 
         public string ProvideHelpHeading { get; set; }
         public string ProvideHelpText { get; set; }
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
-        public IEnumerable<string> UsefulLinksHtml { get; set; }
+        public string UsefulLinksHtml { get; set; }
 
 
         private static string GetDefaultHeaderHtml()
