@@ -11,8 +11,8 @@ namespace HelpMyStreetFE.Repositories
             {
                 case "tankersley":
                     return GetTankersley();
-                case "ageuk":
-                    return GetAgeUK();
+                case "ageuklsl":
+                    return GetAgeUKLSL();
                 case "hlp":
                     return GetHLP();
                 case "ftlos":
@@ -211,15 +211,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetAgeUK()
+        private CommunityViewModel GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            communityViewModel.Latitude = 53.236571;
-            communityViewModel.Longitude = -0.5398307;
+            communityViewModel.Latitude = 52.95;
+            communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = 9;
 
-            communityViewModel.CommunityName = "Age UK";
+            communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
+            communityViewModel.CommunityShortName = "Age UK LSL";
 
             communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
 
@@ -231,18 +232,35 @@ namespace HelpMyStreetFE.Repositories
                     <p class='row sm12 text-left mt-sm mb-xs'>
                         We are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire over the next 6 months because
                         <i>veterans should not be forgotten</i>.
+                    </p>
+                    <p class='row sm12 text-left mt-sm mb-s'>
+                        If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
-            communityViewModel.HeaderVolunteerButtonText = "If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:";
+            communityViewModel.HeaderVolunteerButtonText = null;
 
 
 
             communityViewModel.CommunityVolunteersTextHtml =
- @"<p>Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people, their families and carers for over 61 years. We have over 200 dedicated staff and volunteers helping us to deliver services and activities for older people in Lincoln and across the county.</p>
-<p>Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across 17 departments for people countywide.</p>
-<p>Our support is varied and extensive, 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating opportunities for engagement through clubs and groups. Our day centre had 4700 attendances offering support to vulnerable older people who are otherwise alone during the day and allows us to provide respite for carers.</p>
-<p>To join us or to get in touch, email <a href = ""mailto: info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a></p> 
-";
+                 @"<p>
+                    Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people,
+                    their families and carers for over 61 years. We have over 400 dedicated staff and volunteers helping us to deliver services and activities
+                    for older people in Lincoln and across the county.
+                </p>
+                <p>
+                    Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across
+                    17 departments for people countywide.
+                </p>
+                <p>
+                    Our support is varied and extensive; 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating
+                    opportunities for engagement through clubs and groups. Age UK Lincoln & South Lincolnshire exist to support older people to love later life and
+                    where possible remain independent in their own homes. We continually work towards ending loneliness and isolation in older people, many of whom were 
+                    isolated and living in a form of lockdown before the recent pandemic and sadly for whom there is no ""new normal"".  Their reality is loneliness and isolation still now.
+                </p>
+                <p>
+                    For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a> or call us on 03455 564 144.
+                </p> 
+                ";
             communityViewModel.ShowRequestHelp = false;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
@@ -272,8 +290,9 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.UsefulLinksHtml = 
-                @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/"">Age UK Lincoln and South Lincolnshire main site</a></p>
-                <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans/"">Vitals for Veterans page</a></p>";
+                @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans"">Vitals for Veterans page</a> - Find out more about our incredible project reaching veterans in need across Lincoln and South Lincolnshire</p>
+                <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
+                <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
 
 
             return communityViewModel;

@@ -274,6 +274,11 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", communityName = "hlp" });
 
                 endpoints.MapControllerRoute(
+                    name: "ageuklsl",
+                    pattern: "ageuklsl",
+                    defaults: new { controller = "Community", action = "Index", communityName = "ageuklsl" });
+
+                endpoints.MapControllerRoute(
                    name: "face-masks",
                    pattern: "face-masks",
                    defaults: new { controller = "Community", action = "FaceMasks" });
