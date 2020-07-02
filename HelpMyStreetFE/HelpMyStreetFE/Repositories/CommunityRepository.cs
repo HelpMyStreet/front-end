@@ -373,15 +373,15 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.UsefulLinksHtml = @"
                     <h6>Patterns</h6>
                     <p class='mb-xs'><a href='https://sustainmycrafthabit.com/how-to-make-a-simple-pleated-face-mask-with-free-pattern/#:~:text=%20Instructions%20%201%20Lay%20fabric%20out%20on,around%20the%20perimeter%20and%20stitch%20the...%20More%20'> Simple Pleated Face Mask</a> - free pattern and video</p>
-                    <p class='mt-xs mb-xs'><a href='https://hellosewing.com/wp-content/uploads/face-mask-pattern-1.jpg' > Fitted face mask pattern</a> - free pattern</p>
-                    <p class='mt-xs mb-xs'><a href='https://www.youtube.com/watch?v=b78VGVWa6hw'> Smile mask(with a clear panel)</a> - YouTube video</p>
-                    <p class='mt-xs'><a href='https://freeprintablesonline.com/2020/03/printable-face-mask-patterns-roundup/'> FreePrintablesOnline.com </a> -patterns, videos, hints and tips</p>
+                    <p class='mt-xs mb-xs'><a href='https://hellosewing.com/wp-content/uploads/face-mask-pattern-1.jpg'>Fitted face mask pattern</a> - free pattern</p>
+                    <p class='mt-xs mb-xs'><a href='https://www.youtube.com/watch?v=b78VGVWa6hw'>Smile mask (with a clear panel)</a> - YouTube video</p>
+                    <p class='mt-xs'><a href='https://freeprintablesonline.com/2020/03/printable-face-mask-patterns-roundup/'> FreePrintablesOnline.com</a> - patterns, videos, hints and tips</p>
 
                     <h6>Donation page</h6>
                     <p><a href='#'> You can donate through our JustGiving page</a></p>
 
                     <h6>Requesting materials</h6>
-                    <p>If you’re a FtLOS sewer and need more materials contact your local group administrator or email<a href='mailto:materialrequest-ftlos@outlook.com'>materialrequest-ftlos@outlook.com</a></p>
+                    <p>If you’re a FtLOS sewer and need more materials contact your local group administrator or email <a href='mailto:materialrequest-ftlos@outlook.com'>materialrequest-ftlos@outlook.com</a></p>
             ";
 
             communityViewModel.RequestHelpHeading = "Do you need a face covering?";
