@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Enums.RequestHelp
     {
         Default = 1,
         VitalsForVeterans = 2,
-        DIY = 3        
+        DIY = 3,
+        FtLOS = 4
     }
 }

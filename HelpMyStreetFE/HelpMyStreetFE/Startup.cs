@@ -228,6 +228,10 @@ namespace HelpMyStreetFE
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
                 endpoints.MapControllerRoute(
+                    name: "request-help/ftlos",
+                    pattern: "request-help/ftlos",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.FtLOS });
+                endpoints.MapControllerRoute(
                     name: "request-help/v4v",
                     pattern: "request-help/v4v",
                     defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans });
