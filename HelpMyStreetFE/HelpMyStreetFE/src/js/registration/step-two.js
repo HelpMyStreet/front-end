@@ -2,6 +2,7 @@
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
+import "isomorphic-fetch";
 
 export function initialiseStepTwo() {
 
@@ -103,13 +104,13 @@ export function initialiseStepTwo() {
                     } else {
                         postcodeInput.find("~ .error").hide();
                     }
-                }).catch(function () {
-                    buttonUnload($('#submit_button'));
-                }).finally(function () {
+                }).then(function () {
                     validForm = (validForm && postcodeValid);
                     if (validForm) {
                         $("#registration_form").unbind('submit').submit(); // continue the submit unbind preventDefault
                     }
+                }).catch(function () {
+                    buttonUnload($('#submit_button'));
                 });
 
             }
