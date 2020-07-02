@@ -1,31 +1,25 @@
-﻿
+﻿@model HelpMyStreetFE.Models.HelpExampleCardsViewModel;
 
-@{ 
-    var box1 = (ViewData["box1"] is string && !string.IsNullOrEmpty((string)ViewData["box1"])) ? (string)ViewData["box1"] : "Collect prescription for 73 year old grandmother";
-    var box2 = (ViewData["box2"] is string && !string.IsNullOrEmpty((string)ViewData["box2"])) ? (string)ViewData["box2"] : "Grocery shopping for a pregnant young mum";
-    var box3 = (ViewData["box3"] is string && !string.IsNullOrEmpty((string)ViewData["box3"])) ? (string)ViewData["box3"] : "Post items for an 88 year old grandad";
-}
-
-<div class="row justify-center text-center help">
+<div class="row justify-center text-center help help-examples">
     <div class="sm12 mb-lg">
         <h2>Getting the right help to the right people&hellip;</h2>
     </div>
     <div class="sm4">
         <div class="card pt32">
             <img src="~/img/people-icon--orange.svg" alt="human icon" width="86" />
-            <h6 class="mb0">@box1</h6>
+            <h6 class="mb0">@(Model.Example1 ?? "Collect prescription for 73 year old grandmother")</h6>
         </div>
     </div>
     <div class="sm4">
         <div class="card pt32 large-screen-only">
             <img src="~/img/people-icon--blue.svg" alt="human icon" width="86" />
-            <h6 class="mb0">@box2</h6>
+            <h6 class="mb0">@(Model.Example2 ?? "Grocery shopping for a pregnant young mum")</h6>
         </div>
     </div>
     <div class="sm4">
         <div class="card pt32 large-screen-only">
             <img src="~/img/people-icon--orange.svg" alt="human icon" width="86" />
-            <h6 class="mb0">@box3</h6>
+            <h6 class="mb0">@(Model.Example3 ?? "Post items for an 88 year old grandad")</h6>
         </div>
     </div>
 </div>
