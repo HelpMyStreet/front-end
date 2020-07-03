@@ -15,8 +15,8 @@ namespace HelpMyStreetFE.Services
     {
         RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage);
         RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage);
-        int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage, RequestorType type, RequestHelpSource source, int userId);
-        Task<RequestHelpViewModel> GetSteps(RequestHelpSource source);   
-        List<RequestorType> GetRequestorTypeQuestion(RequestHelpSource source, int questionId);
+        int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage, RequestorType type, RequestHelpFormVariant requestHelpFormVariant, int userId);
+        Task<RequestHelpViewModel> GetSteps(RequestHelpFormVariant source2, int referringGroupId, string source);   
+        List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant source, int questionId);
     }
 }

@@ -24,20 +24,22 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
         }
 
-        public async Task<RequestHelpViewModel> GetSteps(RequestHelpSource source)
+        public async Task<RequestHelpViewModel> GetSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
 
             var model =  new RequestHelpViewModel
             {
+                ReferringGroupID = referringGroupID,
                 Source = source,
+                RequestHelpFormVariant = requestHelpFormVariant,
                 CurrentStepIndex = 0,
                 Steps = new List<IRequestHelpStageViewModel>
                 {
                     new RequestHelpRequestStageViewModel
                     {
-                        PageHeading = GetHelpRequestPageTitle(source),
-                        IntoText = GetHelpRequestPageIntroText(source),
-                        Tasks = await GetRequestHelpTasks(source),
+                        PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
+                        IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
+                        Tasks = await GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = new List<RequestorViewModel>
                         {
                             new RequestorViewModel
@@ -60,7 +62,7 @@ namespace HelpMyStreetFE.Services
                                 IconLight = "request-behalf-white.svg",
                                 Type = RequestorType.OnBehalf
                             },
-                                        new RequestorViewModel
+                            new RequestorViewModel
                             {
                                 ID = 3,
                                 ColourCode = "dark-blue",
@@ -85,16 +87,16 @@ namespace HelpMyStreetFE.Services
                 }
 
             };
-            if (source == RequestHelpSource.DIY) {
+            if (requestHelpFormVariant == RequestHelpFormVariant.DIY) {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
             }
             return model;
         }
 
-        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestorType type,  RequestHelpSource source, int userId)
+        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestorType type,  RequestHelpFormVariant requestHelpFormVariant, int userId)
         {
-            if (source == RequestHelpSource.DIY && requestStage.Tasks
+            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && requestStage.Tasks
                                                     .Where(x => x.IsSelected).FirstOrDefault()
                                                     ?.Questions.Where(x => x.ID == (int)Questions.WillYouCompleteYourself)
                                                     .FirstOrDefault()?.Model == "true")
@@ -105,9 +107,9 @@ namespace HelpMyStreetFE.Services
             return null;
         }
 
-        private string GetHelpRequestPageTitle(RequestHelpSource source)
+        private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (source == RequestHelpSource.FtLOS)
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 return "How can For the Love of Scrubs help?";
             }
@@ -117,9 +119,9 @@ namespace HelpMyStreetFE.Services
             }
         }
 
-        private string GetHelpRequestPageIntroText(RequestHelpSource source)
+        private string GetHelpRequestPageIntroText(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (source == RequestHelpSource.FtLOS)
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 return "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.";
             }
@@ -129,15 +131,15 @@ namespace HelpMyStreetFE.Services
             }
         }
 
-        private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpSource source)
+        private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpFormVariant requestHelpFormVariant)
         {
             var tasks = new List<TasksViewModel>();
-            if (source == RequestHelpSource.VitalsForVeterans)
+            if (requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
                 tasks.Add(new TasksViewModel { ID = 11, SupportActivity = SupportActivities.WellbeingPackage });
             }
 
-            if (source == RequestHelpSource.FtLOS)
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 tasks.Add(new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = true });
             }
@@ -172,10 +174,10 @@ namespace HelpMyStreetFE.Services
                 Label = x.Name,
                 Required = x.Required,
                 AdditionalData = x.AddtitonalData,
-                VisibleForRequestorTypes = GetRequestorTypeQuestion(source, x.Id)
+                VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
             }).ToList());
 
-            if(source != RequestHelpSource.DIY)
+            if(requestHelpFormVariant != RequestHelpFormVariant.DIY)
             { 
                 //question for DIY only
                 tasks.ForEach(x => x.Questions.RemoveAll(x => x.ID == (int)Questions.WillYouCompleteYourself));
@@ -183,9 +185,9 @@ namespace HelpMyStreetFE.Services
 
             return tasks;
         }
-        public List<RequestorType> GetRequestorTypeQuestion(RequestHelpSource source, int questionId)
+        public List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant requestHelpFormVariant, int questionId)
         {
-            if (source == RequestHelpSource.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
+            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
             {
                 return new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation };
             }

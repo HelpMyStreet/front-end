@@ -150,13 +150,13 @@ namespace HelpMyStreetFE.Controllers
                     }
 
                     // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
-                    if (requestHelp.Source == RequestHelpSource.DIY && userId == 0 )
+                    if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && userId == 0 )
                     {
                         requestHelp.Errors.Add("To submit a DIY Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
                     }
 
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.Source, userId, HttpContext);
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, requestHelp.RequestHelpFormVariant, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
                     {
                         return RedirectToRoute("request-help/success", new
@@ -184,13 +184,34 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> RequestHelp(RequestHelpSource source)
+        public async Task<IActionResult> RequestHelp(string referringGroup, string source)
         {
             _logger.LogInformation("request-help");
-            if (source == RequestHelpSource.DIY && (!User.Identity.IsAuthenticated))
-                return Redirect("/login?ReturnUrl=request-help/diy");
 
-            var model = await _requestService.GetRequestHelpSteps(source);
+            RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
+            int referringGroupId = -1;
+
+            if (source == "diy")
+            {
+                requestHelpFormVariant = RequestHelpFormVariant.DIY;
+            }
+            else if (referringGroup == "ftlos")
+            {
+                requestHelpFormVariant = RequestHelpFormVariant.FtLOS;
+                referringGroupId = 99;
+            }
+            else if (referringGroup == "v4v")
+            {
+                requestHelpFormVariant = RequestHelpFormVariant.VitalsForVeterans;
+                referringGroupId = 101;
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
+                return Redirect("/login?ReturnUrl=request-help/0/diy");
+
+            var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
+            var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+
             return View(model);
         }
 
@@ -219,7 +240,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-                requestLink = "/request-help/diy";
+                requestLink = "/request-help/0/diy";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {

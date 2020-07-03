@@ -238,21 +238,17 @@ namespace HelpMyStreetFE
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
                 endpoints.MapControllerRoute(
-                    name: "request-help/ftlos",
-                    pattern: "request-help/ftlos",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.FtLOS });
-                endpoints.MapControllerRoute(
-                    name: "request-help/v4v",
-                    pattern: "request-help/v4v",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans });
-                endpoints.MapControllerRoute(
-                    name: "request-help/diy",
-                    pattern: "request-help/diy",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
-                endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", referringGroup = "", source = "" });
+                endpoints.MapControllerRoute(
+                    name: "request-help/group",
+                    pattern: "request-help/{referringGroup}",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "" });
+                endpoints.MapControllerRoute(
+                    name: "request-help/group/source",
+                    pattern: "request-help/{referringGroup}/{source}",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp" });
                 endpoints.MapControllerRoute(
                     name: "request-help/success",
                     pattern: "request-help/success",
@@ -295,7 +291,7 @@ namespace HelpMyStreetFE
 
                 endpoints.MapControllerRoute(
                     name: "fortheloveofscrubs",
-                    pattern: "fortheloveofscrubs",
+                    pattern: "for-the-love-of-scrubs",
                     defaults: new { controller = "Community", action = "Index", communityName = "ftlos" });
 
                 endpoints.MapControllerRoute(

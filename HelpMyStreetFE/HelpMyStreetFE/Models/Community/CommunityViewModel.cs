@@ -7,6 +7,7 @@ namespace HelpMyStreetFE.Models.Community
     {
         public bool IsLoggedIn { get; set; }
 
+        public string GroupKey { get; set; } = "Generic";
         public bool ShowMap { get; set; } = true;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
