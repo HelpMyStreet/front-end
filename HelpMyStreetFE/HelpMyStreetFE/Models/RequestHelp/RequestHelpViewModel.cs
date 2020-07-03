@@ -16,7 +16,7 @@ namespace HelpMyStreetFE.Models.RequestHelp
         public string Action { get; set; }
         public int ReferringGroupID { get; set; }
         public string Source { get; set; }
-        public RequestHelpSource Source2 { get; set; }
+        public RequestHelpFormVariant RequestHelpFormVariant { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
         public string ToJson() {             
                 return JsonConvert.SerializeObject(this, Formatting.Indented, new JsonSerializerSettings

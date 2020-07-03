@@ -41,7 +41,7 @@ namespace HelpMyStreetFE.Services
             _requestHelpBuilder = requestHelpBuilder;
     }
 
-        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, RequestHelpSource source2, int userId, HttpContext ctx)
+        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, RequestHelpFormVariant requestHelpFormVariant, int userId, HttpContext ctx)
         {
             _logger.LogInformation($"Logging Request");
             var recipient = _requestHelpBuilder.MapRecipient(detailStage);
@@ -64,7 +64,7 @@ namespace HelpMyStreetFE.Services
                     CreatedByUserId = userId,
                     Recipient = recipient,
                     Requestor = requestor,
-                    VolunteerUserId = _requestHelpBuilder.GetVolunteerUserID(requestStage, detailStage.Type, source2, userId),
+                    VolunteerUserId = _requestHelpBuilder.GetVolunteerUserID(requestStage, detailStage.Type, requestHelpFormVariant, userId),
                     ReferringGroupId = referringGroupID,
                     Source = source
                 },
@@ -237,7 +237,7 @@ namespace HelpMyStreetFE.Services
             ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
         }
 
-        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpSource source2, int referringGroupID, string source)
+        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant source2, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(source2, referringGroupID, source);
         }
