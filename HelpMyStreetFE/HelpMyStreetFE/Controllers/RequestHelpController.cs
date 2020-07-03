@@ -191,7 +191,7 @@ namespace HelpMyStreetFE.Controllers
             RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
             int referringGroupId = -1;
 
-            if (source == "diy")
+            if (source == "DIY")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.DIY;
             }
@@ -207,7 +207,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
-                return Redirect("/login?ReturnUrl=request-help/0/diy");
+                return Redirect("/login?ReturnUrl=request-help/0/DIY");
 
             var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
@@ -240,7 +240,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-                requestLink = "/request-help/0/diy";
+                requestLink = "/request-help/0/DIY";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {
