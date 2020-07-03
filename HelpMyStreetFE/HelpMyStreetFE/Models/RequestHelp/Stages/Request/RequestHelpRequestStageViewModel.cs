@@ -10,8 +10,6 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
     {
         public string PageHeading { get; set; }
         public string IntoText { get; set; }
-        public int ReferringGroupID { get; set; }
-        public string Source { get; set; }
         public List<TasksViewModel> Tasks { get; set; }
         public List<RequestorViewModel> Requestors { get; set; }          
 

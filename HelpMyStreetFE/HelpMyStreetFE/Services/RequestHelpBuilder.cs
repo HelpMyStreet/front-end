@@ -24,20 +24,22 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
         }
 
-        public async Task<RequestHelpViewModel> GetSteps(RequestHelpSource source)
+        public async Task<RequestHelpViewModel> GetSteps(RequestHelpSource source2, int referringGroupID, string source)
         {
 
             var model =  new RequestHelpViewModel
             {
+                ReferringGroupID = referringGroupID,
                 Source = source,
+                Source2 = source2,
                 CurrentStepIndex = 0,
                 Steps = new List<IRequestHelpStageViewModel>
                 {
                     new RequestHelpRequestStageViewModel
                     {
-                        PageHeading = GetHelpRequestPageTitle(source),
-                        IntoText = GetHelpRequestPageIntroText(source),
-                        Tasks = await GetRequestHelpTasks(source),
+                        PageHeading = GetHelpRequestPageTitle(source2),
+                        IntoText = GetHelpRequestPageIntroText(source2),
+                        Tasks = await GetRequestHelpTasks(source2),
                         Requestors = new List<RequestorViewModel>
                         {
                             new RequestorViewModel
@@ -60,7 +62,7 @@ namespace HelpMyStreetFE.Services
                                 IconLight = "request-behalf-white.svg",
                                 Type = RequestorType.OnBehalf
                             },
-                                        new RequestorViewModel
+                            new RequestorViewModel
                             {
                                 ID = 3,
                                 ColourCode = "dark-blue",
@@ -85,7 +87,7 @@ namespace HelpMyStreetFE.Services
                 }
 
             };
-            if (source == RequestHelpSource.DIY) {
+            if (source2 == RequestHelpSource.DIY) {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
             }
