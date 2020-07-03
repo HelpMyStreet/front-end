@@ -15,7 +15,7 @@
         <div class="sm12 input">
             <label>
                 @Model.Questions[i].Label
-                <span class="sub-text">@Model.Questions[i].Subtext()</span>
+                <span class="sub-text">@Html.Raw(Model.Questions[i].Subtext())</span>
             </label>
 
             @switch (Model.Questions[i].InputType)
