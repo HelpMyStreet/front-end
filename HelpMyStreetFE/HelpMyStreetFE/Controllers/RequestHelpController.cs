@@ -191,6 +191,14 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/login?ReturnUrl=request-help/diy");
 
             var model = await _requestService.GetRequestHelpSteps(source);
+            var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+
+            switch (source)
+            {
+                case RequestHelpSource.DIY: requestStage.Source = "diy"; break;
+                case RequestHelpSource.FtLOS: requestStage.ReferringGroupID = 99; break;
+                case RequestHelpSource.VitalsForVeterans: requestStage.ReferringGroupID = 101; break;
+            }
             return View(model);
         }
 

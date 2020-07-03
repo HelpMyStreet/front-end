@@ -65,6 +65,8 @@ namespace HelpMyStreetFE.Services
                     Recipient = recipient,
                     Requestor = requestor,
                     VolunteerUserId = _requestHelpBuilder.GetVolunteerUserID(requestStage, detailStage.Type, source, userId),
+                    ReferringGroupId = requestStage.ReferringGroupID,
+                    Source = requestStage.Source
                 },
                 NewJobsRequest = new NewJobsRequest
                 {
