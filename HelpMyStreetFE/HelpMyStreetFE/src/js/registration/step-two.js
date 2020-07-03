@@ -91,7 +91,7 @@ export function initialiseStepTwo() {
         runAdditionalValidation($(this)).then(function (additonalChecks) {
             let validForm = (additonalChecks && valid);            
             let postcodeValid;
-            let postcodeInput = $("input[name='postcode_search']");
+            let postcodeInput = $("input[name='postcode']");
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
             trackEvent("Registration flow", "Submit Step 2", validForm ? "(Valid)" : "(Invalid)");
             if (validForm) { // avoid calling service when possible, so check if the form is valid first

@@ -319,8 +319,6 @@ and limitations under the License.
 
 /*! core-js/modules/es.promise */
 
-/*! core-js/modules/es.promise.finally */
-
 /*! core-js/modules/es.regexp.constructor */
 
 /*! core-js/modules/es.regexp.exec */
@@ -342,6 +340,8 @@ and limitations under the License.
 /*! core-js/modules/web.dom-collections.iterator */
 
 /*! core-js/modules/web.timers */
+
+/*! exports provided: Headers, Request, Response, DOMException, fetch */
 
 /*! exports provided: LogLevel, Logger, setLogLevel, setUserLogHandler */
 
@@ -371,6 +371,8 @@ and limitations under the License.
 
 /*! firebase/auth */
 
+/*! isomorphic-fetch */
+
 /*! no exports provided */
 
 /*! no static exports found */
@@ -378,6 +380,8 @@ and limitations under the License.
 /*! regenerator-runtime/runtime */
 
 /*! tslib */
+
+/*! whatwg-fetch */
 
 /*!**************************!*\
   !*** ./js/shared/btn.js ***!
@@ -426,6 +430,10 @@ and limitations under the License.
 /*!******************************************!*\
   !*** ../node_modules/tslib/tslib.es6.js ***!
   \******************************************/
+
+/*!*********************************************!*\
+  !*** ../node_modules/whatwg-fetch/fetch.js ***!
+  \*********************************************/
 
 /*!************************************************!*\
   !*** ../node_modules/core-js/internals/has.js ***!
@@ -804,10 +812,6 @@ and limitations under the License.
   \*************************************************************/
 
 /*!*************************************************************!*\
-  !*** ../node_modules/core-js/modules/es.promise.finally.js ***!
-  \*************************************************************/
-
-/*!*************************************************************!*\
   !*** ../node_modules/core-js/modules/es.string.iterator.js ***!
   \*************************************************************/
 
@@ -877,6 +881,10 @@ and limitations under the License.
 
 /*!****************************************************************!*\
   !*** ../node_modules/core-js/modules/es.symbol.description.js ***!
+  \****************************************************************/
+
+/*!****************************************************************!*\
+  !*** ../node_modules/isomorphic-fetch/fetch-npm-browserify.js ***!
   \****************************************************************/
 
 /*!*****************************************************************!*\
