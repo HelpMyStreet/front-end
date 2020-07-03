@@ -31,10 +31,12 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<RequestHelpController> _logger;
         private readonly IRequestService _requestService;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService)
+        private readonly IGroupService _groupService;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService)
         {
             _logger = logger;
             _requestService = requestService;
+            _groupService = groupService;
         }
 
         [ValidateAntiForgeryToken]
@@ -190,6 +192,14 @@ namespace HelpMyStreetFE.Controllers
 
             RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
             int referringGroupId = -1;
+            if (referringGroup != null)
+            {
+                var getGroupByKeyResponse = await _groupService.GetGroupByKey(referringGroup);
+                if (getGroupByKeyResponse.IsSuccessful)
+                {
+                    referringGroupId = getGroupByKeyResponse.Content.GroupId;
+                }
+            }
 
             if (source == "DIY")
             {
@@ -198,12 +208,10 @@ namespace HelpMyStreetFE.Controllers
             else if (referringGroup == "ftlos")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.FtLOS;
-                referringGroupId = 99;
             }
             else if (referringGroup == "v4v")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.VitalsForVeterans;
-                referringGroupId = 101;
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
