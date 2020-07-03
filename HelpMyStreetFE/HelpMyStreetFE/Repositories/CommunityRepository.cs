@@ -302,6 +302,8 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
+            communityViewModel.GroupKey = "ftlos";
+
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
             communityViewModel.BannerImageLocation = "/img/community/fortheloveofscrubs/LOSBannerWide.png";

@@ -184,16 +184,23 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> RequestHelp(RequestHelpSource source)
+        public async Task<IActionResult> RequestHelp(string referringGroup, string source)
         {
             _logger.LogInformation("request-help");
-            if (source == RequestHelpSource.DIY && (!User.Identity.IsAuthenticated))
+
+            RequestHelpSource requestHelpSource = RequestHelpSource.Default;
+
+            if (source == "diy") { requestHelpSource = RequestHelpSource.DIY; }
+            else if (referringGroup == "ftlos") { requestHelpSource = RequestHelpSource.FtLOS; }
+            else if (referringGroup == "v4v") { requestHelpSource = RequestHelpSource.VitalsForVeterans; }
+
+            if (requestHelpSource == RequestHelpSource.DIY && (!User.Identity.IsAuthenticated))
                 return Redirect("/login?ReturnUrl=request-help/diy");
 
-            var model = await _requestService.GetRequestHelpSteps(source);
+            var model = await _requestService.GetRequestHelpSteps(requestHelpSource);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
-            switch (source)
+            switch (requestHelpSource)
             {
                 case RequestHelpSource.DIY: requestStage.Source = "diy"; break;
                 case RequestHelpSource.FtLOS: requestStage.ReferringGroupID = 99; break;
