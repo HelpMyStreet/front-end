@@ -110,6 +110,7 @@ namespace HelpMyStreetFE
                 (int)Questions.FaceMask_Recipient => "pos3",
                 (int)Questions.FaceMask_Cost => "pos3",
                 (int)Questions.FaceMask_Amount => "pos2",
+                (int)Questions.FaceMask_SpecificRequirements => "pos2",
                 (int)Questions.IsHealthCritical => "pos3",
                 (int)Questions.WillYouCompleteYourself => "pos3",
                 _ => "pos1"
