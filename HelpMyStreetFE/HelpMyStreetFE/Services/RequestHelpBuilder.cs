@@ -79,7 +79,7 @@ namespace HelpMyStreetFE.Services
                             new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
                             new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
                             new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
-                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
+                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Other", AllowCustom = true},
                         },
                     },
                     new RequestHelpDetailStageViewModel(),
