@@ -36,8 +36,5 @@ namespace HelpMyStreetFE.Models.Registration
 
         [BindProperty(Name = "dob")]
         public DateTime DateOfBirth { get; set; }
-
-        [BindProperty(Name = "source")]
-        public RegistrationSource Source { get; set; }
     }
 }

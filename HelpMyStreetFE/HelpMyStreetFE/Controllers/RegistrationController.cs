@@ -24,37 +24,40 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAuthService _authService;
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
+        private readonly IGroupService _groupService;
         public RegistrationController(
             ILogger<RegistrationController> logger,
             IUserService userService,
             IAuthService authService,
             IAddressService addressService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IGroupService groupService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService;
             _authService = authService;
             _addressService = addressService;
             _configuration = configuration;
+            _groupService = groupService;
         }
 
         [AllowAnonymous]
-        public ActionResult StepOne(string referringGroup)
+        public async Task<ActionResult> StepOne(string referringGroup)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return Redirect("/account");
-            } 
-            
-            
-            RegistrationSource source = RegistrationSource.Default;
+            }
+
+            int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
+            RegistrationSource source = await GetRegistrationJoureyFromGroup(referringGroupId);
 
             return View(new RegistrationViewModel
             {
                 ActiveStep = 1,
                 FirebaseConfiguration = _configuration["Firebase:Configuration"],
                 Source = source,
-                ReferringGroupID = DecodeGroupIdOrGetDefault(referringGroup),
+                ReferringGroupID = referringGroupId,
             });
         }
 
@@ -80,10 +83,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/steptwo")]
-        public async Task<ActionResult> StepTwo(RegistrationSource source)
+        public async Task<ActionResult> StepTwo()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            string correctPage = await GetCorrectPage(userId, source);
+            string correctPage = await GetCorrectPage(userId);
             if (!correctPage.StartsWith("/registration/steptwo"))
             {
                 // A different step needs to be completed at this point
@@ -93,7 +96,7 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 2,
-                Source = source
+                Source = await GetRegistrationJourey(userId)
             });
         }
 
@@ -103,7 +106,7 @@ namespace HelpMyStreetFE.Controllers
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(userId, form.Source);
+            string correctPage = await GetCorrectPage(userId);
             if (!correctPage.StartsWith("/registration/steptwo"))
             {
                 // A different step needs to be completed at this point
@@ -113,7 +116,7 @@ namespace HelpMyStreetFE.Controllers
             try
             {
                 await _userService.CreateUserStepTwoAsync(userId, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth);
-                return Redirect("/registration/stepthree?source=" + form.Source);
+                return Redirect("/registration/stepthree");
             }
             catch (Exception ex)
             {
@@ -124,10 +127,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/stepthree")]
-        public async Task<ActionResult> StepThree(RegistrationSource source)
+        public async Task<ActionResult> StepThree()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            string correctPage = await GetCorrectPage(userId, source);
+            string correctPage = await GetCorrectPage(userId);
             if (!correctPage.StartsWith("/registration/stepthree"))
             {
                 // A different step needs to be completed at this point
@@ -137,7 +140,7 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
-                Source = source,
+                Source = await GetRegistrationJourey(userId),
             });
         }
 
@@ -147,7 +150,7 @@ namespace HelpMyStreetFE.Controllers
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(userId, form.Source);
+            string correctPage = await GetCorrectPage(userId);
             if (!correctPage.StartsWith("/registration/stepthree"))
             {
                 // A different step needs to be completed at this point
@@ -179,11 +182,11 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/stepfour")]
-        public async Task<ActionResult> StepFour(RegistrationSource source)
+        public async Task<ActionResult> StepFour()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            string correctPage = await GetCorrectPage(userId, source);
+            string correctPage = await GetCorrectPage(userId);
             if (!correctPage.StartsWith("/registration/stepfour"))
             {
                 // A different step needs to be completed at this point
@@ -222,7 +225,7 @@ namespace HelpMyStreetFE.Controllers
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(userId, form.Source);
+            string correctPage = await GetCorrectPage(userId);
             if (!correctPage.StartsWith("/registration/stepfour"))
             {
                 // A different step needs to be completed at this point
@@ -250,14 +253,46 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/registration/stepfour?failure=error");
             }
         }
-
-        private async Task<string> GetCorrectPage(int userId, RegistrationSource source)
+        private async Task<RegistrationSource> GetRegistrationJourey(int userId)
         {
             User user = await _userService.GetUserAsync(userId);
-            return GetCorrectPage(user, source);
+
+            return await GetRegistrationJoureyFromGroup(user.ReferringGroupId ?? -1);
         }
 
-        public static string GetCorrectPage(User user, RegistrationSource source = RegistrationSource.Default)
+        private async Task<RegistrationSource> GetRegistrationJoureyFromGroup(int groupId)
+        {
+            // TODO: Replace this with a call to Group Service (GetRegistrationFormVariant) ...
+            string groupKey = "";
+
+            var getGroupResponse = await _groupService.GetGroup(groupId);
+            if (getGroupResponse.IsSuccessful)
+            {
+                groupKey = getGroupResponse.Content.Group.GroupKey;
+            }
+
+            if (groupKey == "ftlos")
+            {
+                return RegistrationSource.FtLOS;
+            }
+            else if (groupKey == "hlp")
+            {
+                return RegistrationSource.HLP;
+            }
+            else
+            {
+                return RegistrationSource.Default;
+            }
+            // END
+        }
+
+        private async Task<string> GetCorrectPage(int userId)
+        {
+            User user = await _userService.GetUserAsync(userId);
+            return GetCorrectPage(user);
+        }
+
+        public static string GetCorrectPage(User user)
         {
             if (user.RegistrationHistory.Count > 0)
             {
@@ -266,11 +301,11 @@ namespace HelpMyStreetFE.Controllers
                 switch (maxStep)
                 {
                     case 1:
-                        return "/registration/steptwo?source=" + source;
+                        return "/registration/steptwo";
                     case 2:
-                        return "/registration/stepthree?source=" + source;
+                        return "/registration/stepthree";
                     case 3:
-                        return "/registration/stepfour?source=" + source;
+                        return "/registration/stepfour";
                     default:
                         return string.Empty; //Registration journey is complete
                 }

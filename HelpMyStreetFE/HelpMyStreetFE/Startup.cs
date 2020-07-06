@@ -308,9 +308,6 @@ namespace HelpMyStreetFE
                    name: "registration/step-one/group",
                    pattern: "registration/step-one/{referringGroup}",
                    defaults: new { controller = "Registration", action = "StepOne" });
-
-                // Enable attribute routing
-                //endpoints.MapControllers();
             });
         }
     }
