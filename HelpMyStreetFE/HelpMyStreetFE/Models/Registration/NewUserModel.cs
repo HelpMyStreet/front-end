@@ -4,6 +4,6 @@
     {
         public string Email { get; set; }
         public string Token { get; set; }
-        public int ReferringGroupId { get; set; }
+        public string ReferringGroupId { get; set; }
     }
 }

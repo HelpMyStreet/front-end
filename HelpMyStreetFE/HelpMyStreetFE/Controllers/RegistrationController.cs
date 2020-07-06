@@ -39,12 +39,16 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult StepOne(RegistrationSource source, string referringGroup)
+        public ActionResult StepOne(string referringGroup)
         {
             if (User.Identity.IsAuthenticated)
             {
                 return Redirect("/account");
-            }
+            } 
+            
+            
+            RegistrationSource source = RegistrationSource.Default;
+
             return View(new RegistrationViewModel
             {
                 ActiveStep = 1,
@@ -62,7 +66,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 _logger.LogInformation("Posting new user");
                 var uid = await _authService.VerifyIdTokenAsync(userData.Token);
-                await _userService.CreateUserAsync(userData.Email, uid, userData.ReferringGroupId, "");
+                await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), "");
                 await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
 
                 return Ok();

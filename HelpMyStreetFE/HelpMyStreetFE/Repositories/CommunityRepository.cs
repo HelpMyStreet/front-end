@@ -20,11 +20,11 @@ namespace HelpMyStreetFE.Repositories
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return GetTankersley();
+                    return await GetTankersley();
                 case "ageuklsl":
-                    return GetAgeUKLSL();
+                    return await GetAgeUKLSL();
                 case "hlp":
-                    return GetHLP();
+                    return await GetHLP();
                 case "ftlos":
                     return await GetFtLOS();
                 default:
@@ -32,9 +32,16 @@ namespace HelpMyStreetFE.Repositories
             }
         }
         
-        private CommunityViewModel GetHLP()
+        private async Task<CommunityViewModel> GetHLP()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("hlp");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
@@ -47,7 +54,6 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Header = "What are Community Connectors?";
             communityViewModel.DisableButtons = true;
-            communityViewModel.SignUpLink = communityViewModel.SignUpLink + "/hlp";
             communityViewModel.HeaderHTML = @"
                     <p class='row sm12 text-left mt-sm mb-xs'>
                         Mental Health First Aid England is working with the new NHS Connect service to recruit volunteer 
@@ -145,9 +151,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetTankersley()
+        private async Task<CommunityViewModel> GetTankersley()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
@@ -221,9 +234,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetAgeUKLSL()
+        private async Task<CommunityViewModel> GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ageuklsl");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;

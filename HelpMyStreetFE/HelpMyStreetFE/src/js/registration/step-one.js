@@ -47,6 +47,7 @@ export function initialiseStepOne() {
           body: JSON.stringify({
             email,
             token,
+            referringGroupId,
           }),
         });          
           window.location.href = "/registration/steptwo?source=" + source;
