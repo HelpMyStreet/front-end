@@ -8,7 +8,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Enum
     public enum RegistrationSource
     {
         Default = 0,
-        HLP = 1
+        HLP = 1,
+        FtLOS = 2,
     }
 
 
