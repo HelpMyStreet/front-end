@@ -23,10 +23,10 @@ namespace HelpMyStreetFE.Services
             _logger = logger;
         }
 
-        public async Task<int> CreateUserAsync(string email, string authId)
+        public async Task<int> CreateUserAsync(string email, string authId, int referringGroupId, string source)
         {
-            _logger.LogInformation($"Creating user {email}, {authId}");
-            return await _userRepository.CreateUser(email, authId);
+            _logger.LogInformation($"Creating user {email}, {authId}, {referringGroupId}, {source}");
+            return await _userRepository.CreateUser(email, authId, referringGroupId, source);
         }
 
         public async Task<int> UpdateUserAsync(User user)

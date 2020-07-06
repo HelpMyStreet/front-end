@@ -1,11 +1,21 @@
-﻿using HelpMyStreetFE.Models.Community;
+﻿using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Models.Community;
+using HelpMyStreetFE.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
-        public CommunityViewModel GetCommunity(string communityName)
+        private readonly IGroupService _groupService;
+
+        public CommunityRepository(IGroupService groupService)
+        {
+            _groupService = groupService;
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(string communityName)
         {
             switch (communityName.Trim().ToLower())
             {
@@ -16,7 +26,7 @@ namespace HelpMyStreetFE.Repositories
                 case "hlp":
                     return GetHLP();
                 case "ftlos":
-                    return GetFtLOS();
+                    return await GetFtLOS();
                 default:
                     return null;
             }
@@ -299,11 +309,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetFtLOS()
+        private async Task<CommunityViewModel> GetFtLOS()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            communityViewModel.GroupKey = "ftlos";
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.CommunityName = "For the Love of Scrubs";
 

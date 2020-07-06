@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
+using HelpMyStreet.Utils.Utils;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -38,7 +39,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult StepOne(RegistrationSource source)
+        public ActionResult StepOne(RegistrationSource source, string referringGroup)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -49,6 +50,7 @@ namespace HelpMyStreetFE.Controllers
                 ActiveStep = 1,
                 FirebaseConfiguration = _configuration["Firebase:Configuration"],
                 Source = source,
+                ReferringGroupID = DecodeGroupIdOrGetDefault(referringGroup),
             });
         }
 
@@ -60,7 +62,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 _logger.LogInformation("Posting new user");
                 var uid = await _authService.VerifyIdTokenAsync(userData.Token);
-                await _userService.CreateUserAsync(userData.Email, uid);
+                await _userService.CreateUserAsync(userData.Email, uid, userData.ReferringGroupId, "");
                 await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
 
                 return Ok();
@@ -271,6 +273,18 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return "/registration/stepone";
+        }
+
+        private int DecodeGroupIdOrGetDefault(string encodedGroupId)
+        {
+            try
+            {
+                return Convert.ToInt32(Base64Utils.Base64Decode(encodedGroupId));
+            }
+            catch
+            {
+                return -1;
+            }
         }
     }
 }

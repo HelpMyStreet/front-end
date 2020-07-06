@@ -32,7 +32,7 @@
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.GroupKey" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
@@ -60,7 +60,7 @@
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.GroupKey" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
                 </div>
@@ -134,7 +134,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.GroupKey" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -231,7 +231,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.GroupKey" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>

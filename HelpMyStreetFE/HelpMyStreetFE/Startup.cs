@@ -305,9 +305,14 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
 
                 endpoints.MapControllerRoute(
-                name: "registration/stepone/hlp",
-                pattern: "registration/stepone/hlp",
-                defaults: new { controller = "Registration", action = "StepOne", source  = RegistrationSource.HLP });
+                   name: "registration/stepone/hlp",
+                   pattern: "registration/stepone/hlp",
+                   defaults: new { controller = "Registration", action = "StepOne", source = RegistrationSource.HLP, referringGroup = "" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/stepone/group",
+                   pattern: "registration/stepone/{referringGroup}",
+                   defaults: new { controller = "Registration", action = "StepOne", source = RegistrationSource.Default });
 
                 // Enable attribute routing
                 //endpoints.MapControllers();

@@ -6,8 +6,7 @@ namespace HelpMyStreetFE.Models.Community
     public class CommunityViewModel
     {
         public bool IsLoggedIn { get; set; }
-
-        public string GroupKey { get; set; } = "Generic";
+        public string EncodedGroupId { get; set; }
         public bool ShowMap { get; set; } = true;
         public double Latitude { get; set; }
         public double Longitude { get; set; }

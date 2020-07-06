@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
@@ -191,28 +192,31 @@ namespace HelpMyStreetFE.Controllers
             _logger.LogInformation("request-help");
 
             RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
-            int referringGroupId = -1;
-            if (referringGroup != null)
+            int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
+
+            // TODO: Replace this with a call to Group Service (GetRequestHelpFormVariant) ...
+            string groupKey = "";
+
+            var getGroupResponse = await _groupService.GetGroup(referringGroupId);
+            if (getGroupResponse.IsSuccessful)
             {
-                var getGroupByKeyResponse = await _groupService.GetGroupByKey(referringGroup);
-                if (getGroupByKeyResponse.IsSuccessful)
-                {
-                    referringGroupId = getGroupByKeyResponse.Content.GroupId;
-                }
+                groupKey = getGroupResponse.Content.Group.GroupKey;
             }
 
             if (source == "DIY")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.DIY;
             }
-            else if (referringGroup == "ftlos")
+            else if (groupKey == "ftlos")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.FtLOS;
             }
-            else if (referringGroup == "v4v")
+            else if (groupKey == "v4v")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.VitalsForVeterans;
             }
+            // END
+
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
                 return Redirect("/login?ReturnUrl=request-help/0/DIY");
@@ -308,5 +312,18 @@ namespace HelpMyStreetFE.Controllers
                 public string Answer { get; set; }
             }
         }
+
+        private int DecodeGroupIdOrGetDefault(string encodedGroupId)
+        {
+            try
+            {
+                return Convert.ToInt32(Base64Utils.Base64Decode(encodedGroupId));
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
     }
 }
