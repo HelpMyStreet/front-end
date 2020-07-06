@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Contracts.GroupService.Request;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -171,6 +173,20 @@ namespace HelpMyStreetFE.Controllers
                     form.VolunteerOptions,
                     form.VolunteerDistance);
 
+                if (form.VolunteerOptions.Contains(SupportActivities.FaceMask))
+                {
+                    int ftLOSGroupID;
+                    var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
+                    if (getGroupByKeyResponse.IsSuccessful)
+                    {
+                        ftLOSGroupID = getGroupByKeyResponse.Content.GroupId;
+                        await _groupService.AssignRole(new PostAssignRoleRequest() { UserID = userId, GroupID = ftLOSGroupID, Role = new RoleRequest() { GroupRole = GroupRoles.Member } });
+                    }
+                    else
+                    {
+                        throw new Exception("Could not identify ftlos group.");
+                    }
+                }
                 return Redirect("/registration/stepfour");
             }
             catch (Exception ex)
