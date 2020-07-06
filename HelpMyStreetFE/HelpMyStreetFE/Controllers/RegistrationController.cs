@@ -52,7 +52,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-            RegistrationSource source = await GetRegistrationJoureyFromGroup(referringGroupId);
+            RegistrationSource source = await GetRegistrationJourneyFromGroup(referringGroupId);
 
             return View(new RegistrationViewModel
             {
@@ -98,7 +98,7 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 2,
-                Source = await GetRegistrationJourey(userId)
+                Source = await GetRegistrationJourney(userId)
             });
         }
 
@@ -142,7 +142,7 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
-                Source = await GetRegistrationJourey(userId),
+                Source = await GetRegistrationJourney(userId),
             });
         }
 
@@ -269,14 +269,14 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/registration/stepfour?failure=error");
             }
         }
-        private async Task<RegistrationSource> GetRegistrationJourey(int userId)
+        private async Task<RegistrationSource> GetRegistrationJourney(int userId)
         {
             User user = await _userService.GetUserAsync(userId);
 
-            return await GetRegistrationJoureyFromGroup(user.ReferringGroupId ?? -1);
+            return await GetRegistrationJourneyFromGroup(user.ReferringGroupId ?? -1);
         }
 
-        private async Task<RegistrationSource> GetRegistrationJoureyFromGroup(int groupId)
+        private async Task<RegistrationSource> GetRegistrationJourneyFromGroup(int groupId)
         {
             // TODO: Replace this with a call to Group Service (GetRegistrationFormVariant) ...
             string groupKey = "";
