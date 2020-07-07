@@ -413,7 +413,7 @@ namespace HelpMyStreetFE.Repositories
                     <p class='mt-xs'><a href='https://freeprintablesonline.com/2020/03/printable-face-mask-patterns-roundup/'> FreePrintablesOnline.com</a> - patterns, videos, hints and tips</p>
 
                     <h6>Donation page</h6>
-                    <p><a href='#'> You can donate through our JustGiving page</a></p>
+                    <p><a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings'> You can donate through our gofundme page</a></p>
 
                     <h6>Requesting materials</h6>
                     <p>If you’re a FtLOS sewer and need more materials contact your local group administrator or email <a href='mailto:materialrequest-ftlos@outlook.com'>materialrequest-ftlos@outlook.com</a></p>
