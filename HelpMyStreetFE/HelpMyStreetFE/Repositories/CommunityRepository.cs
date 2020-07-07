@@ -342,9 +342,9 @@ namespace HelpMyStreetFE.Repositories
                         country. We now have another line of defence to support - our communities.
                     </p>
                     <p class='mt-sm mb-sm'>
-                        We need everyone to do their bit to protect communities against Coronvirus by wearing a fabric face covering when out and
+                        We need everyone to do their bit to protect communities against coronavirus by wearing a fabric face covering when out and
                         about in shops, buses, trains and other public places. Wearing a fabric face covering helps keep everyone safe and supports
-                        the national defence strategy against the spread of Covid 19.
+                        the national defence strategy against the spread of COVID-19.
                     </p>
                     <p class='mt-sm mb-sm'>
                         Everyone is asked to donate £3 to £4 per face covering to cover the cost of materials and to help us support our communities.
@@ -376,10 +376,10 @@ namespace HelpMyStreetFE.Repositories
                         </p>
                         <p class='mb-xs mt-md'>
                             <strong>Is there a cost for face coverings?</strong>
-                            On top of the postage, all we ask if for a small donation of £2 - £3 per face covering to cover the cost of materials. You can donate through our JustGiving page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
+                            On top of the postage, all we ask if for a small donation of £3 - £4 per face covering to cover the cost of materials and to help us support our communities. You can donate through our JustGiving page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
                         </p>
                         <p class='mt-0 mb-0 ml-xl'>
-                            £10 pays for a metre fabric we can use for scrubs and other NHS supplies
+                            £10 pays for a metre of fabric we can use for scrubs and other NHS supplies
                         </p>
                         <p class='mt-0 mb-0 ml-xl'>
                             £25 pays for enough face coverings to help a small care home receive visitors
