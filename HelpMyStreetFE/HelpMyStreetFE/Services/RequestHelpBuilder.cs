@@ -93,19 +93,6 @@ namespace HelpMyStreetFE.Services
             return model;
         }
 
-        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestorType type,  RequestHelpFormVariant requestHelpFormVariant, int userId)
-        {
-            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && requestStage.Tasks
-                                                    .Where(x => x.IsSelected).FirstOrDefault()
-                                                    ?.Questions.Where(x => x.ID == (int)Questions.WillYouCompleteYourself)
-                                                    .FirstOrDefault()?.Model == "true")
-            {
-                return userId;
-            }
-
-            return null;
-        }
-
         private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant)
         {
             if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)

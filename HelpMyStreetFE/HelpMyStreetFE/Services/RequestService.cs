@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.Services
             _requestHelpBuilder = requestHelpBuilder;
     }
 
-        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, RequestHelpFormVariant requestHelpFormVariant, int userId, HttpContext ctx)
+        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
         {
             _logger.LogInformation($"Logging Request");
             var recipient = _requestHelpBuilder.MapRecipient(detailStage);
@@ -63,7 +63,7 @@ namespace HelpMyStreetFE.Services
                     CreatedByUserId = userId,
                     Recipient = recipient,
                     Requestor = requestor,
-                    VolunteerUserId = _requestHelpBuilder.GetVolunteerUserID(requestStage, detailStage.Type, requestHelpFormVariant, userId),
+                    VolunteerUserId = userId,
                     ReferringGroupId = referringGroupID,
                     Source = source
                 },
