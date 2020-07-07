@@ -23,7 +23,6 @@ using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
-using HelpMyStreetFE.Enums.RequestHelp;
 
 namespace HelpMyStreetFE.Services
 {

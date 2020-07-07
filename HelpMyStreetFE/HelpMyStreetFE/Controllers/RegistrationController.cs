@@ -52,13 +52,13 @@ namespace HelpMyStreetFE.Controllers
             }
 
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-            RegistrationSource source = await GetRegistrationJourneyFromGroup(referringGroupId);
+            RegistrationFormVariant registrationFormVariant = await GetRegistrationJourneyFromGroup(referringGroupId);
 
             return View(new RegistrationViewModel
             {
                 ActiveStep = 1,
                 FirebaseConfiguration = _configuration["Firebase:Configuration"],
-                Source = source,
+                RegistrationFormVariant = registrationFormVariant,
                 ReferringGroupID = referringGroupId,
             });
         }
@@ -98,7 +98,7 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 2,
-                Source = await GetRegistrationJourney(userId)
+                RegistrationFormVariant = await GetRegistrationJourney(userId)
             });
         }
 
@@ -142,7 +142,7 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
-                Source = await GetRegistrationJourney(userId),
+                RegistrationFormVariant = await GetRegistrationJourney(userId),
             });
         }
 
@@ -269,14 +269,14 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/registration/stepfour?failure=error");
             }
         }
-        private async Task<RegistrationSource> GetRegistrationJourney(int userId)
+        private async Task<RegistrationFormVariant> GetRegistrationJourney(int userId)
         {
             User user = await _userService.GetUserAsync(userId);
 
             return await GetRegistrationJourneyFromGroup(user.ReferringGroupId ?? -1);
         }
 
-        private async Task<RegistrationSource> GetRegistrationJourneyFromGroup(int groupId)
+        private async Task<RegistrationFormVariant> GetRegistrationJourneyFromGroup(int groupId)
         {
             // TODO: Replace this with a call to Group Service (GetRegistrationFormVariant) ...
             string groupKey = "";
@@ -289,15 +289,15 @@ namespace HelpMyStreetFE.Controllers
 
             if (groupKey == "ftlos")
             {
-                return RegistrationSource.FtLOS;
+                return RegistrationFormVariant.FtLOS;
             }
             else if (groupKey == "hlp")
             {
-                return RegistrationSource.HLP;
+                return RegistrationFormVariant.HLP;
             }
             else
             {
-                return RegistrationSource.Default;
+                return RegistrationFormVariant.Default;
             }
             // END
         }

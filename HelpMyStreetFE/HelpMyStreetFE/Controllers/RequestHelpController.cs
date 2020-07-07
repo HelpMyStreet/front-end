@@ -2,7 +2,6 @@
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
-using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
