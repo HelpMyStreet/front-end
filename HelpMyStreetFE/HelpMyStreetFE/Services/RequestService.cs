@@ -63,7 +63,7 @@ namespace HelpMyStreetFE.Services
                     CreatedByUserId = userId,
                     Recipient = recipient,
                     Requestor = requestor,
-                    VolunteerUserId = _requestHelpBuilder.GetVolunteerUserID(requestStage, detailStage.Type, userId),
+                    VolunteerUserId = userId,
                     ReferringGroupId = referringGroupID,
                     Source = source
                 },
