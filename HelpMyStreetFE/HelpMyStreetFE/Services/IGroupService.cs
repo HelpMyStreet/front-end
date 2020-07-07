@@ -8,12 +8,18 @@ namespace HelpMyStreetFE.Services
 {
     public interface IGroupService
     {
-        Task<ResponseWrapper<GetGroupByKeyResponse, GroupServiceErrorCode>> GetGroupByKey(string groupKey);
+        Task<GetGroupByKeyResponse> GetGroupByKey(string groupKey);
 
-        Task<ResponseWrapper<GetGroupResponse, GroupServiceErrorCode>> GetGroup(int groupId);
+        Task<GetGroupResponse> GetGroup(int groupId);
 
-        Task<ResponseWrapper<GetChildGroupsResponse, GroupServiceErrorCode>> GetChildGroups(int groupId);
+        Task<GetChildGroupsResponse> GetChildGroups(int groupId);
 
-        Task<ResponseWrapper<PostAssignRoleResponse, GroupServiceErrorCode>> AssignRole(PostAssignRoleRequest postAssignRoleRequest);
+        Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest);
+
+        Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source = "");
+
+        Task<GetRequestHelpFormVariantResponse> GetRequestFormVariant(int groupId, string source = "");
+
+        Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId);
     }
 }

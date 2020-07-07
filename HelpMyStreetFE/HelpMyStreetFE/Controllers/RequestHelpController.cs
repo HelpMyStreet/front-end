@@ -2,7 +2,6 @@
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
-using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
@@ -191,32 +190,9 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("request-help");
 
-            RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-
-            // TODO: Replace this with a call to Group Service (GetRequestHelpFormVariant) ...
-            string groupKey = "";
-
-            var getGroupResponse = await _groupService.GetGroup(referringGroupId);
-            if (getGroupResponse.IsSuccessful)
-            {
-                groupKey = getGroupResponse.Content.Group.GroupKey;
-            }
-
-            if (source == "DIY")
-            {
-                requestHelpFormVariant = RequestHelpFormVariant.DIY;
-            }
-            else if (groupKey == "ftlos")
-            {
-                requestHelpFormVariant = RequestHelpFormVariant.FtLOS;
-            }
-            else if (groupKey == "v4v")
-            {
-                requestHelpFormVariant = RequestHelpFormVariant.VitalsForVeterans;
-            }
-            // END
-
+            var groupServiceResponse = await _groupService.GetRequestFormVariant(referringGroupId, source);
+            RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
                 return Redirect("/login?ReturnUrl=request-help/0/DIY");
@@ -245,7 +221,7 @@ namespace HelpMyStreetFE.Controllers
             if (onBehalf && !User.Identity.IsAuthenticated)
             {
                 message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home.</p>";
-                button = " <a href='/registration/stepone' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+                button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
 
             if (fulfillable == Fulfillable.Accepted_DiyRequest)

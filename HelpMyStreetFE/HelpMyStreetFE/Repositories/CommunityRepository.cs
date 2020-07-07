@@ -37,11 +37,8 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("hlp");
-            if (getGroupByKeyResponse.IsSuccessful)
-            {
-                int groupId = getGroupByKeyResponse.Content.GroupId;
-                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-            }
+            int groupId = getGroupByKeyResponse.GroupId;
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
 
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
@@ -156,11 +153,8 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
-            if (getGroupByKeyResponse.IsSuccessful)
-            {
-                int groupId = getGroupByKeyResponse.Content.GroupId;
-                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-            }
+            int groupId = getGroupByKeyResponse.GroupId;
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
 
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
@@ -239,11 +233,8 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("ageuklsl");
-            if (getGroupByKeyResponse.IsSuccessful)
-            {
-                int groupId = getGroupByKeyResponse.Content.GroupId;
-                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-            }
+            int groupId = getGroupByKeyResponse.GroupId;
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
 
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
@@ -334,11 +325,8 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
-            if (getGroupByKeyResponse.IsSuccessful)
-            {
-                int groupId = getGroupByKeyResponse.Content.GroupId;
-                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-            }
+            int groupId = getGroupByKeyResponse.GroupId;
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
 
             communityViewModel.CommunityName = "For the Love of Scrubs";
 

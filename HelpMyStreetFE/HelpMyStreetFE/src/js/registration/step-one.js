@@ -39,7 +39,7 @@ export function initialiseStepOne() {
       .then(async (credentials) => {
         const token = await credentials.user.getIdToken();
 
-        await fetch("/registration/stepone", {
+        await fetch("/registration/step-one", {
           method: "post",
           headers: {
             "content-type": "application/json",
@@ -50,7 +50,7 @@ export function initialiseStepOne() {
             referringGroupId,
           }),
         });          
-          window.location.href = "/registration/steptwo?source=" + source;
+          window.location.href = "/registration/step-two";
       })
       .catch((err) => {
         switch (err.code) {
