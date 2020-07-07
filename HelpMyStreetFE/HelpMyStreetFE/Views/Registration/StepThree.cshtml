@@ -24,6 +24,10 @@
     {
         volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs", Selected = true });
     }
+    if (Model.RegistrationFormVariant == RegistrationFormVariant.AgeUKLSL)
+    {
+        volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package", Selected = true });
+    }
 
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" });
 
@@ -34,7 +38,12 @@
 
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
-    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package" });
+
+    if (Model.RegistrationFormVariant != RegistrationFormVariant.AgeUKLSL)
+    {
+        volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package" });
+    }
+
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.DogWalking, Description = "Walking the dog" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.MealPreparation, Description = "Delivering a hot / pre-prepared meal" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "Calling someone in need of a friendly chat" });
