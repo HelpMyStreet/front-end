@@ -86,6 +86,10 @@ namespace HelpMyStreetFE.Services
                 }
 
             };
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+            }
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY) {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                

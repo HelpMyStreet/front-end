@@ -82,9 +82,9 @@ namespace HelpMyStreetFE.Services
             return null;
         }
 
-        public async Task<GetRequestHelpFormVariantResponse> GetRequestFormVariant(int groupId, string source)
+        public async Task<GetRequestHelpFormVariantResponse> GetRequestHelpFormVariant(int groupId, string source)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetRequestFormVariant?groupId={groupId}&source={source}");
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetRequestHelpFormVariant?groupId={groupId}&source={source}");
             string str = await response.Content.ReadAsStringAsync();
             var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetRequestHelpFormVariantResponse, GroupServiceErrorCode>>(str);
             if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
