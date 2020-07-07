@@ -191,7 +191,7 @@ namespace HelpMyStreetFE.Controllers
             _logger.LogInformation("request-help");
 
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-            var groupServiceResponse = await _groupService.GetRequestFormVariant(referringGroupId, source);
+            var groupServiceResponse = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
             RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
