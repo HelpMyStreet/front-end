@@ -221,7 +221,7 @@ namespace HelpMyStreetFE.Controllers
             if (onBehalf && !User.Identity.IsAuthenticated)
             {
                 message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home.</p>";
-                button = " <a href='/registration/stepone' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+                button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
 
             if (fulfillable == Fulfillable.Accepted_DiyRequest)

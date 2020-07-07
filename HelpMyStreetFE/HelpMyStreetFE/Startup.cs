@@ -303,9 +303,29 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
 
                 endpoints.MapControllerRoute(
+                   name: "registration/step-one",
+                   pattern: "registration/step-one",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
                    name: "registration/step-one/group",
                    pattern: "registration/step-one/{referringGroup}",
                    defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-two",
+                   pattern: "registration/step-two",
+                   defaults: new { controller = "Registration", action = "StepTwo" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-three",
+                   pattern: "registration/step-three",
+                   defaults: new { controller = "Registration", action = "StepThree" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-four",
+                   pattern: "registration/step-four",
+                   defaults: new { controller = "Registration", action = "StepFour" });
             });
         }
     }

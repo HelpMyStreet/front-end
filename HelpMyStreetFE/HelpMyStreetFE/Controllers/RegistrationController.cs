@@ -44,14 +44,23 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> StepOne(string referringGroup, string source = "")
+        public async Task<ActionResult> StepOne(string referringGroup = "", string source = "")
         {
             if (User.Identity.IsAuthenticated)
             {
                 return Redirect("/account");
             }
 
-            int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
+            int referringGroupId = -1;
+
+            if (!string.IsNullOrEmpty(referringGroup))
+            {
+                try
+                {
+                    referringGroupId = Convert.ToInt32(Base64Utils.Base64Decode(referringGroup));
+                }
+                catch { }
+            }
 
             var groupServiceResponse = await _groupService.GetRegistrationFormVariant(referringGroupId, source);
             RegistrationFormVariant registrationFormVariant = groupServiceResponse == null ? RegistrationFormVariant.Default : groupServiceResponse.RegistrationFormVariant;
@@ -66,7 +75,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("[controller]/stepone")]
+        [HttpPost("[controller]/step-one")]
         public async Task<ActionResult> StepOnePost([FromBody] NewUserModel userData)
         {
             try
@@ -86,12 +95,12 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
-        [HttpGet("[controller]/steptwo")]
+        [HttpGet("[controller]/step-two")]
         public async Task<ActionResult> StepTwo()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             string correctPage = await GetCorrectPage(userId);
-            if (!correctPage.StartsWith("/registration/steptwo"))
+            if (!correctPage.StartsWith("/registration/step-two"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
@@ -104,14 +113,14 @@ namespace HelpMyStreetFE.Controllers
             });
         }
 
-        [HttpPost("[controller]/steptwo")]
+        [HttpPost("[controller]/step-two")]
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(userId);
-            if (!correctPage.StartsWith("/registration/steptwo"))
+            if (!correctPage.StartsWith("/registration/step-two"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
@@ -120,22 +129,22 @@ namespace HelpMyStreetFE.Controllers
             try
             {
                 await _userService.CreateUserStepTwoAsync(userId, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth);
-                return Redirect("/registration/stepthree");
+                return Redirect("/registration/step-three");
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error executing step 2");
                 _logger.LogError(ex.ToString());
-                return Redirect("/registration/steptwo?failure=error");
+                return Redirect("/registration/step-two?failure=error");
             }
         }
 
-        [HttpGet("[controller]/stepthree")]
+        [HttpGet("[controller]/step-three")]
         public async Task<ActionResult> StepThree()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             string correctPage = await GetCorrectPage(userId);
-            if (!correctPage.StartsWith("/registration/stepthree"))
+            if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
@@ -148,14 +157,14 @@ namespace HelpMyStreetFE.Controllers
             });
         }
 
-        [HttpPost("[controller]/stepthree")]
+        [HttpPost("[controller]/step-three")]
         public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(userId);
-            if (!correctPage.StartsWith("/registration/stepthree"))
+            if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
@@ -178,23 +187,23 @@ namespace HelpMyStreetFE.Controllers
                 var groupServiceResponse = await _groupService.PostAddUserToDefaultGroups(userId);
                 if (groupServiceResponse == null || !groupServiceResponse.Success) { throw new Exception($"Could not add user {userId} to default groups"); }
 
-                return Redirect("/registration/stepfour");
+                return Redirect("/registration/step-four");
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error executing step 3");
                 _logger.LogError(ex.ToString());
-                return Redirect("/registration/stepthree?failure=error");
+                return Redirect("/registration/step-three?failure=error");
             }
         }
 
-        [HttpGet("[controller]/stepfour")]
+        [HttpGet("[controller]/step-four")]
         public async Task<ActionResult> StepFour()
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             string correctPage = await GetCorrectPage(userId);
-            if (!correctPage.StartsWith("/registration/stepfour"))
+            if (!correctPage.StartsWith("/registration/step-four"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
@@ -226,14 +235,14 @@ namespace HelpMyStreetFE.Controllers
             });
         }
 
-        [HttpPost("[controller]/stepfour")]
+        [HttpPost("[controller]/step-four")]
         public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
             string correctPage = await GetCorrectPage(userId);
-            if (!correctPage.StartsWith("/registration/stepfour"))
+            if (!correctPage.StartsWith("/registration/step-four"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
@@ -257,7 +266,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 _logger.LogError("Error executing step 4");
                 _logger.LogError(ex.ToString());
-                return Redirect("/registration/stepfour?failure=error");
+                return Redirect("/registration/step-four?failure=error");
             }
         }
 
@@ -291,29 +300,17 @@ namespace HelpMyStreetFE.Controllers
                 switch (maxStep)
                 {
                     case 1:
-                        return "/registration/steptwo";
+                        return "/registration/step-two";
                     case 2:
-                        return "/registration/stepthree";
+                        return "/registration/step-three";
                     case 3:
-                        return "/registration/stepfour";
+                        return "/registration/step-four";
                     default:
                         return string.Empty; //Registration journey is complete
                 }
             }
 
-            return "/registration/stepone";
-        }
-
-        private int DecodeGroupIdOrGetDefault(string encodedGroupId)
-        {
-            try
-            {
-                return Convert.ToInt32(Base64Utils.Base64Decode(encodedGroupId));
-            }
-            catch
-            {
-                return -1;
-            }
+            return "/registration/step-one";
         }
     }
 }
