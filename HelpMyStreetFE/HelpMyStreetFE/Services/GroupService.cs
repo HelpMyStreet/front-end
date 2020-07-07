@@ -50,5 +50,28 @@ namespace HelpMyStreetFE.Services
             return JsonConvert.DeserializeObject<ResponseWrapper<GetGroupByKeyResponse, GroupServiceErrorCode>>(str);
         }
 
+        public async Task<ResponseWrapper<GetRegistrationFormVariantResponse, GroupServiceErrorCode>> GetRegistrationFormVariant(int groupId, string source)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetRegistrationFormVariant?groupId={groupId}&source={source}");
+            string str = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ResponseWrapper<GetRegistrationFormVariantResponse, GroupServiceErrorCode>>(str);
+        }
+
+        public async Task<ResponseWrapper<GetRequestHelpFormVariantResponse, GroupServiceErrorCode>> GetRequestFormVariant(int groupId, string source)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetRequestFormVariant?groupId={groupId}&source={source}");
+            string str = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ResponseWrapper<GetRequestHelpFormVariantResponse, GroupServiceErrorCode>>(str);
+        }
+
+        public async Task<ResponseWrapper<PostAddUserToDefaultGroupsResponse, GroupServiceErrorCode>> PostAddUserToDefaultGroups(int userId)
+        {
+            PostAddUserToDefaultGroupsRequest postAddUserToDefaultGroupsRequest = new PostAddUserToDefaultGroupsRequest() { UserID = userId };
+            string json = JsonConvert.SerializeObject(postAddUserToDefaultGroupsRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/PostAddUserToDefaultGroups", data);
+            string str = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ResponseWrapper<PostAddUserToDefaultGroupsResponse, GroupServiceErrorCode>>(str);
+        }
     }
 }
