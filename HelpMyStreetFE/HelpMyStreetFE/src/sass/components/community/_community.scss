@@ -13,12 +13,14 @@
 }
 
 
-.btn{
-    &.disabled { 
-    pointer-events: none; 
-    cursor: default; 
-    background: $gray-8;
-}
+.btn {
+    &.disabled {
+        background: $gray-8;
+        &.btn--sign-up { 
+            pointer-events: none;
+            cursor: default;
+        }
+    }
 }
 
 .commmunity-map-container {
