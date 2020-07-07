@@ -197,10 +197,7 @@ namespace HelpMyStreetFE.Controllers
             string groupKey = "";
 
             var getGroupResponse = await _groupService.GetGroup(referringGroupId);
-            if (getGroupResponse.IsSuccessful)
-            {
-                groupKey = getGroupResponse.Content.Group.GroupKey;
-            }
+            groupKey = getGroupResponse.Group.GroupKey;
 
             if (source == "DIY")
             {
