@@ -101,11 +101,16 @@
 
             <h4>Contact Details</h4>
             <div class="job__expander">
-                <h5>@(forFaceMask ? "Recipient" : "Person in need" )<span></span></h5>
+                <h5>@(forFaceMask ? "Recipient" : "Person in need")<span></span></h5>
                 <dl>
+                    @*@if (!string.IsNullOrEmpty(recipientOrganisation))
+                    {
+                        <dt>Organisation</dt>
+                        <dd>@recipientOrganisation</dd>
+                    }*@
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
-                    <dt>Email</dt>                    
+                    <dt>Email</dt>
                     <dd>@(string.IsNullOrEmpty(recipient.EmailAddress) ? userDetailsNotProvidedText : recipient.EmailAddress) </dd>
                     <dt>Phone number(s)</dt>
                     <dd>
@@ -122,14 +127,14 @@
                     </dd>
                     <dt>Address</dt>
                     <dd>
-                        @Html.DisplayFor(x => recipient.Address, new  {  MaskAddress = AgeUk})
+                        @Html.DisplayFor(x => recipient.Address, new { MaskAddress = AgeUk })
                     </dd>
                 </dl>
             </div>
             <div class="job__expander">
                 <h5>Requester<span></span></h5>
-                @if (requestorType ==  RequestorType.Myself)
-                {                    
+                @if (requestorType == RequestorType.Myself)
+                {
                     <p><i>Request made by recipient </i></p>
                 }
                 else
@@ -164,39 +169,46 @@
 
                 if (question.ShowOnTaskManagement())
                 {
-                        <div class="job__expander">
-                            <h5>@question.FriendlyName()<span></span></h5>
-                            <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
-                        </div>
-                       }
-              }
-                    
-                @if (showOtherDetails)
-                {
                     <div class="job__expander">
-                        <h5>Further Details<span></span></h5>
-                        <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+                        <h5>@question.FriendlyName()<span></span></h5>
+                        <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
                     </div>
                 }
-                }
-                else if (UserIsVerified)
-                {
-                    @foreach (var question in Model.Questions)
-                    {
-                        if (question.ShowOnTaskManagement())
-                        {
-                            <h4>@question.FriendlyName()</h4>
-                            <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
-                        }
-                    }
-                    @if (showOtherDetails)
-                    {
-                        <h4>Further Details</h4>
-                        <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
-                    }
+            }
 
-                    <h4>Communication Needs</h4>
-                    <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+            @if (showOtherDetails)
+            {
+                <div class="job__expander">
+                    <h5>Further Details<span></span></h5>
+                    <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+                </div>
+            }
+        }
+        else if (UserIsVerified)
+        {
+            @*@if (!string.IsNullOrEmpty(recipientOrganisation))
+            {
+                <h4>Organisation</h4>
+                <p>@recipientOrganisation</p>
+            }*@
+
+            @foreach (var question in Model.Questions)
+            {
+
+                if (question.ShowOnTaskManagement())
+                {
+                    <h4>@question.FriendlyName()</h4>
+                    <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
                 }
-            </div>
+            }
+            @if (showOtherDetails)
+            {
+                <h4>Further Details</h4>
+                <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+            }
+
+            <h4>Communication Needs</h4>
+            <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+        }
+    </div>
 </div>

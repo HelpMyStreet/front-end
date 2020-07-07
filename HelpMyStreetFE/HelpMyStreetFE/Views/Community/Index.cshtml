@@ -32,7 +32,7 @@
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.GroupKey" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
@@ -43,7 +43,7 @@
                         }
                         @if (!Model.IsLoggedIn)
                         {
-                            <a href="@Model.SignUpLink" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
 
                         }
                         else
@@ -60,7 +60,7 @@
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.GroupKey" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
                 </div>
@@ -134,7 +134,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.GroupKey" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -153,7 +153,7 @@
                             <div class="" style="text-align: center">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a id="first-button" href="@Model.SignUpLink" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                                    <a id="first-button" href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
                                 }
                                 else
                                 {
@@ -231,7 +231,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.GroupKey" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -250,7 +250,7 @@
                             <div class="" style="text-align: center">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a id="first-button" href="@Model.SignUpLink" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                                    <a id="first-button" href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
                                 }
                                 else
                                 {

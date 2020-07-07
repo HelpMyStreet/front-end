@@ -7,6 +7,7 @@
         const activeStep = @Model.ActiveStep;
         const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration))};
         const source = '@Model.Source';
+        const referringGroupId = '@Model.ReferringGroupID'
     </script>
     <script src="~/registration.js" asp-append-version="true"></script>
 }

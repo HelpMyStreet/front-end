@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
@@ -31,10 +32,12 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<RequestHelpController> _logger;
         private readonly IRequestService _requestService;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService)
+        private readonly IGroupService _groupService;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService)
         {
             _logger = logger;
             _requestService = requestService;
+            _groupService = groupService;
         }
 
         [ValidateAntiForgeryToken]
@@ -189,25 +192,34 @@ namespace HelpMyStreetFE.Controllers
             _logger.LogInformation("request-help");
 
             RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
-            int referringGroupId = -1;
+            int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
 
-            if (source == "diy")
+            // TODO: Replace this with a call to Group Service (GetRequestHelpFormVariant) ...
+            string groupKey = "";
+
+            var getGroupResponse = await _groupService.GetGroup(referringGroupId);
+            if (getGroupResponse.IsSuccessful)
+            {
+                groupKey = getGroupResponse.Content.Group.GroupKey;
+            }
+
+            if (source == "DIY")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.DIY;
             }
-            else if (referringGroup == "ftlos")
+            else if (groupKey == "ftlos")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.FtLOS;
-                referringGroupId = 99;
             }
-            else if (referringGroup == "v4v")
+            else if (groupKey == "v4v")
             {
                 requestHelpFormVariant = RequestHelpFormVariant.VitalsForVeterans;
-                referringGroupId = 101;
             }
+            // END
+
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
-                return Redirect("/login?ReturnUrl=request-help/0/diy");
+                return Redirect("/login?ReturnUrl=request-help/0/DIY");
 
             var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
@@ -240,7 +252,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-                requestLink = "/request-help/0/diy";
+                requestLink = "/request-help/0/DIY";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {
@@ -300,5 +312,18 @@ namespace HelpMyStreetFE.Controllers
                 public string Answer { get; set; }
             }
         }
+
+        private int DecodeGroupIdOrGetDefault(string encodedGroupId)
+        {
+            try
+            {
+                return Convert.ToInt32(Base64Utils.Base64Decode(encodedGroupId));
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
     }
 }

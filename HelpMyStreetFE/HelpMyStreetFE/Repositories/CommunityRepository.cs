@@ -1,30 +1,47 @@
-﻿using HelpMyStreetFE.Models.Community;
+﻿using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Models.Community;
+using HelpMyStreetFE.Services;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
-        public CommunityViewModel GetCommunity(string communityName)
+        private readonly IGroupService _groupService;
+
+        public CommunityRepository(IGroupService groupService)
+        {
+            _groupService = groupService;
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(string communityName)
         {
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return GetTankersley();
+                    return await GetTankersley();
                 case "ageuklsl":
-                    return GetAgeUKLSL();
+                    return await GetAgeUKLSL();
                 case "hlp":
-                    return GetHLP();
+                    return await GetHLP();
                 case "ftlos":
-                    return GetFtLOS();
+                    return await GetFtLOS();
                 default:
                     return null;
             }
         }
         
-        private CommunityViewModel GetHLP()
+        private async Task<CommunityViewModel> GetHLP()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("hlp");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
@@ -37,7 +54,6 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Header = "What are Community Connectors?";
             communityViewModel.DisableButtons = true;
-            communityViewModel.SignUpLink = communityViewModel.SignUpLink + "/hlp";
             communityViewModel.HeaderHTML = @"
                     <p class='row sm12 text-left mt-sm mb-xs'>
                         Mental Health First Aid England is working with the new NHS Connect service to recruit volunteer 
@@ -135,9 +151,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetTankersley()
+        private async Task<CommunityViewModel> GetTankersley()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
@@ -211,9 +234,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetAgeUKLSL()
+        private async Task<CommunityViewModel> GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ageuklsl");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
@@ -234,7 +264,8 @@ namespace HelpMyStreetFE.Repositories
                         <i>veterans should not be forgotten</i>.
                     </p>
                     <p class='row sm12 text-left mt-sm mb-s'>
-                        If you can help us get wellbeing packs to veterans in your area please sign up to volunteer below:
+                        If you can help us get wellbeing packs to veterans in your area please sign up below and tick the 'Collecting and Delivering
+                        a Pre-Prepared Wellbeing Package' option in Step 3 of the sign up ('Helpers').
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
             communityViewModel.HeaderVolunteerButtonText = null;
@@ -298,11 +329,16 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetFtLOS()
+        private async Task<CommunityViewModel> GetFtLOS()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            communityViewModel.GroupKey = "ftlos";
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
+            if (getGroupByKeyResponse.IsSuccessful)
+            {
+                int groupId = getGroupByKeyResponse.Content.GroupId;
+                communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            }
 
             communityViewModel.CommunityName = "For the Love of Scrubs";
 

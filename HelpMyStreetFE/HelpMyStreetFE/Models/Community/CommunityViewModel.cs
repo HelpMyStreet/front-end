@@ -6,13 +6,11 @@ namespace HelpMyStreetFE.Models.Community
     public class CommunityViewModel
     {
         public bool IsLoggedIn { get; set; }
-
-        public string GroupKey { get; set; } = "Generic";
+        public string EncodedGroupId { get; set; }
         public bool ShowMap { get; set; } = true;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public int ZoomLevel { get; set; }
-        public string SignUpLink { get; set; } = "/registration/stepone";
         public string CommunityName { get; set; }
         public string CommunityShortName { get; set; }
         public string BannerImageLocation { get; set; }
