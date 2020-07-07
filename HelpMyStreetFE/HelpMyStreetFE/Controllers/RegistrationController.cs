@@ -44,7 +44,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> StepOne(string referringGroup)
+        public async Task<ActionResult> StepOne(string referringGroup, string source = "")
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -52,7 +52,9 @@ namespace HelpMyStreetFE.Controllers
             }
 
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-            RegistrationFormVariant registrationFormVariant = await GetRegistrationJourneyFromGroup(referringGroupId);
+
+            var groupServiceResponse = await _groupService.GetRegistrationFormVariant(referringGroupId, source);
+            RegistrationFormVariant registrationFormVariant = groupServiceResponse == null ? RegistrationFormVariant.Default : groupServiceResponse.RegistrationFormVariant;
 
             return View(new RegistrationViewModel
             {
@@ -255,34 +257,20 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/registration/stepfour?failure=error");
             }
         }
+
         private async Task<RegistrationFormVariant> GetRegistrationJourney(int userId)
         {
             User user = await _userService.GetUserAsync(userId);
 
-            return await GetRegistrationJourneyFromGroup(user.ReferringGroupId ?? -1);
-        }
-
-        private async Task<RegistrationFormVariant> GetRegistrationJourneyFromGroup(int groupId)
-        {
-            // TODO: Replace this with a call to Group Service (GetRegistrationFormVariant) ...
-            string groupKey = "";
-
-            var getGroupResponse = await _groupService.GetGroup(groupId);
-            groupKey = getGroupResponse.Group.GroupKey;
-
-            if (groupKey == "ftlos")
-            {
-                return RegistrationFormVariant.FtLOS;
-            }
-            else if (groupKey == "hlp")
-            {
-                return RegistrationFormVariant.HLP;
-            }
-            else
+            if (!user.ReferringGroupId.HasValue)
             {
                 return RegistrationFormVariant.Default;
             }
-            // END
+            else
+            {
+                var groupServiceResponse = await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source);
+                return groupServiceResponse == null ? RegistrationFormVariant.Default : groupServiceResponse.RegistrationFormVariant;
+            }
         }
 
         private async Task<string> GetCorrectPage(int userId)

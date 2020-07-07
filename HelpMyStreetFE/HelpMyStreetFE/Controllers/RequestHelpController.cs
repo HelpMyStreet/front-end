@@ -190,29 +190,9 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("request-help");
 
-            RequestHelpFormVariant requestHelpFormVariant = RequestHelpFormVariant.Default;
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-
-            // TODO: Replace this with a call to Group Service (GetRequestHelpFormVariant) ...
-            string groupKey = "";
-
-            var getGroupResponse = await _groupService.GetGroup(referringGroupId);
-            groupKey = getGroupResponse.Group.GroupKey;
-
-            if (source == "DIY")
-            {
-                requestHelpFormVariant = RequestHelpFormVariant.DIY;
-            }
-            else if (groupKey == "ftlos")
-            {
-                requestHelpFormVariant = RequestHelpFormVariant.FtLOS;
-            }
-            else if (groupKey == "v4v")
-            {
-                requestHelpFormVariant = RequestHelpFormVariant.VitalsForVeterans;
-            }
-            // END
-
+            var groupServiceResponse = await _groupService.GetRequestFormVariant(referringGroupId, source);
+            RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
                 return Redirect("/login?ReturnUrl=request-help/0/DIY");
