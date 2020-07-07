@@ -50,7 +50,7 @@ export function initialiseStepOne() {
             referringGroupId,
           }),
         });          
-          window.location.href = "/registration/steptwo?source=" + source;
+          window.location.href = "/registration/steptwo";
       })
       .catch((err) => {
         switch (err.code) {
