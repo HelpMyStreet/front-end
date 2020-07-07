@@ -158,7 +158,7 @@ namespace HelpMyStreetFE.Controllers
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
                     }
 
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, requestHelp.RequestHelpFormVariant, userId, HttpContext);
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
                     {
                         return RedirectToRoute("request-help/success", new
