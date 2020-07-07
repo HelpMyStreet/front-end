@@ -175,6 +175,9 @@ namespace HelpMyStreetFE.Controllers
                     form.VolunteerOptions,
                     form.VolunteerDistance);
 
+                var groupServiceResponse = await _groupService.PostAddUserToDefaultGroups(userId);
+                if (groupServiceResponse == null) { throw new Exception($"Could not add user {userId} to default groups"); }
+
                 return Redirect("/registration/stepfour");
             }
             catch (Exception ex)
