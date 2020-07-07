@@ -152,7 +152,7 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("generic");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
 
