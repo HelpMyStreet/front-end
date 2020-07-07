@@ -173,20 +173,6 @@ namespace HelpMyStreetFE.Controllers
                     form.VolunteerOptions,
                     form.VolunteerDistance);
 
-                if (form.VolunteerOptions.Contains(SupportActivities.FaceMask))
-                {
-                    int ftLOSGroupID;
-                    var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
-                    if (getGroupByKeyResponse.IsSuccessful)
-                    {
-                        ftLOSGroupID = getGroupByKeyResponse.Content.GroupId;
-                        await _groupService.AssignRole(new PostAssignRoleRequest() { UserID = userId, GroupID = ftLOSGroupID, Role = new RoleRequest() { GroupRole = GroupRoles.Member } });
-                    }
-                    else
-                    {
-                        throw new Exception("Could not identify ftlos group.");
-                    }
-                }
                 return Redirect("/registration/stepfour");
             }
             catch (Exception ex)
@@ -282,10 +268,7 @@ namespace HelpMyStreetFE.Controllers
             string groupKey = "";
 
             var getGroupResponse = await _groupService.GetGroup(groupId);
-            if (getGroupResponse.IsSuccessful)
-            {
-                groupKey = getGroupResponse.Content.Group.GroupKey;
-            }
+            groupKey = getGroupResponse.Group.GroupKey;
 
             if (groupKey == "ftlos")
             {
