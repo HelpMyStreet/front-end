@@ -103,11 +103,11 @@
             <div class="job__expander">
                 <h5>@(forFaceMask ? "Recipient" : "Person in need")<span></span></h5>
                 <dl>
-                    @*@if (!string.IsNullOrEmpty(recipientOrganisation))
+                    @if (!string.IsNullOrEmpty(Model.RecipientOrganisation))
                     {
                         <dt>Organisation</dt>
-                        <dd>@recipientOrganisation</dd>
-                    }*@
+                        <dd>@Model.RecipientOrganisation</dd>
+                    }
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
                     <dt>Email</dt>
@@ -186,11 +186,11 @@
         }
         else if (UserIsVerified)
         {
-            @*@if (!string.IsNullOrEmpty(recipientOrganisation))
+            @if (!string.IsNullOrEmpty(Model.RecipientOrganisation))
             {
                 <h4>Organisation</h4>
-                <p>@recipientOrganisation</p>
-            }*@
+                <p>@Model.RecipientOrganisation</p>
+            }
 
             @foreach (var question in Model.Questions)
             {
