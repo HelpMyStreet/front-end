@@ -336,23 +336,32 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Header = "A message from Ashleigh Linsdell, Founder and Director of ‘For the Love of Scrubs’ (FtLOS)";
             communityViewModel.HeaderHTML = @"
-                    <p class='row sm12 text-left mt-sm mb-sm'>
+                <div class='row sm8'>    
+                    <p class='mt-sm mb-sm'>
                         FtLOS has supplied many thousands of items to support frontline workers in hospitals, care homes and surgeries across the
                         country. We now have another line of defence to support - our communities.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-sm'>
+                    <p class='mt-sm mb-sm'>
                         We need everyone to do their bit to protect communities against Coronvirus by wearing a fabric face covering when out and
                         about in shops, buses, trains and other public places. Wearing a fabric face covering helps keep everyone safe and supports
                         the national defence strategy against the spread of Covid 19.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-sm'>
+                    <p class='mt-sm mb-sm'>
                         Everyone is asked to donate £3 to £4 per face covering to cover the cost of materials and to help us support our communities.
                         You’ll also be asked to cover the cost of postage (if needed).
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-md'>
+                    <p class='mt-sm mb-md'>
                         If you’d like to get involved, sign up to sew or request a face covering now.
                     </p>
+                </div>
+                <div class='row sm4 mt-sm mb-md'>
+                    <div class='gfm-embed' data-url='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings/widget/medium'></div>
+                </div>
+                <script defer src='https://www.gofundme.com/static/js/embed.js'></script>
                     ";
+
+            communityViewModel.HeaderButtonWidth = 4;
+            communityViewModel.HeaderPostButtonsHTML = @"<div class='row sm4 large-screen-only'></div>";
 
             communityViewModel.HeaderHelpButtonText = null;
             communityViewModel.HeaderVolunteerButtonText = null;
