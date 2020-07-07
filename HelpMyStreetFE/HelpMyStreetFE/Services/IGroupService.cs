@@ -16,9 +16,9 @@ namespace HelpMyStreetFE.Services
 
         Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest);
 
-        Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source);
+        Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source = "");
 
-        Task<GetRequestHelpFormVariantResponse> GetRequestFormVariant(int groupId, string source);
+        Task<GetRequestHelpFormVariantResponse> GetRequestFormVariant(int groupId, string source = "");
 
         Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId);
     }
