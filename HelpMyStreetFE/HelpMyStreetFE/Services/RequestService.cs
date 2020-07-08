@@ -32,12 +32,14 @@ namespace HelpMyStreetFE.Services
         private readonly ILogger<RequestService> _logger;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder)
+        private readonly IGroupService _groupService;
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
             _requestSettings = requestSettings;
             _requestHelpBuilder = requestHelpBuilder;
+            _groupService = groupService;
     }
 
         public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
@@ -117,17 +119,11 @@ namespace HelpMyStreetFE.Services
                     JobStatuses = new JobStatusRequest()
                     {
                        JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
-                    }
+                    },
+                    Groups = (await _groupService.GetUserGroups(user.ID)).Groups
                 };
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
-
-
-                // if they dont have the community connector support activity, let remove any open requests in there.
-                if (!user.SupportActivities.Contains(SupportActivities.CommunityConnector))
-                {
-                    all = all.Where(x => x.SupportActivity != SupportActivities.CommunityConnector);
-                };
 
                 var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
 
