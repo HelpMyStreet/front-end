@@ -54,7 +54,7 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             LoginViewModel model = new LoginViewModel
             {

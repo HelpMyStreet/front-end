@@ -260,7 +260,7 @@ namespace HelpMyStreetFE.Controllers
  
 
         [HttpPost]
-        public ActionResult Questions([FromBody]QuestionRequest request)
+        public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
         {
             TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
             RequestorType? requestorType = null;

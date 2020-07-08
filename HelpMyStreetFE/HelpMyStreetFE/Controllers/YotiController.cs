@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult Authenticate(string token, string u, bool mobile)
+        public async Task<IActionResult> Authenticate(string token, string u, bool mobile)
         {
             var validUserId = DecodedAndCheckedUserId(u, token != null);
 

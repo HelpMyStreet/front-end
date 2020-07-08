@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Get home");
 
@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.Controllers
 
         
         [HttpGet]
-        public IActionResult FirebaseAccountAction(string mode, string oobCode, string apiKey, string continueUrl)
+        public async Task<IActionResult> FirebaseAccountAction(string mode, string oobCode, string apiKey, string continueUrl)
         {
             switch (mode)
             {
@@ -52,13 +52,13 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public IActionResult ForgottenPassword()
+        public async Task<IActionResult> ForgottenPassword()
         {     
             return View();
         }
 
         [HttpGet]
-        public IActionResult ResetPassword(string oobCode)
+        public async Task<IActionResult> ResetPassword(string oobCode)
         {
             ResetPasswordViewModel model = new ResetPasswordViewModel
             {        
