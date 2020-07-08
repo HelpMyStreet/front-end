@@ -1,4 +1,4 @@
-using HelpMyStreetFE.Models;
+﻿using HelpMyStreetFE.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -18,7 +18,7 @@ namespace HelpMyStreetFE.ViewComponents
             _configuration = configuration;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public IViewComponentResult InvokeAsync()
         {
             LoginViewModel model = new LoginViewModel
             {

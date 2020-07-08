@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> FaceMasks()
+        public IActionResult FaceMasks()
         {
             return RedirectPermanent("/for-the-love-of-scrubs");
         }

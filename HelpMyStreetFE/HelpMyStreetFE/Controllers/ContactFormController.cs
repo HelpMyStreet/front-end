@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Controllers
                     };
                     _emailService.SendEmail(subject, textContent, htmlContent, recipients).Wait();                    
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw;
                 }
