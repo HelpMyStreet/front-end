@@ -78,8 +78,8 @@
                 @foreach (var pc in Model.NearbyPostCodes)
                 {
                     <div class="input input--checkbox">
-                        <label for="postcode_checkbox" class="postcode_checkbox">
-                            <input name="postcodes[]" id="postcode_checkbox" type="checkbox" value="@pc.Postcode" hidden />
+                        <label for="postcode_checkbox_@pc.Postcode.Replace(' ','_')" class="postcode_checkbox">
+                            <input name="postcodes[]" id="postcode_checkbox_@pc.Postcode.Replace(' ','_')" type="checkbox" value="@pc.Postcode" hidden />
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
