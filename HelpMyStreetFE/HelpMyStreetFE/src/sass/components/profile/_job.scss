@@ -197,10 +197,6 @@
 
                 &.disabled {
                     color: $gray-8;
-
-                    &:hover {
-                        cursor: not-allowed;
-                    }
                 }
             }
         }

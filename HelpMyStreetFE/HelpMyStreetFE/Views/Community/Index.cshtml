@@ -20,14 +20,14 @@
             <div class="row flex hero">
                 <div class="row sm6 align-center content-page">
                     <header class="">
-                        <h2 class="row sm12 mb0">@Model.Header</h2>
+                        <h2 class="row sm12 mb0 mw1100">@Model.Header</h2>
                     </header>
 
                     @Html.Raw(@Model.HeaderHTML)
 
                     @if (Model.ShowRequestHelp)
                     {
-                        <div class="row sm6 text-center justify-center mb-sm small-screen-only">
+                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
@@ -36,7 +36,7 @@
                         </div>
                     }
 
-                    <div class="row sm6 text-center justify-center mb-md">
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
                         @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
                         {
                             <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
@@ -55,7 +55,7 @@
 
                     @if (Model.ShowRequestHelp)
                     {
-                        <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md large-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
@@ -63,6 +63,8 @@
                             <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
+
+                    @Html.Raw(@Model.HeaderPostButtonsHTML)
                 </div>
 
                 @if (Model.ShowMap)

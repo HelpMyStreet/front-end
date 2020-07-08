@@ -152,7 +152,7 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("generic");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
 
@@ -336,23 +336,32 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Header = "A message from Ashleigh Linsdell, Founder and Director of ‘For the Love of Scrubs’ (FtLOS)";
             communityViewModel.HeaderHTML = @"
-                    <p class='row sm12 text-left mt-sm mb-sm'>
+                <div class='row sm8'>    
+                    <p class='mt-sm mb-sm'>
                         FtLOS has supplied many thousands of items to support frontline workers in hospitals, care homes and surgeries across the
                         country. We now have another line of defence to support - our communities.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-sm'>
-                        We need everyone to do their bit to protect communities against Coronvirus by wearing a fabric face covering when out and
+                    <p class='mt-sm mb-sm'>
+                        We need everyone to do their bit to protect communities against coronavirus by wearing a fabric face covering when out and
                         about in shops, buses, trains and other public places. Wearing a fabric face covering helps keep everyone safe and supports
-                        the national defence strategy against the spread of Covid 19.
+                        the national defence strategy against the spread of COVID-19.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-sm'>
+                    <p class='mt-sm mb-sm'>
                         Everyone is asked to donate £3 to £4 per face covering to cover the cost of materials and to help us support our communities.
                         You’ll also be asked to cover the cost of postage (if needed).
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-md'>
+                    <p class='mt-sm mb-md'>
                         If you’d like to get involved, sign up to sew or request a face covering now.
                     </p>
+                </div>
+                <div class='row sm4 mt-sm mb-md'>
+                    <div class='gfm-embed' data-url='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings/widget/medium'></div>
+                </div>
+                <script defer src='https://www.gofundme.com/static/js/embed.js'></script>
                     ";
+
+            communityViewModel.HeaderButtonWidth = 4;
+            communityViewModel.HeaderPostButtonsHTML = @"<div class='row sm4 large-screen-only'></div>";
 
             communityViewModel.HeaderHelpButtonText = null;
             communityViewModel.HeaderVolunteerButtonText = null;
@@ -367,10 +376,10 @@ namespace HelpMyStreetFE.Repositories
                         </p>
                         <p class='mb-xs mt-md'>
                             <strong>Is there a cost for face coverings?</strong>
-                            On top of the postage, all we ask if for a small donation of £2 - £3 per face covering to cover the cost of materials. You can donate through our JustGiving page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
+                            On top of the postage, all we ask if for a small donation of £3 - £4 per face covering to cover the cost of materials and to help us support our communities. You can donate through our JustGiving page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
                         </p>
                         <p class='mt-0 mb-0 ml-xl'>
-                            £10 pays for a metre fabric we can use for scrubs and other NHS supplies
+                            £10 pays for a metre of fabric we can use for scrubs and other NHS supplies
                         </p>
                         <p class='mt-0 mb-0 ml-xl'>
                             £25 pays for enough face coverings to help a small care home receive visitors
@@ -404,7 +413,7 @@ namespace HelpMyStreetFE.Repositories
                     <p class='mt-xs'><a href='https://freeprintablesonline.com/2020/03/printable-face-mask-patterns-roundup/'> FreePrintablesOnline.com</a> - patterns, videos, hints and tips</p>
 
                     <h6>Donation page</h6>
-                    <p><a href='#'> You can donate through our JustGiving page</a></p>
+                    <p><a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings'> You can donate through our gofundme page</a></p>
 
                     <h6>Requesting materials</h6>
                     <p>If you’re a FtLOS sewer and need more materials contact your local group administrator or email <a href='mailto:materialrequest-ftlos@outlook.com'>materialrequest-ftlos@outlook.com</a></p>

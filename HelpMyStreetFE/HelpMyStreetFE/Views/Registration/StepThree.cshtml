@@ -16,22 +16,9 @@
     Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 
     var volunteerOptions = new List<SupportActivityViewModel>();
-    if (Model.RegistrationFormVariant == RegistrationFormVariant.HLP)
-    {
-        volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CommunityConnector, Description = "Being a <strong>COMMUNITY CONNECTOR</strong>" });
-    }
-    if (Model.RegistrationFormVariant == RegistrationFormVariant.FtLOS)
-    {
-        volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs", Selected = true });
-    }
 
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" });
-
-    if (Model.RegistrationFormVariant != RegistrationFormVariant.FtLOS)
-    {
-        volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs (<a href='/for-the-love-of-scrubs' target='_blank'>find out more</a>)" });
-    }
-
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs (<a href='/for-the-love-of-scrubs' target='_blank'>find out more</a>)" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package" });
@@ -43,6 +30,21 @@
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CheckingIn, Description = "Reaching out to people in my area to check-in" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks. Please check with me." });
 
+
+    switch (Model.RegistrationFormVariant)
+    {
+        case RegistrationFormVariant.HLP:
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.CommunityConnector, Description = "Being a <strong>COMMUNITY CONNECTOR</strong>", Selected = true });
+            break;
+        case RegistrationFormVariant.FtLOS:
+            volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.FaceMask);
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs", Selected = true });
+            break;
+        case RegistrationFormVariant.AgeUKLSL:
+            volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.WellbeingPackage);
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package", Selected = true });
+            break;
+    }
 
 
     var distanceOptions = new Dictionary<double, string>
@@ -64,7 +66,7 @@
             <div class="sm8">
                 <h2>Helpers</h2>
                 @if (Context.Request.Query["failure"] == "error")
-                {
+        {
                     <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
                 }
             </div>
