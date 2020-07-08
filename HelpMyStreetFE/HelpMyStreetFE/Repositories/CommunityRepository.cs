@@ -52,18 +52,18 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Header = "What are Community Connectors?";
             communityViewModel.DisableButtons = true;
             communityViewModel.HeaderHTML = @"
-                    <p class='row sm12 text-left mt-sm mb-xs'>
+                    <p class='mt-sm mb-xs'>
                         Mental Health First Aid England is working with the new NHS Connect service to recruit volunteer 
                         Community Connectors as part of the nation-wide response to Covid-19. NHS Connect is a new digital
                         service that helps connect vulnerable people with the support they need.<br>
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-xs'>
+                    <p class='mt-sm mb-xs'>
                       We are looking for volunteers who combine an understanding of mental health problems with previous training 
                         and experience in one or more of these practical and ethical frameworks: coaching, motivational interviewing,
                         counselling or an accredited form of therapy.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer.</p>
-                   <div class='row input sm12'>
+                    <p class='mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer.</p>
+                   <div class='input'>
                         <p class='mb-xs mt-sm'>Please confirm that:</p>
                        <form>
                             <div class='input input--checkbox'>
@@ -168,18 +168,17 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityVolunteersHeader = "Welcome from Tankersley & Pilley Community Helpers";
             communityViewModel.HeaderHTML = @"
-                    <p class='row sm12 text-left mt-sm mb-xs'>
+                    <p class='mt-sm mb-xs'>
                         In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
                         We’re the Tankersley &amp; Pilley Community Helpers, here to help with:
                     </p>
-                    <div class='row sm12'>
-                        <ul class='tick-list mt-xs mb-sm compact-list'>
-                            <li>Shopping for essentials</li>
-                            <li>A friendly chat</li>
-                            <li>Help at home</li>
-                            <li>Cooking a hot meal</li>
-                        </ul>
-                    </div>";
+                    <ul class='tick-list mt-xs mb-sm compact-list'>
+                        <li>Shopping for essentials</li>
+                        <li>A friendly chat</li>
+                        <li>Help at home</li>
+                        <li>Cooking a hot meal</li>
+                    </ul>
+                    ";
 
 
 
@@ -247,14 +246,14 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Header = "Veterans need your help!";
             communityViewModel.HeaderHTML = @"
-                    <p class='row sm12 text-left mt-sm mb-xs'>
+                    <p class='mt-sm mb-xs'>
                         We are now underway with our new “Vitals For Veterans” project.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-xs'>
+                    <p class='mt-sm mb-xs'>
                         Over the coming months, we will be delivering wellbeing packs to veterans across Lincoln & South Lincolnshire because
                         <i>veterans should not be forgotten</i>.
                     </p>
-                    <p class='row sm12 text-left mt-sm mb-s'>
+                    <p class='mt-sm mb-s'>
                         If you can help us get wellbeing packs to veterans in your area please sign up below.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
@@ -342,7 +341,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Header = "A message from Ashleigh Linsdell, Founder and Director of ‘For the Love of Scrubs’ (FtLOS)";
             communityViewModel.HeaderHTML = @"
-                <div class='row sm8'>    
+                <div class='row sm8' style='padding-left: 0'>    
                     <p class='mt-sm mb-sm'>
                         FtLOS has supplied many thousands of items to support frontline workers in hospitals, care homes and surgeries across the
                         country. We now have another line of defence to support - our communities.
