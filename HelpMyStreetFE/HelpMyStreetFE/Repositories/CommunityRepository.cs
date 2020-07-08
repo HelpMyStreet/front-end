@@ -255,8 +255,7 @@ namespace HelpMyStreetFE.Repositories
                         <i>veterans should not be forgotten</i>.
                     </p>
                     <p class='row sm12 text-left mt-sm mb-s'>
-                        If you can help us get wellbeing packs to veterans in your area please sign up below and tick the 'Collecting and Delivering
-                        a Pre-Prepared Wellbeing Package' option in Step 3 of the sign up ('Helpers').
+                        If you can help us get wellbeing packs to veterans in your area please sign up below.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
             communityViewModel.HeaderVolunteerButtonText = null;
