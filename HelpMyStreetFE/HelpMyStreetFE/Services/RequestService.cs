@@ -125,13 +125,6 @@ namespace HelpMyStreetFE.Services
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
 
-
-                // if they dont have the community connector support activity, let remove any open requests in there.
-                if (!user.SupportActivities.Contains(SupportActivities.CommunityConnector))
-                {
-                    all = all.Where(x => x.SupportActivity != SupportActivities.CommunityConnector);
-                };
-
                 var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
 
                 jobs = new OpenJobsViewModel
