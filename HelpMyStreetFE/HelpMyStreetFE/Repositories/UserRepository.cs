@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.Repositories
             return resp.User;
         }
 
-        public async Task<int> CreateUser(string email, string authId)
+        public async Task<int> CreateUser(string email, string authId, int referringGroupId, string source)
         {
             var response = await PostAsync<ModifyUserResponse>("/api/postcreateuser", new
             {
@@ -37,6 +37,8 @@ namespace HelpMyStreetFE.Repositories
                 {
                     EmailAddress = email,
                     FirebaseUID = authId,
+                    ReferringGroupId = referringGroupId,
+                    Source = source,
                     DateCreated = DateTime.Now
                 }
             });

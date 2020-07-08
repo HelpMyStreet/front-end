@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models.RequestHelp.Enum;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 namespace HelpMyStreetFE.Models.Registration
 {
@@ -7,6 +8,7 @@ namespace HelpMyStreetFE.Models.Registration
         public int ActiveStep { get; set; }
         public string FirebaseConfiguration { get; set; }
         public string EncodedUserID { get; set; }
-        public RegistrationSource Source { get; set; }
+        public int ReferringGroupID { get; set; }
+        public RegistrationFormVariant RegistrationFormVariant { get; set; }
     }
 }

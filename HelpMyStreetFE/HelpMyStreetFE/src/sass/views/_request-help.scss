@@ -40,7 +40,7 @@
         .small-width {
             width: 149px;
             margin-bottom: 14px;
-            display:block;
+            display: block;
         }
 
         select {
@@ -100,12 +100,14 @@
             }
         }
 
-
-
         textarea {
             width: 100%;
             min-height: 150px;
             font-size: 1.2em;
+        }
+
+        :invalid ~ .error {
+            display: block;
         }
     }
 
@@ -118,8 +120,8 @@
             float: right;
         }
 
-        button{
-            min-width:250px;
+        button {
+            min-width: 250px;
         }
 
         .clear-button {

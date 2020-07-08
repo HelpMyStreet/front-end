@@ -20,8 +20,6 @@ using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
-using HelpMyStreetFE.Enums.RequestHelp;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 namespace HelpMyStreetFE
 {
@@ -122,6 +120,16 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddHttpClient<IGroupService, GroupService>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
@@ -131,7 +139,7 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
-
+          
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
             services.AddTransient<ISystemClock, MockableDateTime>();
@@ -228,17 +236,17 @@ namespace HelpMyStreetFE
                     pattern: "contact-us",
                     defaults: new { controller = "Pages", action = "ContactUs" });
                 endpoints.MapControllerRoute(
-                    name: "request-help/v4v",
-                    pattern: "request-help/v4v",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.VitalsForVeterans });
-                endpoints.MapControllerRoute(
-                    name: "request-help/diy",
-                    pattern: "request-help/diy",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.DIY });
-                endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = RequestHelpSource.Default });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", referringGroup = "", source = "" });
+                endpoints.MapControllerRoute(
+                    name: "request-help/group",
+                    pattern: "request-help/{referringGroup}",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "" });
+                endpoints.MapControllerRoute(
+                    name: "request-help/group/source",
+                    pattern: "request-help/{referringGroup}/{source}",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp" });
                 endpoints.MapControllerRoute(
                     name: "request-help/success",
                     pattern: "request-help/success",
@@ -281,8 +289,8 @@ namespace HelpMyStreetFE
 
                 endpoints.MapControllerRoute(
                     name: "fortheloveofscrubs",
-                    pattern: "fortheloveofscrubs-landingpagedemo",
-                    defaults: new { controller = "Community", action = "ForTheLoveOfScrubs" });
+                    pattern: "for-the-love-of-scrubs",
+                    defaults: new { controller = "Community", action = "Index", communityName = "ftlos" });
 
                 endpoints.MapControllerRoute(
                     name: "OpenRequests",
@@ -295,12 +303,29 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
 
                 endpoints.MapControllerRoute(
-                name: "registration/stepone/hlp",
-                pattern: "registration/stepone/hlp",
-                defaults: new { controller = "Registration", action = "StepOne", source  = RegistrationSource.HLP });
+                   name: "registration/step-one",
+                   pattern: "registration/step-one",
+                   defaults: new { controller = "Registration", action = "StepOne" });
 
-                // Enable attribute routing
-                //endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                   name: "registration/step-one/group",
+                   pattern: "registration/step-one/{referringGroup}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-two",
+                   pattern: "registration/step-two",
+                   defaults: new { controller = "Registration", action = "StepTwo" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-three",
+                   pattern: "registration/step-three",
+                   defaults: new { controller = "Registration", action = "StepThree" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-four",
+                   pattern: "registration/step-four",
+                   defaults: new { controller = "Registration", action = "StepFour" });
             });
         }
     }

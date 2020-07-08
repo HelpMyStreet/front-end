@@ -6,7 +6,7 @@
 @section Scripts {
     <script>
         const activeStep = @Model.ActiveStep;
-        const source = '@Model.Source';
+        const source = '@Model.RegistrationFormVariant';
     </script>
     <script src="~/registration.js" asp-append-version="true"></script>
 }
@@ -15,25 +15,36 @@
     ViewData["Title"] = "Helpers - Registration";
     Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 
-    var volunteerOptions = new Dictionary<SupportActivities, string>();
-    if (Model.Source == HelpMyStreetFE.Models.RequestHelp.Enum.RegistrationSource.HLP)
+    var volunteerOptions = new List<SupportActivityViewModel>();
+
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs (<a href='/for-the-love-of-scrubs' target='_blank'>find out more</a>)" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.DogWalking, Description = "Walking the dog" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.MealPreparation, Description = "Delivering a hot / pre-prepared meal" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "Calling someone in need of a friendly chat" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Anxious, Description = "Providing support over the phone to someone who may be anxious (relevant experience required e.g. Samaritans)" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.HomeworkSupport, Description = "Remote support for parents and carers home-schooling their children" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CheckingIn, Description = "Reaching out to people in my area to check-in" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks. Please check with me." });
+
+
+    switch (Model.RegistrationFormVariant)
     {
-        volunteerOptions.Add(SupportActivities.CommunityConnector, "Being a <strong>COMMUNITY CONNECTOR</strong>");
+        case RegistrationFormVariant.HLP:
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.CommunityConnector, Description = "Being a <strong>COMMUNITY CONNECTOR</strong>", Selected = true });
+            break;
+        case RegistrationFormVariant.FtLOS:
+            volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.FaceMask);
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs", Selected = true });
+            break;
+        case RegistrationFormVariant.AgeUKLSL:
+            volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.WellbeingPackage);
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package", Selected = true });
+            break;
     }
-
-    volunteerOptions.Add(SupportActivities.Shopping, "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)");
-    volunteerOptions.Add(SupportActivities.FaceMask, "Supplying a homemade reusable fabric face covering");
-    volunteerOptions.Add(SupportActivities.CollectingPrescriptions, "Collecting prescriptions from a local pharmacy");
-    volunteerOptions.Add(SupportActivities.Errands, "Running essential local errands (e.g. posting mail)");
-    volunteerOptions.Add(SupportActivities.WellbeingPackage, "Collecting and delivering a pre-prepared wellbeing package");
-    volunteerOptions.Add(SupportActivities.DogWalking, "Walking the dog");
-    volunteerOptions.Add(SupportActivities.MealPreparation, "Delivering a hot / pre-prepared meal");
-    volunteerOptions.Add(SupportActivities.PhoneCalls_Friendly, "Calling someone in need of a friendly chat");
-    volunteerOptions.Add(SupportActivities.PhoneCalls_Anxious, "Providing support over the phone to someone who may be anxious (relevant experience required e.g. Samaritans)");
-    volunteerOptions.Add(SupportActivities.HomeworkSupport, "Remote support for parents and carers home-schooling their children");
-    volunteerOptions.Add(SupportActivities.CheckingIn, "Reaching out to people in my area to check-in");
-    volunteerOptions.Add(SupportActivities.Other, "I may be able to help with other tasks. Please check with me.");
-
 
 
     var distanceOptions = new Dictionary<double, string>
@@ -44,7 +55,7 @@
     { 3, "Within 3 miles" },
     { 999, "Other - please tell us the distance in miles" }
     };
-    }
+}
 
 
     <div class="container">
@@ -55,13 +66,13 @@
             <div class="sm8">
                 <h2>Helpers</h2>
                 @if (Context.Request.Query["failure"] == "error")
-                {
+        {
                     <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
                 }
             </div>
         </div>
         <form id="registration_form" method="post">
-            <input name="source" type="hidden" value="@Model.Source" />
+            <input name="source" type="hidden" value="@Model.RegistrationFormVariant" />
             <div class="row justify-center">
                 <div class="sm8">
                     <p>HelpMyStreet will always try to match helpers to requests that are appropriate for them. Some requests are local in nature (e.g. picking up groceries),
@@ -72,12 +83,12 @@
                     @foreach (var option in volunteerOptions)
                     {
                         <div class="input input--checkbox">
-                            <label for="volunteer-@option.Key">
-                                <input name="volunteer[]" type="checkbox" id="volunteer-@option.Key" value="@option.Key" hidden />
+                            <label for="volunteer-@option.SupportActivities">
+                                <input name="volunteer[]" type="checkbox" id="volunteer-@option.SupportActivities" value="@option.SupportActivities" checked="@option.Selected"  hidden />
                                 <span class="input--checkbox__checkbox">
                                     <span class="mdi mdi-check"></span>
                                 </span>
-                                @Html.Raw(@option.Value)
+                                @Html.Raw(@option.Description)
                             </label>
                         </div>
                         <hr class="input--separator" />

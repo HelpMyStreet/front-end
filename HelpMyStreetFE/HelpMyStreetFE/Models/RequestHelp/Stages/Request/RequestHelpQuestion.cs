@@ -14,7 +14,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string Label { get; set; }
         public QuestionType InputType { get; set; }
         public string Model { get; set; }
-        public bool Required { get; set; }        
+        public bool Required { get; set; }     
+        public int? Max { get; set; }
         public List<AdditonalQuestionData> AdditionalData { get; set; }
         public bool Show { get; set; }
         public List<RequestorType> VisibleForRequestorTypes { get; set; }

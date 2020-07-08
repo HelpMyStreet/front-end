@@ -7,7 +7,7 @@ namespace HelpMyStreetFE.Services
 {
     public interface IUserService
     {
-        Task<int> CreateUserAsync(string email, string authId);
+        Task<int> CreateUserAsync(string email, string authId, int referringGroupId, string source);
         Task<int> UpdateUserAsync(User user);
         Task<User> GetUserAsync(int id);
         Task CreateUserStepTwoAsync(int id, string postCode, string firstName, string lastName, string addressLine1, string addressLine2, string addressLine3, string locality, string mobile, string otherPhone, System.DateTime dob);

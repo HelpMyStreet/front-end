@@ -110,6 +110,7 @@ namespace HelpMyStreetFE
                 (int)Questions.FaceMask_Recipient => "pos3",
                 (int)Questions.FaceMask_Cost => "pos3",
                 (int)Questions.FaceMask_Amount => "pos2",
+                (int)Questions.FaceMask_SpecificRequirements => "pos2",
                 (int)Questions.IsHealthCritical => "pos3",
                 (int)Questions.WillYouCompleteYourself => "pos3",
                 _ => "pos1"
@@ -153,6 +154,7 @@ namespace HelpMyStreetFE
         {
             return question.ID switch
             {
+                (int)Questions.FaceMask_SpecificRequirements => "Size guide:<br />&nbsp;- Men’s (Small / Medium / Large)<br />&nbsp;- Ladies’ (Small / Medium / Large)<br />&nbsp;- Children’s (One Size - under 12)",
                 (int)Questions.FaceMask_Amount => "Remember they’re washable and reusable, so only request what you need between washes.",
                 (int)Questions.FaceMask_Cost => "Volunteers are providing their time and skills free of charge.",
                 _ => string.Empty
@@ -163,9 +165,27 @@ namespace HelpMyStreetFE
         {
             return question.ID switch
             {
-                (int)Questions.FaceMask_SpecificRequirements => "If you have very specific requirements it may take longer to find a volunteer to help with your request. Please don’t include any personal information, such as name or address in this box. We’ll ask for that later.",
+                (int)Questions.FaceMask_SpecificRequirements => "Don’t forget to tell us how many of each size you need. If you have very specific style requirements it may take longer to find a volunteer to help with your request. Please don’t include personal information such as name or address in this box, we’ll ask for that later.",
                 (int)Questions.SupportRequesting => "Please don’t include any sensitive details that aren’t needed in order for us to help you",                
                 _ => string.Empty
+            };
+        }
+
+        public static int? Max(this RequestHelpQuestion question)
+        {
+            return question.ID switch
+            {
+                (int)Questions.FaceMask_Amount => 200,
+                _ => null
+            };
+        }
+
+        public static string DataValidationMessage(this RequestHelpQuestion question)
+        {
+            return question.ID switch
+            {
+                (int)Questions.FaceMask_Amount => @"Please enter a number between 1 and 200. We can only accept requests for up to 200 face coverings using this form, if you need more email For the Love of Scrubs at fortheloveofscrubs@outlook.com",
+                _ => question.DataValidationMessage
             };
         }
     }

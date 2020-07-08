@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction(nameof(ErrorsController.Error404), "Errors");
             }
 
-            CommunityViewModel communityViewModel = _communityRepository.GetCommunity(communityName);
+            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(communityName);
 
             if (communityViewModel == null)
             {

@@ -15,7 +15,7 @@
         <div class="sm12 input">
             <label>
                 @Model.Questions[i].Label
-                <span class="sub-text">@Model.Questions[i].Subtext()</span>
+                <span class="sub-text">@Html.Raw(Model.Questions[i].Subtext())</span>
             </label>
 
             @switch (Model.Questions[i].InputType)
@@ -27,7 +27,7 @@
                     <input type="text" placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
                     break;
                 case QuestionType.Number:
-                    <input type="number" min="1" placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
+                    <input type="number" min="1" max="@Model.Questions[i].Max()" placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
                     break;
                 case QuestionType.Radio:
 
@@ -46,7 +46,7 @@
                     break;
             }
 
-            <span class="error"></span>
+            <span class="error">@Model.Questions[i].DataValidationMessage()</span>
         </div>
     </div>
     <hr class="input--separator" />

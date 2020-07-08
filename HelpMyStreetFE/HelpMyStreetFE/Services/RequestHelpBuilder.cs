@@ -2,7 +2,6 @@
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
-using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
@@ -24,18 +23,22 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
         }
 
-        public async Task<RequestHelpViewModel> GetSteps(RequestHelpSource source)
+        public async Task<RequestHelpViewModel> GetSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
 
             var model =  new RequestHelpViewModel
             {
+                ReferringGroupID = referringGroupID,
                 Source = source,
+                RequestHelpFormVariant = requestHelpFormVariant,
                 CurrentStepIndex = 0,
                 Steps = new List<IRequestHelpStageViewModel>
                 {
                     new RequestHelpRequestStageViewModel
                     {
-                        Tasks = await GetRequestHelpTasks(source),
+                        PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
+                        IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
+                        Tasks = await GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = new List<RequestorViewModel>
                         {
                             new RequestorViewModel
@@ -58,7 +61,7 @@ namespace HelpMyStreetFE.Services
                                 IconLight = "request-behalf-white.svg",
                                 Type = RequestorType.OnBehalf
                             },
-                                        new RequestorViewModel
+                            new RequestorViewModel
                             {
                                 ID = 3,
                                 ColourCode = "dark-blue",
@@ -75,7 +78,7 @@ namespace HelpMyStreetFE.Services
                             new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
                             new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
                             new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
-                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Something Else", AllowCustom = true},
+                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Other", AllowCustom = true},
                         },
                     },
                     new RequestHelpDetailStageViewModel(),
@@ -83,46 +86,68 @@ namespace HelpMyStreetFE.Services
                 }
 
             };
-            if (source == RequestHelpSource.DIY) {
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+            }
+            if (requestHelpFormVariant == RequestHelpFormVariant.DIY) {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
             }
             return model;
         }
 
-        public int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage,  RequestorType type,  RequestHelpSource source, int userId)
+        private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (source == RequestHelpSource.DIY && requestStage.Tasks
-                                                    .Where(x => x.IsSelected).FirstOrDefault()
-                                                    ?.Questions.Where(x => x.ID == (int)Questions.WillYouCompleteYourself)
-                                                    .FirstOrDefault()?.Model == "true")
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
-                return userId;
+                return "How can For the Love of Scrubs help?";
             }
-
-            return null;
+            else
+            {
+                return "What type of help are you looking for?";
+            }
         }
 
-        private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpSource source)
+        private string GetHelpRequestPageIntroText(RequestHelpFormVariant requestHelpFormVariant)
+        {
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            {
+                return "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.";
+            }
+            else
+            {
+                return "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help.";
+            }
+        }
+
+        private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpFormVariant requestHelpFormVariant)
         {
             var tasks = new List<TasksViewModel>();
-            if (source == RequestHelpSource.VitalsForVeterans)
+            if (requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
-                tasks.Add(new TasksViewModel { ID = 11, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage });
+                tasks.Add(new TasksViewModel { ID = 11, SupportActivity = SupportActivities.WellbeingPackage });
             }
 
-            tasks.AddRange(new List<TasksViewModel>
+            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
-                    new TasksViewModel { ID = 1,SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping },
-                    new TasksViewModel { ID = 2, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask },
-                    new TasksViewModel { ID = 3, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn },
-                    new TasksViewModel { ID = 4, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions },
-                    new TasksViewModel { ID = 5, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Errands },
-                    new TasksViewModel { ID = 6, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation },
-                    new TasksViewModel { ID = 7, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly },
-                    new TasksViewModel { ID = 9, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport },
-                    new TasksViewModel { ID = 10, SupportActivity = HelpMyStreet.Utils.Enums.SupportActivities.Other },
+                tasks.Add(new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = true });
+            }
+            else
+            {
+                tasks.AddRange(new List<TasksViewModel>
+            {
+                    new TasksViewModel { ID = 1,SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask },
+                    new TasksViewModel { ID = 3, SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { ID = 4, SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { ID = 5, SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { ID = 6, SupportActivity = SupportActivities.MealPreparation },
+                    new TasksViewModel { ID = 7, SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { ID = 9, SupportActivity = SupportActivities.HomeworkSupport },
+                    new TasksViewModel { ID = 10, SupportActivity = SupportActivities.Other },
              });
+            }
 
             var questions = await _requestHelpRepository.GetQuestionsByActivity(new GetQuestionsByActivitiesRequest
             {
@@ -139,10 +164,10 @@ namespace HelpMyStreetFE.Services
                 Label = x.Name,
                 Required = x.Required,
                 AdditionalData = x.AddtitonalData,
-                VisibleForRequestorTypes = GetRequestorTypeQuestion(source, x.Id)
+                VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
             }).ToList());
 
-            if(source != RequestHelpSource.DIY)
+            if(requestHelpFormVariant != RequestHelpFormVariant.DIY)
             { 
                 //question for DIY only
                 tasks.ForEach(x => x.Questions.RemoveAll(x => x.ID == (int)Questions.WillYouCompleteYourself));
@@ -150,9 +175,9 @@ namespace HelpMyStreetFE.Services
 
             return tasks;
         }
-        public List<RequestorType> GetRequestorTypeQuestion(RequestHelpSource source, int questionId)
+        public List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant requestHelpFormVariant, int questionId)
         {
-            if (source == RequestHelpSource.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
+            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
             {
                 return new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation };
             }

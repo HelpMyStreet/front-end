@@ -6,7 +6,7 @@
 }
 
 @section Scripts {
-    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>*
+    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
     <script src="/community.js" asp-append-version="true"></script>
 }
 
@@ -20,55 +20,58 @@
             <div class="row flex hero">
                 <div class="row sm6 align-center content-page">
                     <header class="">
-                        <h2 class="row sm12 mb0">@Model.Header</h2>
+                        <h2 class="row sm12 mb0 mw1100">@Model.Header</h2>
                     </header>
 
                     @Html.Raw(@Model.HeaderHTML)
 
                     @if (Model.ShowRequestHelp)
                     {
-                        <div class="row sm6 text-center justify-center mb-sm small-screen-only">
+                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
-                    <div class="row sm6 text-center justify-center mb-md">
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
                         @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
                         {
                             <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
                         }
                         @if (!Model.IsLoggedIn)
                         {
-                            <a href="@Model.SignUpLink" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">Sign Up Now</a>
+                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
 
                         }
                         else
                         {
-                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">Provide Help</a>
+                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedInButtonText</a>
 
                         }
                     </div>
 
                     @if (Model.ShowRequestHelp)
                     {
-                        <div class="row sm6 text-center justify-center mb-md large-screen-only">
+                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md large-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
                                 <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
+
+                    @Html.Raw(@Model.HeaderPostButtonsHTML)
                 </div>
-                    
-                <div class="sm6 text-right commmunity-map-container map static-map" id="map"></div>
 
+                @if (Model.ShowMap)
+                {
+                    <div class="sm6 text-right commmunity-map-container map static-map" id="map"></div>
+                }
             </div>
-
         </div>
     </div>
 
@@ -80,28 +83,32 @@
                 <h2 class="mb15 text-center">@Model.CommunityVolunteersHeader</h2>
             </div>
 
-            <div class="row flex justify-center">
-                <div class="community-volunteers-container flex justify-center">
-                    @{
-                        foreach (var volunteer in Model.CommunityVolunteers)
-                        {
-                            <div class="volunteer">
+            @if (Model.CommunityVolunteers != null)
+            {
+                <div class="row flex justify-center">
+                    <div class="community-volunteers-container flex justify-center">
+                        @{
+                            foreach (var volunteer in Model.CommunityVolunteers)
+                            {
+                                <div class="volunteer">
 
-                                <div class="volunteer-image">
-                                    <img src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+                                    <div class="volunteer-image">
+                                        <img src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+                                    </div>
+                                    <div class="volunteer-text">
+                                        <p class="bold mt-sm mb-xs">@volunteer.Name</p>
+                                        <p class="mt-xs mb-xs ">@volunteer.Role</p>
+                                        <p class="mt-xs mb-xs">@volunteer.Location</p>
+                                    </div>
                                 </div>
-                                <div class="volunteer-text">
-                                    <p class="bold mt-sm mb-xs">@volunteer.Name</p>
-                                    <p class="mt-xs mb-xs ">@volunteer.Role</p>
-                                    <p class="mt-xs mb-xs">@volunteer.Location</p>
-                                </div>
-                            </div>
+                            }
+
+
                         }
-
-
-                    }
+                    </div>
                 </div>
-            </div>
+            }
+
 
             <div class="row">
                 <div class="sm12">
@@ -129,7 +136,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help" class="btn cta fixed-width btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">Request Help</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -138,25 +145,25 @@
 
                 @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText))
                 {
-                <div class="sm6">
-                    <div class="card">
-                        <h2>@Model.ProvideHelpHeading</h2>
-                        <p class="text-left mt-sm mb-md">
-                            @Model.ProvideHelpText
-                        </p>
+                    <div class="sm6">
+                        <div class="card">
+                            <h2>@Model.ProvideHelpHeading</h2>
+                            <p class="text-left mt-sm mb-md">
+                                @Model.ProvideHelpText
+                            </p>
 
-                        <div class="" style="text-align: center">
-                            @if (!Model.IsLoggedIn)
-                            {
-                                <a id="first-button" href="@Model.SignUpLink" class="btn cta fixed-width btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Sign Up</a>
-                            }
-                            else
-                            {
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up @(Model.DisableButtons ? "disabled" : "")" >Provide Help</a>
-                            }
+                            <div class="" style="text-align: center">
+                                @if (!Model.IsLoggedIn)
+                                {
+                                    <a id="first-button" href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                                }
+                                else
+                                {
+                                    <a id="first-button" href="/account" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedInButtonText</a>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
             </div>
         </div>
@@ -169,25 +176,20 @@
             </div>
             <div class="row flex justify-center">
                 <div class="sm12 community-useful-links">
-                    @{
-                        foreach (var usefulLink in Model.UsefulLinksHtml)
-                        {
-                            <p> @Html.Raw(usefulLink)</p>
-                        }
-                    }
+                    @Html.Raw(@Model.UsefulLinksHtml)
                 </div>
             </div>
         </div>
     </div>
 
- 
+
     <div class="outer-container">
         <div class="inner-container">
             @if (Model.ShowHelpExampleCards)
             {
-                <partial name="_HelpExampleCards" />
-                    }
-            </div>
+                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
+            }
+        </div>
     </div>
 
 
@@ -212,6 +214,54 @@
 
                     <p> We are a non-profit community interest company with a team of doctors, health practitioners, tech and data people, community volunteers and marketers. The founding team work for Factor 50, a healthcare analytics and digital company that works with the NHS, particularly in mental health.</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @if (Model.ShowRequestHelp)
+                {
+                    <div class="sm6 mb-md">
+                        <div class="card">
+
+                            <h2>@Model.RequestHelpHeading</h2>
+                            <p class="text-left mt-sm mb-md">
+                                @Model.RequestHelpText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText))
+                {
+                    <div class="sm6">
+                        <div class="card">
+                            <h2>@Model.ProvideHelpHeading</h2>
+                            <p class="text-left mt-sm mb-md">
+                                @Model.ProvideHelpText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                @if (!Model.IsLoggedIn)
+                                {
+                                    <a id="first-button" href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                                }
+                                else
+                                {
+                                    <a id="first-button" href="/account" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedInButtonText</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

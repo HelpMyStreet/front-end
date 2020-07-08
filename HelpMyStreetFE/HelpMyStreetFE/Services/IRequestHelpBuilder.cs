@@ -1,6 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Enums.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
@@ -15,8 +14,7 @@ namespace HelpMyStreetFE.Services
     {
         RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage);
         RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage);
-        int? GetVolunteerUserID(RequestHelpRequestStageViewModel requestStage, RequestorType type, RequestHelpSource source, int userId);
-        Task<RequestHelpViewModel> GetSteps(RequestHelpSource source);   
-        List<RequestorType> GetRequestorTypeQuestion(RequestHelpSource source, int questionId);
+        Task<RequestHelpViewModel> GetSteps(RequestHelpFormVariant source2, int referringGroupId, string source);   
+        List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant source, int questionId);
     }
 }

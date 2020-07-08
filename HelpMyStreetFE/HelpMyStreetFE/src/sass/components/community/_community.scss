@@ -13,12 +13,14 @@
 }
 
 
-.btn{
-    &.disabled { 
-    pointer-events: none; 
-    cursor: default; 
-    background: $gray-8;
-}
+.btn {
+    &.disabled {
+        background: $gray-8;
+        &.btn--sign-up { 
+            pointer-events: none;
+            cursor: default;
+        }
+    }
 }
 
 .commmunity-map-container {
@@ -101,4 +103,13 @@
     .text {
         text-align:left;
     }
+}
+
+.gfm-embed {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.mw1100 {
+    max-width: 1100px;
 }
