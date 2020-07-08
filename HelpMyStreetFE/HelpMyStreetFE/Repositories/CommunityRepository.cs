@@ -248,15 +248,14 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Header = "Veterans need your help!";
             communityViewModel.HeaderHTML = @"
                     <p class='row sm12 text-left mt-sm mb-xs'>
-                        We are pleased to announce the start of our new 'Vitals For Veterans' project.
+                        We are now underway with our new 'Vitals For Veterans' project.
                     </p>
                     <p class='row sm12 text-left mt-sm mb-xs'>
-                        We are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire over the next 6 months because
+                        Over the coming months, we will be delivering wellbeing packs to veterans across Lincoln & South Lincolnshire because
                         <i>veterans should not be forgotten</i>.
                     </p>
                     <p class='row sm12 text-left mt-sm mb-s'>
-                        If you can help us get wellbeing packs to veterans in your area please sign up below and tick the 'Collecting and Delivering
-                        a Pre-Prepared Wellbeing Package' option in Step 3 of the sign up ('Helpers').
+                        If you can help us get wellbeing packs to veterans in your area please sign up below.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
             communityViewModel.HeaderVolunteerButtonText = null;
@@ -274,13 +273,15 @@ namespace HelpMyStreetFE.Repositories
                     17 departments for people countywide.
                 </p>
                 <p>
-                    Our support is varied and extensive; 11,845 people attended activities with us in 2018/19, helping to eliminate social isolation and generating
-                    opportunities for engagement through clubs and groups. Age UK Lincoln & South Lincolnshire exist to support older people to love later life and
-                    where possible remain independent in their own homes. We continually work towards ending loneliness and isolation in older people, many of whom were 
-                    isolated and living in a form of lockdown before the recent pandemic and sadly for whom there is no ""new normal"".  Their reality is loneliness and isolation still now.
+                    Our support is varied and extensive; 11,845 people attended activities with us in 2018/19,  helping to combat social isolation by offering
+                    opportunities for engagement through social activities, clubs and groups. Age UK Lincoln & South Lincolnshire exists to improve the lives of
+                    older people, through supporting them to love later life and helping them where possible to remain independent in their own homes. We
+                    continually work towards ending loneliness and isolation in older people, many of whom were isolated and living in a form of lockdown before
+                    the recent pandemic and sadly for whom there is no ""new normal"". Their reality remains loneliness and isolation.
                 </p>
                 <p>
-                    For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a> or call us on 03455 564 144.
+                    For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a>
+                    or call us on 03455 564 144.
                 </p> 
                 ";
             communityViewModel.ShowRequestHelp = false;
@@ -296,8 +297,8 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Susan Kellit",
-                    Role = "Head Of Charitable Services",
+                    Name = "Amanda Wilson",
+                    Role = "Engagement Coordinator",
                     Location = "Lincoln & South Lincolnshire",
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
