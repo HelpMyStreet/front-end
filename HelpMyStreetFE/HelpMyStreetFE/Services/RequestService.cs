@@ -63,7 +63,6 @@ namespace HelpMyStreetFE.Services
                     CreatedByUserId = userId,
                     Recipient = recipient,
                     Requestor = requestor,
-                    VolunteerUserId = userId,
                     ReferringGroupId = referringGroupID,
                     Source = source
                 },

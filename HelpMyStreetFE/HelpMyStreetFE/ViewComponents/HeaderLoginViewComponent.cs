@@ -1,4 +1,4 @@
-﻿using HelpMyStreetFE.Models;
+using HelpMyStreetFE.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -27,7 +27,7 @@ namespace HelpMyStreetFE.ViewComponents
             var routeValues = Request.RouteValues;
             if(routeValues["controller"] == "Community" && routeValues["action"] == "Index" && routeValues["CommunityName"] == "hlp")
             {
-                model.SignUpURL = model.SignUpURL + "/hlp";
+                model.SignUpURL = model.SignUpURL + "/LTQ";
             }
          
             return View(model);
