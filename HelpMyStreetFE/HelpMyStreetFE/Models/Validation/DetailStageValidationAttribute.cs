@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Models.Validation
             {
                 if (string.IsNullOrEmpty(vm.Recipient.Firstname)) errors.Add("Recipients firstname must be supplied");
                 if (string.IsNullOrEmpty(vm.Recipient.Lastname)) errors.Add("Recipients lastname must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.MobileNumber) && string.IsNullOrEmpty(vm.Requestor.AlternatePhoneNumber) && onlyRecipient) errors.Add("Recipients contact number must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.MobileNumber) && string.IsNullOrEmpty(vm.Recipient.AlternatePhoneNumber) && onlyRecipient) { errors.Add("Recipients contact number must be supplied"); }
                 if (string.IsNullOrEmpty(vm.Recipient.Email) && onlyRecipient) errors.Add("Recipients email must be supplied");
                 if (string.IsNullOrEmpty(vm.Recipient.AddressLine1)) errors.Add("Recipients Address Line 1 must be supplied");
                 if (string.IsNullOrEmpty(vm.Recipient.Town)) errors.Add("Recipients Town must be supplied");                
