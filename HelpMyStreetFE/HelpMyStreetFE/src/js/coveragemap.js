@@ -211,7 +211,6 @@ window.initGoogleMap = async function () {
             console.log(autocompleteInput.value);
             autocompleteService.getPlacePredictions({ input: autocompleteInput.value, componentRestrictions: { country: 'uk' } }, (result, status) => {
                 var placesService = new google.maps.places.PlacesService(googleMap);
-                console.log(result[0]);
                 var thisPlace = placesService.getDetails({ placeId: result[0].place_id }, (result, status) => {
                     place = result;
                     if (!place.geometry) {
@@ -224,7 +223,8 @@ window.initGoogleMap = async function () {
                         googleMap.setCenter(place.geometry.location);
                         googleMap.setZoom(closeUpZoomNumber);
                     }
-
+                    autocompleteInput.value = place.name;
+                    autocompleteInput.blur();
                     geolocationState.setActive(false);
                 })
 
