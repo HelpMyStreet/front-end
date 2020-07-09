@@ -207,18 +207,40 @@ window.initGoogleMap = async function () {
         var place = autocomplete.getPlace();
 
         if (!place.geometry) {
-            console.log("No geometry for this place");
-            return
-        }
+            var autocompleteService = new google.maps.places.AutocompleteService();
+            console.log(autocompleteInput.value);
+            autocompleteService.getPlacePredictions({ input: autocompleteInput.value, componentRestrictions: { country: 'uk' } }, (result, status) => {
+                var placesService = new google.maps.places.PlacesService(googleMap);
+                console.log(result[0]);
+                var thisPlace = placesService.getDetails({ placeId: result[0].place_id }, (result, status) => {
+                    place = result;
+                    if (!place.geometry) {
+                        console.log("No geometry for this place");
+                        return
+                    }
+                    if (place.geometry.viewport) {
+                        googleMap.fitBounds(place.geometry.viewport);
+                    } else {
+                        googleMap.setCenter(place.geometry.location);
+                        googleMap.setZoom(closeUpZoomNumber);
+                    }
 
-        if (place.geometry.viewport) {
-            googleMap.fitBounds(place.geometry.viewport);
+                    geolocationState.setActive(false);
+                })
+
+            });
+
         } else {
-            googleMap.setCenter(place.geometry.location);
-            googleMap.setZoom(closeUpZoomNumber);
-        }
 
-        geolocationState.setActive(false);
+            if (place.geometry.viewport) {
+                googleMap.fitBounds(place.geometry.viewport);
+            } else {
+                googleMap.setCenter(place.geometry.location);
+                googleMap.setZoom(closeUpZoomNumber);
+            }
+
+            geolocationState.setActive(false);
+        }
     })
 };
 
