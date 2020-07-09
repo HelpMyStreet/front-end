@@ -116,6 +116,7 @@ h6 + p {
 ul.tick-list {
     list-style: none;
     padding-left: 0.5em;
+    width: 100%;
     li:before {
         content: '\2714';
         margin-right: 0.5em;
