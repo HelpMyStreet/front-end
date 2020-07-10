@@ -105,10 +105,10 @@
                         <div class="tiles__tile__content--top ">
                             <div class="tiles__tile__content--top__header  pt-xs left">Your Details</div>
                             <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                                <div><strong>Name: </strong> @requestor.Firstname @requestor.Lastname </div>
-                                <div><strong>Address: </strong> @requestor.Postcode </div>
+                                <div><strong>Name:</strong> @requestor.Firstname @requestor.Lastname </div>
+                                <div><strong>Address:</strong> @requestor.Postcode </div>
                                 <div><strong>Email:</strong> @requestor.Email </div>
-                                <div><strong>Mobile Number: </strong> @requestor.MobileNumber </div>
+                                <div><strong>Mobile Number:</strong> @requestor.MobileNumber </div>
                                 <div><strong>Alternate Number:</strong> @requestor.AlternatePhoneNumber </div>
                             </div>
                         </div>
@@ -123,12 +123,12 @@
                         <div class="tiles__tile__content__description tiles__tile__content--top__description">
                             @if (forOrg)
                             {
-                                <div><strong>Organisation: </strong> @Model.OrganisationName </div>
+                                <div><strong>Organisation:</strong> @Model.OrganisationName </div>
                             }
-                            <div><strong>Name: </strong> @recipient.Firstname  @recipient.Lastname </div>
-                            <div><strong>Address: </strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
-                            <div><strong>Email: </strong> @recipient.Email </div>
-                            <div><strong>Mobile Number: </strong>  @recipient.MobileNumber</div>
+                            <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
+                            <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
+                            <div><strong>Email:</strong> @recipient.Email </div>
+                            <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
                             <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
                         </div>
                     </div>
