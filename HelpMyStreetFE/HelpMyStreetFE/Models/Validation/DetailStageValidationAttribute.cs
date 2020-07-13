@@ -51,13 +51,13 @@ namespace HelpMyStreetFE.Models.Validation
             if (vm.Recipient == null) errors.Add($"Recipient cannot be null");
             else
             {
-                if (string.IsNullOrEmpty(vm.Recipient.Firstname)) errors.Add("Recipients firstname must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.Lastname)) errors.Add("Recipients lastname must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.MobileNumber) && string.IsNullOrEmpty(vm.Requestor.AlternatePhoneNumber) && onlyRecipient) errors.Add("Recipients contact number must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.Email) && onlyRecipient) errors.Add("Recipients email must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.AddressLine1)) errors.Add("Recipients Address Line 1 must be supplied");
-                if (string.IsNullOrEmpty(vm.Recipient.Town)) errors.Add("Recipients Town must be supplied");                
-                if (string.IsNullOrEmpty(vm.Recipient.Postcode)) errors.Add("Recipients postcode must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.Firstname)) errors.Add("Recipient's firstname must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.Lastname)) errors.Add("Recipient's lastname must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.MobileNumber) && string.IsNullOrEmpty(vm.Recipient.AlternatePhoneNumber) && onlyRecipient) { errors.Add("Recipient's contact number must be supplied"); }
+                if (string.IsNullOrEmpty(vm.Recipient.Email) && onlyRecipient) errors.Add("Recipient's email must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.AddressLine1)) errors.Add("Recipient's Address Line 1 must be supplied");
+                if (string.IsNullOrEmpty(vm.Recipient.Town)) errors.Add("Recipient's Town must be supplied");                
+                if (string.IsNullOrEmpty(vm.Recipient.Postcode)) errors.Add("Recipient's postcode must be supplied");
             }
 
         }
@@ -66,11 +66,11 @@ namespace HelpMyStreetFE.Models.Validation
             if (vm.Requestor == null) errors.Add($"Requestor cannot be null");
             else
             {
-                if (string.IsNullOrEmpty(vm.Requestor.Firstname)) errors.Add("Requestors firstname must be supplied");
-                if (string.IsNullOrEmpty(vm.Requestor.Lastname)) errors.Add("Requestors lastname must be supplied");
-                if (string.IsNullOrEmpty(vm.Requestor.MobileNumber) && string.IsNullOrEmpty(vm.Requestor.AlternatePhoneNumber)) errors.Add("Requestors contact number must be supplied");
-                if (string.IsNullOrEmpty(vm.Requestor.Email)) errors.Add("Requestors email must be supplied");
-                if (string.IsNullOrEmpty(vm.Requestor.Postcode)) errors.Add("Requestors postcode must be supplied");
+                if (string.IsNullOrEmpty(vm.Requestor.Firstname)) errors.Add("Requestor's firstname must be supplied");
+                if (string.IsNullOrEmpty(vm.Requestor.Lastname)) errors.Add("Requestor's lastname must be supplied");
+                if (string.IsNullOrEmpty(vm.Requestor.MobileNumber) && string.IsNullOrEmpty(vm.Requestor.AlternatePhoneNumber)) errors.Add("Requestor's contact number must be supplied");
+                if (string.IsNullOrEmpty(vm.Requestor.Email)) errors.Add("Requestor's email must be supplied");
+                if (string.IsNullOrEmpty(vm.Requestor.Postcode)) errors.Add("Requestor's postcode must be supplied");
             }
 
         }

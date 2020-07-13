@@ -75,7 +75,27 @@
         </div>
     </div>
 
+    <div class="outer-container mb-lg">
 
+        @if (Model.CarouselImages1 != null)
+        {
+            @if (Model.CarouselImages1.Count() > 0)
+            {
+                <div class="slider">
+                    <div class="slides">
+                        @foreach (string carouselImage in Model.CarouselImages1)
+                        {
+                            <div>
+                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
 
     <div class="outer-container outer-container--darker">
         <div class="inner-container">
@@ -169,6 +189,8 @@
         </div>
     </div>
 
+
+
     <div class="outer-container outer-container--darker">
         <div class="inner-container ">
             <div class="row justify-center">
@@ -190,6 +212,29 @@
                 <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
             }
         </div>
+    </div>
+
+
+    <div class="outer-container mb-md">
+
+        @if (Model.CarouselImages2 != null)
+        {
+            @if (Model.CarouselImages2.Count() > 0)
+            {
+                <div class="slider">
+                    <div class="slides">
+                        @foreach (string carouselImage in Model.CarouselImages2)
+                        {
+                            <div>
+                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            }
+        }
+
     </div>
 
 
