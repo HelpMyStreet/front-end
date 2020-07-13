@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Repositories
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("hlp");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-
+            communityViewModel.HomeFolder = "hlp";
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
             communityViewModel.ZoomLevel = 10;
@@ -155,7 +155,7 @@ namespace HelpMyStreetFE.Repositories
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-
+            communityViewModel.HomeFolder = "tankersley";
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
             communityViewModel.ZoomLevel = 14;
@@ -234,7 +234,7 @@ namespace HelpMyStreetFE.Repositories
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("ageuklsl");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-
+            communityViewModel.HomeFolder = "ageUK";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = 9;
@@ -332,7 +332,7 @@ namespace HelpMyStreetFE.Repositories
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
-
+            communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
             communityViewModel.BannerImageLocation = "/img/community/fortheloveofscrubs/LOSBannerWide.png";
@@ -381,7 +381,7 @@ namespace HelpMyStreetFE.Repositories
                         </p>
                         <p class='mb-xs mt-md'>
                             <strong>Is there a cost for face coverings?</strong>
-                            On top of the postage, all we ask if for a small donation of £3 - £4 per face covering to cover the cost of materials and to help us support our communities. You can donate through our JustGiving page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
+                            On top of the postage, all we ask if for a small donation of £3 - £4 per face covering to cover the cost of materials and to help us support our communities. You can donate through our GoFundMe page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
                         </p>
                         <p class='mt-0 mb-0 ml-xl'>
                             £10 pays for a metre of fabric we can use for scrubs and other NHS supplies
