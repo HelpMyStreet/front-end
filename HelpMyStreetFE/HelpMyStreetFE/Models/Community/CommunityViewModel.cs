@@ -43,6 +43,7 @@ namespace HelpMyStreetFE.Models.Community
         public string HomeFolder { get; set; }
         public IEnumerable<string> CarouselImages1 { get; set; }
         public IEnumerable<string> CarouselImages2 { get; set; }
+        public IEnumerable<string> CarouselImages3 { get; set; }
 
         private static string GetDefaultHeaderHtml()
         {
