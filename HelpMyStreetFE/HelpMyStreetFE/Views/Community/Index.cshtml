@@ -204,17 +204,6 @@
         </div>
     </div>
 
-
-    <div class="outer-container">
-        <div class="inner-container">
-            @if (Model.ShowHelpExampleCards)
-            {
-                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
-            }
-        </div>
-    </div>
-
-
     <div class="outer-container mb-md">
 
         @if (Model.CarouselImages2 != null)
@@ -236,6 +225,18 @@
         }
 
     </div>
+
+    <div class="outer-container">
+        <div class="inner-container">
+            @if (Model.ShowHelpExampleCards)
+            {
+                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
+            }
+        </div>
+    </div>
+
+
+
 
 
     <div class="outer-container outer-container--darker">
@@ -315,6 +316,27 @@
     @Html.Hidden(nameof(Model.Latitude))
     @Html.Hidden(nameof(Model.ZoomLevel))
 
+    <div class="outer-container mb-lg">
+
+        @if (Model.CarouselImages3 != null)
+        {
+            @if (Model.CarouselImages3.Count() > 0)
+            {
+                <div class="slider">
+                    <div class="slides">
+                        @foreach (string carouselImage in Model.CarouselImages3)
+                        {
+                            <div>
+                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
 </div>
 
 

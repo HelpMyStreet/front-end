@@ -43,6 +43,7 @@ namespace HelpMyStreetFE.Controllers
             
             string carousel1Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel1";
             string carousel2Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel2";
+            string carousel3Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel3";
 
             if (Directory.Exists(carousel1Path))
             {
@@ -51,6 +52,10 @@ namespace HelpMyStreetFE.Controllers
             if (Directory.Exists(carousel2Path))
             {
                 communityViewModel.CarouselImages2 = Directory.EnumerateFiles(carousel2Path);
+            }
+            if (Directory.Exists(carousel3Path))
+            {
+                communityViewModel.CarouselImages3 = Directory.EnumerateFiles(carousel3Path);
             }
 
             return View(communityViewModel);
