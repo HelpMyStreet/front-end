@@ -207,18 +207,24 @@ window.initGoogleMap = async function () {
         var place = autocomplete.getPlace();
 
         if (!place.geometry) {
-            console.log("No geometry for this place");
-            return
-        }
+            var autocompleteService = new google.maps.places.AutocompleteService();
+            autocompleteService.getPlacePredictions({ input: autocompleteInput.value, componentRestrictions: { country: 'uk' } }, (result, status) => {
+                var placesService = new google.maps.places.PlacesService(googleMap);
+                placesService.getDetails({ placeId: result[0].place_id }, (result, status) => {
+                    place = result;
+                    if (!place.geometry) {
+                        console.log("No geometry for this place");
+                        return
+                    }
+                    autocompleteInput.value = place.name;
+                    autocompleteInput.blur();
+                    showGeometry(place.geometry);
+                })
 
-        if (place.geometry.viewport) {
-            googleMap.fitBounds(place.geometry.viewport);
+            });
         } else {
-            googleMap.setCenter(place.geometry.location);
-            googleMap.setZoom(closeUpZoomNumber);
+            showGeometry(place.geometry);
         }
-
-        geolocationState.setActive(false);
     })
 };
 
@@ -232,6 +238,16 @@ function removedMarkerForPostcodeLookup() {
 function geoLocationSuccess(position) {
     setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
     geolocationState.geolocationComplete(true);
+}
+
+function showGeometry(geometry) {
+    if (geometry.viewport) {
+        googleMap.fitBounds(geometry.viewport);
+    } else {
+        googleMap.setCenter(geometry.location);
+        googleMap.setZoom(closeUpZoomNumber);
+    }
+    geolocationState.setActive(false);
 }
 
 function setMapCentre(latitude, longitude, zoomLevel) {
