@@ -40,7 +40,7 @@ export function initialiseStepThree() {
             valid = false;
             $("#distance-error").show();
         }
-        else if (obj["volunteer_distance"] == 999)
+        else if (obj["volunteer_distance"] == 0.1)
         {
             if (obj["custom_distance"] == "" || obj["custom_distance"] > 20 || obj["custom_distance"] < 0) {
                 $('#custom_distance-error').show();
