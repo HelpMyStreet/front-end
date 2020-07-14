@@ -10,6 +10,23 @@
     <script src="/community.js" asp-append-version="true"></script>
 }
 
+@if (Model.TestBanner)
+{
+    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
+    <div class="container">
+        <header class="content-page__header">
+            <div class="row">
+                <h2 class="sm12 mb-md">This is a HelpMyStreet test environment, and is only accessible to HelpMyStreet staff.</h2>
+                <ul>
+                    <li>If you have got here by clicking on a link in an email from Mental Health First Aid England in relation to signing up as a Community Connector, then please sign up at <a href="http://helpmystreet.org/healthylondonpartnership">http://helpmystreet.org/healthylondonpartnership</a></li>
+                    <li>If you have arrived here for any other reason, you can find our homepage <a href="http://helpmystreet.org">here</a></li>
+                </ul>
+            </div>
+        </header>
+    </div>
+}
+else
+{
 <div class="container">
     <div class="community-banner">
         <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
@@ -127,7 +144,7 @@
                         }
                     </div>
                 </div>
-            }
+                            }
 
 
             <div class="row">
@@ -338,5 +355,5 @@
 
     </div>
 </div>
-
+}
 
