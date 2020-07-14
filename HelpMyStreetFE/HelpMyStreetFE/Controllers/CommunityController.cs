@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -17,16 +18,25 @@ namespace HelpMyStreetFE.Controllers
         private readonly ICommunityRepository _communityRepository;
         private readonly IWebHostEnvironment _env;
         private const string communityImageStore = "/img/community/";
+        private readonly IConfiguration _configuration;
 
-        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env)
+        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration)
         {
             _env = env;
             _logger = logger;
             _communityRepository = communityRepository;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index(string communityName)
         {
+            bool testBanner = false;
+            string strTestBanner = _configuration["TestBanner"];
+            if (!string.IsNullOrEmpty(strTestBanner))
+            {
+                testBanner = Convert.ToBoolean(_configuration["TestBanner"]);
+            }
+
             if (String.IsNullOrWhiteSpace(communityName))
             {
                 return RedirectToAction(nameof(ErrorsController.Error404), "Errors");
@@ -40,6 +50,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             communityViewModel.IsLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated);
+            communityViewModel.TestBanner = testBanner;
             
             string carousel1Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel1";
             string carousel2Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel2";
