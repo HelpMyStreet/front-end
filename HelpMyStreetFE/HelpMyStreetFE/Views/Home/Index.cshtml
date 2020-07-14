@@ -8,199 +8,218 @@
     <script src="~/stickynav.js" asp-append-version="true"></script>
 }
 
-@if (!Model.isLoggedIn)
+@if (Model.TestBanner)
 {
-    <div class="sticky-nav" id="sticky-nav">
-        <div class="row sm12 justify-center">
-            <div class="flex row">
-                <div class="sm6 mr-sm">
-                    <a href="/registration/step-one" class="btn cta small mb-sm mt-sm btn--sign-up">Sign Up Now</a>
-                    <span>  </span>
-
-                </div>
-                <div class="sm6">
-                    <span>  </span>
-                    <a href="/request-help" class="btn cta small mb-sm mt-sm btn--request-help cta--orange">Request Help</a>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-<div class="container">
-    <header class="content-page__header">
-        <div class="row">
-            <h2 class="sm12 mb-md">Helping local people look after each other</h2>
-        </div>
-    </header>
-
-    <div class="row hero flex sm12 mb-sm content-page">
-
-        <div class="row sm5 align-center">
-            <p class="row sm12 text-left mt-sm mb-xs">
-                HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
-            </p>
-            <div class="row sm12">
-                <ul class="tick-list mt-xs mb-sm compact-list">
-                    <li>Shopping for essentials</li>
-                    <li>Cooking a hot meal</li>
-                    <li>Home-sewn face coverings</li>
-                    <li>Help with home-schooling</li>
-                    <li>A friendly chat</li>
+    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
+    <div class="container">
+        <header class="content-page__header">
+            <div class="row">
+                <h2 class="sm12 mb-md">This is a HelpMyStreet test environment, and is only accessible to HelpMyStreet staff.</h2>
+                <ul>
+                    <li>If you have got here by clicking on a link in an email from Mental Health First Aid England in relation to signing up as a Community Connector, then please sign up at <a href="http://helpmystreet.org/healthylondonpartnership">http://helpmystreet.org/healthylondonpartnership</a></li>
+                    <li>If you have arrived here for any other reason, you can find our homepage <a href="http://helpmystreet.org">here</a></li>
                 </ul>
             </div>
-            <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
+        </header>
+    </div>
+}
+else
+{
 
-            <div class="row sm12 text-center justify-center mb-sm">
-                <a href="/request-help" class="btn cta btn--request-help cta--orange">Request Help</a>
+    @if (!Model.isLoggedIn)
+    {
+        <div class="sticky-nav" id="sticky-nav">
+            <div class="row sm12 justify-center">
+                <div class="flex row">
+                    <div class="sm6 mr-sm">
+                        <a href="/registration/step-one" class="btn cta small mb-sm mt-sm btn--sign-up">Sign Up Now</a>
+                        <span>  </span>
+
+                    </div>
+                    <div class="sm6">
+                        <span>  </span>
+                        <a href="/request-help" class="btn cta small mb-sm mt-sm btn--request-help cta--orange">Request Help</a>
+                    </div>
+                </div>
             </div>
+        </div>
+    }
+    <div class="container">
+        <header class="content-page__header">
+            <div class="row">
+                <h2 class="sm12 mb-md">Helping local people look after each other</h2>
+            </div>
+        </header>
 
-            <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
+        <div class="row hero flex sm12 mb-sm content-page">
 
-            <div class="row sm12 text-center justify-center mb-lg">
+            <div class="row sm5 align-center">
+                <p class="row sm12 text-left mt-sm mb-xs">
+                    HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
+                </p>
+                <div class="row sm12">
+                    <ul class="tick-list mt-xs mb-sm compact-list">
+                        <li>Shopping for essentials</li>
+                        <li>Cooking a hot meal</li>
+                        <li>Home-sewn face coverings</li>
+                        <li>Help with home-schooling</li>
+                        <li>A friendly chat</li>
+                    </ul>
+                </div>
+                <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
+
+                <div class="row sm12 text-center justify-center mb-sm">
+                    <a href="/request-help" class="btn cta btn--request-help cta--orange">Request Help</a>
+                </div>
+
+                <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
+
+                <div class="row sm12 text-center justify-center mb-lg">
+                    @if (!Model.isLoggedIn)
+                    {
+                        <a href="/registration/step-one" class="btn cta btn--sign-up">Sign Up Now</a>
+
+                    }
+                    else
+                    {
+                        <a href="/account" class="btn cta btn--sign-up">Provide Help</a>
+
+                    }
+                </div>
+            </div>
+            <div class="flex sm7 home-video-container justify-center align-center text-right mb-lg" id="video">
+                <iframe style="min-width:100%; height:380px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <div class="row card p-md mb-md">
+            <div class="sm5">
+                <div class="text-center">
+                    <img class="" src="~/img/community/fortheloveofscrubs/LOSBannerNarrow.jpg" width="100%" />
+                </div>
+            </div>
+            <div class="sm7 text-center">
+                <h2 class="mb-xs ">Looking for a face covering?</h2>
+                <p class="mt-xs ">
+                    HelpMyStreet have partnered with For the Love of Scrubs to help get high-quality homemade face coverings to everyone who needs them – all whilst helping the NHS!
+                </p>
+                <a href="/for-the-love-of-scrubs" class="btn cta btn--request-help cta--orange">More Info</a>
+            </div>
+        </div>
+
+        <div class="row card street-check" id="street-map">
+            <h2 class="mb-sm">Is your street covered?</h2>
+            <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
+            <div id="your-location">
+                <button title="Your location">
+                    <div id="your-location-image"></div>
+                </button>
+            </div>
+            <div class="row sm12 map homepage-map" id="map">
+            </div>
+            <div class="row sm12 text-center justify-center">
+                <p><strong>From Cardiff to Cambridge, Dover to Dundee, HelpMyStreet gets help to people in need.</strong></p>
+                <div>
+                    <a class="home-link" href="/request-help"><h4 class="orange mb-xs text-center">How can we help?</h4></a>
+                    <p class="mt-sm">We've got shoppers, sewers and hot meal makers; walkers, talkers and homework helpers. All ready and waiting to help you!</p>
+                    <a class="home-link" href="/registration/step-one"><h4 class="green text-center">Join our volunteers</h4></a>
+                    <p class="mt-sm">Help people stay safe - on your street and across your community. Just let us know when, where and how you can help.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row mt-lg justify-center">
+            <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" width="350" /></a></div>
+            <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" width="190" /></a></div>
+
+        </div>
+
+        <div class="row mt72 justify-center">
+            <div class="sm8 text-center justify-center">
+                <h2>Help people shelter safely at home…</h2>
+                <p>
+                    HelpMyStreet.org supports community organisers and  makes volunteering in your local community simple, safe and effective for everyone. Sign up today to help people in your street shelter safely at home:
+                </p>
+            </div>
+        </div>
+        <div class="row mb15 justify-center step">
+            <div class="sm1"><span class="fab circle">1</span></div>
+            <div class="sm7">
+                <h4>
+                    Sign up as a Street Champion
+                </h4>
+                <p>
+                    Street Champions look after a street and lead the helping activities in that street. They are in touch with the people who are sheltering safely at home and work with local Helpers to complete their requests for help.
+                </p>
+            </div>
+        </div>
+        <div class="row justify-center step">
+            <div class="sm1"><span class="fab circle">2</span></div>
+            <div class="sm7">
+                <h4>
+                    Sign up as a Volunteer
+                </h4>
+                <p>
+                    Helpers provide direct help such as collecting prescription medicines, running local errands and shopping for essentials. They work with Street Champions to ensure the right help is getting to the right people in need.
+                </p>
+            </div>
+        </div>
+
+        <div class="row justify-center text-center">
+            <div>
                 @if (!Model.isLoggedIn)
                 {
-                    <a href="/registration/step-one" class="btn cta btn--sign-up">Sign Up Now</a>
-
+                    <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
                 }
                 else
                 {
-                    <a href="/account" class="btn cta btn--sign-up">Provide Help</a>
-
+                    <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
                 }
-            </div> 
-        </div>
-        <div class="flex sm7 home-video-container justify-center align-center text-right mb-lg" id="video">
-            <iframe style="min-width:100%; height:380px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div>
-
-    <div class="row card p-md mb-md">
-        <div class="sm5">
-            <div class="text-center">
-                <img class="" src="~/img/community/fortheloveofscrubs/LOSBannerNarrow.jpg" width="100%" />                
             </div>
         </div>
-        <div class="sm7 text-center">
-            <h2 class="mb-xs ">Looking for a face covering?</h2>
-            <p class="mt-xs ">
-                HelpMyStreet have partnered with For the Love of Scrubs to help get high-quality homemade face coverings to everyone who needs them – all whilst helping the NHS!
-            </p>
-            <a href="/for-the-love-of-scrubs" class="btn cta btn--request-help cta--orange">More Info</a>
-        </div>
-    </div>
 
-    <div class="row card street-check" id="street-map">
-        <h2 class="mb-sm">Is your street covered?</h2>
-        <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
-        <div id="your-location">
-            <button title="Your location">
-                <div id="your-location-image"></div>
-            </button>
+        <div class="row mt72">
+            <partial name="_HelpExampleCards" model="@new HelpExampleCardsViewModel()" />
         </div>
-        <div class="row sm12 map homepage-map" id="map">
-        </div>
-        <div class="row sm12 text-center justify-center">
-            <p><strong>From Cardiff to Cambridge, Dover to Dundee, HelpMyStreet gets help to people in need.</strong></p>
-            <div>
-                <a class="home-link" href="/request-help"><h4 class="orange mb-xs text-center">How can we help?</h4></a>
-                <p class="mt-sm">We've got shoppers, sewers and hot meal makers; walkers, talkers and homework helpers. All ready and waiting to help you!</p>
-                <a class="home-link" href="/registration/step-one"><h4 class="green text-center">Join our volunteers</h4></a>
-                <p class="mt-sm">Help people stay safe - on your street and across your community. Just let us know when, where and how you can help.</p>
+
+        <div class="row justify-center text-center mt-lg">
+            <div class="sm4">
+                <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
             </div>
-
         </div>
-    </div>
-
-    <div class="row mt-lg justify-center">
-        <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" width="350" /></a></div>
-        <div class="sm6 text-center justify-center"><a  href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" width="190" /></a></div>
-        
-    </div>
-
-    <div class="row mt72 justify-center">
-        <div class="sm8 text-center justify-center">
-            <h2>Help people shelter safely at home…</h2>
-            <p>
-                HelpMyStreet.org supports community organisers and  makes volunteering in your local community simple, safe and effective for everyone. Sign up today to help people in your street shelter safely at home:
-            </p>
+        <div class="row justify-center text-center mt72">
+            <div class="sm12">
+                <h2>We’re working with communities&hellip;</h2>
+            </div>
+            <div class="sm8">
+                <p>
+                    Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
+                </p>
+            </div>
+            <div class="sm8 list mb-lg">
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
+                <span>
+                    <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
+                </span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
+            </div>
         </div>
-    </div>
-    <div class="row mb15 justify-center step">
-        <div class="sm1"><span class="fab circle">1</span></div>
-        <div class="sm7">
-            <h4>
-                Sign up as a Street Champion
-            </h4>
-            <p>
-                Street Champions look after a street and lead the helping activities in that street. They are in touch with the people who are sheltering safely at home and work with local Helpers to complete their requests for help.
-            </p>
-        </div>
-    </div>
-    <div class="row justify-center step">
-        <div class="sm1"><span class="fab circle">2</span></div>
-        <div class="sm7">
-            <h4>
-                Sign up as a Volunteer
-            </h4>
-            <p>
-                Helpers provide direct help such as collecting prescription medicines, running local errands and shopping for essentials. They work with Street Champions to ensure the right help is getting to the right people in need.
-            </p>
-        </div>
-    </div>
-
-    <div class="row justify-center text-center">
-        <div>
-            @if (!Model.isLoggedIn)
+        <div class="row justify-center text-center">
+            @if (Model.isLoggedIn)
             {
-                <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+                <div>
+                    <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
+                </div>
             }
             else
             {
-                <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
+                <div>
+                    <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+                </div>
             }
         </div>
     </div>
-
-    <div class="row mt72">
-        <partial name="_HelpExampleCards" model="@new HelpExampleCardsViewModel()" />
-    </div>
-
-    <div class="row justify-center text-center mt-lg">
-        <div class="sm4">
-            <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
-        </div>
-    </div>
-    <div class="row justify-center text-center mt72">
-        <div class="sm12">
-            <h2>We’re working with communities&hellip;</h2>
-        </div>
-        <div class="sm8">
-            <p>
-                Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
-            </p>
-        </div>
-        <div class="sm8 list mb-lg">
-            <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
-            <span>
-                <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
-            </span>
-            <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
-            <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
-            <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
-        </div>
-    </div>
-    <div class="row justify-center text-center">
-        @if (Model.isLoggedIn)
-        {
-            <div>
-                <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
-            </div>
-        }
-        else
-        {
-            <div>
-                <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
-            </div>
-        }
-    </div>
-</div>
+}
