@@ -158,13 +158,15 @@ namespace HelpMyStreetFE.Controllers
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
                     }
 
+                    var isFaceMaskActivity = requestStage.Tasks.Where(x => x.IsSelected).First().SupportActivity == SupportActivities.FaceMask ? true : false;
+
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
                     {
                         return RedirectToRoute("request-help/success", new
                         {
                             fulfillable = response.Content.Fulfillable,
-                            onBehalf = detailStage.Type == RequestorType.OnBehalf ? true : false
+                            isFaceMask = isFaceMaskActivity
                         });
                     }
                 }
@@ -210,7 +212,7 @@ namespace HelpMyStreetFE.Controllers
             return View(model);
         }
 
-        public IActionResult Success(Fulfillable fulfillable, bool onBehalf)
+        public IActionResult Success(Fulfillable fulfillable, bool isFaceMask)
         {
 
             string message = "<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>";
@@ -220,16 +222,30 @@ namespace HelpMyStreetFE.Controllers
             string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
             string requestLink = "/request-help";
 
-            if (!User.Identity.IsAuthenticated)
+            string facemaskmessage = "<p>All of our face coverings are provided by For the Love of Scrubs who rely on donations to cover the cost of their work.</p>" +
+                "<p>If you are able to donate, you can do so on their Go Fund Me page <a href=\"https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\" target=\"_blank\">here</a>.<p>";
+
+            if (isFaceMask)
             {
+                message += facemaskmessage;
+            }
+
+            if (!User.Identity.IsAuthenticated)
+            {    
                 message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
                 message += "<p> Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
                 button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
-
+           
             if (fulfillable == Fulfillable.Accepted_DiyRequest)
             {
                 message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
+
+                if(isFaceMask)
+                {
+                    message += facemaskmessage;
+                }
+
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
                 requestLink = "/request-help/0/DIY";
             }
