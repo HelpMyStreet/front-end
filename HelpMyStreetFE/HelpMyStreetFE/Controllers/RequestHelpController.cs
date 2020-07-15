@@ -78,9 +78,9 @@ namespace HelpMyStreetFE.Controllers
                         var requestStep = (RequestHelpRequestStageViewModel)step;
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
 
-                        detailStage.ShowOtherDetails = 
+                        detailStage.ShowOtherDetails =
                             requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ? false : true;
-                   
+
 
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
 
@@ -152,7 +152,7 @@ namespace HelpMyStreetFE.Controllers
                     }
 
                     // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
-                    if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && userId == 0 )
+                    if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && userId == 0)
                     {
                         requestHelp.Errors.Add("To submit a DIY Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
@@ -213,21 +213,17 @@ namespace HelpMyStreetFE.Controllers
         public IActionResult Success(Fulfillable fulfillable, bool onBehalf)
         {
 
-            string message = "<p>Your request will be passed to a local volunteer who should get in touch shortly.</p>";
+            string message = "<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>";
 
             string link = User.Identity.IsAuthenticated ? "/account" : "/";
 
             string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
             string requestLink = "/request-help";
 
-            if (fulfillable == Fulfillable.Accepted_ManualReferral || fulfillable == Fulfillable.Rejected_Unfulfillable)
+            if (!User.Identity.IsAuthenticated)
             {
-                message = "<p>We’ve just launched HelpMyStreet and we’re building our network across the country. We’re working hard to ensure we have local volunteers in your area who can get the right help to the right people. You’ll be contacted soon to progress your request.</p>";
-            }
-
-            if (onBehalf && !User.Identity.IsAuthenticated)
-            {
-                message += "<p>Are you Volunteering in your local area? Sign up as a Street Champion or Helper to help and support local people shelter safely at home.</p>";
+                message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
+                message += "<p> Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
                 button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
 
@@ -257,7 +253,7 @@ namespace HelpMyStreetFE.Controllers
 
             return View(vm);
         }
- 
+
 
         [HttpPost]
         public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
@@ -268,11 +264,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
             }
-            
+
             foreach (var question in model.Questions)
             {
                 var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
-                if(matchedAnswer != null)
+                if (matchedAnswer != null)
                 {
                     question.Model = matchedAnswer.Answer;
                 }
@@ -287,7 +283,7 @@ namespace HelpMyStreetFE.Controllers
             public RequestHelpRequestStageViewModel Step { get; set; }
             public int TaskID { get; set; }
             public string Position { get; set; }
-            public int? RequestorId  {get;set;}
+            public int? RequestorId { get; set; }
             public List<QuestionAnswer> Answers { get; set; }
             public class QuestionAnswer
             {
