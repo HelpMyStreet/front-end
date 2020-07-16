@@ -49,7 +49,6 @@
   <ItemGroup>
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
-    <Folder Include="wwwroot\img\community\ageUK\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel2\" />
   </ItemGroup>
