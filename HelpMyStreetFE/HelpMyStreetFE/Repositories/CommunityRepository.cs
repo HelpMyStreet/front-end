@@ -250,11 +250,11 @@ namespace HelpMyStreetFE.Repositories
                         We are now underway with our new “Vitals For Veterans” project.
                     </p>
                     <p class='mt-sm mb-xs'>
-                        Over the coming months, we will be delivering wellbeing packs to veterans across Lincoln & South Lincolnshire because
+                        Over the coming months, we are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire because
                         <i>veterans should not be forgotten</i>.
                     </p>
                     <p class='mt-sm mb-s'>
-                        If you can help us get wellbeing packs to veterans in your area please sign up below.
+                        If you can help us deliver wellbeing packs to veterans in your area please sign up below.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
             communityViewModel.HeaderVolunteerButtonText = null;
