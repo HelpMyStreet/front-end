@@ -297,21 +297,21 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Nicki Lee",
                     Role = "Senior Volunteer Coordinator",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    ImageLocation = "/img/community/ageuk/NL_cropped.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Amanda Wilson",
                     Role = "Engagement Coordinator",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    ImageLocation = "/img/community/ageuk/AW_cropped.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Melanie Meik",
                     Role = "Fundraising & Marketing Manager",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    ImageLocation = "/img/community/ageuk/MM_cropped.jpg"
                 },
             };
 
