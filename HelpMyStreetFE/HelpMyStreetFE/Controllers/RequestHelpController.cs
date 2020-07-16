@@ -222,7 +222,7 @@ namespace HelpMyStreetFE.Controllers
             string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
             string requestLink = "/request-help";
 
-            string facemaskmessage = "<p>All of our face coverings are provided by For the Love of Scrubs who rely on donations to cover the cost of their work.</p>" +
+            string facemaskmessage = "<p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities.Without donations they aren’t able to continue their good work.</p>" +
                 "<p>If you are able to donate, you can do so on their Go Fund Me page <a href=\"https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\" target=\"_blank\">here</a>.<p>";
 
             if (isFaceMask)
