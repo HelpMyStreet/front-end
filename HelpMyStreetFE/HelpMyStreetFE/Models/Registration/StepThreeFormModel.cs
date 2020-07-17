@@ -21,7 +21,7 @@ namespace HelpMyStreetFE.Models.Registration
         {
             get
             {
-                return VolunteerDistance == 0.1 && CustomDistance > 0;
+                return VolunteerDistance == 0.1f && CustomDistance > 0;
             }
         }
     }
