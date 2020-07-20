@@ -73,9 +73,14 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> FaceMasksReinstated()
+        public async Task<IActionResult> FaceCoverings()
         {
             return View();
+        }
+
+        public async Task<IActionResult> FaceMasks()
+        {
+            return RedirectPermanent("/face-coverings");
         }
     }
 }
