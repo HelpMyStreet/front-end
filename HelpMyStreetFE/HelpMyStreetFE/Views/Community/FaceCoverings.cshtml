@@ -28,75 +28,32 @@
                     <header class="">
                         <h2 class="row sm12 mb0">HelpMyStreet's Community Sew</h2>
                     </header>
-                    <p class="row sm12 text-left mt-sm mb-xs">
+                    <p class="row sm12 text-left mt-sm">
                         We launched HelpMyStreet.org to ensure everybody in the UK can find the help they need, when they need it - and this now includes face coverings!
                         There are thousands of talented home sewers across the country who are happy to give their time and skills to provide their communities with the
                         face coverings they need.
-                    </p>                    
+                    </p>
 
-                    <div class="row sm12">
-                        <p class="text-left mt-sm mb-xs">
+                    <div class="card min-height">
 
-                            If you're a home sewer who can help,
-                            @if (isLoggedIn)
-                            {
-                                <a href="/account" class="green  large-screen-only">Provide Help</a>
-                            }
-                            else
-                            {
-                                <a href="/registration/stepone" class="green">Sign Up to Sew!</a>
-                            }
+                        <h2>Do you a need a face covering?</h2>
+                        <p class="text-left mt-sm mb-sm">
+                            Our community sewers are working hard to provide face coverings, here’s what you can expect:
                         </p>
-                    </div>
-
-
-                    <div class="row sm4 text-center mb-md mt-md justify-center small-screen-only ">
-                        @if (isLoggedIn)
-                        {
-
-                            <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
-
-                        }
-                        else
-                        {
-                            <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up to Sew</a>
-
-                        }
-                    </div>
-
-                    <div class="row sm12">
-                        <p class="text-left mt-sm mb-xs">If you need a fabric face covering, <a href="/request-help" class="orange">Request Help</a> to find a home sewer near you. To keep everyone safe, it's recommended we all wear a fabric face covering when: </p>
-                        <ul class="tick-list mt-xs mb-sm compact-list">
-                            <li>Using public transport</li>
-                            <li>Visiting hospitals or care homes</li>
-                            <li>Shopping</li>
-                            <li>Self-isolating with symptoms</li>
-                            <li>In enclosed public spaces</li>
+                        <ul class="tick-list mt-sm">
+                            <li>Well-made, washable, reusable face coverings made with at least two layers of fabric</li>
+                            <li>To pay a small amount to cover the cost of materials and postage or donate to a good cause of a volunteers choosing</li>
+                            <li>Items made with love by a talented volunteer</li>
                         </ul>
-                    </div>
 
-                    <div class="row sm12 text-center justify-center small-screen-only mb-sm">
-                        <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request Help</a>
-                    </div>
-
-                    <div class="row  large-screen-only text-center ">
-                        <div class="sm4 justify-center ">
-                            @if (isLoggedIn)
-                            {
-
-                                <a href="/account" class="btn cta small btn--sign-up">Provide Help</a>
-                            }
-                            else
-                            {
-                                <a href="/registration/stepone" class="btn cta small btn--sign-up">Sign Up to Sew</a>
-
-                            }
+                        <div class="mt-md" style="text-align: center">
+                            <a href="/request-help?source=face-masks" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
                         </div>
 
-                        <div class="sm7 justify-center">
-                            <a href="/request-help" class="btn cta small btn--request-help cta--orange">Request a Face Covering</a>
-                        </div>
                     </div>
+
+
+
                 </div>
             </div>
 
