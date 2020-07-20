@@ -23,8 +23,7 @@
             .verification-panel {
                 -ms-grid-row: 1;
                 -ms-grid-column: 2;
-                 grid-area: verificationpanel;
-                 margin-bottom:10px;
+                grid-area: verificationpanel;
             }
 
             .profile-panel {
@@ -43,7 +42,17 @@
     }
 }
 
-.account__notifications{
+.verification-panel {
+    margin-bottom: 10px;
+
+    .yoti__auth__button {
+        div {
+            min-height: 1px;
+        }
+    }
+}
+
+.account__notifications {
     margin-top: 50px;
     margin-bottom: 50px;
 }
