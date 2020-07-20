@@ -430,7 +430,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpLoggedOutButtonText = "Sign Up to Sew";
+            communityViewModel.ProvideHelpLoggedOutButtonText = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {
