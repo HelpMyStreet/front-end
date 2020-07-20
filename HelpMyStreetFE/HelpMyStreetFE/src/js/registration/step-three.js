@@ -10,7 +10,7 @@ export function initialiseStepThree() {
 
     $("input[name='volunteer_distance'").change(function () {
         let value = $(this).val()        
-        if (value == 999) {
+        if (value == 0.1) {
             $("input[name='custom_distance']").show();
         } else {
             $("input[name='custom_distance']").hide();
