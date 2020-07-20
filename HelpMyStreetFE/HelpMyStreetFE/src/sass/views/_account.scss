@@ -48,6 +48,11 @@
     .yoti__auth__button {
         div {
             min-height: 1px;
+
+            /* Except for IE11 */
+            @media all and (-ms-high-contrast:none) {
+                min-height: inherit;
+            }
         }
     }
 }
