@@ -80,7 +80,7 @@ namespace HelpMyStreetFE.Services
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = selectedTask.Questions.Select(x => new Question {
                                 Id = x.ID,
-                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Value ?? "" : x.Model,
+                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Key ?? "" : x.Model,
                                 Name = x.Label,
                                 Required = x.Required,
                                 AddtitonalData = x.AdditionalData,
