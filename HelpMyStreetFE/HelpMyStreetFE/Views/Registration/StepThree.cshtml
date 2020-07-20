@@ -40,6 +40,10 @@
             volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.FaceMask);
             volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs", Selected = true });
             break;
+        case RegistrationFormVariant.FaceMasks:
+            volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.FaceMask);
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings", Selected = true });
+            break;
         case RegistrationFormVariant.AgeUKLSL:
             volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.WellbeingPackage);
             volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package", Selected = true });
