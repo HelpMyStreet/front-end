@@ -34,3 +34,15 @@
     border:10px solid $orange;
     padding:5px;
 }
+
+.face-coverings-panel {
+    .ftlos-partnership {
+        max-width: 330px;
+        margin-left: 10px;
+        margin-bottom: 20px;
+
+        @media screen and (min-width: $med-screen) {
+            margin-bottom: 0;
+        }
+    }
+}
