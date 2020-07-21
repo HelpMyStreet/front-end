@@ -47,8 +47,11 @@
             @for $i from 1 through 12 {
                 .sm#{$i} {
                     flex-basis: 100% * ($i / 12);
-                    padding-right: 12px;
-                    padding-left: 12px;
+
+                    &:not(.card) {
+                        padding-right: 12px;
+                        padding-left: 12px;
+                    }
 
                     @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
                         padding-left: 0px;

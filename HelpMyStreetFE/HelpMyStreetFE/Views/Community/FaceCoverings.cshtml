@@ -1,4 +1,6 @@
-﻿@{
+﻿@model HelpMyStreetFE.Models.Community.FaceCoveringsViewModel
+
+@{
     ViewData["Title"] = "Community Sew";
     var isLoggedIn = User.Identity.IsAuthenticated;
 }
@@ -25,38 +27,86 @@
         <div class="inner-container">
             <div class="row flex hero">
                 <div class="row sm12 align-center content-page">
-                    <header class="">
-                        <h2 class="row sm12 mb0">HelpMyStreet's Community Sew</h2>
-                    </header>
+                    <h2 class="row sm12 mb0">HelpMyStreet's Community Sew</h2>
                     <p class="row sm12 text-left mt-sm">
                         We launched HelpMyStreet.org to ensure everybody in the UK can find the help they need, when they need it - and this now includes face coverings!
                         There are thousands of talented home sewers across the country who are happy to give their time and skills to provide their communities with the
                         face coverings they need.
                     </p>
 
-                    <div class="card min-height">
+                    <div class="row sm12 mb-md">
+                        <div class="card sm12">
+                            <h6 class="mt-0">Do you a need a face covering?</h6>
+                            <p class="text-left mt-sm mb-sm">
+                                Our community sewers are working hard to provide face coverings, here’s what you can expect:
+                            </p>
+                            <ul class="tick-list mt-sm">
+                                <li>Well-made, washable, reusable face coverings made with at least two layers of fabric</li>
+                                <li>To pay a small amount to cover the cost of materials and postage or donate to a good cause of a volunteers choosing</li>
+                                <li>Items made with love by a talented volunteer</li>
+                            </ul>
 
-                        <h2>Do you a need a face covering?</h2>
-                        <p class="text-left mt-sm mb-sm">
-                            Our community sewers are working hard to provide face coverings, here’s what you can expect:
-                        </p>
-                        <ul class="tick-list mt-sm">
-                            <li>Well-made, washable, reusable face coverings made with at least two layers of fabric</li>
-                            <li>To pay a small amount to cover the cost of materials and postage or donate to a good cause of a volunteers choosing</li>
-                            <li>Items made with love by a talented volunteer</li>
-                        </ul>
+                            <div class="mt-md text-center">
+                                <a href="/request-help?source=face-masks" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                            </div>
+                        </div>
+                    </div>
 
-                        <div class="mt-md" style="text-align: center">
-                            <a href="/request-help?source=face-masks" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                    <h2 class="row sm12 mt-lg mb-md">Join us as a sewing volunteer</h2>
+                    <div class="row hero flex">
+                        <div class="sm6 mb-md">
+                            <div class="card min-height">
+                                <h6 class="mt-0">Join HelpMyStreet as an independent sewer</h6>
+                                <ul class="mt-sm pl-md">
+                                    <li>Source your own material and supplies</li>
+                                    <li>Request payment to cover the cost of materials (£2 - £3 per face covering) or ask for donations to support a good cause of your choosing</li>
+                                </ul>
+
+                                <p>
+                                    <img src="~/img/community/face-mask/face-mask-sewing-1000px.jpg" />
+                                </p>
+
+                                <div class="mt-sm text-center">
+                                    @if (isLoggedIn)
+                                    {
+                                        <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/registration/stepone?source=face-masks" class="btn cta fixed-width btn--sign-up">Join Us Now</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sm6 mb-md">
+                            <div class="card min-height">
+                                <h6 class="mt-0">Join HelpMyStreet as part of For the Love of Scrubs (FTLOS) - our fabulous face coverings partner</h6>
+                                <ul class="mt-sm pl-md">
+                                    <li>Receive pre-paid supplies straight to your door from Ashleigh and the FTLOS team</li>
+                                    <li>Request payment in the form of donations to the <a href="https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings">FTLOS GoFundMe page</a></li>
+                                    <li>Be a part of one of the UK's biggest sewing communities</li>
+                                </ul>
+
+                                <p>
+                                    <img src="~/img/community/fortheloveofscrubs/LOSBannerWide.png" />
+                                </p>
+
+                                <div class="mt-sm text-center">
+                                    @if (isLoggedIn)
+                                    {
+                                        <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Model.FtlosSignUpURL" class="btn cta fixed-width btn--sign-up">Join FTLOS</a>
+                                    }
+                                </div>
+                            </div>
                         </div>
 
                     </div>
-
-
-
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -114,8 +164,8 @@
                             @requestHelpDesc
                         </p>
 
-                        <div class="" style="text-align: center">
-                            <a href="/request-help" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                        <div class="">
+                            <a href="/request-help?source=face-masks" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
                         </div>
 
                     </div>
@@ -128,15 +178,14 @@
                             @provideHelpDesc
                         </p>
 
-                        <div class="" style="text-align: center">
+                        <div class="">
                             @if (isLoggedIn)
                             {
-
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
                             }
                             else
                             {
-                                <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Sign Up to Sew</a>
+                                <a href="/registration/stepone?source=face-masks" class="btn cta fixed-width btn--sign-up">Join Us Now</a>
                             }
                         </div>
                     </div>
@@ -170,18 +219,6 @@
         </div>
     </div>
 
-    <div class="outer-container">
-        <div class="inner-container help-examples">
-            @{
-                ViewData["Box1"] = "6 plain face coverings to safely commute";
-                ViewData["Box2"] = "Bright face coverings to cheer my mum up in hospital";
-                ViewData["Box3"] = "10 donated face coverings for care home visitors";
-            }
-
-            @*<partial name="_HelpExampleCards" view-data="ViewData" />*@
-
-        </div>
-    </div>
 
     <div class="outer-container outer-container--darker">
         <div class="inner-container">
@@ -227,29 +264,28 @@
                             @requestHelpDesc
                         </p>
 
-                        <div class="" style="text-align: center">
-                            <a href="/request-help" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                        <div class="">
+                            <a href="/request-help?source=face-masks" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
                         </div>
 
                     </div>
                 </div>
 
                 <div class="sm6">
-                    <div class="card">
+                    <div class="card min-height">
                         <h2>@provideHelpHead</h2>
                         <p class="text-left mt-sm mb-md">
                             @provideHelpDesc
                         </p>
 
-                        <div class="" style="text-align: center">
+                        <div class="">
                             @if (isLoggedIn)
                             {
-
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">Provide Help</a>
+                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
                             }
                             else
                             {
-                                <a id="first-button" href="/registration/stepone" class="btn cta fixed-width btn--sign-up">Sign Up to Sew</a>
+                                <a href="/registration/stepone?source=face-masks" class="btn cta fixed-width btn--sign-up">Join Us Now</a>
                             }
                         </div>
                     </div>
