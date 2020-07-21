@@ -154,7 +154,11 @@ namespace HelpMyStreetFE.Services
                 ActivitesRequest = new ActivitesRequest
                 {
                     Activities = tasks.Select(x => x.SupportActivity).ToList()
-                }
+                },
+                RequestHelpFormVariantRequest = new RequestHelpFormVariantRequest
+                {
+                    RequestHelpFormVariant = requestHelpFormVariant
+                },
             });
 
             tasks.ForEach(x => x.Questions = questions.SupportActivityQuestions[x.SupportActivity].Select(x => new RequestHelpQuestion
