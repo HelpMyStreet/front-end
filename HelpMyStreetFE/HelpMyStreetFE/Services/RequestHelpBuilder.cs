@@ -171,12 +171,6 @@ namespace HelpMyStreetFE.Services
                 VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
             }).ToList());
 
-            if(requestHelpFormVariant != RequestHelpFormVariant.DIY)
-            { 
-                //question for DIY only
-                tasks.ForEach(x => x.Questions.RemoveAll(x => x.ID == (int)Questions.WillYouCompleteYourself));
-            }
-
             return tasks;
         }
         public List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant requestHelpFormVariant, int questionId)
