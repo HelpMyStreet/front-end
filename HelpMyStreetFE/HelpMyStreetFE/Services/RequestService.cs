@@ -231,9 +231,9 @@ namespace HelpMyStreetFE.Services
             ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
         }
 
-        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant source2, int referringGroupID, string source)
+        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
-            return await _requestHelpBuilder.GetSteps(source2, referringGroupID, source);
+            return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
     }
  }
