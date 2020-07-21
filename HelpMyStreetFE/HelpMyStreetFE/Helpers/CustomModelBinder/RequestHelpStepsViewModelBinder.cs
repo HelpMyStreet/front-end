@@ -126,7 +126,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 int questionID = -1;
                 int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
                 var question = task.Questions.Where(x => x.ID == questionID).FirstOrDefault();
-                if (question != null)
+                if (question != null && question.InputType != HelpMyStreet.Utils.Enums.QuestionType.LabelOnly)
                 {
                     question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
                 }
