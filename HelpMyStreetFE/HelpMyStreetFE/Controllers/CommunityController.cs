@@ -86,8 +86,8 @@ namespace HelpMyStreetFE.Controllers
 
             FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
             {
-                FtlosSignUpURL = $"/registration/stepone/{encodedFtlosGroupId}/face-masks",
-                GenericSignUpURL = $"/registration/stepone/{encodedGenericGroupId}/face-masks",
+                FtlosSignUpURL = $"/registration/step-one/{encodedFtlosGroupId}/face-masks",
+                GenericSignUpURL = $"/registration/step-one/{encodedGenericGroupId}/face-masks",
                 RequestHelpURL = $"/request-help/{encodedGenericGroupId}/face-masks",
             };
 
