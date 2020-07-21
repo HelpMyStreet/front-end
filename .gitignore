@@ -352,3 +352,4 @@ MigrationBackup/
 HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.js
 HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.css
 HelpMyStreetFE/HelpMyStreetFE/appsettings.Development.json
+HelpMyStreetFE/HelpMyStreetFE/appsettings.NMR.json
