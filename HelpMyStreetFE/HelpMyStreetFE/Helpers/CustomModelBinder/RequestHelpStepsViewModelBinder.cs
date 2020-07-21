@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -128,7 +129,14 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 var question = task.Questions.Where(x => x.ID == questionID).FirstOrDefault();
                 if (question != null)
                 {
-                    question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
+                    if (question.InputType == QuestionType.LabelOnly)
+                    {
+                        question.Model = "";
+                    }
+                    else
+                    {
+                        question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
+                    }
                 }
             }
 

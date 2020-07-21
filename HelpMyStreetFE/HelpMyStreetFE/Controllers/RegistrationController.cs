@@ -71,6 +71,7 @@ namespace HelpMyStreetFE.Controllers
                 FirebaseConfiguration = _configuration["Firebase:Configuration"],
                 RegistrationFormVariant = registrationFormVariant,
                 ReferringGroupID = referringGroupId,
+                Source = source,
             });
         }
 
@@ -82,7 +83,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 _logger.LogInformation("Posting new user");
                 var uid = await _authService.VerifyIdTokenAsync(userData.Token);
-                await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), "");
+                await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), userData.Source);
                 await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
 
                 return Ok();

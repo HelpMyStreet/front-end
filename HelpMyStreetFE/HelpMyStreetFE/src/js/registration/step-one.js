@@ -48,6 +48,7 @@ export function initialiseStepOne() {
             email,
             token,
             referringGroupId,
+            source,
           }),
         });          
           window.location.href = "/registration/step-two";

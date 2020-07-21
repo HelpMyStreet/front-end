@@ -318,6 +318,11 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Registration", action = "StepOne" });
 
                 endpoints.MapControllerRoute(
+                   name: "registration/step-one/group/source",
+                   pattern: "registration/step-one/{referringGroup}/{source}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
                    name: "registration/step-two",
                    pattern: "registration/step-two",
                    defaults: new { controller = "Registration", action = "StepTwo" });

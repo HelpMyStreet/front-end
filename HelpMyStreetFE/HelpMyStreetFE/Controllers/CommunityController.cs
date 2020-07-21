@@ -79,9 +79,17 @@ namespace HelpMyStreetFE.Controllers
 
         public async Task<IActionResult> FaceCoverings()
         {
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
-            var encodedFtlosGroupId = Base64Utils.Base64Encode(getGroupByKeyResponse.GroupId.ToString());
-            FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel() { FtlosSignUpURL = $"/registration/stepone/{encodedFtlosGroupId}?source=face-masks" };
+            var ftlosGetGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
+            var encodedFtlosGroupId = Base64Utils.Base64Encode(ftlosGetGroupByKeyResponse.GroupId.ToString());
+            var genericGetGroupByKeyResponse = await _groupService.GetGroupByKey("Generic");
+            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse.GroupId.ToString());
+
+            FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
+            {
+                FtlosSignUpURL = $"/registration/step-one/{encodedFtlosGroupId}/face-masks",
+                GenericSignUpURL = $"/registration/step-one/{encodedGenericGroupId}/face-masks",
+                RequestHelpURL = $"/request-help/{encodedGenericGroupId}/face-masks",
+            };
 
             return View(faceCoveringsViewModel);
         }
