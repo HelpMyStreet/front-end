@@ -7,8 +7,8 @@ namespace HelpMyStreetFE.Models.Registration
     {
         public int ActiveStep { get; set; }
         public string FirebaseConfiguration { get; set; }
-        public string EncodedUserID { get; set; }
         public int ReferringGroupID { get; set; }
+        public string Source { get; set; }
         public RegistrationFormVariant RegistrationFormVariant { get; set; }
     }
 }
