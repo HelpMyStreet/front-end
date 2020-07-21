@@ -22,6 +22,6 @@ namespace HelpMyStreetFE.Services
         Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx);
         Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids);
-        Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant source2, int referringGroupID, string source);
+        Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source);
     }
 }

@@ -9,6 +9,8 @@ using System.Web;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using HelpMyStreetFE.Services;
+using HelpMyStreet.Utils.Utils;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -19,13 +21,15 @@ namespace HelpMyStreetFE.Controllers
         private readonly IWebHostEnvironment _env;
         private const string communityImageStore = "/img/community/";
         private readonly IConfiguration _configuration;
+        private readonly IGroupService _groupService;
 
-        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration)
+        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService)
         {
             _env = env;
             _logger = logger;
             _communityRepository = communityRepository;
             _configuration = configuration;
+            _groupService = groupService;
         }
 
         public async Task<IActionResult> Index(string communityName)
@@ -73,9 +77,18 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
+        public async Task<IActionResult> FaceCoverings()
+        {
+            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
+            var encodedFtlosGroupId = Base64Utils.Base64Encode(getGroupByKeyResponse.GroupId.ToString());
+            FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel() { FtlosSignUpURL = $"/registration/stepone/{encodedFtlosGroupId}?source=face-masks" };
+
+            return View(faceCoveringsViewModel);
+        }
+
         public async Task<IActionResult> FaceMasks()
         {
-            return RedirectPermanent("/for-the-love-of-scrubs");
+            return RedirectToAction("FaceCoverings");
         }
     }
 }

@@ -18,7 +18,7 @@
     var volunteerOptions = new List<SupportActivityViewModel>();
 
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" });
-    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings through For the Love of Scrubs (<a href='/for-the-love-of-scrubs' target='_blank'>find out more</a>)" });
+    volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
     volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package" });
@@ -39,6 +39,10 @@
         case RegistrationFormVariant.FtLOS:
             volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.FaceMask);
             volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supplying reusable homemade face coverings through For the Love of Scrubs", Selected = true });
+            break;
+        case RegistrationFormVariant.FaceMasks:
+            volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.FaceMask);
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supply homemade face coverings", Selected = true });
             break;
         case RegistrationFormVariant.AgeUKLSL:
             volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.WellbeingPackage);

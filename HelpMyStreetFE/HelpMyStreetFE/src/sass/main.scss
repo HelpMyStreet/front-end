@@ -247,6 +247,9 @@ input[type=number]::-webkit-outer-spin-button {
         padding: $med-margin 16px;
     }
 
+    img {
+        max-width: 100%;
+    }
  
 }
 

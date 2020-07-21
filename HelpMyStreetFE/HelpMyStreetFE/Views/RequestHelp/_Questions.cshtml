@@ -14,7 +14,7 @@
     <div class="row">
         <div class="sm12 input">
             <label>
-                @Model.Questions[i].Label
+                @Html.Raw(Model.Questions[i].Label)
                 <span class="sub-text">@Html.Raw(Model.Questions[i].Subtext())</span>
             </label>
 
