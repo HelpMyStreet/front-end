@@ -113,6 +113,7 @@ namespace HelpMyStreetFE
                 (int)Questions.FaceMask_SpecificRequirements => "pos2",
                 (int)Questions.IsHealthCritical => "pos3",
                 (int)Questions.WillYouCompleteYourself => "pos3",
+                (int)Questions.FtlosDonationInformation => "pos3",
                 _ => "pos1"
             };        
         }

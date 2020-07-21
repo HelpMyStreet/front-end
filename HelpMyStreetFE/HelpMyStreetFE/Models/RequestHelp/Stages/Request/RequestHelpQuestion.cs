@@ -27,6 +27,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
                     QuestionType.Number => "Please enter a number",
                     QuestionType.Text => "Please enter a value",
                     QuestionType.MultiLineText => "Please enter a value",
+                    QuestionType.LabelOnly => "This shouldn't happen",
+                    _ => "Please enter a value"
                 };                                
             } 
         }

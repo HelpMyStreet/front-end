@@ -65,23 +65,23 @@
                         @foreach (var question in Model.Task.Questions)
                         {
                             if (string.IsNullOrEmpty(question.Model)) question.Model = "Not Answered";
-                            <div class="tiles__tile__content--top__header  p-xs">@question.Label</div>
-                            <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                                @{
-                                    string answer = @question.Model;
-                                    if (question.InputType == HelpMyStreet.Utils.Enums.QuestionType.Radio)
-                                    {
-                                        var radioInput = question.AdditionalData.Where(x => x.Key == question.Model).FirstOrDefault();
-                                        answer = radioInput != null ? radioInput.Value : "Not Answered";
+                            <div class="tiles__tile__content--top__header  p-xs">@Html.Raw(question.Label)</div>
+                            @if (question.InputType != QuestionType.LabelOnly)
+                            {
+                                <div class="tiles__tile__content__description tiles__tile__content--top__description">
+                                    @{
+                                        string answer = @question.Model;
+                                        if (question.InputType == HelpMyStreet.Utils.Enums.QuestionType.Radio)
+                                        {
+                                            var radioInput = question.AdditionalData.Where(x => x.Key == question.Model).FirstOrDefault();
+                                            answer = radioInput != null ? radioInput.Value : "Not Answered";
+                                        }
                                     }
-                                }
                                     @answer
-                                    
-                                
-
-                            </div>
+                                </div>
+                            }
                             <hr class="input--separator" />
-                        }                      
+                        }
                         @*<div class="tiles__tile__content__description tiles__tile__content--top__description"><strong>Is this request critical to someone’s health or wellbeing?</strong> - <span class="header-text">@Model.HealthCriticalReviewString</span></div>*@
                         @*<div class="tiles__tile__content__description tiles__tile__content--top__description"><strong>When is the help needed?</strong> -  <span class="header-text">@Model.TimeRequestedReviewString</span></div>*@
 
