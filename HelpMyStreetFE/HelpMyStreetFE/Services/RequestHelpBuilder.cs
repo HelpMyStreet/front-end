@@ -137,8 +137,8 @@ namespace HelpMyStreetFE.Services
             {
                 tasks.AddRange(new List<TasksViewModel>
             {
-                    new TasksViewModel { ID = 1,SupportActivity = SupportActivities.Shopping },
-                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask },
+                    new TasksViewModel { ID = 1, SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
                     new TasksViewModel { ID = 3, SupportActivity = SupportActivities.CheckingIn },
                     new TasksViewModel { ID = 4, SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { ID = 5, SupportActivity = SupportActivities.Errands },
