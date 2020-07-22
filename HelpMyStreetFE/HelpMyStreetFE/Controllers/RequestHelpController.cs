@@ -166,7 +166,9 @@ namespace HelpMyStreetFE.Controllers
                         return RedirectToRoute("request-help/success", new
                         {
                             fulfillable = response.Content.Fulfillable,
-                            isFTLOS = isFTLOSJourney
+                            isFTLOS = isFTLOSJourney,
+                            referringGroupId = requestHelp.ReferringGroupID,
+                            source = requestHelp.Source
                         });
                     }
                 }
@@ -212,7 +214,7 @@ namespace HelpMyStreetFE.Controllers
             return View(model);
         }
 
-        public IActionResult Success(Fulfillable fulfillable, bool isFTLOS)
+        public IActionResult Success(Fulfillable fulfillable, bool isFTLOS, int referringGroupId, string source)
         {
 
             string message = "<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>";
@@ -220,7 +222,7 @@ namespace HelpMyStreetFE.Controllers
             string link = User.Identity.IsAuthenticated ? "/account" : "/";
 
             string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-            string requestLink = "/request-help";
+            string requestLink = "/request-help/" + Base64Utils.Base64Encode(referringGroupId.ToString()) + "/" + source;
 
             string facemaskmessage = "<p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities. Without donations they aren’t able to continue their good work.</p>" +
                 "<p>If you are able to donate, you can do so on their Go Fund Me page <a href=\"https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\" target=\"_blank\">here</a>.<p>";
@@ -247,7 +249,6 @@ namespace HelpMyStreetFE.Controllers
                 }
 
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-                requestLink = "/request-help/0/DIY";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {
