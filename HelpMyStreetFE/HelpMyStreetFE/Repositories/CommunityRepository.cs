@@ -321,6 +321,12 @@ namespace HelpMyStreetFE.Repositories
                 <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
                 <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
 
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
+            {
+                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
+                Example2 = "Collect a prescription for an older lady in Lincoln",
+                Example3 = "Post a letter for a gentleman in Spalding"
+            };
 
             return communityViewModel;
         }
