@@ -125,7 +125,7 @@ namespace HelpMyStreetFE.Services
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
 
-                var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
+                var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
                 jobs = new OpenJobsViewModel
                 {
