@@ -196,6 +196,10 @@ namespace HelpMyStreetFE.Services
         {
             return string.Join(' ', name.Trim().Split(' ').Where(word => word.Length > 0).Select(word => char.ToUpper(word[0]) + word.Substring(1)));
         }
-    }
 
+        public bool GetRegistrationIsComplete(User user)
+        {
+            return user.RegistrationHistory.Count > 0 && user.RegistrationHistory.Max(a => a.Key) > 3;
+        }
+    }
 }

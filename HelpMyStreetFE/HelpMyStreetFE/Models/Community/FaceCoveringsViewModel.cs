@@ -7,7 +7,6 @@ namespace HelpMyStreetFE.Models.Community
 {
     public class FaceCoveringsViewModel
     {
-        public string FtlosSignUpURL { get; set; }
         public string GenericSignUpURL { get; set; }
         public string RequestHelpURL { get; set; }
     }

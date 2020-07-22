@@ -321,6 +321,12 @@ namespace HelpMyStreetFE.Repositories
                 <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
                 <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
 
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
+            {
+                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
+                Example2 = "Collect a prescription for an older lady in Lincoln",
+                Example3 = "Post a letter for a gentleman in Spalding"
+            };
 
             return communityViewModel;
         }
@@ -426,7 +432,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.RequestHelpHeading = "Do you need a face covering?";
             communityViewModel.RequestHelpText = "If you’d like some For the Love of Scrubs face coverings for yourself, your family or an organisation, request them now. We'll do our best to help! ";
-            communityViewModel.RequestHelpButtonText = "Request a Face Covering";
+            communityViewModel.RequestHelpButtonText = "Request Face Coverings";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";

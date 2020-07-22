@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models;
 using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
@@ -33,6 +32,9 @@ namespace HelpMyStreetFE.Controllers
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestService _requestService;
+
+        private static readonly string REGISTRATION_URL = "/registration/step-two";
+
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
@@ -67,12 +69,11 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUser();
-            string correctPage = RegistrationController.GetCorrectPage(user);
-            if (correctPage.Length > 0)
+            if (!_userService.GetRegistrationIsComplete(user))
             {
-                //Registration journey is not complete
-                return Redirect(correctPage);
+                return Redirect(REGISTRATION_URL);
             }
+
             if (user.IsVerified.HasValue && user.IsVerified.Value)
             {
                 return await OpenRequests();
@@ -86,12 +87,11 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Profile()
         {
             var user = await GetCurrentUser();
-            string correctPage = RegistrationController.GetCorrectPage(user);
-            if (correctPage.Length > 0)
+            if (!_userService.GetRegistrationIsComplete(user))
             {
-                //Registration journey is not complete
-                return Redirect(correctPage);
+                return Redirect(REGISTRATION_URL);
             }
+
             var viewModel = GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
@@ -103,14 +103,13 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Streets()
         {          
-            var currentUser = await GetCurrentUser();
-            string correctPage = RegistrationController.GetCorrectPage(currentUser);
-            if (correctPage.Length > 0)
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
             {
-                //Registration journey is not complete
-                return Redirect(correctPage);
+                return Redirect(REGISTRATION_URL);
             }
-            var viewModel = GetAccountViewModel(currentUser);
+
+            var viewModel = GetAccountViewModel(user);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -132,7 +131,7 @@ namespace HelpMyStreetFE.Controllers
                 {            
                     foreach (var helper in helpers.Users.GroupBy(x => x.ID).Select(g => g.First()).ToList())// de duping
                     {
-                        if (helper.ID == currentUser.ID) continue;
+                        if (helper.ID == user.ID) continue;
                         if (!helper.IsVerified.HasValue || !helper.IsVerified.Value) continue;
                         bool isStreetChampion = (helper.StreetChampionRoleUnderstood.Value && helper.ChampionPostcodes.Contains(postcode));
                         street.Helpers.Add(new Helper
@@ -156,16 +155,15 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> OpenRequests()
         {
            
-            var currentUser = await GetCurrentUser();
-            string correctPage = RegistrationController.GetCorrectPage(currentUser);
-            if (correctPage.Length > 0)
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
             {
-                //Registration journey is not complete
-                return Redirect(correctPage);
+                return Redirect(REGISTRATION_URL);
             }
-            var viewModel = GetAccountViewModel(currentUser);
+
+            var viewModel = GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-            viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, currentUser, HttpContext); 
+            viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext); 
             return View("Index", viewModel);
         }
 
@@ -173,16 +171,15 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> AcceptedRequests()
         {
-            var currentUser = await GetCurrentUser();
-            string correctPage = RegistrationController.GetCorrectPage(currentUser);
-            if (correctPage.Length > 0)
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
             {
-                //Registration journey is not complete
-                return Redirect(correctPage);
+                return Redirect(REGISTRATION_URL);
             }
-            var viewModel = GetAccountViewModel(currentUser);
+
+            var viewModel = GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;            
-            var jobs = await _requestService.GetJobsForUserAsync(currentUser.ID, HttpContext);        
+            var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);        
             var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
 
             viewModel.PageModel = new AcceptedRequestsViewModel
@@ -203,10 +200,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         private async Task<User> GetCurrentUser()
-        {              
-             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-             var  user = await _userService.GetUserAsync(id);                
-             HttpContext.Session.SetObjectAsJson("User", user);                 
+        {
+            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var user = await _userService.GetUserAsync(id);
+            HttpContext.Session.SetObjectAsJson("User", user);
             return user;
         }
 
