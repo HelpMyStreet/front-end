@@ -27,7 +27,7 @@
         <div class="inner-container">
             <div class="row flex hero">
                 <div class="row sm12 align-center content-page">
-                    <h2 class="row sm12 mb0">HelpMyStreet's Community Sew</h2>
+                    <h2 class="row sm12 mb0">HelpMyStreet’s Community Sew</h2>
                     <p class="row sm12 text-left mt-sm">
                         We launched HelpMyStreet.org to ensure everybody in the UK can find the help they need, when they need it - and this now includes face coverings!
                         There are thousands of talented home sewers across the country who are happy to give their time and skills to provide their communities with the
@@ -42,12 +42,12 @@
                             </p>
                             <ul class="tick-list mt-sm">
                                 <li>Well-made, washable, reusable face coverings made with at least two layers of fabric</li>
-                                <li>To pay a small amount to cover the cost of materials and postage or donate to a good cause of a volunteer's choosing</li>
+                                <li>To pay a small amount to cover the cost of materials and postage or donate to a good cause of a volunteer’s choosing</li>
                                 <li>Items made with love by a talented volunteer</li>
                             </ul>
 
                             <div class="mt-md text-center">
-                                <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                                <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request Face Coverings</a>
                             </div>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                                 <ul class="mt-sm pl-md">
                                     <li>Receive pre-paid supplies straight to your door from Ashleigh and the FTLOS team</li>
                                     <li>Request payment in the form of donations to the <a href="https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings" target="_blank">FTLOS GoFundMe page</a></li>
-                                    <li>Be a part of one of the UK's biggest sewing communities</li>
+                                    <li>Be a part of one of the UK’s biggest sewing communities</li>
                                 </ul>
 
                                 <p>
@@ -92,14 +92,7 @@
                                 </p>
 
                                 <div class="mt-sm text-center">
-                                    @if (isLoggedIn)
-                                    {
-                                        <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="@Model.FtlosSignUpURL" class="btn cta fixed-width btn--sign-up">Join FTLOS</a>
-                                    }
+                                    <a href="/for-the-love-of-scrubs" class="btn cta fixed-width btn--sign-up">Find our more</a>
                                 </div>
                             </div>
                         </div>
@@ -119,22 +112,22 @@
                 <div class="sm12">
                     <div class="community-volunteers-text" id="read-more-text">
                         <p>
-                            Wearing a face covering can help protect everyone and reduce the spread of coronavirus, so face coverings are compulsory in some public spaces such as shops and public transport. We're all urged to use home-made fabric face coverings so we can save medical masks for the medics!
+                            Wearing a face covering can help protect everyone and reduce the spread of coronavirus, so face coverings are compulsory in some public spaces such as shops and public transport. We’re all urged to use home-made fabric face coverings so we can save medical masks for the medics!
                         </p>
 
                         <p>HelpMyStreet is bringing together home sewers who are using their time and skills to help their neighbours.</p>
                         <p>
                             <strong>Will all of your face coverings look the same?</strong> Hopefully not! All of our volunteers are encouraged to find a pattern
                             and materials that suit them. All we ask is that face coverings have at least two layers of fabric and will fit comfortably and securely -
-                            as a volunteer you can opt for a fitted or pleated style, use ties or elastics, go for patterned or plain, it's completely up to you
-                            (check out our Useful Links section below for patterns and guidance). If you're requesting face coverings and have a strong preference for
+                            as a volunteer you can opt for a fitted or pleated style, use ties or elastics, go for patterned or plain, it’s completely up to you
+                            (check out our Useful Links section below for patterns and guidance). If you’re requesting face coverings and have a strong preference for
                             a specific style make sure to include it on your request so volunteers know what you need.
                         </p>
 
                         <p>
                             <strong>Is there a cost for face coverings?</strong> Did you know it takes the average sewer half an hour to make a face covering?
-                            Our volunteers won't charge for their time or skills, but may need to ask for £2 to £3 per face covering to cover the cost of materials,
-                            plus postage if you're further afield. They'll let you know the cost when they contact you. See our FAQs for details on how to pay safely.
+                            Our volunteers won’t charge for their time or skills, but may need to ask for £2 to £3 per face covering to cover the cost of materials,
+                            plus postage if you’re further afield. They’ll let you know the cost when they contact you. See our FAQs for details on how to pay safely.
                         </p>
 
                         <p>If you have any questions about signing up as a sewing volunteer or making a request for face coverings, email <a href="mailto:sewing@helpmystreet.org">sewing@helpmystreet.org</a>.</p>
@@ -146,11 +139,11 @@
 
     @{
         var requestHelpHead = "Do you need a face covering?";
-        var requestHelpDesc = "If you need face coverings for yourself, your family or your organisation, please Request Help. Whether it's 1 or 100, we'll do our best to help.";
+        var requestHelpDesc = "If you need face coverings for yourself, your family or your organisation, please Request Help. Whether it’s 1 or 100, we’ll do our best to help.";
 
 
         var provideHelpHead = "Volunteer with us!";
-        var provideHelpDesc = " If you're a home sewer and able to make face coverings, either for the cost of materials or as a donation, join us to help your neighbours. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+        var provideHelpDesc = " If you’re a home sewer and able to make face coverings, either for the cost of materials or as a donation, join us to help your neighbours. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
     }
 
     <div class="outer-container">
@@ -165,7 +158,7 @@
                         </p>
 
                         <div class="">
-                            <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                            <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request Face Coverings</a>
                         </div>
 
                     </div>
@@ -265,7 +258,7 @@
                         </p>
 
                         <div class="">
-                            <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request a Face Covering</a>
+                            <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request Face Coverings</a>
                         </div>
 
                     </div>

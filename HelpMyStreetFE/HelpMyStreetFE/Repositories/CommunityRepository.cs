@@ -432,7 +432,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.RequestHelpHeading = "Do you need a face covering?";
             communityViewModel.RequestHelpText = "If you’d like some For the Love of Scrubs face coverings for yourself, your family or an organisation, request them now. We'll do our best to help! ";
-            communityViewModel.RequestHelpButtonText = "Request a Face Covering";
+            communityViewModel.RequestHelpButtonText = "Request Face Coverings";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
