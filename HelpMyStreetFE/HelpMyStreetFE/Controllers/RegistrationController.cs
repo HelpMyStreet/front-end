@@ -289,12 +289,7 @@ namespace HelpMyStreetFE.Controllers
         private async Task<string> GetCorrectPage(int userId)
         {
             User user = await _userService.GetUserAsync(userId);
-            return GetCorrectPage(user);
-        }
-
-        public static string GetCorrectPage(User user)
-        {
-            if (user.RegistrationHistory.Count > 0)
+            if (user != null && user.RegistrationHistory.Count > 0)
             {
                 int maxStep = user.RegistrationHistory.Max(a => a.Key);
 
@@ -307,7 +302,7 @@ namespace HelpMyStreetFE.Controllers
                     case 3:
                         return "/registration/step-four";
                     default:
-                        return string.Empty; //Registration journey is complete
+                        return "/account"; //Registration journey is complete
                 }
             }
 
