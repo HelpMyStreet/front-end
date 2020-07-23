@@ -427,7 +427,7 @@ namespace HelpMyStreetFE.Repositories
                     <p>You can donate through For the Love of Scrubs’ <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings'>gofundme page</a></p>
 
                     <h6>Requesting materials</h6>
-                    <p>If you’re a FTLOS sewer and need more materials contact your local group administrator or email <a href='mailto:materialrequest-ftlos@outlook.com'>materialrequest-ftlos@outlook.com</a></p>
+                    <p>If you’re a FTLOS sewer and need more materials contact your local group administrator or email <a href='mailto:requestmaterials.ftlos@outlook.com'>requestmaterials.ftlos@outlook.com</a></p>
             ";
 
             communityViewModel.RequestHelpHeading = "Do you need a face covering?";
