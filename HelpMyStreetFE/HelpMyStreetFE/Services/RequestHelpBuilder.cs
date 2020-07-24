@@ -94,6 +94,8 @@ namespace HelpMyStreetFE.Services
             {
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(2, 1);
+
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY) {
