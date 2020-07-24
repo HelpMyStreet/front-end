@@ -21,10 +21,9 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             {
                 var selectedTask = this.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                 if (selectedTask == null) return null;
-                var healthCriticalQuestion = selectedTask.Questions.Where(x => x.ID == (int)HelpMyStreet.Utils.Enums.Questions.IsHealthCritical).FirstOrDefault();
-                if (healthCriticalQuestion == null) return null; 
-                return bool.Parse(healthCriticalQuestion.Model); // if we dont ask the question then its not health critical;
-
+                var healthCriticalQuestion = selectedTask.Questions.Where(x => x.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
+                if (healthCriticalQuestion == null || healthCriticalQuestion.Model == null) return null; 
+                return bool.Parse(healthCriticalQuestion.Model);
             }
         }
         public bool AgreeToTerms { get; set; }
