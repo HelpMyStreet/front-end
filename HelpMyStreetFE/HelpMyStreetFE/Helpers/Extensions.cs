@@ -76,7 +76,7 @@ namespace HelpMyStreetFE
 
     public static class JobSummaryQuestionExtensions
     {
-        public static bool  ShowOnTaskManagement(this Question question)
+        public static bool ShowOnTaskManagement(this Question question)
         {
             return question.Id switch
             {
@@ -93,41 +93,26 @@ namespace HelpMyStreetFE
             return question.Id switch
             {
                 (int)Questions.FaceMask_SpecificRequirements => "Request Description",
-                (int)Questions.SupportRequesting => "Request Description",                
+                (int)Questions.SupportRequesting => "Request Description",
                 _ => question.Name
             };
         }
 
     }
 
-    public static class RequestHelpQuestionExtensions {
-        
-        public static string Location(this RequestHelpQuestion question)
-        {
-            
-            return question.ID switch
-            {
-                (int)Questions.FaceMask_Recipient => "pos3",
-                (int)Questions.FaceMask_Cost => "pos3",
-                (int)Questions.FaceMask_Amount => "pos2",
-                (int)Questions.FaceMask_SpecificRequirements => "pos2",
-                (int)Questions.IsHealthCritical => "pos3",
-                (int)Questions.WillYouCompleteYourself => "pos3",
-                (int)Questions.FtlosDonationInformation => "pos3",
-                _ => "pos1"
-            };        
-        }
+    public static class RequestHelpQuestionExtensions
+    {
 
-        public static bool Show(this RequestHelpQuestion question , string position, RequestorType? requestorType)
-        {        
-            if (question.Location() == position)
+        public static bool Show(this RequestHelpQuestion question, string position, RequestorType? requestorType)
+        {
+            if (question.Location == position)
             {
                 //if the question has no configuration for RequestorTypes then show
-                if ( question.VisibleForRequestorTypes == null) return true;
+                if (question.VisibleForRequestorTypes == null) return true;
 
                 // if no requestor type has been provided (they havent clicked that option yet) but the question has 
                 //configuration against it we want to hide the question
-                if (requestorType == null) return false; 
+                if (requestorType == null) return false;
 
                 if (question.VisibleForRequestorTypes.Contains(requestorType.Value))
                 {
@@ -136,10 +121,10 @@ namespace HelpMyStreetFE
                 else
                 {
                     return false;
-                }                
-            }                        
-           
-            return false;           
+                }
+            }
+
+            return false;
         }
 
         public static string Class(this RequestHelpQuestion question)
@@ -149,26 +134,6 @@ namespace HelpMyStreetFE
             {
                 (int)Questions.FaceMask_Amount => "small-width",
                 _ => ""
-            };
-        }
-            public static string Subtext(this RequestHelpQuestion question)
-        {
-            return question.ID switch
-            {
-                (int)Questions.FaceMask_SpecificRequirements => "Size guide:<br />&nbsp;- Men’s (Small / Medium / Large)<br />&nbsp;- Ladies’ (Small / Medium / Large)<br />&nbsp;- Children’s (One Size - under 12)",
-                (int)Questions.FaceMask_Amount => "Remember they’re washable and reusable, so only request what you need between washes.",
-                (int)Questions.FaceMask_Cost => "Volunteers are providing their time and skills free of charge.",
-                _ => string.Empty
-            };
-        }
-
-        public static string Placeholder(this RequestHelpQuestion question)
-        {
-            return question.ID switch
-            {
-                (int)Questions.FaceMask_SpecificRequirements => "Don’t forget to tell us how many of each size you need. If you have very specific style requirements it may take longer to find a volunteer to help with your request. Please don’t include personal information such as name or address in this box, we’ll ask for that later.",
-                (int)Questions.SupportRequesting => "Please don’t include any sensitive details that aren’t needed in order for us to help you",                
-                _ => string.Empty
             };
         }
 

@@ -179,6 +179,9 @@ namespace HelpMyStreetFE.Services
                 InputType = x.Type,
                 Label = x.Name,
                 Required = x.Required,
+                PlaceholderText = x.PlaceholderText,
+                SubText = x.SubText,
+                Location = x.Location,
                 AdditionalData = x.AddtitonalData,
                 VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
             }).ToList());
