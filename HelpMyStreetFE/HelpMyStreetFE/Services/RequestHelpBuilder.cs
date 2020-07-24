@@ -133,6 +133,10 @@ namespace HelpMyStreetFE.Services
             {
                 tasks.Add(new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = true });
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                tasks.Add(new TasksViewModel { ID = 14, SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
+            }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
