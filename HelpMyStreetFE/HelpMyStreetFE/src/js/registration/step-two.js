@@ -8,7 +8,7 @@ export function initialiseStepTwo() {
 
   trackEvent("Registration flow", "View Step 2");
 
-  $("#manual_address").on("click", function (evt) {
+  $(".manual_entry").on("click", function (evt) {
     evt.preventDefault();
     $(".expander").slideDown();
     trackEvent("Registration flow", "Click Manual entry");
@@ -57,7 +57,7 @@ export function initialiseStepTwo() {
                     $("input[name=address_line_2]").val(address.addressLine2);
                     $("input[name=city]").val(address.locality);
                     $("input[name=postcode]").val(address.postcode);
-                    $(".expander").slideDown();
+                    //$(".expander").slideDown();
                 });
             } else {
                 let postcodeInput = $("input[name='postcode_search']");

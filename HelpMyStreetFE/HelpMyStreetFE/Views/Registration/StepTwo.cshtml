@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Models.Registration;
+@using HelpMyStreetFE.Models.Registration;
 
 @model RegistrationViewModel;
 
@@ -53,7 +53,7 @@
                         <span class="text">Find address</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
                     </button>
-                    <a id="manual_address" href="#" class="input__link">Or enter your address manually</a>
+                    <a href="#" class="manual_entry input__link">Or enter your address manually</a>
                 </div>
                 <div class="input sm8 dnone" id="address_selector">
                     <label for="address-selector">Select address</label>
