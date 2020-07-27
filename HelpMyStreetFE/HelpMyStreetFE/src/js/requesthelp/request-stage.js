@@ -1,7 +1,7 @@
 ﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
-import { loadQuestions } from "./requesthelp-shared.js";
+import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 
 export function intialiseRequestStage() {
     intialiseRequestTiles();
@@ -42,37 +42,6 @@ var validateForm = function () {
         
         return validForm;
     });
-}
-
-
-var validateQuestions = function(){
-    var validQuestions = [];
-    $('.question').each(function () {
-        var type = $(this).attr("type");
-        let errorField = $(this).find("~ .error");
-        if (type == "radio") {
-            errorField = $(this).parentsUntil(".input").parent().find(".error");            
-        }
-        errorField.hide();
-        var isRequired = $(this).attr("data-required");
-    
-        var val = $(this).val();
-        if (type == "radio") {
-            val = $(`input[name="${$(this).attr("name")}"]:checked`).val();
-        }                
-        if (isRequired == "True") {            
-            if (val == undefined || val == "") {
-                validQuestions.push(false);           
-                errorField.text($(this).attr("data-val-message")).show();
-            } else {
-                validQuestions.push(true);
-            }
-        } else {
-            validQuestions.push(true);
-        }        
-    });
-
-    return !validQuestions.includes(false);
 }
 
 
