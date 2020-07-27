@@ -1,7 +1,7 @@
 ﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
-
+import { loadQuestions } from "./requesthelp-shared.js";
 
 export function intialiseRequestStage() {
     intialiseRequestTiles();
@@ -12,7 +12,7 @@ export function intialiseRequestStage() {
         $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
     });
     if (taskId != "") {        
-        LoadQuestions(taskId);
+        loadQuestions(taskId);
     }   
 
     trackEvent("Request form", "View 0.request", "", 0);
@@ -42,27 +42,6 @@ var validateForm = function () {
         
         return validForm;
     });
-}
-
-
-var GetCurrentQuestionAnswers = function () {
-    var questionAnswers = []
-
-    $('.question').each(function () {
-        var type = $(this).attr("type");   
-        var val = $(this).val();
-        if (type == "radio") {
-            val = $(`input[name="${$(this).attr("name")}"]:checked`).val();
-        }      
-        if (val != undefined) {
-            questionAnswers.push({
-                id: Number($(this).attr("data-id")),
-                answer: val
-            });
-        }
-    });
-
-    return questionAnswers;
 }
 
 
@@ -124,7 +103,7 @@ var handleRequestFor = function (el) {
         let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
         trackEvent("Request form", "Select request for", selectedValue, 0);
 
-        LoadQuestions(taskId);
+        loadQuestions(taskId);
     }
 }
 var handleTimeFrame = function (el) {
@@ -174,51 +153,16 @@ var handleActivity = function (el) {
         $('.requestorFor:visible').addClass("selected");
         let selectedId = $('.requestorFor:visible').attr("data-id");
         $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
-        LoadQuestions(taskId, selectedId);
+        loadQuestions(taskId, selectedId);
     } else {
         $('.requestorFor:visible').removeClass("selected");
         $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-        LoadQuestions(taskId);
+        loadQuestions(taskId);
     }
 
 
 
 }
-
-
-
-var LoadQuestions = function (taskId) {
-    var requestorId = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-    requestorId = requestorId == "" ? null : Number(requestorId);
-
-    var qRequest = {
-        taskId: Number(taskId),
-        step: JSON.parse($('input[name="RequestStep"]').val()),
-        requestorId: requestorId,
-        answers: GetCurrentQuestionAnswers(),
-    };
-
-    $('.questions').each(function () {
-        qRequest.position = $(this).attr("data-position");
-        var el = $(this);
-        $.ajax({
-            url: "/RequestHelp/Questions",
-            type: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            dataType: "html",
-            data: JSON.stringify(qRequest),
-            success: function (data) {
-                el.html(data);
-            }
-        });
-    })
-
-
-    }
-
 
 function displayTodayHelpNeededOptions(show) {
     if (!show) {

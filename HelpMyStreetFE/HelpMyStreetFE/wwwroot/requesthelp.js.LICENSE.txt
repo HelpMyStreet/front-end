@@ -240,6 +240,8 @@
 
 /*! ./request-stage */
 
+/*! ./requesthelp-shared.js */
+
 /*! ./review-stage */
 
 /*! core-js/modules/es.array.concat */
@@ -298,6 +300,8 @@
 
 /*! exports provided: intialiseReviewStage */
 
+/*! exports provided: loadQuestions */
+
 /*! exports provided: trackPageView, trackEvent */
 
 /*! exports provided: validateFormData, validatePostCode, validateEmail, validatePhoneNumber, hasNumber, validatePrivacyAndTerms, scrollToFirstError */
@@ -335,6 +339,10 @@
 /*!*****************************************!*\
   !*** ./js/requesthelp/request-stage.js ***!
   \*****************************************/
+
+/*!**********************************************!*\
+  !*** ./js/requesthelp/requesthelp-shared.js ***!
+  \**********************************************/
 
 /*!************************************************!*\
   !*** ../node_modules/core-js/internals/has.js ***!
