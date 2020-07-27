@@ -1,6 +1,15 @@
 import "isomorphic-fetch";
 
 $(document).ready(function () {
+
+    var sliders = document.getElementsByClassName('slides');
+
+    sliders.forEach(slide => {
+        var middleSlide = Math.floor(slide.querySelectorAll('div').length / 2)
+        var mainSlide = slide.querySelectorAll('div')[middleSlide];
+        slide.scrollTo(mainSlide.offsetLeft, 0);
+    });
+
     $('#community-volunteers-text').readmore({
         moreLink: '<a href="#">Read more</a>',
         lessLink: '<a href="#">Read less</a>',
