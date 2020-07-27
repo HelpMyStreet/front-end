@@ -206,7 +206,10 @@ namespace HelpMyStreetFE.Controllers
             RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
-                return Redirect("/login?ReturnUrl=request-help/0/DIY");
+            {
+                string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId.ToString());
+                return Redirect($"/login?ReturnUrl=request-help/{encodedReferringGroupId}/{source}");
+            }
 
             var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
@@ -220,7 +223,7 @@ namespace HelpMyStreetFE.Controllers
             string message = "<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>";
 
             string doneLink = User.Identity.IsAuthenticated ? "/account" : "/";
-            string button = $" <a href='{doneLink}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+            string button = $"<a href='{doneLink}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
 
             string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId.ToString());
             string requestLink = $"/request-help/{encodedReferringGroupId}/{source}";
@@ -236,8 +239,8 @@ namespace HelpMyStreetFE.Controllers
             if (!User.Identity.IsAuthenticated)
             {    
                 message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
-                message += "<p> Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
-                button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+                message += "<p>Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
+                button = $"<a href='/registration/step-one/{encodedReferringGroupId}/help-request-success' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
            
             if (fulfillable == Fulfillable.Accepted_DiyRequest)
@@ -249,7 +252,7 @@ namespace HelpMyStreetFE.Controllers
                     message += facemaskmessage;
                 }
 
-                button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+                button = "<a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {
