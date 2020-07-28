@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Request;
+using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
@@ -134,30 +134,30 @@ namespace HelpMyStreetFE.Services
             var tasks = new List<TasksViewModel>();
             if (requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
-                tasks.Add(new TasksViewModel { ID = 11, SupportActivity = SupportActivities.WellbeingPackage });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.WellbeingPackage });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
-                tasks.Add(new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = true });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = true });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
             {
-                tasks.Add(new TasksViewModel { ID = 14, SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
             }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
             {
-                    new TasksViewModel { ID = 1, SupportActivity = SupportActivities.Shopping },
-                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
-                    new TasksViewModel { ID = 3, SupportActivity = SupportActivities.CheckingIn },
-                    new TasksViewModel { ID = 4, SupportActivity = SupportActivities.CollectingPrescriptions },
-                    new TasksViewModel { ID = 5, SupportActivity = SupportActivities.Errands },
-                    new TasksViewModel { ID = 6, SupportActivity = SupportActivities.MealPreparation },
-                    new TasksViewModel { ID = 7, SupportActivity = SupportActivities.PhoneCalls_Friendly },
-                    new TasksViewModel { ID = 9, SupportActivity = SupportActivities.HomeworkSupport },
-                    new TasksViewModel { ID = 10, SupportActivity = SupportActivities.Other },
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
+                    new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealPreparation },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.HomeworkSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
              });
             }
 

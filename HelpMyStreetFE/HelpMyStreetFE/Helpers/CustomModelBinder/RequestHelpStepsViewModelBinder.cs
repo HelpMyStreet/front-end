@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
@@ -100,7 +100,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             }
 
             model.Tasks.ForEach(x => x.IsSelected = false);
-            var task = model.Tasks.Where(x => x.ID == selectedTaskId).FirstOrDefault();
+            var task = model.Tasks.Where(x => (int)x.SupportActivity == selectedTaskId).FirstOrDefault();
             if (task != null)
             {
                 task.IsSelected = true;
