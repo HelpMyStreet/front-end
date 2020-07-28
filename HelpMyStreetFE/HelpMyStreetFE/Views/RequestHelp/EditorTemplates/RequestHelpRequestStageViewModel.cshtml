@@ -40,7 +40,9 @@
 
 <div class="row">
     <div class="sm12">
-        <div class="questions" data-position="pos1"></div>
+        <div class="questions" data-position="pos1">
+            <partial name="_Questions" model="@Model.GetRequestHelpQuestionsByLocation("pos1")" />
+        </div>
     </div>
 </div>
 
@@ -50,7 +52,9 @@
 
 <div class="row">
     <div class="sm12">
-        <div class="questions" data-position="pos2"></div>
+        <div class="questions" data-position="pos2">
+            <partial name="_Questions" model="@Model.GetRequestHelpQuestionsByLocation("pos2")" />
+        </div>
     </div>
 </div>
 
@@ -123,7 +127,9 @@
 
 <div class="row">
     <div class="sm12">
-        <div class="questions" data-position="pos3"></div>
+        <div class="questions" data-position="pos3">
+            <partial name="_Questions" model="@Model.GetRequestHelpQuestionsByLocation("pos3")" />
+        </div>
     </div>
 </div>
 

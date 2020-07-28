@@ -2,8 +2,6 @@
 @using HelpMyStreet.Utils.Enums;
 
 <input type="hidden" name="DetailStep" class="model" value='@Json.Serialize(Model)' />
-@Html.Hidden("FormStage", RequestHelpFormStage.Detail)
-@Html.Hidden("PreviousAnswers", @Json.Serialize(Model.Questions))
 
 @switch (Model.Type)
 {
@@ -33,18 +31,13 @@
         break;
 }
 
-<div class="row">
-    <div class="sm12">
-        <div class="questions" data-position="details1"></div>
-    </div>
-</div>
-
-
 <hr class="input--separator" />
 <h2>Is there anything more you would like to tell us?</h2>
 
 <div class="row">
     <div class="sm12">
-        <div class="questions" data-position="details2"></div>
+        <div class="questions" data-position="details2">
+            <partial name="_Questions" model="Model.Questions" />
+        </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.Validation;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
         public RecipientDetails Recipient { get; set; } 
         public string TemplateName { get; set; } = "RequestHelpDetailStageViewModel";
         public RequestorType Type { get; set; }
-        public List<RequestHelpQuestion> Questions { get; set; }
+        public QuestionsViewModel Questions { get; set; }
 
         public string CommunicationNeeds { get; set; }
         public string OtherDetails { get; set; }

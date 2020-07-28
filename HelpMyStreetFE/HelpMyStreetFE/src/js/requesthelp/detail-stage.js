@@ -6,9 +6,6 @@ import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
     SetupAddressFinder();
-
-    var supportActivity = $('input#SelectedSupportActivity').val();
-    loadQuestions(supportActivity);
     
     trackEvent("Request form", "View 1.details", "", 0);
 }

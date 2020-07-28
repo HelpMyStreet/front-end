@@ -84,15 +84,15 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             model.CommunicationNeeds = bindingContext.ValueProvider.GetValue("currentStep.CommunicationNeeds").FirstValue;
             model.OtherDetails = bindingContext.ValueProvider.GetValue("currentStep.OtherDetails").FirstValue;
 
-            model.Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity);
+            model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity) };
 
-            for (int i = 0; i < model.Questions.Count; i++)
+            for (int i = 0; i < model.Questions.Questions.Count(); i++)
             {
                 int questionID = -1;
                 int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
 
 
-                var question = model.Questions.Where(x => x.ID == questionID).FirstOrDefault();
+                var question = model.Questions.Questions.Where(x => x.ID == questionID).FirstOrDefault();
                 if (question != null)
                 {
                     if (question.InputType == QuestionType.LabelOnly)
