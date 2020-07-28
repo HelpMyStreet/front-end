@@ -139,6 +139,7 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
                         reviewStage.OtherDetails = detailStage.OtherDetails;
                         reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
+                        reviewStage.RequestStageQuestions = requestStage.RequestHelpQuestions.Questions;
                         reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
                     }
                 }
@@ -299,14 +300,9 @@ namespace HelpMyStreetFE.Controllers
             foreach (var question in questionsViewModel.Questions)
             {
                 var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
-                var matchedPreviousAnswer = request.PreviousAnswers.Where(x => x.ID == question.ID && !string.IsNullOrEmpty(x.Model)).FirstOrDefault();
                 if (matchedAnswer != null)
                 {
                     question.Model = matchedAnswer.Answer;
-                }
-                else if (matchedPreviousAnswer != null)
-                {
-                    question.Model = matchedPreviousAnswer.Model;
                 }
                 question.Show = question.Show(request.Position, requestorType);
             }
@@ -365,7 +361,6 @@ namespace HelpMyStreetFE.Controllers
             public string SupportActivity { get; set; }
             public string Position { get; set; }
             public int? RequestorId { get; set; }
-            public List<RequestHelpQuestion> PreviousAnswers { get; set; }
             public List<QuestionAnswer> Answers { get; set; }
             public class QuestionAnswer
             {

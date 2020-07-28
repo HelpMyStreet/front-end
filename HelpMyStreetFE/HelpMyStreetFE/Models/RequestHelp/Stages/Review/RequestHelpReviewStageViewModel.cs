@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public bool? HealthCritical { get; set; }
         public string CommunicationNeeds { get; set; }
         public string OtherDetails { get; set; }
+        public List<RequestHelpQuestion> RequestStageQuestions { get; set; }
         public List<RequestHelpQuestion> DetailsStageQuestions { get; set; }
         public bool ShowOtherDetails { get; set; }
 

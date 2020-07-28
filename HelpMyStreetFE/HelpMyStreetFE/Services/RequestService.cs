@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Services
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
 
-            IEnumerable<RequestHelpQuestion> questions = selectedTask.Questions.Union(detailStage.Questions.Questions);
+            IEnumerable<RequestHelpQuestion> questions = requestStage.RequestHelpQuestions.Questions.Union(detailStage.Questions.Questions);
 
             var request = new PostNewRequestForHelpRequest
             {

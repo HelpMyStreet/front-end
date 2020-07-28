@@ -8,7 +8,6 @@
 }
 <input type="hidden" name="RequestStep" class="model" value='@Json.Serialize(Model)' />
 @Html.Hidden("FormStage", RequestHelpFormStage.Request)
-@Html.Hidden("PreviousAnswers", @Json.Serialize(Model.Tasks.Where(x => x.IsSelected).FirstOrDefault() != null ? Model.Tasks.Where(x => x.IsSelected).FirstOrDefault().Questions : new List<HelpMyStreetFE.Models.RequestHelp.RequestHelpQuestion>()))
 <input type="hidden" name="selectAction" />
 <h2>@Model.PageHeading</h2>
 <div class="row">

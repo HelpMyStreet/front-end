@@ -20,9 +20,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         {
             get
             {
-                var selectedTask = this.Tasks.Where(x => x.IsSelected).FirstOrDefault();
-                if (selectedTask == null) return null;
-                var healthCriticalQuestion = selectedTask.Questions.Where(x => x.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
+                if (RequestHelpQuestions == null) return null;
+                var healthCriticalQuestion = RequestHelpQuestions.Questions.Where(x => x.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
                 if (healthCriticalQuestion == null || healthCriticalQuestion.Model == null) return null; 
                 return bool.Parse(healthCriticalQuestion.Model);
             }

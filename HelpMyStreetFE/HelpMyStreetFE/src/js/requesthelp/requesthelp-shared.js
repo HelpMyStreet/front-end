@@ -7,7 +7,6 @@
         formVariant: $('input#FormVariant').val(),
         formStage: $('input#currentStep_FormStage').val(),
         requestorId: requestorId,
-        previousAnswers: JSON.parse($('input#currentStep_PreviousAnswers').val()),
         answers: GetCurrentQuestionAnswers(),
     };
     

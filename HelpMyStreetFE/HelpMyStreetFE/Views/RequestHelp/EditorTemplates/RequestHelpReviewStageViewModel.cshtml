@@ -57,13 +57,13 @@
         </div>
     </div>
 
-    @if (Model.Task.Questions != null)
+    @if (Model.RequestStageQuestions != null)
     {
         <div class="row justify-center ">
             <div class="sm8">
                 <div class="tiles__tile tiles__tile">
                     <div class="tiles__tile__content--top">
-                        @foreach (var question in Model.Task.Questions)
+                        @foreach (var question in Model.RequestStageQuestions)
                         {
                             if (string.IsNullOrEmpty(question.Model)) question.Model = "Not Answered";
                             <div class="tiles__tile__content--top__header  p-xs">@Html.Raw(question.Label)</div>

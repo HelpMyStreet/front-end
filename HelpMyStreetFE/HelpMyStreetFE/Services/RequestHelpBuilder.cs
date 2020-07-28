@@ -161,35 +161,6 @@ namespace HelpMyStreetFE.Services
              });
             }
 
-            var questions = await _requestHelpRepository.GetQuestionsByActivity(new GetQuestionsByActivitiesRequest
-            {
-                ActivitesRequest = new ActivitesRequest
-                {
-                    Activities = tasks.Select(x => x.SupportActivity).ToList()
-                },
-                RequestHelpFormVariantRequest = new RequestHelpFormVariantRequest
-                {
-                    RequestHelpFormVariant = requestHelpFormVariant
-                },
-                RequestHelpFormStageRequest = new RequestHelpFormStageRequest
-                {
-                    RequestHelpFormStage = RequestHelpFormStage.Request
-                }
-            });
-
-            tasks.ForEach(x => x.Questions = questions.SupportActivityQuestions[x.SupportActivity].Select(x => new RequestHelpQuestion
-            {
-                ID = x.Id,
-                InputType = x.Type,
-                Label = x.Name,
-                Required = x.Required,
-                PlaceholderText = x.PlaceholderText,
-                SubText = x.SubText,
-                Location = x.Location,
-                AdditionalData = x.AddtitonalData,
-                VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
-            }).ToList());
-
             return tasks;
         }
 
