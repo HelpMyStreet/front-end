@@ -1,11 +1,11 @@
-using HelpMyStreet.Utils.Enums;
+﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
+using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,22 +14,27 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
     public class RequestHelpStepsViewModelBinder : IModelBinder
     {
         private readonly IModelMetadataProvider _provider;
-        public RequestHelpStepsViewModelBinder(IModelMetadataProvider provider)
+        private readonly IRequestHelpBuilder _requestHelpBuilder;
+        public RequestHelpStepsViewModelBinder(IModelMetadataProvider provider, IRequestHelpBuilder requestHelpBuilder)
         {
             _provider = provider;
+            _requestHelpBuilder = requestHelpBuilder;
         }
         Task IModelBinder.BindModelAsync(ModelBindingContext bindingContext)
         {
             var stepTypeValue = bindingContext.ValueProvider.GetValue("StepType");
             var stepType = Type.GetType(stepTypeValue.ToString());
+            RequestHelpFormVariant requestHelpFormVariant = Enum.Parse<RequestHelpFormVariant>(bindingContext.ValueProvider.GetValue("FormVariant").FirstValue);
+            SupportActivities selectedSupportActivity;
+            Enum.TryParse<SupportActivities>(bindingContext.ValueProvider.GetValue("SelectedSupportActivity").FirstValue, out selectedSupportActivity);
             bindingContext.ModelMetadata = _provider.GetMetadataForType(stepType);
             switch (stepType.Name)
             {
                 case nameof(RequestHelpRequestStageViewModel):
-                    bindingContext.Result = ModelBindingResult.Success(BindRequestStage(bindingContext));
+                    bindingContext.Result = ModelBindingResult.Success(BindRequestStage(bindingContext, requestHelpFormVariant).Result);
                     break;
                 case nameof(RequestHelpDetailStageViewModel):
-                    bindingContext.Result = ModelBindingResult.Success(BuildDetailStage(bindingContext));
+                    bindingContext.Result = ModelBindingResult.Success(BuildDetailStage(bindingContext, requestHelpFormVariant, selectedSupportActivity).Result);
                     break;
                 case nameof(RequestHelpReviewStageViewModel):
                     bindingContext.Result = ModelBindingResult.Success(BuildReviewStage(bindingContext));
@@ -45,7 +50,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             return model;
         }
 
-        private RequestHelpDetailStageViewModel BuildDetailStage(ModelBindingContext bindingContext)
+        private async Task<RequestHelpDetailStageViewModel> BuildDetailStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant, SupportActivities selectedSupportActivity)
         {
             RequestHelpDetailStageViewModel model = JsonConvert.DeserializeObject<RequestHelpDetailStageViewModel>(bindingContext.ValueProvider.GetValue("DetailStep").FirstValue);
             var recpientnamePrefix = "currentStep.Recipient.";
@@ -79,10 +84,32 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             model.CommunicationNeeds = bindingContext.ValueProvider.GetValue("currentStep.CommunicationNeeds").FirstValue;
             model.OtherDetails = bindingContext.ValueProvider.GetValue("currentStep.OtherDetails").FirstValue;
 
+            model.Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity);
+
+            for (int i = 0; i < model.Questions.Count; i++)
+            {
+                int questionID = -1;
+                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
+
+
+                var question = model.Questions.Where(x => x.ID == questionID).FirstOrDefault();
+                if (question != null)
+                {
+                    if (question.InputType == QuestionType.LabelOnly)
+                    {
+                        question.Model = "";
+                    }
+                    else
+                    {
+                        question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
+                    }
+                }
+            }
+
             return model;
         }
 
-        private RequestHelpRequestStageViewModel BindRequestStage(ModelBindingContext bindingContext)
+        private async Task<RequestHelpRequestStageViewModel> BindRequestStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant)
         {
             RequestHelpRequestStageViewModel model = JsonConvert.DeserializeObject<RequestHelpRequestStageViewModel>(bindingContext.ValueProvider.GetValue("RequestStep").FirstValue);
 
@@ -119,10 +146,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
             }
 
-            int questionCount = -1;
-            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask.QuestionCount").FirstValue, out questionCount);
+            task.Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity);
 
-            for (int i = 0; i < questionCount; i++)
+            for (int i = 0; i < task.Questions.Count; i++)
             {
                 int questionID = -1;
                 int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);

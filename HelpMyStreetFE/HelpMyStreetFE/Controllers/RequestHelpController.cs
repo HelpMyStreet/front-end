@@ -5,9 +5,7 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
-using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
@@ -15,8 +13,6 @@ using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,11 +28,13 @@ namespace HelpMyStreetFE.Controllers
         private readonly ILogger<RequestHelpController> _logger;
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService)
+        private readonly IRequestHelpBuilder _requestHelpBuilder;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder)
         {
             _logger = logger;
             _requestService = requestService;
             _groupService = groupService;
+            _requestHelpBuilder = requestHelpBuilder;
         }
 
         [ValidateAntiForgeryToken]
@@ -139,6 +137,7 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
                         reviewStage.OtherDetails = detailStage.OtherDetails;
                         reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
+                        reviewStage.DetailsStageQuestions = detailStage.Questions;
                     }
                 }
                 if (requestHelp.Action == "finish")
@@ -277,34 +276,50 @@ namespace HelpMyStreetFE.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
+        public async Task<ActionResult> Questions([FromBody] QuestionRequest request)
         {
-            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
             RequestorType? requestorType = null;
             if (request.RequestorId.HasValue)
             {
-                requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
+                //TODO: fix or remove
+                //requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
             }
 
-            foreach (var question in model.Questions)
+            RequestHelpFormVariant requestHelpFormVariant = Enum.Parse<RequestHelpFormVariant>(request.FormVariant);
+            RequestHelpFormStage requestHelpFormStage = Enum.Parse<RequestHelpFormStage>(request.FormStage);
+            SupportActivities supportActivity = Enum.Parse<SupportActivities>(request.SupportActivity);
+
+            QuestionsViewModel questionsViewModel = new QuestionsViewModel()
+            {
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity)
+            };
+
+            foreach (var question in questionsViewModel.Questions)
             {
                 var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
+                var matchedPreviousAnswer = request.PreviousAnswers.Where(x => x.ID == question.ID && !string.IsNullOrEmpty(x.Model)).FirstOrDefault();
                 if (matchedAnswer != null)
                 {
                     question.Model = matchedAnswer.Answer;
                 }
+                else if (matchedPreviousAnswer != null)
+                {
+                    question.Model = matchedPreviousAnswer.Model;
+                }
                 question.Show = question.Show(request.Position, requestorType);
             }
 
-            return PartialView("_Questions", model);
+            return PartialView("_Questions", questionsViewModel);
         }
 
         public class QuestionRequest
         {
-            public RequestHelpRequestStageViewModel Step { get; set; }
-            public int TaskID { get; set; }
+            public string FormVariant { get; set; }
+            public string FormStage { get; set; }
+            public string SupportActivity { get; set; }
             public string Position { get; set; }
             public int? RequestorId { get; set; }
+            public List<RequestHelpQuestion> PreviousAnswers { get; set; }
             public List<QuestionAnswer> Answers { get; set; }
             public class QuestionAnswer
             {

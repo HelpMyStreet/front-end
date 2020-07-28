@@ -50,6 +50,8 @@ namespace HelpMyStreetFE.Services
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
 
+            IEnumerable<RequestHelpQuestion> questions = selectedTask.Questions.Union(detailStage.Questions);
+
             var request = new PostNewRequestForHelpRequest
             {
                 HelpRequest = new HelpRequest
@@ -78,7 +80,7 @@ namespace HelpMyStreetFE.Services
                             Details = "",
                             HealthCritical = requestStage.IsHealthCritical.HasValue ? requestStage.IsHealthCritical.Value : false,
                             SupportActivity = selectedTask.SupportActivity,
-                            Questions = selectedTask.Questions.Select(x => new Question {
+                            Questions = questions.Select(x => new Question {
                                 Id = x.ID,
                                 Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Key ?? "" : x.Model,
                                 Name = x.Label,

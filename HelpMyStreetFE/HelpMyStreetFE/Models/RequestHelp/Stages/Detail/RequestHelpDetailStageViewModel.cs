@@ -14,6 +14,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
         public RecipientDetails Recipient { get; set; } 
         public string TemplateName { get; set; } = "RequestHelpDetailStageViewModel";
         public RequestorType Type { get; set; }
+        public List<RequestHelpQuestion> Questions { get; set; }
+
         public string CommunicationNeeds { get; set; }
         public string OtherDetails { get; set; }
 

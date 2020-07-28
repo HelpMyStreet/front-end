@@ -300,7 +300,7 @@
 
 /*! exports provided: intialiseReviewStage */
 
-/*! exports provided: loadQuestions */
+/*! exports provided: loadQuestions, validateQuestions */
 
 /*! exports provided: trackPageView, trackEvent */
 

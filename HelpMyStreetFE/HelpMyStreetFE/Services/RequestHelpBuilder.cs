@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Request;
+﻿using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
@@ -171,6 +171,10 @@ namespace HelpMyStreetFE.Services
                 {
                     RequestHelpFormVariant = requestHelpFormVariant
                 },
+                RequestHelpFormStageRequest = new RequestHelpFormStageRequest
+                {
+                    RequestHelpFormStage = RequestHelpFormStage.Request
+                }
             });
 
             tasks.ForEach(x => x.Questions = questions.SupportActivityQuestions[x.SupportActivity].Select(x => new RequestHelpQuestion
@@ -188,8 +192,45 @@ namespace HelpMyStreetFE.Services
 
             return tasks;
         }
+
+        public async Task<List<RequestHelpQuestion>> GetQuestionsForTask(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity)
+        {
+            var questions = await _requestHelpRepository.GetQuestionsByActivity(new GetQuestionsByActivitiesRequest
+            {
+                ActivitesRequest = new ActivitesRequest
+                {
+                    Activities = new List<SupportActivities>() { supportActivity }
+                },
+                RequestHelpFormVariantRequest = new RequestHelpFormVariantRequest
+                {
+                    RequestHelpFormVariant = requestHelpFormVariant
+                },
+                RequestHelpFormStageRequest = new RequestHelpFormStageRequest
+                {
+                    RequestHelpFormStage = requestHelpFormStage
+                }
+            });
+
+            List<RequestHelpQuestion> requestHelpQuestions = questions.SupportActivityQuestions[supportActivity].Select(x => new RequestHelpQuestion
+            {
+                ID = x.Id,
+                InputType = x.Type,
+                Label = x.Name,
+                Required = x.Required,
+                PlaceholderText = x.PlaceholderText,
+                SubText = x.SubText,
+                Location = x.Location,
+                AdditionalData = x.AddtitonalData,
+                VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
+            }).ToList();
+
+
+            return requestHelpQuestions;
+        }
+
         public List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant requestHelpFormVariant, int questionId)
         {
+            //TODO: Remove this??
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
             {
                 return new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation };

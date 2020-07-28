@@ -1,11 +1,14 @@
-@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpRequestStageViewModel
+﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpRequestStageViewModel
+@using HelpMyStreet.Utils.Enums;
 
 @{
 
-    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();    
+    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();
 
 }
-<input type="hidden" name="RequestStep" value='@Json.Serialize(Model)' />
+<input type="hidden" name="RequestStep" class="model" value='@Json.Serialize(Model)' />
+@Html.Hidden("FormStage", RequestHelpFormStage.Request)
+@Html.Hidden("PreviousAnswers", @Json.Serialize(Model.Tasks.Where(x => x.IsSelected).FirstOrDefault() != null ? Model.Tasks.Where(x => x.IsSelected).FirstOrDefault().Questions : new List<HelpMyStreetFE.Models.RequestHelp.RequestHelpQuestion>()))
 <input type="hidden" name="selectAction" />
 <h2>@Model.PageHeading</h2>
 <div class="row">
@@ -74,47 +77,47 @@
 
 <hr class="input--separator" />
 
-    <div class="row">
-        <div class="sm12 input">
-            <label for="selectedTimeFrame">When is the help needed?</label>
+<div class="row">
+    <div class="sm12 input">
+        <label for="selectedTimeFrame">When is the help needed?</label>
 
-            <div class="tiles">
-                <div class="input">
-                    <input type="hidden" id="selectedTimeFrame" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+        <div class="tiles">
+            <div class="input">
+                <input type="hidden" id="selectedTimeFrame" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
 
-                    <div class="row">
-                        @foreach (var time in Model.Timeframes)
-                        {
-                            @Html.DisplayFor(x => time, "TimeFrameTile")
-                        }
-                    </div>
-                    <span class="error"></span>
+                <div class="row">
+                    @foreach (var time in Model.Timeframes)
+                    {
+                        @Html.DisplayFor(x => time, "TimeFrameTile")
+                    }
                 </div>
+                <span class="error"></span>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="row">
-        <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
-        <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
-            <span>Within</span>
-            <select>
-                <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
-                @for (int i = 1; i <= 30; ++i)
+<div class="row">
+    <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
+    <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
+        <span>Within</span>
+        <select>
+            <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
+            @for (int i = 1; i <= 30; ++i)
+            {
+                if (i == 1)
                 {
-                    if (i == 1)
-                    {
-                        <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
-                    }
-                    else
-                    {
-                        <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
-                    }
+                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
                 }
-            </select>
+                else
+                {
+                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
+                }
+            }
+        </select>
 
-        </div>
     </div>
+</div>
 
 <hr class="input--separator" />
 

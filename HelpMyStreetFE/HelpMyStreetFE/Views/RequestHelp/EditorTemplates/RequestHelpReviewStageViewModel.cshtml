@@ -17,7 +17,8 @@
     recipient.AlternatePhoneNumber = string.IsNullOrEmpty(recipient.AlternatePhoneNumber) ? "None Provided" : recipient.AlternatePhoneNumber;
 
 }
-    <input type="hidden" name="ReviewStep" value='@Json.Serialize(Model)' />
+<input type="hidden" name="ReviewStep" class="model" value='@Json.Serialize(Model)' />
+@Html.Hidden("FormStage", RequestHelpFormStage.Review)
 
 <h2>Review</h2>
 <div class="tiles">
@@ -28,9 +29,9 @@
         </div>
     </div>
 
-    <div class="row  justify-center pb-md">        
-            @Html.DisplayFor(x => x.Task, "TaskTile", new { ForReview = true})                
-            @Html.DisplayFor(x => x.RequestedFor, "RequestForTile", new { ForReview = true})        
+    <div class="row  justify-center pb-md">
+        @Html.DisplayFor(x => x.Task, "TaskTile", new { ForReview = true })
+        @Html.DisplayFor(x => x.RequestedFor, "RequestForTile", new { ForReview = true })
     </div>
 
 
@@ -39,21 +40,21 @@
     <hr class="input--separator" />
     <div class="row mt-md justify-center">
         <div class="sm8">
-            <label class="tiles__label--large"> Description</label> <button class="edit-button" name="formAction"  type="submit" value="EditRequest">Edit</button>
+            <label class="tiles__label--large"> Description</label> <button class="edit-button" name="formAction" type="submit" value="EditRequest">Edit</button>
         </div>
     </div>
 
 
     <div class="row justify-center">
-            <div class="sm8">
-                <div class="tiles__tile tiles__tile--large">
-                    <div class="tiles__tile__content ">
-                        <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
-                        <div class="tiles__tile__content__header">When is the help needed?</div>
-                        <div class="tiles__tile__content__description">@Model.TimeRequestedReviewString</div>
-                    </div>
+        <div class="sm8">
+            <div class="tiles__tile tiles__tile--large">
+                <div class="tiles__tile__content ">
+                    <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
+                    <div class="tiles__tile__content__header">When is the help needed?</div>
+                    <div class="tiles__tile__content__description">@Model.TimeRequestedReviewString</div>
                 </div>
-            </div>        
+            </div>
+        </div>
     </div>
 
     @if (Model.Task.Questions != null)
@@ -82,83 +83,89 @@
                             }
                             <hr class="input--separator" />
                         }
-                        @*<div class="tiles__tile__content__description tiles__tile__content--top__description"><strong>Is this request critical to someone’s health or wellbeing?</strong> - <span class="header-text">@Model.HealthCriticalReviewString</span></div>*@
-                        @*<div class="tiles__tile__content__description tiles__tile__content--top__description"><strong>When is the help needed?</strong> -  <span class="header-text">@Model.TimeRequestedReviewString</span></div>*@
-
                     </div>
                 </div>
             </div>
         </div>
-      }
-        <hr class="input--separator" />
-        <div class="row mt-md justify-center">
-            <div class="sm8">
-                <label class="tiles__label--large"> Personal Details</label> <button class="edit-button"  type="submit" name="formAction" value="EditDetails">Edit</button>
-            </div>
+    }
+    <hr class="input--separator" />
+    <div class="row mt-md justify-center">
+        <div class="sm8">
+            <label class="tiles__label--large"> Personal Details</label> <button class="edit-button" type="submit" name="formAction" value="EditDetails">Edit</button>
         </div>
-        <div class="row justify-center ">
+    </div>
+    <div class="row justify-center ">
 
-            @if (onBehalf || forOrg)
-            {
-                <div class="sm4">
-                    <div id="requestor" class="tiles__tile">
-                        <div class="tiles__tile__content--top ">
-                            <div class="tiles__tile__content--top__header  pt-xs left">Your Details</div>
-                            <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                                <div><strong>Name:</strong> @requestor.Firstname @requestor.Lastname </div>
-                                <div><strong>Address:</strong> @requestor.Postcode </div>
-                                <div><strong>Email:</strong> @requestor.Email </div>
-                                <div><strong>Mobile Number:</strong> @requestor.MobileNumber </div>
-                                <div><strong>Alternate Number:</strong> @requestor.AlternatePhoneNumber </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-
-            <div class="@(onBehalf || forOrg ? "sm4" : "sm8")">
-                <div id="recipient" class="tiles__tile">
-                    <div class="tiles__tile__content--top">
-                        <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Their" : "Your") Details</div>
+        @if (onBehalf || forOrg)
+        {
+            <div class="sm4">
+                <div id="requestor" class="tiles__tile">
+                    <div class="tiles__tile__content--top ">
+                        <div class="tiles__tile__content--top__header  pt-xs left">Your Details</div>
                         <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                            @if (forOrg)
-                            {
-                                <div><strong>Organisation:</strong> @Model.OrganisationName </div>
-                            }
-                            <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
-                            <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
-                            <div><strong>Email:</strong> @recipient.Email </div>
-                            <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
-                            <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
+                            <div><strong>Name:</strong> @requestor.Firstname @requestor.Lastname </div>
+                            <div><strong>Address:</strong> @requestor.Postcode </div>
+                            <div><strong>Email:</strong> @requestor.Email </div>
+                            <div><strong>Mobile Number:</strong> @requestor.MobileNumber </div>
+                            <div><strong>Alternate Number:</strong> @requestor.AlternatePhoneNumber </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
 
+        <div class="@(onBehalf || forOrg ? "sm4" : "sm8")">
+            <div id="recipient" class="tiles__tile">
+                <div class="tiles__tile__content--top">
+                    <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Their" : "Your") Details</div>
+                    <div class="tiles__tile__content__description tiles__tile__content--top__description">
+                        @if (forOrg)
+                        {
+                            <div><strong>Organisation:</strong> @Model.OrganisationName </div>
+                        }
+                        <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
+                        <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
+                        <div><strong>Email:</strong> @recipient.Email </div>
+                        <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
+                        <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.DetailsStageQuestions != null)
+    {
         <div class="row justify-center ">
             <div class="sm8">
                 <div class="tiles__tile tiles__tile">
-                    <div class="tiles__tile__content--top ">
-                        <div class="tiles__tile__content--top__header  pt-xs">Are there any communication needs that volunteers need to know about before they contact you or the person who needs help?</div>
-                        <div class="tiles__tile__content__description tiles__tile__content--top__description">
-
-                            <div>@(string.IsNullOrEmpty(Model.CommunicationNeeds) ? "None Entered" : Model.CommunicationNeeds)</div>
-                        </div>
-                        @if (Model.ShowOtherDetails)
+                    <div class="tiles__tile__content--top">
+                        @foreach (var question in Model.DetailsStageQuestions)
                         {
+                            if (string.IsNullOrEmpty(question.Model)) question.Model = "Not Answered";
+                            <div class="tiles__tile__content--top__header  p-xs">@Html.Raw(question.Label)</div>
+                            @if (question.InputType != QuestionType.LabelOnly)
+                            {
+                                <div class="tiles__tile__content__description tiles__tile__content--top__description">
+                                    @{
+                                        string answer = @question.Model;
+                                        if (question.InputType == HelpMyStreet.Utils.Enums.QuestionType.Radio)
+                                        {
+                                            var radioInput = question.AdditionalData.Where(x => x.Key == question.Model).FirstOrDefault();
+                                            answer = radioInput != null ? radioInput.Value : "Not Answered";
+                                        }
+                                    }
+                                    @answer
+                                </div>
+                            }
                             <hr class="input--separator" />
-                            <div class="tiles__tile__content--top__header pt-xs ">Is there anything else you would like to tell us about the request?</div>
-                            <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                                <div>@(string.IsNullOrEmpty(Model.OtherDetails) ? "None Entered" : Model.OtherDetails)</div>
-                            </div>
                         }
                     </div>
                 </div>
             </div>
         </div>
+    }
 
-
-    </div>
+</div>
 
 

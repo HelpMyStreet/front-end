@@ -1,14 +1,16 @@
-﻿export function loadQuestions (taskId) {
+﻿export function loadQuestions(supportActivity) {
     var requestorId = $('input[name="currentStep.SelectedRequestor.Id"]').val();
     requestorId = requestorId == "" ? null : Number(requestorId);
     
     var qRequest = {
-        taskId: Number(taskId),
-        step: JSON.parse($('input[name="RequestStep"]').val()),
+        SupportActivity: supportActivity,
+        formVariant: $('input#FormVariant').val(),
+        formStage: $('input#currentStep_FormStage').val(),
         requestorId: requestorId,
+        previousAnswers: JSON.parse($('input#currentStep_PreviousAnswers').val()),
         answers: GetCurrentQuestionAnswers(),
     };
-
+    
     $('.questions').each(function () {
         qRequest.position = $(this).attr("data-position");
         var el = $(this);
