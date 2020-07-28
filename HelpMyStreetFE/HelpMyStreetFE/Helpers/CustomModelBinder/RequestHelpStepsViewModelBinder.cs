@@ -166,6 +166,26 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
             }
 
+            model.RequestHelpQuestions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity) };
+
+            for (int i = 0; i < model.RequestHelpQuestions.Questions.Count; i++)
+            {
+                int questionID = -1;
+                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
+                var question = model.RequestHelpQuestions.Questions.Where(x => x.ID == questionID).FirstOrDefault();
+                if (question != null)
+                {
+                    if (question.InputType == QuestionType.LabelOnly)
+                    {
+                        question.Model = "";
+                    }
+                    else
+                    {
+                        question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
+                    }
+                }
+            }
+
             bool AgreeToTerms, AgreeToPrivacy = false;            
             bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToPrivacy)).FirstValue, out AgreeToPrivacy);
             bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToTerms)).FirstValue, out AgreeToTerms);

@@ -12,7 +12,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string IntoText { get; set; }
         public List<TasksViewModel> Tasks { get; set; }
         public List<RequestorViewModel> Requestors { get; set; }          
-        public List<RequestHelpQuestion> RequestHelpQuestions { get; set; }
+        public QuestionsViewModel RequestHelpQuestions { get; set; }
 
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public List<RequestHelpTimeViewModel> Timeframes { get; set; }
@@ -36,7 +36,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 
             if (RequestHelpQuestions != null)
             {
-                questionsViewModel.Questions = RequestHelpQuestions.Where(a => a.Location == location).ToList();
+                questionsViewModel.Questions = RequestHelpQuestions.Questions.Where(a => a.Location == location).ToList();
             }
 
             return questionsViewModel;

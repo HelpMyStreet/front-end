@@ -121,6 +121,7 @@ namespace HelpMyStreetFE.Controllers
                                     break;
                             }
                         }
+                        requestStep.RequestHelpQuestions = await UpdateQuestionsViewModel(requestStep.RequestHelpQuestions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Request, (SupportActivities)requestHelp.SelectedSupportActivity());
                         detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
                     }
                     if (step is RequestHelpDetailStageViewModel)

@@ -7,13 +7,9 @@ export function intialiseRequestStage() {
     intialiseRequestTiles();
     validateForm();
 
-    var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
     $("#CustomTime").find("select").change(function () {
         $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
     });
-    if (taskId != "") {        
-        loadQuestions(taskId);
-    }   
 
     trackEvent("Request form", "View 0.request", "", 0);
 }
