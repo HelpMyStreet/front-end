@@ -81,6 +81,7 @@ namespace HelpMyStreetFE.Controllers
 
 
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                        detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
 
                         if (HttpContext.Session.Keys.Contains("User"))
                         {
@@ -121,8 +122,6 @@ namespace HelpMyStreetFE.Controllers
                                     break;
                             }
                         }
-                        requestStep.Questions = await UpdateQuestionsViewModel(requestStep.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Request, (SupportActivities)requestHelp.SelectedSupportActivity());
-                        detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
                     }
                     if (step is RequestHelpDetailStageViewModel)
                     {
@@ -306,7 +305,10 @@ namespace HelpMyStreetFE.Controllers
 
         private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity)
         {
-            QuestionsViewModel updatedQuestionsViewModel = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity) };
+            QuestionsViewModel updatedQuestionsViewModel = new QuestionsViewModel()
+            {
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity)
+            };
 
             if (previousQuestionsViewModel != null)
             {
