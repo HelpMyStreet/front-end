@@ -19,7 +19,7 @@ var validateForm =  function (validateRequestor) {
 
         buttonLoad($("#btnNext"));
         
-        const valid = validateFormData($(this), {
+        const valid = validateQuestions() && validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.Lastname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.MobileNumber": (v, d) => {                
