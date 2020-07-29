@@ -31,13 +31,21 @@
         break;
 }
 
+<div class="row">
+    <div class="sm12">
+        <div class="questions" data-position="details1">
+            <partial name="_Questions" model="@Model.Questions.GetQuestionsByLocation("details1")" />
+        </div>
+    </div>
+</div>
+
 <hr class="input--separator" />
 <h2>Is there anything more you would like to tell us?</h2>
 
 <div class="row">
     <div class="sm12">
         <div class="questions" data-position="details2">
-            <partial name="_Questions" model="Model.Questions" />
+            <partial name="_Questions" model="@Model.Questions.GetQuestionsByLocation("details2")" />
         </div>
     </div>
 </div>
