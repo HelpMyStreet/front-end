@@ -7,11 +7,11 @@
 {
     case RequestorType.Myself:
         <h2>Your details</h2>
-        @Html.EditorFor(x => x.Recipient, new { Prefix = "Your" });
+        @Html.EditorFor(x => x.Recipient, new { Prefix = "Your", FullAddressRequired = Model.FullRecipientAddressRequired });
         break;
     case RequestorType.OnBehalf:
         <h2>Details for the person who needs the help</h2>
-        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their" })
+        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", FullAddressRequired = Model.FullRecipientAddressRequired })
         <hr class="input--separator" />
         <h2>Your details</h2>
         @Html.EditorFor(x => x.Requestor)
@@ -25,7 +25,7 @@
                 <span class="error"></span>
             </div>
         </div>
-        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their" });
+        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", FullAddressRequired = Model.FullRecipientAddressRequired });
         <h2>Your Details</h2>
         @Html.EditorFor(x => x.Requestor);
         break;

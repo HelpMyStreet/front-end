@@ -81,7 +81,10 @@ namespace HelpMyStreetFE.Services
                             new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Other", AllowCustom = true},
                         },
                     },
-                    new RequestHelpDetailStageViewModel(),
+                    new RequestHelpDetailStageViewModel()
+                    {
+                        FullRecipientAddressRequired = GetFullRecipientAddressRequired(requestHelpFormVariant)
+                    },
                     new RequestHelpReviewStageViewModel(),
                 }
 
@@ -126,6 +129,18 @@ namespace HelpMyStreetFE.Services
             else
             {
                 return "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help.";
+            }
+        }
+
+        private bool GetFullRecipientAddressRequired(RequestHelpFormVariant requestHelpFormVariant)
+        {
+            if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
