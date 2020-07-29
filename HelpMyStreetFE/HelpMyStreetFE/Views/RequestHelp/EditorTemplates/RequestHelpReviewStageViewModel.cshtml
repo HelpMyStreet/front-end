@@ -124,7 +124,14 @@
                             <div><strong>Organisation:</strong> @Model.OrganisationName </div>
                         }
                         <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
-                        <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
+                        @if (string.IsNullOrEmpty(recipient.AddressLine1))
+                        {
+                            <div><strong>Postcode:</strong> @recipient.Postcode </div>
+                        }
+                        else
+                        {
+                            <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
+                        }
                         <div><strong>Email:</strong> @recipient.Email </div>
                         <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
                         <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
