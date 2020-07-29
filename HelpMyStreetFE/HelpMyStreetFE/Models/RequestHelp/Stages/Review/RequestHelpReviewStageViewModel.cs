@@ -15,17 +15,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RequestorDetails Requestor { get; set; }
         public string OrganisationName { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
-        public bool? HealthCritical { get; set; }
         public List<RequestHelpQuestion> RequestStageQuestions { get; set; }
         public List<RequestHelpQuestion> DetailsStageQuestions { get; set; }
-
-        public string HealthCriticalReviewString { get
-            {
-                if (HealthCritical.HasValue && HealthCritical.Value)
-                    return "Health Critical";
-                        return "Not Health Critical";
-            }
-        }
 
         public string TimeRequestedReviewString
         {

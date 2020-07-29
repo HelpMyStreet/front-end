@@ -16,16 +16,6 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public List<RequestHelpTimeViewModel> Timeframes { get; set; }
-        public bool? IsHealthCritical
-        {
-            get
-            {
-                if (Questions == null || Questions.Questions == null) return null;
-                var healthCriticalQuestion = Questions.Questions.Where(x => x.ID == (int)HelpMyStreet.Utils.Enums.Questions.IsHealthCritical).FirstOrDefault();
-                if (healthCriticalQuestion == null || healthCriticalQuestion.Model == null) return null; 
-                return bool.Parse(healthCriticalQuestion.Model);
-            }
-        }
         public bool AgreeToTerms { get; set; }
         public bool AgreeToPrivacy { get; set; }
     }

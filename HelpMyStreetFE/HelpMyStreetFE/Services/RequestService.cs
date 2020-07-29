@@ -49,6 +49,10 @@ namespace HelpMyStreetFE.Services
             var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? _requestHelpBuilder.MapRequestor(detailStage) : recipient;
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
+            
+            bool heathCritical = false;
+            var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
+            if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
 
             IEnumerable<RequestHelpQuestion> questions = requestStage.Questions.Questions.Union(detailStage.Questions.Questions);
 
@@ -76,7 +80,7 @@ namespace HelpMyStreetFE.Services
                         {
                             DueDays = selectedTime.Days,
                             Details = "",
-                            HealthCritical = requestStage.IsHealthCritical.HasValue ? requestStage.IsHealthCritical.Value : false,
+                            HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = questions.Select(x => new Question {
                                 Id = x.ID,

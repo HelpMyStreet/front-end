@@ -128,7 +128,6 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.Requestor = detailStage.Requestor;
                         reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.OrganisationName = detailStage.Organisation;
-                        reviewStage.HealthCritical = requestStage.IsHealthCritical;
                         reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.RequestStageQuestions = requestStage.Questions.Questions;

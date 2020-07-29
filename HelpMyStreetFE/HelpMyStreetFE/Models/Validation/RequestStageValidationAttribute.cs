@@ -23,11 +23,6 @@ namespace HelpMyStreetFE.Models.Validation
                 var vm = (RequestHelpRequestStageViewModel)value;
                 var task = vm.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                 if (task == null) errors.Add($"A Task must be selected");
-                else {
-                    if (vm.Questions.Questions.Any(x => x.ID == (int)Questions.IsHealthCritical)) {
-                        if (!vm.IsHealthCritical.HasValue) errors.Add($"{nameof(vm.IsHealthCritical)} cannot be null");
-                    }
-                }
                                     
                if (vm.Timeframes.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Timeframe must be selected");
                if (vm.Requestors.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Requestor must be selected");
