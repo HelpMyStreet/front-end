@@ -7,7 +7,7 @@
     @foreach (RequestHelpQuestion question in Model.Questions)
     {
         if (!question.Show) continue;
-        var name = $"currentStep.SelectedTask.Questions.[{question.ID}].Model";
+        var name = $"currentStep.Questions.[{question.ID}].Model";
 
         <div class="row">
             <div class="sm12 input">

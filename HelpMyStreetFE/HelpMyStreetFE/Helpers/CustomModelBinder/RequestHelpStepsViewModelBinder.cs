@@ -89,7 +89,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             foreach (RequestHelpQuestion question in model.Questions.Questions)
             {
-                question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{question.ID}].Model").FirstValue;
+                question.Model = bindingContext.ValueProvider.GetValue($"currentStep.Questions.[{question.ID}].Model").FirstValue;
             }
 
             return model;
@@ -136,7 +136,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             foreach (RequestHelpQuestion question in model.RequestHelpQuestions.Questions)
             {
-                question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{question.ID}].Model").FirstValue;
+                question.Model = bindingContext.ValueProvider.GetValue($"currentStep.Questions.[{question.ID}].Model").FirstValue;
             }
 
             bool AgreeToTerms, AgreeToPrivacy = false;            
