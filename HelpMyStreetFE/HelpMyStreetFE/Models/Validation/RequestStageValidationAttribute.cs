@@ -24,7 +24,7 @@ namespace HelpMyStreetFE.Models.Validation
                 var task = vm.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                 if (task == null) errors.Add($"A Task must be selected");
                 else {
-                    if (vm.RequestHelpQuestions.Questions.Any(x => x.ID == (int)Questions.IsHealthCritical)) {
+                    if (vm.Questions.Questions.Any(x => x.ID == (int)Questions.IsHealthCritical)) {
                         if (!vm.IsHealthCritical.HasValue) errors.Add($"{nameof(vm.IsHealthCritical)} cannot be null");
                     }
                 }

@@ -132,9 +132,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
             }
 
-            model.RequestHelpQuestions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity) };
+            model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity) };
 
-            foreach (RequestHelpQuestion question in model.RequestHelpQuestions.Questions)
+            foreach (RequestHelpQuestion question in model.Questions.Questions)
             {
                 question.Model = bindingContext.ValueProvider.GetValue($"currentStep.Questions.[{question.ID}].Model").FirstValue;
             }

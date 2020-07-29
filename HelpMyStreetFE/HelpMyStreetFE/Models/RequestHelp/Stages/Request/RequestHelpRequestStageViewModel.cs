@@ -12,7 +12,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string IntoText { get; set; }
         public List<TasksViewModel> Tasks { get; set; }
         public List<RequestorViewModel> Requestors { get; set; }
-        public QuestionsViewModel RequestHelpQuestions { get; set; } = new QuestionsViewModel();
+        public QuestionsViewModel Questions { get; set; } = new QuestionsViewModel();
 
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public List<RequestHelpTimeViewModel> Timeframes { get; set; }
@@ -20,8 +20,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         {
             get
             {
-                if (RequestHelpQuestions == null || RequestHelpQuestions.Questions == null) return null;
-                var healthCriticalQuestion = RequestHelpQuestions.Questions.Where(x => x.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
+                if (Questions == null || Questions.Questions == null) return null;
+                var healthCriticalQuestion = Questions.Questions.Where(x => x.ID == (int)HelpMyStreet.Utils.Enums.Questions.IsHealthCritical).FirstOrDefault();
                 if (healthCriticalQuestion == null || healthCriticalQuestion.Model == null) return null; 
                 return bool.Parse(healthCriticalQuestion.Model);
             }

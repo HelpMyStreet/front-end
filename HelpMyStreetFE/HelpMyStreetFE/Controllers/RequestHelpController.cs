@@ -121,7 +121,7 @@ namespace HelpMyStreetFE.Controllers
                                     break;
                             }
                         }
-                        requestStep.RequestHelpQuestions = await UpdateQuestionsViewModel(requestStep.RequestHelpQuestions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Request, (SupportActivities)requestHelp.SelectedSupportActivity());
+                        requestStep.Questions = await UpdateQuestionsViewModel(requestStep.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Request, (SupportActivities)requestHelp.SelectedSupportActivity());
                         detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
                     }
                     if (step is RequestHelpDetailStageViewModel)
@@ -139,7 +139,7 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
                         reviewStage.OtherDetails = detailStage.OtherDetails;
                         reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
-                        reviewStage.RequestStageQuestions = requestStage.RequestHelpQuestions.Questions;
+                        reviewStage.RequestStageQuestions = requestStage.Questions.Questions;
                         reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
                     }
                 }
