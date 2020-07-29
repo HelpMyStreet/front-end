@@ -20,8 +20,6 @@ namespace HelpMyStreetFE.Models.RequestHelp
         public string PlaceholderText { get; set; }
         public int? Max { get; set; }
         public List<AdditonalQuestionData> AdditionalData { get; set; }
-        public bool Show { get; set; } = true;
-        public List<RequestorType> VisibleForRequestorTypes { get; set; }
         public string DataValidationMessage { get
             {
                 return InputType switch

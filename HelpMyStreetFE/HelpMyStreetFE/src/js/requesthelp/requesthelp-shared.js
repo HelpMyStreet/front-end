@@ -1,12 +1,8 @@
 ﻿export function loadQuestions(supportActivity) {
-    var requestorId = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-    requestorId = requestorId == "" ? null : Number(requestorId);
-    
     var qRequest = {
         SupportActivity: supportActivity,
         formVariant: $('input#FormVariant').val(),
         formStage: $('input#currentStep_FormStage').val(),
-        requestorId: requestorId,
         answers: GetCurrentQuestionAnswers(),
     };
     

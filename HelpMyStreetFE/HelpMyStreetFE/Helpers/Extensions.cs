@@ -102,31 +102,6 @@ namespace HelpMyStreetFE
 
     public static class RequestHelpQuestionExtensions
     {
-
-        public static bool Show(this RequestHelpQuestion question, string position, RequestorType? requestorType)
-        {
-            if (question.Location == position)
-            {
-                //if the question has no configuration for RequestorTypes then show
-                if (question.VisibleForRequestorTypes == null) return true;
-
-                // if no requestor type has been provided (they havent clicked that option yet) but the question has 
-                //configuration against it we want to hide the question
-                if (requestorType == null) return false;
-
-                if (question.VisibleForRequestorTypes.Contains(requestorType.Value))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
         public static string Class(this RequestHelpQuestion question)
         {
 

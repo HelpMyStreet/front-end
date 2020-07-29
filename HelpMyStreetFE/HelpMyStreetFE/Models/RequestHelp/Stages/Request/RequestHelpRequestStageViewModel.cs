@@ -11,8 +11,8 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string PageHeading { get; set; }
         public string IntoText { get; set; }
         public List<TasksViewModel> Tasks { get; set; }
-        public List<RequestorViewModel> Requestors { get; set; }          
-        public QuestionsViewModel RequestHelpQuestions { get; set; }
+        public List<RequestorViewModel> Requestors { get; set; }
+        public QuestionsViewModel RequestHelpQuestions { get; set; } = new QuestionsViewModel();
 
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public List<RequestHelpTimeViewModel> Timeframes { get; set; }
@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         {
             get
             {
-                if (RequestHelpQuestions == null) return null;
+                if (RequestHelpQuestions == null || RequestHelpQuestions.Questions == null) return null;
                 var healthCriticalQuestion = RequestHelpQuestions.Questions.Where(x => x.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
                 if (healthCriticalQuestion == null || healthCriticalQuestion.Model == null) return null; 
                 return bool.Parse(healthCriticalQuestion.Model);
@@ -28,18 +28,6 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         }
         public bool AgreeToTerms { get; set; }
         public bool AgreeToPrivacy { get; set; }
-
-        public QuestionsViewModel GetRequestHelpQuestionsByLocation(string location)
-        {
-            QuestionsViewModel questionsViewModel = new QuestionsViewModel();
-
-            if (RequestHelpQuestions != null)
-            {
-                questionsViewModel.Questions = RequestHelpQuestions.Questions.Where(a => a.Location == location).ToList();
-            }
-
-            return questionsViewModel;
-        }
     }
 }
 

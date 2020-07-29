@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
@@ -281,13 +281,6 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         public async Task<ActionResult> Questions([FromBody] QuestionRequest request)
         {
-            RequestorType? requestorType = null;
-            if (request.RequestorId.HasValue)
-            {
-                //TODO: fix or remove
-                //requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
-            }
-
             RequestHelpFormVariant requestHelpFormVariant = Enum.Parse<RequestHelpFormVariant>(request.FormVariant);
             RequestHelpFormStage requestHelpFormStage = Enum.Parse<RequestHelpFormStage>(request.FormStage);
             SupportActivities supportActivity = Enum.Parse<SupportActivities>(request.SupportActivity);
@@ -297,6 +290,8 @@ namespace HelpMyStreetFE.Controllers
                 Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity)
             };
 
+            questionsViewModel = questionsViewModel.GetQuestionsByLocation(request.Position);
+
             foreach (var question in questionsViewModel.Questions)
             {
                 var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
@@ -304,7 +299,6 @@ namespace HelpMyStreetFE.Controllers
                 {
                     question.Model = matchedAnswer.Answer;
                 }
-                question.Show = question.Show(request.Position, requestorType);
             }
 
             return PartialView("_Questions", questionsViewModel);
@@ -360,7 +354,6 @@ namespace HelpMyStreetFE.Controllers
             public string FormStage { get; set; }
             public string SupportActivity { get; set; }
             public string Position { get; set; }
-            public int? RequestorId { get; set; }
             public List<QuestionAnswer> Answers { get; set; }
             public class QuestionAnswer
             {

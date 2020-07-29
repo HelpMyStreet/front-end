@@ -192,21 +192,10 @@ namespace HelpMyStreetFE.Services
                 SubText = x.SubText,
                 Location = x.Location,
                 AdditionalData = x.AddtitonalData,
-                VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
             }).ToList();
 
 
             return requestHelpQuestions;
-        }
-
-        public List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant requestHelpFormVariant, int questionId)
-        {
-            //TODO: Remove this??
-            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
-            {
-                return new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation };
-            }
-            return null;
         }
 
         public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage)
