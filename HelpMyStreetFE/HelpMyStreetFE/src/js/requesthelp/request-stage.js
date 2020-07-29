@@ -67,8 +67,6 @@ var handleRequestFor = function (el) {
     if (taskId != "") {
         let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
         trackEvent("Request form", "Select request for", selectedValue, 0);
-
-        loadQuestions(taskId);
     }
 }
 var handleTimeFrame = function (el) {
@@ -96,7 +94,7 @@ var handleActivity = function (el) {
     let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
     trackEvent("Request form", "Select activity", selectedValue, 0);
     
-    if (taskId == 2) { // facemask   
+    if (taskId == 12) { // facemask   
         $('#requestorFor_3').show(); // onbehalf of organisation
         if ($('#requestorFor_3').hasClass("selected")) {
             $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
@@ -118,15 +116,9 @@ var handleActivity = function (el) {
         $('.requestorFor:visible').addClass("selected");
         let selectedId = $('.requestorFor:visible').attr("data-id");
         $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
-        loadQuestions(taskId, selectedId);
-    } else {
-        $('.requestorFor:visible').removeClass("selected");
-        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-        loadQuestions(taskId);
     }
 
-
-
+    loadQuestions(taskId);
 }
 
 function displayTodayHelpNeededOptions(show) {
