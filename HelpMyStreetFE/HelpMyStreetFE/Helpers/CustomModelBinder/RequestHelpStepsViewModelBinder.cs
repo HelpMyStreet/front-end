@@ -82,8 +82,6 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             };
 
             model.Organisation = bindingContext.ValueProvider.GetValue("currentStep.Organisation").FirstValue;
-            model.CommunicationNeeds = bindingContext.ValueProvider.GetValue("currentStep.CommunicationNeeds").FirstValue;
-            model.OtherDetails = bindingContext.ValueProvider.GetValue("currentStep.OtherDetails").FirstValue;
 
             model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity) };
 

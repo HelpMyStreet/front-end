@@ -76,10 +76,6 @@ namespace HelpMyStreetFE.Controllers
                         var requestStep = (RequestHelpRequestStageViewModel)step;
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
 
-                        detailStage.ShowOtherDetails =
-                            requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ? false : true;
-
-
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
                         detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
 
@@ -135,9 +131,6 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.HealthCritical = requestStage.IsHealthCritical;
                         reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
-                        reviewStage.OtherDetails = detailStage.OtherDetails;
-                        reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
                         reviewStage.RequestStageQuestions = requestStage.Questions.Questions;
                         reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
                     }

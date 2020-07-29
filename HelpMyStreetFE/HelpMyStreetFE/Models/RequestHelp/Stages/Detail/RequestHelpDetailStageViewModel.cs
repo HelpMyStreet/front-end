@@ -16,11 +16,6 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
         public string TemplateName { get; set; } = "RequestHelpDetailStageViewModel";
         public RequestorType Type { get; set; }
         public QuestionsViewModel Questions { get; set; }
-
-        public string CommunicationNeeds { get; set; }
-        public string OtherDetails { get; set; }
-
-        public bool ShowOtherDetails { get; set; } = true;
     }    
 }
 

@@ -57,9 +57,7 @@ namespace HelpMyStreetFE.Services
                 HelpRequest = new HelpRequest
                 {
                     AcceptedTerms = requestStage.AgreeToTerms,
-                    OtherDetails = detailStage.OtherDetails,
                     ConsentForContact = requestStage.AgreeToTerms,
-                    SpecialCommunicationNeeds = detailStage.CommunicationNeeds,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
                     ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
