@@ -114,6 +114,10 @@ namespace HelpMyStreetFE.Services
             {
                 return "How can For the Love of Scrubs help?";
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                return "Get in touch with a Community Connector";
+            }
             else
             {
                 return "What type of help are you looking for?";
@@ -125,6 +129,10 @@ namespace HelpMyStreetFE.Services
             if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 return "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.";
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                return "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.";
             }
             else
             {
