@@ -1,53 +1,54 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.QuestionsViewModel
 @using HelpMyStreet.Utils.Enums;
+@using HelpMyStreetFE.Models.RequestHelp;
 
-@for (int i = 0; i < Model.Questions?.Count; i++)
+@if (Model.Questions != null) 
 {
-    if (!Model.Questions[i].Show) continue;
-    var name = $"currentStep.SelectedTask.Questions.[{i}].Model";
-    var id = $"currentStep.SelectedTask.Questions.[{i}].Id";
-    <input type="hidden" name="@id" value="@Model.Questions[i].ID" />
+    @foreach (RequestHelpQuestion question in Model.Questions)
+    {
+        if (!question.Show) continue;
+        var name = $"currentStep.SelectedTask.Questions.[{question.ID}].Model";
 
+        <div class="row">
+            <div class="sm12 input">
+                <label>
+                    @Html.Raw(question.Label)
+                    <span class="sub-text">@Html.Raw(question.SubText)</span>
+                </label>
 
-    <div class="row">
-        <div class="sm12 input">
-            <label>
-                @Html.Raw(Model.Questions[i].Label)
-                <span class="sub-text">@Html.Raw(Model.Questions[i].SubText)</span>
-            </label>
+                @switch (question.InputType)
+                {
+                    case QuestionType.LabelOnly:
+                        break;
+                    case QuestionType.MultiLineText:
+                        <textarea placeholder="@question.PlaceholderText" data-id="@question.ID" class="question @question.Class()" data-required="@question.Required" data-val-message="@question.DataValidationMessage" name="@name">@question.Model</textarea>
+                        break;
+                    case QuestionType.Text:
+                        <input type="text" placeholder="@question.PlaceholderText" data-id="@question.ID" class="question @question.Class()" data-required="@question.Required" data-val-message="@question.DataValidationMessage" value="@question.Model" name="@name">
+                        break;
+                    case QuestionType.Number:
+                        <input type="number" min="1" max="@question.Max()" placeholder="@question.PlaceholderText" data-id="@question.ID" class="question @question.Class()" data-required="@question.Required" data-val-message="@question.DataValidationMessage" value="@question.Model" name="@name">
+                        break;
+                    case QuestionType.Radio:
 
-            @switch (Model.Questions[i].InputType)
-            {
-                case QuestionType.LabelOnly:
-                    break;
-                case QuestionType.MultiLineText:
-                    <textarea placeholder="@Model.Questions[i].PlaceholderText" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" name="@name">@Model.Questions[i].Model</textarea>
-                    break;
-                case QuestionType.Text:
-                    <input type="text" placeholder="@Model.Questions[i].PlaceholderText" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
-                    break;
-                case QuestionType.Number:
-                    <input type="number" min="1" max="@Model.Questions[i].Max()" placeholder="@Model.Questions[i].PlaceholderText" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" value="@Model.Questions[i].Model" name="@name">
-                    break;
-                case QuestionType.Radio:
+                        @foreach (var radio in question.AdditionalData)
+                        {
+                            <div class="input--radio">
+                                <label>
+                                    <input type="radio" name="@name" value="@radio.Key" data-id="@question.ID" data-required="@question.Required" data-val-message="@question.DataValidationMessage" class="question @question.Class()" @(question.Model == radio.Key ? "checked" : "") hidden />
+                                    <span class="input--radio__radio">
+                                        <span class="input--radio__radio__inner"></span>
+                                    </span>
+                                    @radio.Value
+                                </label>
+                            </div>
+                        }
+                        break;
+                }
 
-                    @foreach (var radio in Model.Questions[i].AdditionalData)
-                    {
-                        <div class="input--radio">
-                            <label>
-                                <input type="radio" name="@name" value="@radio.Key" data-id="@Model.Questions[i].ID" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" class="question @Model.Questions[i].Class()" @(Model.Questions[i].Model == radio.Key ? "checked" : "") hidden />
-                                <span class="input--radio__radio">
-                                    <span class="input--radio__radio__inner"></span>
-                                </span>
-                                @radio.Value
-                            </label>
-                        </div>
-                    }
-                    break;
-            }
-
-            <span class="error">@Model.Questions[i].DataValidationMessage()</span>
+                <span class="error">@question.DataValidationMessage()</span>
+            </div>
         </div>
-    </div>
-    <hr class="input--separator" />
+        <hr class="input--separator" />
+    }
 }

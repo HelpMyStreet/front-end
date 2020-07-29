@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
@@ -86,24 +87,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity) };
 
-            for (int i = 0; i < model.Questions.Questions.Count(); i++)
+            foreach (RequestHelpQuestion question in model.Questions.Questions)
             {
-                int questionID = -1;
-                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
-
-
-                var question = model.Questions.Questions.Where(x => x.ID == questionID).FirstOrDefault();
-                if (question != null)
-                {
-                    if (question.InputType == QuestionType.LabelOnly)
-                    {
-                        question.Model = "";
-                    }
-                    else
-                    {
-                        question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
-                    }
-                }
+                question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{question.ID}].Model").FirstValue;
             }
 
             return model;
@@ -148,22 +134,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             model.RequestHelpQuestions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity) };
 
-            for (int i = 0; i < model.RequestHelpQuestions.Questions.Count; i++)
+            foreach (RequestHelpQuestion question in model.RequestHelpQuestions.Questions)
             {
-                int questionID = -1;
-                int.TryParse(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Id").FirstValue, out questionID);
-                var question = model.RequestHelpQuestions.Questions.Where(x => x.ID == questionID).FirstOrDefault();
-                if (question != null)
-                {
-                    if (question.InputType == QuestionType.LabelOnly)
-                    {
-                        question.Model = "";
-                    }
-                    else
-                    {
-                        question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{i}].Model").FirstValue;
-                    }
-                }
+                question.Model = bindingContext.ValueProvider.GetValue($"currentStep.SelectedTask.Questions.[{question.ID}].Model").FirstValue;
             }
 
             bool AgreeToTerms, AgreeToPrivacy = false;            
