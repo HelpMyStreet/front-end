@@ -12,6 +12,9 @@ export function intialiseRequestStage() {
     });
 
     trackEvent("Request form", "View 0.request", "", 0);
+
+    const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+    if (taskId != "") { updateOptionsForActivity(taskId); }
 }
 
 
@@ -34,7 +37,6 @@ var validateForm = function () {
             buttonUnload($("#btnNext"));;
             scrollToFirstError();
         }
-
         
         return validForm;
     });
@@ -93,7 +95,12 @@ var handleActivity = function (el) {
 
     let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
     trackEvent("Request form", "Select activity", selectedValue, 0);
-    
+
+    updateOptionsForActivity(taskId);
+    loadQuestions(taskId);
+}
+
+var updateOptionsForActivity = function (taskId) {
     if (taskId == 12) { // facemask   
         $('#requestorFor_3').show(); // onbehalf of organisation
         if ($('#requestorFor_3').hasClass("selected")) {
@@ -117,8 +124,6 @@ var handleActivity = function (el) {
         let selectedId = $('.requestorFor:visible').attr("data-id");
         $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
     }
-
-    loadQuestions(taskId);
 }
 
 function displayTodayHelpNeededOptions(show) {
