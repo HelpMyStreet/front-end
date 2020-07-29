@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Response;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
@@ -302,31 +302,6 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return PartialView("_Questions", questionsViewModel);
-        }
-
-        public async Task<QuestionsViewModel> GetQuestionsViewModel(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity)
-        {
-            QuestionsViewModel questionsViewModel = new QuestionsViewModel()
-            {
-                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity)
-            };
-
-            foreach (var question in questionsViewModel.Questions)
-            {
-                //var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
-                //var matchedPreviousAnswer = request.PreviousAnswers.Where(x => x.ID == question.ID && !string.IsNullOrEmpty(x.Model)).FirstOrDefault();
-                //if (matchedAnswer != null)
-                //{
-                //    question.Model = matchedAnswer.Answer;
-                //}
-                //else if (matchedPreviousAnswer != null)
-                //{
-                //    question.Model = matchedPreviousAnswer.Model;
-                //}
-                question.Show = true;// question.Show(request.Position, requestorType);
-            }
-
-            return questionsViewModel;
         }
 
         private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity)
