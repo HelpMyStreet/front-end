@@ -283,6 +283,11 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", communityName = "ageuklsl" });
 
                 endpoints.MapControllerRoute(
+                   name: "face-coverings",
+                   pattern: "face-coverings",
+                   defaults: new { controller = "Community", action = "FaceCoverings" });
+
+                endpoints.MapControllerRoute(
                    name: "face-masks",
                    pattern: "face-masks",
                    defaults: new { controller = "Community", action = "FaceMasks" });
@@ -310,6 +315,11 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                    name: "registration/step-one/group",
                    pattern: "registration/step-one/{referringGroup}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
+                   name: "registration/step-one/group/source",
+                   pattern: "registration/step-one/{referringGroup}/{source}",
                    defaults: new { controller = "Registration", action = "StepOne" });
 
                 endpoints.MapControllerRoute(

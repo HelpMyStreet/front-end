@@ -137,8 +137,8 @@ namespace HelpMyStreetFE.Services
             {
                 tasks.AddRange(new List<TasksViewModel>
             {
-                    new TasksViewModel { ID = 1,SupportActivity = SupportActivities.Shopping },
-                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask },
+                    new TasksViewModel { ID = 1, SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
                     new TasksViewModel { ID = 3, SupportActivity = SupportActivities.CheckingIn },
                     new TasksViewModel { ID = 4, SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { ID = 5, SupportActivity = SupportActivities.Errands },
@@ -154,7 +154,11 @@ namespace HelpMyStreetFE.Services
                 ActivitesRequest = new ActivitesRequest
                 {
                     Activities = tasks.Select(x => x.SupportActivity).ToList()
-                }
+                },
+                RequestHelpFormVariantRequest = new RequestHelpFormVariantRequest
+                {
+                    RequestHelpFormVariant = requestHelpFormVariant
+                },
             });
 
             tasks.ForEach(x => x.Questions = questions.SupportActivityQuestions[x.SupportActivity].Select(x => new RequestHelpQuestion
@@ -166,12 +170,6 @@ namespace HelpMyStreetFE.Services
                 AdditionalData = x.AddtitonalData,
                 VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
             }).ToList());
-
-            if(requestHelpFormVariant != RequestHelpFormVariant.DIY)
-            { 
-                //question for DIY only
-                tasks.ForEach(x => x.Questions.RemoveAll(x => x.ID == (int)Questions.WillYouCompleteYourself));
-            }
 
             return tasks;
         }

@@ -321,6 +321,12 @@ namespace HelpMyStreetFE.Repositories
                 <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
                 <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
 
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
+            {
+                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
+                Example2 = "Collect a prescription for an older lady in Lincoln",
+                Example3 = "Post a letter for a gentleman in Spalding"
+            };
 
             return communityViewModel;
         }
@@ -339,11 +345,11 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ShowMap = false;
 
-            communityViewModel.Header = "A message from Ashleigh Linsdell, Founder and Director of ‘For the Love of Scrubs’ (FtLOS)";
+            communityViewModel.Header = "A message from Ashleigh Linsdell, Founder and Director of ‘For the Love of Scrubs’ (FTLOS)";
             communityViewModel.HeaderHTML = @"
                 <div class='row sm8' style='padding-left: 0'>    
                     <p class='mt-sm mb-sm'>
-                        FtLOS has supplied many thousands of items to support frontline workers in hospitals, care homes and surgeries across the
+                        FTLOS has supplied many thousands of items to support frontline workers in hospitals, care homes and surgeries across the
                         country. We now have another line of defence to support - our communities.
                     </p>
                     <p class='mt-sm mb-sm'>
@@ -372,12 +378,12 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HeaderVolunteerButtonText = null;
 
 
-            communityViewModel.CommunityVolunteersHeader = "What to expect from FtLOS";
+            communityViewModel.CommunityVolunteersHeader = "What to expect from FTLOS";
 
             communityViewModel.CommunityVolunteersTextHtml =
             @"
                         <p>
-                            The face coverings made by FtLOS volunteers are reusable, washable and well constructed. They can be posted straight to your home - we’ll just ask you to cover the cost of postage before we send them.
+                            The face coverings made by FTLOS volunteers are reusable, washable and well constructed. They can be posted straight to your home - we’ll just ask you to cover the cost of postage before we send them.
                         </p>
                         <p class='mb-xs mt-md'>
                             <strong>Is there a cost for face coverings?</strong>
@@ -394,7 +400,7 @@ namespace HelpMyStreetFE.Repositories
                         </p>
                         <p class='mt-md'>
                             <strong>Who can order face coverings?</strong>
-                            FtLOS face coverings are made by our communities for our communities, so we can’t accept commercial orders. Items supplied by our volunteers cannot be offered for resale under any circumstances.
+                            FTLOS face coverings are made by our communities for our communities, so we can’t accept commercial orders. Items supplied by our volunteers cannot be offered for resale under any circumstances.
                         </p>
                         <p class='mt-md'>
                             <strong>Will all of your face coverings look the same?</strong>
@@ -421,16 +427,16 @@ namespace HelpMyStreetFE.Repositories
                     <p>You can donate through For the Love of Scrubs’ <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings'>gofundme page</a></p>
 
                     <h6>Requesting materials</h6>
-                    <p>If you’re a FtLOS sewer and need more materials contact your local group administrator or email <a href='mailto:materialrequest-ftlos@outlook.com'>materialrequest-ftlos@outlook.com</a></p>
+                    <p>If you’re a FTLOS sewer and need more materials contact your local group administrator or email <a href='mailto:requestmaterials.ftlos@outlook.com'>requestmaterials.ftlos@outlook.com</a></p>
             ";
 
             communityViewModel.RequestHelpHeading = "Do you need a face covering?";
             communityViewModel.RequestHelpText = "If you’d like some For the Love of Scrubs face coverings for yourself, your family or an organisation, request them now. We'll do our best to help! ";
-            communityViewModel.RequestHelpButtonText = "Request a Face Covering";
+            communityViewModel.RequestHelpButtonText = "Request Face Coverings";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpLoggedOutButtonText = "Sign Up to Sew";
+            communityViewModel.ProvideHelpLoggedOutButtonText = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {

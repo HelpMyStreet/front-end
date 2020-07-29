@@ -80,7 +80,7 @@ namespace HelpMyStreetFE.Services
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = selectedTask.Questions.Select(x => new Question {
                                 Id = x.ID,
-                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Value ?? "" : x.Model,
+                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Key ?? "" : x.Model,
                                 Name = x.Label,
                                 Required = x.Required,
                                 AddtitonalData = x.AdditionalData,
@@ -125,7 +125,7 @@ namespace HelpMyStreetFE.Services
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
 
-                var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles < user.SupportRadiusMiles);
+                var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
                 jobs = new OpenJobsViewModel
                 {
@@ -231,9 +231,9 @@ namespace HelpMyStreetFE.Services
             ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
         }
 
-        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant source2, int referringGroupID, string source)
+        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
-            return await _requestHelpBuilder.GetSteps(source2, referringGroupID, source);
+            return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
     }
  }

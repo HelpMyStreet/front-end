@@ -71,6 +71,7 @@ namespace HelpMyStreetFE.Controllers
                 FirebaseConfiguration = _configuration["Firebase:Configuration"],
                 RegistrationFormVariant = registrationFormVariant,
                 ReferringGroupID = referringGroupId,
+                Source = source,
             });
         }
 
@@ -82,7 +83,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 _logger.LogInformation("Posting new user");
                 var uid = await _authService.VerifyIdTokenAsync(userData.Token);
-                await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), "");
+                await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), userData.Source);
                 await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
 
                 return Ok();
@@ -288,12 +289,7 @@ namespace HelpMyStreetFE.Controllers
         private async Task<string> GetCorrectPage(int userId)
         {
             User user = await _userService.GetUserAsync(userId);
-            return GetCorrectPage(user);
-        }
-
-        public static string GetCorrectPage(User user)
-        {
-            if (user.RegistrationHistory.Count > 0)
+            if (user != null && user.RegistrationHistory.Count > 0)
             {
                 int maxStep = user.RegistrationHistory.Max(a => a.Key);
 
@@ -306,7 +302,7 @@ namespace HelpMyStreetFE.Controllers
                     case 3:
                         return "/registration/step-four";
                     default:
-                        return string.Empty; //Registration journey is complete
+                        return "/account"; //Registration journey is complete
                 }
             }
 

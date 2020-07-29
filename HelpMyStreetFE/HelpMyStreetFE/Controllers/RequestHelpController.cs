@@ -158,7 +158,7 @@ namespace HelpMyStreetFE.Controllers
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
                     }
 
-                    var isFaceMaskActivity = requestStage.Tasks.Where(x => x.IsSelected).First().SupportActivity == SupportActivities.FaceMask ? true : false;
+                    var isFTLOSJourney = requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.FtLOS ? true : false;
 
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, HttpContext);
                     if (response.HasContent && response.IsSuccessful)
@@ -166,7 +166,9 @@ namespace HelpMyStreetFE.Controllers
                         return RedirectToRoute("request-help/success", new
                         {
                             fulfillable = response.Content.Fulfillable,
-                            isFaceMask = isFaceMaskActivity
+                            isFTLOS = isFTLOSJourney,
+                            referringGroupId = requestHelp.ReferringGroupID,
+                            source = requestHelp.Source
                         });
                     }
                 }
@@ -212,20 +214,21 @@ namespace HelpMyStreetFE.Controllers
             return View(model);
         }
 
-        public IActionResult Success(Fulfillable fulfillable, bool isFaceMask)
+        public IActionResult Success(Fulfillable fulfillable, bool isFTLOS, int referringGroupId, string source)
         {
 
             string message = "<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>";
 
-            string link = User.Identity.IsAuthenticated ? "/account" : "/";
+            string doneLink = User.Identity.IsAuthenticated ? "/account" : "/";
+            string button = $" <a href='{doneLink}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
 
-            string button = $" <a href='{link}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-            string requestLink = "/request-help";
+            string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId.ToString());
+            string requestLink = $"/request-help/{encodedReferringGroupId}/{source}";
 
-            string facemaskmessage = "<p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities.Without donations they aren’t able to continue their good work.</p>" +
+            string facemaskmessage = "<p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities. Without donations they aren’t able to continue their good work.</p>" +
                 "<p>If you are able to donate, you can do so on their Go Fund Me page <a href=\"https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\" target=\"_blank\">here</a>.<p>";
 
-            if (isFaceMask)
+            if (isFTLOS)
             {
                 message += facemaskmessage;
             }
@@ -241,13 +244,12 @@ namespace HelpMyStreetFE.Controllers
             {
                 message = "Your request will now be available in the 'My Accepted Requests' area of your profile.";
 
-                if(isFaceMask)
+                if(isFTLOS)
                 {
                     message += facemaskmessage;
                 }
 
                 button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
-                requestLink = "/request-help/0/DIY";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {

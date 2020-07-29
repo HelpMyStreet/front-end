@@ -14,12 +14,14 @@
     <div class="row">
         <div class="sm12 input">
             <label>
-                @Model.Questions[i].Label
+                @Html.Raw(Model.Questions[i].Label)
                 <span class="sub-text">@Html.Raw(Model.Questions[i].Subtext())</span>
             </label>
 
             @switch (Model.Questions[i].InputType)
             {
+                case QuestionType.LabelOnly:
+                    break;
                 case QuestionType.MultiLineText:
                     <textarea placeholder="@Model.Questions[i].Placeholder()" data-id="@Model.Questions[i].ID" class="question @Model.Questions[i].Class()" data-required="@Model.Questions[i].Required" data-val-message="@Model.Questions[i].DataValidationMessage" name="@name">@Model.Questions[i].Model</textarea>
                     break;
