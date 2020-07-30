@@ -37,6 +37,8 @@
         @Html.AntiForgeryToken();
         @Html.Hidden("requestHelp", Model.ToJson())
         @Html.Hidden("StepType", Model.Steps[Model.CurrentStepIndex].GetType())
+        @Html.Hidden("FormVariant", Model.RequestHelpFormVariant)
+        @Html.Hidden("SelectedSupportActivity", Model.SelectedSupportActivity())
         @Html.EditorFor(x => currentStep, currentStep.TemplateName);
 
         <div class="btn-wrapper">

@@ -1,11 +1,12 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
+import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 
 export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
     SetupAddressFinder();
-
+    
     trackEvent("Request form", "View 1.details", "", 0);
 }
 var validateForm =  function (validateRequestor) {
@@ -18,7 +19,7 @@ var validateForm =  function (validateRequestor) {
 
         buttonLoad($("#btnNext"));
         
-        const valid = validateFormData($(this), {
+        const valid = validateQuestions() && validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.Lastname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.MobileNumber": (v, d) => {                

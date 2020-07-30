@@ -15,7 +15,8 @@
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious, Description = "Some extra support over the phone",  IconClass="double-line-alignment" },
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled", IconClass="double-line-alignment"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"}
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector,  Description= "I want to get in touch with a Community Connector", IconClass="limit-width"},
         };
 
     var activity = activties.Where(x => x.Activity == Model.SupportActivity).First();
@@ -28,7 +29,7 @@
 
 <div class="sm4">
 
-    <div id="task_@Model.ID" data-type="activities" data-id='@Model.ID' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
+    <div id="task_@((int)Model.SupportActivity)" data-type="activities" data-id='@((int)Model.SupportActivity)' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
         <div class="tiles__tile__content ">
             @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
             {

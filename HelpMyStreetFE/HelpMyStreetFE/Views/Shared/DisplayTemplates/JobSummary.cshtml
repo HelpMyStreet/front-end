@@ -20,6 +20,7 @@
         className = "job--warm";
     }
     var AgeUk = Model.SupportActivity == SupportActivities.WellbeingPackage;
+    var Hlp = Model.SupportActivity == SupportActivities.CommunityConnector;
     string iconClass = AgeUk ? "limit-width" : "";
 
     var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
@@ -127,7 +128,7 @@
                     </dd>
                     <dt>Address</dt>
                     <dd>
-                        @Html.DisplayFor(x => recipient.Address, new { MaskAddress = AgeUk })
+                        @Html.DisplayFor(x => recipient.Address, new { MaskAddress = AgeUk || Hlp })
                     </dd>
                 </dl>
             </div>

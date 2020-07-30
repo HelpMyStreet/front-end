@@ -81,7 +81,10 @@ namespace HelpMyStreetFE.Services
                             new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Other", AllowCustom = true},
                         },
                     },
-                    new RequestHelpDetailStageViewModel(),
+                    new RequestHelpDetailStageViewModel()
+                    {
+                        FullRecipientAddressRequired = GetFullRecipientAddressRequired(requestHelpFormVariant)
+                    },
                     new RequestHelpReviewStageViewModel(),
                 }
 
@@ -90,6 +93,14 @@ namespace HelpMyStreetFE.Services
             {
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(2, 1);
+
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
+            }
+
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY) {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
@@ -103,6 +114,10 @@ namespace HelpMyStreetFE.Services
             {
                 return "How can For the Love of Scrubs help?";
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                return "Get in touch with a Community Connector";
+            }
             else
             {
                 return "What type of help are you looking for?";
@@ -115,9 +130,25 @@ namespace HelpMyStreetFE.Services
             {
                 return "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.";
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                return "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.";
+            }
             else
             {
                 return "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help.";
+            }
+        }
+
+        private bool GetFullRecipientAddressRequired(RequestHelpFormVariant requestHelpFormVariant)
+        {
+            if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -126,60 +157,68 @@ namespace HelpMyStreetFE.Services
             var tasks = new List<TasksViewModel>();
             if (requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
-                tasks.Add(new TasksViewModel { ID = 11, SupportActivity = SupportActivities.WellbeingPackage });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.WellbeingPackage });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
-                tasks.Add(new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = true });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = true });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            {
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
             }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
             {
-                    new TasksViewModel { ID = 1, SupportActivity = SupportActivities.Shopping },
-                    new TasksViewModel { ID = 2, SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
-                    new TasksViewModel { ID = 3, SupportActivity = SupportActivities.CheckingIn },
-                    new TasksViewModel { ID = 4, SupportActivity = SupportActivities.CollectingPrescriptions },
-                    new TasksViewModel { ID = 5, SupportActivity = SupportActivities.Errands },
-                    new TasksViewModel { ID = 6, SupportActivity = SupportActivities.MealPreparation },
-                    new TasksViewModel { ID = 7, SupportActivity = SupportActivities.PhoneCalls_Friendly },
-                    new TasksViewModel { ID = 9, SupportActivity = SupportActivities.HomeworkSupport },
-                    new TasksViewModel { ID = 10, SupportActivity = SupportActivities.Other },
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
+                    new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealPreparation },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.HomeworkSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
              });
             }
 
+            return tasks;
+        }
+
+        public async Task<List<RequestHelpQuestion>> GetQuestionsForTask(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity)
+        {
             var questions = await _requestHelpRepository.GetQuestionsByActivity(new GetQuestionsByActivitiesRequest
             {
                 ActivitesRequest = new ActivitesRequest
                 {
-                    Activities = tasks.Select(x => x.SupportActivity).ToList()
+                    Activities = new List<SupportActivities>() { supportActivity }
                 },
                 RequestHelpFormVariantRequest = new RequestHelpFormVariantRequest
                 {
                     RequestHelpFormVariant = requestHelpFormVariant
                 },
+                RequestHelpFormStageRequest = new RequestHelpFormStageRequest
+                {
+                    RequestHelpFormStage = requestHelpFormStage
+                }
             });
 
-            tasks.ForEach(x => x.Questions = questions.SupportActivityQuestions[x.SupportActivity].Select(x => new RequestHelpQuestion
+            List<RequestHelpQuestion> requestHelpQuestions = questions.SupportActivityQuestions[supportActivity].Select(x => new RequestHelpQuestion
             {
                 ID = x.Id,
                 InputType = x.Type,
                 Label = x.Name,
                 Required = x.Required,
+                PlaceholderText = x.PlaceholderText,
+                SubText = x.SubText,
+                Location = x.Location,
                 AdditionalData = x.AddtitonalData,
-                VisibleForRequestorTypes = GetRequestorTypeQuestion(requestHelpFormVariant, x.Id)
-            }).ToList());
+            }).ToList();
 
-            return tasks;
-        }
-        public List<RequestorType> GetRequestorTypeQuestion(RequestHelpFormVariant requestHelpFormVariant, int questionId)
-        {
-            if (requestHelpFormVariant == RequestHelpFormVariant.DIY && ((Questions)questionId) == Questions.WillYouCompleteYourself)
-            {
-                return new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation };
-            }
-            return null;
+
+            return requestHelpQuestions;
         }
 
         public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage)
