@@ -1,4 +1,4 @@
-﻿import { buttonLoad, buttonUnload } from "../shared/btn";
+import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
@@ -61,7 +61,7 @@ export function initialiseStepTwo() {
 
                     $("select[name='address_selector']").find("~ .error").hide();
 
-                    if (address.addressLine1.length <= 2 || address.city.length <= 2) {
+                    if (address.addressLine1.length <= 2 || address.locality.length <= 2) {
                         // Address will fail validation
                         $(".expander").slideDown();
                         $(".manual_entry").hide();
