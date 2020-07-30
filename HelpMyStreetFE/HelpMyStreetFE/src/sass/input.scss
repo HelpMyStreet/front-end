@@ -11,6 +11,7 @@ input[type="date"]::-webkit-inner-spin-button {
         position: absolute;
         top: -27px;
         left: 0;
+        width : 100%;
     }
 
 
@@ -41,8 +42,15 @@ input[type="date"]::-webkit-inner-spin-button {
             line-height: 22px;
             color: var(--p-color);
             position: absolute;
-            left: 0;
             bottom: -22px;
+
+            &.float_right {
+                float: right;
+                position: initial;
+                font-weight: normal;
+                text-decoration: underline;
+                cursor: pointer;
+            }
         }
 
         select {

@@ -49,6 +49,7 @@ export function initialiseStepTwo() {
                 );
 
                 $("#address_selector").slideDown();
+                $("#address_finder ~ .manual_entry").hide();
                 $("select[name=address_selector]").on("change", function () {
                     const id = $(this).children("option:selected").val();
 
