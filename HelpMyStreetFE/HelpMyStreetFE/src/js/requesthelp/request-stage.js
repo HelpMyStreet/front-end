@@ -14,7 +14,7 @@ export function intialiseRequestStage() {
     trackEvent("Request form", "View 0.request", "", 0);
 
     const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
-    if (taskId != "") { updateOptionsForActivity(taskId); }
+    updateOptionsForActivity(taskId);
 }
 
 
