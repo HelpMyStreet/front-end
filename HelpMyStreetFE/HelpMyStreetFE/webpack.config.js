@@ -6,6 +6,9 @@ module.exports = {
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
+  performance: {
+    hints: 'warning'
+  },
   context: path.resolve(__dirname, "src"),
   entry: {
     main: "./js/app.js",
