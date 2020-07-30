@@ -1,11 +1,12 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
+import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 
 export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
     SetupAddressFinder();
-
+    
     trackEvent("Request form", "View 1.details", "", 0);
 }
 var validateForm =  function (validateRequestor) {
@@ -18,7 +19,7 @@ var validateForm =  function (validateRequestor) {
 
         buttonLoad($("#btnNext"));
         
-        const valid = validateFormData($(this), {
+        const valid = validateQuestions() && validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.Lastname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.MobileNumber": (v, d) => {                
@@ -116,6 +117,7 @@ var SetupAddressFinder = function () {
 
         evt.preventDefault();
         $(".expander").slideDown();
+        $(".manual_entry").hide();
     });
 
     
@@ -131,7 +133,10 @@ var SetupAddressFinder = function () {
             if (resp.ok) {
                 const { hasContent, isSuccessful, content } = await resp.json();
 
-                if (hasContent && isSuccessful) {                    
+                if (hasContent && isSuccessful) {
+                    let postcodeInput = $("input[name='postcode_search']");
+                    postcodeInput.find("~ .error").hide();
+
                     $("select[name=address_selector]").html(
                         content.addressDetails.reduce((acc, cur, i) => {
                             const text = Object.keys(cur).reduce((tAcc, tCur) => {
@@ -149,15 +154,23 @@ var SetupAddressFinder = function () {
                     );
 
                     $("#address_selector").slideDown();
+                    $("#address_finder ~ .manual_entry").hide();
+
                     $("select[name=address_selector]").on("change", function () {
                         const id = $(this).children("option:selected").val();
                         const address = content.addressDetails[id];
                         $("input[name='currentStep.Recipient.AddressLine1']").val(address.addressLine1);
                         $("input[name='currentStep.Recipient.AddressLine2']").val(address.addressLine2);
                         $("input[name='currentStep.Recipient.Town']").val(address.locality);
-                        $("input[name='currentStep.Recipient.Postcode']").val(address.postcode);             
+                        $("input[name='currentStep.Recipient.Postcode']").val(address.postcode);
                     });
+                } else {
+                    let postcodeInput = $("input[name='postcode_search']");
+                    postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
                 }
+            } else {
+                let postcodeInput = $("input[name='postcode_search']");
+                postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
             }
         } catch (ex) {
             console.error(ex);
