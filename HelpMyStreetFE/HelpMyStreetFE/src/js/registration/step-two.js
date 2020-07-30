@@ -11,6 +11,7 @@ export function initialiseStepTwo() {
   $(".manual_entry").on("click", function (evt) {
     evt.preventDefault();
     $(".expander").slideDown();
+    $(".manual_entry").hide();
     trackEvent("Registration flow", "Click Manual entry");
  });
 
@@ -48,6 +49,7 @@ export function initialiseStepTwo() {
                 );
 
                 $("#address_selector").slideDown();
+                $("#address_finder ~ .manual_entry").hide();
                 $("select[name=address_selector]").on("change", function () {
                     const id = $(this).children("option:selected").val();
 
@@ -57,13 +59,23 @@ export function initialiseStepTwo() {
                     $("input[name=address_line_2]").val(address.addressLine2);
                     $("input[name=city]").val(address.locality);
                     $("input[name=postcode]").val(address.postcode);
-                    //$(".expander").slideDown();
+
+                    $("select[name='address_selector']").find("~ .error").hide();
+
+                    if (address.addressLine1.length <= 2 || address.locality.length <= 2) {
+                        // Address will fail validation
+                        $(".expander").slideDown();
+                        $(".manual_entry").hide();
+                    }
                 });
             } else {
                 let postcodeInput = $("input[name='postcode_search']");
                 postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
             }
-        } 
+        } else {
+            let postcodeInput = $("input[name='postcode_search']");
+            postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+        }
     } catch (ex) {
       console.error(ex);
     }
@@ -71,7 +83,6 @@ export function initialiseStepTwo() {
   });
 
     $("#registration_form").on("submit", function (event) {
-        $(".expander").slideDown();        
         const valid = validateFormData($(this), {
             first_name: (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             last_name: (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
@@ -92,6 +103,23 @@ export function initialiseStepTwo() {
             let validForm = (additonalChecks && valid);            
             let postcodeValid;
             let postcodeInput = $("input[name='postcode']");
+
+            if (!valid && $(".expander:visible").length == 0 && $("input[name='address_line_1']").val().length <= 2) {
+                // Address invalid and manual entry fields not visible
+                let postcodeSearchInput = $("input[name='postcode_search']");
+                postcodeSearchInput.find("~ .error").hide();
+                if ($("#address_selector:visible").length == 0) {
+                    if (postcodeSearchInput.val().length < 5) {
+                        postcodeSearchInput.find("~ .error").text("Please enter your address").show();
+                    } else {
+                        postcodeSearchInput.find("~ .error").text("Please confirm your address").show();
+                    }
+                } else {
+                    $("select[name='address_selector']").find("~ .error").text("Please select your address").show();
+                }
+            }
+
+
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
             trackEvent("Registration flow", "Submit Step 2", validForm ? "(Valid)" : "(Invalid)");
             if (validForm) { // avoid calling service when possible, so check if the form is valid first
