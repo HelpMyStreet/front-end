@@ -1,4 +1,4 @@
-import { buttonLoad, buttonUnload } from "../shared/btn";
+﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
@@ -67,12 +67,15 @@ export function initialiseStepTwo() {
                         $(".expander").slideDown();
                         $(".manual_entry").hide();
                     }
-               });
+                });
             } else {
                 let postcodeInput = $("input[name='postcode_search']");
                 postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
             }
-        } 
+        } else {
+            let postcodeInput = $("input[name='postcode_search']");
+            postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+        }
     } catch (ex) {
       console.error(ex);
     }
