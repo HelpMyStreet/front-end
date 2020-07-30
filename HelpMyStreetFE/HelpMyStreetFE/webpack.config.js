@@ -17,7 +17,6 @@ module.exports = {
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js", 
   },
-  devtool: "inline-source-map",
   output: {
     path: path.resolve(__dirname, "wwwroot"),
   },
