@@ -36,8 +36,8 @@ else
         <div class="container">
             <div class="row flex hero">
                 <div class="row sm6 align-center content-page">
-                    <header class="">
-                        <h2 class="mb0 mw1000">@Model.Header</h2>
+                    <header class="mw1000">
+                        <h2 class="mb0 mt-md">@Model.Header</h2>
                     </header>
 
                     @Html.Raw(@Model.HeaderHTML)
@@ -47,7 +47,7 @@ else
                         <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
-                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
                             <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
@@ -56,7 +56,7 @@ else
                     <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
                         @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
                         {
-                            <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
                         }
                         @if (!Model.IsLoggedIn)
                         {
@@ -75,7 +75,7 @@ else
                         <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md large-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
-                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
                             <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
@@ -86,7 +86,9 @@ else
 
                 @if (Model.ShowMap)
                 {
-                    <div class="sm6 text-right commmunity-map-container map static-map" id="map"></div>
+                    <div class="sm6 nopadding pl-md">
+                        <div class="text-right commmunity-map-container map static-map" id="map"></div>
+                    </div>
                 }
             </div>
         </div>
@@ -117,14 +119,14 @@ else
     <div class="outer-container outer-container--darker">
         <div class="container">
             <div class="row flex justify-center">
-                <h2 class="mb15 text-center">@Model.CommunityVolunteersHeader</h2>
+                <h2 class="mb15 mt-lg text-center">@Model.CommunityVolunteersHeader</h2>
             </div>
         </div>
     </div>
 
     @if (Model.CommunityVolunteers != null)
     {
-        <div class="outer-container mb-md">
+        <div class="outer-container outer-container--darker">
             <div class="slider">
                 <div class="slides">
                     @foreach (var volunteer in Model.CommunityVolunteers)
@@ -143,8 +145,6 @@ else
         </div>
     }
 
-
-
     <div class="outer-container outer-container--darker">
         <div class="container">
             <div class="row">
@@ -152,6 +152,7 @@ else
                     <div class="community-volunteers-text" id="community-volunteers-text">
                         @Html.Raw(@Model.CommunityVolunteersTextHtml)
                     </div>
+                    <div class="mb-md"></div>
                 </div>
             </div>
         </div>
@@ -208,20 +209,20 @@ else
 
 
 
-    <div class="outer-container outer-container--darker mb-md">
+    <div class="outer-container outer-container--darker">
         <div class="container ">
             <div class="row justify-center">
-                <h2 class="text-center">Useful Links</h2>
+                <h2 class="text-center mt-lg">Useful Links</h2>
             </div>
             <div class="row flex justify-center">
-                <div class="sm12 community-useful-links">
+                <div class="sm12 community-useful-links mb-lg">
                     @Html.Raw(@Model.UsefulLinksHtml)
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="outer-container mb-md">
+    <div class="outer-container outer-container--darker mb-md">
 
         @if (Model.CarouselImages2 != null)
         {
@@ -243,14 +244,14 @@ else
 
     </div>
 
-    <div class="outer-container">
-        <div class="inner-container">
-            @if (Model.ShowHelpExampleCards)
-            {
+    @if (Model.ShowHelpExampleCards)
+    {
+        <div class="outer-container mt-md">
+            <div class="inner-container container">
                 <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
-            }
+            </div>
         </div>
-    </div>
+    }
 
 
 
@@ -260,13 +261,13 @@ else
         <div class="container">
             <div class="row">
                 <div class="sm12">
-                    <h2 class="text-center">About HelpMyStreet.org</h2>
+                    <h2 class="text-center mt-lg">About HelpMyStreet.org</h2>
                 </div>
             </div>
 
 
             <div class="row mt-lg">
-                <div class="sm6 flex mb-sm home-video-container justify-center align-center text-right" id="video">
+                <div class="sm6 flex mb-md home-video-container justify-center align-center text-right" id="video">
                     <iframe style="min-width: 100%; height: 350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
 
@@ -333,7 +334,7 @@ else
     @Html.Hidden(nameof(Model.Latitude))
     @Html.Hidden(nameof(Model.ZoomLevel))
 
-    <div class="outer-container mb-lg">
+    <div class="outer-container outer-container--darker mb-lg">
 
         @if (Model.CarouselImages3 != null)
         {
