@@ -27,17 +27,17 @@
 }
 else
 {
-<div class="container">
-    <div class="community-banner">
-        <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+    <div class="container">
+        <div class="community-banner">
+            <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+        </div>
     </div>
-
     <div class="outer-container">
-        <div class="inner-container">
-            <div class="row flex hero">
+        <div class="container">
+            <div class="row flex hero mb-lg">
                 <div class="row sm6 align-center content-page">
-                    <header class="">
-                        <h2 class="mb0 mw1000">@Model.Header</h2>
+                    <header class="mw1000">
+                        <h2 class="mb0 mt-md">@Model.Header</h2>
                     </header>
 
                     @Html.Raw(@Model.HeaderHTML)
@@ -47,7 +47,7 @@ else
                         <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
-                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
                             <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
@@ -56,7 +56,7 @@ else
                     <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
                         @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
                         {
-                            <p class="row sm12 mt-sm mb-sm">@Model.HeaderVolunteerButtonText</p>
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
                         }
                         @if (!Model.IsLoggedIn)
                         {
@@ -75,7 +75,7 @@ else
                         <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md large-screen-only">
                             @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                             {
-                                <p class="row sm12 mt-sm mb-sm">@Model.HeaderHelpButtonText</p>
+                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
                             <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
@@ -86,72 +86,68 @@ else
 
                 @if (Model.ShowMap)
                 {
-                    <div class="sm6 text-right commmunity-map-container map static-map" id="map"></div>
+                    <div class="sm6 nopadding pl-md">
+                        <div class="text-right commmunity-map-container map static-map" id="map"></div>
+                    </div>
                 }
             </div>
         </div>
     </div>
 
-    <div class="outer-container mb-lg">
 
-        @if (Model.CarouselImages1 != null)
-        {
-            @if (Model.CarouselImages1.Count() > 0)
-            {
-                <div class="slider">
-                    <div class="slides">
-                        @foreach (string carouselImage in Model.CarouselImages1)
-                        {
-                            <div>
-                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                            </div>
-
-                        }
-                    </div>
+    @if (Model.CarouselImages1 != null && Model.CarouselImages1.Count() > 0)
+    {
+        <div class="outer-container mb-lg">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (string carouselImage in Model.CarouselImages1)
+                    {
+                        <div>
+                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                        </div>
+                    }
                 </div>
-            }
-        }
-
-    </div>
+            </div>
+        </div>
+    }
 
     <div class="outer-container outer-container--darker">
-        <div class="inner-container">
+        <div class="container">
             <div class="row flex justify-center">
-                <h2 class="mb15 text-center">@Model.CommunityVolunteersHeader</h2>
+                <h2 class="mb15 mt-lg text-center">@Model.CommunityVolunteersHeader</h2>
             </div>
+        </div>
+    </div>
 
-            @if (Model.CommunityVolunteers != null)
-            {
-                <div class="row flex justify-center">
-                    <div class="community-volunteers-container flex justify-center">
-                        @{
-                            foreach (var volunteer in Model.CommunityVolunteers)
-                            {
-                                <div class="volunteer">
-
-                                    <div class="volunteer-image">
-                                        <img src="@volunteer.ImageLocation" alt="@volunteer.Name" />
-                                    </div>
-                                    <div class="volunteer-text">
-                                        <p class="bold mt-sm mb-xs">@volunteer.Name</p>
-                                        <p class="mt-xs mb-xs ">@volunteer.Role</p>
-                                        <p class="mt-xs mb-xs">@volunteer.Location</p>
-                                    </div>
-                                </div>
-                            }
-
-
-                        }
-                    </div>
+    @if (Model.CommunityVolunteers != null)
+    {
+        <div class="outer-container outer-container--darker">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (var volunteer in Model.CommunityVolunteers)
+                    {
+                        <div class="volunteer">
+                            <img class="slide" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+                            <p class="bold mt-sm mb-xs">@volunteer.Name</p>
+                            @if (volunteer.Role != null)
+                            {<p class="mt-xs mb-xs ">@volunteer.Role</p>}
+                            @if (volunteer.Location != null)
+                            {<p class="mt-xs mb-xs">@volunteer.Location</p>}
+                        </div>
+                    }
                 </div>
-                            }
+            </div>
+        </div>
+    }
 
-
+    <div class="outer-container outer-container--darker">
+        <div class="container">
             <div class="row">
                 <div class="sm12">
                     <div class="community-volunteers-text" id="community-volunteers-text">
                         @Html.Raw(@Model.CommunityVolunteersTextHtml)
                     </div>
+                    <div class="mb-md"></div>
                 </div>
             </div>
         </div>
@@ -159,7 +155,7 @@ else
 
 
     <div class="outer-container">
-        <div class="inner-container--no-side-padding">
+        <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
 
                 @if (Model.ShowRequestHelp)
@@ -208,65 +204,62 @@ else
 
 
 
-    <div class="outer-container outer-container--darker mb-md">
-        <div class="inner-container ">
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
             <div class="row justify-center">
-                <h2 class="text-center">Useful Links</h2>
+                <h2 class="text-center mt-lg">Useful Links</h2>
             </div>
             <div class="row flex justify-center">
-                <div class="sm12 community-useful-links">
+                <div class="sm12 community-useful-links mb-lg">
                     @Html.Raw(@Model.UsefulLinksHtml)
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="outer-container mb-md">
 
-        @if (Model.CarouselImages2 != null)
-        {
-            @if (Model.CarouselImages2.Count() > 0)
-            {
-                <div class="slider">
-                    <div class="slides">
-                        @foreach (string carouselImage in Model.CarouselImages2)
-                        {
-                            <div>
-                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                            </div>
+    @if (Model.CarouselImages2 != null && Model.CarouselImages2.Count() > 0)
+    {
+        <div class="outer-container outer-container--darker mb-md">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (string carouselImage in Model.CarouselImages2)
+                    {
+                        <div>
+                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                        </div>
 
-                        }
-                    </div>
+                    }
                 </div>
-            }
-        }
-
-    </div>
-
-    <div class="outer-container">
-        <div class="inner-container">
-            @if (Model.ShowHelpExampleCards)
-            {
-                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
-            }
+            </div>
         </div>
-    </div>
+    }
+
+
+    @if (Model.ShowHelpExampleCards)
+    {
+        <div class="outer-container mt-md">
+            <div class="inner-container container">
+                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
+            </div>
+        </div>
+    }
 
 
 
 
 
-    <div class="outer-container outer-container--darker">
-        <div class="inner-container">
+    <div class="outer-container @(Model.ShowHelpExampleCards ? "outer-container--darker" : "")">
+        <div class="container">
             <div class="row">
                 <div class="sm12">
-                    <h2 class="text-center">About HelpMyStreet.org</h2>
+                    <h2 class="text-center mt-lg">About HelpMyStreet.org</h2>
                 </div>
             </div>
 
 
             <div class="row mt-lg">
-                <div class="sm6 flex mb-sm home-video-container justify-center align-center text-right" id="video">
+                <div class="sm6 flex mb-md home-video-container justify-center align-center text-right" id="video">
                     <iframe style="min-width: 100%; height: 350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
 
@@ -282,7 +275,7 @@ else
     </div>
 
     <div class="outer-container">
-        <div class="inner-container--no-side-padding">
+        <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
 
                 @if (Model.ShowRequestHelp)
@@ -333,27 +326,21 @@ else
     @Html.Hidden(nameof(Model.Latitude))
     @Html.Hidden(nameof(Model.ZoomLevel))
 
-    <div class="outer-container mb-lg">
 
-        @if (Model.CarouselImages3 != null)
-        {
-            @if (Model.CarouselImages3.Count() > 0)
-            {
-                <div class="slider">
-                    <div class="slides">
-                        @foreach (string carouselImage in Model.CarouselImages3)
-                        {
-                            <div>
-                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                            </div>
-
-                        }
-                    </div>
+    @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
+    {
+        <div class="outer-container outer-container--darker mb-lg">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (string carouselImage in Model.CarouselImages3)
+                    {
+                        <div>
+                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                        </div>
+                    }
                 </div>
-            }
-        }
-
-    </div>
-</div>
+            </div>
+        </div>
+    }
 }
 
