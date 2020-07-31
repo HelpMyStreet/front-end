@@ -2,8 +2,7 @@
     width: 100%;
 
     .slides {
-        margin-left: auto;
-        margin-right: auto;
+        margin: 0 auto;
         display: flex;
         overflow-x: auto;
         scroll-behavior: smooth;
@@ -12,11 +11,9 @@
 
 
         > div {
-            margin-left: 10px;
-            margin-right: 10px;
+            margin: 0 10px;
             padding: 15px;
             flex-shrink: 0;
-            width: 300px;
 
             &:first-child {
                 margin-left: auto;
@@ -29,7 +26,7 @@
             .slide {
                 border-radius: 4px;
                 object-fit: cover;
-                width: 100%;
+                width: 270px;
                 height: 300px;
                 box-shadow: 2px 3px 13px 5px rgba(0,0,0,0.1);
             }
