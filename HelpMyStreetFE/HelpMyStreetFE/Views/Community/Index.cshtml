@@ -34,7 +34,7 @@ else
     </div>
     <div class="outer-container">
         <div class="container">
-            <div class="row flex hero">
+            <div class="row flex hero mb-lg">
                 <div class="row sm6 align-center content-page">
                     <header class="mw1000">
                         <h2 class="mb0 mt-md">@Model.Header</h2>
@@ -94,27 +94,22 @@ else
         </div>
     </div>
 
-    <div class="outer-container mb-lg">
 
-        @if (Model.CarouselImages1 != null)
-        {
-            @if (Model.CarouselImages1.Count() > 0)
-            {
-                <div class="slider">
-                    <div class="slides">
-                        @foreach (string carouselImage in Model.CarouselImages1)
-                        {
-                            <div>
-                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                            </div>
-
-                        }
-                    </div>
+    @if (Model.CarouselImages1 != null && Model.CarouselImages1.Count() > 0)
+    {
+        <div class="outer-container mb-lg">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (string carouselImage in Model.CarouselImages1)
+                    {
+                        <div>
+                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                        </div>
+                    }
                 </div>
-            }
-        }
-
-    </div>
+            </div>
+        </div>
+    }
 
     <div class="outer-container outer-container--darker">
         <div class="container">
@@ -222,27 +217,24 @@ else
         </div>
     </div>
 
-    <div class="outer-container outer-container--darker mb-md">
 
-        @if (Model.CarouselImages2 != null)
-        {
-            @if (Model.CarouselImages2.Count() > 0)
-            {
-                <div class="slider">
-                    <div class="slides">
-                        @foreach (string carouselImage in Model.CarouselImages2)
-                        {
-                            <div>
-                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                            </div>
+    @if (Model.CarouselImages2 != null && Model.CarouselImages2.Count() > 0)
+    {
+        <div class="outer-container outer-container--darker mb-md">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (string carouselImage in Model.CarouselImages2)
+                    {
+                        <div>
+                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                        </div>
 
-                        }
-                    </div>
+                    }
                 </div>
-            }
-        }
+            </div>
+        </div>
+    }
 
-    </div>
 
     @if (Model.ShowHelpExampleCards)
     {
@@ -257,7 +249,7 @@ else
 
 
 
-    <div class="outer-container outer-container--darker">
+    <div class="outer-container @(Model.ShowHelpExampleCards ? "outer-container--darker" : "")">
         <div class="container">
             <div class="row">
                 <div class="sm12">
@@ -334,26 +326,21 @@ else
     @Html.Hidden(nameof(Model.Latitude))
     @Html.Hidden(nameof(Model.ZoomLevel))
 
-    <div class="outer-container outer-container--darker mb-lg">
 
-        @if (Model.CarouselImages3 != null)
-        {
-            @if (Model.CarouselImages3.Count() > 0)
-            {
-                <div class="slider">
-                    <div class="slides">
-                        @foreach (string carouselImage in Model.CarouselImages3)
-                        {
-                            <div>
-                                <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                            </div>
-
-                        }
-                    </div>
+    @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
+    {
+        <div class="outer-container outer-container--darker mb-lg">
+            <div class="slider">
+                <div class="slides">
+                    @foreach (string carouselImage in Model.CarouselImages3)
+                    {
+                        <div>
+                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                        </div>
+                    }
                 </div>
-            }
-        }
-
-    </div>
+            </div>
+        </div>
+    }
 }
 
