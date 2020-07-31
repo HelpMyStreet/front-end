@@ -5,17 +5,18 @@ $(document).ready(function () {
     var sliders = document.getElementsByClassName('slides');
 
     sliders.forEach(slides => {
-        const numberOfSlides = slides.querySelectorAll('div').length;
-        const slideWidth = $(slides).find('div:nth-child(2)').first().outerWidth(true);
-        const totalWidth = numberOfSlides * slideWidth;
+        var numberOfFrames = 0;
+        var totalWidth = 0;
+        slides.querySelectorAll('div').forEach(s => { numberOfFrames++; totalWidth += $(s).outerWidth(true); });
         const visibleWidth = $(slides).width();
         var scrollTarget;
-        if (numberOfSlides % 2 == 1) {
+        if (numberOfFrames % 2 == 1) {
             // odd - centre centre image
             scrollTarget = Math.floor(totalWidth / 2 - visibleWidth / 2);
         } else {
             // even - centre left-of-centre image
-            scrollTarget = Math.floor(totalWidth / 2 - visibleWidth / 2 - slideWidth / 2);
+            const frameWidth = $(slides).find('div:nth-child(2)').first().outerWidth(true); // use second frame; first has non-typical margin
+            scrollTarget = Math.floor(totalWidth / 2 - visibleWidth / 2 - frameWidth / 2);
         }
         $(slides).scrollLeft(scrollTarget);
     });
