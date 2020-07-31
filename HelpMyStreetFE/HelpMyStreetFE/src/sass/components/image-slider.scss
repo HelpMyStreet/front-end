@@ -6,7 +6,6 @@
         margin-right: auto;
         display: flex;
         overflow-x: auto;
-        scroll-snap-type: x mandatory;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
         text-align: center;
@@ -63,21 +62,25 @@
 
 
 @media screen and (max-width: $sm-screen) {
-    .slides > div {
-        margin-left: calc((100% - 300px)/2);
-        margin-right: calc((100% - 300px)/2);
-        scroll-snap-align: center;
-        flex-shrink: 0;
-        width: 300px;
-        border-radius: 10px;
-        transform-origin: center center;
-        transform: scale(1);
-        transition: transform 0.5s;
-        position: relative;
-        display: flex;
-        margin-left:auto;
-        align-items: center;
-        font-size: 100px;
+    .slides {
+        scroll-snap-type: x mandatory;
+
+        > div {
+            margin-left: calc((100% - 300px)/2);
+            margin-right: calc((100% - 300px)/2);
+            scroll-snap-align: center;
+            flex-shrink: 0;
+            width: 300px;
+            border-radius: 10px;
+            transform-origin: center center;
+            transform: scale(1);
+            transition: transform 0.5s;
+            position: relative;
+            display: flex;
+            margin-left: auto;
+            align-items: center;
+            font-size: 100px;
+        }
     }
 }
 
