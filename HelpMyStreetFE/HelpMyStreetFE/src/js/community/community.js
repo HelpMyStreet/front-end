@@ -4,10 +4,20 @@ $(document).ready(function () {
 
     var sliders = document.getElementsByClassName('slides');
 
-    sliders.forEach(slide => {
-        var middleSlide = Math.floor(slide.querySelectorAll('div').length / 2)
-        var mainSlide = slide.querySelectorAll('div')[middleSlide];
-        slide.scrollTo(mainSlide.offsetLeft, 0);
+    sliders.forEach(slides => {
+        const numberOfSlides = slides.querySelectorAll('div').length;
+        const slideWidth = $(slides).find('div:nth-child(2)').first().outerWidth(true);
+        const totalWidth = numberOfSlides * slideWidth;
+        const visibleWidth = $(slides).width();
+        var scrollTarget;
+        if (numberOfSlides % 2 == 1) {
+            // odd - centre centre image
+            scrollTarget = Math.floor(totalWidth / 2 - visibleWidth / 2);
+        } else {
+            // even - centre left-of-centre image
+            scrollTarget = Math.floor(totalWidth / 2 - visibleWidth / 2 - slideWidth / 2);
+        }
+        $(slides).scrollLeft(scrollTarget);
     });
 
     $('#community-volunteers-text').readmore({
