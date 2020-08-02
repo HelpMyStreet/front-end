@@ -82,7 +82,7 @@ namespace HelpMyStreetFE.Services
                             Details = "",
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
-                            Questions = questions.Select(x => new Question {
+                            Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
                                 Id = x.ID,
                                 Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Key ?? "" : x.Model,
                                 Name = x.Label,

@@ -1,11 +1,13 @@
 ﻿export function loadQuestions(supportActivity) {
+    $('button#btnNext').addClass('disabled prevent-submit');
+
     var qRequest = {
         SupportActivity: supportActivity,
         formVariant: $('input#FormVariant').val(),
         formStage: $('input#currentStep_FormStage').val(),
         answers: GetCurrentQuestionAnswers(),
     };
-    
+
     $('.questions').each(function () {
         qRequest.position = $(this).attr("data-position");
         var el = $(this);
@@ -20,6 +22,7 @@
             data: JSON.stringify(qRequest),
             success: function (data) {
                 el.html(data);
+                $('button#btnNext').removeClass('disabled prevent-submit');
             }
         });
     })
