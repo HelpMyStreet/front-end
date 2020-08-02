@@ -1,6 +1,9 @@
+import { initialiseSliders } from "../shared/image-slider.js"
 import "isomorphic-fetch";
 
 $(document).ready(function () {
+    initialiseSliders();
+
     $('#community-volunteers-text').readmore({
         moreLink: '<a href="#">Read more</a>',
         lessLink: '<a href="#">Read less</a>',
