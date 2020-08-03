@@ -30,6 +30,7 @@
     bool removePluralisation = forFaceMask &&  Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.SupportActivity.FriendlyName().Remove(Model.SupportActivity.FriendlyName().Length - 1) : Model.SupportActivity.FriendlyName());
     bool showOtherDetails = !forFaceMask;
+    var ageUKReference = Model?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
 <div class="job @className" id="@id">
@@ -54,7 +55,12 @@
 
                 }
 
-              @friendlyName
+                @friendlyName
+
+                @if(ageUKReference != null)
+                {
+                    @($"({ageUKReference})")
+                }
 
             </span>
             <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
