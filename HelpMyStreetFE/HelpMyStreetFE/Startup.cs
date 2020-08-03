@@ -120,7 +120,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
-            services.AddHttpClient<IGroupService, GroupService>(client =>
+            services.AddHttpClient<IGroupRepository, GroupRepository>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
@@ -139,6 +139,7 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
+            services.AddSingleton<IGroupService, GroupService>();
           
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
