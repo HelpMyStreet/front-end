@@ -23,5 +23,7 @@ namespace HelpMyStreetFE.Services
         Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId);
 
         Task<GetUserGroupsResponse> GetUserGroups(int userId);
+
+        Task<GetUserRolesResponse> GetUserRoles(int userId);
     }
 }

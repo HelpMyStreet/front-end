@@ -106,6 +106,18 @@ namespace HelpMyStreetFE.Services
             return null;
         }
 
+        public async Task<GetUserRolesResponse> GetUserRoles(int userId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetUserRoles?userId={userId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetUserRolesResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content;
+            }
+            return null;
+        }
+
         public async Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId)
         {
             PostAddUserToDefaultGroupsRequest postAddUserToDefaultGroupsRequest = new PostAddUserToDefaultGroupsRequest() { UserID = userId };
