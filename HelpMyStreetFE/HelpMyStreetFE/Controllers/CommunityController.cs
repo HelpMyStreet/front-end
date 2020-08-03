@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.Controllers
 
         public async Task<IActionResult> FaceMasks()
         {
-            return RedirectToAction("FaceCoverings");
+            return Redirect("/face-coverings");
         }
     }
 }
