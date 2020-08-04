@@ -5,9 +5,15 @@
 
 @{ var PageModel = (GroupRequestsViewModel)Model.PageModel; }
 
+<div class="user-profile profile-panel p-md">
+    <header class="profile-panel__header">
+        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Requests</h3>
+        <p>Requests submitted to @Model.CurrentGroup.GroupName</p>
+    </header>
     <div class="profile">
         @Html.DisplayFor(x => PageModel.Jobs, new
-           {
-               UserIsVerified = true
-           })
+        {
+            UserIsVerified = true
+        })
     </div>
+</div>
