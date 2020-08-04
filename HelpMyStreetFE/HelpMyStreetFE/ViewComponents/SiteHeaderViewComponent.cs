@@ -16,9 +16,11 @@ namespace HelpMyStreetFE.ViewComponents
     public class SiteHeaderViewComponent : ViewComponent
     {
         private readonly IUserService _userService;
-        public SiteHeaderViewComponent(IUserService userService)
+        private readonly IGroupService _groupService;
+        public SiteHeaderViewComponent(IUserService userService, IGroupService groupService)
         {
             _userService = userService;
+            _groupService = groupService;
         }
 
  
@@ -38,12 +40,12 @@ namespace HelpMyStreetFE.ViewComponents
                     user = await _userService.GetUserAsync(id);
                     HttpContext.Session.SetObjectAsJson("User", user);
                 }
-                viewModel.AccountVM = GetAccountViewModel(user);
+                viewModel.AccountVM = await GetAccountViewModel(user);
             }                                 
             return View(viewModel);
         }
 
-        private AccountViewModel GetAccountViewModel(User user)
+        private async Task<AccountViewModel> GetAccountViewModel(User user)
         {
             var viewModel = new AccountViewModel();
 
@@ -53,6 +55,8 @@ namespace HelpMyStreetFE.ViewComponents
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.UserDetails = userDetails;
             }
+
+            viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
 
             return viewModel;
         }

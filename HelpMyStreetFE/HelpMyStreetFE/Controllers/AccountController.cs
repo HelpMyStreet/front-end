@@ -32,6 +32,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestService _requestService;
+        private readonly IGroupService _groupService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
 
@@ -42,7 +43,8 @@ namespace HelpMyStreetFE.Controllers
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IOptions<RequestSettings>  requestSettings,
-            IRequestService requestService
+            IRequestService requestService,
+            IGroupService groupService
             )
         {
             _logger = logger;
@@ -52,6 +54,7 @@ namespace HelpMyStreetFE.Controllers
             _yotiOptions = yotiOptions;
             _requestService = requestService;
             _requestSettings = requestSettings;
+            _groupService = groupService;
         }  
 
         [HttpGet]
@@ -92,7 +95,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
             viewModel.PageModel = userDetails;            
@@ -109,7 +112,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -161,7 +164,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext); 
             return View("Index", viewModel);
@@ -177,7 +180,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;            
             var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);        
             var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
@@ -207,7 +210,7 @@ namespace HelpMyStreetFE.Controllers
             return user;
         }
 
-        private AccountViewModel GetAccountViewModel(User user)
+        private async Task<AccountViewModel> GetAccountViewModel(User user)
         {
             var viewModel = new AccountViewModel();
 
@@ -242,8 +245,9 @@ namespace HelpMyStreetFE.Controllers
                     
                 };
        
-                viewModel.UserDetails = userDetails;                
-                
+                viewModel.UserDetails = userDetails;
+
+                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
             }
 
             return viewModel;
