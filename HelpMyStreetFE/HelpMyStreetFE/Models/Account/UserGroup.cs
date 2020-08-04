@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models.Account
 {
-    public class GroupViewModel
+    public class UserGroup
     {
         public int GroupId { get; set; }
         public string GroupName { get; set; }

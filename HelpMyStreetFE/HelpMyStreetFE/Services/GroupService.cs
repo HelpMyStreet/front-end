@@ -54,9 +54,9 @@ namespace HelpMyStreetFE.Services
             return (await _groupRepository.GetUserGroups(userId)).Groups;
         }
 
-        public async Task<List<GroupViewModel>> GetUserGroupRoles(int userId)
+        public async Task<List<UserGroup>> GetUserGroupRoles(int userId)
         {
-            List<GroupViewModel> response = new List<GroupViewModel>();
+            List<UserGroup> response = new List<UserGroup>();
             var userRoles = await _groupRepository.GetUserRoles(userId);
 
             foreach (var groupRoles in userRoles.UserGroupRoles)
@@ -64,7 +64,7 @@ namespace HelpMyStreetFE.Services
                 var group = await _groupRepository.GetGroup(groupRoles.Key);
                 var roles = groupRoles.Value.Select(role => (GroupRoles)role).ToList();
 
-                response.Add(new GroupViewModel()
+                response.Add(new UserGroup()
                 {
                     GroupId = group.Group.GroupId,
                     GroupKep = group.Group.GroupKey,

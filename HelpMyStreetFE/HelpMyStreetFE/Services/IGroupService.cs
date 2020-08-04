@@ -18,6 +18,6 @@ namespace HelpMyStreetFE.Services
 
         Task<List<int>> GetUserGroups(int userId);
 
-        Task<List<GroupViewModel>> GetUserGroupRoles(int userId);
+        Task<List<UserGroup>> GetUserGroupRoles(int userId);
     }
 }
