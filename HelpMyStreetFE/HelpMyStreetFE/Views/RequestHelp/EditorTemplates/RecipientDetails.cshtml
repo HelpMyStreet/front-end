@@ -72,29 +72,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="@(Model?.Postcode != null ?  "dblock" : "")  expander sm6">
-                    <h5>Please enter <span class="lowercase">@prefix</span> address</h5>
-                    <div class="input">
+                <div class="@(Model?.Postcode != null ?  "dblock" : "")  expander sm12 pt-xs row">
+                    <div class="input sm6">
                         <label for="currentStep_Recipient_AddressLine1">@prefix address line 1</label>
                         @Html.TextBoxFor(x => x.AddressLine1)
                         <span class="error"></span>
                     </div>
-                    <div class="input">
+                    <div class="input sm6">
                         <label for="currentStep.Recipient.AddressLine2">@prefix address line 2</label>
                         @Html.TextBoxFor(x => x.AddressLine2)
                         <span class="error"></span>
                     </div>
-                    <div class="input">
+                    <div class="input sm6">
                         <label for="currentStep_Recipient_Town">@prefix town / city</label>
                         @Html.TextBoxFor(x => x.Town)
                         <span class="error"></span>
                     </div>
-                    <div class="input">
+                    <div class="input sm6">
                         <label for="currentStep_Recipient_County">@prefix county</label>
                         @Html.TextBoxFor(x => x.County)
                         <span class="error"></span>
                     </div>
-                    <div class="input">
+                    <div class="input sm6">
                         <label for="currentStep_Recipient_Postcode">@prefix postcode</label>
                         @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input" })
                         <span class="error"></span>
