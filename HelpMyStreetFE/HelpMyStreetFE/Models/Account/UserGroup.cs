@@ -10,7 +10,7 @@ namespace HelpMyStreetFE.Models.Account
     {
         public int GroupId { get; set; }
         public string GroupName { get; set; }
-        public string GroupKep { get; set; }
+        public string GroupKey { get; set; }
         public List<GroupRoles> UserRoles { get; set; }
     }
 }

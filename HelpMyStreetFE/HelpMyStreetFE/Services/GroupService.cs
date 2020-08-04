@@ -67,7 +67,7 @@ namespace HelpMyStreetFE.Services
                 response.Add(new UserGroup()
                 {
                     GroupId = group.Group.GroupId,
-                    GroupKep = group.Group.GroupKey,
+                    GroupKey = group.Group.GroupKey,
                     GroupName = group.Group.GroupName,
                     UserRoles = roles
                 });

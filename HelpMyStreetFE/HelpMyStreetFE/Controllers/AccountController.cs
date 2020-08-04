@@ -35,6 +35,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupService _groupService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
+        private static readonly string PROFILE_URL = "/account";
 
         public AccountController(
             ILogger<AccountController> logger,
@@ -190,6 +191,28 @@ namespace HelpMyStreetFE.Controllers
                 Jobs = jobs,
                 ContactInformation = contactInformation
             };
+
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Group(string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            if (currentGroup == null)
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            viewModel.CurrentPage = MenuPage.UserDetails;
+            viewModel.CurrentGroup = currentGroup;
 
             return View("Index", viewModel);
         }

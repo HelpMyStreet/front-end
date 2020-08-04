@@ -8,7 +8,7 @@ $(document).ready(function () {
 });
 
 function initialiseAccountNameExpanders() {
-    $('.account__nav .account__nav__item.submenu__container').each(function () {
+    $('.account__body .account__nav .account__nav__item.submenu__container').each(function () {
         $(this).find('a').first().on('click', function (event) {
             $(this).next('ul').slideToggle();
             event.preventDefault();

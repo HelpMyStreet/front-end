@@ -25,18 +25,18 @@
             @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
             {
                 <li class="account__nav__item submenu__container">
-                    <a href="#">@userGroup.GroupName</a>
+                    <a href=@($"/account/g/{userGroup.GroupKey}")>@userGroup.GroupName</a>
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
                             <li class="account__nav__item">
-                                <a href="#">Requests</a>
+                                <a href=@($"/account/g/{userGroup.GroupKey}/requests")>Requests</a>
                             </li>
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
                         {
                             <li class="account__nav__item">
-                                <a href="#">Volunteers</a>
+                                <a href=@($"/account/g/{userGroup.GroupKey}/volunteers")>Volunteers</a>
                             </li>
                         }
                     </ul>
