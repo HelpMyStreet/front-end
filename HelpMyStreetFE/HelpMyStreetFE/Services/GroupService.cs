@@ -2,6 +2,11 @@
 using HelpMyStreet.Contracts.GroupService.Response;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreet.Contracts.GroupService.Request;
+using System.Collections.Generic;
+using HelpMyStreetFE.Models.Account;
+using System.Linq;
+using HelpMyStreet.Utils.Enums;
+using System;
 
 namespace HelpMyStreetFE.Services
 {
@@ -14,49 +19,61 @@ namespace HelpMyStreetFE.Services
             _groupRepository = groupRepository;
         }
 
-        public async Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest)
+        public async Task<int> GetGroupIdByKey(string groupKey)
         {
-            return await _groupRepository.AssignRole(postAssignRoleRequest);
+            var groupServiceResponse = await _groupRepository.GetGroupByKey(groupKey);
+
+            if (groupServiceResponse == null) { throw new Exception($"Could not identify group for key '{groupKey}'"); }
+
+            return groupServiceResponse.GroupId;
         }
 
-        public async Task<GetChildGroupsResponse> GetChildGroups(int groupId)
+        public async Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source)
         {
-            return await _groupRepository.GetChildGroups(groupId);
+            var groupServiceResponse = await _groupRepository.GetRegistrationFormVariant(groupId, source);
+
+            return groupServiceResponse?.RegistrationFormVariant;
         }
 
-        public async Task<GetGroupResponse> GetGroup(int groupId)
+        public async Task<RequestHelpFormVariant?> GetRequestHelpFormVariant(int groupId, string source)
         {
-            return await _groupRepository.GetGroup(groupId);
+            var groupServiceResponse = await _groupRepository.GetRequestHelpFormVariant(groupId, source);
+
+            return groupServiceResponse?.RequestHelpFormVariant;
         }
 
-        public async Task<GetGroupByKeyResponse> GetGroupByKey(string groupKey)
+        public async Task AddUserToDefaultGroups(int userId)
         {
-            return await _groupRepository.GetGroupByKey(groupKey);
+            var groupServiceResponse = await _groupRepository.PostAddUserToDefaultGroups(userId);
+
+            if (groupServiceResponse == null || !groupServiceResponse.Success) { throw new Exception($"Could not add user {userId} to default groups"); }
         }
 
-        public async Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source)
+        public async Task<List<int>> GetUserGroups(int userId)
         {
-            return await _groupRepository.GetRegistrationFormVariant(groupId, source);
+            return (await _groupRepository.GetUserGroups(userId)).Groups;
         }
 
-        public async Task<GetRequestHelpFormVariantResponse> GetRequestHelpFormVariant(int groupId, string source)
+        public async Task<List<GroupViewModel>> GetUserGroupRoles(int userId)
         {
-            return await _groupRepository.GetRequestHelpFormVariant(groupId, source);
-        }
+            List<GroupViewModel> response = new List<GroupViewModel>();
+            var userRoles = await _groupRepository.GetUserRoles(userId);
 
-        public async Task<GetUserGroupsResponse> GetUserGroups(int userId)
-        {
-            return await _groupRepository.GetUserGroups(userId);
-        }
+            foreach (var groupRoles in userRoles.UserGroupRoles)
+            {
+                var group = await _groupRepository.GetGroup(groupRoles.Key);
+                var roles = groupRoles.Value.Select(role => (GroupRoles)role).ToList();
 
-        public async Task<GetUserRolesResponse> GetUserRoles(int userId)
-        {
-            return await _groupRepository.GetUserRoles(userId);
-        }
+                response.Add(new GroupViewModel()
+                {
+                    GroupId = group.Group.GroupId,
+                    GroupKep = group.Group.GroupKey,
+                    GroupName = group.Group.GroupName,
+                    UserRoles = roles
+                });
+            }
 
-        public async Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId)
-        {
-            return await _groupRepository.PostAddUserToDefaultGroups(userId);
+            return response;
         }
     }
 }

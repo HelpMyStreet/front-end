@@ -80,8 +80,8 @@ namespace HelpMyStreetFE.Controllers
 
         public async Task<IActionResult> FaceCoverings()
         {
-            var genericGetGroupByKeyResponse = await _groupService.GetGroupByKey("Generic");
-            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse.GroupId.ToString());
+            var genericGetGroupByKeyResponse = await _groupService.GetGroupIdByKey("Generic");
+            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse.ToString());
 
             FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
             {

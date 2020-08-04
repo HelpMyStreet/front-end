@@ -192,11 +192,10 @@ namespace HelpMyStreetFE.Controllers
             // Fix to allow existing routing
             if (referringGroup == "v4v")
             {
-                referringGroupId = (await _groupService.GetGroupByKey("ageuklsl")).GroupId;
+                referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl");
             }
 
-            var groupServiceResponse = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
-            RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
+            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source) ?? RequestHelpFormVariant.Default;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
             {

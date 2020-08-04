@@ -124,7 +124,7 @@ namespace HelpMyStreetFE.Services
                     {
                        JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
                     },
-                    Groups = new GroupRequest() { Groups = (await _groupService.GetUserGroups(user.ID)).Groups }
+                    Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
                 };
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
