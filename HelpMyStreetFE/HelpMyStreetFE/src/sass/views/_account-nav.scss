@@ -34,5 +34,11 @@
         a.selected {
             background-color: white;
         }
+
+        &.submenu__container {
+            ul {
+                display: none;
+            }
+        }
     }
 }

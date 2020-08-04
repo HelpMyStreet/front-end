@@ -24,8 +24,22 @@
         {
             @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
             {
-                <li class="account__nav__item">
+                <li class="account__nav__item submenu__container">
                     <a href="#">@userGroup.GroupName</a>
+                    <ul>
+                        @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+                        {
+                            <li class="account__nav__item">
+                                <a href="#">Requests</a>
+                            </li>
+                        }
+                        @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+                        {
+                            <li class="account__nav__item">
+                                <a href="#">Volunteers</a>
+                            </li>
+                        }
+                    </ul>
                 </li>
             }
         }
