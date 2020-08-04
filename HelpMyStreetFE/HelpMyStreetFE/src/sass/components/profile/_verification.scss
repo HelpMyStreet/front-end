@@ -90,21 +90,6 @@ $screen-md-min: 767px;
             }
 
             &__yoti {
-
-                &__auth {
-                    &__desktop {
-                        @media screen and (max-width: $screen-md-min) {
-                            display: none;
-                        }
-                    }
-
-                    &__mobile {
-                        @media screen and (min-width: $screen-md-min) {
-                            display: none;
-                        }
-                    }
-                }
-
                 &__logos {
                     display: inline-block;
 

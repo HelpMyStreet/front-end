@@ -5,9 +5,7 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
-using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
@@ -15,8 +13,6 @@ using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,11 +28,13 @@ namespace HelpMyStreetFE.Controllers
         private readonly ILogger<RequestHelpController> _logger;
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService)
+        private readonly IRequestHelpBuilder _requestHelpBuilder;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder)
         {
             _logger = logger;
             _requestService = requestService;
             _groupService = groupService;
+            _requestHelpBuilder = requestHelpBuilder;
         }
 
         [ValidateAntiForgeryToken]
@@ -78,11 +76,8 @@ namespace HelpMyStreetFE.Controllers
                         var requestStep = (RequestHelpRequestStageViewModel)step;
                         var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
 
-                        detailStage.ShowOtherDetails =
-                            requestStep.Tasks.Where(x => x.IsSelected).First().SupportActivity == HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ? false : true;
-
-
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                        detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
 
                         if (HttpContext.Session.Keys.Contains("User"))
                         {
@@ -133,12 +128,10 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.Requestor = detailStage.Requestor;
                         reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.OrganisationName = detailStage.Organisation;
-                        reviewStage.HealthCritical = requestStage.IsHealthCritical;
                         reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.CommunicationNeeds = detailStage.CommunicationNeeds;
-                        reviewStage.OtherDetails = detailStage.OtherDetails;
-                        reviewStage.ShowOtherDetails = detailStage.ShowOtherDetails;
+                        reviewStage.RequestStageQuestions = requestStage.Questions.Questions;
+                        reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
                     }
                 }
                 if (requestHelp.Action == "finish")
@@ -154,7 +147,7 @@ namespace HelpMyStreetFE.Controllers
                     // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
                     if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && userId == 0)
                     {
-                        requestHelp.Errors.Add("To submit a DIY Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
+                        requestHelp.Errors.Add("To \"Submit & Accept\" a Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
                     }
 
@@ -206,10 +199,18 @@ namespace HelpMyStreetFE.Controllers
             RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
-                return Redirect("/login?ReturnUrl=request-help/0/DIY");
+            {
+                string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId.ToString());
+                return Redirect($"/login?ReturnUrl=request-help/{encodedReferringGroupId}/{source}");
+            }
 
             var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
+
+            if (requestStage.Tasks.Count() == 1)
+            {
+                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpFormVariant, RequestHelpFormStage.Request, requestStage.Tasks.First().SupportActivity);
+            }
 
             return View(model);
         }
@@ -220,7 +221,7 @@ namespace HelpMyStreetFE.Controllers
             string message = "<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>";
 
             string doneLink = User.Identity.IsAuthenticated ? "/account" : "/";
-            string button = $" <a href='{doneLink}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+            string button = $"<a href='{doneLink}' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
 
             string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId.ToString());
             string requestLink = $"/request-help/{encodedReferringGroupId}/{source}";
@@ -236,8 +237,8 @@ namespace HelpMyStreetFE.Controllers
             if (!User.Identity.IsAuthenticated)
             {    
                 message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
-                message += "<p> Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
-                button = " <a href='/registration/step-one' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+                message += "<p>Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
+                button = $"<a href='/registration/step-one/{encodedReferringGroupId}/help-request-success' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
             }
            
             if (fulfillable == Fulfillable.Accepted_DiyRequest)
@@ -249,7 +250,7 @@ namespace HelpMyStreetFE.Controllers
                     message += facemaskmessage;
                 }
 
-                button = " <a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+                button = "<a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {
@@ -274,34 +275,59 @@ namespace HelpMyStreetFE.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Questions([FromBody]QuestionRequest request)
+        public async Task<ActionResult> Questions([FromBody] QuestionRequest request)
         {
-            TasksViewModel model = request.Step.Tasks.Where(x => x.ID == request.TaskID).First();
-            RequestorType? requestorType = null;
-            if (request.RequestorId.HasValue)
-            {
-                requestorType = request.Step.Requestors.Where(x => x.ID == request.RequestorId.Value).First().Type;
-            }
+            RequestHelpFormVariant requestHelpFormVariant = Enum.Parse<RequestHelpFormVariant>(request.FormVariant);
+            RequestHelpFormStage requestHelpFormStage = Enum.Parse<RequestHelpFormStage>(request.FormStage);
+            SupportActivities supportActivity = Enum.Parse<SupportActivities>(request.SupportActivity);
 
-            foreach (var question in model.Questions)
+            QuestionsViewModel questionsViewModel = new QuestionsViewModel()
+            {
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity)
+            };
+
+            questionsViewModel = questionsViewModel.GetQuestionsByLocation(request.Position);
+
+            foreach (var question in questionsViewModel.Questions)
             {
                 var matchedAnswer = request.Answers.Where(x => x.Id == question.ID && !string.IsNullOrEmpty(x.Answer)).FirstOrDefault();
                 if (matchedAnswer != null)
                 {
                     question.Model = matchedAnswer.Answer;
                 }
-                question.Show = question.Show(request.Position, requestorType);
             }
 
-            return PartialView("_Questions", model);
+            return PartialView("_Questions", questionsViewModel);
+        }
+
+        private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity)
+        {
+            QuestionsViewModel updatedQuestionsViewModel = new QuestionsViewModel()
+            {
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity)
+            };
+
+            if (previousQuestionsViewModel != null)
+            {
+                foreach (RequestHelpQuestion question in updatedQuestionsViewModel.Questions)
+                {
+                    var matchedQuestion = previousQuestionsViewModel.Questions.Where(pq => pq.ID == question.ID && !string.IsNullOrEmpty(pq.Model)).FirstOrDefault();
+                    if (matchedQuestion != null)
+                    {
+                        question.Model = matchedQuestion.Model;
+                    }
+                }
+            }
+
+            return updatedQuestionsViewModel;
         }
 
         public class QuestionRequest
         {
-            public RequestHelpRequestStageViewModel Step { get; set; }
-            public int TaskID { get; set; }
+            public string FormVariant { get; set; }
+            public string FormStage { get; set; }
+            public string SupportActivity { get; set; }
             public string Position { get; set; }
-            public int? RequestorId { get; set; }
             public List<QuestionAnswer> Answers { get; set; }
             public class QuestionAnswer
             {

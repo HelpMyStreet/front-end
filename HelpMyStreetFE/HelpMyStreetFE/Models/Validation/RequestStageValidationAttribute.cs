@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using System;
 using System.Collections.Generic;
@@ -23,17 +24,31 @@ namespace HelpMyStreetFE.Models.Validation
                 var vm = (RequestHelpRequestStageViewModel)value;
                 var task = vm.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                 if (task == null) errors.Add($"A Task must be selected");
-                else {
-                    if (task.Questions.Any(x => x.ID == (int)Questions.IsHealthCritical)) {
-                        if (!vm.IsHealthCritical.HasValue) errors.Add($"{nameof(vm.IsHealthCritical)} cannot be null");
+
+                if (vm.Timeframes.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Timeframe must be selected");
+                if (vm.Requestors.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Requestor must be selected");
+
+                if (vm.Questions != null && vm.Questions.Questions != null)
+                {
+                    foreach (var q in vm.Questions.Questions)
+                    {
+                        if (q.Required && string.IsNullOrEmpty(q.Model)) errors.Add($"{q.DataValidationMessage}");
                     }
                 }
-                                    
-               if (vm.Timeframes.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Timeframe must be selected");
-               if (vm.Requestors.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Requestor must be selected");
             }
-           
-            if(errors.Count > 0)
+            else if (value is RequestHelpDetailStageViewModel)
+            {
+                var vm = (RequestHelpDetailStageViewModel)value;
+                if (vm.Questions != null && vm.Questions.Questions != null)
+                {
+                    foreach (var q in vm.Questions.Questions)
+                    {
+                        if (q.Required && string.IsNullOrEmpty(q.Model)) errors.Add($"{q.DataValidationMessage}");
+                    }
+                }
+            }
+
+            if (errors.Count > 0)
             {
                 ErrorMessage = string.Join(",", errors);
                 return false;

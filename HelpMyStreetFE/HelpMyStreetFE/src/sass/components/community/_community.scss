@@ -16,7 +16,13 @@
 .btn {
     &.disabled {
         background: $gray-8;
-        &.btn--sign-up { 
+
+        &.btn--sign-up {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        &.prevent-submit {
             pointer-events: none;
             cursor: default;
         }
@@ -24,7 +30,8 @@
 }
 
 .commmunity-map-container {
-    min-height: 400px
+    height: 100%;
+    min-height: 400px;
 }
 
 .community-volunteers-container {

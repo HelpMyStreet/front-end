@@ -49,15 +49,19 @@ namespace HelpMyStreetFE.Services
             var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? _requestHelpBuilder.MapRequestor(detailStage) : recipient;
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
+            
+            bool heathCritical = false;
+            var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
+            if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
+
+            IEnumerable<RequestHelpQuestion> questions = requestStage.Questions.Questions.Union(detailStage.Questions.Questions);
 
             var request = new PostNewRequestForHelpRequest
             {
                 HelpRequest = new HelpRequest
                 {
                     AcceptedTerms = requestStage.AgreeToTerms,
-                    OtherDetails = detailStage.OtherDetails,
                     ConsentForContact = requestStage.AgreeToTerms,
-                    SpecialCommunicationNeeds = detailStage.CommunicationNeeds,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
                     ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
@@ -76,11 +80,11 @@ namespace HelpMyStreetFE.Services
                         {
                             DueDays = selectedTime.Days,
                             Details = "",
-                            HealthCritical = requestStage.IsHealthCritical.HasValue ? requestStage.IsHealthCritical.Value : false,
+                            HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
-                            Questions = selectedTask.Questions.Select(x => new Question {
+                            Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
                                 Id = x.ID,
-                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Key ?? "" : x.Model,
+                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Value ?? "" : x.Model,
                                 Name = x.Label,
                                 Required = x.Required,
                                 AddtitonalData = x.AdditionalData,
