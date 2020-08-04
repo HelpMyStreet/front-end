@@ -1,0 +1,13 @@
+﻿@using HelpMyStreet.Utils.Models
+@using HelpMyStreetFE.Models.Account
+
+@model AccountViewModel
+
+@{ var PageModel = (GroupRequestsViewModel)Model.PageModel; }
+
+    <div class="profile">
+        @Html.DisplayFor(x => PageModel.Jobs, new
+           {
+               UserIsVerified = true
+           })
+    </div>

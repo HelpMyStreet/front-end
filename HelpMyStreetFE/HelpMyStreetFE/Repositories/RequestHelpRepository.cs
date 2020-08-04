@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.Repositories
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
 
-            return response.Content.JobSummaries;
+            return response?.Content?.JobSummaries;
         }
 
         public async Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request)

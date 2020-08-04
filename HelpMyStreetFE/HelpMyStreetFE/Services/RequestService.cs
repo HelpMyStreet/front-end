@@ -239,6 +239,17 @@ namespace HelpMyStreetFE.Services
         {
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
+
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId)
+        {
+            var jobsByFilterRequest = new GetJobsByFilterRequest()
+            {
+                Postcode = "NG1 6FG",
+                ReferringGroupID = GroupId
+            };
+
+            return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+        }
     }
  }
 
