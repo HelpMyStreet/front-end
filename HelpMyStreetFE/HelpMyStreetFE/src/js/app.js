@@ -1,6 +1,5 @@
 ﻿//IE POLLYFILS for fetch
 import 'core-js/';
-import "isomorphic-fetch"
 //---------------------
 import "../sass/main.scss";
 import firebase from "./firebase/index";
@@ -11,6 +10,7 @@ import "./shared/site-header";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
 import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
+import { hmsFetch, fetchResponses } from "./shared/hmsFetch.js";
 
 $(function () {
     $('.no-fouc').removeClass('no-fouc');
@@ -40,8 +40,14 @@ $(function () {
 
         buttonLoad($(this));
 
-        fetch(`/api/postcode/checkCoverage/${postCode}`)
-        .then(resp => resp.json())
+        hmsFetch(`/api/postcode/checkCoverage/${postCode}`)
+            .then(resp => {
+                if (resp.fetchReponse == fetchResponses.SUCCESS) {
+                    return resp.fetchPayload;
+                } else {
+                    throw ("Unable to fetch postcode: ", resp.fetchReponse);
+                };
+            })
             .then(data => {
                 $('#postcode_button').addClass('postcode_button_clicked')                
                 var postCodeValid = (data.postCodeResponse.isSuccessful && data.postCodeResponse.hasContent);                

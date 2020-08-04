@@ -1,4 +1,5 @@
 ﻿import { showPopup } from '../../shared/popup';
+import { hmsFetch, fetchResponses } from "../../shared/hmsFetch.js";
 
 export function showVerifiedAcceptPopup(acceptBtn) {
     let popupMessage =
@@ -47,7 +48,7 @@ export function showUnVerifiedAcceptPopup() {
 
 export async function SetRequestToInProgress(jobId) {
     try {
-        let resp = await fetch('/api/requesthelp/accept-request', {
+        let resp = await hmsFetch('/api/requesthelp/accept-request', {
             method: 'post',
             headers: {
                 'content-type': 'application/json'
@@ -55,8 +56,8 @@ export async function SetRequestToInProgress(jobId) {
             body: JSON.stringify({ jobId })
         });
 
-        if (resp.ok) {
-            return resp.json();
+        if (resp.fetchRespone == fetchResponses.SUCCESS) {
+            return resp.fetchPayload;
         } else {
             return false;
         }

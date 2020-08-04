@@ -1,10 +1,10 @@
-
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 export async function processYoti(thisToken, userId, mobile) {
     $('#overlay').show();
     $('.loading-overlay').show();
-    var response = await fetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
-    if (response.status == 200) {
+    var response = await hmsFetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
         window.location.href = "/Account";
     } else {
         if (mobile) {

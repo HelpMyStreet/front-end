@@ -1,4 +1,5 @@
 ﻿import { showPopup } from '../../shared/popup';
+import { hmsFetch, fetchResponses } from "../../shared/hmsFetch.js";
 
 export function showCompletePopup(btn) {
     let popupMessage =
@@ -54,7 +55,7 @@ export function showReleasePopup(btn) {
         actionBtnText: "Confirm",
         buttonCssClass: "bg-dark-blue",
         acceptCallbackAsync: async () => {
-            let resp = await fetch('/api/requesthelp/release-request', {
+            let resp = await hmsFetch('/api/requesthelp/release-request', {
                 method: 'post',
                 headers: {
                     'content-type': 'application/json'
@@ -62,20 +63,22 @@ export function showReleasePopup(btn) {
                 body: JSON.stringify({ jobId })
             });
 
-            if (resp.ok) {
-                let hasUpdated = await resp.json()
+            if (resp.fetchResponse = fetchResponses.SUCCESS) {
+                let hasUpdated = await resp.fetchPayload;
                 if (hasUpdated == true) {
                     _modifyButton(btn, "Released");
-            
+
                     let completeButton = btn.prev(".complete-request");
                     let undoButton = btn.next(".undo-request");
                     undoButton.attr("data-undo", "release")
-                    undoButton.show();      
+                    undoButton.show();
                     completeButton.hide();
                     let moreInfo = btn.parent().next(".job__info__footer")
                     moreInfo.hide();
                 }
                 return hasUpdated;
+            } else {
+                return false;
             }
         }
     })
