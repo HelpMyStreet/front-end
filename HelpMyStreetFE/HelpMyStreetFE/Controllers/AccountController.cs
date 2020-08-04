@@ -18,6 +18,7 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.Http;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Controllers
 {    
@@ -206,12 +207,61 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user);
             var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null)
+
+            if (currentGroup != null)
+            {
+                if (currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+                {
+                    return await GroupRequests(groupKey);
+                }
+                else if (currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+                {
+                    return await GroupVolunteers(groupKey);
+                }
+            }
+
+            return Redirect(PROFILE_URL);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GroupRequests(string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
-            viewModel.CurrentPage = MenuPage.UserDetails;
+            viewModel.CurrentPage = MenuPage.GroupRequests;
+            viewModel.CurrentGroup = currentGroup;
+
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GroupVolunteers(string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            viewModel.CurrentPage = MenuPage.GroupVolunteers;
             viewModel.CurrentGroup = currentGroup;
 
             return View("Index", viewModel);

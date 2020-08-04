@@ -25,18 +25,18 @@
             @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
             {
                 <li class="account__nav__item submenu__container">
-                    <a href=@($"/account/g/{userGroup.GroupKey}")>@userGroup.GroupName</a>
+                    <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">@userGroup.GroupName</a>
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
                             <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/requests")>Requests</a>
+                                <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">Requests</a>
                             </li>
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
                         {
                             <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/volunteers")>Volunteers</a>
+                                <a href=@($"/account/g/{userGroup.GroupKey}/volunteers") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupVolunteers ? "selected" : string.Empty)">Volunteers</a>
                             </li>
                         }
                     </ul>

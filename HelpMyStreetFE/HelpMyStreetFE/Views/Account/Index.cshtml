@@ -48,6 +48,12 @@
                     case MenuPage.ComingSoon:
                         <partial name="_ComingSoon"  for="@Model.UserDetails" />
                         break;
+                    case MenuPage.GroupRequests:
+                        <p>Group Reqeustrs</p>
+                        break;
+                    case MenuPage.GroupVolunteers:
+                        <p>Group Voluinteers</p>
+                        break;
                     default:
                         <partial name="_Verification" for="VerificationViewModel" />
                         <partial name="_UserData" for="@Model.PageModel" />
