@@ -55,8 +55,9 @@ export function showReleasePopup(btn) {
 
     let job = btn.parentsUntil(".job").parent();
     let jobId = job.attr("id");
+    let userActingAsAdmin = $(job).data("user-acting-as-admin") === "True";
 
-    if ($(job).data("user-acting-as-admin") === "True") {
+    if (userActingAsAdmin) {
         popupMessage =
             `<p>Request unable to be completed?</p>
              <p>We can return it to the 'Open Requests' list so that other volunteers can accept it.</p>`;
@@ -69,7 +70,7 @@ export function showReleasePopup(btn) {
     }
 
     showPopup({
-        header: "Can't do?",
+        header: userActingAsAdmin ? "Mark as open?" : "Can't do?",
         htmlContent: popupMessage,
         messageOnFalse: "We couldn't release this request at the moment, please try again later",
         actionBtnText: "Confirm",
