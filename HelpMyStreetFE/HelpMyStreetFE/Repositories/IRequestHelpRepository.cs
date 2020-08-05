@@ -17,6 +17,7 @@ namespace HelpMyStreetFE.Repositories
         Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
         Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request);
         Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request);
+        Task<bool> UpdateJobStatusToCancelledAsync(PutUpdateJobStatusToCancelledRequest request);
         Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request);
 
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);

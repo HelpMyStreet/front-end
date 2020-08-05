@@ -213,6 +213,19 @@ namespace HelpMyStreetFE.Services
 
             return success;
         }
+        public async Task<bool> UpdateJobStatusToCancelledAsync(int jobID, int createdByUserId, HttpContext ctx)
+        {
+            var success = await _requestHelpRepository.UpdateJobStatusToCancelledAsync(new PutUpdateJobStatusToCancelledRequest()
+            {
+                CreatedByUserID = createdByUserId,
+                JobID = jobID
+            });
+
+            if (success)
+                TriggerCacheRefresh(ctx);
+
+            return success;
+        }
         public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx)
         {
             var success = await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()

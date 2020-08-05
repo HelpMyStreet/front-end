@@ -88,12 +88,68 @@ export function showReleasePopup(btn) {
                 let hasUpdated = await resp.json()
                 if (hasUpdated == true) {
                     _modifyButton(btn, "Released");
-            
+
                     let completeButton = btn.prev(".complete-request");
                     let undoButton = btn.next(".undo-request");
                     undoButton.attr("data-undo", "release")
-                    undoButton.show();      
+                    undoButton.show();
                     completeButton.hide();
+                    let moreInfo = btn.parent().next(".job__info__footer")
+                    moreInfo.hide();
+                }
+                return hasUpdated;
+            }
+        }
+    })
+}
+
+
+export function showCancelPopup(btn) {
+    var popupMessage;
+
+    let job = btn.parentsUntil(".job").parent();
+    let jobId = job.attr("id");
+    let jobStatus = $(job).data("job-status");
+
+    if (jobStatus === "Done") {
+        popupMessage =
+            `<p>Request was not genuine?</p>
+             <p>We can mark it as cancelled.</p>`;
+    } else if (jobStatus === "InProgress") {
+        popupMessage =
+            `<p>Request is no longer current?</p>
+             <p>We can mark is as cancelled and remove it from the volunteer's Accepted Requests view.</p>`;
+    } else if (jobStatus === "Open") {
+        popupMessage =
+            `<p>Request is no longer current?</p>
+             <p>We can mark is as cancelled and remove it from volunteers' Open Requests view.</p>`;
+    }
+
+    showPopup({
+        header: jobStatus === "Done" ? "Mark as cancelled?" : "Cancel?",
+        htmlContent: popupMessage,
+        messageOnFalse: "We couldn't cancel this request at the moment, please try again later",
+        actionBtnText: "Confirm",
+        buttonCssClass: "bg-dark-blue",
+        acceptCallbackAsync: async () => {
+            let resp = await fetch('/api/requesthelp/cancel-request', {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ jobId })
+            });
+
+            if (resp.ok) {
+                let hasUpdated = await resp.json()
+                if (hasUpdated == true) {
+                    _modifyButton(btn, "Cancelled");
+
+                    let cancelButton = btn.prev(".cancel-request");
+                    let undoButton = btn.next(".undo-request");
+                    undoButton.attr("data-undo", "release")
+                    undoButton.show();
+                    cancelButton.hide();
                     let moreInfo = btn.parent().next(".job__info__footer")
                     moreInfo.hide();
                 }

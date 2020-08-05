@@ -63,6 +63,13 @@ namespace HelpMyStreetFE.Repositories
             return response.Content.Success;
         }
 
+        public async Task<bool> UpdateJobStatusToCancelledAsync(PutUpdateJobStatusToCancelledRequest request)
+        {
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToCancelledResponse>>($"/api/PutUpdateJobStatusToCancelled", request);
+
+            return response.Content.Success;
+        }
+
         public async Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request)
         {
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToInProgressResponse>>($"/api/PutUpdateJobStatusToInProgress", request);

@@ -34,7 +34,7 @@
     var ageUKReference = Model?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@UserActingAsAdmin">
+<div class="job @className" id="@id" data-user-acting-as-admin="@UserActingAsAdmin" data-job-status="@Model.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.IsHealthCritical)
@@ -77,15 +77,15 @@
         </div>
         <div class="job__info__actions column flex-end">
             @switch (Model.JobStatus)
-                {
+            {
                 case JobStatuses.Open:
                     <button class="btn cta large fill accept-request  @(UserIsVerified ? "" : "disabled")">
                         <span class="text">Accept</span>
                     </button>
-                        <div class="job__info__footer actioned">
-                            <a href="/account/accepted-requests">Go to My Accepted Requests</a>
-                        </div>
-                        break;
+                    <div class="job__info__footer actioned">
+                        <a href="/account/accepted-requests">Go to My Accepted Requests</a>
+                    </div>
+                    break;
                 case JobStatuses.InProgress:
                     <button class="btn cta large fill complete-request">
                         <span class="text">Mark as Done</span>
@@ -105,6 +105,11 @@
                         <div class="loader">
                             <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
                         </div>
+                    </button>
+                    break;
+                case JobStatuses.Done:
+                    <button class="btn border-orange orange large bg-white mt-sm cancel-request">
+                        <span class="text">Cancel</span>
                     </button>
                     break;
             }

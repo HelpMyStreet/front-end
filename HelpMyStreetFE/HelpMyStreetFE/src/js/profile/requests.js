@@ -9,7 +9,8 @@ import {
 } from "./requests-popup-helper/open-requests"
 import {
     showCompletePopup,
-    showReleasePopup
+    showReleasePopup,
+    showCancelPopup
 } from "./requests-popup-helper/accepted-requests"
 import {
     buttonLoad,
@@ -119,6 +120,10 @@ export function initialiseRequests(isVerified) {
 
     $('.release-request').click(function () {
         showReleasePopup($(this))
+    })
+
+    $('.cancel-request').click(function () {
+        showCancelPopup($(this))
     })
 }
 

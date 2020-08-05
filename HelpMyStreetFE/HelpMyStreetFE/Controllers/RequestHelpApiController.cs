@@ -65,10 +65,10 @@ namespace HelpMyStreetFE.Controllers {
                 return StatusCode(500);
             }
         }
-        
+
         [Authorize]
         [HttpPost("release-request")]
-        public async Task<ActionResult<bool>> ReleaseRequest([FromBody]UpdateJobRequest job)
+        public async Task<ActionResult<bool>> ReleaseRequest([FromBody] UpdateJobRequest job)
         {
             try
             {
@@ -77,6 +77,25 @@ namespace HelpMyStreetFE.Controllers {
 
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 return await _requestService.UpdateJobStatusToOpenAsync(DecodeJobID(job.JobID), userId, HttpContext);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("an error occured releasing job", ex);
+                return StatusCode(500);
+            }
+        }
+
+        [Authorize]
+        [HttpPost("cancel-request")]
+        public async Task<ActionResult<bool>> CancelRequest([FromBody] UpdateJobRequest job)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(job);
+
+                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return await _requestService.UpdateJobStatusToCancelledAsync(DecodeJobID(job.JobID), userId, HttpContext);
             }
             catch (Exception ex)
             {

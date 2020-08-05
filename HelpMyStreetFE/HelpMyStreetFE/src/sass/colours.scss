@@ -40,7 +40,7 @@ $popup-backdrop: rgba(0,0,0, 0.7);
 }
 
 .orange {
-  color: $orange;
+    color: $orange;
 }
 
 .black {
@@ -81,8 +81,12 @@ $popup-backdrop: rgba(0,0,0, 0.7);
   background-color: white;
 }
 
-.border-dark-blue{
+.border-dark-blue {
     border-color: $dark-blue;
+}
+
+.border-orange {
+    border-color: $orange;
 }
 
 .transparent {
