@@ -12,8 +12,9 @@
     </header>
     <div class="profile">
         @Html.DisplayFor(x => PageModel.Jobs, new
-        {
-            UserIsVerified = true
-        })
+           {
+               UserIsVerified = true,
+               UserActingAsAdmin = true
+           })
     </div>
 </div>

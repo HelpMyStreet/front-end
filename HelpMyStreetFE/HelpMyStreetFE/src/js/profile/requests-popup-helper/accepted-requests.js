@@ -1,11 +1,22 @@
 ﻿import { showPopup } from '../../shared/popup';
 
 export function showCompletePopup(btn) {
-    let popupMessage =
-        `<p>We’ll move this request from your Accepted Requests page.</p>
-         <p>Thank you for helping people in your community stay safe.</p>`;
+    var popupMessage;
     
-    var jobId = btn.parentsUntil(".job").parent().attr("id");    
+    let job = btn.parentsUntil(".job").parent();    
+    let jobId = job.attr("id");
+
+
+    if ($(job).data("user-acting-as-admin") === "True") {
+        popupMessage = 
+            `<p>We’ll mark this request as complete.</p>
+             <p>Thank you for helping people in your community stay safe.</p>`;
+    } else {
+        popupMessage =
+            `<p>We’ll move this request from your Accepted Requests page.</p>
+             <p>Thank you for helping people in your community stay safe.</p>`;
+    }
+
     showPopup({
         header: "Completed?",
         htmlContent: popupMessage,
@@ -40,13 +51,23 @@ export function showCompletePopup(btn) {
 
 
 export function showReleasePopup(btn) {
-    let popupMessage =
-        `<p>Not able to complete the request?</p>
-         <p>If you're not able to complete a request for help, we can return it to the 'Open Requests' list so that other volunteers can accept it.</p>
-         <p>If there's a problem (e.g. incorrect contact details) please let us know:
-         <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>`;
+    var popupMessage;
 
-    let jobId = btn.parentsUntil(".job").parent().attr("id");
+    let job = btn.parentsUntil(".job").parent();
+    let jobId = job.attr("id");
+
+    if ($(job).data("user-acting-as-admin") === "True") {
+        popupMessage =
+            `<p>Request unable to be completed?</p>
+             <p>We can return it to the 'Open Requests' list so that other volunteers can accept it.</p>`;
+    } else {
+        popupMessage =
+            `<p>Not able to complete the request?</p>
+             <p>If you're not able to complete a request for help, we can return it to the 'Open Requests' list so that other volunteers can accept it.</p>
+             <p>If there's a problem (e.g. incorrect contact details) please let us know:
+             <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>`;
+    }
+
     showPopup({
         header: "Can't do?",
         htmlContent: popupMessage,
