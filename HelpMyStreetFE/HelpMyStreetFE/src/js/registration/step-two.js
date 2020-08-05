@@ -88,9 +88,9 @@ export function initialiseStepTwo() {
             last_name: (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             postcode: (v) => v !== "" ||
                 "Please enter a postcode",
-            dob: (v) => v !== "" || "Please enter a valid date of birth",          
+            dob: (v) => v !== "" || "Please enter a valid date of birth",
             alt_number: (v, d) =>
-                ((d.mobile_number !== "") || (v !== ""))  || "Please enter a mobile number or an alternative phone number",
+                ((d.mobile_number !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
             city: (v) =>
                 (v.length > 2) ||
                 "Please enter a valid city",

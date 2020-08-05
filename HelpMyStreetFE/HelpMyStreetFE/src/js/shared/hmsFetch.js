@@ -8,7 +8,7 @@ import "isomorphic-fetch"
 const defaultOptions = {
     timeOutLength: 5000,
     errorRetry: 3,
-    timeOutRetry: 0
+    timeOutRetry: 1
 };
 
 const fetchResponses = {
@@ -23,15 +23,14 @@ const fetchResponses = {
 
 function sendNewRelicError(url, response, error) {
     var err = new Error(url + " - " + response + ": " + error)
-    /*
-    if (!newrelic) {
+    var newrelicType = typeof newrelic;
+    if (newrelicType == 'undefined') {
         console.error(err);
     }
     else {
         newrelic.noticeError(err);
     }
-    */
-    console.error(err);
+    
 };
 
 async function tryFetch(url, data, options){

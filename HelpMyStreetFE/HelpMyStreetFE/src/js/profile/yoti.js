@@ -3,7 +3,7 @@ import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 export async function processYoti(thisToken, userId, mobile) {
     $('#overlay').show();
     $('.loading-overlay').show();
-    var response = await hmsFetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId);
+    var response = await hmsFetch("/yoti/ValidateToken?token=" + thisToken + "&u=" + userId,null,{timeOutLength: 10000, timeOutRetry: 0, errorRetry: 0});
     if (response.fetchResponse == fetchResponses.SUCCESS) {
         window.location.href = "/Account";
     } else {

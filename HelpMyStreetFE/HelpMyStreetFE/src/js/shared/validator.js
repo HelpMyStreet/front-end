@@ -42,8 +42,10 @@ export async function validatePostCode(postcode) {
     let postcodeValid = false;
     const resp = await hmsFetch(`/api/postcode/${postcode}`);
     if (resp.fetchResponse == fetchResponses.SUCCESS) {
-        const { hasContent, isSuccessful } = await resp.payload;  
-        postcodeValid = (hasContent && isSuccessful);        
+        const { hasContent, isSuccessful } = await resp.fetchPayload;
+        postcodeValid = (hasContent && isSuccessful);
+    } else {
+        console.error("Invalid Postcode Validation Response");
     }
     return postcodeValid
 }
