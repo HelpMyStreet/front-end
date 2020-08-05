@@ -10,10 +10,14 @@ $(document).ready(function () {
 
 function initialiseAccountNavExpanders() {
     $('.account__body .account__nav .account__nav__item.submenu__container').each(function () {
-        $(this).find('a').first().on('click', function (event) {
-            $(this).next('ul').slideToggle();
+        const a = $(this).children('a');
+        $(a).on('click', function (event) {
+            subMenuToggle($(this).parent());
             event.preventDefault();
         });
+        if ($(a).hasClass('selected')) {
+            subMenuToggle(this, 0);
+        }
     });
 }
 
@@ -33,4 +37,20 @@ function initialiseNavBadges() {
                 });
             });
     });
+}
+
+function subMenuToggle(container, slideDuration = 400) {
+    const ul = $(container).children('ul');
+    if ($(ul).is(':visible')) {
+        $(ul).find('.account__nav__badge').hide();
+        $(ul).slideUp(slideDuration, function () {
+            $(container).children('a').children('.account__nav__badge').show();
+        });
+    } else {
+        $(container).children('a').children('.account__nav__badge').hide();
+        $(ul).find('.account__nav__badge').hide();
+        $(ul).slideDown(slideDuration, function () {
+            $(ul).find('.account__nav__badge').show();
+        });
+    }
 }

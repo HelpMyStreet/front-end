@@ -253,10 +253,12 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey)
         {
+            CountNavViewModel countNavViewModel = new CountNavViewModel();
+
             var user = await GetCurrentUser();
             if (!_userService.GetRegistrationIsComplete(user))
             {
-                return null;
+                return countNavViewModel;
             }
 
             UserGroup currentGroup = null;
@@ -270,7 +272,7 @@ namespace HelpMyStreetFE.Controllers
             switch (menuPage)
             {
                 case MenuPage.GroupRequests:
-                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return null; }
+                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
                     var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
@@ -283,10 +285,10 @@ namespace HelpMyStreetFE.Controllers
                     count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
                     break;
                 default:
-                    return null;
+                    return countNavViewModel;
             }
 
-            CountNavViewModel countNavViewModel = new CountNavViewModel() { Count = count };
+            countNavViewModel.Count = count;
 
             return countNavViewModel;
         }

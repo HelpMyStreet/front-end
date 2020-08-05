@@ -31,7 +31,10 @@
             @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
             {
                 <li class="account__nav__item submenu__container">
-                    <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">@userGroup.GroupName</a>
+                    <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">
+                        @userGroup.GroupName
+                        <span class="account__nav__badge" data-group-key="@userGroup.GroupKey" data-menu-page="@MenuPage.GroupRequests"></span>
+                    </a>
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
