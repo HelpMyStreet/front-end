@@ -247,8 +247,48 @@ namespace HelpMyStreetFE.Controllers
                 Jobs = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId)
             };
 
-
             return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return null;
+            }
+
+            UserGroup currentGroup = null;
+            if (groupKey != null)
+            {
+                var userGroups = await _groupService.GetUserGroupRoles(user.ID);
+                currentGroup = userGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            }
+
+            int count;
+            switch (menuPage)
+            {
+                case MenuPage.GroupRequests:
+                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return null; }
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId);
+                    count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
+                    break;
+                case MenuPage.AcceptedRequests:
+                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                    count = acceptedRequests.Count();
+                    break;
+                case MenuPage.OpenRequests:
+                    var openRequests = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext);
+                    count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
+                    break;
+                default:
+                    return null;
+            }
+
+            CountNavViewModel countNavViewModel = new CountNavViewModel() { Count = count };
+
+            return countNavViewModel;
         }
 
         [HttpGet]

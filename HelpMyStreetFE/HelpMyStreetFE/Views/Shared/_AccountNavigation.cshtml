@@ -5,11 +5,17 @@
 <nav class="account__nav">
     <ul class="account__nav__list m-0 p-0">
         <li class="account__nav__item">
-            @await Component.InvokeAsync("OpenRequestsNav",  new CountNavViewModel { CurrentPage = Model.CurrentPage })
+            <a href="/account/open-requests" class="@(Model.CurrentPage == MenuPage.OpenRequests ? "selected" : string.Empty)">
+                Open Requests
+                <span class="account__nav__badge" data-menu-page="@MenuPage.OpenRequests"></span>
+            </a>
         </li>
 
         <li class="account__nav__item">
-            @await Component.InvokeAsync("AcceptedRequestsNav", new CountNavViewModel { CurrentPage = Model.CurrentPage })
+            <a href="/account/accepted-requests" class="@(Model.CurrentPage == MenuPage.AcceptedRequests ? "selected" : string.Empty)">
+                My Accepted Requests
+                <span class="account__nav__badge" data-menu-page="@MenuPage.AcceptedRequests"></span>
+            </a>
         </li>
         @if (Model.UserDetails.IsStreetChampion && Model.UserDetails.IsVerified)
         {
@@ -29,9 +35,12 @@
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
-                            <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">Requests</a>
-                            </li>
+                        <li class="account__nav__item">
+                            <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
+                                Requests
+                                <span class="account__nav__badge" data-group-key="@userGroup.GroupKey" data-menu-page="@MenuPage.GroupRequests"></span>
+                            </a>
+                        </li>
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
                         {
