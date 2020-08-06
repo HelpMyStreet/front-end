@@ -66,17 +66,6 @@ export function initialiseRequests(isVerified) {
     });
   });
 
-
-    $('.accept-request').click(function (evt) {
-        evt.preventDefault();        
-        if (isVerified) {
-            showStatusUpdatePopup($(this));
-        } else {
-            showUnVerifiedAcceptPopup();
-        }
-    });
-
-
   $(".job__expander h5").each((_, a) => {
     const el = $(a);
 
@@ -88,9 +77,15 @@ export function initialiseRequests(isVerified) {
     });
   });
 
-    $('.undo-request').click(async function (evt) {
-        evt.preventDefault();  
+    $('.job button.trigger-status-update-popup').click(function () {
+        showStatusUpdatePopup($(this));
+    });
 
+    $('.accept-request-unverified').click(function () {
+        showUnVerifiedAcceptPopup();
+    });
+
+    $('.undo-request').click(async function (evt) {
         const job = $(this).parentsUntil(".job").parent();
         const targetState = $(this).data("target-state");
         const targetUser = $(this).data("target-user") ?? "";
@@ -103,10 +98,6 @@ export function initialiseRequests(isVerified) {
         }
         buttonUnload($(this));
     })
-
-    $('.job button.trigger-status-update-popup').click(function () {
-        showStatusUpdatePopup($(this));
-    });
 }
 
 

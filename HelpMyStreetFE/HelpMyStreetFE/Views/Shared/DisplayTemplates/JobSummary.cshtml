@@ -81,12 +81,21 @@
                 case JobStatuses.Open:
                     @if (!UserActingAsAdmin)
                     {
-                    <button class="btn cta large trigger-status-update-popup @(UserIsVerified ? "" : "disabled")" data-target-state="@JobStatuses.InProgress">
-                        <span class="text">Accept</span>
-                    </button>
-                    <div class="job__info__footer actioned">
-                        <a href="/account/accepted-requests">Go to My Accepted Requests</a>
-                    </div>
+                        @if (UserIsVerified)
+                        {
+                            <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                                <span class="text">Accept</span>
+                            </button>
+                            <div class="job__info__footer actioned">
+                                <a href="/account/accepted-requests">Go to My Accepted Requests</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <button class="btn cta large accept-request-unverified disabled">
+                                <span class="text">Accept</span>
+                            </button>
+                        }
                     }
                     break;
                 case JobStatuses.InProgress:
