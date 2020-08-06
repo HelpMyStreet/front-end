@@ -206,9 +206,10 @@ namespace HelpMyStreetFE.Controllers
             var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
-            if (requestStage.Tasks.Count() == 1)
+            SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;
+            if (selectedTask != null)
             {
-                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpFormVariant, RequestHelpFormStage.Request, requestStage.Tasks.First().SupportActivity);
+                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value);
             }
 
             return View(model);
