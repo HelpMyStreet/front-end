@@ -81,7 +81,7 @@
                 case JobStatuses.Open:
                     @if (!UserActingAsAdmin)
                     {
-                    <button class="btn cta large fill accept-request trigger-status-update-popup @(UserIsVerified ? "" : "disabled")" data-target-state="@JobStatuses.InProgress">
+                    <button class="btn cta large trigger-status-update-popup @(UserIsVerified ? "" : "disabled")" data-target-state="@JobStatuses.InProgress">
                         <span class="text">Accept</span>
                     </button>
                     <div class="job__info__footer actioned">
@@ -90,10 +90,10 @@
                     }
                     break;
                 case JobStatuses.InProgress:
-                    <button class="btn cta large fill complete-request trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                    <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.Done">
                         <span class="text">Mark as Done</span>
                     </button>
-                    <button class="btn border-dark-blue dark-blue large bg-white mt-sm release-request trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                    <button class="btn border-dark-blue dark-blue large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.Open">
                         @if (UserActingAsAdmin)
                         {
                             <span class="text">Mark as Open</span>
@@ -115,7 +115,7 @@
             }
             @if (UserActingAsAdmin && Model.JobStatus != JobStatuses.Cancelled)
             {
-                <button class="btn border-orange orange large bg-white mt-sm cancel-request trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                <button class="btn border-orange orange large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                     <span class="text">Cancel</span>
                 </button>
             }
