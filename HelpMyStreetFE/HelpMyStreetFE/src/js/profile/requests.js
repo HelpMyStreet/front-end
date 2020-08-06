@@ -1,6 +1,7 @@
 import {
     getParameterByName,
-    updateQueryStringParam
+    updateQueryStringParam,
+    removeQueryStringParam
 } from "../shared/querystring-helper";
 import {
     showUnVerifiedAcceptPopup,
@@ -28,7 +29,7 @@ export function initialiseRequests(isVerified) {
                 },
                 {
                     duration: 1000,
-                    complete: () => {                        
+                    complete: () => {
                         if (isVerified) {
                             $(`#${job} .job__detail`).slideDown();
                             $(`#${job}`).addClass("open highlight");
@@ -39,43 +40,44 @@ export function initialiseRequests(isVerified) {
                 }
             );
         }
-  }
+    }
 
-  $(".job a.open").each((_, a) => {
-    const el = $(a);
-    const id = el.attr("data-id");
-    el.on("click", (e) => {
-      e.preventDefault();
-        if (isVerified) {            
-            updateQueryStringParam('j', id);
-            $(`#${id}`).addClass("open");
+    $(".job a.open").each((_, a) => {
+        const el = $(a);
+        const id = el.attr("data-id");
+        el.on("click", (e) => {
+            e.preventDefault();
+            if (isVerified) {
+                updateQueryStringParam('j', id);
+                $(`#${id}`).addClass("open");
+                $(`#${id} .job__detail`).slideToggle();
+            } else {
+                showUnVerifiedAcceptPopup();
+            }
+        });
+    });
+
+    $(".job a.close").each((_, a) => {
+        const el = $(a);
+        const id = el.attr("data-id");
+        el.on("click", (e) => {
+            e.preventDefault();
+            removeQueryStringParam('j', id);
+            $(`#${id}`).removeClass("open");
             $(`#${id} .job__detail`).slideToggle();
-        } else {
-            showUnVerifiedAcceptPopup();
-        }
+        });
     });
-  });
 
-  $(".job a.close").each((_, a) => {
-    const el = $(a);
-    const id = el.attr("data-id");
-    el.on("click", (e) => {
-      e.preventDefault();
-      $(`#${id}`).removeClass("open");
-      $(`#${id} .job__detail`).slideToggle();
+    $(".job__expander h5").each((_, a) => {
+        const el = $(a);
+
+        el.on("click", (e) => {
+            e.preventDefault();
+
+            el.toggleClass("open");
+            el.next().slideToggle();
+        });
     });
-  });
-
-  $(".job__expander h5").each((_, a) => {
-    const el = $(a);
-
-    el.on("click", (e) => {
-      e.preventDefault();
-
-      el.toggleClass("open");
-      el.next().slideToggle();
-    });
-  });
 
     $('.job button.trigger-status-update-popup').click(function () {
         showStatusUpdatePopup($(this));

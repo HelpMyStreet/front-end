@@ -18,6 +18,22 @@ export function updateQueryStringParam(key, value) {
     window.history.replaceState({}, "", baseUrl + params);
 };
 
+export function removeQueryStringParam(key, value) {
+    var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
+        urlQueryString = document.location.search,
+        baseUrl = removeTrailingSlashes(baseUrl)
+    // If the "search" string exists, then build params from it
+    if (urlQueryString) {
+        var keyRegex = new RegExp('([\?&])' + key + '=' + value + '[^&]*');
+
+        // If param exists already, update it
+        if (urlQueryString.match(keyRegex) !== null) {
+            var params = urlQueryString.replace(keyRegex, "");
+            window.history.replaceState({}, "", baseUrl + params);
+        }
+    }
+};
+
 function removeTrailingSlashes(url) {
     return url.replace(/\/+$/, ''); //Removes one or more trailing slashes from URL
 }
