@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace HelpMyStreetFE.Models.Home
+namespace HelpMyStreetFE.Models.Feedback
 {
-    public enum MessageType
+    public enum FeedbackMessageType
     {
         FaceCovering,
         Group,
@@ -13,6 +13,6 @@ namespace HelpMyStreetFE.Models.Home
         public string Tagline { get; set; }
         public string Message { get; set; }
         public string Person { get; set; }
-        public MessageType Type { get; set; }
+        public FeedbackMessageType Type { get; set; }
     }
 }

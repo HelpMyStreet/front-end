@@ -108,7 +108,7 @@
 
     <div class="outer-container outer-container--darker">
         <div class="inner-container">
-      
+
             <div class="row">
                 <div class="sm12">
                     <div class="community-volunteers-text" id="read-more-text">
@@ -211,6 +211,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="mt-lg">
+        @await Component.InvokeAsync("Feedback", new { feedbackMessageType = HelpMyStreetFE.Models.Feedback.FeedbackMessageType.FaceCovering, numberToShow = 0 })
     </div>
 
 

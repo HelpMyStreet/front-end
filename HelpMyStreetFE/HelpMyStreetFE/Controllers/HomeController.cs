@@ -40,16 +40,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 testBanner = Convert.ToBoolean(_configuration["TestBanner"]);
             }
-            var feedback = await _feedbackRepository.GetFeedback();
-            var faceMasks = feedback.FindAll(e => e.Type == MessageType.FaceCovering);
-            
-            var notMasks = feedback.FindAll(e => e.Type != MessageType.FaceCovering);
-            var messages = notMasks.Concat(faceMasks.OrderBy(x => Guid.NewGuid()).Take(3)).ToList();
+
             var model = new HomeViewModel
             {
                 isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated),
-                TestBanner = testBanner,
-                FeedbackMessages = messages
+                TestBanner = testBanner
             };
 
             return View(model);

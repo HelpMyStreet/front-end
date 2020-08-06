@@ -35,7 +35,6 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetHLP()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("hlp");
             int groupId = getGroupByKeyResponse.GroupId;
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
@@ -334,6 +333,9 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetFtLOS()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            communityViewModel.showFeedback = true;
+            communityViewModel.ShowHelpExampleCards = false;
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
 
             var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
             int groupId = getGroupByKeyResponse.GroupId;

@@ -1,5 +1,5 @@
 ﻿@model HomeViewModel;
-@using HelpMyStreetFE.Models.Home;
+@using HelpMyStreetFE.Models.Feedback;
 
 @{
     ViewData["Title"] = "Home Page";
@@ -7,11 +7,7 @@
 @section Scripts {
     <script src="~/coverageMap.js" asp-append-version="true"></script>
     <script src="~/stickynav.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-    <script type="text/javascript" src="~/feedback.js" asp-append-version="true"></script>
 }
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 
 @if (Model.TestBanner)
 {
@@ -186,18 +182,9 @@ else
         </div>
 
         <div>
-            @if (Model.FeedbackMessages.Count() > 0) { 
-                <div class="feedback-message">
-                    @foreach (FeedbackMessage feedbackMessage in Model.FeedbackMessages)
-                    {
-                        <div class="card-feedback mr-sm ml-sm"><h3>&ldquo;@feedbackMessage.Tagline&bdquo;</h3>
-                        <p>@feedbackMessage.Message</p>
-                        <p class="person"><i>@feedbackMessage.Person</i></p>
-                    </div>
-                    }
-                </div>
-            }
+            @await Component.InvokeAsync("Feedback", new {feedbackMessageType = FeedbackMessageType.Other, numberToShow = 0 })
         </div>
+
 
         <div class="row justify-center text-center mt-lg">
             <div class="sm4">

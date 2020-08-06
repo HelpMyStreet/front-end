@@ -1,0 +1,23 @@
+﻿@model HelpMyStreetFE.Models.Feedback.FeedbackViewModel;
+@using HelpMyStreetFE.Models.Feedback;
+
+<script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script defer type="text/javascript" src="~/feedback.js" asp-append-version="true"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+<div>
+    @if (Model.FeedbackMessages.Count() > 0)
+    {
+        <div class="feedback-message">
+            @foreach (FeedbackMessage feedbackMessage in Model.FeedbackMessages)
+            {
+                <div class="card-feedback mr-sm ml-sm">
+                    <h3>&ldquo;@feedbackMessage.Tagline&bdquo;</h3>
+                    <p>@feedbackMessage.Message</p>
+                    <p class="person"><i>@feedbackMessage.Person</i></p>
+                </div>
+            } 
+        </div>
+    }
+</div>

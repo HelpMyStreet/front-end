@@ -7,6 +7,5 @@ namespace HelpMyStreetFE.Models
     {
         public bool isLoggedIn { get; set; }
         public bool TestBanner { get; set; }
-        public List<FeedbackMessage> FeedbackMessages { get; set; }
     }
 }
