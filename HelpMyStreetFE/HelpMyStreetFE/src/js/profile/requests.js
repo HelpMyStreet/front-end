@@ -115,6 +115,7 @@ export function showStatusUpdatePopup(btn) {
         if (success) {
             $(job).find('.job__status span').html(targetState);
             $(job).find('button').toggle();
+            $(job).find('.next-step').toggle();
         }
         return success;
     }
