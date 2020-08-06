@@ -1,7 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
-using HelpMyStreetFE.Models.Reponses;
-using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Services;
+﻿using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,7 +6,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
-
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Controllers { 
 
@@ -28,86 +25,38 @@ namespace HelpMyStreetFE.Controllers {
 
 
         [Authorize]
-        [HttpPost("accept-request")]
-        public async Task<ActionResult<bool>> AcceptRequest([FromBody]UpdateJobRequest job)
+        [HttpGet("set-request-status")]
+        public async Task<ActionResult<bool>> SetRequestStatus(string j, JobStatuses s, string u)
         {
             try
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(job);
-
-                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);                             
-                return await _requestService.UpdateJobStatusToInProgressAsync(DecodeJobID(job.JobID), userId, userId, HttpContext);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("an error occured accepting help", ex);
-                return StatusCode(500);
-            }
-        }
-
-        [Authorize]
-        [HttpPost("complete-request")]
-        public async Task<ActionResult<bool>> CompleteRequest([FromBody]UpdateJobRequest job)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(job);
-
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                return await _requestService.UpdateJobStatusToDoneAsync(DecodeJobID(job.JobID), userId, HttpContext);
+                var jobId = DecodeJobID(j);
+                switch (s)
+                {
+                    case JobStatuses.InProgress:
+                        int targetUserId = string.IsNullOrEmpty(u) ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
+                        return await _requestService.UpdateJobStatusToInProgressAsync(jobId, userId, targetUserId, HttpContext);
+                    case JobStatuses.Done:
+                        return await _requestService.UpdateJobStatusToDoneAsync(jobId, userId, HttpContext);
+                    case JobStatuses.Cancelled:
+                        return await _requestService.UpdateJobStatusToCancelledAsync(jobId, userId, HttpContext);
+                    case JobStatuses.Open:
+                        return await _requestService.UpdateJobStatusToOpenAsync(jobId, userId, HttpContext);
+                    default:
+                        throw new Exception($"Unexpected JobStatus {s}");
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError("an error occured completing job", ex);
-                return StatusCode(500);
-            }
-        }
-
-        [Authorize]
-        [HttpPost("release-request")]
-        public async Task<ActionResult<bool>> ReleaseRequest([FromBody] UpdateJobRequest job)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(job);
-
-                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                return await _requestService.UpdateJobStatusToOpenAsync(DecodeJobID(job.JobID), userId, HttpContext);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("an error occured releasing job", ex);
-                return StatusCode(500);
-            }
-        }
-
-        [Authorize]
-        [HttpPost("cancel-request")]
-        public async Task<ActionResult<bool>> CancelRequest([FromBody] UpdateJobRequest job)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(job);
-
-                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                return await _requestService.UpdateJobStatusToCancelledAsync(DecodeJobID(job.JobID), userId, HttpContext);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("an error occured releasing job", ex);
+                _logger.LogError("Exception in SetRequestStatus", ex);
                 return StatusCode(500);
             }
         }
 
         private int DecodeJobID(string encodedJobId)
         {
-            int jobId;
-            if (!int.TryParse(Base64Utils.Base64Decode(encodedJobId), out jobId))
+            if (!int.TryParse(Base64Utils.Base64Decode(encodedJobId), out int jobId))
             {
                 throw new Exception("Could not decode Job ID: " + encodedJobId);
             }

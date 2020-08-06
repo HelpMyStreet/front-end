@@ -1,31 +1,5 @@
 ﻿import { showPopup } from '../../shared/popup';
 
-export function showVerifiedAcceptPopup(acceptBtn) {
-    let popupMessage =
-        `<p>It will appear on your "My Accepted Requests" page and you’ll be able to view more information about it.</p>
-            <p>Please use the information in the request to fulfil it as soon as possible (this may involve contacting the recipient) – the ball’s in your court, someone may be depending on you.</p>
-            <p>Thank you for helping people in your community to stay safe.</p>`
-    var jobId = acceptBtn.parentsUntil(".job").parent().attr("id");
-    showPopup({
-        header: "Accept this Request for Help?",
-        htmlContent: popupMessage,
-        messageOnFalse: "We couldn't accept this request at the moment, please try again later",
-        actionBtnText: "Accept",
-        acceptCallbackAsync: async () => {
-            let hasUpdated = await SetRequestToInProgress(jobId);   
-                if (hasUpdated == true) {
-                    acceptBtn.text("Accepted");
-                    acceptBtn.addClass("actioned");
-                    acceptBtn.attr("disabled", "true");
-                    let acceptLink = acceptBtn.next(".job__info__footer.actioned")
-                    acceptLink.show();
-                    acceptLink.next(".job__info__footer").hide();
-                }
-                return hasUpdated;
-            }        
-    })
-}
-
 export function showUnVerifiedAcceptPopup() {
     let popupMessage =
         `<p><a href="/account/profile">Complete your ID verification</a> today so that you can start helping people!</p>
@@ -42,27 +16,5 @@ export function showUnVerifiedAcceptPopup() {
         }
 
     })
-}
-
-
-export async function SetRequestToInProgress(jobId) {
-    try {
-        let resp = await fetch('/api/requesthelp/accept-request', {
-            method: 'post',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({ jobId })
-        });
-
-        if (resp.ok) {
-            return resp.json();
-        } else {
-            return false;
-        }
-    } catch (err) {
-        console.error(err);
-        return false;
-    }
 }
 

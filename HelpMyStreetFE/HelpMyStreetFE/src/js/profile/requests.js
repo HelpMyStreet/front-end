@@ -3,19 +3,18 @@ import {
     updateQueryStringParam
 } from "../shared/querystring-helper";
 import {
-    showVerifiedAcceptPopup,
     showUnVerifiedAcceptPopup,
-    SetRequestToInProgress
 } from "./requests-popup-helper/open-requests"
-import {
-    showCompletePopup,
-    showReleasePopup,
-    showCancelPopup
-} from "./requests-popup-helper/accepted-requests"
 import {
     buttonLoad,
     buttonUnload
 } from "../shared/btn";
+import {
+    showPopup
+} from "../shared/popup";
+import {
+    getPopupMessaging
+} from "./requests-popup-helper/requests-popup-messaging";
 
 export function initialiseRequests(isVerified) {
     const job = getParameterByName("j");  
@@ -71,16 +70,11 @@ export function initialiseRequests(isVerified) {
     $('.accept-request').click(function (evt) {
         evt.preventDefault();        
         if (isVerified) {
-            showVerifiedAcceptPopup($(this));
+            showStatusUpdatePopup($(this));
         } else {
             showUnVerifiedAcceptPopup();
         }
     });
-
-    $('.complete-request').click(function (evt) {
-        evt.preventDefault();
-        showCompletePopup($(this));
-    })
 
 
   $(".job__expander h5").each((_, a) => {
@@ -96,49 +90,58 @@ export function initialiseRequests(isVerified) {
 
     $('.undo-request').click(async function (evt) {
         evt.preventDefault();  
-        let jobId = $(this).parentsUntil(".job").parent().attr("id");
-        buttonLoad($(this));
-        let hasUpdated = await SetRequestToInProgress(jobId)  
-        if (hasUpdated) {
-            let type = $(this).attr("data-undo");
-            let releaseButton = $(this).prev(".release-request");
-            let doneButton = releaseButton.prev(".complete-request");
 
-            switch (type) {
-                case "complete":
-                    _undoCompleteButtons(releaseButton, doneButton)
-                    break;
-                case "release":
-                    _undoReleaseButtons(releaseButton, doneButton);
-                    break;
-            }
-           
-            $(this).hide();            
+        const job = $(this).parentsUntil(".job").parent();
+        const targetState = $(this).data("target-state");
+        const targetUser = $(this).data("target-user") ?? "";
+
+        buttonLoad($(this));
+        let hasUpdated = await setRequestStatus(job, targetState, targetUser);
+        if (hasUpdated) {
+            $(job).find('.job__status span').html(targetState);
+            $(job).find('button').toggle();
         }
         buttonUnload($(this));
     })
 
-    $('.release-request').click(function () {
-        showReleasePopup($(this))
-    })
-
-    $('.cancel-request').click(function () {
-        showCancelPopup($(this))
-    })
+    $('.job button.trigger-status-update-popup').click(function () {
+        showStatusUpdatePopup($(this));
+    });
 }
 
 
-function _undoCompleteButtons(releaseButton, doneButton) {
 
-    releaseButton.show();
-    doneButton.text("Completed");
-    doneButton.removeClass("actioned");
-    doneButton.attr("disabled", false);
+export function showStatusUpdatePopup(btn) {
+    const job = btn.parentsUntil(".job").parent();
+    const targetState = $(btn).data("target-state");
+    const targetUser = $(btn).data("target-user") ?? "";
+
+    let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
+
+    popupSettings.acceptCallbackAsync = async () => {
+        let success = await setRequestStatus(job, targetState, targetUser);
+
+        if (success) {
+            $(job).find('.job__status span').html(targetState);
+            $(job).find('button').toggle();
+        }
+        return success;
+    }
+
+    showPopup(popupSettings);
 }
 
-function _undoReleaseButtons(releaseButton, doneButton) {
-    doneButton.show();
-    releaseButton.text("Can't Do");
-    releaseButton.removeClass("actioned");
-    releaseButton.attr("disabled", false);
+
+
+
+async function setRequestStatus(job, newStatus, targetUser) {
+    let success = false;
+    let jobId = job.attr("id");
+
+    let resp = await fetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    if (resp.ok) {
+        success = await resp.json()
+    }
+    return success;
 }
+

@@ -42,7 +42,7 @@
             }
         }
 
-        div {
+        >div {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -133,11 +133,6 @@
 
                 &.disabled {
                     background-color: $gray-8;
-                }
-
-                .loader,
-                &.undo-request {
-                    display: none;
                 }
             }
         }
