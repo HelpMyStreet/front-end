@@ -226,24 +226,12 @@ namespace HelpMyStreetFE.Services
 
             return success;
         }
-        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int? volunteerUserId, HttpContext ctx)
+        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx)
         {
-            if (volunteerUserId == null)
-            {
-                var job = await GetJobDetailsAsync(jobID);
-                volunteerUserId = job.VolunteerUserID;
-
-                if (volunteerUserId == null)
-                {
-                    // No VolunteerUserId supplied, and none already associated with job
-                    return false;
-                }
-            }
-
             var success = await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
             {
                 CreatedByUserID = createdByUserId,
-                VolunteerUserID = volunteerUserId.Value,
+                VolunteerUserID = volunteerUserId,
                 JobID = jobID
             });
 
