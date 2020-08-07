@@ -35,23 +35,23 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     bindingContext.Result = ModelBindingResult.Success(BindRequestStage(bindingContext, requestHelpFormVariant).Result);
                     break;
                 case nameof(RequestHelpDetailStageViewModel):
-                    bindingContext.Result = ModelBindingResult.Success(BuildDetailStage(bindingContext, requestHelpFormVariant, selectedSupportActivity).Result);
+                    bindingContext.Result = ModelBindingResult.Success(BindDetailStage(bindingContext, requestHelpFormVariant, selectedSupportActivity).Result);
                     break;
                 case nameof(RequestHelpReviewStageViewModel):
-                    bindingContext.Result = ModelBindingResult.Success(BuildReviewStage(bindingContext));
+                    bindingContext.Result = ModelBindingResult.Success(BindReviewStage(bindingContext));
                     break;
             }
 
             return Task.CompletedTask;
         }
 
-        private RequestHelpReviewStageViewModel BuildReviewStage(ModelBindingContext bindingContext)
+        private RequestHelpReviewStageViewModel BindReviewStage(ModelBindingContext bindingContext)
         {
             RequestHelpReviewStageViewModel model = JsonConvert.DeserializeObject<RequestHelpReviewStageViewModel>(bindingContext.ValueProvider.GetValue("ReviewStep").FirstValue);
             return model;
         }
 
-        private async Task<RequestHelpDetailStageViewModel> BuildDetailStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant, SupportActivities selectedSupportActivity)
+        private async Task<RequestHelpDetailStageViewModel> BindDetailStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant, SupportActivities selectedSupportActivity)
         {
             RequestHelpDetailStageViewModel model = JsonConvert.DeserializeObject<RequestHelpDetailStageViewModel>(bindingContext.ValueProvider.GetValue("DetailStep").FirstValue);
             var recpientnamePrefix = "currentStep.Recipient.";

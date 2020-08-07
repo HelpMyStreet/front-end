@@ -46,28 +46,35 @@ namespace HelpMyStreetFE.Repositories
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
 
-            return response.Content.JobSummaries;
+            return response?.Content?.JobSummaries;
         }
 
         public async Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request)
         {
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToDoneResponse>>($"/api/PutUpdateJobStatusToDone", request);
 
-            return response.Content.Success;
+            return response.Content.Outcome == UpdateJobStatusOutcome.Success;
         }
 
         public async Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request)
         {
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToOpenResponse>>($"/api/PutUpdateJobStatusToOpen", request);
 
-            return response.Content.Success;
+            return response.Content.Outcome == UpdateJobStatusOutcome.Success;
+        }
+
+        public async Task<bool> UpdateJobStatusToCancelledAsync(PutUpdateJobStatusToCancelledRequest request)
+        {
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToCancelledResponse>>($"/api/PutUpdateJobStatusToCancelled", request);
+
+            return response.Content.Outcome == UpdateJobStatusOutcome.Success;
         }
 
         public async Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request)
         {
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToInProgressResponse>>($"/api/PutUpdateJobStatusToInProgress", request);
 
-            return response.Content.Success;
+            return response.Content.Outcome == UpdateJobStatusOutcome.Success;
         }
 
         public async Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request)
