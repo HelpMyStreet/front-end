@@ -35,12 +35,7 @@
 }
 
 .slides::-webkit-scrollbar {
-    width: 10px;
     height: 10px;
-
-    @media screen and (min-width: $sm-screen) {
-        display: none;
-    }
 }
 
 .slides::-webkit-scrollbar-thumb {
