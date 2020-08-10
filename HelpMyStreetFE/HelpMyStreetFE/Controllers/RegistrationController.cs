@@ -62,8 +62,7 @@ namespace HelpMyStreetFE.Controllers
                 catch { }
             }
 
-            var groupServiceResponse = await _groupService.GetRegistrationFormVariant(referringGroupId, source);
-            RegistrationFormVariant registrationFormVariant = groupServiceResponse == null ? RegistrationFormVariant.Default : groupServiceResponse.RegistrationFormVariant;
+            RegistrationFormVariant registrationFormVariant = await _groupService.GetRegistrationFormVariant(referringGroupId, source) ?? RegistrationFormVariant.Default;
 
             return View(new RegistrationViewModel
             {
@@ -185,8 +184,7 @@ namespace HelpMyStreetFE.Controllers
                     form.VolunteerOptions,
                     form.VolunteerDistance);
 
-                var groupServiceResponse = await _groupService.PostAddUserToDefaultGroups(userId);
-                if (groupServiceResponse == null || !groupServiceResponse.Success) { throw new Exception($"Could not add user {userId} to default groups"); }
+                await _groupService.AddUserToDefaultGroups(userId);
 
                 return Redirect("/registration/step-four");
             }
@@ -281,8 +279,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                var groupServiceResponse = await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source);
-                return groupServiceResponse == null ? RegistrationFormVariant.Default : groupServiceResponse.RegistrationFormVariant;
+                return await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source) ?? RegistrationFormVariant.Default;
             }
         }
 

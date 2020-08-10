@@ -7,6 +7,7 @@
 @{
     bool UserIsVerified = (bool)ViewData["UserIsVerified"];
     bool IsAccepted = ViewData["IsAccepted"] is bool ? (bool)ViewData["IsAccepted"] : false;
+    bool UserActingAsAdmin = (bool)ViewData["UserActingAsAdmin"];
     var id = Base64Utils.Base64Encode(Model.JobID.ToString());
 
     var className = "";
@@ -33,7 +34,7 @@
     var ageUKReference = Model?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
-<div class="job @className" id="@id">
+<div class="job @className" id="@id" data-user-acting-as-admin="@UserActingAsAdmin" data-job-status="@Model.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.IsHealthCritical)
@@ -48,9 +49,18 @@
             <span class="due-date">Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="job__info__activity column">
+            <span class="activity__title job__status">
+                @switch (Model.JobStatus)
+                {
+                    case JobStatuses.Open:<span>Open</span>break;
+                    case JobStatuses.InProgress: <span>In Progress</span> break;
+                    case JobStatuses.Done: <span>Done</span>break;
+                    case JobStatuses.Cancelled: <span>Cancelled</span>break;
+                }
+            </span>
             <span class="activity__title @Model.SupportActivity.Class()">
                 @if (Model.SupportActivity != SupportActivities.Other)
-                {
+                    {
                     <img src="~/img/icons/@Model.SupportActivity.Icon()" class="@iconClass" />
 
                 }
@@ -65,46 +75,81 @@
             </span>
             <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
         </div>
-        <div class="job__info__actions column flex-end">
-            @if (IsAccepted)
-            {
-                <button class="btn cta large fill complete-request">
-                    <span class="text">Mark As Done</span>
-                </button>
-                <button class="btn border-dark-blue dark-blue large bg-white mt-sm release-request">
-                    <span class="text">Can't do</span>
-                </button>
-                <button class="btn border-green green large bg-white mt-sm undo-request">
+        <div class="column flex-end mt-sm">
+            <div class="job__info__actions">
+                @switch (Model.JobStatus)
+                {
+                    case JobStatuses.Open:
+                        @if (!UserActingAsAdmin)
+                        {
+                            @if (UserIsVerified)
+                            {
+                                <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                                    <span class="text">Accept</span>
+                                </button>
+                                <div class="job__info__footer next-step dnone">
+                                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobID.ToString())">Go to My Accepted Requests</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <button class="btn cta large accept-request-unverified bg-gray-8">
+                                    <span class="text">Accept</span>
+                                </button>
+                            }
+                        }
+                        break;
+                    case JobStatuses.InProgress:
+                        <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                            <span class="text">Mark as Done</span>
+                        </button>
+                        <button class="btn border-dark-blue dark-blue large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                            @if (UserActingAsAdmin)
+                            {
+                                <span class="text">Mark as Open</span>
+                            }
+                            else
+                            {
+                                <span class="text">Can't do</span>
+                            }
+                        </button>
+                        break;
+                    case JobStatuses.Done:
+                        if (UserActingAsAdmin)
+                        {
+                            <button class="btn border-orange orange large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.ToString())">
+                                <span class="text">Not done</span>
+                            </button>
+                        }
+                        break;
+                }
+                @if (UserActingAsAdmin && Model.JobStatus != JobStatuses.Cancelled)
+                {
+                    <button class="btn border-orange orange large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                        <span class="text">Cancel</span>
+                    </button>
+                }
+                <button class="btn border-green green large bg-white mt-sm undo-request dnone" data-target-state="@Model.JobStatus" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.ToString())">
                     <span class="text">Undo</span>
-                    <div class="loader">
+                    <div class="loader dnone">
                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
                     </div>
                 </button>
-            }
-            else
-            {
-                <button class="btn cta large fill accept-request  @(UserIsVerified ? "" : "disabled")">
-                    <span class="text">Accept</span>
-                </button>
-                @if (!IsAccepted)
+            </div>
+            <div class="job__info__footer">
+                @if (UserIsVerified)
                 {
-                    <div class="job__info__footer actioned">
-                        <a href="/account/accepted-requests">Go to My Accepted Requests</a>
-                    </div>
+                    <a href="#" data-id="@id" class="open">View more info <span></span></a>
+                    <a href="#" data-id="@id" class="close">View less info <span></span></a>
                 }
-            }
-                <div class="job__info__footer">
-      
-                        <a href="#" data-id="@id" class="open @(UserIsVerified ? "" : "disabled") ">View more info <span></span></a>
-                        <a href="#" data-id="@id" class="close">View less info <span></span></a>                                                      
-                </div>          
+            </div>
         </div>
        
     </div>
     <div class="job__detail">
         @if (IsAccepted)
-        {
-            var (requestor, recipient, requestorType) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
+            {
+                var (requestor, recipient, requestorType) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
 
             <h4>Contact Details</h4>
             <div class="job__expander">

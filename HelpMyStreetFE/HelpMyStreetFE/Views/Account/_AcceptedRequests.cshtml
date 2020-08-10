@@ -35,11 +35,12 @@
                      foreach (var job in PageModel.Jobs)
                      {
                          @Html.DisplayFor(x => job, new
-                         {
-                             UserIsVerified = true,
-                             IsAccepted = true,
-                             ContactInformation = PageModel.ContactInformation[job.JobID]
-                         });
+                            {
+                                UserIsVerified = true,
+                                UserActingAsAdmin = false,
+                                IsAccepted = true,
+                                ContactInformation = PageModel.ContactInformation[job.JobID]
+                            });
                      }
                  }
              }
