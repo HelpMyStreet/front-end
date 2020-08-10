@@ -33,14 +33,14 @@ function sendNewRelicError(url, response, error) {
     
 };
 
-async function tryFetch(url, data, options){
+async function tryFetch(url, data, options, completedAttempts) {
+    completedAttempts++;
     let didTimeOut = false;
     let fetchResult = await new Promise(resolve => {
     const timeOut = setTimeout(function () {
-            didTimeOut = true;
-            if (options.timeOutRetry > 0){
-                options.timeOutRetry--;
-                resolve(tryFetch(url,data,options));
+        didTimeOut = true;
+        if (options.timeOutRetry > completedAttempts) {
+                resolve(tryFetch(url, data, options, completedAttempts));
             } else {
                 sendNewRelicError(url, fetchResponses.TIMEOUT);
                 resolve({fetchResponse: fetchResponses.TIMEOUT});
@@ -64,9 +64,8 @@ async function tryFetch(url, data, options){
                         var fetchError = fetchResponses.SERVER_NOT_FOUND;
                         break;
                     case 500:
-                        if (options.errorRetry > 0) {
-                            options.errorRetry--;
-                            resolve(tryFetch(url, data, options));
+                        if (options.errorRetry > completedAttempts) {
+                            resolve(tryFetch(url, data, options, completedAttempts));
                         } else {
                             var fetchError = fetchResponses.SERVER_ERROR;
                         }
@@ -94,7 +93,7 @@ async function hmsFetch(url, data, options) {
     var _options = defaultOptions;
     if (options) { Object.assign(_options, options) };
 
-    return tryFetch(url, data, _options)
+    return tryFetch(url, data, _options, -1)
 };
 
 
