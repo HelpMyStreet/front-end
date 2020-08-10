@@ -16,7 +16,10 @@ import {
 import {
     getPopupMessaging
 } from "./requests-popup-helper/requests-popup-messaging";
-import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
+import {
+    hmsFetch,
+    fetchResponses
+} from "../shared/hmsFetch";
 
 export function initialiseRequests(isVerified) {
     const job = getParameterByName("j");  
