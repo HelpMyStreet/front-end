@@ -131,6 +131,10 @@ else
             </div>
         </div>
 
+        <div class="mt-lg">
+            @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other })
+        </div>
+
         <div class="row mt-lg justify-center">
             <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" width="350" /></a></div>
             <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" width="190" /></a></div>
@@ -180,11 +184,6 @@ else
                 }
             </div>
         </div>
-
-        <div>
-            @await Component.InvokeAsync("Feedback", new {feedbackMessageType = FeedbackMessageType.Other })
-        </div>
-
 
         <div class="row justify-center text-center mt-lg">
             <div class="sm4">
