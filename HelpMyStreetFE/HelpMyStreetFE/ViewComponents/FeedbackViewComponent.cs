@@ -31,10 +31,6 @@ namespace HelpMyStreetFE.ViewComponents
             if (feedbackMessageType != FeedbackMessageType.Other)
             {
                 messages = messages.FindAll(e => e.Type == feedbackMessageType);
-                if (numberToShow != null)
-                {
-                    messages = messages.OrderBy(x => Guid.NewGuid()).Take(numberToShow.Value).ToList();
-                }
             }
             else
             {
@@ -43,6 +39,12 @@ namespace HelpMyStreetFE.ViewComponents
                 var notMasks = messages.FindAll(e => e.Type != FeedbackMessageType.FaceCovering);
                 messages = notMasks.Concat(faceMasks.OrderBy(x => Guid.NewGuid()).Take(3)).ToList(); //get fewer masks involved
             }
+
+            if (numberToShow != null)
+            {
+                messages = messages.OrderBy(x => Guid.NewGuid()).Take(numberToShow.Value).ToList();
+            }
+
             viewModel.FeedbackMessages = messages;
             return View(viewModel);
         }
