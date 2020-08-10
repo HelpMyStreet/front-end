@@ -45,6 +45,16 @@ module.exports = {
           options: { plugins: ["@babel/plugin-proposal-class-properties"] },
         },
       },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: {
+          loader: "file-loader",
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            },
+        },
+      },
     ],
   },
 };
