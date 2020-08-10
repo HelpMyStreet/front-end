@@ -1,4 +1,7 @@
-﻿$(function () {
+﻿import $ from "jquery";
+import "slick-carousel"
+
+$(function () {
     $(".feedback-message").slick({
         infinitie: true,
         slidesToShow: 3,
