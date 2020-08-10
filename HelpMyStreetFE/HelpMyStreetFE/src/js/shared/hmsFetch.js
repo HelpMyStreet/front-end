@@ -35,11 +35,11 @@ function sendNewRelicError(url, response, error) {
 
 async function tryFetch(url, data, options){
     let didTimeOut = false;
-    let fetchResult = await new Promise(function(resolve, reject){
+    let fetchResult = await new Promise(resolve => {
     const timeOut = setTimeout(function () {
             didTimeOut = true;
             if (options.timeOutRetry > 0){
-                options.timeOutRetry = options.timeOutRetry - 1;
+                options.timeOutRetry--;
                 resolve(tryFetch(url,data,options));
             } else {
                 sendNewRelicError(url, fetchResponses.TIMEOUT);
@@ -65,7 +65,7 @@ async function tryFetch(url, data, options){
                         break;
                     case 500:
                         if (options.errorRetry > 0) {
-                            options.errorRetry = options.errorRetry - 1;
+                            options.errorRetry--;
                             resolve(tryFetch(url, data, options));
                         } else {
                             var fetchError = fetchResponses.SERVER_ERROR;
