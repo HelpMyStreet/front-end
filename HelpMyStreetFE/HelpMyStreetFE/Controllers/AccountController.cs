@@ -183,8 +183,31 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user);
-            viewModel.CurrentPage = MenuPage.AcceptedRequests;            
-            var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);        
+            viewModel.CurrentPage = MenuPage.AcceptedRequests;
+            var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+            var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
+
+            viewModel.PageModel = new AcceptedRequestsViewModel
+            {
+                Jobs = jobs,
+                ContactInformation = contactInformation
+            };
+
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CompletedRequests()
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            viewModel.CurrentPage = MenuPage.CompletedRequests;
+            var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
             var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
 
             viewModel.PageModel = new AcceptedRequestsViewModel
