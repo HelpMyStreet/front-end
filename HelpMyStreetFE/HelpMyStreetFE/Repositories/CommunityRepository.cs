@@ -36,7 +36,9 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
+
             int groupId = await _groupService.GetGroupIdByKey("hlp");
+
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "hlp";
             communityViewModel.Latitude = 51.507602;
@@ -331,6 +333,9 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetFtLOS()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            communityViewModel.showFeedback = true;
+            communityViewModel.ShowHelpExampleCards = false;
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos");
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
