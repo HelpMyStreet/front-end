@@ -24,16 +24,16 @@ namespace HelpMyStreetFE.ViewComponents
             _feedbackRepository = feedbackRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int numberToShow)
+        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow)
         {
             var viewModel = new FeedbackViewModel();
             var messages = await _feedbackRepository.GetFeedback();
             if (feedbackMessageType != FeedbackMessageType.Other)
             {
                 messages = messages.FindAll(e => e.Type == feedbackMessageType);
-                if (numberToShow != 0)
+                if (numberToShow != null)
                 {
-                    messages = messages.OrderBy(x => Guid.NewGuid()).Take(numberToShow).ToList();
+                    messages = messages.OrderBy(x => Guid.NewGuid()).Take(numberToShow.Value).ToList();
                 }
             }
             else
