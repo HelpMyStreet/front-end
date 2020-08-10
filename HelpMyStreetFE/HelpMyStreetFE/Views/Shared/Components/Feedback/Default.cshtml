@@ -9,10 +9,12 @@
         <div class="feedback-message">
             @foreach (FeedbackMessage feedbackMessage in Model.FeedbackMessages)
             {
-                <div class="card-feedback mr-sm ml-sm">
-                    <h3>&ldquo;@feedbackMessage.Tagline&bdquo;</h3>
-                    <p>@feedbackMessage.Message</p>
-                    <p class="person"><i>@feedbackMessage.Person</i></p>
+                <div>
+                    <div class="card-feedback mr-sm ml-sm">
+                        <h3>&ldquo;@feedbackMessage.Tagline&bdquo;</h3>
+                        <p>@feedbackMessage.Message</p>
+                        <p class="person"><i>@feedbackMessage.Person</i></p>
+                    </div>
                 </div>
             }
         </div>
