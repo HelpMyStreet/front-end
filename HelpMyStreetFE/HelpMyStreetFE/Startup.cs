@@ -120,7 +120,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
-            services.AddHttpClient<IGroupService, GroupService>(client =>
+            services.AddHttpClient<IGroupRepository, GroupRepository>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
@@ -140,6 +140,7 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
+            services.AddSingleton<IGroupService, GroupService>();
           
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
@@ -260,6 +261,19 @@ namespace HelpMyStreetFE
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
+
+                endpoints.MapControllerRoute(
+                    name: "account/g/group",
+                    pattern: "account/g/{groupKey}",
+                    defaults: new { controller = "Account", action = "Group" });
+                endpoints.MapControllerRoute(
+                    name: "account/g/group/requests",
+                    pattern: "account/g/{groupKey}/requests",
+                    defaults: new { controller = "Account", action = "GroupRequests" });
+                endpoints.MapControllerRoute(
+                    name: "account/g/group/volunteers",
+                    pattern: "account/g/{groupKey}/volunteers",
+                    defaults: new { controller = "Account", action = "GroupVolunteers" });
 
                 // Community placeholders
                 endpoints.MapControllerRoute(

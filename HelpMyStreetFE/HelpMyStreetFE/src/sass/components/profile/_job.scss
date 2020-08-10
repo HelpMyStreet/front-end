@@ -42,7 +42,7 @@
             }
         }
 
-        div {
+        > div {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -52,19 +52,8 @@
             flex-direction: column;
         }
 
-        .flex-end {
-            margin-top: 0.4rem;
-
-            @media (min-width: $sm-screen) {
-                justify-content: flex-end;
-                margin-top: 0px;
-            }
-        }
-
         &__urgency {
             color: $dark-blue;
-            height: 50px;
-            margin: -5px -5px 5px;
             background-color: $washed-blue;
 
             span,
@@ -81,7 +70,6 @@
                 height: auto;
                 background-color: transparent;
                 flex-direction: column;
-                justify-content: center;
             }
 
             .critical {
@@ -121,65 +109,31 @@
         }
 
         &__actions {
+            display: flex;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            width: 190px;
+
             .btn {
-                width: 190px;
+                width: 100%;
                 padding: 5px 0;
-
-                &.actioned {
-                    background: none;
-                    border: none;
-                    color: $green;
-                }
-
-                &.disabled {
-                    background-color: $gray-8;
-                }
-
-                .loader,
-                &.undo-request {
-                    display: none;
-                }
             }
         }
 
         &__footer {
-            @media (min-width: $med-screen) {
-                grid-column-start: 3;
-                grid-column-end: 3;
-            }
-
-            &.actioned {
-                display: none;
-                text-align: center;
-            }
-
-            button.disabled {
-                background-color: $gray-8;
-            }
+            display: flex;
+            flex-grow: 0;
+            margin-top: 10px;
 
             a {
-                margin: 10px 0 0;
-
                 span {
-                    text-decoration: none;
                     display: inline-block;
                     margin-left: 3px;
                 }
 
 
                 &.open {
-                    display: inline;
-
-                    &.disabled {
-                        span {
-                            @include arrow( 8px, 3px, $gray-8, down, $white);
-                            height: 10px;
-                            vertical-align: middle;
-                        }
-                    }
-
                     span {
-                        vertical-align: middle;
                         @include arrow( 8px, 3px, $dark-blue, down, $white);
                         height: 10px;
                     }
@@ -193,10 +147,6 @@
                         height: 10px;
                         margin: 0 0 3px 12px;
                     }
-                }
-
-                &.disabled {
-                    color: $gray-8;
                 }
             }
         }

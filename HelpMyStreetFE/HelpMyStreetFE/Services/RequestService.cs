@@ -124,7 +124,7 @@ namespace HelpMyStreetFE.Services
                     {
                        JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
                     },
-                    Groups = new GroupRequest() { Groups = (await _groupService.GetUserGroups(user.ID)).Groups }
+                    Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
                 };
 
                 var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
@@ -213,6 +213,19 @@ namespace HelpMyStreetFE.Services
 
             return success;
         }
+        public async Task<bool> UpdateJobStatusToCancelledAsync(int jobID, int createdByUserId, HttpContext ctx)
+        {
+            var success = await _requestHelpRepository.UpdateJobStatusToCancelledAsync(new PutUpdateJobStatusToCancelledRequest()
+            {
+                CreatedByUserID = createdByUserId,
+                JobID = jobID
+            });
+
+            if (success)
+                TriggerCacheRefresh(ctx);
+
+            return success;
+        }
         public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx)
         {
             var success = await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
@@ -238,6 +251,17 @@ namespace HelpMyStreetFE.Services
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId)
+        {
+            var jobsByFilterRequest = new GetJobsByFilterRequest()
+            {
+                Postcode = "NG1 6FG",
+                ReferringGroupID = GroupId
+            };
+
+            return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
         }
     }
  }

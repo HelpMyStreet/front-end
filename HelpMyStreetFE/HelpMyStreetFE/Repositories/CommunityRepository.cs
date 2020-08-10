@@ -35,8 +35,10 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetHLP()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("hlp");
-            int groupId = getGroupByKeyResponse.GroupId;
+
+
+            int groupId = await _groupService.GetGroupIdByKey("hlp");
+
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "hlp";
             communityViewModel.Latitude = 51.507602;
@@ -151,8 +153,7 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("tankersley");
-            int groupId = getGroupByKeyResponse.GroupId;
+            int groupId = await _groupService.GetGroupIdByKey("tankersley");
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "tankersley";
             communityViewModel.Latitude = 53.498113;
@@ -230,8 +231,7 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ageuklsl");
-            int groupId = getGroupByKeyResponse.GroupId;
+            int groupId = await _groupService.GetGroupIdByKey("ageuklsl");
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "ageUK";
             communityViewModel.Latitude = 52.95;
@@ -337,8 +337,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
 
-            var getGroupByKeyResponse = await _groupService.GetGroupByKey("ftlos");
-            int groupId = getGroupByKeyResponse.GroupId;
+            int groupId = await _groupService.GetGroupIdByKey("ftlos");
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";

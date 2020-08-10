@@ -18,6 +18,7 @@ using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.Http;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Controllers
 {    
@@ -32,8 +33,10 @@ namespace HelpMyStreetFE.Controllers
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestService _requestService;
+        private readonly IGroupService _groupService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
+        private static readonly string PROFILE_URL = "/account";
 
         public AccountController(
             ILogger<AccountController> logger,
@@ -42,7 +45,8 @@ namespace HelpMyStreetFE.Controllers
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IOptions<RequestSettings>  requestSettings,
-            IRequestService requestService
+            IRequestService requestService,
+            IGroupService groupService
             )
         {
             _logger = logger;
@@ -52,6 +56,7 @@ namespace HelpMyStreetFE.Controllers
             _yotiOptions = yotiOptions;
             _requestService = requestService;
             _requestSettings = requestSettings;
+            _groupService = groupService;
         }  
 
         [HttpGet]
@@ -92,7 +97,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
             viewModel.PageModel = userDetails;            
@@ -109,7 +114,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -161,7 +166,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext); 
             return View("Index", viewModel);
@@ -177,7 +182,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;            
             var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);        
             var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
@@ -187,6 +192,125 @@ namespace HelpMyStreetFE.Controllers
                 Jobs = jobs,
                 ContactInformation = contactInformation
             };
+
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Group(string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+
+            if (currentGroup != null)
+            {
+                if (currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+                {
+                    return await GroupRequests(groupKey);
+                }
+                else if (currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+                {
+                    return await GroupVolunteers(groupKey);
+                }
+            }
+
+            return Redirect(PROFILE_URL);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GroupRequests(string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            viewModel.CurrentPage = MenuPage.GroupRequests;
+            viewModel.CurrentGroup = currentGroup;
+
+            viewModel.PageModel = new GroupRequestsViewModel()
+            {
+                Jobs = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId)
+            };
+
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey)
+        {
+            CountNavViewModel countNavViewModel = new CountNavViewModel();
+
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return countNavViewModel;
+            }
+
+            UserGroup currentGroup = null;
+            if (groupKey != null)
+            {
+                var userGroups = await _groupService.GetUserGroupRoles(user.ID);
+                currentGroup = userGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            }
+
+            int count;
+            switch (menuPage)
+            {
+                case MenuPage.GroupRequests:
+                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId);
+                    count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
+                    break;
+                case MenuPage.AcceptedRequests:
+                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                    count = acceptedRequests.Count();
+                    break;
+                case MenuPage.OpenRequests:
+                    var openRequests = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext);
+                    count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
+                    break;
+                default:
+                    return countNavViewModel;
+            }
+
+            countNavViewModel.Count = count;
+
+            return countNavViewModel;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GroupVolunteers(string groupKey)
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            viewModel.CurrentPage = MenuPage.GroupVolunteers;
+            viewModel.CurrentGroup = currentGroup;
 
             return View("Index", viewModel);
         }
@@ -207,7 +331,7 @@ namespace HelpMyStreetFE.Controllers
             return user;
         }
 
-        private AccountViewModel GetAccountViewModel(User user)
+        private async Task<AccountViewModel> GetAccountViewModel(User user)
         {
             var viewModel = new AccountViewModel();
 
@@ -242,8 +366,9 @@ namespace HelpMyStreetFE.Controllers
                     
                 };
        
-                viewModel.UserDetails = userDetails;                
-                
+                viewModel.UserDetails = userDetails;
+
+                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
             }
 
             return viewModel;
