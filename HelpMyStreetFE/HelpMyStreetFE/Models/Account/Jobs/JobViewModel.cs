@@ -1,6 +1,6 @@
 ﻿using HelpMyStreet.Utils.Models;
 
-namespace HelpMyStreetFE.Models.Account
+namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobViewModel
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;

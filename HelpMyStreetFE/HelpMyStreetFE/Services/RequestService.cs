@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
-using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Contracts.RequestService.Extensions;
 using Microsoft.AspNetCore.Http;

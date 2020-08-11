@@ -1,7 +1,7 @@
 ﻿using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
-using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Http;
@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.ViewComponents
                 UserActingAsAdmin = admin,
                 UserIsVerified = user.IsVerified ?? false,
                 ContactInformation = contactInformation.ContainsKey(a.JobID) ? contactInformation[a.JobID] : new RequestContactInformation(),
-        });
+            });
 
             return View("JobList", jobs2);
         }

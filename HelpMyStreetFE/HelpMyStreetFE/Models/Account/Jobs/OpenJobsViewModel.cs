@@ -3,7 +3,7 @@ using HelpMyStreetFE.Services;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HelpMyStreetFE.Models.Account
+namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class OpenJobsViewModel
     {
