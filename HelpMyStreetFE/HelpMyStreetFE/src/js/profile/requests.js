@@ -136,7 +136,7 @@ async function setRequestStatus(job, newStatus, targetUser) {
     let success = false;
     let jobId = job.attr("id");
 
-    var response = hmsFetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    var response = await hmsFetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
     if (response == fetchResponses.SUCCESS) {
         return response.fetchPayload;
     }
