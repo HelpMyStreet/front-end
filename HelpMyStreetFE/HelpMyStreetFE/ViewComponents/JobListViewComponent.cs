@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobSummary = a,
                 UserActingAsAdmin = admin,
                 UserIsVerified = user.IsVerified ?? false,
-                ContactInformation = contactInformation[a.JobID],
+                ContactInformation = contactInformation.ContainsKey(a.JobID) ? contactInformation[a.JobID] : new RequestContactInformation(),
         });
 
             return View("JobList", jobs2);

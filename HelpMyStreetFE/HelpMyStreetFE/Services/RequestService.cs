@@ -166,7 +166,14 @@ namespace HelpMyStreetFE.Services
 
             foreach (var id in ids)
             {
-                details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
+                try
+                {
+                    details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError(ex, $"Failed to get job details for id {id}");
+                }
             }
 
             return details.Aggregate(new Dictionary<int, RequestContactInformation>(), (acc, cur) =>
