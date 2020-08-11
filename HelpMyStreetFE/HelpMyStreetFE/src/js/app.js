@@ -4,13 +4,11 @@ import 'core-js/';
 import "../sass/main.scss";
 import firebase from "./firebase/index";
 import account from "./account";
-import notification from "./account/notification";
 import "./shared/info-popup";
 import "./shared/site-header";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
 import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
-import { hmsFetch, fetchResponses } from "./shared/hmsFetch.js";
 
 $(function () {
     $('.no-fouc').removeClass('no-fouc');
