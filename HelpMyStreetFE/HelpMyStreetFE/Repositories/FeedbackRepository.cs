@@ -93,6 +93,20 @@ namespace HelpMyStreetFE.Repositories
                     Message = "The ability to shape the content and presentation of local material - on the website and with the posters and flyers - makes it much more likely that local people will access and use this service",
                     Person = "Kate organises a local group in South Yorkshire who built a community page on HelpMyStreet,\r\nJuly 2020",
                     Type = FeedbackMessageType.Group
+                },
+                new FeedbackMessage()
+                {
+                    Tagline = "A priviledge",
+                    Message = "It has been a privilege to join HelpMyStreet and to deliver the wellbeing packages for Age UK. To be able to give something back to others who have given to us in the past is most rewarding.",
+                    Person = "Sharon in Stamford provided some help, August 2020",
+                    Type = FeedbackMessageType.Group
+                },
+                new FeedbackMessage()
+                {
+                    Tagline = "Very rewarding",
+                    Message = "I am enjoying being a volunteer for the Age UK Vitals for Veterans campaign. Helping those who have served their country is very rewarding and I am only too pleased to be able to help.",
+                    Person = "Steve in Spalding provided some help, August 2020",
+                    Type = FeedbackMessageType.Group
                 }
 
             };
