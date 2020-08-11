@@ -136,14 +136,12 @@ async function setRequestStatus(job, newStatus, targetUser) {
     let success = false;
     let jobId = job.attr("id");
 
-    return new Promise(resolve => {
-        hmsFetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser)
-            .then(response => {
-                if (response.fetchResponse == fetchResponses.SUCCESS) {
-                    success = response.fetchPayload;
-                }
-                resolve(success);
-            });
-    });
+    var response = hmsFetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    if (response == fetchResponses.SUCCESS) {
+        return response.fetchPayload;
+    }
+    else {
+        return false;
+    }
 }
 
