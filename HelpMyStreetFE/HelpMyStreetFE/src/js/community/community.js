@@ -1,5 +1,5 @@
-import { initialiseSliders } from "../shared/image-slider.js"
-import "isomorphic-fetch";
+import { initialiseSliders } from "../shared/image-slider.js";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 $(document).ready(function () {
     initialiseSliders();
@@ -268,7 +268,11 @@ function deleteMarkers() {
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
     let endpoint = '/api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
-    const content = await fetch(endpoint);
-    const users = await content.json();
-    return users.volunteerCoordinates;
+    const content = await hmsFetch(endpoint);
+    if (content.fetchResponse == fetchResponses.SUCCESS) {
+        var payload = await content.fetchPayload;
+        return payload.volunteerCoordinates;
+    } else {
+        return [];
+    }
 }

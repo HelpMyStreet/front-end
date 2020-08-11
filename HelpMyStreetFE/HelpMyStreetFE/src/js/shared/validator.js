@@ -1,3 +1,5 @@
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+
 export function validateFormData(form, validation) {
   const obj = form
     .find(".input")
@@ -38,10 +40,12 @@ export function validateFormData(form, validation) {
 
 export async function validatePostCode(postcode) {
     let postcodeValid = false;
-    const resp = await fetch(`/api/postcode/${postcode}`);
-    if (resp.ok) {
-        const { hasContent, isSuccessful } = await resp.json();  
-        postcodeValid = (hasContent && isSuccessful);        
+    const resp = await hmsFetch(`/api/postcode/${postcode}`);
+    if (resp.fetchResponse == fetchResponses.SUCCESS) {
+        const { hasContent, isSuccessful } = await resp.fetchPayload;
+        postcodeValid = (hasContent && isSuccessful);
+    } else {
+        console.error("Invalid Postcode Validation Response");
     }
     return postcodeValid
 }
