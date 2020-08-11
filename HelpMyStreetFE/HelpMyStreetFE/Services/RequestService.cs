@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.Services
             _requestSettings = requestSettings;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
-    }
+        }
 
         public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
         {
@@ -49,7 +49,7 @@ namespace HelpMyStreetFE.Services
             var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? _requestHelpBuilder.MapRequestor(detailStage) : recipient;
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
-            
+
             bool heathCritical = false;
             var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
             if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
@@ -122,7 +122,7 @@ namespace HelpMyStreetFE.Services
                     ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
                     JobStatuses = new JobStatusRequest()
                     {
-                       JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
+                        JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
                     },
                     Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
                 };
@@ -136,7 +136,7 @@ namespace HelpMyStreetFE.Services
                     CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
                     OtherJobs = otherJobs.OrderOpenJobsForDisplay().Take(maxOtherJobsToDisplay)
                 };
-                
+
                 ctx.Session.SetObjectAsJson("openJobs", jobs);
                 ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());
             }
@@ -170,7 +170,7 @@ namespace HelpMyStreetFE.Services
                 {
                     details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogError(ex, $"Failed to get job details for id {id}");
                 }
@@ -260,7 +260,7 @@ namespace HelpMyStreetFE.Services
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
 
-        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId, HttpContext ctx)
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId, JobFilterRequest jobFilterRequest, HttpContext ctx)
         {
             var jobs = ctx.Session.GetObjectFromJson<IEnumerable<JobSummary>>($"group{GroupId}Jobs");
             DateTime lastUpdated;
@@ -277,7 +277,23 @@ namespace HelpMyStreetFE.Services
                 ctx.Session.SetObjectAsJson($"group{GroupId}Jobs", jobs);
                 ctx.Session.SetString($"group{GroupId}JobsLastUpdated", DateTime.Now.ToString());
             }
+            if (jobFilterRequest != null)
+            {
+                jobs = FilterJobs(jobs, jobFilterRequest);
+            }
+            return jobs;
+        }
 
+        private IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest)
+        {
+            if (jobFilterRequest.JobStatuses != null)
+            {
+                jobs = jobs.Where(j => jobFilterRequest.JobStatuses.Contains(j.JobStatus));
+            }
+            if (jobFilterRequest.SupportActivities != null)
+            {
+                jobs = jobs.Where(j => jobFilterRequest.SupportActivities.Contains(j.SupportActivity));
+            }
             return jobs;
         }
     }

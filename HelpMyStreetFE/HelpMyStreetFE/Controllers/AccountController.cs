@@ -19,6 +19,7 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.Account.Jobs;
 
 namespace HelpMyStreetFE.Controllers
 {    
@@ -274,7 +275,8 @@ namespace HelpMyStreetFE.Controllers
             {
                 case MenuPage.GroupRequests:
                     if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, HttpContext);
+                    JobFilterRequest jobFilterRequest = new JobFilterRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.InProgress, JobStatuses.Open } };
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, jobFilterRequest, HttpContext);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.AcceptedRequests:

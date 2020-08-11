@@ -1,0 +1,25 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobFilterViewModel
+
+<div>
+    <h6>Filter jobs here</h6>
+
+    @if (Model.JobStatuses != null)
+    {
+        <p>Status:</p>
+        @foreach (var status in Model.JobStatuses)
+        {
+            <label>@status.Value</label>
+            @Html.CheckBoxFor(x => status.IsSelected)
+        }
+    }
+
+    @if (Model.SupportActivities != null)
+    {
+        <p>Activity:</p>
+        @foreach (var supportActivity in Model.SupportActivities)
+        {
+            <label>@supportActivity.Value</label>
+            @Html.CheckBoxFor(x => supportActivity.IsSelected)
+        }
+    }
+</div>

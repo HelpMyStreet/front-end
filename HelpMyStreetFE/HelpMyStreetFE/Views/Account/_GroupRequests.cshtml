@@ -1,5 +1,7 @@
 ﻿@using HelpMyStreetFE.Models.Account
 @using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Enums;
 
 @model AccountViewModel
 
@@ -9,10 +11,20 @@
         <p>Requests submitted to @Model.CurrentGroup.GroupName</p>
     </header>
 
+    @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+    {
+        JobStatuses = new List<FilterField<JobStatuses>>() {
+            new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+            new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+            new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
+            new FilterField<JobStatuses>() { Value = JobStatuses.Open }
+        }
+    })
+
     @await Component.InvokeAsync("JobList", new
     {
         JobSet = JobSet.GroupRequests,
         GroupId = Model.CurrentGroup.GroupId
-    }) 
+    })
 
 </div>
