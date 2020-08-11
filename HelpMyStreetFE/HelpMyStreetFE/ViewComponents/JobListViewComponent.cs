@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.ViewComponents
             switch (jobSet)
             {
                 case JobSet.GroupRequests:
-                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value);
+                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, HttpContext);
                     admin = true;
                     break;
                 case JobSet.UserOpenRequests_MatchingCriteria:

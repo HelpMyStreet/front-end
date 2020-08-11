@@ -274,7 +274,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 case MenuPage.GroupRequests:
                     if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId);
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, HttpContext);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.AcceptedRequests:
