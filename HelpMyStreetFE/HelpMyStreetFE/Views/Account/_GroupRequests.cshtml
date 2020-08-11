@@ -1,9 +1,7 @@
-﻿@using HelpMyStreet.Utils.Models
-@using HelpMyStreetFE.Models.Account
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
 
 @model AccountViewModel
-
-@{ var PageModel = (GroupRequestsViewModel)Model.PageModel; }
 
 <div class="user-profile profile-panel p-md">
     <header class="profile-panel__header">
@@ -13,7 +11,7 @@
 
     @await Component.InvokeAsync("JobList", new
     {
-        MenuPage = HelpMyStreetFE.Enums.Account.MenuPage.GroupRequests,
+        JobSet = JobSet.GroupRequests,
         GroupId = Model.CurrentGroup.GroupId
     }) 
 

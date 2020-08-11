@@ -2,42 +2,39 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Utils;
 
-@model HelpMyStreet.Utils.Models.JobSummary
+@model HelpMyStreetFE.Models.Account.JobViewModel
 
 @{
-    bool UserIsVerified = (bool)ViewData["UserIsVerified"];
-    bool IsAccepted = ViewData["IsAccepted"] is bool ? (bool)ViewData["IsAccepted"] : false;
-    bool UserActingAsAdmin = (bool)ViewData["UserActingAsAdmin"];
-    var id = Base64Utils.Base64Encode(Model.JobID.ToString());
+    var id = Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString());
 
     var className = "";
-    if(Model.DueDate.Date <= DateTime.Today)
+    if(Model.JobSummary.DueDate.Date <= DateTime.Today)
     {
         className = "job--hot";
     }
 
-    if(Model.DueDate.Date == DateTime.Today.AddDays(1))
+    if(Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
     {
         className = "job--warm";
     }
-    var AgeUk = Model.SupportActivity == SupportActivities.WellbeingPackage;
-    var Hlp = Model.SupportActivity == SupportActivities.CommunityConnector;
+    var AgeUk = Model.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
+    var Hlp = Model.JobSummary.SupportActivity == SupportActivities.CommunityConnector;
     string iconClass = AgeUk ? "limit-width" : "";
 
-    var forFaceMask = Model.SupportActivity == SupportActivities.FaceMask;
+    var forFaceMask = Model.JobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided"; 
     var friendlyNamePrefix = forFaceMask  ?
-    Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
-    bool removePluralisation = forFaceMask &&  Model?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
-    var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.SupportActivity.FriendlyName().Remove(Model.SupportActivity.FriendlyName().Length - 1) : Model.SupportActivity.FriendlyName());
+    Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
+    bool removePluralisation = forFaceMask &&  Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
+    var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.JobSummary.SupportActivity.FriendlyName().Remove(Model.JobSummary.SupportActivity.FriendlyName().Length - 1) : Model.JobSummary.SupportActivity.FriendlyName());
     bool showOtherDetails = !forFaceMask;
-    var ageUKReference = Model?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
+    var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@UserActingAsAdmin" data-job-status="@Model.JobStatus">
+<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
-            @if (Model.IsHealthCritical)
+            @if (Model.JobSummary.IsHealthCritical)
             {
                 <span class="critical-icon">!</span>
                 <span class="critical">Critical</span>
@@ -46,11 +43,11 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span class="due-date">Due @Model.DueDate.ToString("dd/MM/yyyy")</span>
+            <span class="due-date">Due @Model.JobSummary.DueDate.ToString("dd/MM/yyyy")</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title job__status">
-                @switch (Model.JobStatus)
+                @switch (Model.JobSummary.JobStatus)
                 {
                     case JobStatuses.Open:<span>Open</span>break;
                     case JobStatuses.InProgress: <span>In Progress</span> break;
@@ -58,10 +55,10 @@
                     case JobStatuses.Cancelled: <span>Cancelled</span>break;
                 }
             </span>
-            <span class="activity__title @Model.SupportActivity.Class()">
-                @if (Model.SupportActivity != SupportActivities.Other)
+            <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
+                @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
                     {
-                    <img src="~/img/icons/@Model.SupportActivity.Icon()" class="@iconClass" />
+                    <img src="~/img/icons/@Model.JobSummary.SupportActivity.Icon()" class="@iconClass" />
 
                 }
 
@@ -73,22 +70,22 @@
                 }
 
             </span>
-            <span class="activity__detail">@Model.PostCode (@Math.Round(Model.DistanceInMiles, 1) miles away)</span>
+            <span class="activity__detail">@Model.JobSummary.PostCode (@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
         </div>
         <div class="column flex-end mt-sm">
             <div class="job__info__actions">
-                @switch (Model.JobStatus)
+                @switch (Model.JobSummary.JobStatus)
                 {
                     case JobStatuses.Open:
-                        @if (!UserActingAsAdmin)
+                        @if (!Model.UserActingAsAdmin)
                         {
-                            @if (UserIsVerified)
+                            @if (Model.UserIsVerified)
                             {
                                 <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
                                     <span class="text">Accept</span>
                                 </button>
                                 <div class="job__info__footer next-step dnone">
-                                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobID.ToString())">Go to My Accepted Requests</a>
+                                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString())">Go to My Accepted Requests</a>
                                 </div>
                             }
                             else
@@ -104,7 +101,7 @@
                             <span class="text">Mark as Done</span>
                         </button>
                         <button class="btn border-dark-blue dark-blue large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                            @if (UserActingAsAdmin)
+                            @if (Model.UserActingAsAdmin)
                             {
                                 <span class="text">Mark as Open</span>
                             }
@@ -115,21 +112,21 @@
                         </button>
                         break;
                     case JobStatuses.Done:
-                        if (UserActingAsAdmin)
+                        if (Model.UserActingAsAdmin)
                         {
-                            <button class="btn border-orange orange large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.ToString())">
+                            <button class="btn border-orange orange large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
                         break;
                 }
-                @if (UserActingAsAdmin && Model.JobStatus != JobStatuses.Cancelled)
+                @if (Model.UserActingAsAdmin && Model.JobSummary.JobStatus != JobStatuses.Cancelled)
                 {
                     <button class="btn border-orange orange large bg-white mt-sm trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>
                     </button>
                 }
-                <button class="btn border-green green large bg-white mt-sm undo-request dnone" data-target-state="@Model.JobStatus" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.ToString())">
+                <button class="btn border-green green large bg-white mt-sm undo-request dnone" data-target-state="@Model.JobSummary.JobStatus" data-target-user="@Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.ToString())">
                     <span class="text">Undo</span>
                     <div class="loader dnone">
                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
@@ -137,7 +134,7 @@
                 </button>
             </div>
             <div class="job__info__footer">
-                @if (UserIsVerified)
+                @if (Model.UserIsVerified)
                 {
                     <a href="#" data-id="@id" class="open">View more info <span></span></a>
                     <a href="#" data-id="@id" class="close">View less info <span></span></a>
@@ -147,18 +144,18 @@
        
     </div>
     <div class="job__detail">
-        @if (IsAccepted)
+        @if (Model.JobSummary.JobStatus == JobStatuses.InProgress)
             {
-                var (requestor, recipient, requestorType) = (HelpMyStreetFE.Models.Account.RequestContactInformation)ViewData["ContactInformation"];
+                var (requestor, recipient, requestorType) = Model.ContactInformation;
 
             <h4>Contact Details</h4>
             <div class="job__expander">
                 <h5>@(forFaceMask ? "Recipient" : "Person in need")<span></span></h5>
                 <dl>
-                    @if (!string.IsNullOrEmpty(Model.RecipientOrganisation))
+                    @if (!string.IsNullOrEmpty(Model.JobSummary.RecipientOrganisation))
                     {
                         <dt>Organisation</dt>
-                        <dd>@Model.RecipientOrganisation</dd>
+                        <dd>@Model.JobSummary.RecipientOrganisation</dd>
                     }
                     <dt>Name</dt>
                     <dd>@recipient.FirstName @recipient.LastName</dd>
@@ -211,12 +208,12 @@
             </div>
             <div class="job__expander add-line">
                 <h5>Communication Needs<span></span></h5>
-                <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+                <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
             </div>
 
             <h4>Request Details</h4>
 
-            @foreach (var question in Model.Questions)
+            @foreach (var question in Model.JobSummary.Questions)
             {
 
                 if (question.ShowOnTaskManagement())
@@ -232,19 +229,19 @@
             {
                 <div class="job__expander">
                     <h5>Further Details<span></span></h5>
-                    <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+                    <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
                 </div>
             }
         }
-        else if (UserIsVerified)
+        else if (Model.UserIsVerified)
         {
-            @if (!string.IsNullOrEmpty(Model.RecipientOrganisation))
+            @if (!string.IsNullOrEmpty(Model.JobSummary.RecipientOrganisation))
             {
                 <h4>Organisation</h4>
-                <p>@Model.RecipientOrganisation</p>
+                <p>@Model.JobSummary.RecipientOrganisation</p>
             }
 
-            @foreach (var question in Model.Questions)
+            @foreach (var question in Model.JobSummary.Questions)
             {
 
                 if (question.ShowOnTaskManagement())
@@ -256,11 +253,11 @@
             @if (showOtherDetails)
             {
                 <h4>Further Details</h4>
-                <p>@(String.IsNullOrEmpty(Model.OtherDetails) ? "None entered" : Model.OtherDetails)</p>
+                <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
             }
 
             <h4>Communication Needs</h4>
-            <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+            <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
         }
     </div>
 </div>

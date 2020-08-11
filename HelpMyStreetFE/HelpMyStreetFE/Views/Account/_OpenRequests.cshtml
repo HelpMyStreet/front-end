@@ -1,87 +1,90 @@
-﻿@using HelpMyStreet.Utils.Models
-@using HelpMyStreetFE.Models.Account
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
 
 @model AccountViewModel
 
 @{
-    var Jobs = (OpenJobsViewModel)Model.PageModel;
+    bool NoCriteriaJobsToDisplay = false;
+    bool NoNonCriteriaJobsToDisplay = false;
 }
 
-    <div class="verification-panel">
-        <div class="user-profile profile-panel p-md">
+<div class="verification-panel">
+    <div class="user-profile profile-panel p-md">
+        <header class="profile-panel__header">
+            <h3 class="profile-panel__title">Open Requests</h3>
+            <p>Help that’s needed near you</p>
+        </header>
+
+        <div class="profile">
+
+            @if (NoCriteriaJobsToDisplay && NoNonCriteriaJobsToDisplay)
+            {
+                <div class="profile__empty">
+                    <p class="profile__empty__title">Everyone's taken care of!</p>
+                    <p class="profile__empty__text">
+                        Please come back later to check for new Open Requests for help and support - they’re being added all the time.
+                        We’ll also send you email notifications of new requests.
+                    </p>
+                    <p class="profile__empty__title">Thank You!</p>
+                </div>
+            }
+            else
+            {
+                <p>Requests meeting the criteria you set when you signed up</p>
+                @await Component.InvokeAsync("JobList", new
+                   {
+                       JobSet = JobSet.UserOpenRequests_MatchingCriteria,
+                       EmptyListCallback = new Action(() => NoCriteriaJobsToDisplay = true),
+                   })
+                @if (NoCriteriaJobsToDisplay)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__text--left">
+                            There are no open requests at present which meet the criteria you specified when you signed up
+                        </p>
+                    </div>
+                }
+
+
+                <p>Other Requests</p>
+                <div class="profile__section">
+                    @await Component.InvokeAsync("JobList", new
+                       {
+                           JobSet = JobSet.UserOpenRequests_NotMatchingCriteria,
+                           EmptyListCallback = new Action(() => NoNonCriteriaJobsToDisplay = true),
+                       })
+                </div>
+                @if (NoNonCriteriaJobsToDisplay)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__text--left">
+                            There are no further open requests nearby at present
+                        </p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    @if (Model.UserDetails.IsVerified)
+    {
+        <div class="user-profile profile-panel p-md mt-md">
             <header class="profile-panel__header">
-                <h3 class="profile-panel__title">Open Requests</h3>
-                <p>Help that’s needed near you</p>
+                <h3 class="profile-panel__title">Submit &amp; Accept</h3>
             </header>
 
             <div class="profile">
-
-                @if (Jobs.HasNoJobs)
-                {
-                    <div class="profile__empty">
-                        <p class="profile__empty__title">Everyone's taken care of!</p>
-                        <p class="profile__empty__text">
-                            Please come back later to check for new Open Requests for help and support - they’re being added all the time.
-                            We’ll also send you email notifications of new requests.
-                        </p>
-                        <p class="profile__empty__title">Thank You!</p>
-                    </div>
-                }
-                else
-                {
-                    <p>Requests meeting the criteria you set when you signed up</p>
-                    @if (Jobs.CriteriaJobs.Count() == 0)
-                    {
-                        <div class="profile__empty">
-                            <p class="profile__empty__text--left">
-                                There are no open requests at present which meet the criteria you specified when you signed up
-                            </p>
-                        </div>
-                    }
-                    else
-                    {
-                        @Html.DisplayFor(x => Jobs.CriteriaJobs, new { UserIsVerified = Model.UserDetails.IsVerified, UserActingAsAdmin = false })
-                    }
-
-
-                    <p>Other Requests</p>
-                    @if (Jobs.OtherJobs.Count() == 0)
-                    {
-                        <div class="profile__empty">
-                            <p class="profile__empty__text--left">
-                                There are no further open requests nearby at present
-                            </p>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="profile__section">
-                            @Html.DisplayFor(x => Jobs.OtherJobs, new { UserIsVerified = Model.UserDetails.IsVerified, UserActingAsAdmin = false })
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-
-        @if (Model.UserDetails.IsVerified)
-        {
-            <div class="user-profile profile-panel p-md mt-md">
-                <header class="profile-panel__header">
-                    <h3 class="profile-panel__title">Submit &amp; Accept</h3>
-                </header>
-
-                <div class="profile">
-                    <div>
-                        <p>
-                            If you have a request for help that you are going to complete yourself, you can use the Submit &amp; Accept function to immediately accept the request when you submit it.
-                        </p>
-                    </div>
-
-                    <p>The request will immediately appear in your 'Accepted Requests' page and others volunteers won't be able to see or accept them.<p>
-                        <div class="profile__empty mt-md">
-                            <a href="/request-help/0/DIY" class="btn cta cta--orange fill">Submit &amp; Accept</a>
-                        </div>
+                <div>
+                    <p>
+                        If you have a request for help that you are going to complete yourself, you can use the Submit &amp; Accept function to immediately accept the request when you submit it.
+                    </p>
                 </div>
+
+                <p>The request will immediately appear in your 'Accepted Requests' page and others volunteers won't be able to see or accept them.<p>
+                    <div class="profile__empty mt-md">
+                        <a href="/request-help/0/DIY" class="btn cta cta--orange fill">Submit &amp; Accept</a>
+                    </div>
             </div>
-        }
         </div>
+    }
+</div>
