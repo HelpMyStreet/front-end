@@ -257,7 +257,6 @@ namespace HelpMyStreetFE.Services
         {
             var jobsByFilterRequest = new GetJobsByFilterRequest()
             {
-                Postcode = "NG1 6FG",
                 ReferringGroupID = GroupId
             };
 
