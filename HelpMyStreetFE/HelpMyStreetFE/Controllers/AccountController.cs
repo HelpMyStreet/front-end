@@ -265,11 +265,6 @@ namespace HelpMyStreetFE.Controllers
             viewModel.CurrentPage = MenuPage.GroupRequests;
             viewModel.CurrentGroup = currentGroup;
 
-            viewModel.PageModel = new GroupRequestsViewModel()
-            {
-                Jobs = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId)
-            };
-
             return View("Index", viewModel);
         }
 

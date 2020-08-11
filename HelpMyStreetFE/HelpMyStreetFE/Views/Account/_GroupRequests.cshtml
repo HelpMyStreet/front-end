@@ -10,11 +10,11 @@
         <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Requests</h3>
         <p>Requests submitted to @Model.CurrentGroup.GroupName</p>
     </header>
-    <div class="profile">
-        @Html.DisplayFor(x => PageModel.Jobs, new
-           {
-               UserIsVerified = true,
-               UserActingAsAdmin = true
-           })
-    </div>
+
+    @await Component.InvokeAsync("JobList", new
+    {
+        MenuPage = HelpMyStreetFE.Enums.Account.MenuPage.GroupRequests,
+        GroupId = Model.CurrentGroup.GroupId
+    }) 
+
 </div>

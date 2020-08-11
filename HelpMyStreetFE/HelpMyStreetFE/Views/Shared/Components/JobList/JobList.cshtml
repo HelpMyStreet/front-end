@@ -1,0 +1,10 @@
+﻿@model IEnumerable<HelpMyStreet.Utils.Models.JobSummary>
+
+
+<div class="profile">
+    @Html.DisplayFor(x => Model, new
+       {
+           UserIsVerified = true,
+           UserActingAsAdmin = true
+       })
+</div>
