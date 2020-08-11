@@ -25,21 +25,19 @@ function initialiseAccountNavExpanders() {
 async function initialiseNavBadges() {
     $('.account__nav .account__nav__badge').each(function () {
         const badge = $(this);
-        hmsFetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
-            .then(async function (response) {
-                if (response.fetchResponse == fetchResponses.SUCCESS) {
-                    const count = (await response.fetchPayload).count;
-                    if (count > 0) {
-                        $(badge).html(count);
-                        $(badge).addClass('count');
-                    } else {
-                        $(badge).html('');
-                        $(badge).removeClass('count');
-                    }
-                } else {
-                    // No badges today
-                }
-            });
+        var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            const count = (await response.fetchPayload).count;
+            if (count > 0) {
+                $(badge).html(count);
+                $(badge).addClass('count');
+            } else {
+                $(badge).html('');
+                $(badge).removeClass('count');
+            }
+        } else {
+            // No badges today
+        }
     });
 }
 
