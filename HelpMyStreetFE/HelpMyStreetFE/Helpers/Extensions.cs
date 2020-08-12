@@ -84,6 +84,8 @@ namespace HelpMyStreetFE
                 (int)Questions.FaceMask_Cost => true,
                 (int)Questions.SupportRequesting => true,
                 (int)Questions.FaceMask_SpecificRequirements => true,
+                (int)Questions.CommunicationNeeds => true,
+                (int)Questions.AnythingElseToTellUs => true,
                 _ => false
             };
         }
@@ -94,6 +96,8 @@ namespace HelpMyStreetFE
             {
                 (int)Questions.FaceMask_SpecificRequirements => "Request Description",
                 (int)Questions.SupportRequesting => "Request Description",
+                (int)Questions.CommunicationNeeds => "Communication Needs",
+                (int)Questions.AnythingElseToTellUs => "Further Details",
                 _ => question.Name
             };
         }
