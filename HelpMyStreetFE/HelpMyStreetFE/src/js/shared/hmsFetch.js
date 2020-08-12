@@ -52,7 +52,7 @@ async function tryFetch(url, data, options, completedAttempts) {
                 clearTimeout(timeOut);
                 switch (response.status) {
                     case 200:
-                        resolve({fetchResponse: fetchResponses.SUCCESS, fetchPayload: response.json()});
+                        resolve({fetchResponse: fetchResponses.SUCCESS, fetchPayload: response.json(), fetchPayloadText: response.text() });
                         break;
                     case 400:
                         var fetchError = fetchResponses.BAD_REQUEST;
@@ -71,7 +71,7 @@ async function tryFetch(url, data, options, completedAttempts) {
                         }
                         break;
                     default:
-                        resolve({ fetchResponse: response.status, fetchPayload: response.json() });
+                        resolve({ fetchResponse: response.status, fetchPayload: response.json(), fetchPayloadText: response.text() });
 
                 }
                 if (fetchError) {

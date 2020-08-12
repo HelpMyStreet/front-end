@@ -376,5 +376,16 @@ namespace HelpMyStreetFE.Controllers
 
             return viewModel;
         }
+
+
+
+
+        [HttpGet]
+        public IActionResult GetFilteredJobs(JobFilterRequest jobFilterRequest)
+        {
+            var a = ViewComponent("JobList", new { jobSet = JobSet.GroupRequests, groupId = -1, emptyListCallback = (Action)null });
+            // new HelpMyStreetFE.ViewComponents.JobListViewComponent().InvokeAsync(JobSet.GroupRequests, -1, null);
+            return a;
+        }
     }
 }
