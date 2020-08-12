@@ -2,6 +2,7 @@
 import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 export function initaliseDetailStage() {
     validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
@@ -123,15 +124,23 @@ var SetupAddressFinder = function () {
     
     $("#address_finder").on("click", async function (evt) {
         trackEvent("Request form", "Click Find address");
-       
+
+ 
         evt.preventDefault();
         buttonLoad($(this));
         $("select[name=address_selector]").unbind("change");
-        const postcode = $("input[name=postcode_search]").val();        
+        const postcode = $("input[name=postcode_search]").val();
+        
         try {
-            const resp = await fetch(`/api/postcode/${postcode}`);
-            if (resp.ok) {
-                const { hasContent, isSuccessful, content } = await resp.json();
+            if (postcode == "") {
+                let postcodeInput = $("input[name='postcode_search']");
+                postcodeInput.find("~ .error").text("Please enter a postcode to search").show();
+                buttonUnload($(this));
+                return;
+            }
+            const resp = await hmsFetch(`/api/postcode/${postcode}`);
+            if (resp.fetchResponse == fetchResponses.SUCCESS) {
+                const { hasContent, isSuccessful, content } = await resp.fetchPayload;
 
                 if (hasContent && isSuccessful) {
                     let postcodeInput = $("input[name='postcode_search']");

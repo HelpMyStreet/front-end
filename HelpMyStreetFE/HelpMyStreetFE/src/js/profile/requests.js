@@ -16,6 +16,10 @@ import {
 import {
     getPopupMessaging
 } from "./requests-popup-helper/requests-popup-messaging";
+import {
+    hmsFetch,
+    fetchResponses
+} from "../shared/hmsFetch";
 
 export function initialiseRequests(isVerified) {
     const job = getParameterByName("j");  
@@ -132,10 +136,12 @@ async function setRequestStatus(job, newStatus, targetUser) {
     let success = false;
     let jobId = job.attr("id");
 
-    let resp = await fetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
-    if (resp.ok) {
-        success = await resp.json()
+    var response = await hmsFetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        return response.fetchPayload;
     }
-    return success;
+    else {
+        return false;
+    }
 }
 

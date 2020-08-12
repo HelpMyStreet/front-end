@@ -1,5 +1,6 @@
 import login from "./login";
 import notification from "./notification";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 
 export default { login, notification };
 
@@ -21,21 +22,22 @@ function initialiseAccountNavExpanders() {
     });
 }
 
-function initialiseNavBadges() {
-    $('.account__nav .account__nav__badge').each(function () {
+async function initialiseNavBadges() {
+    $('.account__nav .account__nav__badge').each(async function () {
         const badge = $(this);
-        fetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
-            .then(function (response) {
-                response.json().then(function (json) {
-                    if (json.count > 0) {
-                        $(badge).html(json.count);
-                        $(badge).addClass('count');
-                    } else {
-                        $(badge).html('');
-                        $(badge).removeClass('count');
-                    }
-                });
-            });
+        var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            const count = (await response.fetchPayload).count;
+            if (count > 0) {
+                $(badge).html(count);
+                $(badge).addClass('count');
+            } else {
+                $(badge).html('');
+                $(badge).removeClass('count');
+            }
+        } else {
+            // No badges today
+        }
     });
 }
 
