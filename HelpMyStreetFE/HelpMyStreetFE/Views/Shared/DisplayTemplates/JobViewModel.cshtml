@@ -18,16 +18,13 @@
         className = "job--warm";
     }
     var AgeUk = Model.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
-    var Hlp = Model.JobSummary.SupportActivity == SupportActivities.CommunityConnector;
     string iconClass = AgeUk ? "limit-width" : "";
 
     var forFaceMask = Model.JobSummary.SupportActivity == SupportActivities.FaceMask;
-    var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided"; 
     var friendlyNamePrefix = forFaceMask  ?
     Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
     bool removePluralisation = forFaceMask &&  Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.JobSummary.SupportActivity.FriendlyName().Remove(Model.JobSummary.SupportActivity.FriendlyName().Length - 1) : Model.JobSummary.SupportActivity.FriendlyName());
-    bool showOtherDetails = !forFaceMask;
     var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
@@ -143,126 +140,5 @@
         </div>
        
     </div>
-    <div class="job__detail">
-        @if (Model.JobSummary.JobStatus == JobStatuses.InProgress)
-            {
-                var (requestor, recipient, requestorType) = Model.ContactInformation;
-
-            <h4>Contact Details</h4>
-            <div class="job__expander">
-                <h5>@(forFaceMask ? "Recipient" : "Person in need")<span></span></h5>
-                <dl>
-                    @if (!string.IsNullOrEmpty(Model.JobSummary.RecipientOrganisation))
-                    {
-                        <dt>Organisation</dt>
-                        <dd>@Model.JobSummary.RecipientOrganisation</dd>
-                    }
-                    <dt>Name</dt>
-                    <dd>@recipient.FirstName @recipient.LastName</dd>
-                    <dt>Email</dt>
-                    <dd>@(string.IsNullOrEmpty(recipient.EmailAddress) ? userDetailsNotProvidedText : recipient.EmailAddress) </dd>
-                    <dt>Phone number(s)</dt>
-                    <dd>
-                        @if (String.IsNullOrEmpty(recipient.MobileNumber) && String.IsNullOrEmpty(recipient.OtherNumber))
-                        {
-                            @userDetailsNotProvidedText
-                        }
-                        else
-                        {
-                            @recipient.MobileNumber
-                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(recipient.MobileNumber) ? "" : " / ")
-                            @recipient.OtherNumber
-                        }
-                    </dd>
-                    <dt>Address</dt>
-                    <dd>
-                        @Html.DisplayFor(x => recipient.Address, new { MaskAddress = AgeUk || Hlp })
-                    </dd>
-                </dl>
-            </div>
-            <div class="job__expander">
-                <h5>Requester<span></span></h5>
-                @if (requestorType == RequestorType.Myself)
-                {
-                    <p><i>Request made by recipient </i></p>
-                }
-                else
-                {
-                    <dl>
-                        <dt>Name</dt>
-                        <dd>@requestor.FirstName @requestor.LastName</dd>
-                        <dt>Email</dt>
-                        <dd>@requestor.EmailAddress</dd>
-                        <dt>Phone number(s)</dt>
-                        <dd>
-                            @requestor.MobileNumber
-                            @(String.IsNullOrEmpty(recipient.OtherNumber) || String.IsNullOrEmpty(requestor.MobileNumber) ? "" : " / ")
-                            @requestor.OtherNumber
-                        </dd>
-                        <dt>Address</dt>
-                        <dd>
-                            @requestor.Address.Postcode
-                        </dd>
-                    </dl>
-                }
-            </div>
-            @if (!String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds))
-            {
-                <div class="job__expander add-line">
-                    <h5>Communication Needs<span></span></h5>
-                    <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
-                </div>
-            }
-            <h4>Request Details</h4>
-
-            @foreach (var question in Model.JobSummary.Questions)
-            {
-
-                if (question.ShowOnTaskManagement())
-                {
-                    <div class="job__expander">
-                        <h5>@question.FriendlyName()<span></span></h5>
-                        <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
-                    </div>
-                }
-            }
-
-            @if (showOtherDetails && !String.IsNullOrEmpty(Model.JobSummary.OtherDetails))
-            {
-                <div class="job__expander">
-                    <h5>Further Details<span></span></h5>
-                    <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
-                </div>
-            }
-        }
-        else if (Model.UserIsVerified)
-        {
-            @if (!string.IsNullOrEmpty(Model.JobSummary.RecipientOrganisation))
-            {
-                <h4>Organisation</h4>
-                <p>@Model.JobSummary.RecipientOrganisation</p>
-            }
-
-            @foreach (var question in Model.JobSummary.Questions)
-            {
-
-                if (question.ShowOnTaskManagement())
-                {
-                    <h4>@question.FriendlyName()</h4>
-                    <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
-                }
-            }
-            @if (showOtherDetails && !String.IsNullOrEmpty(Model.JobSummary.OtherDetails))
-            {
-                <h4>Further Details</h4>
-                <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
-            }
-
-            @if (!String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds))
-            {
-                <h4>Communication Needs</h4>
-                <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
-            }
-        }
-    </div>
+    <div class="job__detail"></div>
 </div>

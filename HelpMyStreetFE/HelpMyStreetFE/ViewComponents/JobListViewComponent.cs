@@ -59,14 +59,11 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobs.Count() == 0) { emptyListCallback.Invoke(); }
 
-            var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(a => a.JobID));
-
             var jobs2 = jobs.Select(a => new JobViewModel()
             {
                 JobSummary = a,
                 UserActingAsAdmin = admin,
-                UserIsVerified = user.IsVerified ?? false,
-                ContactInformation = contactInformation.ContainsKey(a.JobID) ? contactInformation[a.JobID] : new RequestContactInformation(),
+                UserIsVerified = user.IsVerified ?? false
             });
 
             return View("JobList", jobs2);

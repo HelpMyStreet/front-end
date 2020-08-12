@@ -49,12 +49,14 @@ export function initialiseRequests(isVerified) {
     $(".job a.open").each((_, a) => {
         const el = $(a);
         const id = el.attr("data-id");
+        const job = el.parentsUntil(".job").parent();
         el.on("click", (e) => {
             e.preventDefault();
             if (isVerified) {
                 updateQueryStringParam('j', id);
                 $(`#${id}`).addClass("open");
                 $(`#${id} .job__detail`).slideToggle();
+                loadJobDetails(job);
             } else {
                 showUnVerifiedAcceptPopup();
             }
@@ -97,7 +99,7 @@ export function initialiseRequests(isVerified) {
         const targetUser = $(this).data("target-user") ?? "";
 
         buttonLoad($(this));
-        let hasUpdated = await setRequestStatus(job, targetState, targetUser);
+        let hasUpdated = await setJobStatus(job, targetState, targetUser);
         if (hasUpdated) {
             $(job).find('.job__status span').html(targetState);
             $(job).find('button').toggle();
@@ -116,7 +118,7 @@ export function showStatusUpdatePopup(btn) {
     let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
 
     popupSettings.acceptCallbackAsync = async () => {
-        let success = await setRequestStatus(job, targetState, targetUser);
+        let success = await setJobStatus(job, targetState, targetUser);
 
         if (success) {
             $(job).find('.job__status span').html(targetState);
@@ -132,11 +134,10 @@ export function showStatusUpdatePopup(btn) {
 
 
 
-async function setRequestStatus(job, newStatus, targetUser) {
-    let success = false;
+async function setJobStatus(job, newStatus, targetUser) {
     let jobId = job.attr("id");
 
-    var response = await hmsFetch('/api/requesthelp/set-request-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    var response = await hmsFetch('/api/requesthelp/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
     if (response.fetchResponse == fetchResponses.SUCCESS) {
         return response.fetchPayload;
     }
@@ -145,3 +146,14 @@ async function setRequestStatus(job, newStatus, targetUser) {
     }
 }
 
+
+async function loadJobDetails(job) {
+    let jobId = job.attr("id");
+
+   var response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        $(job).find('.job__detail').html(await response.fetchPayload);
+    } else {
+        return false;
+    }
+}

@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Controllers {
 
     [Route("api/requesthelp")]
     [ApiController]
-    public class RequestHelpAPIController : ControllerBase
+    public class RequestHelpAPIController : Controller
     {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
@@ -25,8 +25,8 @@ namespace HelpMyStreetFE.Controllers {
 
 
         [Authorize]
-        [HttpGet("set-request-status")]
-        public async Task<ActionResult<bool>> SetRequestStatus(string j, JobStatuses s, string u)
+        [HttpGet("set-job-status")]
+        public async Task<ActionResult<bool>> SetJobStatus(string j, JobStatuses s, string u)
         {
             try
             {
@@ -52,6 +52,17 @@ namespace HelpMyStreetFE.Controllers {
                 _logger.LogError("Exception in SetRequestStatus", ex);
                 return StatusCode(500);
             }
+        }
+
+        [Authorize]
+        [HttpGet("get-job-details")]
+        public async Task<IActionResult> GetJobDetails(string j)
+        {
+            var jobId = DecodeJobID(j);
+            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            return ViewComponent("JobDetail", new { jobId, userId });
+
         }
 
         private int DecodeJobID(string encodedJobId)
