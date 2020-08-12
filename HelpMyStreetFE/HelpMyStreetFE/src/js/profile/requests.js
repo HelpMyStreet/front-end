@@ -113,6 +113,8 @@ export function initialiseRequests(isVerified) {
         }
         buttonUnload($(this));
     })
+
+    initialiseFilters();
 }
 
 
@@ -171,4 +173,14 @@ async function loadJobDetails(job, forceRefresh) {
         jobDetail.removeData('status');
         return false;
     }
+}
+
+
+function initialiseFilters() {
+    $('button.update').on('click', async function () {
+        var response = await hmsFetch('/api/requesthelp/get-filtered-jobs');
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            $('.job-filter-results-panel').html(await response.fetchPayload);
+        }
+    });
 }

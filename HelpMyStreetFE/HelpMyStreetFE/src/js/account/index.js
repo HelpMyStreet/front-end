@@ -7,7 +7,6 @@ export default { login, notification };
 $(document).ready(function () {
     initialiseAccountNavExpanders();
     initialiseNavBadges();
-    initialiseFilters();
 });
 
 function initialiseAccountNavExpanders() {
@@ -56,13 +55,4 @@ function subMenuToggle(container, slideDuration = 400) {
             $(ul).find('.account__nav__badge').show();
         });
     }
-}
-
-function initialiseFilters() {
-    $('button.update').on('click', async function () {
-        var response = await hmsFetch('/account/GetFilteredJobs', null, { timeOutLength: 40000, timeOutRetry: 2, errorRetry: 5 });
-        if (response.fetchResponse == fetchResponses.SUCCESS) {
-            $('.job-filter-results-panel').html(response.fetchPayloadText);
-        }
-    });
 }

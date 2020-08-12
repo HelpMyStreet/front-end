@@ -7,6 +7,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.Account.Jobs;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.Controllers { 
 
@@ -64,6 +66,15 @@ namespace HelpMyStreetFE.Controllers {
             return ViewComponent("JobDetail", new { jobId, userId });
 
         }
+
+
+        [Authorize]
+        [HttpGet("get-filtered-jobs")]
+        public IActionResult GetFilteredJobsOld()
+        {
+            return ViewComponent("JobList", new { jobSet = JobSet.GroupRequests, groupId = -1 });
+        }
+
 
         private int DecodeJobID(string encodedJobId)
         {
