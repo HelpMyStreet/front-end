@@ -193,6 +193,11 @@
         p {
             line-height: 1.25;
         }
+
+        .loading-spinner {
+            margin: 15px auto 0 auto;
+            width: 32px;
+        }
     }
 
     &__expander {
