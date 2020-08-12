@@ -23,7 +23,7 @@ function initialiseAccountNavExpanders() {
 }
 
 async function initialiseNavBadges() {
-    $('.account__nav .account__nav__badge').each(function () {
+    $('.account__nav .account__nav__badge').each(async function () {
         const badge = $(this);
         var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
         if (response.fetchResponse == fetchResponses.SUCCESS) {
