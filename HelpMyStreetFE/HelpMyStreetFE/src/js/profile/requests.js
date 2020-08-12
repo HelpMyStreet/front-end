@@ -37,6 +37,7 @@ export function initialiseRequests(isVerified) {
                         if (isVerified) {
                             $(`#${job} .job__detail`).slideDown();
                             $(`#${job}`).addClass("open highlight");
+                            loadJobDetails(jobEl);
                         } else {
                             $(`#${job}`).addClass("highlight");
                         }
@@ -46,16 +47,22 @@ export function initialiseRequests(isVerified) {
         }
     }
 
+    $(".job").each(function () {
+        $(this).on("mouseover", () => {
+            loadJobDetails($(this));
+        })
+    });
+
     $(".job a.open").each((_, a) => {
         const el = $(a);
         const id = el.attr("data-id");
-        const job = el.parentsUntil(".job").parent();
         el.on("click", (e) => {
             e.preventDefault();
             if (isVerified) {
                 updateQueryStringParam('j', id);
                 $(`#${id}`).addClass("open");
                 $(`#${id} .job__detail`).slideToggle();
+                const job = el.parentsUntil(".job").parent();
                 loadJobDetails(job);
             } else {
                 showUnVerifiedAcceptPopup();
@@ -147,13 +154,21 @@ async function setJobStatus(job, newStatus, targetUser) {
 }
 
 
-async function loadJobDetails(job) {
-    let jobId = job.attr("id");
+async function loadJobDetails(job, forceRefresh) {
+    let jobDetail = $(job).find('.job__detail');
 
-   var response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId);
+    if (!forceRefresh && jobDetail.data('status') !== undefined) {
+        return;
+    }
+
+    let jobId = $(job).attr("id");
+    jobDetail.data('status', 'updating' );
+    const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId);
     if (response.fetchResponse == fetchResponses.SUCCESS) {
-        $(job).find('.job__detail').html(await response.fetchPayload);
+        jobDetail.html(await response.fetchPayload);
+        jobDetail.data('status', { 'updated': new Date() });
     } else {
+        jobDetail.removeData('status');
         return false;
     }
 }
