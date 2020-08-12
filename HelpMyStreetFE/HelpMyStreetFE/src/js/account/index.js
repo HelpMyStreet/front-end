@@ -62,7 +62,7 @@ function subMenuToggle(container, slideDuration = 400) {
 
 function initialiseFilters() {
     $('button.update').on('click', async function () {
-        var response = await hmsFetch('/account/GetFilteredJobs', { timeOutLength: 10000, timeOutRetry: 2, errorRetry: 5 });
+        var response = await hmsFetch('/account/GetFilteredJobs', null, { timeOutLength: 40000, timeOutRetry: 2, errorRetry: 5 });
         if (response.fetchResponse == fetchResponses.SUCCESS) {
             $('.job-filter-results-panel').html(response.fetchPayloadText);
         }
