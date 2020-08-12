@@ -206,11 +206,13 @@
                     </dl>
                 }
             </div>
-            <div class="job__expander add-line">
-                <h5>Communication Needs<span></span></h5>
-                <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
-            </div>
-
+            @if (!String.IsNullOrEmpty(Model.SpecialCommunicationNeeds))
+            {
+                <div class="job__expander add-line">
+                    <h5>Communication Needs<span></span></h5>
+                    <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+                </div>
+            }
             <h4>Request Details</h4>
 
             @foreach (var question in Model.JobSummary.Questions)
@@ -225,7 +227,7 @@
                 }
             }
 
-            @if (showOtherDetails)
+            @if (showOtherDetails && !String.IsNullOrEmpty(Model.OtherDetails))
             {
                 <div class="job__expander">
                     <h5>Further Details<span></span></h5>
@@ -250,14 +252,17 @@
                     <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
                 }
             }
-            @if (showOtherDetails)
+            @if (showOtherDetails && !String.IsNullOrEmpty(Model.OtherDetails))
             {
                 <h4>Further Details</h4>
                 <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
             }
 
-            <h4>Communication Needs</h4>
-            <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
+            @if (!String.IsNullOrEmpty(Model.SpecialCommunicationNeeds))
+            {
+                <h4>Communication Needs</h4>
+                <p>@(String.IsNullOrEmpty(Model.SpecialCommunicationNeeds) ? "None entered" : Model.SpecialCommunicationNeeds)</p>
+            }
         }
     </div>
 </div>
