@@ -1,4 +1,4 @@
-@using HelpMyStreetFE;
+﻿@using HelpMyStreetFE;
 @using HelpMyStreet.Utils.Enums;
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
@@ -23,29 +23,29 @@
                 <dt>Organisation</dt>
                 <dd>@Model.JobSummary.RecipientOrganisation</dd>
             }
-            if (@Model.Recipient != null)
+            @if (@Model.Recipient != null)
             {
-            <dt>Name</dt>
-            <dd>@Model.Recipient.FirstName @Model.Recipient.LastName</dd>
-            <dt>Email</dt>
-            <dd>@(string.IsNullOrEmpty(Model.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.Recipient.EmailAddress) </dd>
-            <dt>Phone number(s)</dt>
-            <dd>
-                @if (String.IsNullOrEmpty(Model.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.Recipient.OtherNumber))
-                {
-                    @userDetailsNotProvidedText
-                }
-                else
-                {
-                    @Model.Recipient.MobileNumber
-                    @(String.IsNullOrEmpty(Model.Recipient.OtherNumber) || String.IsNullOrEmpty(Model.Recipient.MobileNumber) ? "" : " / ")
-                    @Model.Recipient.OtherNumber
-                }
-            </dd>
-            <dt>Address</dt>
-            <dd>
-                @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
-            </dd>
+                <dt>Name</dt>
+                <dd>@Model.Recipient.FirstName @Model.Recipient.LastName</dd>
+                <dt>Email</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.Recipient.EmailAddress) </dd>
+                <dt>Phone number(s)</dt>
+                <dd>
+                    @if (String.IsNullOrEmpty(Model.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.Recipient.OtherNumber))
+                    {
+                        @userDetailsNotProvidedText
+                    }
+                    else
+                    {
+                        @Model.Recipient.MobileNumber
+                        @(String.IsNullOrEmpty(Model.Recipient.OtherNumber) || String.IsNullOrEmpty(Model.Recipient.MobileNumber) ? "" : " / ")
+                        @Model.Recipient.OtherNumber
+                    }
+                </dd>
+                <dt>Address</dt>
+                <dd>
+                    @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
+                </dd>
             }
         </dl>
     </div>
@@ -80,7 +80,7 @@
     }
     <h4>Request Details</h4>
 
-    @foreach (var question in Model.JobSummary.Questions)
+    @*@foreach (var question in Model.JobSummary.Questions)
     {
 
         if (question.ShowOnTaskManagement())
@@ -90,7 +90,7 @@
                 <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
             </div>
         }
-    }
+    }*@
 }
 else if (Model.UserIsVerified)
 {
@@ -100,7 +100,7 @@ else if (Model.UserIsVerified)
         <p>@Model.JobSummary.RecipientOrganisation</p>
     }
 
-    @foreach (var question in Model.JobSummary.Questions)
+    @*@foreach (var question in Model.JobSummary.Questions)
     {
 
         if (question.ShowOnTaskManagement())
@@ -108,5 +108,5 @@ else if (Model.UserIsVerified)
             <h4>@question.FriendlyName()</h4>
             <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
         }
-    }
+    }*@
 }

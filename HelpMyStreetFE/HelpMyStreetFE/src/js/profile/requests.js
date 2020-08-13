@@ -47,60 +47,46 @@ export function initialiseRequests(isVerified) {
         }
     }
 
-    $(".job").each(function () {
-        $(this).on("mouseover", () => {
-            loadJobDetails($(this));
-        })
+    $('.job-list').on('mouseover', '.job', function () {
+        loadJobDetails($(this));
     });
 
-    $(".job a.open").each((_, a) => {
-        const el = $(a);
-        const id = el.attr("data-id");
-        el.on("click", (e) => {
-            e.preventDefault();
-            if (isVerified) {
-                updateQueryStringParam('j', id);
-                $(`#${id}`).addClass("open");
-                $(`#${id} .job__detail`).slideToggle();
-                const job = el.parentsUntil(".job").parent();
-                loadJobDetails(job);
-            } else {
-                showUnVerifiedAcceptPopup();
-            }
-        });
+    $('.job-list').on('click', '.job a.open', function (e) {
+        e.preventDefault();
+        const job = $(this).parentsUntil('.job').parent();
+        if (isVerified) {
+            updateQueryStringParam('j', job.id);
+            job.toggleClass('open');
+            job.find('.job__detail').slideToggle();
+            loadJobDetails(job);
+        } else {
+            showUnVerifiedAcceptPopup();
+        }
     });
 
-    $(".job a.close").each((_, a) => {
-        const el = $(a);
-        const id = el.attr("data-id");
-        el.on("click", (e) => {
-            e.preventDefault();
-            removeQueryStringParam('j', id);
-            $(`#${id}`).removeClass("open");
-            $(`#${id} .job__detail`).slideToggle();
-        });
+    $('.job-list').on('click', '.job a.close', function (e) {
+        e.preventDefault();
+        const job = $(this).parentsUntil('.job').parent();
+        removeQueryStringParam('j', job.id());
+        job.toggleClass('open');
+        job.find('.job__detail').slideToggle();
     });
 
-    $(".job__expander h5").each((_, a) => {
-        const el = $(a);
-
-        el.on("click", (e) => {
-            e.preventDefault();
-
-            el.toggleClass("open");
-            el.next().slideToggle();
-        });
+    $('.job-list').on('click', '.job__expander h5', function (e) {
+        e.preventDefault();
+        $(this).toggleClass('open');
+        $(this).next().slideToggle();
     });
 
-    $('.job button.trigger-status-update-popup').click(function () {
+    $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
         showStatusUpdatePopup($(this));
     });
 
-    $('.accept-request-unverified').click(function () {
+    $('.job-list').on('click', '.accept-request-unverified', function () {
         showUnVerifiedAcceptPopup();
     });
 
-    $('.undo-request').click(async function (evt) {
+    $('.job-list').on('click', '.undo-request', async function (evt) {
         const job = $(this).parentsUntil(".job").parent();
         const targetState = $(this).data("target-state");
         const targetUser = $(this).data("target-user") ?? "";
@@ -177,10 +163,22 @@ async function loadJobDetails(job, forceRefresh) {
 
 
 function initialiseFilters() {
-    $('button.update').on('click', async function () {
-        var response = await hmsFetch('/api/requesthelp/get-filtered-jobs');
-        if (response.fetchResponse == fetchResponses.SUCCESS) {
-            $('.job-filter-results-panel').html(await response.fetchPayload);
+    $('.job-filter-panel').on('click', '.update', async function (e) {
+        e.preventDefault();
+        var formData = {
+            fihheld1: 'asdfasdfasf'
         }
+        console.log(formData);
+        var fetchRequestData = {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: { 'Content-Type': 'application/json' },
+        };
+        console.log(fetchRequestData);
+        var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+        }
+        return false;
     });
 }
