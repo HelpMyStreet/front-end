@@ -259,6 +259,26 @@ namespace HelpMyStreetFE.Services
             {
                 jobs = jobs.Where(j => jobFilterRequest.SupportActivities.Contains(j.SupportActivity));
             }
+            if (jobFilterRequest.MaxDistanceInMiles != null)
+            {
+                jobs = jobs.Where(j => j.DistanceInMiles <= jobFilterRequest.MaxDistanceInMiles);
+            }
+            if (jobFilterRequest.DueAfter != null)
+            {
+                jobs = jobs.Where(j => j.DueDate.Date >= jobFilterRequest.DueAfter?.Date);
+            }
+            if (jobFilterRequest.DueBefore != null)
+            {
+                jobs = jobs.Where(j => j.DueDate.Date <= jobFilterRequest.DueBefore?.Date);
+            }
+            if (jobFilterRequest.RequestedAfter != null)
+            {
+                jobs = jobs.Where(j => j.DateRequested.Date >= jobFilterRequest.RequestedAfter?.Date);
+            }
+            if (jobFilterRequest.RequestedBefore != null)
+            {
+                jobs = jobs.Where(j => j.DateRequested.Date <= jobFilterRequest.RequestedBefore?.Date);
+            }
             return jobs;
         }
     }

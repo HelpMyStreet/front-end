@@ -165,16 +165,27 @@ async function loadJobDetails(job, forceRefresh) {
 function initialiseFilters() {
     $('.job-filter-panel').on('click', '.update', async function (e) {
         e.preventDefault();
-        var formData = {
-            fihheld1: 'asdfasdfasf'
-        }
-        console.log(formData);
+        const formData = $('.job-filter-panel form').serializeArray();
+        let dataToSend = {};
+
+        formData.forEach((d) => {
+            if (d.name.indexOf('[]') > 0) {
+                const name = d.name.replace('[]', '');
+                if (!dataToSend[name]) {
+                    dataToSend[name] = [parseInt(d.value)];
+                } else {
+                    dataToSend[name].push(parseInt(d.value));
+                }
+            } else {
+                dataToSend[d.name] = parseInt(d.value);
+            }
+        });
+
         var fetchRequestData = {
             method: 'POST',
-            body: JSON.stringify(formData),
+            body: JSON.stringify(dataToSend),
             headers: { 'Content-Type': 'application/json' },
         };
-        console.log(fetchRequestData);
         var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
         if (response.fetchResponse == fetchResponses.SUCCESS) {
             $('.job-filter-results-panel .job-list').html(await response.fetchPayload);

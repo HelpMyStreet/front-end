@@ -9,6 +9,8 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Enums.Account;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Controllers { 
 
@@ -19,10 +21,13 @@ namespace HelpMyStreetFE.Controllers {
     {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService)
+        private readonly IGroupService _groupService;
+
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IGroupService groupService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _groupService = groupService;
         }
 
 
@@ -67,14 +72,29 @@ namespace HelpMyStreetFE.Controllers {
 
         }
 
-
         [Authorize]
-        [HttpGet("get-filtered-jobs")]
-        public IActionResult GetFilteredJobsOld()
+        [HttpPost("get-filtered-jobs")]
+        public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
-            return ViewComponent("JobList", new { jobSet = JobSet.GroupRequests, groupId = -1 });
-        }
+            var referrerComponents = Request.Headers["Referer"].ToString().Split('/');
 
+            JobSet jobSet;
+            int? groupId = null;
+            switch (referrerComponents[4])
+            {
+                case "accepted-requests": jobSet = JobSet.UserAcceptedRequests; break;
+                case "completed-requests": jobSet = JobSet.UserCompletedRequests; break;
+                case "open-requests": jobSet = JobSet.UserOpenRequests_NotMatchingCriteria; break;
+                case "g":
+                    jobSet = JobSet.GroupRequests;
+                    groupId = await _groupService.GetGroupIdByKey(referrerComponents[5]);
+                    break;
+                default:
+                    throw new Exception($"Unexpected URL component: {referrerComponents[4]}");
+            }
+
+            return ViewComponent("JobList", new { jobSet, groupId, jobFilterRequest });
+        }
 
         private int DecodeJobID(string encodedJobId)
         {

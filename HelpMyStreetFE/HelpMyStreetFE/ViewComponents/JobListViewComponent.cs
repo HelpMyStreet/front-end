@@ -25,7 +25,7 @@ namespace HelpMyStreetFE.ViewComponents
             _requestSettings = requestSettings;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobSet jobSet, int? groupId, Action emptyListCallback)
+        public async Task<IViewComponentResult> InvokeAsync(JobSet jobSet, int? groupId, JobFilterRequest jobFilterRequest, Action emptyListCallback)
         {
             User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
@@ -39,7 +39,6 @@ namespace HelpMyStreetFE.ViewComponents
             switch (jobSet)
             {
                 case JobSet.GroupRequests:
-                    JobFilterRequest jobFilterRequest = new JobFilterRequest() { };
                     jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, jobFilterRequest, HttpContext);
                     admin = true;
                     break;
@@ -57,7 +56,7 @@ namespace HelpMyStreetFE.ViewComponents
                     break;
             }
 
-            if (jobs.Count() == 0) { emptyListCallback.Invoke(); }
+            if (jobs.Count() == 0 && emptyListCallback != null) { emptyListCallback.Invoke(); }
 
             var jobs2 = jobs.Select(a => new JobViewModel()
             {

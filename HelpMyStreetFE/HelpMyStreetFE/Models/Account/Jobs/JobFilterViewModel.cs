@@ -8,14 +8,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public IEnumerable<FilterField<SupportActivities>> SupportActivities { get; set; }
         public IEnumerable<FilterField<JobStatuses>> JobStatuses { get; set; }
-
-        public JobFilterRequest GetJobFilterRequest()
-        {
-            return new JobFilterRequest()
-            {
-                SupportActivities = SupportActivities.Where(a => a.IsSelected).Select(a => a.Value),
-                JobStatuses = JobStatuses.Where(a => a.IsSelected).Select(a => a.Value),
-            };
-        }
+        public IEnumerable<FilterField<int>> MaxDistanceInMiles { get; set; }
+        public IEnumerable<FilterField<int>> DueInNextXDays { get; set; }
     }
 }

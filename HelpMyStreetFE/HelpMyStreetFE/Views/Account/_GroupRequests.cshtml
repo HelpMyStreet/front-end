@@ -13,14 +13,37 @@
 
     <div class="job-filter-panel">
         @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
-        {
-            JobStatuses = new List<FilterField<JobStatuses>>() {
-                new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
-                new FilterField<JobStatuses>() { Value = JobStatuses.Done },
-                new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
-                new FilterField<JobStatuses>() { Value = JobStatuses.Open }
-            }
-        })
+   {
+       JobStatuses = new List<FilterField<JobStatuses>>() {
+                new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, Label = "Cancelled" },
+                new FilterField<JobStatuses>() { Value = JobStatuses.Done, Label = "Done" },
+                new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, Label = "In Progress" },
+                new FilterField<JobStatuses>() { Value = JobStatuses.Open, Label = "Open" }
+            },
+       SupportActivities = new List<FilterField<SupportActivities>>()
+       {
+           new FilterField<SupportActivities>(){Value = SupportActivities.CheckingIn, Label = "Checking In" },
+           new FilterField<SupportActivities>(){Value = SupportActivities.WellbeingPackage, Label = "Wellbeing Package"},
+           new FilterField<SupportActivities>(){Value = SupportActivities.FaceMask, Label = "Face Covering"}
+       },
+       DueInNextXDays = new List<FilterField<int>>()
+       {
+           new FilterField<int>{Value = 1, Label = "Today" },
+           new FilterField<int>{Value = 7, Label = "This week"},
+           new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
+           new FilterField<int>{Value = 999, Label = "Show all"}
+       },
+       MaxDistanceInMiles = new List<FilterField<int>>()
+       {
+           new FilterField<int>{Value = 0, Label = "My street only"},
+           new FilterField<int>{Value = 1, Label ="Within 1 mile"},
+           new FilterField<int>{Value = 5, Label = "within 5 miles"},
+           new FilterField<int>{Value = 10, Label = "within 10 miles"},
+           new FilterField<int>{Value = 20, Label = "within 20 miles"},
+           new FilterField<int>{Value = 50, Label = "within 50 miles"},
+           new FilterField<int>{Value = Int32.MaxValue, Label = "Show all"},
+       }
+   })
     </div>
 
     <div class="job-filter-results-panel">
