@@ -18,12 +18,11 @@ namespace HelpMyStreetFE.Services
         Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, int maxOtherJobsToDisplay, User user, HttpContext ctx);
         Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, JobFilterRequest jobFilterRequest, HttpContext ctx);
         Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx);
-        Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId);
+        Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
         Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToCancelledAsync(int jobID, int createdByUserId, HttpContext ctx);
         Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx);
-        Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids);
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source);
     }
 }

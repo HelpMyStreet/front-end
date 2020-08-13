@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int JobID, int UserId)
         {
-            var jobDetails = await _requestService.GetJobDetailsAsync(JobID);
+            var jobDetails = await _requestService.GetJobDetailsAsync(JobID, UserId);
             var userDetails = await _userService.GetUserAsync(UserId);
 
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
@@ -28,24 +28,7 @@ namespace HelpMyStreetFE.ViewComponents
                 UserIsVerified = userDetails.IsVerified ?? false,
                 Recipient = jobDetails.Recipient,
                 Requestor = jobDetails.Requestor,
-                RequestorType = jobDetails.RequestorType,
-                JobSummary = new HelpMyStreet.Utils.Models.JobSummary()
-                {
-                    JobID = jobDetails.JobID,
-                    SupportActivity = jobDetails.SupportActivity,
-                    SpecialCommunicationNeeds = jobDetails.SpecialCommunicationNeeds,
-                    DateStatusLastChanged = jobDetails.DateStatusLastChanged,
-                    Details = jobDetails.Details,
-                    DueDate = jobDetails.DueDate,
-                    DueDays = jobDetails.DueDays,
-                    JobStatus = jobDetails.JobStatus,
-                    OtherDetails = jobDetails.OtherDetails,
-                    PostCode = jobDetails.PostCode,
-                    RecipientOrganisation = jobDetails.OrganisationName,
-
-                    //TODO: Need actual questions here 
-                    Questions = new List<HelpMyStreet.Utils.Models.Question>(),
-                }
+                JobSummary = jobDetails.JobSummary,
             };
 
             return View("JobDetail", jobDetailViewModel);

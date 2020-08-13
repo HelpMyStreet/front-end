@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE;
+@using HelpMyStreetFE;
 @using HelpMyStreet.Utils.Enums;
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
@@ -53,7 +53,7 @@
     {
         <div class="job__expander">
             <h5>Requester<span></span></h5>
-            @if (Model.RequestorType == RequestorType.Myself)
+            @if (Model.JobSummary.RequestorType == RequestorType.Myself)
             {
                 <p><i>Request made by recipient </i></p>
             }
@@ -78,13 +78,6 @@
             }
         </div>
     }
-    @if (!String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds))
-    {
-        <div class="job__expander add-line">
-            <h5>Communication Needs<span></span></h5>
-            <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
-        </div>
-    }
     <h4>Request Details</h4>
 
     @foreach (var question in Model.JobSummary.Questions)
@@ -97,14 +90,6 @@
                 <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
             </div>
         }
-    }
-
-    @if (!String.IsNullOrEmpty(Model.JobSummary.OtherDetails))
-    {
-        <div class="job__expander">
-            <h5>Further Details<span></span></h5>
-            <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
-        </div>
     }
 }
 else if (Model.UserIsVerified)
@@ -123,16 +108,5 @@ else if (Model.UserIsVerified)
             <h4>@question.FriendlyName()</h4>
             <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
         }
-    }
-    @if (!String.IsNullOrEmpty(Model.JobSummary.OtherDetails))
-    {
-        <h4>Further Details</h4>
-        <p>@(String.IsNullOrEmpty(Model.JobSummary.OtherDetails) ? "None entered" : Model.JobSummary.OtherDetails)</p>
-    }
-
-    @if (!String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds))
-    {
-        <h4>Communication Needs</h4>
-        <p>@(String.IsNullOrEmpty(Model.JobSummary.SpecialCommunicationNeeds) ? "None entered" : Model.JobSummary.SpecialCommunicationNeeds)</p>
     }
 }

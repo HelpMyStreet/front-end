@@ -9,6 +9,5 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public bool UserIsVerified { get; set; }
         public RequestPersonalDetails Requestor { get; set; }
         public RequestPersonalDetails Recipient { get; set; }
-        public RequestorType RequestorType { get; set; }
     }
 }

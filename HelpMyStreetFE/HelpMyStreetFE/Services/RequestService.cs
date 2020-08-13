@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreetFE.Models.Account.Jobs;
@@ -19,10 +18,7 @@ using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
-using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 
 namespace HelpMyStreetFE.Services
 {
@@ -64,7 +60,6 @@ namespace HelpMyStreetFE.Services
                     ConsentForContact = requestStage.AgreeToTerms,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
-                    ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
                     ReadPrivacyNotice = requestStage.AgreeToPrivacy,
                     CreatedByUserId = userId,
                     Recipient = recipient,
@@ -160,39 +155,9 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
         {
-            List<GetJobDetailsResponse> details = new List<GetJobDetailsResponse>();
-
-            foreach (var id in ids)
-            {
-                try
-                {
-                    details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Failed to get job details for id {id}");
-                }
-            }
-
-            return details.Aggregate(new Dictionary<int, RequestContactInformation>(), (acc, cur) =>
-            {
-                acc[cur.JobID] = new RequestContactInformation
-                {
-                    RequestorType = cur.RequestorType,
-                    JobID = cur.JobID,
-                    Recipient = cur.Recipient,
-                    Requestor = cur.Requestor
-                };
-
-                return acc;
-            });
-        }
-
-        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
-        {
-            return await _requestHelpRepository.GetJobDetailsAsync(jobId);
+            return await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
         }
         public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx)
         {

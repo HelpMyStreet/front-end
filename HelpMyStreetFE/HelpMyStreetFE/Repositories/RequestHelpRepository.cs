@@ -35,9 +35,9 @@ namespace HelpMyStreetFE.Repositories
             return response.Content.JobSummaries;
         }
 
-        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID={jobId}");
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID={jobId}&userID={userId}");
 
             return response.Content;
         }
