@@ -225,7 +225,7 @@ namespace HelpMyStreetFE.Services
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
 
-        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId, JobFilterRequest jobFilterRequest, HttpContext ctx)
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId, HttpContext ctx)
         {
             var jobs = ctx.Session.GetObjectFromJson<IEnumerable<JobSummary>>($"group{GroupId}Jobs");
             DateTime lastUpdated;
@@ -242,14 +242,10 @@ namespace HelpMyStreetFE.Services
                 ctx.Session.SetObjectAsJson($"group{GroupId}Jobs", jobs);
                 ctx.Session.SetString($"group{GroupId}JobsLastUpdated", DateTime.Now.ToString());
             }
-            if (jobFilterRequest != null)
-            {
-                jobs = FilterJobs(jobs, jobFilterRequest);
-            }
             return jobs;
         }
 
-        private IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest)
+        public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest)
         {
             if (jobFilterRequest.JobStatuses != null)
             {

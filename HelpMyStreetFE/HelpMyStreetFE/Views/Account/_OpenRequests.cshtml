@@ -1,5 +1,7 @@
 ﻿@using HelpMyStreetFE.Models.Account
 @using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Enums;
 
 @model AccountViewModel
 
@@ -47,7 +49,45 @@
 
 
                 <p>Other Requests</p>
-                <div class="profile__section">
+
+
+                <div class="job-filter-panel">
+                    @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+               {
+                   SupportActivities = new List<FilterField<SupportActivities>>()
+                   {
+                       new FilterField<SupportActivities>(){Value = SupportActivities.CheckingIn },
+                       new FilterField<SupportActivities>(){Value = SupportActivities.WellbeingPackage},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.Shopping},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.MealPreparation},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.Errands},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.DogWalking},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.HomeworkSupport},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.Other},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.PhoneCalls_Friendly},
+                       new FilterField<SupportActivities>(){Value = SupportActivities.MedicalAppointmentTransport},
+                   },
+                   DueInNextXDays = new List<FilterField<int>>()
+                   {
+                       new FilterField<int>{Value = 1, Label = "Today" },
+                       new FilterField<int>{Value = 7, Label = "This week"},
+                       new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
+                       new FilterField<int>{Value = 999, Label = "Show all"}
+                   },
+                   MaxDistanceInMiles = new List<FilterField<int>>()
+                   {
+                       new FilterField<int>{Value = 0, Label = "My street only"},
+                       new FilterField<int>{Value = 1, Label ="Within 1 mile"},
+                       new FilterField<int>{Value = 5, Label = "within 5 miles"},
+                       new FilterField<int>{Value = 10, Label = "within 10 miles"},
+                       new FilterField<int>{Value = 20, Label = "within 20 miles"},
+                       new FilterField<int>{Value = 50, Label = "within 50 miles"},
+                       new FilterField<int>{Value = Int32.MaxValue, Label = "Show all"},
+                   }
+               })
+                </div>
+
+                <div class="profile__section job-filter-results-panel">
                     @await Component.InvokeAsync("JobList", new
                        {
                            JobSet = JobSet.UserOpenRequests_NotMatchingCriteria,

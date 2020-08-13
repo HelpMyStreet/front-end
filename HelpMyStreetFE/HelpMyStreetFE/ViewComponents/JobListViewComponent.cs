@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.ViewComponents
             switch (jobSet)
             {
                 case JobSet.GroupRequests:
-                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, jobFilterRequest, HttpContext);
+                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, HttpContext);
                     admin = true;
                     break;
                 case JobSet.UserOpenRequests_MatchingCriteria:
@@ -54,6 +54,11 @@ namespace HelpMyStreetFE.ViewComponents
                 case JobSet.UserCompletedRequests:
                     jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
                     break;
+            }
+
+            if (jobFilterRequest != null)
+            {
+                jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
             }
 
             if (jobs.Count() == 0 && emptyListCallback != null) { emptyListCallback.Invoke(); }
