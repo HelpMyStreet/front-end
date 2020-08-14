@@ -7,10 +7,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobDetailViewModel
     {
-        public JobSummary JobSummary { get; set; }
         public bool UserIsVerified { get; set; }
-        public RequestPersonalDetails Requestor { get; set; }
-        public RequestPersonalDetails Recipient { get; set; }
-        public List<StatusHistory> JobStatusHistory { get; set; }
+        public JobDetail JobDetail { get; set; }
     }
 }

@@ -29,13 +29,15 @@ namespace HelpMyStreetFE.Services
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IGroupService _groupService;
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService)
+        private readonly IUserService _userService;
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
             _requestSettings = requestSettings;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
+            _userService = userService;
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
@@ -155,19 +157,25 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public async Task<JobDetailViewModel> GetJobDetailsAsync(int jobId, int userId)
+        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId)
         {
             var getJobDetailsResponse = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
             var getStatusHistoryResponse = await _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
 
+            User currentVolunteer = null;
+            if (getJobDetailsResponse?.JobSummary?.VolunteerUserID != null) {
+                currentVolunteer = await _userService.GetUserAsync(getJobDetailsResponse.JobSummary.VolunteerUserID.Value);
+            }
+
             if (getJobDetailsResponse != null && getStatusHistoryResponse != null)
             {
-                return new JobDetailViewModel()
+                return new JobDetail()
                 {
                     JobSummary = getJobDetailsResponse.JobSummary,
                     Recipient = getJobDetailsResponse.Recipient,
                     Requestor = getJobDetailsResponse.Requestor,
                     JobStatusHistory = getStatusHistoryResponse.History,
+                    CurrentVolunteer = currentVolunteer,
                 };
             }
             return null;
