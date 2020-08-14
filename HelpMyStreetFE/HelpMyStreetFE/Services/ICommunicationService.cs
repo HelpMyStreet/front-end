@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
-   public interface IEmailService
+    public interface ICommunicationService
     {
-        Task<bool> SendEmail(string Subject, string textContet, string htmlContent, List<RecipientModel> recipients);
+        Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient);
     }
-    
 }
