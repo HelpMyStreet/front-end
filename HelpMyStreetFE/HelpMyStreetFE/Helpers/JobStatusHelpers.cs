@@ -1,6 +1,6 @@
 ﻿using HelpMyStreet.Utils.Enums;
 
-namespace HelpMyStreetFE
+namespace HelpMyStreetFE.Helpers
 {
     public static class JobStatusHelpers
     {

@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE;
+﻿@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Utils;
 
@@ -8,12 +8,12 @@
     var id = Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString());
 
     var className = "";
-    if(Model.JobSummary.DueDate.Date <= DateTime.Today)
+    if (Model.JobSummary.DueDate.Date <= DateTime.Today)
     {
         className = "job--hot";
     }
 
-    if(Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
+    if (Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
     {
         className = "job--warm";
     }
@@ -21,9 +21,9 @@
     string iconClass = AgeUk ? "limit-width" : "";
 
     var forFaceMask = Model.JobSummary.SupportActivity == SupportActivities.FaceMask;
-    var friendlyNamePrefix = forFaceMask  ?
-    Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
-    bool removePluralisation = forFaceMask &&  Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
+    var friendlyNamePrefix = forFaceMask ?
+    Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer : "";
+    bool removePluralisation = forFaceMask && Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.JobSummary.SupportActivity.FriendlyName().Remove(Model.JobSummary.SupportActivity.FriendlyName().Length - 1) : Model.JobSummary.SupportActivity.FriendlyName());
     var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
@@ -48,14 +48,13 @@
             </span>
             <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
                 @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
-                    {
+                {
                     <img src="~/img/icons/@Model.JobSummary.SupportActivity.Icon()" class="@iconClass" />
-
                 }
 
                 @friendlyName
 
-                @if(!string.IsNullOrWhiteSpace(ageUKReference))
+                @if (!string.IsNullOrWhiteSpace(ageUKReference))
                 {
                     @($"({ageUKReference})")
                 }
@@ -132,7 +131,7 @@
                 }
             </div>
         </div>
-       
+
     </div>
     <div class="job__detail">
         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel() { Hide = false, ShowDarkSpinner = true }' />
