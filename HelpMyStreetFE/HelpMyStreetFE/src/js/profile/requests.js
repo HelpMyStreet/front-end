@@ -55,7 +55,7 @@ export function initialiseRequests(isVerified) {
         e.preventDefault();
         const job = $(this).parentsUntil('.job').parent();
         if (isVerified) {
-            updateQueryStringParam('j', job.id);
+            updateQueryStringParam('j', $(job).attr('id'));
             job.toggleClass('open');
             job.find('.job__detail').slideToggle();
             loadJobDetails(job);
@@ -67,7 +67,7 @@ export function initialiseRequests(isVerified) {
     $('.job-list').on('click', '.job a.close', function (e) {
         e.preventDefault();
         const job = $(this).parentsUntil('.job').parent();
-        removeQueryStringParam('j', job.id());
+        removeQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
     });
