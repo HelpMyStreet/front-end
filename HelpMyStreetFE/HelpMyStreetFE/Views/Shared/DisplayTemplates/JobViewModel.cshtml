@@ -31,6 +31,7 @@
 <div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
+            <span class="requested" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Help requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
             @if (Model.JobSummary.IsHealthCritical)
             {
                 <span class="critical-icon">!</span>
@@ -40,7 +41,7 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span class="due-date">Due @Model.JobSummary.DueDate.ToString("dd/MM/yyyy")</span>
+            <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title job__status">
