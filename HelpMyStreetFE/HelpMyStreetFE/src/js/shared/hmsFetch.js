@@ -37,9 +37,9 @@ async function tryFetch(url, data, options, completedAttempts) {
     completedAttempts++;
     let didTimeOut = false;
     let fetchResult = await new Promise(resolve => {
-    const timeOut = setTimeout(function () {
-        didTimeOut = true;
-        if (options.timeOutRetry > completedAttempts) {
+        const timeOut = setTimeout(function () {
+            didTimeOut = true;
+            if (options.timeOutRetry > completedAttempts) {
                 resolve(tryFetch(url, data, options, completedAttempts));
             } else {
                 sendNewRelicError(url, fetchResponses.TIMEOUT);
@@ -52,7 +52,7 @@ async function tryFetch(url, data, options, completedAttempts) {
                 clearTimeout(timeOut);
                 switch (response.status) {
                     case 200:
-                        resolve({fetchResponse: fetchResponses.SUCCESS, fetchPayload: response.json()});
+                        resolve({ fetchResponse: fetchResponses.SUCCESS, fetchPayload: extractResponse(response) });
                         break;
                     case 400:
                         var fetchError = fetchResponses.BAD_REQUEST;
@@ -71,7 +71,7 @@ async function tryFetch(url, data, options, completedAttempts) {
                         }
                         break;
                     default:
-                        resolve({ fetchResponse: response.status, fetchPayload: response.json() });
+                        resolve({ fetchResponse: response.status, fetchPayload: extractResponse(response) });
 
                 }
                 if (fetchError) {
@@ -96,7 +96,14 @@ async function hmsFetch(url, data, options) {
     return tryFetch(url, data, _options, -1)
 };
 
-
+function extractResponse(response) {
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        return response.text();
+    } else {
+        return response.json();
+    }
+}
     
 
 

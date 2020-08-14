@@ -19,9 +19,10 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.Account.Jobs;
 
 namespace HelpMyStreetFE.Controllers
-{    
+{
     [Authorize]
 
     public class AccountController : Controller
@@ -44,7 +45,7 @@ namespace HelpMyStreetFE.Controllers
             IAddressService addressService,
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
-            IOptions<RequestSettings>  requestSettings,
+            IOptions<RequestSettings> requestSettings,
             IRequestService requestService,
             IGroupService groupService
             )
@@ -57,7 +58,7 @@ namespace HelpMyStreetFE.Controllers
             _requestService = requestService;
             _requestSettings = requestSettings;
             _groupService = groupService;
-        }  
+        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -86,7 +87,7 @@ namespace HelpMyStreetFE.Controllers
             else
             {
                 return await Profile();
-            }  
+            }
         }
 
         public async Task<IActionResult> Profile()
@@ -100,14 +101,14 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
-            viewModel.PageModel = userDetails;            
+            viewModel.PageModel = userDetails;
             return View("Index", viewModel);
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Streets()
-        {          
+        {
             var user = await GetCurrentUser();
             if (!_userService.GetRegistrationIsComplete(user))
             {
@@ -120,20 +121,20 @@ namespace HelpMyStreetFE.Controllers
             var streetsViewModel = new StreetsViewModel();
 
             var friendlyPostcodes = await _addressService.GetFriendlyNames(viewModel.UserDetails.ChampionPostcodes);
-            
+
             foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
             {
-                Street street = new Street();                
+                Street street = new Street();
                 street.Name = postcode;
                 if (friendlyPostcodes.Content != null)
                 {
                     street.FriendlyName = friendlyPostcodes.Content.PostcodesResponse[HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode)].FriendlyName;
                 }
-                var helpers = await _userService.GetHelpersByPostcode(postcode);            
-                var champs = await _userService.GetChampionsByPostcode(postcode);                
+                var helpers = await _userService.GetHelpersByPostcode(postcode);
+                var champs = await _userService.GetChampionsByPostcode(postcode);
                 helpers.Users.AddRange(champs.Users);
                 if (helpers.Users != null)
-                {            
+                {
                     foreach (var helper in helpers.Users.GroupBy(x => x.ID).Select(g => g.First()).ToList())// de duping
                     {
                         if (helper.ID == user.ID) continue;
@@ -147,7 +148,7 @@ namespace HelpMyStreetFE.Controllers
                             Email = helper.UserPersonalDetails.EmailAddress,
                             SupportedActivites = helper.SupportActivities,
                             IsStreetChampion = isStreetChampion
-                        }); 
+                        });
                     }
                     streetsViewModel.Streets.Add(street);
                 }
@@ -156,10 +157,10 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
-        [HttpGet]  
+        [HttpGet]
         public async Task<IActionResult> OpenRequests()
         {
-           
+
             var user = await GetCurrentUser();
             if (!_userService.GetRegistrationIsComplete(user))
             {
@@ -168,7 +169,6 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-            viewModel.PageModel = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext); 
             return View("Index", viewModel);
         }
 
@@ -183,15 +183,22 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user);
-            viewModel.CurrentPage = MenuPage.AcceptedRequests;            
-            var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);        
-            var contactInformation = await _requestService.GetContactInformationForRequests(jobs.Select(j => j.JobID));
+            viewModel.CurrentPage = MenuPage.AcceptedRequests;
 
-            viewModel.PageModel = new AcceptedRequestsViewModel
+            return View("Index", viewModel);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CompletedRequests()
+        {
+            var user = await GetCurrentUser();
+            if (!_userService.GetRegistrationIsComplete(user))
             {
-                Jobs = jobs,
-                ContactInformation = contactInformation
-            };
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user);
+            viewModel.CurrentPage = MenuPage.CompletedRequests;
 
             return View("Index", viewModel);
         }
@@ -242,11 +249,6 @@ namespace HelpMyStreetFE.Controllers
             viewModel.CurrentPage = MenuPage.GroupRequests;
             viewModel.CurrentGroup = currentGroup;
 
-            viewModel.PageModel = new GroupRequestsViewModel()
-            {
-                Jobs = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId)
-            };
-
             return View("Index", viewModel);
         }
 
@@ -273,7 +275,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 case MenuPage.GroupRequests:
                     if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId);
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, HttpContext);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.AcceptedRequests:
@@ -363,9 +365,9 @@ namespace HelpMyStreetFE.Controllers
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
-                    
+
                 };
-       
+
                 viewModel.UserDetails = userDetails;
 
                 viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);

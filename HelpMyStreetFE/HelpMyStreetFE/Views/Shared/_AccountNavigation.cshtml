@@ -17,6 +17,14 @@
                 <span class="account__nav__badge" data-menu-page="@MenuPage.AcceptedRequests"></span>
             </a>
         </li>
+
+        <li class="account__nav__item">
+            <a href="/account/completed-requests" class="@(Model.CurrentPage == MenuPage.CompletedRequests ? "selected" : string.Empty)">
+                My Completed Requests
+                <span class="account__nav__badge" data-menu-page="@MenuPage.CompletedRequests"></span>
+            </a>
+        </li>
+
         @if (Model.UserDetails.IsStreetChampion && Model.UserDetails.IsVerified)
         {
             <li class="account__nav__item">
@@ -26,7 +34,7 @@
         <li class="account__nav__item">
             <a href="/account/profile" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>
         </li>
-        @foreach(var userGroup in Model.UserGroups)
+        @foreach (var userGroup in Model.UserGroups)
         {
             @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
             {
@@ -38,12 +46,12 @@
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
-                        <li class="account__nav__item">
-                            <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
-                                Requests
-                                <span class="account__nav__badge" data-group-key="@userGroup.GroupKey" data-menu-page="@MenuPage.GroupRequests"></span>
-                            </a>
-                        </li>
+                            <li class="account__nav__item">
+                                <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
+                                    Requests
+                                    <span class="account__nav__badge" data-group-key="@userGroup.GroupKey" data-menu-page="@MenuPage.GroupRequests"></span>
+                                </a>
+                            </li>
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
                         {

@@ -1,20 +1,41 @@
-﻿@using HelpMyStreet.Utils.Models
-@using HelpMyStreetFE.Models.Account
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Enums;
 
 @model AccountViewModel
-
-@{ var PageModel = (GroupRequestsViewModel)Model.PageModel; }
 
 <div class="user-profile profile-panel p-md">
     <header class="profile-panel__header">
         <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Requests</h3>
         <p>Requests submitted to @Model.CurrentGroup.GroupName</p>
     </header>
-    <div class="profile">
-        @Html.DisplayFor(x => PageModel.Jobs, new
-           {
-               UserIsVerified = true,
-               UserActingAsAdmin = true
-           })
+
+    <div class="job-filter-panel">
+        @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+   {
+       JobStatuses = new List<FilterField<JobStatuses>>() {
+                new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, Label = "Cancelled", IsSelected = true },
+                new FilterField<JobStatuses>() { Value = JobStatuses.Done, Label = "Done", IsSelected = true },
+                new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, Label = "In Progress", IsSelected = true },
+                new FilterField<JobStatuses>() { Value = JobStatuses.Open, Label = "Open", IsSelected = true }
+            },
+       DueInNextXDays = new List<FilterField<int>>()
+       {
+           new FilterField<int>{Value = 1, Label = "Today" },
+           new FilterField<int>{Value = 7, Label = "This week"},
+           new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
+           new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
+       },
+   })
     </div>
+
+    <div class="job-filter-results-panel">
+        @await Component.InvokeAsync("JobList", new
+        {
+            JobSet = JobSet.GroupRequests,
+            GroupId = Model.CurrentGroup.GroupId
+        })
+    </div>
+
 </div>

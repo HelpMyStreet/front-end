@@ -8,10 +8,9 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
-using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Contracts.RequestService.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -19,10 +18,7 @@ using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
-using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 
 namespace HelpMyStreetFE.Services
 {
@@ -40,7 +36,7 @@ namespace HelpMyStreetFE.Services
             _requestSettings = requestSettings;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
-    }
+        }
 
         public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
         {
@@ -49,7 +45,7 @@ namespace HelpMyStreetFE.Services
             var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? _requestHelpBuilder.MapRequestor(detailStage) : recipient;
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
-            
+
             bool heathCritical = false;
             var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
             if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
@@ -64,7 +60,6 @@ namespace HelpMyStreetFE.Services
                     ConsentForContact = requestStage.AgreeToTerms,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
-                    ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
                     ReadPrivacyNotice = requestStage.AgreeToPrivacy,
                     CreatedByUserId = userId,
                     Recipient = recipient,
@@ -122,7 +117,7 @@ namespace HelpMyStreetFE.Services
                     ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
                     JobStatuses = new JobStatusRequest()
                     {
-                       JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
+                        JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
                     },
                     Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
                 };
@@ -136,7 +131,7 @@ namespace HelpMyStreetFE.Services
                     CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
                     OtherJobs = otherJobs.OrderOpenJobsForDisplay().Take(maxOtherJobsToDisplay)
                 };
-                
+
                 ctx.Session.SetObjectAsJson("openJobs", jobs);
                 ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());
             }
@@ -160,32 +155,9 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
         {
-            List<GetJobDetailsResponse> details = new List<GetJobDetailsResponse>();
-
-            foreach (var id in ids)
-            {
-                details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
-            }
-
-            return details.Aggregate(new Dictionary<int, RequestContactInformation>(), (acc, cur) =>
-            {
-                acc[cur.JobID] = new RequestContactInformation
-                {
-                    RequestorType = cur.RequestorType,
-                    JobID = cur.JobID,
-                    Recipient = cur.Recipient,
-                    Requestor = cur.Requestor
-                };
-
-                return acc;
-            });
-        }
-
-        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
-        {
-            return await _requestHelpRepository.GetJobDetailsAsync(jobId);
+            return await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
         }
         public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx)
         {
@@ -253,15 +225,57 @@ namespace HelpMyStreetFE.Services
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
 
-        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId)
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int GroupId, HttpContext ctx)
         {
-            var jobsByFilterRequest = new GetJobsByFilterRequest()
+            var jobs = ctx.Session.GetObjectFromJson<IEnumerable<JobSummary>>($"group{GroupId}Jobs");
+            DateTime lastUpdated;
+            DateTime.TryParse(ctx.Session.GetString($"group{GroupId}JobsLastUpdated"), out lastUpdated);
+            if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now)
             {
-                Postcode = "NG1 6FG",
-                ReferringGroupID = GroupId
-            };
+                var jobsByFilterRequest = new GetJobsByFilterRequest()
+                {
+                    ReferringGroupID = GroupId
+                };
 
-            return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+                jobs = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+
+                ctx.Session.SetObjectAsJson($"group{GroupId}Jobs", jobs);
+                ctx.Session.SetString($"group{GroupId}JobsLastUpdated", DateTime.Now.ToString());
+            }
+            return jobs;
+        }
+
+        public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest)
+        {
+            if (jobFilterRequest.JobStatuses != null)
+            {
+                jobs = jobs.Where(j => jobFilterRequest.JobStatuses.Contains(j.JobStatus));
+            }
+            if (jobFilterRequest.SupportActivities != null)
+            {
+                jobs = jobs.Where(j => jobFilterRequest.SupportActivities.Contains(j.SupportActivity));
+            }
+            if (jobFilterRequest.MaxDistanceInMiles != null)
+            {
+                jobs = jobs.Where(j => j.DistanceInMiles <= jobFilterRequest.MaxDistanceInMiles);
+            }
+            if (jobFilterRequest.DueAfter != null)
+            {
+                jobs = jobs.Where(j => j.DueDate.Date >= jobFilterRequest.DueAfter?.Date);
+            }
+            if (jobFilterRequest.DueBefore != null)
+            {
+                jobs = jobs.Where(j => j.DueDate.Date <= jobFilterRequest.DueBefore?.Date);
+            }
+            if (jobFilterRequest.RequestedAfter != null)
+            {
+                jobs = jobs.Where(j => j.DateRequested.Date >= jobFilterRequest.RequestedAfter?.Date);
+            }
+            if (jobFilterRequest.RequestedBefore != null)
+            {
+                jobs = jobs.Where(j => j.DateRequested.Date <= jobFilterRequest.RequestedBefore?.Date);
+            }
+            return jobs;
         }
     }
  }

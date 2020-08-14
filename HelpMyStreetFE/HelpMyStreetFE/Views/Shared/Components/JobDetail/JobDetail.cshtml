@@ -1,0 +1,112 @@
+﻿@using HelpMyStreetFE;
+@using HelpMyStreet.Utils.Enums;
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
+
+@{
+    var AgeUk = Model.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
+    var Hlp = Model.JobSummary.SupportActivity == SupportActivities.CommunityConnector;
+
+    var forFaceMask = Model.JobSummary.SupportActivity == SupportActivities.FaceMask;
+    var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
+}
+
+
+@if (Model.JobSummary.JobStatus == JobStatuses.InProgress)
+{
+    <h4>Contact Details</h4>
+    <div class="job__expander">
+        <h5>@(forFaceMask ? "Recipient" : "Person in need")<span></span></h5>
+        <dl>
+            @if (!string.IsNullOrEmpty(Model.JobSummary.RecipientOrganisation))
+            {
+                <dt>Organisation</dt>
+                <dd>@Model.JobSummary.RecipientOrganisation</dd>
+            }
+            @if (@Model.Recipient != null)
+            {
+                <dt>Name</dt>
+                <dd>@Model.Recipient.FirstName @Model.Recipient.LastName</dd>
+                <dt>Email</dt>
+                <dd>@(string.IsNullOrEmpty(Model.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.Recipient.EmailAddress) </dd>
+                <dt>Phone number(s)</dt>
+                <dd>
+                    @if (String.IsNullOrEmpty(Model.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.Recipient.OtherNumber))
+                    {
+                        @userDetailsNotProvidedText
+                    }
+                    else
+                    {
+                        @Model.Recipient.MobileNumber
+                        @(String.IsNullOrEmpty(Model.Recipient.OtherNumber) || String.IsNullOrEmpty(Model.Recipient.MobileNumber) ? "" : " / ")
+                        @Model.Recipient.OtherNumber
+                    }
+                </dd>
+                <dt>Address</dt>
+                <dd>
+                    @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
+                </dd>
+            }
+        </dl>
+    </div>
+    @if (Model.Requestor != null)
+    {
+        <div class="job__expander">
+            <h5>Requester<span></span></h5>
+            @if (Model.JobSummary.RequestorType == RequestorType.Myself)
+            {
+                <p><i>Request made by recipient </i></p>
+            }
+            else
+            {
+                <dl>
+                    <dt>Name</dt>
+                    <dd>@Model.Requestor.FirstName @Model.Requestor.LastName</dd>
+                    <dt>Email</dt>
+                    <dd>@Model.Requestor.EmailAddress</dd>
+                    <dt>Phone number(s)</dt>
+                    <dd>
+                        @Model.Requestor.MobileNumber
+                        @(String.IsNullOrEmpty(Model.Requestor.OtherNumber) || String.IsNullOrEmpty(Model.Requestor.MobileNumber) ? "" : " / ")
+                        @Model.Requestor.OtherNumber
+                    </dd>
+                    <dt>Address</dt>
+                    <dd>
+                        @Model.Requestor.Address.Postcode
+                    </dd>
+                </dl>
+            }
+        </div>
+    }
+    <h4>Request Details</h4>
+
+    @*@foreach (var question in Model.JobSummary.Questions)
+    {
+
+        if (question.ShowOnTaskManagement())
+        {
+            <div class="job__expander">
+                <h5>@question.FriendlyName()<span></span></h5>
+                <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
+            </div>
+        }
+    }*@
+}
+else if (Model.UserIsVerified)
+{
+    @if (!string.IsNullOrEmpty(Model.JobSummary.RecipientOrganisation))
+    {
+        <h4>Organisation</h4>
+        <p>@Model.JobSummary.RecipientOrganisation</p>
+    }
+
+    @*@foreach (var question in Model.JobSummary.Questions)
+    {
+
+        if (question.ShowOnTaskManagement())
+        {
+            <h4>@question.FriendlyName()</h4>
+            <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
+        }
+    }*@
+}
