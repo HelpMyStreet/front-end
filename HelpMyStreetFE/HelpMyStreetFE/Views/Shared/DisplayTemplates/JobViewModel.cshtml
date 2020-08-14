@@ -61,7 +61,7 @@
 
                 @friendlyName
 
-                @if(ageUKReference != null)
+                @if(!string.IsNullOrWhiteSpace(ageUKReference))
                 {
                     @($"({ageUKReference})")
                 }
