@@ -44,13 +44,7 @@
         </div>
         <div class="job__info__activity column">
             <span class="activity__title job__status">
-                @switch (Model.JobSummary.JobStatus)
-                {
-                    case JobStatuses.Open:<span>Open</span>break;
-                    case JobStatuses.InProgress: <span>In Progress</span> break;
-                    case JobStatuses.Done: <span>Done</span>break;
-                    case JobStatuses.Cancelled: <span>Cancelled</span>break;
-                }
+                <span>@Model.JobSummary.JobStatus.FriendlyName()</span>
             </span>
             <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
                 @if (Model.JobSummary.SupportActivity != SupportActivities.Other)

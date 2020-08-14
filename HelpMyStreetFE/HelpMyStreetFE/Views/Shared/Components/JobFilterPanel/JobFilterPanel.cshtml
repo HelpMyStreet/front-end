@@ -9,7 +9,7 @@
             <p>Status:</p>
             @foreach (var status in Model.JobStatuses)
             {
-                <label for="filter-status-@status.Value">@status.Value</label>
+                <label for="filter-status-@status.Value">@status.Value.FriendlyName()</label>
                 <input name="JobStatuses[]" type="checkbox" id="filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
             }
             <label for="filter-status-select-all">Select all</label>

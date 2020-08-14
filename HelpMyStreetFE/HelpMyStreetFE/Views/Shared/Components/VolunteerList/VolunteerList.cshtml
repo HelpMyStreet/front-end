@@ -7,8 +7,8 @@
             @volunteer.User.UserPersonalDetails.DisplayName
             @volunteer.User.UserPersonalDetails.Address.Postcode
             @volunteer.User.UserPersonalDetails.EmailAddress
-            @volunteer.User.UserPersonalDetails.MobilePhone
-            @volunteer.User.UserPersonalDetails.OtherPhone
+            @volunteer.User.UserPersonalDetails.MobilePhone / @volunteer.User.UserPersonalDetails.OtherPhone
+            Roles:
             @foreach(var role in volunteer.Roles)
             {
                 @role
