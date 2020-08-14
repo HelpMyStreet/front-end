@@ -1,4 +1,5 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobFilterViewModel
+@using HelpMyStreetFE.Helpers;
 
 <form action="/api/requesthelp/get-filtered-jobs" method="post">
     <h6>Filter jobs here</h6>
@@ -9,11 +10,12 @@
             <p>Status:</p>
             @foreach (var status in Model.JobStatuses)
             {
-                <label for="filter-status-@status.Value">@status.Value</label>
+                <label for="filter-status-@status.Value">@status.Value.FriendlyName()</label>
                 <input name="JobStatuses[]" type="checkbox" id="filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
             }
             <label for="filter-status-select-all">Select all</label>
             <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
+            @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
         </fieldset>
     }
 
@@ -28,6 +30,7 @@
             }
             <label for="filter-supportActivity-select-all">Select all</label>
             <input id="filter-supportActivity-select-all" type="checkbox" class="filter-select-all" />
+            @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
         </fieldset>
     }
 

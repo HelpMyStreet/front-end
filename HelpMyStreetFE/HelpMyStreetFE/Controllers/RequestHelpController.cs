@@ -154,11 +154,11 @@ namespace HelpMyStreetFE.Controllers
                     var isFTLOSJourney = requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.FtLOS ? true : false;
 
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, HttpContext);
-                    if (response.HasContent && response.IsSuccessful)
+                    if (response != null)
                     {
                         return RedirectToRoute("request-help/success", new
                         {
-                            fulfillable = response.Content.Fulfillable,
+                            fulfillable = response.Fulfillable,
                             isFTLOS = isFTLOSJourney,
                             referringGroupId = requestHelp.ReferringGroupID,
                             source = requestHelp.Source

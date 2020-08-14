@@ -1,8 +1,9 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.QuestionsViewModel
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreetFE.Models.RequestHelp;
+@using HelpMyStreetFE.Helpers;
 
-@if (Model.Questions != null) 
+@if (Model.Questions != null)
 {
     @foreach (RequestHelpQuestion question in Model.Questions)
     {

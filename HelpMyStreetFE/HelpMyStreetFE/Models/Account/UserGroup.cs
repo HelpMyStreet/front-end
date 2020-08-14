@@ -8,9 +8,10 @@ namespace HelpMyStreetFE.Models.Account
 {
     public class UserGroup
     {
+        public int UserId { get; set; }
         public int GroupId { get; set; }
         public string GroupName { get; set; }
         public string GroupKey { get; set; }
-        public List<GroupRoles> UserRoles { get; set; }
+        public IEnumerable<GroupRoles> UserRoles { get; set; }
     }
 }

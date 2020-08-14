@@ -38,6 +38,7 @@ namespace HelpMyStreetFE.Controllers
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account";
+        private static readonly string DEFAULT_VERIFIED_URL = "/account/open-requests";
 
         public AccountController(
             ILogger<AccountController> logger,
@@ -82,7 +83,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (user.IsVerified.HasValue && user.IsVerified.Value)
             {
-                return await OpenRequests();
+                return Redirect(DEFAULT_VERIFIED_URL);
             }
             else
             {

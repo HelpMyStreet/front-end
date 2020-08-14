@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE;
+﻿@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Utils;
 
@@ -8,12 +8,12 @@
     var id = Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString());
 
     var className = "";
-    if(Model.JobSummary.DueDate.Date <= DateTime.Today)
+    if (Model.JobSummary.DueDate.Date <= DateTime.Today)
     {
         className = "job--hot";
     }
 
-    if(Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
+    if (Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
     {
         className = "job--warm";
     }
@@ -21,9 +21,9 @@
     string iconClass = AgeUk ? "limit-width" : "";
 
     var forFaceMask = Model.JobSummary.SupportActivity == SupportActivities.FaceMask;
-    var friendlyNamePrefix = forFaceMask  ?
-    Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer  : "";
-    bool removePluralisation = forFaceMask &&  Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
+    var friendlyNamePrefix = forFaceMask ?
+    Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer : "";
+    bool removePluralisation = forFaceMask && Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
     var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.JobSummary.SupportActivity.FriendlyName().Remove(Model.JobSummary.SupportActivity.FriendlyName().Length - 1) : Model.JobSummary.SupportActivity.FriendlyName());
     var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
@@ -31,6 +31,7 @@
 <div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
+            <span class="requested" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Help requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
             @if (Model.JobSummary.IsHealthCritical)
             {
                 <span class="critical-icon">!</span>
@@ -40,28 +41,21 @@
             {
                 <img src="~/img/icons/calendar.svg" />
             }
-            <span class="due-date">Due @Model.JobSummary.DueDate.ToString("dd/MM/yyyy")</span>
+            <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title job__status">
-                @switch (Model.JobSummary.JobStatus)
-                {
-                    case JobStatuses.Open:<span>Open</span>break;
-                    case JobStatuses.InProgress: <span>In Progress</span> break;
-                    case JobStatuses.Done: <span>Done</span>break;
-                    case JobStatuses.Cancelled: <span>Cancelled</span>break;
-                }
+                <span>@Model.JobSummary.JobStatus.FriendlyName()</span>
             </span>
             <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
                 @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
-                    {
+                {
                     <img src="~/img/icons/@Model.JobSummary.SupportActivity.Icon()" class="@iconClass" />
-
                 }
 
                 @friendlyName
 
-                @if(ageUKReference != null)
+                @if (!string.IsNullOrWhiteSpace(ageUKReference))
                 {
                     @($"({ageUKReference})")
                 }
@@ -138,7 +132,7 @@
                 }
             </div>
         </div>
-       
+
     </div>
     <div class="job__detail">
         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel() { Hide = false, ShowDarkSpinner = true }' />

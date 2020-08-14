@@ -29,16 +29,18 @@ namespace HelpMyStreetFE.Services
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IGroupService _groupService;
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService)
+        private readonly IUserService _userService;
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
             _requestSettings = requestSettings;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
+            _userService = userService;
         }
 
-        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
+        public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
         {
             _logger.LogInformation($"Logging Request");
             var recipient = _requestHelpBuilder.MapRecipient(detailStage);
@@ -91,7 +93,7 @@ namespace HelpMyStreetFE.Services
 
 
             var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
-            if (response.HasContent & response.IsSuccessful)
+            if (response != null)
                 TriggerCacheRefresh(ctx);
 
             return response;
@@ -155,10 +157,30 @@ namespace HelpMyStreetFE.Services
         }
 
 
-        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
+        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId)
         {
-            return await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
+            var getJobDetailsResponse = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
+            var getStatusHistoryResponse = await _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
+
+            User currentVolunteer = null;
+            if (getJobDetailsResponse?.JobSummary?.VolunteerUserID != null) {
+                currentVolunteer = await _userService.GetUserAsync(getJobDetailsResponse.JobSummary.VolunteerUserID.Value);
+            }
+
+            if (getJobDetailsResponse != null && getStatusHistoryResponse != null)
+            {
+                return new JobDetail()
+                {
+                    JobSummary = getJobDetailsResponse.JobSummary,
+                    Recipient = getJobDetailsResponse.Recipient,
+                    Requestor = getJobDetailsResponse.Requestor,
+                    JobStatusHistory = getStatusHistoryResponse.History,
+                    CurrentVolunteer = currentVolunteer,
+                };
+            }
+            return null;
         }
+
         public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx)
         {
             var success = await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()

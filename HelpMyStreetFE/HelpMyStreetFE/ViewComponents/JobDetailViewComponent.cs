@@ -20,15 +20,10 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int JobID, int UserId)
         {
-            var jobDetails = await _requestService.GetJobDetailsAsync(JobID, UserId);
-            var userDetails = await _userService.GetUserAsync(UserId);
-
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
-                UserIsVerified = userDetails.IsVerified ?? false,
-                Recipient = jobDetails.Recipient,
-                Requestor = jobDetails.Requestor,
-                JobSummary = jobDetails.JobSummary,
+                JobDetail = await _requestService.GetJobDetailsAsync(JobID, UserId),
+                UserIsVerified = (await _userService.GetUserAsync(UserId)).IsVerified ?? false,
             };
 
             return View("JobDetail", jobDetailViewModel);

@@ -15,10 +15,10 @@
         @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
    {
        JobStatuses = new List<FilterField<JobStatuses>>() {
-                new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, Label = "Cancelled", IsSelected = true },
-                new FilterField<JobStatuses>() { Value = JobStatuses.Done, Label = "Done", IsSelected = true },
-                new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, Label = "In Progress", IsSelected = true },
-                new FilterField<JobStatuses>() { Value = JobStatuses.Open, Label = "Open", IsSelected = true }
+                new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, IsSelected = true },
+                new FilterField<JobStatuses>() { Value = JobStatuses.Done, IsSelected = true },
+                new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true }
             },
        DueInNextXDays = new List<FilterField<int>>()
        {

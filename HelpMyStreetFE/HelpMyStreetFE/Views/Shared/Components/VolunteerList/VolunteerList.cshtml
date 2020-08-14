@@ -1,0 +1,18 @@
+﻿@model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
+
+<ul>
+    @foreach (var volunteer in Model.Volunteers)
+    {
+        <li>
+            @volunteer.User.UserPersonalDetails.DisplayName
+            @volunteer.User.UserPersonalDetails.Address.Postcode
+            @volunteer.User.UserPersonalDetails.EmailAddress
+            @volunteer.User.UserPersonalDetails.MobilePhone / @volunteer.User.UserPersonalDetails.OtherPhone
+            Roles:
+            @foreach(var role in volunteer.Roles)
+            {
+                @role
+            }
+        </li>
+    }
+</ul>

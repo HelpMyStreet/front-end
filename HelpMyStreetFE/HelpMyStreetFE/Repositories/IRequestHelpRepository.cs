@@ -9,9 +9,10 @@ namespace HelpMyStreetFE.Repositories
 {
 	public interface IRequestHelpRepository
 	{
-        Task<BaseRequestHelpResponse<LogRequestResponse>> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
+        Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
         Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
+        Task<GetJobStatusHistoryResponse> GetJobStatusHistoryAsync(int jobId);
         Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
         Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request);
         Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request);
