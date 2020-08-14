@@ -1,4 +1,4 @@
-using HelpMyStreetFE.Models.Reponses;
+﻿using HelpMyStreetFE.Models.Reponses;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Repositories
         Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
         Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
+        Task<GetJobStatusHistoryResponse> GetJobStatusHistoryAsync(int jobId);
         Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
         Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request);
         Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request);

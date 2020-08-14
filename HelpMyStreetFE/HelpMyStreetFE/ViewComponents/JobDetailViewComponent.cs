@@ -23,15 +23,9 @@ namespace HelpMyStreetFE.ViewComponents
             var jobDetails = await _requestService.GetJobDetailsAsync(JobID, UserId);
             var userDetails = await _userService.GetUserAsync(UserId);
 
-            JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
-            {
-                UserIsVerified = userDetails.IsVerified ?? false,
-                Recipient = jobDetails.Recipient,
-                Requestor = jobDetails.Requestor,
-                JobSummary = jobDetails.JobSummary,
-            };
+            jobDetails.UserIsVerified = userDetails.IsVerified ?? false;
 
-            return View("JobDetail", jobDetailViewModel);
+            return View("JobDetail", jobDetails);
         }
     }
 }

@@ -80,7 +80,7 @@
     }
     <h4>Request Details</h4>
 
-    @*@foreach (var question in Model.JobSummary.Questions)
+    @foreach (var question in Model.JobSummary.Questions)
     {
 
         if (question.ShowOnTaskManagement())
@@ -90,7 +90,7 @@
                 <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
             </div>
         }
-    }*@
+    }
 }
 else if (Model.UserIsVerified)
 {
@@ -100,7 +100,7 @@ else if (Model.UserIsVerified)
         <p>@Model.JobSummary.RecipientOrganisation</p>
     }
 
-    @*@foreach (var question in Model.JobSummary.Questions)
+    foreach (var question in Model.JobSummary.Questions)
     {
 
         if (question.ShowOnTaskManagement())
@@ -108,5 +108,13 @@ else if (Model.UserIsVerified)
             <h4>@question.FriendlyName()</h4>
             <p> @(String.IsNullOrEmpty(question.Answer) ? "None entered" : question.Answer)</p>
         }
-    }*@
+    }
+}
+
+<h4>Job Status History</h4>
+
+@foreach(var statusChange in Model.JobStatusHistory) {
+    <ul>
+        <li>@statusChange.StatusDate - @statusChange.JobStatus</li>
+    </ul>
 }
