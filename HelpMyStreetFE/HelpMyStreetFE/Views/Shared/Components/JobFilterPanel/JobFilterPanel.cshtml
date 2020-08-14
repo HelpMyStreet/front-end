@@ -9,7 +9,7 @@
             <p>Status:</p>
             @foreach (var status in Model.JobStatuses)
             {
-                <label for="filter-status-@status.Value">@status.Value (@status.MatchingItems)</label>
+                <label for="filter-status-@status.Value">@status.Value</label>
                 <input name="JobStatuses[]" type="checkbox" id="filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
             }
             <label for="filter-status-select-all">Select all</label>
@@ -23,7 +23,7 @@
             <p>Activity:</p>
             @foreach (var supportActivity in Model.SupportActivities)
             {
-                <label for="filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName() (@supportActivity.MatchingItems)</label>
+                <label for="filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName()</label>
                 <input name="SupportActivities[]" type="checkbox" id="filter-supportActivity-@supportActivity.Value" value="@((int)supportActivity.Value)" checked="@supportActivity.IsSelected" />
             }
             <label for="filter-supportActivity-select-all">Select all</label>
@@ -37,7 +37,7 @@
             <p>Distance:</p>
             @foreach (var distance in Model.MaxDistanceInMiles)
             {
-                <label for="filter-distance-@distance.Value">@distance.Label (@distance.MatchingItems)</label>
+                <label for="filter-distance-@distance.Value">@distance.Label</label>
                 <input type="radio" name="MaxDistanceInMiles" id="filter-distance-@distance.Value" value="@distance.Value" checked="@distance.IsSelected" />
             }
         </fieldset>
@@ -49,7 +49,7 @@
             <p>Due:</p>
             @foreach (var dueInNextXDays in Model.DueInNextXDays)
             {
-                <label for="filter-due-@dueInNextXDays.Value">@dueInNextXDays.Label (@dueInNextXDays.MatchingItems)</label>
+                <label for="filter-due-@dueInNextXDays.Value">@dueInNextXDays.Label</label>
                 <input type="radio" name="DueInNextXDays" id="filter-due-@dueInNextXDays.Value" value="@dueInNextXDays.Value" checked="@dueInNextXDays.IsSelected" />
             }
         </fieldset>

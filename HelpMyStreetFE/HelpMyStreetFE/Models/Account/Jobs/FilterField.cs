@@ -10,6 +10,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public string Label { get; set; }
         public T Value { get; set; }
         public bool IsSelected { get; set; }
-        public int MatchingItems { get; set; }
+        //public int MatchingItems { get; set; }
     }
 }
