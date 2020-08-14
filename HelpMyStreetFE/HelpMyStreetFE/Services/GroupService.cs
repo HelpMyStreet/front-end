@@ -1,7 +1,5 @@
 ﻿using System.Threading.Tasks;
-using HelpMyStreet.Contracts.GroupService.Response;
 using HelpMyStreetFE.Repositories;
-using HelpMyStreet.Contracts.GroupService.Request;
 using System.Collections.Generic;
 using HelpMyStreetFE.Models.Account;
 using System.Linq;
@@ -62,10 +60,11 @@ namespace HelpMyStreetFE.Services
             foreach (var groupRoles in userRoles.UserGroupRoles)
             {
                 var group = await _groupRepository.GetGroup(groupRoles.Key);
-                var roles = groupRoles.Value.Select(role => (GroupRoles)role).ToList();
+                var roles = groupRoles.Value.Select(role => (GroupRoles)role);
 
                 response.Add(new UserGroup()
                 {
+                    UserId = userId,
                     GroupId = group.Group.GroupId,
                     GroupKey = group.Group.GroupKey,
                     GroupName = group.Group.GroupName,
@@ -75,5 +74,29 @@ namespace HelpMyStreetFE.Services
 
             return response;
         }
+
+        public async Task<List<UserGroup>> GetGroupMembers(int groupId)
+        {
+            var thisGroup = (await _groupRepository.GetGroup(groupId)).Group;
+            List<int> userIds = (await _groupRepository.GetGroupMembers(groupId)).Users;
+
+            List<UserGroup> response = new List<UserGroup>();
+            foreach (int userId in userIds)
+            {
+                // TODO: Remove this call (once we have GetGroupMemberRoles)
+                var userRoles = await _groupRepository.GetUserRoles(userId);
+                response.AddRange(userRoles.UserGroupRoles.Where(group => group.Key == groupId).Select(group => new UserGroup()
+                {
+                    UserId = userId,
+                    GroupId = groupId,
+                    GroupKey = thisGroup.GroupKey,
+                    GroupName = thisGroup.GroupName,
+                    UserRoles = group.Value.Select(role => (GroupRoles)role)
+                }));
+            }
+
+            return response;
+        }
+
     }
 }
