@@ -66,10 +66,41 @@
     &:focus {
         outline: none;
     }
+
+    /** Standard close button */
+    &--close {
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+
+        .icon--close {
+            .bg {
+                fill: $gray-8;
+            }
+
+            .cross {
+                stroke: white;
+                stroke-width: 12px;
+            }
+        }
+
+        @media screen and (min-width: $breakpointSm) {
+            .icon--close {
+                display: none;
+            }
+        }
+
+        &:before {
+            @include copy-sz-xs;
+            color: $gray-8;
+            margin-right: 0.5rem;
+            content: "Close";
+        }
+    }
 }
 
-
-.clear{
+.clear {
     border: 2px solid $green;
     background: $white;
     color: $green;
