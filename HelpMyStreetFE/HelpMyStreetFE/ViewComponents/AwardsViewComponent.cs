@@ -19,25 +19,41 @@ namespace HelpMyStreetFE.ViewComponents
     public class AwardsViewComponent : ViewComponent
     {
         private IAwardsRepository _awardsRepository;
-        private Dictionary<SupportActivities, string> friendlySupports = new Dictionary<SupportActivities, string>()
+        private Dictionary<SupportActivities, string> friendlySupport = new Dictionary<SupportActivities, string>()
         {
-        { SupportActivities.Shopping, "Shopping trips" },
-        { SupportActivities.CollectingPrescriptions, "Prescriptions" },
-        { SupportActivities.Errands, "Errands" },
-        { SupportActivities.DogWalking, "Dogs Walked" },
-        { SupportActivities.MealPreparation, "Prepared Meals" },
-        { SupportActivities.PhoneCalls_Friendly, "Friendly Chats" },
-        { SupportActivities.PhoneCalls_Anxious, "Supportive Chats" },
-        { SupportActivities.HomeworkSupport, "Homework Assignments" },
-        { SupportActivities.CheckingIn, "Check ins" },
-        { SupportActivities.Other, "Other Tasks" },
-        { SupportActivities.FaceMask, "Face Coverings" },
-        { SupportActivities.WellbeingPackage, "Wellbeing Packages" },
+        { SupportActivities.Shopping, "shopping trip" },
+        { SupportActivities.CollectingPrescriptions, "prescription collected" },
+        { SupportActivities.Errands, "errand run" },
+        { SupportActivities.DogWalking, "dog walked" },
+        { SupportActivities.MealPreparation, "meal prepared" },
+        { SupportActivities.PhoneCalls_Friendly, "friendly chat" },
+        { SupportActivities.PhoneCalls_Anxious, "supportive chat" },
+        { SupportActivities.HomeworkSupport, "homework assignment" },
+        { SupportActivities.CheckingIn, "check in" },
+        { SupportActivities.Other, "other task" },
+        { SupportActivities.FaceMask, "face covering sent" },
+        { SupportActivities.WellbeingPackage, "wellbeing package" },
         { SupportActivities.CommunityConnector, "Community Connectors" },
         };
-    
+        private Dictionary<SupportActivities, string> friendlySupports = new Dictionary<SupportActivities, string>()
+        {
+        { SupportActivities.Shopping, "shopping trips" },
+        { SupportActivities.CollectingPrescriptions, "prescriptions collected" },
+        { SupportActivities.Errands, "errands run" },
+        { SupportActivities.DogWalking, "dogs walked" },
+        { SupportActivities.MealPreparation, "meals prepared" },
+        { SupportActivities.PhoneCalls_Friendly, "friendly chats" },
+        { SupportActivities.PhoneCalls_Anxious, "supportive chats" },
+        { SupportActivities.HomeworkSupport, "homework assignments" },
+        { SupportActivities.CheckingIn, "check ins" },
+        { SupportActivities.Other, "other tasks" },
+        { SupportActivities.FaceMask, "face coverings sent" },
+        { SupportActivities.WellbeingPackage, "wellbeing packages" },
+        { SupportActivities.CommunityConnector, "Community Connectors" },
+        };
 
-    public AwardsViewComponent(IAwardsRepository awardsRepository)
+
+        public AwardsViewComponent(IAwardsRepository awardsRepository)
         {
             _awardsRepository = awardsRepository;
         }
@@ -57,7 +73,12 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 if (result.Activity != SupportActivities.CommunityConnector)
                 {
-                    listArray.Add(result.Count + " " + friendlySupports[result.Activity]);
+                    if (result.Count == 1) {
+                        listArray.Add(result.Count + " " + friendlySupport[result.Activity]);
+                    }
+                    else {
+                        listArray.Add(result.Count + " " + friendlySupports[result.Activity]);
+                    }
                 }
             }
 
