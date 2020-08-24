@@ -281,6 +281,10 @@ namespace HelpMyStreetFE.Services
             {
                 jobs = jobs.Where(j => j.DistanceInMiles <= jobFilterRequest.MaxDistanceInMiles);
             }
+            if (jobFilterRequest.DueInNextXDays != null)
+            {
+                jobs = jobs.Where(j => j.DueDate.Date <= DateTime.Now.Date.AddDays(jobFilterRequest.DueInNextXDays.Value));
+            }
             if (jobFilterRequest.DueAfter != null)
             {
                 jobs = jobs.Where(j => j.DueDate.Date >= jobFilterRequest.DueAfter?.Date);

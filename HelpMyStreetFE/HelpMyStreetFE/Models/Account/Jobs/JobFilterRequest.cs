@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public IEnumerable<SupportActivities> SupportActivities { get; set; }
         public IEnumerable<JobStatuses> JobStatuses { get; set; }
         public int? MaxDistanceInMiles { get; set; }
+        public int? DueInNextXDays { get; set; }
         public DateTime? DueAfter { get; set; }
         public DateTime? DueBefore { get; set; }
         public DateTime? RequestedAfter { get; set; }
