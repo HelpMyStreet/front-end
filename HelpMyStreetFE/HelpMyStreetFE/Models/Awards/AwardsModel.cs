@@ -8,6 +8,6 @@ namespace HelpMyStreetFE.Models.Awards
         public string AwardName { get; set; }
         public int AwardValue { get; set; }
         public string AwardDescription { get; set; }
-        public string ImageLocation { get; set; } = "/img/icons/thumbs-up.jpg";
+        public string ImageLocation { get; set; } = "/img/icons/thumbs-up.svg";
     }
 }
