@@ -66,7 +66,7 @@ export const login = async (email, password) => {
         } else {
             window.location.href = "/account";
         }
-
+        return { success: true };
     } catch (e) {              
       hideLoadingSpinner('.header-login__form');
       return handleErrorResponse(e);
