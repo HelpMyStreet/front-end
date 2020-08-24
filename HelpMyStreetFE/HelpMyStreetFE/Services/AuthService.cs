@@ -1,6 +1,7 @@
 ﻿using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Repositories;
 using Microsoft.AspNetCore.Authentication;
@@ -46,15 +47,35 @@ namespace HelpMyStreetFE.Services
 
         public async Task<string> VerifyIdTokenAsync(string token)
         {
-            var decoded = await _firebase.VerifyIdTokenAsync(token);
+            FirebaseToken decoded;
+
+            try
+            {
+                decoded = await _firebase.VerifyIdTokenAsync(token);
+            }
+            catch (FirebaseAuthException ex)
+            {
+                throw new Exception($"ID {token} not authorized at Firebase", ex);
+            }
 
             return decoded.Uid;
         }
 
         public async Task LoginWithTokenAsync(string token, HttpContext httpContext)
         {
-            var uid = await VerifyIdTokenAsync(token);            
-            var user = await _userRepository.GetUserByAuthId(uid);
+            var uid = await VerifyIdTokenAsync(token);
+
+            User user;
+
+            try
+            {
+                user = await _userRepository.GetUserByAuthId(uid);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"User {uid} not found in User Service", ex);
+            }
+
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
             identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
