@@ -57,6 +57,10 @@ namespace HelpMyStreetFE.Services
             {
                 throw new Exception($"ID {token} not authorized at Firebase", ex);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Exception calling _firebase.VerifyIdTokenAsync", ex);
+            }
 
             return decoded.Uid;
         }
