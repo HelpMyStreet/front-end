@@ -55,5 +55,6 @@
     <Folder Include="Views\Shared\Components\Feedback\" />
     <Folder Include="Models\Awards\" />
     <Folder Include="Views\Shared\Components\Awards\" />
+    <Folder Include="wwwroot\img\awards\" />
   </ItemGroup>
 </Project>

@@ -359,6 +359,8 @@ namespace HelpMyStreetFE.Controllers
                 };
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.Notifications = notifications;
+                var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                viewModel.Jobs = jobs.ToList();
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
