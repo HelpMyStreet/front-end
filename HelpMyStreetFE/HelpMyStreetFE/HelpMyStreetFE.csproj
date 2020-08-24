@@ -14,6 +14,7 @@
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
     <Content Remove="appsettings.Development.json" />
+    <Content Remove="wwwroot\profile.js~13f1cc15978c1bf79b0dfc86e1040f05f2cac27f" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,5 +53,7 @@
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel2\" />
     <Folder Include="Models\Feedback\" />
     <Folder Include="Views\Shared\Components\Feedback\" />
+    <Folder Include="Models\Awards\" />
+    <Folder Include="Views\Shared\Components\Awards\" />
   </ItemGroup>
 </Project>
