@@ -267,41 +267,17 @@ namespace HelpMyStreetFE.Services
             return jobs;
         }
 
-        public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest)
+        public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jfr)
         {
-            if (jobFilterRequest.JobStatuses != null)
-            {
-                jobs = jobs.Where(j => jobFilterRequest.JobStatuses.Contains(j.JobStatus));
-            }
-            if (jobFilterRequest.SupportActivities != null)
-            {
-                jobs = jobs.Where(j => jobFilterRequest.SupportActivities.Contains(j.SupportActivity));
-            }
-            if (jobFilterRequest.MaxDistanceInMiles != null)
-            {
-                jobs = jobs.Where(j => j.DistanceInMiles <= jobFilterRequest.MaxDistanceInMiles);
-            }
-            if (jobFilterRequest.DueInNextXDays != null)
-            {
-                jobs = jobs.Where(j => j.DueDate.Date <= DateTime.Now.Date.AddDays(jobFilterRequest.DueInNextXDays.Value));
-            }
-            if (jobFilterRequest.DueAfter != null)
-            {
-                jobs = jobs.Where(j => j.DueDate.Date >= jobFilterRequest.DueAfter?.Date);
-            }
-            if (jobFilterRequest.DueBefore != null)
-            {
-                jobs = jobs.Where(j => j.DueDate.Date <= jobFilterRequest.DueBefore?.Date);
-            }
-            if (jobFilterRequest.RequestedAfter != null)
-            {
-                jobs = jobs.Where(j => j.DateRequested.Date >= jobFilterRequest.RequestedAfter?.Date);
-            }
-            if (jobFilterRequest.RequestedBefore != null)
-            {
-                jobs = jobs.Where(j => j.DateRequested.Date <= jobFilterRequest.RequestedBefore?.Date);
-            }
-            return jobs;
+            return jobs.Where( 
+                j =>    (jfr.JobStatuses == null        || jfr.JobStatuses.Contains(j.JobStatus))
+                    &&  (jfr.SupportActivities == null  || jfr.SupportActivities.Contains(j.SupportActivity))
+                    &&  (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
+                    &&  (jfr.DueInNextXDays == null     || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    &&  (jfr.DueAfter == null           || j.DueDate.Date >= jfr.DueAfter?.Date)
+                    &&  (jfr.DueBefore == null          || j.DueDate.Date <= jfr.DueBefore?.Date)
+                    &&  (jfr.RequestedAfter == null     || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    &&  (jfr.RequestedBefore != null)   || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
         }
     }
  }
