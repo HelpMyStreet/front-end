@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Enums.Account;
-using System.Linq;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace HelpMyStreetFE.Controllers { 
@@ -71,24 +68,7 @@ namespace HelpMyStreetFE.Controllers {
         [HttpPost("get-filtered-jobs")]
         public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
-            var referrerComponents = Request.Headers["Referer"].ToString().Split('/');
-
-            JobSet jobSet;
-            int? groupId = null;
-            switch (referrerComponents[4])
-            {
-                case "accepted-requests": jobSet = JobSet.UserAcceptedRequests; break;
-                case "completed-requests": jobSet = JobSet.UserCompletedRequests; break;
-                case "open-requests": jobSet = JobSet.UserOpenRequests_NotMatchingCriteria; break;
-                case "g":
-                    jobSet = JobSet.GroupRequests;
-                    groupId = await _groupService.GetGroupIdByKey(referrerComponents[5]);
-                    break;
-                default:
-                    throw new Exception($"Unexpected URL component: {referrerComponents[4]}");
-            }
-
-            return ViewComponent("JobList", new { jobSet, groupId, jobFilterRequest });
+            return ViewComponent("JobList", new { jobFilterRequest });
         }
 
         private int DecodeJobID(string encodedJobId)

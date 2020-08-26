@@ -35,7 +35,7 @@
                 <p>Requests meeting the criteria you set when you signed up</p>
                 @await Component.InvokeAsync("JobList", new
                    {
-                       JobSet = JobSet.UserOpenRequests_MatchingCriteria,
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = -1 },
                        EmptyListCallback = new Action(() => NoCriteriaJobsToDisplay = true),
                    })
                 @if (NoCriteriaJobsToDisplay)
@@ -52,11 +52,11 @@
 
                 <div class="job-filter-panel @(NoNonCriteriaJobsToDisplay? "dnone" : "")">
                     @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
-                    {
-                       JobSet = JobSet.UserOpenRequests_NotMatchingCriteria,
-                       FilterSet = FilterSet.DefaultFilterSet.OpenRequestsDefaultFilterSet,
-                       EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
-                    })
+                       {
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria },
+                           FilterSet = FilterSet.DefaultFilterSet.OpenRequestsDefaultFilterSet,
+                           EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
+                       })
                 </div>
 
                 @if (NoNonCriteriaJobsToDisplay)

@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Response;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -116,7 +116,7 @@ namespace HelpMyStreetFE.Services
             return new OpenJobsViewModel
             {
                 CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
-                OtherJobs = otherJobs.OrderOpenJobsForDisplay().Take(_requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay)
+                OtherJobs = otherJobs.OrderOpenJobsForDisplay()
             };
         }
 
@@ -164,7 +164,7 @@ namespace HelpMyStreetFE.Services
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
                 JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
-                _ => throw new ArgumentException(message: "invalid JobStatuses value", paramName: nameof(status)),
+                _ => throw new ArgumentException(message: "Invalid JobStatuses value", paramName: nameof(status)),
             };
 
             if (success)
@@ -198,7 +198,8 @@ namespace HelpMyStreetFE.Services
                     &&  (jfr.DueAfter == null           || j.DueDate.Date >= jfr.DueAfter?.Date)
                     &&  (jfr.DueBefore == null          || j.DueDate.Date <= jfr.DueBefore?.Date)
                     &&  (jfr.RequestedAfter == null     || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    &&  (jfr.RequestedBefore == null)   || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+                    &&  (jfr.RequestedBefore == null)   || j.DateRequested.Date <= jfr.RequestedBefore?.Date)
+                .Take(jfr.ResultsToShow > 0 ? jfr.ResultsToShow : _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay);
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)

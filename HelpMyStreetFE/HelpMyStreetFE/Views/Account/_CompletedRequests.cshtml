@@ -2,6 +2,7 @@
 @using HelpMyStreetFE.Enums.Account
 
 @model AccountViewModel
+@using HelpMyStreetFE.Models.Account.Jobs
 
 @{
     bool NoJobsToDisplay = false;
@@ -18,10 +19,10 @@
             @if (Model.UserDetails.IsVerified)
             {
                 @await Component.InvokeAsync("JobList", new
-                {
-                    JobSet = JobSet.UserCompletedRequests,
-                    EmptyListCallback = new Action(() => NoJobsToDisplay = true)
-                })
+                   {
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = -1 },
+                       EmptyListCallback = new Action(() => NoJobsToDisplay = true)
+                   })
                 @if (NoJobsToDisplay)
                 {
                     <div class="profile__empty">
@@ -33,7 +34,7 @@
                         </p>
                         <p class="profile__empty__text">
                             Once you accept a request for help or support on the <a href="/account/open-requests">Open Requests</a> page, they'll appear on your <a href="/account/accepted-requests">accepted requests page</a>.
-</p>
+                        </p>
                     </div>
                 }
             }

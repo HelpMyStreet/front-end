@@ -14,8 +14,7 @@
     <div class="job-filter-panel">
         @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
            {
-               JobSet = JobSet.GroupRequests,
-               GroupId = Model.CurrentGroup.GroupId,
+               JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupRequests, GroupId = Model.CurrentGroup.GroupId },
                FilterSet = FilterSet.DefaultFilterSet.GroupRequestsDefaultFilterSet,
            })
     </div>

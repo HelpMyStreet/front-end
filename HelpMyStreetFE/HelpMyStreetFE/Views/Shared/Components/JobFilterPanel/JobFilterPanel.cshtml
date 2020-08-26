@@ -9,6 +9,10 @@
 <form action="/api/requesthelp/get-filtered-jobs" method="post">
     <h6>Filter jobs here</h6>
 
+    <input type="hidden" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
+    <input type="hidden" name="GroupId" value="@Model.JobFilterRequest.GroupId" />
+    <input type="hidden" name="ResultsToShow" value="@Model.JobFilterRequest.ResultsToShow" />
+
     @if (Model.FilterSet.JobStatuses != null)
     {
         <fieldset>
@@ -69,8 +73,7 @@
 <div class="profile__section job-filter-results-panel">
     @await Component.InvokeAsync("JobList", new
 {
-    JobSet = Model.JobSet,
-    GroupId = Model.GroupId,
+    JobFilterRequest = Model.JobFilterRequest,
     EmptyListCallback = new Action(() =>
     {
         jobsToDisplay = false; 

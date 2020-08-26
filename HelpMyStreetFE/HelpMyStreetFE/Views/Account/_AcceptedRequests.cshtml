@@ -1,5 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.Account
 @using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs
 
 @model AccountViewModel
 
@@ -18,10 +19,10 @@
             @if (Model.UserDetails.IsVerified)
             {
                 @await Component.InvokeAsync("JobList", new
-                {
-                    JobSet = JobSet.UserAcceptedRequests,
-                    EmptyListCallback = new Action(() => NoJobsToDisplay = true)
-                })
+                   {
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserAcceptedRequests, ResultsToShow = -1 },
+                       EmptyListCallback = new Action(() => NoJobsToDisplay = true)
+                   })
                 @if (NoJobsToDisplay)
                 {
                     <div class="profile__empty">
