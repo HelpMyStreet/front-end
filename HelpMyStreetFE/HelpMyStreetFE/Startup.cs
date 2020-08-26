@@ -20,6 +20,11 @@ using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
+using HelpMyStreet.Cache.Extensions;
+using HelpMyStreet.Cache;
+using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Account.Jobs;
 
 namespace HelpMyStreetFE
 {
@@ -46,6 +51,7 @@ namespace HelpMyStreetFE
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
             services.Configure<RequestSettings>(Configuration.GetSection("RequestSettings"));
+            services.Configure<SessionCacheService.SessionCacheSettings>(Configuration.GetSection("SessionCacheSettings"));
 
 
             PollyHttpPolicies pollyHttpPolicies = new PollyHttpPolicies(new PollyHttpPoliciesConfig());
@@ -146,6 +152,8 @@ namespace HelpMyStreetFE
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
+            services.AddMemCache();
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
 
             services.AddControllers();
             services.AddRazorPages()

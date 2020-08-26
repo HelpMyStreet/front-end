@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.ViewComponents
@@ -25,7 +26,7 @@ namespace HelpMyStreetFE.ViewComponents
             _requestSettings = requestSettings;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobSet jobSet, int? groupId, JobFilterRequest jobFilterRequest, Action emptyListCallback)
+        public async Task<IViewComponentResult> InvokeAsync(JobSet jobSet, int? groupId, JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
         {
             User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
@@ -39,20 +40,20 @@ namespace HelpMyStreetFE.ViewComponents
             switch (jobSet)
             {
                 case JobSet.GroupRequests:
-                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, HttpContext);
+                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, cancellationToken);
                     admin = true;
                     break;
                 case JobSet.UserOpenRequests_MatchingCriteria:
-                    jobs = (await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext)).CriteriaJobs;
+                    jobs = (await _requestService.GetOpenJobsAsync(user, cancellationToken)).CriteriaJobs;
                     break;
                 case JobSet.UserOpenRequests_NotMatchingCriteria:
-                    jobs = (await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext)).OtherJobs;
+                    jobs = (await _requestService.GetOpenJobsAsync(user, cancellationToken)).OtherJobs;
                     break;
                 case JobSet.UserAcceptedRequests:
-                    jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                    jobs = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
                     break;
                 case JobSet.UserCompletedRequests:
-                    jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                    jobs = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
                     break;
             }
 

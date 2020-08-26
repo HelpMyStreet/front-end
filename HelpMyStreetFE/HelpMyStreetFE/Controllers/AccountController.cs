@@ -20,6 +20,7 @@ using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
+using System.Threading;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -32,7 +33,6 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
 
@@ -46,7 +46,6 @@ namespace HelpMyStreetFE.Controllers
             IAddressService addressService,
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
-            IOptions<RequestSettings> requestSettings,
             IRequestService requestService,
             IGroupService groupService
             )
@@ -57,7 +56,6 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
             _yotiOptions = yotiOptions;
             _requestService = requestService;
-            _requestSettings = requestSettings;
             _groupService = groupService;
         }
 
@@ -254,7 +252,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey)
+        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
             CountNavViewModel countNavViewModel = new CountNavViewModel();
 
@@ -276,15 +274,15 @@ namespace HelpMyStreetFE.Controllers
             {
                 case MenuPage.GroupRequests:
                     if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, HttpContext);
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, cancellationToken);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.AcceptedRequests:
-                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
                     count = acceptedRequests.Count();
                     break;
                 case MenuPage.OpenRequests:
-                    var openRequests = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext);
+                    var openRequests = await _requestService.GetOpenJobsAsync(user, cancellationToken);
                     count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
                     break;
                 default:
