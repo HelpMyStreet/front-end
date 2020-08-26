@@ -279,7 +279,11 @@ namespace HelpMyStreetFE.Controllers
                     break;
                 case MenuPage.AcceptedRequests:
                     var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
-                    count = acceptedRequests.Count();
+                    count = acceptedRequests.Where(j => j.JobStatus == JobStatuses.InProgress).Count();
+                    break;
+                case MenuPage.CompletedRequests:
+                    var completedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
+                    count = completedRequests.Where(j => j.JobStatus == JobStatuses.Done).Count();
                     break;
                 case MenuPage.OpenRequests:
                     var openRequests = await _requestService.GetOpenJobsAsync(user, cancellationToken);

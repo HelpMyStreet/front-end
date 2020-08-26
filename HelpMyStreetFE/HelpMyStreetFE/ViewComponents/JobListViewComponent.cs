@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
@@ -50,10 +51,10 @@ namespace HelpMyStreetFE.ViewComponents
                     jobs = (await _requestService.GetOpenJobsAsync(user, cancellationToken)).OtherJobs;
                     break;
                 case JobSet.UserAcceptedRequests:
-                    jobs = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
+                    jobs = (await _requestService.GetJobsForUserAsync(user.ID, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress);
                     break;
                 case JobSet.UserCompletedRequests:
-                    jobs = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
+                    jobs = (await _requestService.GetJobsForUserAsync(user.ID, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled);
                     break;
             }
 

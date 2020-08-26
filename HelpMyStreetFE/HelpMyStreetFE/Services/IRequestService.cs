@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Services
 {
     public interface IRequestService
     {
-        Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, CancellationToken cancellationToken); 
+        Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, CancellationToken cancellationToken);
         Task<OpenJobsViewModel> GetOpenJobsAsync(User user, CancellationToken cancellationToken);
         Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, CancellationToken cancellationToken);
         Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken);

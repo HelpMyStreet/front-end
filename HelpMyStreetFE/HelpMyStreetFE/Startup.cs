@@ -324,11 +324,14 @@ namespace HelpMyStreetFE
                     name: "OpenRequests",
                     pattern: "account/open-requests",
                     defaults: new { controller = "Account", action = "OpenRequests" });
-
                 endpoints.MapControllerRoute(
                    name: "AcceptedRequests",
                    pattern: "account/accepted-requests",
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
+                endpoints.MapControllerRoute(
+                   name: "CompletedRequests",
+                   pattern: "account/completed-requests",
+                   defaults: new { controller = "Account", action = "CompletedRequests" });
 
                 endpoints.MapControllerRoute(
                    name: "registration/step-one",
