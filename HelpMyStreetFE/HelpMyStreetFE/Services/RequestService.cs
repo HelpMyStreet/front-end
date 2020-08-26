@@ -133,23 +133,23 @@ namespace HelpMyStreetFE.Services
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var getJobDetailsResponse = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
-            var getStatusHistoryResponse = await _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
+            var jobStatusHistory = _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
+            var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
-            User currentVolunteer = null;
-            if (getJobDetailsResponse?.JobSummary?.VolunteerUserID != null)
+            if (jobDetails != null)
             {
-                currentVolunteer = await _userService.GetUserAsync(getJobDetailsResponse.JobSummary.VolunteerUserID.Value);
-            }
+                User currentVolunteer = null;
+                if (jobDetails.JobSummary?.VolunteerUserID != null)
+                {
+                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value);
+                }
 
-            if (getJobDetailsResponse != null && getStatusHistoryResponse != null)
-            {
                 return new JobDetail()
                 {
-                    JobSummary = getJobDetailsResponse.JobSummary,
-                    Recipient = getJobDetailsResponse.Recipient,
-                    Requestor = getJobDetailsResponse.Requestor,
-                    JobStatusHistory = getStatusHistoryResponse.History,
+                    JobSummary = jobDetails.JobSummary,
+                    Recipient = jobDetails.Recipient,
+                    Requestor = jobDetails.Requestor,
+                    JobStatusHistory = (await jobStatusHistory)?.History,
                     CurrentVolunteer = currentVolunteer,
                 };
             }
@@ -240,13 +240,13 @@ namespace HelpMyStreetFE.Services
         {
             Task.Factory.StartNew(async () =>
             {
-                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", cancellationToken);
 
 
-                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId));
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
@@ -255,8 +255,8 @@ namespace HelpMyStreetFE.Services
                 List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
                 if (userGroups != null)
                 {
-                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(async g => {
-                        await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g => {
+                        _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                         {
                             return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
                         }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
