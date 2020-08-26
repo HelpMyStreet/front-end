@@ -198,7 +198,7 @@ namespace HelpMyStreetFE.Services
                     &&  (jfr.DueAfter == null           || j.DueDate.Date >= jfr.DueAfter?.Date)
                     &&  (jfr.DueBefore == null          || j.DueDate.Date <= jfr.DueBefore?.Date)
                     &&  (jfr.RequestedAfter == null     || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    &&  (jfr.RequestedBefore != null)   || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+                    &&  (jfr.RequestedBefore == null)   || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)
