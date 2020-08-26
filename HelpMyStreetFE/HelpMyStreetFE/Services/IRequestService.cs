@@ -18,10 +18,7 @@ namespace HelpMyStreetFE.Services
         Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, CancellationToken cancellationToken);
         Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken);
-        Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, CancellationToken cancellationToken);
-        Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, CancellationToken cancellationToken);
-        Task<bool> UpdateJobStatusToCancelledAsync(int jobID, int createdByUserId, CancellationToken cancellationToken);
-        Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken);
+        Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source);
         IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest);
     }

@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -156,56 +156,21 @@ namespace HelpMyStreetFE.Services
             return null;
         }
 
-        public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, CancellationToken cancellationToken)
+        public async Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
-            var success = await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()
+            bool success = status switch
             {
-                JobID = jobID,
-                CreatedByUserID = createdByUserId
-            });
+                JobStatuses.InProgress => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value),
+                JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
+                JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
+                JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
+                _ => throw new ArgumentException(message: "invalid JobStatuses value", paramName: nameof(status)),
+            };
 
             if (success)
-                TriggerCacheRefresh(createdByUserId, cancellationToken);
-
-            return success;
-        }
-        public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, CancellationToken cancellationToken)
-        {
-            var success = await _requestHelpRepository.UpdateJobStatusToOpenAsync(new PutUpdateJobStatusToOpenRequest()
             {
-                CreatedByUserID = createdByUserId,
-                JobID = jobID
-            });
-
-            if (success)
                 TriggerCacheRefresh(createdByUserId, cancellationToken);
-
-            return success;
-        }
-        public async Task<bool> UpdateJobStatusToCancelledAsync(int jobID, int createdByUserId, CancellationToken cancellationToken)
-        {
-            var success = await _requestHelpRepository.UpdateJobStatusToCancelledAsync(new PutUpdateJobStatusToCancelledRequest()
-            {
-                CreatedByUserID = createdByUserId,
-                JobID = jobID
-            });
-
-            if (success)
-                TriggerCacheRefresh(createdByUserId, cancellationToken);
-
-            return success;
-        }
-        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken)
-        {
-            var success = await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
-            {
-                CreatedByUserID = createdByUserId,
-                VolunteerUserID = volunteerUserId,
-                JobID = jobID
-            });
-
-            if (success)
-                TriggerCacheRefresh(createdByUserId, cancellationToken);
+            }
 
             return success;
         }
