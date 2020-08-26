@@ -98,7 +98,7 @@ namespace HelpMyStreetFE.Services
 
 
             var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
-            if (response != null)
+            if (response != null && userId != 0)
                 TriggerCacheRefresh(userId, cancellationToken);
 
             return response;
@@ -124,7 +124,7 @@ namespace HelpMyStreetFE.Services
         {
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId);
+                return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.WaitForFreshData, cancellationToken);
 
             return jobs.OrderOpenJobsForDisplay();
@@ -242,7 +242,7 @@ namespace HelpMyStreetFE.Services
             {
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId);
+                    return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", cancellationToken);
 
 
