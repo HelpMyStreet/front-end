@@ -22,23 +22,30 @@ function initialiseAccountNavExpanders() {
     });
 }
 
-async function initialiseNavBadges() {
-    $('.account__nav .account__nav__badge').each(async function () {
+function initialiseNavBadges() {
+    $('.account__nav .account__nav__badge').each(function () {
         const badge = $(this);
-        var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
-        if (response.fetchResponse == fetchResponses.SUCCESS) {
-            const count = (await response.fetchPayload).count;
-            if (count > 0) {
-                $(badge).html(count);
-                $(badge).addClass('count');
-            } else {
-                $(badge).html('');
-                $(badge).removeClass('count');
-            }
-        } else {
-            // No badges today
-        }
+        refreshBadge(badge);
+        setInterval(async function () {
+            refreshBadge(badge);
+        }, 5000);
     });
+}
+
+async function refreshBadge(badge) {
+    var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'))
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        const count = (await response.fetchPayload).count;
+        if (count > 0) {
+            $(badge).html(count);
+            $(badge).addClass('count');
+        } else {
+            $(badge).html('');
+            $(badge).removeClass('count');
+        }
+    } else {
+        // No badges today
+    }
 }
 
 function subMenuToggle(container, slideDuration = 400) {
