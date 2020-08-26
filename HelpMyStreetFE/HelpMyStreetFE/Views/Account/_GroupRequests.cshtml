@@ -13,29 +13,23 @@
 
     <div class="job-filter-panel">
         @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
-   {
-       JobStatuses = new List<FilterField<JobStatuses>>() {
-                new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, IsSelected = true },
-                new FilterField<JobStatuses>() { Value = JobStatuses.Done, IsSelected = true },
-                new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
-                new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true }
-            },
-       DueInNextXDays = new List<FilterField<int>>()
-       {
-           new FilterField<int>{Value = 1, Label = "Today" },
-           new FilterField<int>{Value = 7, Label = "This week"},
-           new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
-           new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
-       },
-   })
-    </div>
-
-    <div class="job-filter-results-panel">
-        @await Component.InvokeAsync("JobList", new
-        {
-            JobSet = JobSet.GroupRequests,
-            GroupId = Model.CurrentGroup.GroupId
-        })
+           {
+               JobSet = JobSet.GroupRequests,
+               GroupId = Model.CurrentGroup.GroupId,
+               JobStatuses = new List<FilterField<JobStatuses>>() {
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, IsSelected = true },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Done, IsSelected = true },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true }
+                    },
+               DueInNextXDays = new List<FilterField<int>>()
+               {
+                   new FilterField<int>{Value = 1, Label = "Today" },
+                   new FilterField<int>{Value = 7, Label = "This week"},
+                   new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
+                   new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
+               },
+           })
     </div>
 
 </div>

@@ -2,6 +2,10 @@
 @using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Extensions;
 
+@{ 
+    bool jobsToDisplay = true;
+}
+
 <form action="/api/requesthelp/get-filtered-jobs" method="post">
     <h6>Filter jobs here</h6>
 
@@ -61,3 +65,21 @@
 
     <button type="submit" class="update">Update</button>
 </form>
+
+<div class="profile__section job-filter-results-panel">
+    @await Component.InvokeAsync("JobList", new
+{
+    JobSet = Model.JobSet,
+    GroupId = Model.GroupId,
+    EmptyListCallback = new Action(() =>
+    {
+        jobsToDisplay = false; 
+        Model.EmptyJobSetCallback?.Invoke();
+    }),
+})
+
+    @if (!jobsToDisplay)
+    {
+        <p>No jobs to display</p>
+    }
+</div>
