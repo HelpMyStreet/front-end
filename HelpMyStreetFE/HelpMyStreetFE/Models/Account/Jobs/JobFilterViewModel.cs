@@ -1,6 +1,4 @@
-﻿using HelpMyStreet.Utils.Enums;
-using HelpMyStreetFE.Enums.Account;
-using System.Collections.Generic;
+﻿using HelpMyStreetFE.Enums.Account;
 using System;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
@@ -9,10 +7,8 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public JobSet JobSet { get; set; }
         public int GroupId { get; set; }
-        public IEnumerable<FilterField<SupportActivities>> SupportActivities { get; set; }
-        public IEnumerable<FilterField<JobStatuses>> JobStatuses { get; set; }
-        public IEnumerable<FilterField<int>> MaxDistanceInMiles { get; set; }
-        public IEnumerable<FilterField<int>> DueInNextXDays { get; set; }
+        public FilterSet FilterSet { get; set; }
+        public JobFilterRequest JobFilterRequest { get; set; }
         public Action EmptyJobSetCallback { get; set; }
     }
 }

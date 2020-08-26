@@ -54,34 +54,7 @@
                     @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
                     {
                        JobSet = JobSet.UserOpenRequests_NotMatchingCriteria,
-                       SupportActivities = new List<FilterField<SupportActivities>>()
-                           {
-                               new FilterField<SupportActivities>(){Value = SupportActivities.CheckingIn, IsSelected = true },
-                               new FilterField<SupportActivities>(){Value = SupportActivities.WellbeingPackage, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.Shopping, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.MealPreparation, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.Errands, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.DogWalking, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.HomeworkSupport, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.Other, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.PhoneCalls_Friendly, IsSelected = true},
-                               new FilterField<SupportActivities>(){Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true},
-                           },
-                       DueInNextXDays = new List<FilterField<int>>()
-                           {
-                               new FilterField<int>{Value = 1, Label = "Today" },
-                               new FilterField<int>{Value = 7, Label = "This week"},
-                               new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
-                               new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
-                           },
-                       MaxDistanceInMiles = new List<FilterField<int>>()
-                           {
-                               new FilterField<int>{Value = 0, Label = "My street only"},
-                               new FilterField<int>{Value = 1, Label ="Within 1 mile"},
-                               new FilterField<int>{Value = 5, Label = "within 5 miles"},
-                               new FilterField<int>{Value = 10, Label = "within 10 miles"},
-                               new FilterField<int>{Value = 20, Label = "within 20 miles", IsSelected = true},
-                           },
+                       FilterSet = FilterSet.DefaultFilterSet.OpenRequestsDefaultFilterSet,
                        EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
                     })
                 </div>
