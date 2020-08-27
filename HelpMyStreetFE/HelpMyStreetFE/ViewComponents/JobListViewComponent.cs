@@ -29,6 +29,8 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
         {
+            JobListViewModel jobListViewModel = new JobListViewModel();
+
             User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
             if (user == null)
@@ -59,16 +61,23 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
 
+            jobListViewModel.TotalJobs = jobs.Count();
+
+            if (jobFilterRequest.ResultsToShow > 0)
+            {
+                jobs = jobs.Take(jobFilterRequest.ResultsToShow);
+            }
+
             if (jobs.Count() == 0 && emptyListCallback != null) { emptyListCallback.Invoke(); }
 
-            var jobs2 = jobs.Select(a => new JobViewModel()
+            jobListViewModel.Jobs = jobs.Select(a => new JobViewModel()
             {
                 JobSummary = a,
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false
             });
 
-            return View("JobList", jobs2);
+            return View("JobList", jobListViewModel);
         }
     }
 }

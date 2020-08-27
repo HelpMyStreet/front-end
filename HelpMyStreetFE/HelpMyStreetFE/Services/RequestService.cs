@@ -190,16 +190,15 @@ namespace HelpMyStreetFE.Services
 
         public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jfr)
         {
-            return jobs.Where( 
-                j =>    (jfr.JobStatuses == null        || jfr.JobStatuses.Contains(j.JobStatus))
-                    &&  (jfr.SupportActivities == null  || jfr.SupportActivities.Contains(j.SupportActivity))
-                    &&  (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    &&  (jfr.DueInNextXDays == null     || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    &&  (jfr.DueAfter == null           || j.DueDate.Date >= jfr.DueAfter?.Date)
-                    &&  (jfr.DueBefore == null          || j.DueDate.Date <= jfr.DueBefore?.Date)
-                    &&  (jfr.RequestedAfter == null     || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    &&  (jfr.RequestedBefore == null)   || j.DateRequested.Date <= jfr.RequestedBefore?.Date)
-                .Take(jfr.ResultsToShow > 0 ? jfr.ResultsToShow : _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay);
+            return jobs.Where(
+                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
+                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
+                    && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
+                    && (jfr.DueInNextXDays == null || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.DueAfter == null || j.DueDate.Date >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)
