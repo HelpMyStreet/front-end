@@ -149,6 +149,7 @@ namespace HelpMyStreetFE.Services
             if (user.RegistrationHistory.Count < 3)
             {
                 return new UserDetails(
+                   user,
                    personalDetails.FirstName == null && personalDetails.LastName == null ? "??" : personalDetails.FirstName.Substring(0, 1).ToUpper() + personalDetails.LastName.Substring(0, 1).ToUpper(),
                    personalDetails.DisplayName == null ? "??" : personalDetails.DisplayName,
                    "Not Set",
@@ -175,6 +176,7 @@ namespace HelpMyStreetFE.Services
             string streetChampion = isStreetChampion ? "Street Champion" : "Helper";         
 
             return new UserDetails(
+                user,
                 initials,
                 personalDetails.DisplayName,
                 personalDetails.FirstName,

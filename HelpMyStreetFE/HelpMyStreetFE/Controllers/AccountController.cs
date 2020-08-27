@@ -368,7 +368,6 @@ namespace HelpMyStreetFE.Controllers
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
-
                 };
 
                 viewModel.UserDetails = userDetails;

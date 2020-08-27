@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using HelpMyStreet.Utils.Models;
+using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Models.Account
 {
     public class UserDetails //I expect this class to be depricated when we know how to differentiate users
     {
         public UserDetails(
+            User user,
             string initials,
             string displayName,
             string firstName,
@@ -21,6 +23,7 @@ namespace HelpMyStreetFE.Models.Account
             bool isVerified
             )
         {
+            User = user;
             Initials = initials;
             DisplayName = displayName;
             FirstName = firstName;
@@ -37,6 +40,7 @@ namespace HelpMyStreetFE.Models.Account
             IsVerified = isVerified;
         }
 
+        public User User { get; set; }
         public string Initials { get; set; }
         public string DisplayName { get; set; }
         public string FirstName { get; set; }
