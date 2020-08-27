@@ -53,7 +53,7 @@ export function initialiseRequests(isVerified) {
 
     $('.job-list').on('click', '.job a.open', function (e) {
         e.preventDefault();
-        const job = $(this).parentsUntil('.job').parent();
+        const job = $(this).closest('.job');
         if (isVerified) {
             updateQueryStringParam('j', $(job).attr('id'));
             job.toggleClass('open');
@@ -66,7 +66,7 @@ export function initialiseRequests(isVerified) {
 
     $('.job-list').on('click', '.job a.close', function (e) {
         e.preventDefault();
-        const job = $(this).parentsUntil('.job').parent();
+        const job = $(this).closest('.job');
         removeQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
@@ -87,7 +87,7 @@ export function initialiseRequests(isVerified) {
     });
 
     $('.job-list').on('click', '.undo-request', async function (evt) {
-        const job = $(this).parentsUntil(".job").parent();
+        const job = $(this).closest(".job");
         const targetState = $(this).data("target-state");
         const targetUser = $(this).data("target-user") ?? "";
 
@@ -106,7 +106,7 @@ export function initialiseRequests(isVerified) {
 
 
 export function showStatusUpdatePopup(btn) {
-    const job = btn.parentsUntil(".job").parent();
+    const job = btn.closest(".job");
     const targetState = $(btn).data("target-state");
     const targetUser = $(btn).data("target-user") ?? "";
 
