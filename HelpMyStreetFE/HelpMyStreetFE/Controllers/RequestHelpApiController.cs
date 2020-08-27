@@ -9,6 +9,8 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Controllers { 
 
@@ -58,9 +60,15 @@ namespace HelpMyStreetFE.Controllers {
         public async Task<IActionResult> GetJobDetails(string j)
         {
             var jobId = DecodeJobID(j);
-            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return ViewComponent("JobDetail", new { jobId, userId });
+            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            return ViewComponent("JobDetail", new { jobId, user });
 
         }
 
