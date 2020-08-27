@@ -125,16 +125,18 @@ else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSumma
         <div class="job__expander__content">
             @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
             {
-                <h5>Organisation</h5>
-                <p>@Model.JobDetail.JobSummary.RecipientOrganisation</p>
+                <dl>
+                    <dt>Organisation</dt>
+                    <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                </dl>
             }
 
             @foreach (var q in Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement()))
             {
-                <div class="job__expander">
-                    <h5>@q.FriendlyName()</h5>
-                    <p> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</p>
-                </div>
+                <dl>
+                    <dt>@q.FriendlyName()</dt>
+                    <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
+                </dl>
             }
         </div>
     </div>
@@ -145,12 +147,13 @@ else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSumma
     <div class="job__expander">
         <h4>Request Status History<span></span></h4>
         <div class="job__expander__content">
-            @foreach (var statusChange in Model.JobDetail.JobStatusHistory)
-            {
-                <ul>
-                    <li>@statusChange.StatusDate - @statusChange.JobStatus.FriendlyName()</li>
-                </ul>
-            }
+            <dl>
+                @foreach (var statusChange in Model.JobDetail.JobStatusHistory)
+                {
+                    <dt>@statusChange.JobStatus.FriendlyName()</dt>
+                    <dd>@statusChange.StatusDate.ToString("dd/MM/yyyy hh:mm tt")</dd>
+                }
+            </dl>
         </div>
     </div>
 }
