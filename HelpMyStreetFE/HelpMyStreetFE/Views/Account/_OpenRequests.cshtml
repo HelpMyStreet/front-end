@@ -53,7 +53,7 @@
                 <div class="job-filter-panel @(NoNonCriteriaJobsToDisplay? "dnone" : "")">
                     @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
                        {
-                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20 },
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
                            FilterSet = FilterSet.DefaultFilterSet.OpenRequestsDefaultFilterSet,
                            EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
                        })

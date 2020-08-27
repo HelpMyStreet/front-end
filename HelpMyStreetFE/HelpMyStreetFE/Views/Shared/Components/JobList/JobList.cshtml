@@ -3,13 +3,14 @@
 
 <div class="profile job-list">
     @Html.DisplayFor(x => Model.Jobs)
+
+    @if (Model.TotalJobs > Model.DisplayedJobs)
+    {
+        <p class="text-center">
+            Showing @Model.DisplayedJobs of @Model.TotalJobs requests.
+            <a href="#" class="show-more-jobs">Show more</a>.
+            <a href="#" class="show-all-jobs">Show all</a>.
+        </p>
+    }
 </div>
 
-@if (Model.TotalJobs > Model.DisplayedJobs)
-{
-    <p class="text-center">
-        Showing @Model.DisplayedJobs of @Model.TotalJobs requests.
-        <a href="#" class="show-more-jobs">Show more</a>.
-        <a href="#" class="show-all-jobs">Show all</a>.
-    </p>
-}

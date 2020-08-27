@@ -192,4 +192,19 @@ function initialiseFilters() {
         }
         return false;
     });
+
+    $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
+        e.preventDefault();
+        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
+        const resultsToShowIncrementInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShowIncrement"]');
+        resultsToShowInput.val(parseInt(resultsToShowInput.val()) + parseInt(resultsToShowIncrementInput.val()));
+        $(this).closest('.job-filter-panel').find('.update').click();
+    });
+
+    $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
+        e.preventDefault();
+        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
+        resultsToShowInput.val(0);
+        $(this).closest('.job-filter-panel').find('.update').click();
+    });
 }

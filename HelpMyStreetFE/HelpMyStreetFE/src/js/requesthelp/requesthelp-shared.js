@@ -1,4 +1,4 @@
-export function loadQuestions(supportActivity) {
+﻿export function loadQuestions(supportActivity) {
     $('button#btnNext').addClass('disabled prevent-submit');
 
     var qRequest = {

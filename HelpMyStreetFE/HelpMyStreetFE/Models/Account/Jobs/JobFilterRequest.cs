@@ -18,5 +18,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? RequestedAfter { get; set; }
         public DateTime? RequestedBefore { get; set; }
         public int ResultsToShow { get; set; }
+        public int ResultsToShowIncrement { get; set; }
     }
 }
