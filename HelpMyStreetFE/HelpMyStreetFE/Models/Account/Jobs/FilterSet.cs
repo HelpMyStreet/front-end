@@ -47,6 +47,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
                     new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.Other, IsSelected = true},
                     new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, IsSelected = true},
                     new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.MedicalAppointmentTransport, IsSelected = true},
+                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, IsSelected = true},
+                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask, IsSelected = true},
+                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, IsSelected = true},
+                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector, IsSelected = true},
                 },
                 DueInNextXDays = new List<FilterField<int>>()
                 {
