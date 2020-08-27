@@ -7,9 +7,9 @@
     @if (Model.FilteredJobs > Model.DisplayedJobs)
     {
         <p class="text-center">
-            Showing first @Model.DisplayedJobs of @Model.FilteredJobs requests@(Model.UnfilteredJobs > Model.FilteredJobs ? " matching filter" : "").
+            Showing first @Model.DisplayedJobs requests@(Model.UnfilteredJobs > Model.FilteredJobs ? " matching filter" : "").
             <a href="#" class="show-more-jobs">Show more</a>.
-            <a href="#" class="show-all-jobs">Show all</a>.
+            <a href="#" class="show-all-jobs">Show all @Model.FilteredJobs</a>.
         </p>
     }
 </div>
