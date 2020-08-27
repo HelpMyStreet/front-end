@@ -11,8 +11,9 @@ using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreet.Utils.Extensions;
 
-namespace HelpMyStreetFE.Controllers { 
+namespace HelpMyStreetFE.Controllers {
 
 
     [Route("api/requesthelp")]
@@ -33,7 +34,7 @@ namespace HelpMyStreetFE.Controllers {
 
         [Authorize]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<bool>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
+        public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
             try
             {
@@ -46,7 +47,16 @@ namespace HelpMyStreetFE.Controllers {
                     targetUserId = string.IsNullOrEmpty(u) ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
                 }
 
-                return await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
+                bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
+
+                if (success)
+                {
+                    return s.FriendlyName();
+                }
+                else
+                {
+                    return StatusCode(400);
+                }
             }
             catch (Exception ex)
             {

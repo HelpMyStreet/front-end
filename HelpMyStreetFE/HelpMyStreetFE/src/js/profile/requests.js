@@ -72,7 +72,7 @@ export function initialiseRequests(isVerified) {
         job.find('.job__detail').slideToggle();
     });
 
-    $('.job-list').on('click', '.job__expander h5', function (e) {
+    $('.job-list').on('click', '.job__expander h4', function (e) {
         e.preventDefault();
         $(this).toggleClass('open');
         $(this).next().slideToggle();
@@ -92,9 +92,10 @@ export function initialiseRequests(isVerified) {
         const targetUser = $(this).data("target-user") ?? "";
 
         buttonLoad($(this));
-        let hasUpdated = await setJobStatus(job, targetState, targetUser);
-        if (hasUpdated) {
-            $(job).find('.job__status span').html(targetState);
+        let newStatus = await setJobStatus(job, targetState, targetUser);
+        if (newStatus) {
+            $(job).find('.job__status').html(newStatus);
+            $(job).find('.job__info__urgency>*').show();
             $(job).find('button').toggle();
         }
         buttonUnload($(this));
@@ -113,12 +114,14 @@ export function showStatusUpdatePopup(btn) {
     let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
 
     popupSettings.acceptCallbackAsync = async () => {
-        let success = await setJobStatus(job, targetState, targetUser);
+        let newStatus = await setJobStatus(job, targetState, targetUser);
 
-        if (success) {
-            $(job).find('.job__status span').html(targetState);
+        if (newStatus) {
+            $(job).find('.job__status').html(newStatus);
+            $(job).find('.job__info__urgency>*').hide();
             $(job).find('button').toggle();
             $(job).find('.next-step').toggle();
+            return true;
         }
         return success;
     }

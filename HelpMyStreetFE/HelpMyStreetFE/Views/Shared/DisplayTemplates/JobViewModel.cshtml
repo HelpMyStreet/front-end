@@ -9,15 +9,19 @@
     var id = Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString());
 
     var className = "";
-    if (Model.JobSummary.DueDate.Date <= DateTime.Today)
+    if (Model.JobSummary.JobStatus == JobStatuses.Open || Model.JobSummary.JobStatus == JobStatuses.InProgress)
     {
-        className = "job--hot";
+        if (Model.JobSummary.DueDate.Date <= DateTime.Today)
+        {
+            className = "job--hot";
+        }
+
+        if (Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
+        {
+            className = "job--warm";
+        }
     }
 
-    if (Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
-    {
-        className = "job--warm";
-    }
     var AgeUk = Model.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
     string iconClass = AgeUk ? "limit-width" : "";
 
@@ -32,21 +36,37 @@
 <div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
-            <span class="requested" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Help requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
-            @if (Model.JobSummary.IsHealthCritical)
+            @if (Model.JobSummary.JobStatus == JobStatuses.Done)
             {
-                <span class="critical-icon">!</span>
-                <span class="critical">Critical</span>
+                <img src="~/img/icons/green-tick.svg" alt="Done" />
+                <span class="due-date" title="@Model.JobSummary.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed<br /> @Model.JobSummary.DateStatusLastChanged.FriendlyFutureDate()</span>
+            }
+            else if (Model.JobSummary.JobStatus == JobStatuses.Cancelled)
+            {
+                <img src="~/img/icons/gray-tick.svg" alt="Cancelled" />
+                <span class="due-date" title="@Model.JobSummary.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled<br /> @Model.JobSummary.DateStatusLastChanged.FriendlyFutureDate()</span>
             }
             else
             {
-                <img src="~/img/icons/calendar.svg" />
+                <span class="due-date" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested<br /> @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
+                if (Model.JobSummary.IsHealthCritical)
+                {
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                }
+                else
+                {
+                    <img src="~/img/icons/calendar.svg" />
+                }
+                <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
             }
-            <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
         </div>
         <div class="job__info__activity column">
             <span class="activity__title job__status">
-                <span>@Model.JobSummary.JobStatus.FriendlyName()</span>
+                @if (Model.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobSummary.JobStatus == JobStatuses.Open)
+                {
+                    @Model.JobSummary.JobStatus.FriendlyName()
+                }
             </span>
             <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
                 @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
@@ -62,7 +82,13 @@
                 }
 
             </span>
-            <span class="activity__detail">@Model.JobSummary.PostCode (@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
+            <span class="activity__detail">
+                @Model.JobSummary.PostCode
+                @if (!Model.UserActingAsAdmin)
+                {
+                    <span>(@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
+                }
+            </span>
         </div>
         <div class="column flex-end mt-sm">
             <div class="job__info__actions">
