@@ -1,14 +1,24 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobFilterViewModel
 @using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Extensions;
+
+@{ 
+    bool jobsToDisplay = true;
+}
 
 <form action="/api/requesthelp/get-filtered-jobs" method="post">
     <h6>Filter jobs here</h6>
 
-    @if (Model.JobStatuses != null)
+    <input type="hidden" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
+    <input type="hidden" name="GroupId" value="@Model.JobFilterRequest.GroupId" />
+    <input type="hidden" name="ResultsToShowIncrement" value="@Model.JobFilterRequest.ResultsToShowIncrement" />
+    <input type="hidden" name="ResultsToShow" value="@Model.JobFilterRequest.ResultsToShow" />
+
+    @if (Model.FilterSet.JobStatuses != null)
     {
         <fieldset>
             <p>Status:</p>
-            @foreach (var status in Model.JobStatuses)
+            @foreach (var status in Model.FilterSet.JobStatuses)
             {
                 <label for="filter-status-@status.Value">@status.Value.FriendlyName()</label>
                 <input name="JobStatuses[]" type="checkbox" id="filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
@@ -19,11 +29,11 @@
         </fieldset>
     }
 
-    @if (Model.SupportActivities != null)
+    @if (Model.FilterSet.SupportActivities != null)
     {
         <fieldset>
             <p>Activity:</p>
-            @foreach (var supportActivity in Model.SupportActivities)
+            @foreach (var supportActivity in Model.FilterSet.SupportActivities)
             {
                 <label for="filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName()</label>
                 <input name="SupportActivities[]" type="checkbox" id="filter-supportActivity-@supportActivity.Value" value="@((int)supportActivity.Value)" checked="@supportActivity.IsSelected" />
@@ -34,11 +44,11 @@
         </fieldset>
     }
 
-    @if (Model.MaxDistanceInMiles != null)
+    @if (Model.FilterSet.MaxDistanceInMiles != null)
     {
         <fieldset>
             <p>Distance:</p>
-            @foreach (var distance in Model.MaxDistanceInMiles)
+            @foreach (var distance in Model.FilterSet.MaxDistanceInMiles)
             {
                 <label for="filter-distance-@distance.Value">@distance.Label</label>
                 <input type="radio" name="MaxDistanceInMiles" id="filter-distance-@distance.Value" value="@distance.Value" checked="@distance.IsSelected" />
@@ -46,11 +56,11 @@
         </fieldset>
     }
 
-    @if (Model.DueInNextXDays != null)
+    @if (Model.FilterSet.DueInNextXDays != null)
     {
         <fieldset>
             <p>Due:</p>
-            @foreach (var dueInNextXDays in Model.DueInNextXDays)
+            @foreach (var dueInNextXDays in Model.FilterSet.DueInNextXDays)
             {
                 <label for="filter-due-@dueInNextXDays.Value">@dueInNextXDays.Label</label>
                 <input type="radio" name="DueInNextXDays" id="filter-due-@dueInNextXDays.Value" value="@dueInNextXDays.Value" checked="@dueInNextXDays.IsSelected" />
@@ -60,3 +70,20 @@
 
     <button type="submit" class="update">Update</button>
 </form>
+
+<div class="profile__section job-filter-results-panel">
+    @await Component.InvokeAsync("JobList", new
+{
+    JobFilterRequest = Model.JobFilterRequest,
+    EmptyListCallback = new Action(() =>
+    {
+        jobsToDisplay = false; 
+        Model.EmptyJobSetCallback?.Invoke();
+    }),
+})
+
+    @if (!jobsToDisplay)
+    {
+        <p>No jobs to display</p>
+    }
+</div>

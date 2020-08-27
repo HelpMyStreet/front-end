@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.ViewComponents
@@ -18,11 +19,11 @@ namespace HelpMyStreetFE.ViewComponents
             _userService = userService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int JobID, int UserId)
+        public async Task<IViewComponentResult> InvokeAsync(int JobID, int UserId, CancellationToken cancellationToken)
         {
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
-                JobDetail = await _requestService.GetJobDetailsAsync(JobID, UserId),
+                JobDetail = await _requestService.GetJobDetailsAsync(JobID, UserId, cancellationToken),
                 UserIsVerified = (await _userService.GetUserAsync(UserId)).IsVerified ?? false,
             };
 

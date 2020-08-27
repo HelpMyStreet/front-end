@@ -33,17 +33,6 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId)
-        {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobsAllocatedToUserResponse>>($"/api/GetJobsAllocatedToUser?volunteerUserID={volunteerUserId}");
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content.JobSummaries;
-            }
-            return null;
-        }
-
         public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID={jobId}&userID={userId}");
@@ -77,8 +66,14 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request)
+        public async Task<bool> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId)
         {
+            var request = new PutUpdateJobStatusToDoneRequest()
+            {
+                JobID = jobId,
+                CreatedByUserID = createdByUserId
+            };
+
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToDoneResponse>>($"/api/PutUpdateJobStatusToDone", request);
 
             if (response.HasContent && response.IsSuccessful)
@@ -88,8 +83,14 @@ namespace HelpMyStreetFE.Repositories
             return false;
         }
 
-        public async Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request)
+        public async Task<bool> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId)
         {
+            var request = new PutUpdateJobStatusToOpenRequest()
+            {
+                JobID = jobId,
+                CreatedByUserID = createdByUserId
+            };
+
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToOpenResponse>>($"/api/PutUpdateJobStatusToOpen", request);
 
             if (response.HasContent && response.IsSuccessful)
@@ -99,8 +100,14 @@ namespace HelpMyStreetFE.Repositories
             return false;
         }
 
-        public async Task<bool> UpdateJobStatusToCancelledAsync(PutUpdateJobStatusToCancelledRequest request)
+        public async Task<bool> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId)
         {
+            var request = new PutUpdateJobStatusToCancelledRequest()
+            {
+                JobID = jobId,
+                CreatedByUserID = createdByUserId
+            };
+
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToCancelledResponse>>($"/api/PutUpdateJobStatusToCancelled", request);
 
             if (response.HasContent && response.IsSuccessful)
@@ -110,8 +117,15 @@ namespace HelpMyStreetFE.Repositories
             return false;
         }
 
-        public async Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request)
+        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId)
         {
+            var request = new PutUpdateJobStatusToInProgressRequest()
+            {
+                JobID = jobId,
+                CreatedByUserID = createdByUserId,
+                VolunteerUserID = volunteerUserId
+            };
+
             var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToInProgressResponse>>($"/api/PutUpdateJobStatusToInProgress", request);
 
             if (response.HasContent && response.IsSuccessful)

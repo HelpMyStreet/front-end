@@ -53,7 +53,7 @@ export function initialiseRequests(isVerified) {
 
     $('.job-list').on('click', '.job a.open', function (e) {
         e.preventDefault();
-        const job = $(this).parentsUntil('.job').parent();
+        const job = $(this).closest('.job');
         if (isVerified) {
             updateQueryStringParam('j', $(job).attr('id'));
             job.toggleClass('open');
@@ -66,7 +66,7 @@ export function initialiseRequests(isVerified) {
 
     $('.job-list').on('click', '.job a.close', function (e) {
         e.preventDefault();
-        const job = $(this).parentsUntil('.job').parent();
+        const job = $(this).closest('.job');
         removeQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
@@ -87,7 +87,7 @@ export function initialiseRequests(isVerified) {
     });
 
     $('.job-list').on('click', '.undo-request', async function (evt) {
-        const job = $(this).parentsUntil(".job").parent();
+        const job = $(this).closest(".job");
         const targetState = $(this).data("target-state");
         const targetUser = $(this).data("target-user") ?? "";
 
@@ -106,7 +106,7 @@ export function initialiseRequests(isVerified) {
 
 
 export function showStatusUpdatePopup(btn) {
-    const job = btn.parentsUntil(".job").parent();
+    const job = btn.closest(".job");
     const targetState = $(btn).data("target-state");
     const targetUser = $(btn).data("target-user") ?? "";
 
@@ -191,5 +191,20 @@ function initialiseFilters() {
             $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
         }
         return false;
+    });
+
+    $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
+        e.preventDefault();
+        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
+        const resultsToShowIncrementInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShowIncrement"]');
+        resultsToShowInput.val(parseInt(resultsToShowInput.val()) + parseInt(resultsToShowIncrementInput.val()));
+        $(this).closest('.job-filter-panel').find('.update').click();
+    });
+
+    $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
+        e.preventDefault();
+        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
+        resultsToShowInput.val(0);
+        $(this).closest('.job-filter-panel').find('.update').click();
     });
 }

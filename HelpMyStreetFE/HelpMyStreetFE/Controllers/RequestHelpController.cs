@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -41,7 +42,8 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         public async Task<IActionResult> RequestHelp(
         [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpViewModel requestHelp,
-        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
+        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step,
+        CancellationToken cancellationToken)
         {
             try
             {
@@ -153,7 +155,7 @@ namespace HelpMyStreetFE.Controllers
 
                     var isFTLOSJourney = requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.FtLOS ? true : false;
 
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, HttpContext);
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, cancellationToken);
                     if (response != null)
                     {
                         return RedirectToRoute("request-help/success", new

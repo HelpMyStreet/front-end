@@ -9,6 +9,5 @@ namespace HelpMyStreetFE.Models.Email
     {
         public int OpenRequestsRadius { get; set; }
         public int MaxNonCriteriaOpenJobsToDisplay { get; set; }
-        public int RequestsSessionExpiryInMinutes { get; set; }
     }
 }
