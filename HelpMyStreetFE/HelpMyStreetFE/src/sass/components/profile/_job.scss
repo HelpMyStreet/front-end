@@ -62,6 +62,15 @@
                 padding: 0 5px;
             }
 
+            > span {
+                margin: 0 10px;
+                &.narrow-screen-no-ml {
+                    @media (max-width: $med-screen) {
+                        margin-left: 0;
+                    }
+                }
+            }
+
             img {
                 height: 25px;
                 margin: 5px;
