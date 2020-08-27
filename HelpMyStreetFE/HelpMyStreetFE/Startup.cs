@@ -51,7 +51,6 @@ namespace HelpMyStreetFE
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
             services.Configure<RequestSettings>(Configuration.GetSection("RequestSettings"));
-            services.Configure<SessionCacheService.SessionCacheSettings>(Configuration.GetSection("SessionCacheSettings"));
 
 
             PollyHttpPolicies pollyHttpPolicies = new PollyHttpPolicies(new PollyHttpPoliciesConfig());
