@@ -211,19 +211,13 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-
-            if (currentGroup != null)
+            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
             {
-                if (currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
-                {
-                    return await GroupRequests(groupKey);
-                }
-                else if (currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
-                {
-                    return await GroupVolunteers(groupKey);
-                }
+                return await GroupRequests(groupKey);
+            }
+            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin))
+            {
+                return await GroupVolunteers(groupKey);
             }
 
             return Redirect(PROFILE_URL);
@@ -239,14 +233,13 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
             viewModel.CurrentPage = MenuPage.GroupRequests;
-            viewModel.CurrentGroup = currentGroup;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }
@@ -262,19 +255,13 @@ namespace HelpMyStreetFE.Controllers
                 return countNavViewModel;
             }
 
-            UserGroup currentGroup = null;
-            if (groupKey != null)
-            {
-                var userGroups = await _groupService.GetUserGroupRoles(user.ID);
-                currentGroup = userGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            }
-
             int count;
             switch (menuPage)
             {
                 case MenuPage.GroupRequests:
-                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, cancellationToken);
+                    var userGroupRoles = await _groupService.GetUserGroupRoles(user.ID);
+                    if (!_groupService.GetUserHasRole(userGroupRoles, groupKey, GroupRoles.TaskAdmin)) { return countNavViewModel; }
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(userGroupRoles.Where(g => g.GroupKey == groupKey).FirstOrDefault().GroupId, cancellationToken);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.AcceptedRequests:
@@ -308,14 +295,13 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
             viewModel.CurrentPage = MenuPage.GroupVolunteers;
-            viewModel.CurrentGroup = currentGroup;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }

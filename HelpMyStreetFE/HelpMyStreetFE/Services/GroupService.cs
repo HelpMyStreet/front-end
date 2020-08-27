@@ -98,5 +98,23 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
+        public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId);
+
+            return userGroupRoles?.Where(g => g.GroupId == groupId).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public async Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId);
+
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
+        {
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
     }
 }

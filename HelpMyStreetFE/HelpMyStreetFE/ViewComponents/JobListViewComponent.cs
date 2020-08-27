@@ -41,9 +41,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobFilterRequest.JobSet == JobSet.GroupRequests)
             {
-                if (!(await _groupService.GetUserGroupRoles(user.ID))
-                    .Where(g => g.GroupId == jobFilterRequest.GroupId.Value)
-                    .FirstOrDefault().UserRoles.Contains(GroupRoles.TaskAdmin))
+                if (!(await _groupService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin)))
                 {
                     throw new UnauthorizedAccessException("User not authorized to view group tasks");
                 }

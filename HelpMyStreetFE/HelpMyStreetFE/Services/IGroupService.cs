@@ -21,5 +21,9 @@ namespace HelpMyStreetFE.Services
         Task<List<UserGroup>> GetUserGroupRoles(int userId);
 
         Task<List<UserGroup>> GetGroupMembers(int groupId);
+
+        Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role);
+        Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role);
+        bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role);
     }
 }
