@@ -255,32 +255,31 @@ namespace HelpMyStreetFE.Controllers
                 return countNavViewModel;
             }
 
-            int count;
-            switch (menuPage)
+            if (menuPage == MenuPage.GroupRequests)
             {
-                case MenuPage.GroupRequests:
-                    var userGroupRoles = await _groupService.GetUserGroupRoles(user.ID);
-                    if (!_groupService.GetUserHasRole(userGroupRoles, groupKey, GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(userGroupRoles.Where(g => g.GroupKey == groupKey).FirstOrDefault().GroupId, false, cancellationToken);
-                    count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
-                    break;
-                case MenuPage.AcceptedRequests:
-                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken);
-                    count = acceptedRequests.Where(j => j.JobStatus == JobStatuses.InProgress).Count();
-                    break;
-                case MenuPage.CompletedRequests:
-                    var completedRequests = await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken);
-                    count = completedRequests.Where(j => j.JobStatus == JobStatuses.Done).Count();
-                    break;
-                case MenuPage.OpenRequests:
-                    var openRequests = await _requestService.GetOpenJobsAsync(user, false, cancellationToken);
-                    count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
-                    break;
-                default:
+                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
+                {
                     return countNavViewModel;
+                }
             }
 
-            countNavViewModel.Count = count;
+            IEnumerable<JobSummary> jobs = menuPage switch
+            {
+                MenuPage.GroupRequests
+                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress),
+                MenuPage.AcceptedRequests
+                    => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
+                MenuPage.CompletedRequests
+                    => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done),
+                MenuPage.OpenRequests
+                    => (await _requestService.GetOpenJobsAsync(user, false, cancellationToken)),
+                _   => null
+            };
+
+            if (jobs != null)
+            {
+                countNavViewModel.Count = jobs.Count();
+            }
 
             return countNavViewModel;
         }

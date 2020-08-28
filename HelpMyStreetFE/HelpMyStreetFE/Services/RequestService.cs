@@ -104,7 +104,7 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
-        public async Task<OpenJobsViewModel> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
@@ -114,11 +114,11 @@ namespace HelpMyStreetFE.Services
                 return await GetOpenJobsForUserFromRepo(user);
             }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
-            if (jobs == null)
-            {
-                return null;
-            }
+            return jobs;
+        }
 
+        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs)
+        {
             var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
             return new OpenJobsViewModel
@@ -189,6 +189,12 @@ namespace HelpMyStreetFE.Services
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
+        }
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
+        {
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey));
+
+            return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
 
         public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
