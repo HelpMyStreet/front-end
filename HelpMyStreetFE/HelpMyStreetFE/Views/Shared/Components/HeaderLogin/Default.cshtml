@@ -20,12 +20,12 @@
         <div class="header-login__input pt-sm pb-sm mr-sm">
             <label for="email">Email address</label>
             <input type="email" placeholder="Email Address" id="email" />
-            <span id="login-fail-message" class="login__fail-message"></span>
+            <div id="login-fail-message" class="login__fail-message"></div>
         </div>
-        <div class="header-login__input pt-sm pb-sm mr-md">
-            <label for="password">Password</label>
-            <input type="Password" placeholder="Password" id="password" />
-            <span><a href="/forgotten-password" class="link--forgot-pw">Forgotten password?</a></span>
+        <div class="header-login__input header-login__input--password pt-sm pb-sm mr-md">            
+            <label for="password" class="password--label">Password</label>
+            <input class="password--input" type="Password" placeholder="Password" id="password" />
+            <a href="/forgotten-password" class="link--forgot-pw">Forgotten password?</a>
         </div>
 
         <div class="header-login__btn pt-sm pb-sm">
@@ -35,5 +35,7 @@
             </button>
             <a href="@Model.SignUpURL" class="btn btn--sign-up cta">Sign Up Now</a>
         </div>
+        
+        
     </div>
 </article>
