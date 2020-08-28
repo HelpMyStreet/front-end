@@ -1,8 +1,12 @@
-.account__nav {
-    @media screen and (max-width: $med-screen) {
-        margin-bottom: 20px;
+.account__wrapper {
+    .account__nav {
+        @media screen and (max-width: $med-screen) {
+            display: none;
+        }
     }
+}
 
+.account__nav {
     &__item {
         list-style: none;
 
