@@ -55,15 +55,31 @@
         &__urgency {
             color: $dark-blue;
             background-color: $washed-blue;
+            text-align: center;
+            flex-direction: column;
 
             span,
             img {
                 padding: 0 5px;
+                vertical-align: middle;
             }
 
-            img {
+            > span {
+                margin: 0 10px;
+            }
+
+            img, span.critical-icon {
                 height: 25px;
                 margin: 5px;
+
+                @media (min-width: $med-screen) {
+                    display: block;
+                    margin: 5px auto;
+                }
+            }
+
+            @media (min-width: $sm-screen) {
+                flex-direction: row;
             }
 
             @media (min-width: $med-screen) {
@@ -109,15 +125,31 @@
         }
 
         &__actions {
-            display: flex;
-            flex-wrap: wrap;
-            flex-grow: 1;
-            width: 190px;
-
             .btn {
                 width: 100%;
                 padding: 5px 0;
+                margin: 0.25rem 0.5rem;
             }
+
+            display: flex;
+            flex-wrap: wrap;
+            flex-grow: 1;
+            justify-content: center;
+            width: 100%;
+
+            @media (min-width: $sm-screen) {
+                flex-direction: row;
+                width: auto;
+
+                .btn {
+                    width: 12rem;
+                }
+            }
+
+            @media (min-width: $med-screen) {
+                flex-direction: column;
+            }
+
         }
 
         &__footer {
@@ -136,16 +168,6 @@
                     span {
                         @include arrow( 8px, 3px, $dark-blue, down, $white);
                         height: 10px;
-                    }
-                }
-
-                &.close {
-                    display: none;
-
-                    span {
-                        @include arrow( 8px, 3px, $dark-blue, up, $white);
-                        height: 10px;
-                        margin: 0 0 3px 12px;
                     }
                 }
             }
@@ -174,17 +196,6 @@
         display: none;
         padding: 10px 20px;
 
-
-        &:before {
-            content: " ";
-            position: relative;
-            display: block;
-            margin: auto;
-            border: none;
-            border-top: 1px solid $gray-8;
-            width: 100%;
-        }
-
         h4 {
             color: $dark-blue;
             font-size: 1.2rem;
@@ -212,11 +223,15 @@
             width: 100%;
         }
 
-        h5 {
-            position: relative;
+        h4, h5 {
             color: $dark-blue;
-            font-size: 1.1rem;
-            padding: 10px 40px 10px 10px;
+            font-size: 1.3rem;
+            padding: 20px 0px 5px 0px;
+        }
+
+        h4 {
+            position: relative;
+            padding: 10px 30px 10px 0px;
             margin: 0;
 
             span {
@@ -238,16 +253,15 @@
             }
         }
 
-        dl,
-        p {
+        &__content {
             display: none;
-            padding: 10px 20px;
         }
 
         dl {
             dt {
                 font-weight: bold;
-                color: $dark-blue;
+                color: $black;
+                padding-top: 0.25rem;
             }
 
             dd {

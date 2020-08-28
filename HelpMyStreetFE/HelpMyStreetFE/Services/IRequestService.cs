@@ -13,13 +13,15 @@ namespace HelpMyStreetFE.Services
 {
     public interface IRequestService
     {
-        Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, CancellationToken cancellationToken);
-        Task<OpenJobsViewModel> GetOpenJobsAsync(User user, CancellationToken cancellationToken);
-        Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, CancellationToken cancellationToken);
+        Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken);
         Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken);
         Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source);
         IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest);
+        OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs);
     }
 }

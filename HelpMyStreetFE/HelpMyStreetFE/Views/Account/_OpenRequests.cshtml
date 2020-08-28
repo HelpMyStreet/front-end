@@ -1,7 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.Account
 @using HelpMyStreetFE.Enums.Account
 @using HelpMyStreetFE.Models.Account.Jobs;
-@using HelpMyStreet.Utils.Enums;
 
 @model AccountViewModel
 
@@ -54,7 +53,7 @@
                     @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
                        {
                            JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
-                           FilterSet = FilterSet.DefaultFilterSet.OpenRequestsDefaultFilterSet,
+                           FilterSet = FilterSet.DefaultFilterSet.GetOpenRequestsDefaultFilterSet(Model.UserDetails.User),
                            EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
                        })
                 </div>

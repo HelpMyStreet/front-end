@@ -73,14 +73,14 @@
 
 <div class="profile__section job-filter-results-panel">
     @await Component.InvokeAsync("JobList", new
-{
-    JobFilterRequest = Model.JobFilterRequest,
-    EmptyListCallback = new Action(() =>
     {
-        jobsToDisplay = false; 
-        Model.EmptyJobSetCallback?.Invoke();
-    }),
-})
+        JobFilterRequest = Model.JobFilterRequest,
+        EmptyListCallback = new Action(() =>
+        {
+            jobsToDisplay = false; 
+            Model.EmptyJobSetCallback?.Invoke();
+        }),
+    })
 
     @if (!jobsToDisplay)
     {

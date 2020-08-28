@@ -104,13 +104,21 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
-        public async Task<OpenJobsViewModel> GetOpenJobsAsync(User user, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await GetOpenJobsForUserFromRepo(user);
-            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-jobs", RefreshBehaviour.WaitForFreshData, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
+            return jobs;
+        }
+
+        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs)
+        {
             var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
             return new OpenJobsViewModel
@@ -120,14 +128,17 @@ namespace HelpMyStreetFE.Services
             };
         }
 
-        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
-            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.WaitForFreshData, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
-            return jobs.OrderOpenJobsForDisplay();
+            return jobs?.OrderOpenJobsForDisplay();
         }
 
 
@@ -179,13 +190,22 @@ namespace HelpMyStreetFE.Services
         {
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
-
-        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey));
+
+            return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        {
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = groupId });
-            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.WaitForFreshData, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
         public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jfr)

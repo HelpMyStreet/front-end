@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
+using HelpMyStreetFE.ViewComponents;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -211,19 +212,13 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-
-            if (currentGroup != null)
+            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
             {
-                if (currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
-                {
-                    return await GroupRequests(groupKey);
-                }
-                else if (currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
-                {
-                    return await GroupVolunteers(groupKey);
-                }
+                return await GroupRequests(groupKey);
+            }
+            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin))
+            {
+                return await GroupVolunteers(groupKey);
             }
 
             return Redirect(PROFILE_URL);
@@ -239,63 +234,29 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
             viewModel.CurrentPage = MenuPage.GroupRequests;
-            viewModel.CurrentGroup = currentGroup;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
+        public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            CountNavViewModel countNavViewModel = new CountNavViewModel();
-
             var user = await GetCurrentUser();
             if (!_userService.GetRegistrationIsComplete(user))
             {
-                return countNavViewModel;
+                return 0;
             }
 
-            UserGroup currentGroup = null;
-            if (groupKey != null)
-            {
-                var userGroups = await _groupService.GetUserGroupRoles(user.ID);
-                currentGroup = userGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            }
+            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
 
-            int count;
-            switch (menuPage)
-            {
-                case MenuPage.GroupRequests:
-                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, cancellationToken);
-                    count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
-                    break;
-                case MenuPage.AcceptedRequests:
-                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
-                    count = acceptedRequests.Where(j => j.JobStatus == JobStatuses.InProgress).Count();
-                    break;
-                case MenuPage.CompletedRequests:
-                    var completedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
-                    count = completedRequests.Where(j => j.JobStatus == JobStatuses.Done).Count();
-                    break;
-                case MenuPage.OpenRequests:
-                    var openRequests = await _requestService.GetOpenJobsAsync(user, cancellationToken);
-                    count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
-                    break;
-                default:
-                    return countNavViewModel;
-            }
-
-            countNavViewModel.Count = count;
-
-            return countNavViewModel;
+            return count;
         }
 
         [HttpGet]
@@ -308,14 +269,13 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
             viewModel.CurrentPage = MenuPage.GroupVolunteers;
-            viewModel.CurrentGroup = currentGroup;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }
@@ -368,7 +328,6 @@ namespace HelpMyStreetFE.Controllers
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
-
                 };
 
                 viewModel.UserDetails = userDetails;

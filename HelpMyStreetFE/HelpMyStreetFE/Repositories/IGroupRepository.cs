@@ -25,5 +25,7 @@ namespace HelpMyStreetFE.Repositories
         Task<GetUserRolesResponse> GetUserRoles(int userId);
 
         Task<GetGroupMembersResponse> GetGroupMembers(int groupId);
+
+        Task<GetGroupMemberRolesResponse> GetGroupMemberRoles(int groupId, int userId);
     }
 }

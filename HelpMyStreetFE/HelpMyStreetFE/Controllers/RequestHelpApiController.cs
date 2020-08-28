@@ -9,8 +9,11 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
+using HelpMyStreet.Utils.Extensions;
 
-namespace HelpMyStreetFE.Controllers { 
+namespace HelpMyStreetFE.Controllers {
 
 
     [Route("api/requesthelp")]
@@ -31,7 +34,7 @@ namespace HelpMyStreetFE.Controllers {
 
         [Authorize]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<bool>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
+        public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
             try
             {
@@ -44,7 +47,16 @@ namespace HelpMyStreetFE.Controllers {
                     targetUserId = string.IsNullOrEmpty(u) ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
                 }
 
-                return await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
+                bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
+
+                if (success)
+                {
+                    return s.FriendlyName();
+                }
+                else
+                {
+                    return StatusCode(400);
+                }
             }
             catch (Exception ex)
             {
@@ -58,9 +70,15 @@ namespace HelpMyStreetFE.Controllers {
         public async Task<IActionResult> GetJobDetails(string j)
         {
             var jobId = DecodeJobID(j);
-            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return ViewComponent("JobDetail", new { jobId, userId });
+            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            return ViewComponent("JobDetail", new { jobId, user });
 
         }
 

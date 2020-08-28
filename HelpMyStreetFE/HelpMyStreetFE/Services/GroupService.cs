@@ -75,28 +75,44 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
-        public async Task<List<UserGroup>> GetGroupMembers(int groupId)
+        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId)
         {
             var thisGroup = (await _groupRepository.GetGroup(groupId)).Group;
-            List<int> userIds = (await _groupRepository.GetGroupMembers(groupId)).Users;
+            var groupMemberRoles = await _groupRepository.GetGroupMemberRoles(groupId, userId);
 
             List<UserGroup> response = new List<UserGroup>();
-            foreach (int userId in userIds)
+            foreach (var userRoles in groupMemberRoles.GroupMemberRoles)
             {
-                // TODO: Remove this call (once we have GetGroupMemberRoles)
-                var userRoles = await _groupRepository.GetUserRoles(userId);
-                response.AddRange(userRoles.UserGroupRoles.Where(group => group.Key == groupId).Select(group => new UserGroup()
+                response.Add(new UserGroup()
                 {
-                    UserId = userId,
+                    UserId = userRoles.Key,
                     GroupId = groupId,
                     GroupKey = thisGroup.GroupKey,
                     GroupName = thisGroup.GroupName,
-                    UserRoles = group.Value.Select(role => (GroupRoles)role)
-                }));
+                    UserRoles = userRoles.Value.Select(role => (GroupRoles)role)
+                });
             }
 
             return response;
         }
 
+        public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId);
+
+            return userGroupRoles?.Where(g => g.GroupId == groupId).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public async Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId);
+
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
+        {
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
     }
 }

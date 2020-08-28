@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,41 +34,51 @@ namespace HelpMyStreetFE.Models.Account.Jobs
                 },
             };
 
-            public static FilterSet OpenRequestsDefaultFilterSet = new FilterSet()
+            public static FilterSet GetOpenRequestsDefaultFilterSet(User user)
             {
-                SupportActivities = new List<FilterField<SupportActivities>>()
+                FilterSet filterSet = new FilterSet()
                 {
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn, IsSelected = true },
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.Shopping, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.Errands, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.Other, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.MedicalAppointmentTransport, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, IsSelected = true},
-                    new FilterField<SupportActivities>(){Value = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector, IsSelected = true},
-                },
-                DueInNextXDays = new List<FilterField<int>>()
+                    SupportActivities = new List<FilterField<SupportActivities>>()
+                    {
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.Shopping, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.Errands, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.Other, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.MedicalAppointmentTransport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, IsSelected = true },
+                    },
+                    DueInNextXDays = new List<FilterField<int>>()
+                    {
+                        new FilterField<int> { Value = 1, Label = "Today" },
+                        new FilterField<int> { Value = 7, Label = "This week" },
+                        new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
+                        new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                    },
+                    MaxDistanceInMiles = new List<FilterField<int>>()
+                    {
+                        new FilterField<int> { Value = 0, Label = "My street only" },
+                        new FilterField<int> { Value = 1, Label = "Within 1 mile" },
+                        new FilterField<int> { Value = 5, Label = "within 5 miles" },
+                        new FilterField<int> { Value = 10, Label = "within 10 miles" },
+                        new FilterField<int> { Value = 20, Label = "within 20 miles", IsSelected = true },
+                    },
+                };
+
+                if (user.SupportActivities.Contains(HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector))
                 {
-                    new FilterField<int>{Value = 1, Label = "Today" },
-                    new FilterField<int>{Value = 7, Label = "This week"},
-                    new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
-                    new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
-                },
-                MaxDistanceInMiles = new List<FilterField<int>>()
-                {
-                    new FilterField<int>{Value = 0, Label = "My street only"},
-                    new FilterField<int>{Value = 1, Label ="Within 1 mile"},
-                    new FilterField<int>{Value = 5, Label = "within 5 miles"},
-                    new FilterField<int>{Value = 10, Label = "within 10 miles"},
-                    new FilterField<int>{Value = 20, Label = "within 20 miles", IsSelected = true},
-                },
-            };
+                    ((List<FilterField<SupportActivities>>)filterSet.SupportActivities)
+                        .Insert(0, new FilterField<SupportActivities>() { Value = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector, IsSelected = true });
+                }
+
+                return filterSet;
+            }
         }
     }
 }
