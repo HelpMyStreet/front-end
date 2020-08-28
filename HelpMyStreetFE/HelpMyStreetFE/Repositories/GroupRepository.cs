@@ -144,5 +144,17 @@ namespace HelpMyStreetFE.Repositories
             }
             return null;
         }
+
+        public async Task<GetGroupMemberRolesResponse> GetGroupMemberRoles(int groupId, int userId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMemberRoles?groupId={groupId}&userId={userId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMemberRolesResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content;
+            }
+            return null;
+        }
     }
 }

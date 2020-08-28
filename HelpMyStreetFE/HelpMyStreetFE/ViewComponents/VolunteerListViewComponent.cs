@@ -32,10 +32,10 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
 
-            var groupMembers = await _groupService.GetGroupMembers(groupId);
+            var groupMembers = await _groupService.GetGroupMembers(groupId, user.ID);
 
 
-            var getUserTasks = groupMembers.Select(async (userGroup) =>
+            var getEachUser = groupMembers.Select(async (userGroup) =>
             {
                 return new VolunteerViewModel()
                 {
@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             VolunteerListViewModel volunteerListViewModel = new VolunteerListViewModel
             {
-                Volunteers = (await Task.WhenAll(getUserTasks)).Where(v => v.User != null)
+                Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null)
             };
 
 
