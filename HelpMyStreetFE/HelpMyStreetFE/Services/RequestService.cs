@@ -138,7 +138,7 @@ namespace HelpMyStreetFE.Services
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
-            return jobs.OrderOpenJobsForDisplay();
+            return jobs?.OrderOpenJobsForDisplay();
         }
 
 

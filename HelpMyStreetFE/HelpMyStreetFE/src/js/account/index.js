@@ -35,13 +35,16 @@ function initialiseNavBadges() {
 async function refreshBadge(badge) {
     var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'))
     if (response.fetchResponse == fetchResponses.SUCCESS) {
-        const count = (await response.fetchPayload).count;
-        if (count > 0) {
-            $(badge).html(count);
-            $(badge).addClass('count');
+        var newCount = await response.fetchPayload;
+        if ($(badge).html() != newCount) {
+            if ($(badge).is(':visible')) {
+                $(badge).addClass('updated');
+            } else {
+                $(badge).removeClass('dnone');
+            }
+            $(badge).html(newCount);
         } else {
-            $(badge).html('');
-            $(badge).removeClass('count');
+            $(badge).removeClass('updated');
         }
     } else {
         // No badges today

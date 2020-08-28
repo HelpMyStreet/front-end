@@ -32,6 +32,22 @@
                 color: $white;
                 text-align: center;
                 box-shadow: 0 0 4px rgba(0, 0, 0, 0.29);
+
+                @keyframes update {
+                    from {
+                        color: $green;
+                    }
+
+                    to {
+                        color: $white;
+                    }
+                }
+
+                &.updated {
+                    animation-name: update;
+                    animation-duration: 3s;
+                }
+
             }
         }
 

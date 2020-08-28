@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
+using HelpMyStreetFE.ViewComponents;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -245,43 +246,17 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
+        public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            CountNavViewModel countNavViewModel = new CountNavViewModel();
-
             var user = await GetCurrentUser();
             if (!_userService.GetRegistrationIsComplete(user))
             {
-                return countNavViewModel;
+                return 0;
             }
 
-            if (menuPage == MenuPage.GroupRequests)
-            {
-                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
-                {
-                    return countNavViewModel;
-                }
-            }
+            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
 
-            IEnumerable<JobSummary> jobs = menuPage switch
-            {
-                MenuPage.GroupRequests
-                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress),
-                MenuPage.AcceptedRequests
-                    => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
-                MenuPage.CompletedRequests
-                    => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done),
-                MenuPage.OpenRequests
-                    => (await _requestService.GetOpenJobsAsync(user, false, cancellationToken)),
-                _   => null
-            };
-
-            if (jobs != null)
-            {
-                countNavViewModel.Count = jobs.Count();
-            }
-
-            return countNavViewModel;
+            return count;
         }
 
         [HttpGet]
