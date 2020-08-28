@@ -201,6 +201,11 @@ namespace HelpMyStreetFE.Services
 
         public bool GetRegistrationIsComplete(User user)
         {
+            if (user?.RegistrationHistory == null)
+            {
+                return false;
+            }
+            
             return user.RegistrationHistory.Count > 0 && user.RegistrationHistory.Max(a => a.Key) > 3;
         }
     }
