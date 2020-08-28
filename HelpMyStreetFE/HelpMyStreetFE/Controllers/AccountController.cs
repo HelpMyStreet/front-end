@@ -261,19 +261,19 @@ namespace HelpMyStreetFE.Controllers
                 case MenuPage.GroupRequests:
                     var userGroupRoles = await _groupService.GetUserGroupRoles(user.ID);
                     if (!_groupService.GetUserHasRole(userGroupRoles, groupKey, GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(userGroupRoles.Where(g => g.GroupKey == groupKey).FirstOrDefault().GroupId, cancellationToken);
+                    var groupRequests = await _requestService.GetGroupRequestsAsync(userGroupRoles.Where(g => g.GroupKey == groupKey).FirstOrDefault().GroupId, false, cancellationToken);
                     count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.AcceptedRequests:
-                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
+                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken);
                     count = acceptedRequests.Where(j => j.JobStatus == JobStatuses.InProgress).Count();
                     break;
                 case MenuPage.CompletedRequests:
-                    var completedRequests = await _requestService.GetJobsForUserAsync(user.ID, cancellationToken);
+                    var completedRequests = await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken);
                     count = completedRequests.Where(j => j.JobStatus == JobStatuses.Done).Count();
                     break;
                 case MenuPage.OpenRequests:
-                    var openRequests = await _requestService.GetOpenJobsAsync(user, cancellationToken);
+                    var openRequests = await _requestService.GetOpenJobsAsync(user, false, cancellationToken);
                     count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
                     break;
                 default:
