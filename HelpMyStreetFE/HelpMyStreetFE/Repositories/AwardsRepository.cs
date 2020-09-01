@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Repositories
                                 return !x.IsVerified.GetValueOrDefault(false);
                             }
                         }
-                        return false; }
+                        return false; },
                 },
                 new AwardsModel()
                 {
@@ -48,13 +48,15 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Good Samaritan",
                     AwardValue = 1,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
-                    ImageLocation = "/img/awards/good-samaritan.png",
+                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    ImageLocation = "/img/awards/good-samaritan.png"
                 },
                 new AwardsModel()
                 {
                     AwardName = "Helping Hand",
                     AwardValue = 2,
-                    AwardDescription = "{{count}} requests completed so far{{lost}} - you're brill!",
+                    AwardDescription = "{{count}} requests completed so far{{list}} - you're brill!",
+                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/helping-hand.png"
                 },
                 new AwardsModel()
@@ -62,6 +64,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Top Neighbour",
                     AwardValue = 11,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the great work!",
+                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/top-neighbour.png"
                 },
                 new AwardsModel()
@@ -69,6 +72,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Budding Humanitarian",
                     AwardValue = 21,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're awesome!",
+                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/budding-humanitarian.png"
                 },
                 new AwardsModel()
@@ -76,6 +80,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Helping Hero",
                     AwardValue = 51,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
+                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/helping-hero.png"
                 },
                 new AwardsModel()
@@ -83,6 +88,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Volunteer Superstar",
                     AwardValue = 101,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're amazing!",
+                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/volunteer-superstar.png"
                 }
             };
