@@ -353,6 +353,7 @@ HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.js
 HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.txt
 HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.map
 HelpMyStreetFE/HelpMyStreetFE/wwwroot/*.css
+HelpMyStreetFE/HelpMyStreetFE/wwwroot/fonts/*.*
 HelpMyStreetFE/HelpMyStreetFE/appsettings.Development.json
 HelpMyStreetFE/HelpMyStreetFE/appsettings.NMR.json
 

@@ -24,9 +24,15 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<User> GetUser(int id)
         {
-            var resp = await GetAsync<GetUserResponse>($"/api/getuserbyid?id={id}");
-
-            return resp.User;
+            try
+            {
+                var resp = await GetAsync<GetUserResponse>($"/api/getuserbyid?id={id}");
+                return resp.User;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async Task<int> CreateUser(string email, string authId, int referringGroupId, string source)

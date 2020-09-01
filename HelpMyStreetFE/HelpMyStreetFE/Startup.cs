@@ -20,6 +20,11 @@ using System;
 using Microsoft.Extensions.Internal;
 using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
+using HelpMyStreet.Cache.Extensions;
+using HelpMyStreet.Cache;
+using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Account.Jobs;
 
 namespace HelpMyStreetFE
 {
@@ -120,7 +125,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
-            services.AddHttpClient<IGroupService, GroupService>(client =>
+            services.AddHttpClient<IGroupRepository, GroupRepository>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
@@ -142,6 +147,7 @@ namespace HelpMyStreetFE
             });
 
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
+            services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
@@ -149,11 +155,14 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
+            services.AddSingleton<IGroupService, GroupService>();
           
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
+            services.AddMemCache();
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
 
             services.AddControllers();
             services.AddRazorPages()
@@ -270,6 +279,19 @@ namespace HelpMyStreetFE
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
 
+                endpoints.MapControllerRoute(
+                    name: "account/g/group",
+                    pattern: "account/g/{groupKey}",
+                    defaults: new { controller = "Account", action = "Group" });
+                endpoints.MapControllerRoute(
+                    name: "account/g/group/requests",
+                    pattern: "account/g/{groupKey}/requests",
+                    defaults: new { controller = "Account", action = "GroupRequests" });
+                endpoints.MapControllerRoute(
+                    name: "account/g/group/volunteers",
+                    pattern: "account/g/{groupKey}/volunteers",
+                    defaults: new { controller = "Account", action = "GroupVolunteers" });
+
                 // Community placeholders
                 endpoints.MapControllerRoute(
                     name: "Kimberley",
@@ -311,11 +333,14 @@ namespace HelpMyStreetFE
                     name: "OpenRequests",
                     pattern: "account/open-requests",
                     defaults: new { controller = "Account", action = "OpenRequests" });
-
                 endpoints.MapControllerRoute(
                    name: "AcceptedRequests",
                    pattern: "account/accepted-requests",
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
+                endpoints.MapControllerRoute(
+                   name: "CompletedRequests",
+                   pattern: "account/completed-requests",
+                   defaults: new { controller = "Account", action = "CompletedRequests" });
 
                 endpoints.MapControllerRoute(
                    name: "registration/step-one",

@@ -1,28 +1,24 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using HelpMyStreet.Contracts.RequestService.Request;
-using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Contracts.RequestService.Extensions;
-using Microsoft.AspNetCore.Http;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
+using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
+using HelpMyStreet.Cache;
+using System.Threading;
+using HelpMyStreetFE.Models.Account;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
-using HelpMyStreetFE.Helpers;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
-using HelpMyStreetFE.Models.RequestHelp.Stages;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 
 namespace HelpMyStreetFE.Services
 {
@@ -30,26 +26,33 @@ namespace HelpMyStreetFE.Services
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
         private readonly ILogger<RequestService> _logger;
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IGroupService _groupService;
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IOptions<RequestSettings> requestSettings, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService)
+        private readonly IUserService _userService;
+        private readonly IMemDistCache<IEnumerable<JobSummary>> _memDistCache;
+        private readonly IOptions<RequestSettings> _requestSettings;
+
+        private const string CACHE_KEY_PREFIX = "request-service-jobs";
+
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IOptions<RequestSettings> requestSettings)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
-            _requestSettings = requestSettings;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
-    }
+            _userService = userService;
+            _memDistCache = memDistCache;
+            _requestSettings = requestSettings;
+        }
 
-        public async Task<BaseRequestHelpResponse<LogRequestResponse>> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, HttpContext ctx)
+        public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Logging Request");
             var recipient = _requestHelpBuilder.MapRecipient(detailStage);
             var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? _requestHelpBuilder.MapRequestor(detailStage) : recipient;
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
-            
+
             bool heathCritical = false;
             var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
             if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
@@ -64,7 +67,6 @@ namespace HelpMyStreetFE.Services
                     ConsentForContact = requestStage.AgreeToTerms,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
-                    ForRequestor = detailStage.Type == RequestorType.Myself ? true : false,
                     ReadPrivacyNotice = requestStage.AgreeToPrivacy,
                     CreatedByUserId = userId,
                     Recipient = recipient,
@@ -96,151 +98,183 @@ namespace HelpMyStreetFE.Services
 
 
             var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
-            if (response.HasContent & response.IsSuccessful)
-                TriggerCacheRefresh(ctx);
+            if (response != null && userId != 0)
+                TriggerCacheRefresh(userId, cancellationToken);
 
             return response;
         }
-        public async Task<OpenJobsViewModel> GetOpenJobsAsync(double distanceInMiles, int maxOtherJobsToDisplay, User user, HttpContext ctx)
+
+        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
-            if (user.PostalCode == null)
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                throw new Exception("Cannot identify jobs without user postcode");
-            }
-
-            var jobs = ctx.Session.GetObjectFromJson<OpenJobsViewModel>("openJobs");
-            DateTime lastUpdated;
-            DateTime.TryParse(ctx.Session.GetString("openJobsLastUpdated"), out lastUpdated);
-            if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now)
-            {
-                var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly };
-                var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
-                var jobsByFilterRequest = new GetJobsByFilterRequest()
-                {
-                    Postcode = user.PostalCode,
-                    DistanceInMiles = distanceInMiles,
-                    ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
-                    JobStatuses = new JobStatusRequest()
-                    {
-                       JobStatuses = new List<JobStatuses>() { JobStatuses.Open}
-                    },
-                    Groups = new GroupRequest() { Groups = (await _groupService.GetUserGroups(user.ID)).Groups }
-                };
-
-                var all = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
-
-                var (criteriaJobs, otherJobs) = all.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
-
-                jobs = new OpenJobsViewModel
-                {
-                    CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
-                    OtherJobs = otherJobs.OrderOpenJobsForDisplay().Take(maxOtherJobsToDisplay)
-                };
-                
-                ctx.Session.SetObjectAsJson("openJobs", jobs);
-                ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.ToString());
-            }
+                return await GetOpenJobsForUserFromRepo(user);
+            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
             return jobs;
         }
 
-        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, HttpContext ctx)
+        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs)
         {
-            var jobs = ctx.Session.GetObjectFromJson<IEnumerable<JobSummary>>("acceptedJobs");
-            DateTime lastUpdated;
-            DateTime.TryParse(ctx.Session.GetString("acceptedJobsLastUpdated"), out lastUpdated);
-            if (jobs == null || lastUpdated.AddMinutes(_requestSettings.Value.RequestsSessionExpiryInMinutes) < DateTime.Now)
-            {
-                jobs = (await _requestHelpRepository.GetJobsAllocatedToUserAsync(userId)).OrderOpenJobsForDisplay();
-                ctx.Session.SetObjectAsJson("acceptedJobs", jobs);
-                ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.ToString());
-            }
+            var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
-            return jobs;
+            return new OpenJobsViewModel
+            {
+                CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
+                OtherJobs = otherJobs.OrderOpenJobsForDisplay()
+            };
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
+        {
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+
+            return jobs?.OrderOpenJobsForDisplay();
         }
 
 
-        public async Task<IDictionary<int, RequestContactInformation>> GetContactInformationForRequests(IEnumerable<int> ids)
+        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {
-            List<GetJobDetailsResponse> details = new List<GetJobDetailsResponse>();
+            var jobStatusHistory = _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
+            var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
-            foreach (var id in ids)
+            if (jobDetails != null)
             {
-                details.Add(await _requestHelpRepository.GetJobDetailsAsync(id));
-            }
-
-            return details.Aggregate(new Dictionary<int, RequestContactInformation>(), (acc, cur) =>
-            {
-                acc[cur.JobID] = new RequestContactInformation
+                User currentVolunteer = null;
+                if (jobDetails.JobSummary?.VolunteerUserID != null)
                 {
-                    RequestorType = cur.RequestorType,
-                    JobID = cur.JobID,
-                    Recipient = cur.Recipient,
-                    Requestor = cur.Requestor
+                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value);
+                }
+
+                return new JobDetail()
+                {
+                    JobSummary = jobDetails.JobSummary,
+                    Recipient = jobDetails.Recipient,
+                    Requestor = jobDetails.Requestor,
+                    JobStatusHistory = (await jobStatusHistory)?.History,
+                    CurrentVolunteer = currentVolunteer,
                 };
-
-                return acc;
-            });
+            }
+            return null;
         }
 
-        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId)
+        public async Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
-            return await _requestHelpRepository.GetJobDetailsAsync(jobId);
-        }
-        public async Task<bool> UpdateJobStatusToDoneAsync(int jobID, int createdByUserId, HttpContext ctx)
-        {
-            var success = await _requestHelpRepository.UpdateJobStatusToDoneAsync(new PutUpdateJobStatusToDoneRequest()
+            bool success = status switch
             {
-                JobID = jobID,
-                CreatedByUserID = createdByUserId
-            });
+                JobStatuses.InProgress => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value),
+                JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
+                JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
+                JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
+                _ => throw new ArgumentException(message: "Invalid JobStatuses value", paramName: nameof(status)),
+            };
 
             if (success)
-                TriggerCacheRefresh(ctx);
-
-            return success;
-        }
-        public async Task<bool> UpdateJobStatusToOpenAsync(int jobID, int createdByUserId, HttpContext ctx)
-        {
-            var success = await _requestHelpRepository.UpdateJobStatusToOpenAsync(new PutUpdateJobStatusToOpenRequest()
             {
-                CreatedByUserID = createdByUserId,
-                JobID = jobID
-            });
-
-            if (success)
-                TriggerCacheRefresh(ctx);
+                TriggerCacheRefresh(createdByUserId, cancellationToken);
+            }
 
             return success;
-        }
-        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, HttpContext ctx)
-        {
-            var success = await _requestHelpRepository.UpdateJobStatusToInProgressAsync(new PutUpdateJobStatusToInProgressRequest()
-            {
-                CreatedByUserID = createdByUserId,
-                VolunteerUserID = volunteerUserId,
-                JobID = jobID
-            });
-
-            if (success)
-                TriggerCacheRefresh(ctx);
-
-            return success;
-        }
-
-        private void TriggerCacheRefresh(HttpContext ctx)
-        {
-            int triggerSessionMinutes = (_requestSettings.Value.RequestsSessionExpiryInMinutes + 1) * -1;
-            ctx.Session.SetString("acceptedJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
-            ctx.Session.SetString("openJobsLastUpdated", DateTime.Now.AddMinutes(triggerSessionMinutes).ToString());
         }
 
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
+        {
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey));
+
+            return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
+        }
+
+        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        {
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = groupId });
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+        }
+
+        public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jfr)
+        {
+            return jobs.Where(
+                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
+                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
+                    && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
+                    && (jfr.DueInNextXDays == null || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.DueAfter == null || j.DueDate.Date >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+        }
+
+        private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
+                }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", cancellationToken);
+
+
+                _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId));
+                }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
+
+
+                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
+                if (userGroups != null)
+                {
+                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g => {
+                        _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                        {
+                            return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
+                        }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
+                    });
+                }
+            });
+        }
+
+        private async Task<IEnumerable<JobSummary>> GetOpenJobsForUserFromRepo(User user)
+        {
+            if (user.PostalCode == null)
+            {
+                return null;
+            }
+
+            var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly, SupportActivities.CommunityConnector };
+            var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+            var jobsByFilterRequest = new GetJobsByFilterRequest()
+            {
+                Postcode = user.PostalCode,
+                DistanceInMiles = _requestSettings.Value.OpenRequestsRadius,
+                ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
+                JobStatuses = new JobStatusRequest()
+                {
+                    JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
+                },
+                Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
+            };
+
+            return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+        }
     }
- }
+}
 
 
 

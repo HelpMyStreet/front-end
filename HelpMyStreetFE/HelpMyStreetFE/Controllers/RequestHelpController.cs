@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -41,7 +42,8 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost]
         public async Task<IActionResult> RequestHelp(
         [ModelBinder(BinderType = typeof(RequestHelpModelBinder))]RequestHelpViewModel requestHelp,
-        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step)
+        [ModelBinder(BinderType = typeof(RequestHelpStepsViewModelBinder))] IRequestHelpStageViewModel step,
+        CancellationToken cancellationToken)
         {
             try
             {
@@ -153,12 +155,12 @@ namespace HelpMyStreetFE.Controllers
 
                     var isFTLOSJourney = requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.FtLOS ? true : false;
 
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, HttpContext);
-                    if (response.HasContent && response.IsSuccessful)
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, cancellationToken);
+                    if (response != null)
                     {
                         return RedirectToRoute("request-help/success", new
                         {
-                            fulfillable = response.Content.Fulfillable,
+                            fulfillable = response.Fulfillable,
                             isFTLOS = isFTLOSJourney,
                             referringGroupId = requestHelp.ReferringGroupID,
                             source = requestHelp.Source
@@ -192,11 +194,10 @@ namespace HelpMyStreetFE.Controllers
             // Fix to allow existing routing
             if (referringGroup == "v4v")
             {
-                referringGroupId = (await _groupService.GetGroupByKey("ageuklsl")).GroupId;
+                referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl");
             }
 
-            var groupServiceResponse = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
-            RequestHelpFormVariant requestHelpFormVariant = groupServiceResponse == null ? RequestHelpFormVariant.Default : groupServiceResponse.RequestHelpFormVariant;
+            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source) ?? RequestHelpFormVariant.Default;
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
             {
@@ -207,9 +208,10 @@ namespace HelpMyStreetFE.Controllers
             var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
-            if (requestStage.Tasks.Count() == 1)
+            SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;
+            if (selectedTask != null)
             {
-                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpFormVariant, RequestHelpFormStage.Request, requestStage.Tasks.First().SupportActivity);
+                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value);
             }
 
             return View(model);

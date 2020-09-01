@@ -144,52 +144,7 @@ namespace HelpMyStreetFE.Services
 
         public UserDetails GetUserDetails(User user)
         {
-            var personalDetails = user.UserPersonalDetails;
-
-            if (user.RegistrationHistory.Count < 3)
-            {
-                return new UserDetails(
-                   personalDetails.FirstName == null && personalDetails.LastName == null ? "??" : personalDetails.FirstName.Substring(0, 1).ToUpper() + personalDetails.LastName.Substring(0, 1).ToUpper(),
-                   personalDetails.DisplayName == null ? "??" : personalDetails.DisplayName,
-                   "Not Set",
-                   "Not Set",
-                   "Not Set",
-                   "Not Set",
-                   "Not Set",
-                   "Not Set",
-                   "Not Set",
-                   "Not Set",                  
-                   "Not Set",
-                   new List<string>(),
-                   false,
-                   false);
-            }
-
-            string initials = personalDetails.FirstName.Substring(0, 1).ToUpper() + personalDetails.LastName.Substring(0, 1).ToUpper();
-
-            string address = personalDetails.Address.AddressLine1 + ", " + personalDetails.Address.Postcode;
-          
-            string gender = "Unknown";            
-            bool isStreetChampion = (user.StreetChampionRoleUnderstood.HasValue && user.StreetChampionRoleUnderstood.Value == true);
-            bool isVerified = (user.IsVerified.HasValue && user.IsVerified.Value == true);
-            string streetChampion = isStreetChampion ? "Street Champion" : "Helper";         
-
-            return new UserDetails(
-                initials,
-                personalDetails.DisplayName,
-                personalDetails.FirstName,
-                personalDetails.LastName,
-                personalDetails.EmailAddress,
-                address,
-                streetChampion,
-                personalDetails.MobilePhone,
-                personalDetails.OtherPhone,
-                personalDetails.DateOfBirth.Value.ToString("dd/MM/yyyy"),
-                gender,                
-                user.ChampionPostcodes,
-                isStreetChampion,
-                isVerified
-                );
+            return new UserDetails(user);
         }
 
         public string FormatName(string name)
@@ -199,6 +154,11 @@ namespace HelpMyStreetFE.Services
 
         public bool GetRegistrationIsComplete(User user)
         {
+            if (user?.RegistrationHistory == null)
+            {
+                return false;
+            }
+            
             return user.RegistrationHistory.Count > 0 && user.RegistrationHistory.Max(a => a.Key) > 3;
         }
     }

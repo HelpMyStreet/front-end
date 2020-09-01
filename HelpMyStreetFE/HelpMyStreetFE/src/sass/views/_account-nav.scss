@@ -1,8 +1,12 @@
-.account__nav {
-    @media screen and (max-width: $med-screen) {
-        margin-bottom: 20px;
+.account__wrapper {
+    .account__nav {
+        @media screen and (max-width: $med-screen) {
+            display: none;
+        }
     }
+}
 
+.account__nav {
     &__item {
         list-style: none;
 
@@ -18,21 +22,43 @@
 
             .count {
                 position: absolute;
+                min-width: 29px;
                 right: -12px;
                 top: -9px;
                 font-size: 12px;
                 background: $green;
-                border-radius: 50%;
-                padding: 1px;
+                border-radius: 15px;
+                padding: 1px 7px;
                 color: $white;
-                height: 29px;
-                width: 29px;
                 text-align: center;
+                box-shadow: 0 0 4px rgba(0, 0, 0, 0.29);
+
+                @keyframes update {
+                    from {
+                        color: $green;
+                    }
+
+                    to {
+                        color: $white;
+                    }
+                }
+
+                &.updated {
+                    animation-name: update;
+                    animation-duration: 3s;
+                }
+
             }
         }
 
         a.selected {
             background-color: white;
+        }
+
+        &.submenu__container {
+            ul {
+                display: none;
+            }
         }
     }
 }
