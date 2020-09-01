@@ -54,9 +54,8 @@ namespace HelpMyStreetFE.ViewComponents
                 viewModel.Notifications = new List<NotificationModel>();
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.UserDetails = userDetails;
+                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
             }
-
-            viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
 
             return viewModel;
         }

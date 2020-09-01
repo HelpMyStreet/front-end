@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using HelpMyStreet.Utils.Enums;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -23,6 +24,11 @@ namespace HelpMyStreetFE.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(int JobID, User user, CancellationToken cancellationToken)
         {
             var jobDetails = await _requestService.GetJobDetailsAsync(JobID, user.ID, cancellationToken);
+
+            if (jobDetails == null)
+            {
+                throw new Exception($"Failed to retrieve job details for JobId {JobID}");
+            }
 
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
