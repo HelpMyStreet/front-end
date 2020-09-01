@@ -31,7 +31,7 @@ const applyButtons = document.querySelectorAll(".btn--apply-filter");
 applyButtons.forEach((b) => {
   b.addEventListener("click", async (e) => {
     e.preventDefault();
-    //buttonLoad($(b));
+    //buttonLoad($(b)); // Removing for now due to size jumping bug
     b.classList.remove("applied");
 
     if (loadRequests($(b).closest("form"))) {
