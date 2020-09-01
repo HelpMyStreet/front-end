@@ -56,10 +56,6 @@
                                     </dd>
                                 }
                             </dl>
-                            @if (Model.JobDetail.JobSummary.RequestorType == RequestorType.Myself)
-                            {
-                                <p><i>Request made by recipient </i></p>
-                            }
                         </div>
                     }
                     @if (Model.JobDetail.Requestor != null && Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself)
