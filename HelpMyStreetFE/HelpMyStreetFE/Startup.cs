@@ -49,7 +49,7 @@ namespace HelpMyStreetFE
                 });
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
-            services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
+            services.Configure<EmailConfig>(Configuration.GetSection("EmailConfig"));
             services.Configure<RequestSettings>(Configuration.GetSection("RequestSettings"));
 
 
@@ -135,11 +135,21 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+
+            services.AddHttpClient<ICommunicationService, CommunicationService>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<IEmailService, EmailService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
