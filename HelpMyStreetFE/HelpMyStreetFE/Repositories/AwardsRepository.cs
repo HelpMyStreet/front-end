@@ -1,5 +1,6 @@
 ﻿using System;
 using HelpMyStreetFE.Models.Awards;
+using HelpMyStreet.Utils.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,10 +15,40 @@ namespace HelpMyStreetFE.Repositories
             {
                 new AwardsModel()
                 {
+                    AwardName = "Ready to start helping?",
+                    AwardValue = 0,
+                    AwardDescription = "<a href='/account/verify'>Verify your ID</a> and see what help is needed near you in the Open Requests tab.",
+                    ImageLocation = "/img/awards/question.svg",
+                    SpecificPredicate = u => {
+                        foreach (Object o in u) {
+                            if (o is User){
+                                User x = (User)o;
+                                return !x.IsVerified.GetValueOrDefault(false);
+                            }
+                        }
+                        return false; }
+                },
+                new AwardsModel()
+                {
+                    AwardName = "Ready to start helping?",
+                    AwardValue = 0,
+                    AwardDescription = "Find out what help is needed near you in the <a href='/account/open-requests'>open requests</a> tab!",
+                    ImageLocation = "/img/awards/question.svg",
+                    SpecificPredicate = u => {
+                        foreach (Object o in u) {
+                            if (o is User){
+                                User x = (User)o;
+                                return x.IsVerified.GetValueOrDefault(false);
+                            }
+                        }
+                        return false; }
+                },
+                new AwardsModel()
+                {
                     AwardName = "Good Samaritan",
                     AwardValue = 1,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
-                    ImageLocation = "/img/awards/good-samaritan.png"
+                    ImageLocation = "/img/awards/good-samaritan.png",
                 },
                 new AwardsModel()
                 {

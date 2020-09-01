@@ -58,15 +58,18 @@ namespace HelpMyStreetFE.ViewComponents
             _awardsRepository = awardsRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(List<JobSummary> jobs)
+        public async Task<IViewComponentResult> InvokeAsync(List<JobSummary> jobs, User user)
         {
             var viewModel = new AwardsViewModel();
             var awards = await _awardsRepository.GetAwards();
+            var predicates = new List<Object>() { user };
             var completedJobs = jobs.Where(x => x.JobStatus == JobStatuses.Done).Count();
+
             awards = awards.OrderBy(x => x.AwardValue).ToList();
-            var relevantAwards = awards.Where(x => completedJobs > x.AwardValue);
+            var relevantAwards = awards.Where(x => completedJobs >= x.AwardValue && x.SpecificPredicate(predicates));
 
             var listOfJobs = jobs.GroupBy(x => x.SupportActivity, x => x.JobID, (activity, jobID) => new { Activity = activity, Count = jobID.Count() });
+            listOfJobs = listOfJobs.OrderByDescending(x => x.Count);
 
             var listArray = new List<string>();
             foreach (var result in listOfJobs)
