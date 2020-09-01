@@ -1,0 +1,22 @@
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Enums;
+
+@model AccountViewModel
+
+<div class="user-profile profile-panel p-md">
+    <header class="profile-panel__header">
+        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Requests</h3>
+        <p>Requests submitted to @Model.CurrentGroup.GroupName</p>
+    </header>
+
+    <div class="job-filter-panel">
+        @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+           {
+               JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupRequests, GroupId = Model.CurrentGroup.GroupId, ResultsToShow = 50, ResultsToShowIncrement = 50 },
+               FilterSet = FilterSet.DefaultFilterSet.GroupRequestsDefaultFilterSet,
+           })
+    </div>
+
+</div>

@@ -4,10 +4,12 @@ using Microsoft.Extensions.Logging;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Services;
 using System.Threading.Tasks;
+using HelpMyStreetFE.Repositories;
 using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Models.Home;
+using System.Linq;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -17,13 +19,15 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
+        private readonly IFeedbackRepository _feedbackRepository;
 
-        public HomeController(ILogger<HomeController> logger, IAddressService addressService, IUserService userService, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, IAddressService addressService, IUserService userService, IConfiguration configuration, IFeedbackRepository feedbackRepository)
         {
             _logger = logger;
             _addressService = addressService;
             _userService = userService;
             _configuration = configuration;
+            _feedbackRepository = feedbackRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -35,7 +39,7 @@ namespace HelpMyStreetFE.Controllers
             if (!string.IsNullOrEmpty(strTestBanner))
             {
                 testBanner = Convert.ToBoolean(_configuration["TestBanner"]);
-            }            
+            }
 
             var model = new HomeViewModel
             {

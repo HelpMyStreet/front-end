@@ -2,7 +2,7 @@
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDob } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
-import "isomorphic-fetch";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 export function initialiseStepTwo() {
 
@@ -24,9 +24,9 @@ export function initialiseStepTwo() {
 
     const postcode = $("input[name=postcode_search]").val();
     try {
-        const resp = await fetch(`/api/postcode/${postcode}`);
-        if (resp.ok) {
-            const { hasContent, isSuccessful, content } = await resp.json();
+        const resp = await hmsFetch(`/api/postcode/${postcode}`);
+        if (resp.fetchResponse == fetchResponses.SUCCESS) {
+            const { hasContent, isSuccessful, content } = await resp.fetchPayload;
 
             if (hasContent && isSuccessful) {
                 let postcodeInput = $("input[name='postcode_search']");
@@ -74,7 +74,7 @@ export function initialiseStepTwo() {
             }
         } else {
             let postcodeInput = $("input[name='postcode_search']");
-            postcodeInput.find("~ .error").text("We could not validate that postcode, please check what you've entered and try again").show();
+            postcodeInput.find("~ .error").text("Sorry, there's been an error. Please try again.").show();
         }
     } catch (ex) {
       console.error(ex);
@@ -88,9 +88,9 @@ export function initialiseStepTwo() {
             last_name: (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             postcode: (v) => v !== "" ||
                 "Please enter a postcode",
-            dob: (v) => v !== "" || "Please enter a valid date of birth",          
+            dob: (v) => v !== "" || "Please enter a valid date of birth",
             alt_number: (v, d) =>
-                ((d.mobile_number !== "") || (v !== ""))  || "Please enter a mobile number or an alternative phone number",
+                ((d.mobile_number !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
             city: (v) =>
                 (v.length > 2) ||
                 "Please enter a valid city",

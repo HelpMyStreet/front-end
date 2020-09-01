@@ -2,7 +2,7 @@
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
-
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 export function initialiseStepOne() {
 
@@ -39,7 +39,7 @@ export function initialiseStepOne() {
       .then(async (credentials) => {
         const token = await credentials.user.getIdToken();
 
-        await fetch("/registration/step-one", {
+        const fetchAttempt = await hmsFetch("/registration/step-one", {
           method: "post",
           headers: {
             "content-type": "application/json",
@@ -50,8 +50,13 @@ export function initialiseStepOne() {
             referringGroupId,
             source,
           }),
-        });          
-          window.location.href = "/registration/step-two";
+        });
+          if (fetchAttempt.fetchResponse == fetchResponses.SUCCESS) {
+              window.location.href = "/registration/step-two";
+          }
+          else {
+              setError("email", "An error has occurred, please try again")
+          }
       })
       .catch((err) => {
         switch (err.code) {

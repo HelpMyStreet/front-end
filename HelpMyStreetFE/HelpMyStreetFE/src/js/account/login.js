@@ -1,13 +1,16 @@
 import firebase from "../firebase";
 import { showLoadingSpinner, hideLoadingSpinner } from "../states/loading";
 import { getParameterByName } from "../shared/querystring-helper";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 const handleErrorResponse = response => {    
     if (response) {    
     switch (response.code) {
-      case "auth/wrong-password":
-        return { success: false, message: "Incorrect username or password provided, please try again" };
-      case "auth/user-not-found":
-        return { success: false, message: "Incorrect username or password provided, please try again" };
+        case "auth/wrong-password":
+            return { success: false, message: "Incorrect username or password provided, please try again" };
+            break;
+        case "auth/user-not-found":
+            return { success: false, message: "Incorrect username or password provided, please try again" };
+            break;
       default:
         return { success: false, message: "An unexpected error occurred" };
     }
@@ -32,8 +35,10 @@ export const login = async (email, password) => {
   if (validationResponse.success) {
     try {
       const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
-      const token = await credentials.user.getIdToken();
-      const authResp = await fetch('/api/auth', {
+        
+        const token = await credentials.user.getIdToken();
+
+      const authResp = await hmsFetch('/api/auth', {
         method: 'post',
         headers: {
           authorization: `Bearer ${token}`,
@@ -41,9 +46,18 @@ export const login = async (email, password) => {
         },
         body: JSON.stringify({ token })
       });
-                   
-        if (authResp.status == 500) {                        
-            throw ({ code: "auth/internal-server-error" });            
+        console.log("Fetch Rsp:" + authResp.fetchResponse);
+        switch (authResp.fetchResponse) {
+            case fetchResponses.SERVER_ERROR:
+                throw ({ code: "auth/internal-server-error" });
+                break;
+            case fetchResponses.UNAUTHORISED:
+                throw ({ code: "auth/server-not-authorised" });
+                break;
+            case fetchResponses.TIMEOUT:
+                throw ({ code: "auth/server-timeout" });
+                break;
+
         }
       
         var returnUrl = getParameterByName("ReturnUrl");        
@@ -52,7 +66,7 @@ export const login = async (email, password) => {
         } else {
             window.location.href = "/account";
         }
-
+        return { success: true };
     } catch (e) {              
       hideLoadingSpinner('.header-login__form');
       return handleErrorResponse(e);

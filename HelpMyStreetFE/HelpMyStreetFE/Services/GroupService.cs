@@ -1,124 +1,118 @@
-﻿using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Threading.Tasks;
-using HelpMyStreet.Contracts.GroupService.Response;
+﻿using System.Threading.Tasks;
 using HelpMyStreetFE.Repositories;
-using HelpMyStreet.Contracts.Shared;
-using HelpMyStreet.Contracts.RequestService.Response;
-using HelpMyStreet.Contracts.GroupService.Request;
-using System.Text;
+using System.Collections.Generic;
+using HelpMyStreetFE.Models.Account;
+using System.Linq;
+using HelpMyStreet.Utils.Enums;
+using System;
 
 namespace HelpMyStreetFE.Services
 {
-    public class GroupService : BaseHttpService, IGroupService
-    { 
+    public class GroupService : IGroupService
+    {
+        private readonly IGroupRepository _groupRepository;
 
-        public GroupService(
-            IConfiguration configuration,
-            HttpClient client) : base(client, configuration, "Services:Group")
+        public GroupService(IGroupRepository groupRepository)
         {
+            _groupRepository = groupRepository;
         }
 
-        public async Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest)
+        public async Task<int> GetGroupIdByKey(string groupKey)
         {
-            string json = JsonConvert.SerializeObject(postAssignRoleRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/PostAssignRole", data);
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostAssignRoleResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
+            var groupServiceResponse = await _groupRepository.GetGroupByKey(groupKey);
+
+            if (groupServiceResponse == null) { throw new Exception($"Could not identify group for key '{groupKey}'"); }
+
+            return groupServiceResponse.GroupId;
         }
 
-        public async Task<GetChildGroupsResponse> GetChildGroups(int groupId)
+        public async Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetChildGroups?groupID={groupId}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetChildGroupsResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
+            var groupServiceResponse = await _groupRepository.GetRegistrationFormVariant(groupId, source);
+
+            return groupServiceResponse?.RegistrationFormVariant;
         }
 
-        public async Task<GetGroupResponse> GetGroup(int groupId)
+        public async Task<RequestHelpFormVariant?> GetRequestHelpFormVariant(int groupId, string source)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroup?groupID={groupId}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
+            var groupServiceResponse = await _groupRepository.GetRequestHelpFormVariant(groupId, source);
+
+            return groupServiceResponse?.RequestHelpFormVariant;
         }
 
-        public async Task<GetGroupByKeyResponse> GetGroupByKey(string groupKey)
+        public async Task AddUserToDefaultGroups(int userId)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupByKey?groupKey={groupKey}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupByKeyResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
+            var groupServiceResponse = await _groupRepository.PostAddUserToDefaultGroups(userId);
+
+            if (groupServiceResponse == null || !groupServiceResponse.Success) { throw new Exception($"Could not add user {userId} to default groups"); }
         }
 
-        public async Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source)
+        public async Task<List<int>> GetUserGroups(int userId)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetRegistrationFormVariant?groupId={groupId}&source={source}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetRegistrationFormVariantResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
+            return (await _groupRepository.GetUserGroups(userId)).Groups;
         }
 
-        public async Task<GetRequestHelpFormVariantResponse> GetRequestHelpFormVariant(int groupId, string source)
+        public async Task<List<UserGroup>> GetUserGroupRoles(int userId)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetRequestHelpFormVariant?groupId={groupId}&source={source}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetRequestHelpFormVariantResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            List<UserGroup> response = new List<UserGroup>();
+            var userRoles = await _groupRepository.GetUserRoles(userId);
+
+            foreach (var groupRoles in userRoles.UserGroupRoles)
             {
-                return deserializedResponse.Content;
+                var group = await _groupRepository.GetGroup(groupRoles.Key);
+                var roles = groupRoles.Value.Select(role => (GroupRoles)role);
+
+                response.Add(new UserGroup()
+                {
+                    UserId = userId,
+                    GroupId = group.Group.GroupId,
+                    GroupKey = group.Group.GroupKey,
+                    GroupName = group.Group.GroupName,
+                    UserRoles = roles
+                });
             }
-            return null;
+
+            return response;
         }
 
-        public async Task<GetUserGroupsResponse> GetUserGroups(int userId)
+        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetUserGroups?userId={userId}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetUserGroupsResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            var thisGroup = (await _groupRepository.GetGroup(groupId)).Group;
+            var groupMemberRoles = await _groupRepository.GetGroupMemberRoles(groupId, userId);
+
+            List<UserGroup> response = new List<UserGroup>();
+            foreach (var userRoles in groupMemberRoles.GroupMemberRoles)
             {
-                return deserializedResponse.Content;
+                response.Add(new UserGroup()
+                {
+                    UserId = userRoles.Key,
+                    GroupId = groupId,
+                    GroupKey = thisGroup.GroupKey,
+                    GroupName = thisGroup.GroupName,
+                    UserRoles = userRoles.Value.Select(role => (GroupRoles)role)
+                });
             }
-            return null;
+
+            return response;
         }
 
-        public async Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId)
+        public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role)
         {
-            PostAddUserToDefaultGroupsRequest postAddUserToDefaultGroupsRequest = new PostAddUserToDefaultGroupsRequest() { UserID = userId };
-            string json = JsonConvert.SerializeObject(postAddUserToDefaultGroupsRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/PostAddUserToDefaultGroups", data);
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostAddUserToDefaultGroupsResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
+            var userGroupRoles = await GetUserGroupRoles(userId);
+
+            return userGroupRoles?.Where(g => g.GroupId == groupId).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public async Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId);
+
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
+        {
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
         }
     }
 }
