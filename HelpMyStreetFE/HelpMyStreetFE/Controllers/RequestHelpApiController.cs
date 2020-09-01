@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Controllers {
         }
 
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
         public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.Controllers {
             }
         }
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("get-job-details")]
         public async Task<IActionResult> GetJobDetails(string j)
         {
@@ -79,10 +79,9 @@ namespace HelpMyStreetFE.Controllers {
             }
 
             return ViewComponent("JobDetail", new { jobId, user });
-
         }
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpPost("get-filtered-jobs")]
         public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
@@ -96,8 +95,6 @@ namespace HelpMyStreetFE.Controllers {
                 throw new Exception("Could not decode Job ID: " + encodedJobId);
             }
             return jobId;
-
         }
-
     }
 }
