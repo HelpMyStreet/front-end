@@ -34,37 +34,14 @@ applyButtons.forEach((b) => {
     buttonLoad($(b));
     b.classList.remove("applied");
 
-    const g = document.getElementById(b.getAttribute("data-target-group"));
-
-    const formData = $('.job-filter-panel form').serializeArray();
-    let dataToSend = {};
-
-    formData.forEach((d) => {
-      if (d.name.indexOf('[]') > 0) {
-        const name = d.name.replace('[]', '');
-        if (!dataToSend[name]) {
-          dataToSend[name] = [parseInt(d.value)];
-        } else {
-          dataToSend[name].push(parseInt(d.value));
-        }
-      } else {
-        dataToSend[d.name] = parseInt(d.value);
-      }
-    });
-
-    var fetchRequestData = {
-      method: 'POST',
-      body: JSON.stringify(dataToSend),
-      headers: { 'Content-Type': 'application/json' },
-    };
-    var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-      $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+    if (loadRequests($(b).closest("form"))) {
+      const g = document.getElementById(b.getAttribute("data-target-group"));
       g.querySelectorAll('.group--filters-jobs').forEach((t) => {
         t.classList.remove("filter--show");
       });
       b.classList.add("applied");
     }
+
     buttonUnload($(b));
     return false;
   });
@@ -72,17 +49,49 @@ applyButtons.forEach((b) => {
 
 
 
-  $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
-    e.preventDefault();
-    const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
-    const resultsToShowIncrementInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShowIncrement"]');
-    resultsToShowInput.val(parseInt(resultsToShowInput.val()) + parseInt(resultsToShowIncrementInput.val()));
-    $(this).closest('.job-filter-panel').find('.update').click();
+$('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
+  e.preventDefault();
+  const form = $(this).closest('.job-filter-panel').find('form');
+  const resultsToShowInput = $(form).find('input[name="ResultsToShow"]');
+  const resultsToShowIncrementInput = $(form).find('input[name="ResultsToShowIncrement"]');
+  resultsToShowInput.val(parseInt(resultsToShowInput.val()) + parseInt(resultsToShowIncrementInput.val()));
+  loadRequests(form);
+});
+
+$('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
+  e.preventDefault();
+  const form = $(this).closest('.job-filter-panel').find('form');
+  const resultsToShowInput = $(form).find('input[name="ResultsToShow"]');
+  resultsToShowInput.val(0);
+  loadRequests(form);
+});
+
+async function loadRequests(form) {
+  const formData = $(form).serializeArray();
+  let dataToSend = {};
+
+  formData.forEach((d) => {
+    if (d.name.indexOf('[]') > 0) {
+      const name = d.name.replace('[]', '');
+      if (!dataToSend[name]) {
+        dataToSend[name] = [parseInt(d.value)];
+      } else {
+        dataToSend[name].push(parseInt(d.value));
+      }
+    } else {
+      dataToSend[d.name] = parseInt(d.value);
+    }
   });
 
-  $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
-    e.preventDefault();
-    const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
-    resultsToShowInput.val(0);
-    $(this).closest('.job-filter-panel').find('.update').click();
-  });
+  var fetchRequestData = {
+    method: 'POST',
+    body: JSON.stringify(dataToSend),
+    headers: { 'Content-Type': 'application/json' },
+  };
+  var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
+  if (response.fetchResponse == fetchResponses.SUCCESS) {
+    $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+    return true;
+  }
+  return false;
+}
