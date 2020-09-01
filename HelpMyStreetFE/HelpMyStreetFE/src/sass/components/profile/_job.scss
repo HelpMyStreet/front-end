@@ -11,274 +11,273 @@
 }
 
 .job {
-    @include shadow-xs;
-    width: 100%;
-    min-height: 50px;
-    border: 1px solid $gray-8;
-    border-radius: 5px;
-    margin: 10px 0;
-    padding: 5px;
-    overflow: hidden;
+  @include shadow-xs;
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid $gray-8;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 5px;
+  overflow: hidden;
+
+  @media (min-width: $med-screen) {
+    padding: 10px 5px;
+  }
+
+  &.highlight {
+    animation: highlight 2s;
+  }
+
+  &__info {
+    min-height: 100px;
+    display: grid;
+    grid-template-columns: 1fr;
 
     @media (min-width: $med-screen) {
-        padding: 10px 5px;
+      grid-template-columns: 1fr 2fr 1.3fr;
+
+      &.twoCol {
+        grid-template-columns: 0.5fr 2.5fr 1.3fr;
+        text-align: center;
+      }
     }
 
-    &.highlight {
-        animation: highlight 2s;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    &__info {
-        min-height: 100px;
-        display: grid;
-        grid-template-columns: 1fr;
+    .column {
+      flex-direction: column;
+    }
+
+    &__urgency {
+      color: $dark-blue;
+      background-color: $washed-blue;
+      text-align: center;
+      flex-direction: column;
+
+      span,
+      img {
+        padding: 0 5px;
+        vertical-align: middle;
+      }
+
+      > span {
+        margin: 0 10px;
+      }
+
+      img {
+        height: 25px;
+        margin: 5px;
 
         @media (min-width: $med-screen) {
-            grid-template-columns: 1fr 2fr 1.3fr;
-
-            &.twoCol {
-                grid-template-columns: 0.5fr 2.5fr 1.3fr;
-                text-align: center;
-            }
+          display: block;
+          margin: 5px auto;
         }
+      }
 
-        > div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      @media (min-width: $sm-screen) {
+        flex-direction: row;
+      }
 
-        .column {
-            flex-direction: column;
-        }
-
-        &__urgency {
-            color: $dark-blue;
-            background-color: $washed-blue;
-            text-align: center;
-            flex-direction: column;
-
-            span,
-            img {
-                padding: 0 5px;
-                vertical-align: middle;
-            }
-
-            > span {
-                margin: 0 10px;
-            }
-
-            img, span.critical-icon {
-                height: 25px;
-                margin: 5px;
-
-                @media (min-width: $med-screen) {
-                    display: block;
-                    margin: 5px auto;
-                }
-            }
-
-            @media (min-width: $sm-screen) {
-                flex-direction: row;
-            }
-
-            @media (min-width: $med-screen) {
-                height: auto;
-                background-color: transparent;
-                flex-direction: column;
-            }
-
-            .critical {
-                font-weight: bold;
-                color: $light-orange;
-            }
-
-            .critical-icon {
-                margin: 5px;
-                display: inline-block;
-                text-align: center;
-                height: 25px;
-                width: 25px;
-                background-color: $orange;
-                border-radius: 25px;
-                color: white;
-            }
-        }
-
-        &__activity {
-            .activity__title {
-                font-weight: bold;
-                display: flex;
-                align-items: center;
-                margin: 5px;
-
-                img {
-                    display: inline-block;
-                    margin-right: 10px;
-                    max-width: 32px;
-
-                    &.limit-width {
-                        max-width: 80px;
-                    }
-                }
-            }
-        }
-
-        &__actions {
-            .btn {
-                width: 100%;
-                padding: 5px 0;
-                margin: 0.25rem 0.5rem;
-            }
-
-            display: flex;
-            flex-wrap: wrap;
-            flex-grow: 1;
-            justify-content: center;
-            width: 100%;
-
-            @media (min-width: $sm-screen) {
-                flex-direction: row;
-                width: auto;
-
-                .btn {
-                    width: 12rem;
-                }
-            }
-
-            @media (min-width: $med-screen) {
-                flex-direction: column;
-            }
-
-        }
-
-        &__footer {
-            display: flex;
-            flex-grow: 0;
-            margin-top: 10px;
-
-            a {
-                span {
-                    display: inline-block;
-                    margin-left: 3px;
-                }
-
-
-                &.open {
-                    span {
-                        @include arrow( 8px, 3px, $dark-blue, down, $white);
-                        height: 10px;
-                    }
-                }
-            }
-        }
+      @media (min-width: $med-screen) {
+        height: auto;
+        background-color: transparent;
+        flex-direction: column;
+      }
     }
 
-    &--hot {
-        .job__info {
-            .due-date {
-                color: $orange;
-                font-weight: 600;
-            }
+    &__activity {
+      .activity__title {
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+
+        img {
+          display: inline-block;
+          margin-right: 10px;
+          max-width: 32px;
+
+          &.limit-width {
+            max-width: 80px;
+          }
         }
+      }
+
+      .critical {
+        font-weight: bold;
+        color: $light-orange;
+      }
+
+      .critical-icon {
+        margin: 5px;
+        display: inline-block;
+        text-align: center;
+        height: 25px;
+        width: 25px;
+        background-color: $orange;
+        border-radius: 25px;
+        color: white;
+      }
     }
 
-    &--warm {
-        .job__info {
-            .due-date {
-                color: $orange;
-            }
+    &__actions {
+      .btn {
+        width: 100%;
+        padding: 5px 0;
+        margin: 0.25rem 0.5rem;
+      }
+
+      display: flex;
+      flex-wrap: wrap;
+      flex-grow: 1;
+      justify-content: center;
+      width: 100%;
+
+      @media (min-width: $sm-screen) {
+        flex-direction: row;
+        width: auto;
+
+        .btn {
+          width: 12rem;
         }
+      }
+
+      @media (min-width: $med-screen) {
+        flex-direction: column;
+      }
     }
 
+    &__footer {
+      display: flex;
+      flex-grow: 0;
+      margin-top: 10px;
 
-    &__detail {
+      a {
+        span {
+          display: inline-block;
+          margin-left: 3px;
+        }
+
+
+        &.open {
+          span {
+            @include arrow( 8px, 3px, $dark-blue, down, $white);
+            height: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  &--hot {
+    .job__info {
+      .due-date {
+        color: $orange;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &--warm {
+    .job__info {
+      .due-date {
+        color: $orange;
+      }
+    }
+  }
+
+
+  &__detail {
+    display: none;
+    padding: 10px 20px;
+
+    h4 {
+      color: $dark-blue;
+      font-size: 1.2rem;
+    }
+
+    p {
+      line-height: 1.25;
+    }
+
+    .loading-spinner {
+      margin: 15px auto 0 auto;
+      width: 32px;
+    }
+  }
+
+  &__expander {
+    &.add-line:after,
+    &:before {
+      content: " ";
+      position: relative;
+      margin: 10px auto;
+      display: block;
+      border: none;
+      border-top: 1px solid $gray-8;
+      width: 100%;
+    }
+
+    h4, h5 {
+      color: $dark-blue;
+      font-size: 1.3rem;
+      padding: 20px 0px 5px 0px;
+    }
+
+    h4 {
+      position: relative;
+      padding: 10px 30px 10px 0px;
+      margin: 0;
+
+      span {
+
+        @include arrow( 8px, 3px, $dark-blue, down, $white);
+        float: right;
+        margin-top: 10px;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.open {
+        span {
+          @include arrow( 8px, 3px, $dark-blue, up, $white);
+          float: right;
+        }
+      }
+    }
+
+    &__content {
+      display: none;
+    }
+
+    dl {
+      dt {
+        font-weight: bold;
+        color: $black;
+        padding-top: 0.25rem;
+      }
+
+      dd {
+        word-wrap: break-word;
+      }
+    }
+  }
+
+  &.open {
+    a {
+      &.open {
         display: none;
-        padding: 10px 20px;
+      }
 
-        h4 {
-            color: $dark-blue;
-            font-size: 1.2rem;
-        }
-
-        p {
-            line-height: 1.25;
-        }
-
-        .loading-spinner {
-            margin: 15px auto 0 auto;
-            width: 32px;
-        }
+      &.close {
+        display: inline;
+      }
     }
-
-    &__expander {
-        &.add-line:after,
-        &:before {
-            content: " ";
-            position: relative;
-            margin: 10px auto;
-            display: block;
-            border: none;
-            border-top: 1px solid $gray-8;
-            width: 100%;
-        }
-
-        h4, h5 {
-            color: $dark-blue;
-            font-size: 1.3rem;
-            padding: 20px 0px 5px 0px;
-        }
-
-        h4 {
-            position: relative;
-            padding: 10px 30px 10px 0px;
-            margin: 0;
-
-            span {
-
-                @include arrow( 8px, 3px, $dark-blue, down, $white);
-                float: right;
-                margin-top: 10px;
-            }
-
-            &:hover {
-                cursor: pointer;
-            }
-
-            &.open {
-                span {
-                    @include arrow( 8px, 3px, $dark-blue, up, $white);
-                    float: right;
-                }
-            }
-        }
-
-        &__content {
-            display: none;
-        }
-
-        dl {
-            dt {
-                font-weight: bold;
-                color: $black;
-                padding-top: 0.25rem;
-            }
-
-            dd {
-                word-wrap: break-word;
-            }
-        }
-    }
-
-    &.open {
-        a {
-            &.open {
-                display: none;
-            }
-
-            &.close {
-                display: inline;
-            }
-        }
-    }
+  }
 }

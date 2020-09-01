@@ -53,24 +53,21 @@
             else
             {
                 <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
-                @if (Model.JobSummary.IsHealthCritical)
-                {
-                    <span>
-                        <span class="critical-icon">!</span>
-                        <span class="critical">Critical</span>
-                    </span>
-                }
 
                 <span>
-                    @if (!Model.JobSummary.IsHealthCritical)
-                    {
                     <img src="~/img/icons/calendar.svg" />
-                    }
                     <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
                 </span>
             }
         </div>
         <div class="job__info__activity column">
+            @if (Model.JobSummary.IsHealthCritical)
+            {
+                <span class="">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
             <span class="activity__title job__status">
                 @if (Model.UserActingAsAdmin && (Model.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobSummary.JobStatus == JobStatuses.Open))
                 {
