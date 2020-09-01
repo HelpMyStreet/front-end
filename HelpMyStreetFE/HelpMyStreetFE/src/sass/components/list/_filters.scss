@@ -62,6 +62,11 @@ body {
     .btn--apply-filter {
       display: block;
       margin: 0.5rem auto;
+
+    &.applied {
+        animation-duration: 1s;
+        animation-name: action-feedback;
+      }
     }
   }
 
@@ -109,9 +114,11 @@ body {
     }
 
     &__category {
-      margin: 0.1rem;
+      margin: 0.6rem;
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
+      padding: 0;
+      border: none;
 
       input {
         + label {
@@ -137,7 +144,6 @@ body {
         display: none;
         padding: 0.5rem;
       }
-
       /** When category toggled on */
       &.filter--show {
         background-color: white;
@@ -158,13 +164,6 @@ body {
       .form-group {
         display: flex;
         align-items: center;
-      }
-
-      &.applied {
-        .btn__toggle-show {
-          animation-duration: 1s;
-          animation-name: action-feedback;
-        }
       }
     }
   }
