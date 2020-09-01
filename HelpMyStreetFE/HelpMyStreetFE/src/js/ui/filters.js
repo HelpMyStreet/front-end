@@ -31,7 +31,7 @@ const applyButtons = document.querySelectorAll(".btn--apply-filter");
 applyButtons.forEach((b) => {
   b.addEventListener("click", async (e) => {
     e.preventDefault();
-    buttonLoad($(b));
+    //buttonLoad($(b));
     b.classList.remove("applied");
 
     if (loadRequests($(b).closest("form"))) {
@@ -42,7 +42,7 @@ applyButtons.forEach((b) => {
       b.classList.add("applied");
     }
 
-    buttonUnload($(b));
+    //buttonUnload($(b));
     return false;
   });
 });
