@@ -1,4 +1,4 @@
-import "isomorphic-fetch";
+import { hmsFetch, fetchResponses } from "./shared/hmsFetch.js";
 
 const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
 const closeUpZoomNumber = 16; // zoom level when postcode is entered
@@ -357,7 +357,11 @@ function deleteMarkers() {
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
     let endpoint = '/api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
-    const content = await fetch(endpoint);
-    const users = await content.json();
-    return users.volunteerCoordinates;
+    const content = await hmsFetch(endpoint);
+    if (content.fetchResponse == fetchResponses.SUCCESS) {
+        var payload = await content.fetchPayload;
+        return payload.volunteerCoordinates;
+    } else {
+        return [];
+    }
 }

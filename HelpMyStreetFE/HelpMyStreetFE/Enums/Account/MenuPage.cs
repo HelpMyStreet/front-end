@@ -11,6 +11,9 @@ namespace HelpMyStreetFE.Enums.Account
         MyStreets,
         ComingSoon,
         OpenRequests,
-        AcceptedRequests
+        AcceptedRequests,
+        CompletedRequests,
+        GroupRequests,
+        GroupVolunteers,
     }
 }

@@ -1,27 +1,29 @@
-﻿using HelpMyStreet.Contracts.GroupService.Request;
-using HelpMyStreet.Contracts.GroupService.Response;
-using HelpMyStreet.Contracts.RequestService.Response;
-using HelpMyStreet.Contracts.Shared;
+﻿using HelpMyStreet.Contracts.GroupService.Response;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.Account;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
     public interface IGroupService
     {
-        Task<GetGroupByKeyResponse> GetGroupByKey(string groupKey);
+        Task<int> GetGroupIdByKey(string groupKey);
 
-        Task<GetGroupResponse> GetGroup(int groupId);
+        Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
 
-        Task<GetChildGroupsResponse> GetChildGroups(int groupId);
+        Task<RequestHelpFormVariant?> GetRequestHelpFormVariant(int groupId, string source = "");
 
-        Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest);
+        Task AddUserToDefaultGroups(int userId);
 
-        Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source = "");
+        Task<List<int>> GetUserGroups(int userId);
 
-        Task<GetRequestHelpFormVariantResponse> GetRequestHelpFormVariant(int groupId, string source = "");
+        Task<List<UserGroup>> GetUserGroupRoles(int userId);
 
-        Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId);
+        Task<List<UserGroup>> GetGroupMembers(int groupId, int userId);
 
-        Task<GetUserGroupsResponse> GetUserGroups(int userId);
+        Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role);
+        Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role);
+        bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role);
     }
 }

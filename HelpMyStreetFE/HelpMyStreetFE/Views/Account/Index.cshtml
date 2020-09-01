@@ -42,11 +42,20 @@
                     case MenuPage.AcceptedRequests:
                         <partial name="_AcceptedRequests" for="@Model" />
                         break;
+                    case MenuPage.CompletedRequests:
+                        <partial name="_CompletedRequests" for="@Model" />
+                        break;
                     case MenuPage.MyStreets:
                         <partial name="_MyStreets" for="@Model.PageModel" />
                         break;
                     case MenuPage.ComingSoon:
-                        <partial name="_ComingSoon"  for="@Model.UserDetails" />
+                        <partial name="_ComingSoon" for="@Model.UserDetails" />
+                        break;
+                    case MenuPage.GroupRequests:
+                        <partial name="_GroupRequests" for="@Model" />
+                        break;
+                    case MenuPage.GroupVolunteers:
+                        <partial name="_GroupVolunteers" for="@Model" />
                         break;
                     default:
                         <partial name="_Verification" for="VerificationViewModel" />

@@ -1,5 +1,0 @@
-@model CountNavViewModel
-@using HelpMyStreetFE.Enums.Account;
-
-
-<a href="/account/open-requests" class="@(Model.CurrentPage == MenuPage.OpenRequests ? "selected" : string.Empty)">Open Requests @if(Model.Count != 0){ <span class="count">@Model.Count</span>}</a>

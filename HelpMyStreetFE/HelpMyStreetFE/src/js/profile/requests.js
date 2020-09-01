@@ -1,20 +1,25 @@
 import {
     getParameterByName,
-    updateQueryStringParam
+    updateQueryStringParam,
+    removeQueryStringParam
 } from "../shared/querystring-helper";
 import {
-    showVerifiedAcceptPopup,
     showUnVerifiedAcceptPopup,
-    SetRequestToInProgress
 } from "./requests-popup-helper/open-requests"
-import {
-    showCompletePopup,
-    showReleasePopup
-} from "./requests-popup-helper/accepted-requests"
 import {
     buttonLoad,
     buttonUnload
 } from "../shared/btn";
+import {
+    showPopup
+} from "../shared/popup";
+import {
+    getPopupMessaging
+} from "./requests-popup-helper/requests-popup-messaging";
+import {
+    hmsFetch,
+    fetchResponses
+} from "../shared/hmsFetch";
 
 export function initialiseRequests(isVerified) {
     const job = getParameterByName("j");  
@@ -28,10 +33,11 @@ export function initialiseRequests(isVerified) {
                 },
                 {
                     duration: 1000,
-                    complete: () => {                        
+                    complete: () => {
                         if (isVerified) {
                             $(`#${job} .job__detail`).slideDown();
                             $(`#${job}`).addClass("open highlight");
+                            loadJobDetails(jobEl);
                         } else {
                             $(`#${job}`).addClass("highlight");
                         }
@@ -39,101 +45,161 @@ export function initialiseRequests(isVerified) {
                 }
             );
         }
-  }
+    }
 
-  $(".job a.open").each((_, a) => {
-    const el = $(a);
-    const id = el.attr("data-id");
-    el.on("click", (e) => {
-      e.preventDefault();
-        if (isVerified) {            
-            updateQueryStringParam('j', id);
-            $(`#${id}`).addClass("open");
-            $(`#${id} .job__detail`).slideToggle();
-        } else {
-            showUnVerifiedAcceptPopup();
-        }
+    $('.job-list').on('mouseover', '.job', function () {
+        loadJobDetails($(this));
     });
-  });
 
-  $(".job a.close").each((_, a) => {
-    const el = $(a);
-    const id = el.attr("data-id");
-    el.on("click", (e) => {
-      e.preventDefault();
-      $(`#${id}`).removeClass("open");
-      $(`#${id} .job__detail`).slideToggle();
-    });
-  });
-
-
-    $('.accept-request').click(function (evt) {
-        evt.preventDefault();        
+    $('.job-list').on('click', '.job a.open', function (e) {
+        e.preventDefault();
+        const job = $(this).closest('.job');
         if (isVerified) {
-            showVerifiedAcceptPopup($(this));
+            updateQueryStringParam('j', $(job).attr('id'));
+            job.toggleClass('open');
+            job.find('.job__detail').slideToggle();
+            loadJobDetails(job);
         } else {
             showUnVerifiedAcceptPopup();
         }
     });
 
-    $('.complete-request').click(function (evt) {
-        evt.preventDefault();
-        showCompletePopup($(this));
-    })
-
-
-  $(".job__expander h5").each((_, a) => {
-    const el = $(a);
-
-    el.on("click", (e) => {
-      e.preventDefault();
-
-      el.toggleClass("open");
-      el.next().slideToggle();
+    $('.job-list').on('click', '.job__expander h4', function (e) {
+        e.preventDefault();
+        $(this).toggleClass('open');
+        $(this).next().slideToggle();
     });
-  });
 
-    $('.undo-request').click(async function (evt) {
-        evt.preventDefault();  
-        let jobId = $(this).parentsUntil(".job").parent().attr("id");
+    $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
+        showStatusUpdatePopup($(this));
+    });
+
+    $('.job-list').on('click', '.accept-request-unverified', function () {
+        showUnVerifiedAcceptPopup();
+    });
+
+    $('.job-list').on('click', '.undo-request', async function (evt) {
+        const job = $(this).closest(".job");
+        const targetState = $(this).data("target-state");
+        const targetUser = $(this).data("target-user") ?? "";
+
         buttonLoad($(this));
-        let hasUpdated = await SetRequestToInProgress(jobId)  
-        if (hasUpdated) {
-            let type = $(this).attr("data-undo");
-            let releaseButton = $(this).prev(".release-request");
-            let doneButton = releaseButton.prev(".complete-request");
-
-            switch (type) {
-                case "complete":
-                    _undoCompleteButtons(releaseButton, doneButton)
-                    break;
-                case "release":
-                    _undoReleaseButtons(releaseButton, doneButton);
-                    break;
-            }
-           
-            $(this).hide();            
+        let newStatus = await setJobStatus(job, targetState, targetUser);
+        if (newStatus) {
+            $(job).find('.job__status').html(newStatus);
+            $(job).find('.job__info__urgency>*').show();
+            $(job).find('button').toggle();
         }
         buttonUnload($(this));
     })
 
-    $('.release-request').click(function () {
-        showReleasePopup($(this))
-    })
+    initialiseFilters();
 }
 
 
-function _undoCompleteButtons(releaseButton, doneButton) {
 
-    releaseButton.show();
-    doneButton.text("Completed");
-    doneButton.removeClass("actioned");
-    doneButton.attr("disabled", false);
+export function showStatusUpdatePopup(btn) {
+    const job = btn.closest(".job");
+    const targetState = $(btn).data("target-state");
+    const targetUser = $(btn).data("target-user") ?? "";
+
+    let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
+
+    popupSettings.acceptCallbackAsync = async () => {
+        let newStatus = await setJobStatus(job, targetState, targetUser);
+
+        if (newStatus) {
+            $(job).find('.job__status').html(newStatus);
+            $(job).find('.job__info__urgency>*').hide();
+            $(job).find('button').toggle();
+            $(job).find('.next-step').toggle();
+            return true;
+        }
+        return success;
+    }
+
+    showPopup(popupSettings);
 }
 
-function _undoReleaseButtons(releaseButton, doneButton) {
-    doneButton.show();
-    releaseButton.text("Can't Do");
-    releaseButton.removeClass("actioned");
-    releaseButton.attr("disabled", false);
+
+
+
+async function setJobStatus(job, newStatus, targetUser) {
+    let jobId = job.attr("id");
+
+    var response = await hmsFetch('/api/requesthelp/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        return response.fetchPayload;
+    }
+    else {
+        return false;
+    }
+}
+
+
+async function loadJobDetails(job, forceRefresh) {
+    let jobDetail = $(job).find('.job__detail');
+
+    if (!forceRefresh && jobDetail.data('status') !== undefined) {
+        return;
+    }
+
+    let jobId = $(job).attr("id");
+    jobDetail.data('status', 'updating' );
+    const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        jobDetail.html(await response.fetchPayload);
+        jobDetail.data('status', { 'updated': new Date() });
+    } else {
+        jobDetail.removeData('status');
+        return false;
+    }
+}
+
+
+function initialiseFilters() {
+    $('.job-filter-panel').on('click', '.update', async function (e) {
+        e.preventDefault();
+        const formData = $('.job-filter-panel form').serializeArray();
+        let dataToSend = {};
+
+        formData.forEach((d) => {
+            if (d.name.indexOf('[]') > 0) {
+                const name = d.name.replace('[]', '');
+                if (!dataToSend[name]) {
+                    dataToSend[name] = [parseInt(d.value)];
+                } else {
+                    dataToSend[name].push(parseInt(d.value));
+                }
+            } else {
+                dataToSend[d.name] = parseInt(d.value);
+            }
+        });
+
+        var fetchRequestData = {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: { 'Content-Type': 'application/json' },
+        };
+        var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+        }
+        return false;
+    });
+
+    $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
+        e.preventDefault();
+        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
+        const resultsToShowIncrementInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShowIncrement"]');
+        resultsToShowInput.val(parseInt(resultsToShowInput.val()) + parseInt(resultsToShowIncrementInput.val()));
+        $(this).closest('.job-filter-panel').find('.update').click();
+    });
+
+    $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
+        e.preventDefault();
+        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
+        resultsToShowInput.val(0);
+        $(this).closest('.job-filter-panel').find('.update').click();
+    });
 }

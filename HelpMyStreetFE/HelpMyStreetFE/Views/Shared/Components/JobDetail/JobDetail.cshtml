@@ -1,0 +1,169 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
+
+@{
+    var AgeUk = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
+    var Hlp = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.CommunityConnector;
+
+    var forFaceMask = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.FaceMask;
+    var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
+
+    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement());
+}
+
+
+@if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin)
+{
+    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null || Model.JobDetail.Requestor != null || (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null))
+    {
+        <div class="job__expander">
+            <h4>Contact Details<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
+                    {
+                        <div class="sm6">
+                            <h5>Recipient</h5>
+                            <dl>
+                                @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                                {
+                                    <dt>Organisation</dt>
+                                    <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                                }
+                                @if (@Model.JobDetail.Recipient != null)
+                                {
+                                    <dt>Name</dt>
+                                    <dd>@Model.JobDetail.Recipient.FirstName @Model.JobDetail.Recipient.LastName</dd>
+                                    <dt>Email</dt>
+                                    <dd>@(string.IsNullOrEmpty(Model.JobDetail.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.JobDetail.Recipient.EmailAddress) </dd>
+                                    <dt>@(Model.JobDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                    <dd>
+                                        @if (String.IsNullOrEmpty(Model.JobDetail.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.JobDetail.Recipient.OtherNumber))
+                                        {
+                                            @userDetailsNotProvidedText
+                                        }
+                                        else
+                                        {
+                                            @string.Join(" / ", Model.JobDetail.Recipient.PhoneNumbers())
+                                        }
+                                    </dd>
+                                    <dt>Address</dt>
+                                    <dd>
+                                        @Html.DisplayFor(x => Model.JobDetail.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
+                                    </dd>
+                                }
+                            </dl>
+                            @if (Model.JobDetail.JobSummary.RequestorType == RequestorType.Myself)
+                            {
+                                <p><i>Request made by recipient </i></p>
+                            }
+                        </div>
+                    }
+                    @if (Model.JobDetail.Requestor != null && Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself)
+                    {
+                        <div class="sm6">
+                            <h5>Requester</h5>
+                            <dl>
+                                <dt>Name</dt>
+                                <dd>@Model.JobDetail.Requestor.FirstName @Model.JobDetail.Requestor.LastName</dd>
+                                <dt>Email</dt>
+                                <dd>@Model.JobDetail.Requestor.EmailAddress</dd>
+                                <dt>@(Model.JobDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                <dd>@string.Join(" / ", Model.JobDetail.Requestor.PhoneNumbers())</dd>
+                                <dt>Address</dt>
+                                <dd>
+                                    @Model.JobDetail.Requestor.Address.Postcode
+                                </dd>
+                            </dl>
+                        </div>
+                    }
+                    @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
+                    {
+                        var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+                        <div class="sm6">
+                            <h5>Volunteer</h5>
+                            <dl>
+                                <dt>Name</dt>
+                                <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
+                                <dt>Email</dt>
+                                <dd>@volunteerDetails.EmailAddress</dd>
+                                <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                            </dl>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (questionsToDisplay.Count() > 0)
+    {
+        <div class="job__expander">
+            <h4>Request Details<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    <div class="sm12">
+                        @foreach (var q in questionsToDisplay)
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
+                            </dl>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0))
+{
+    <div class="job__expander">
+        <h4>Request Details<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                <div class="sm12">
+                    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                    {
+                        <dl>
+                            <dt>Organisation</dt>
+                            <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                        </dl>
+                    }
+
+                    @foreach (var q in Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement()))
+                    {
+                        <dl>
+                            <dt>@q.FriendlyName()</dt>
+                            <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.UserActingAsAdmin)
+{
+    <div class="job__expander">
+        <h4>Request Status History<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                <div class="sm12">
+                    <dl>
+                        @foreach (var statusChange in Model.JobDetail.JobStatusHistory)
+                        {
+                            <dt>@statusChange.JobStatus.FriendlyName()</dt>
+                            <dd>@statusChange.StatusDate.ToString("dd/MM/yyyy hh:mm tt").ToLower()</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+}

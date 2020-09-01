@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
+using HelpMyStreetFE.Models.Feedback;
 
 namespace HelpMyStreetFE.Models.Community
 {
@@ -45,6 +46,9 @@ namespace HelpMyStreetFE.Models.Community
         public IEnumerable<string> CarouselImages1 { get; set; }
         public IEnumerable<string> CarouselImages2 { get; set; }
         public IEnumerable<string> CarouselImages3 { get; set; }
+
+        public bool showFeedback { get; set; } = false;
+        public FeedbackMessageType showFeedbackType { get; set; } = FeedbackMessageType.Other;
 
         private static string GetDefaultHeaderHtml()
         {

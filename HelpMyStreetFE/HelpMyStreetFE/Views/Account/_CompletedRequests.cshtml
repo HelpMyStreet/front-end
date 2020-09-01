@@ -1,0 +1,55 @@
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
+
+@model AccountViewModel
+@using HelpMyStreetFE.Models.Account.Jobs
+
+@{
+    bool NoJobsToDisplay = false;
+}
+
+﻿<div class="verification-panel">
+    <div class="user-profile profile-panel p-md">
+        <header class="profile-panel__header">
+            <h3 class="profile-panel__title">Completed Requests</h3>
+            <p>Requests for help that you’ve completed</p>
+        </header>
+
+        <div class="profile">
+            @if (Model.UserDetails.IsVerified)
+            {
+                @await Component.InvokeAsync("JobList", new
+                   {
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = -1 },
+                       EmptyListCallback = new Action(() => NoJobsToDisplay = true)
+                   })
+                @if (NoJobsToDisplay)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__title">
+                            Can you help?
+                        </p>
+                        <p class="profile__empty__text">
+                            Please check the <a href="/account/open-requests">Open Requests</a> page to see new requests for help and support - they're being added all the time
+                        </p>
+                        <p class="profile__empty__text">
+                            Once you accept a request for help or support on the <a href="/account/open-requests">Open Requests</a> page, they'll appear on your <a href="/account/accepted-requests">accepted requests page</a>.
+                        </p>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="profile__empty">
+                    <p class="profile__empty__title">
+                        Start helping
+                    </p>
+                    <p class="profile__empty__text">
+                        <a href="/account">Complete your ID verification</a> today so that you can start helping people!
+                    </p>
+                    <p class="profile__empty__text">You're currently registered as an Unverified volunteer.  As soon as you've completed your ID Verification, you'll be a Verified volunteer on HelpMyStreet.org and will be able to help people in your local area.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
