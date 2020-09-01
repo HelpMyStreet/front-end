@@ -12,7 +12,6 @@
         <button class="btn btn__filter-toggle btn__toggle-show" data-target-item="filters-jobs">Filter requests</button>
     </header>
 
-
     <input type="hidden" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
     <input type="hidden" name="GroupId" value="@Model.JobFilterRequest.GroupId" />
     <input type="hidden" name="ResultsToShowIncrement" value="@Model.JobFilterRequest.ResultsToShowIncrement" />
@@ -29,7 +28,7 @@
             @if (Model.FilterSet.JobStatuses != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
-                    <button class="btn blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="group--filters-jobs">Status</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">Status</button>
                     <div class="form-group__wrapper">
                         @foreach (var status in Model.FilterSet.JobStatuses)
                         {
@@ -50,7 +49,7 @@
             @if (Model.FilterSet.SupportActivities != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
-                    <button class="btn blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="group--filters-jobs">Support Activities</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">Support Activities</button>
                     <div class="form-group__wrapper">
                         @foreach (var supportActivity in Model.FilterSet.SupportActivities)
                         {
@@ -71,7 +70,7 @@
             @if (Model.FilterSet.MaxDistanceInMiles != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
-                    <button class="btn blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="group--filters-jobs">Distance</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">Distance</button>
                     <div class="form-group__wrapper">
                         @foreach (var distance in Model.FilterSet.MaxDistanceInMiles)
                         {
@@ -87,7 +86,7 @@
             @if (Model.FilterSet.DueInNextXDays != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-due">
-                    <button class="btn blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="group--filters-jobs">Due</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">Due</button>
                     <div class="form-group__wrapper">
                         @foreach (var dueInNextXDays in Model.FilterSet.DueInNextXDays)
                         {
@@ -100,10 +99,13 @@
                 </fieldset>
             }
 
-            <button type="submit" class="btn small btn--apply-filter" data-target-group="filters-jobs">Apply</button>
-
+            <div class="filter__list__apply__wrapper">
+                <button type="submit" class="btn cta small btn--apply-filter disabled" data-target-group="filters-jobs">
+                    <span class="text">Apply</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading"}' /></div>
+                </button>
+            </div>
         </div>
-
     </div>
 
 

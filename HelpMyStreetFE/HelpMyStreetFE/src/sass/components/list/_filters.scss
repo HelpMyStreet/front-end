@@ -17,6 +17,7 @@ body {
   &__header {
     display: flex;
     justify-content: flex-end;
+    margin-top: 1rem;
   }
 
   &__list-wrapper {
@@ -56,16 +57,6 @@ body {
       &.filter--show {
         transform: translate(0, 0);
         transition: none;
-      }
-    }
-
-    .btn--apply-filter {
-      display: block;
-      margin: 0.5rem auto;
-
-    &.applied {
-        animation-duration: 1s;
-        animation-name: action-feedback;
       }
     }
   }
@@ -166,6 +157,31 @@ body {
         align-items: center;
       }
     }
+
+    &__apply__wrapper {
+      margin: 0.6rem;
+      grid-row-end: 5;
+
+      .btn--apply-filter {
+        padding: 0.5rem;
+        width: 100%;
+
+        &.applied {
+          animation-duration: 1s;
+          animation-name: action-feedback;
+        }
+
+        &.disabled, &.applied {
+          cursor: default;
+          background-color: $white;
+          color: $gray-8;
+
+          &:hover {
+            border-color: $white;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -178,9 +194,11 @@ body {
 
 @keyframes action-feedback {
   from {
-    background-color: #333;
+    color: $white;
+    background-color: $green;
   }
   to {
-    background-color: $toggleBtnBg;
+    color: $gray-8;
+    background-color: $white;
   }
 }
