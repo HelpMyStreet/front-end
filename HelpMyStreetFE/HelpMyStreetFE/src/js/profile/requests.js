@@ -92,8 +92,6 @@ export function initialiseRequests(isVerified) {
         }
         buttonUnload($(this));
     })
-
-    initialiseFilters();
 }
 
 
@@ -154,52 +152,4 @@ async function loadJobDetails(job, forceRefresh) {
         jobDetail.removeData('status');
         return false;
     }
-}
-
-
-function initialiseFilters() {
-    $('.job-filter-panel').on('click', '.update', async function (e) {
-        e.preventDefault();
-        const formData = $('.job-filter-panel form').serializeArray();
-        let dataToSend = {};
-
-        formData.forEach((d) => {
-            if (d.name.indexOf('[]') > 0) {
-                const name = d.name.replace('[]', '');
-                if (!dataToSend[name]) {
-                    dataToSend[name] = [parseInt(d.value)];
-                } else {
-                    dataToSend[name].push(parseInt(d.value));
-                }
-            } else {
-                dataToSend[d.name] = parseInt(d.value);
-            }
-        });
-
-        var fetchRequestData = {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: { 'Content-Type': 'application/json' },
-        };
-        var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
-        if (response.fetchResponse == fetchResponses.SUCCESS) {
-            $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
-        }
-        return false;
-    });
-
-    $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
-        e.preventDefault();
-        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
-        const resultsToShowIncrementInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShowIncrement"]');
-        resultsToShowInput.val(parseInt(resultsToShowInput.val()) + parseInt(resultsToShowIncrementInput.val()));
-        $(this).closest('.job-filter-panel').find('.update').click();
-    });
-
-    $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
-        e.preventDefault();
-        const resultsToShowInput = $(this).closest('.job-filter-panel').find('form input[name="ResultsToShow"]');
-        resultsToShowInput.val(0);
-        $(this).closest('.job-filter-panel').find('.update').click();
-    });
 }

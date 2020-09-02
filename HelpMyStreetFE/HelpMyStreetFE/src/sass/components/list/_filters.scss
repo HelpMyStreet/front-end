@@ -1,0 +1,203 @@
+@import "../../mixins/effects";
+
+/** Environment */
+$bp: 600px;
+$toggleBtnBg: white;
+
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  line-height: 1.333;
+  color: #51535b;
+  background-color: #f7f6f4;
+}
+
+.filter {
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  &__list-wrapper {
+    background-color: #f0ede8;
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+    @include shadow-xs;
+    width: 80%;
+    max-width: 300px;
+    position: fixed;
+    top: 50vh;
+    right: 0;
+    padding: 1rem;
+    transform: translate(100%, -50%);
+    transition: transform 0.4s ease-in;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    &.filter--show {
+      transform: translate(0%, -50%);
+      transition: transform 0.2s ease-out;
+    }
+
+    @media screen and (min-width: $bp) {
+      position: relative;
+      transform: translate(0, 0);
+      top: auto;
+      right: auto;
+      width: auto;
+      max-width: none;
+      transition: none;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+
+      &.filter--show {
+        transform: translate(0, 0);
+        transition: none;
+      }
+    }
+  }
+
+  &__list {
+    max-height: 70vh;
+    overflow-y: auto;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+
+    @media screen and (min-width: $bp) {
+      max-height: none;
+      overflow-y: hidden;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+
+    &__toggle {
+      padding: 0.5rem;
+      color: $blue;
+      background-color: $toggleBtnBg;
+      position: relative;
+      border: 0;
+      display: initial;
+      width: 100%;
+      padding-right: 1rem;
+      border: 2px solid transparent;
+
+      &:hover {
+        border-color: $blue;
+      }
+
+      &:after {
+        content: " ";
+        width: 0.5rem;
+        height: 0.5rem;
+        border-right: 2px solid $blue;
+        border-bottom: 2px solid #333;
+        position: absolute;
+        top: 0.7rem;
+        right: 1rem;
+        transform: rotate(45deg);
+        transition: transform 0.3s;
+      }
+    }
+
+    &__category {
+      margin: 0.6rem;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 0;
+      border: none;
+
+      input {
+        + label {
+          display: inline-block;
+          cursor: pointer;
+          padding: 0.5rem 0;
+        }
+
+        &:checked {
+          + label {
+            color: $blue;
+          }
+        }
+
+        &:focus {
+          + label {
+            color: $green;
+          }
+        }
+      }
+
+      .form-group__wrapper {
+        display: none;
+        padding: 0.5rem;
+      }
+      /** When category toggled on */
+      &.filter--show {
+        background-color: white;
+
+        @include shadow-md;
+
+        .form-group__wrapper {
+          display: block;
+        }
+
+        .filter__list__toggle {
+          &:after {
+            transform: rotate(-135deg);
+          }
+        }
+      }
+
+      .form-group {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    &__apply__wrapper {
+      margin: 0.6rem;
+
+      .btn--apply-filter {
+        padding: 0.5rem;
+        width: 100%;
+
+        &.applied {
+          animation-duration: 1s;
+          animation-name: action-feedback;
+        }
+
+        &.disabled, &.applied {
+          cursor: default;
+          background-color: $white;
+          color: $gray-8;
+
+          &:hover {
+            border-color: $white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.filter .btn__filter-toggle {
+  margin-bottom: 0.7rem;
+  @media screen and (min-width: $bp) {
+    display: none;
+  }
+}
+
+@keyframes action-feedback {
+  from {
+    color: $white;
+    background-color: $green;
+  }
+  to {
+    color: $gray-8;
+    background-color: $white;
+  }
+}
