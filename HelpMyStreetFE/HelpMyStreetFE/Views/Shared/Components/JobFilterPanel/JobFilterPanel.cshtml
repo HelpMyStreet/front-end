@@ -30,6 +30,10 @@
                 <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
                     <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">Status</button>
                     <div class="form-group__wrapper">
+                        <div class="form-group select-all">
+                            <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
+                            <label for="filter-status-select-all">Select all</label>
+                        </div>
                         @foreach (var status in Model.FilterSet.JobStatuses)
                         {
                             <div class="form-group">
@@ -37,10 +41,6 @@
                                 <label for="filter-status-@status.Value">@status.Value.FriendlyName()</label>
                             </div>
                         }
-                        <div class="form-group">
-                            <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
-                            <label for="filter-status-select-all">Select all</label>
-                        </div>
                     </div>
                     @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
                 </fieldset>
@@ -51,6 +51,10 @@
                 <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
                     <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">Support Activities</button>
                     <div class="form-group__wrapper">
+                        <div class="form-group select-all">
+                            <input id="filter-supportActivity-select-all" type="checkbox" class="filter-select-all" />
+                            <label for="filter-supportActivity-select-all">Select all</label>
+                        </div>
                         @foreach (var supportActivity in Model.FilterSet.SupportActivities)
                         {
                             <div class="form-group">
@@ -58,10 +62,6 @@
                                 <label for="filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName()</label>
                             </div>
                         }
-                        <div class="form-group">
-                            <input id="filter-supportActivity-select-all" type="checkbox" class="filter-select-all" />
-                            <label for="filter-supportActivity-select-all">Select all</label>
-                        </div>
                     </div>
                     @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
                 </fieldset>

@@ -48,6 +48,22 @@ applyButtons.forEach((b) => {
 });
 
 
+// Initialise select all checkboxes
+$('.job-filter-panel input[type="checkbox"].filter-select-all').each(function () {
+  const inputsInWrapper = $(this).closest('.form-group__wrapper').find('input[type="checkbox"]:not(".filter-select-all")');
+  $(this).prop('checked', !$(inputsInWrapper).is(':not(:checked)'));
+});
+
+// Update select all checkboxes
+$('.job-filter-panel').on('click', 'input[type="checkbox"]', function () {
+  const inputsInWrapper = $(this).closest('.form-group__wrapper').find('input[type="checkbox"]:not(".filter-select-all")');
+  if (this.classList.contains('filter-select-all')) {
+    inputsInWrapper.prop('checked', $(this).is(':checked'));
+  } else {
+    const selectAllInput = $(this).closest('.form-group__wrapper').find('input[type="checkbox"].filter-select-all');
+    $(selectAllInput).prop('checked', !$(inputsInWrapper).is(':not(:checked)'));
+  }
+});
 
 $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
   e.preventDefault();
