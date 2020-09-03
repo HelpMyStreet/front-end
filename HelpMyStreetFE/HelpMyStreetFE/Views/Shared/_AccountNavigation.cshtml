@@ -53,12 +53,15 @@
                 <li class="account__nav__item submenu__container">
                     <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">
                         @userGroup.GroupName
-                        @await Component.InvokeAsync("AccountNavBadge", new
-                           {
-                               User = Model.UserDetails.User,
-                               MenuPage = MenuPage.GroupRequests,
-                               GroupKey = userGroup.GroupKey
-                           })
+                        @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+                        {
+                            @await Component.InvokeAsync("AccountNavBadge", new
+                               {
+                                   User = Model.UserDetails.User,
+                                   MenuPage = MenuPage.GroupRequests,
+                                   GroupKey = userGroup.GroupKey
+                               })
+                        }
                     </a>
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
