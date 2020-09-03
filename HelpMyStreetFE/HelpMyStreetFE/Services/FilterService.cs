@@ -33,10 +33,10 @@ namespace HelpMyStreetFE.Services
         {
             JobStatuses = new List<FilterField<JobStatuses>>()
                 {
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, IsSelected = true },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Done, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true },
                     new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true }
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, IsSelected = true },
                 },
             DueInNextXDays = new List<FilterField<int>>()
                 {
@@ -53,19 +53,21 @@ namespace HelpMyStreetFE.Services
             {
                 SupportActivities = new List<FilterField<SupportActivities>>()
                     {
-                        new FilterField<SupportActivities>() { Value = SupportActivities.CheckingIn, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.WellbeingPackage, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Shopping, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealPreparation, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Errands, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.DogWalking, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.HomeworkSupport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Friendly, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.CollectingPrescriptions, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.FaceMask, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.WellbeingPackage, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.CheckingIn, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.CollectingPrescriptions, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.Errands, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.MealPreparation, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Friendly, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.HomeworkSupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
+
+                        // The following are not currently on any request help form
+                        //new FilterField<SupportActivities>() { Value = SupportActivities.DogWalking, IsSelected = true },
+                        //new FilterField<SupportActivities>() { Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true },
+                        //new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Anxious, IsSelected = true },
                     },
                 DueInNextXDays = new List<FilterField<int>>()
                     {
