@@ -28,7 +28,10 @@
             @if (Model.FilterSet.JobStatuses != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
-                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">Status</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">
+                        <span class="filter__list__category__title">Status</span>
+                        <span class="filter__list__category__summary"></span>
+                    </button>
                     <div class="form-group__wrapper">
                         <div class="form-group select-all">
                             <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
@@ -42,14 +45,16 @@
                             </div>
                         }
                     </div>
-                    @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
                 </fieldset>
             }
 
             @if (Model.FilterSet.SupportActivities != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
-                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">Support Activities</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">
+                        <span class="filter__list__category__title">Support Activities</span>
+                        <span class="filter__list__category__summary"></span>
+                    </button>
                     <div class="form-group__wrapper">
                         <div class="form-group select-all">
                             <input id="filter-supportActivity-select-all" type="checkbox" class="filter-select-all" />
@@ -63,14 +68,16 @@
                             </div>
                         }
                     </div>
-                    @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
                 </fieldset>
             }
 
             @if (Model.FilterSet.MaxDistanceInMiles != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
-                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">Distance</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">
+                        <span class="filter__list__category__title">Distance</span>
+                        <span class="filter__list__category__summary"></span>
+                    </button>
                     <div class="form-group__wrapper">
                         @foreach (var distance in Model.FilterSet.MaxDistanceInMiles)
                         {
@@ -86,7 +93,10 @@
             @if (Model.FilterSet.DueInNextXDays != null)
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-due">
-                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">Due</button>
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">
+                        <span class="filter__list__category__title">Due</span>
+                        <span class="filter__list__category__summary"></span>
+                    </button>
                     <div class="form-group__wrapper">
                         @foreach (var dueInNextXDays in Model.FilterSet.DueInNextXDays)
                         {

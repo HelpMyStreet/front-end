@@ -12,11 +12,14 @@ toggleButtons.forEach((btn) => {
 
     if (!target.classList.contains("filter--show")) {
       target.classList.remove("applied");
+    } else {
+      updateFilterSummary(target);
     }
 
     if (target) {
       target.classList.toggle("filter--show");
     }
+
 
     const g = document.getElementById(btn.getAttribute("data-target-group"));
     g.querySelectorAll(".btn--apply-filter").forEach((b) => {
@@ -33,6 +36,7 @@ applyButtons.forEach((b) => {
     e.preventDefault();
     //buttonLoad($(b)); // Removing for now due to size jumping bug
     b.classList.remove("applied");
+    updateFilterSummaries();
 
     if (loadRequests($(b).closest("form"))) {
       const g = document.getElementById(b.getAttribute("data-target-group"));
@@ -110,4 +114,42 @@ async function loadRequests(form) {
     return true;
   }
   return false;
+}
+
+$(function() {
+  updateFilterSummaries();
+});
+
+function updateFilterSummaries() {
+  $('.filter__list__category').each(function () { updateFilterSummary(this); });
+}
+
+function updateFilterSummary(list) {
+  let summary = "";
+  const inputs = $(list).find('input');
+  if (inputs.first().is('[type="checkbox"]')) {
+    if (!$(inputs).is(':not(:checked)')) {
+      // All selected; nothing filtered out
+    } else {
+      summary = $.map($(inputs).filter(':checked'), function (i) {
+        return $(list).find('label[for="' + i.id + '"]').first().html();
+      }).join(', ');
+    }
+  } else if (inputs.first().is('[type="radio"]')) {
+    const selectedInput = $(inputs).filter(':checked').first();
+    if (selectedInput.val() == 999) {
+      // Nothing filtered out
+    } else {
+      summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
+    }
+  }
+
+  const summarySpan = $(list).find('.filter__list__category__summary');
+
+  if (summary === "") {
+    summarySpan.addClass("dnone");
+  } else {
+    summarySpan.html(summary);
+    summarySpan.removeClass("dnone");
+  }
 }

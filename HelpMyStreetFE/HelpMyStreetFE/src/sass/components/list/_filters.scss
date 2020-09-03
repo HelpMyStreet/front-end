@@ -103,6 +103,23 @@ body {
         transform: rotate(45deg);
         transition: transform 0.3s;
       }
+
+      .filter__list__category__title,
+      .filter__list__category__summary {
+        display: inline-block;
+        padding: 0 0.25rem;
+        font-size: 1rem;
+        line-height: 1.222;
+        vertical-align: bottom;
+      }
+
+      .filter__list__category__summary {
+        max-width: calc(100% - 1.5rem);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: normal;
+      }
     }
 
     &__category {
@@ -111,6 +128,7 @@ body {
       border-top-right-radius: 24px;
       padding: 0;
       border: none;
+      min-width: 0;
 
       input {
         + label {
@@ -149,6 +167,10 @@ body {
         .filter__list__toggle {
           &:after {
             transform: rotate(-135deg);
+          }
+
+          .filter__list__category__summary {
+            display: none;
           }
         }
       }
