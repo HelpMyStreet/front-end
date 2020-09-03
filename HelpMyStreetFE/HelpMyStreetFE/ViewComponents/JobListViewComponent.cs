@@ -62,6 +62,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredJobs = jobs.Count();
+            jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
 
             if (jobFilterRequest.ResultsToShow > 0)
             {
