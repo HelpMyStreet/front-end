@@ -167,12 +167,23 @@
           margin-left: 3px;
         }
 
+                &.open {
+                    span {
+                        @include arrow( 8px, 3px, $dark-blue, down, $white);
+                        height: 10px;
+                    }
+                }
 
-        &.open {
-          span {
-            @include arrow( 8px, 3px, $dark-blue, down, $white);
-            height: 10px;
-          }
+                &.close {
+                    display: none;
+
+                    span {
+                        @include arrow( 8px, 3px, $dark-blue, up, $white);
+                        height: 10px;
+                        margin: 0 0 3px 12px;
+                    }
+                }
+            }
         }
       }
     }

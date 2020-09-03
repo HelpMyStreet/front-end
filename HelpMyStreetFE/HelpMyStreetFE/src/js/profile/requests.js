@@ -64,6 +64,14 @@ export function initialiseRequests(isVerified) {
         }
     });
 
+    $('.job-list').on('click', '.job a.close', function (e) {
+        e.preventDefault();
+        const job = $(this).closest('.job');
+        removeQueryStringParam('j', $(job).attr('id'));
+        job.toggleClass('open');
+        job.find('.job__detail').slideToggle();
+    });
+
     $('.job-list').on('click', '.job__expander h4', function (e) {
         e.preventDefault();
         $(this).toggleClass('open');
