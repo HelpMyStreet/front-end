@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 
@@ -119,26 +119,23 @@
 else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0))
 {
     <div class="job__expander">
-        <h4>Request Details<span></span></h4>
-        <div class="job__expander__content">
-            <div class="row">
-                <div class="sm12">
-                    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
-                    {
-                        <dl>
-                            <dt>Organisation</dt>
-                            <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
-                        </dl>
-                    }
+        <div class="row">
+            <div class="sm12">
+                @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                {
+                    <dl>
+                        <dt>Organisation</dt>
+                        <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                    </dl>
+                }
 
-                    @foreach (var q in Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement()))
-                    {
-                        <dl>
-                            <dt>@q.FriendlyName()</dt>
-                            <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
-                        </dl>
-                    }
-                </div>
+                @foreach (var q in Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement()))
+                {
+                    <dl>
+                        <dt>@q.FriendlyName()</dt>
+                        <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
+                    </dl>
+                }
             </div>
         </div>
     </div>
