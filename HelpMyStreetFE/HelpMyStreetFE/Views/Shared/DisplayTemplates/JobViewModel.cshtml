@@ -52,13 +52,19 @@
             }
             else
             {
-                <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
-
                 <span>
                     <img src="~/img/icons/calendar.svg" />
-                    <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
+                    <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
                 </span>
+
+                <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
             }
+            <span class="job__status">
+                @if (Model.UserActingAsAdmin && (Model.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobSummary.JobStatus == JobStatuses.Open))
+                {
+                    @Model.JobSummary.JobStatus.FriendlyName()
+                }
+            </span>
         </div>
         <div class="job__info__activity column">
             @if (Model.JobSummary.IsHealthCritical)
@@ -68,12 +74,6 @@
                     <span class="critical">Critical</span>
                 </span>
             }
-            <span class="activity__title job__status">
-                @if (Model.UserActingAsAdmin && (Model.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobSummary.JobStatus == JobStatuses.Open))
-                {
-                    @Model.JobSummary.JobStatus.FriendlyName()
-                }
-            </span>
             <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
                 @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
                 {
