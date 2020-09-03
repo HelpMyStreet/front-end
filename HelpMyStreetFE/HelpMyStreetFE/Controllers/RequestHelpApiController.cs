@@ -12,6 +12,7 @@ using System.Threading;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreet.Utils.Extensions;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -67,7 +68,7 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("get-job-details")]
-        public async Task<IActionResult> GetJobDetails(string j)
+        public async Task<IActionResult> GetJobDetails(string j, JobSet js)
         {
             var jobId = DecodeJobID(j);
 
@@ -78,7 +79,7 @@ namespace HelpMyStreetFE.Controllers {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            return ViewComponent("JobDetail", new { jobId, user });
+            return ViewComponent("JobDetail", new { jobId, user, jobSet = js });
         }
 
         [AuthorizeAttributeNoRedirect]

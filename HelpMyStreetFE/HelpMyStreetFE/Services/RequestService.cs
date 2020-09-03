@@ -141,6 +141,10 @@ namespace HelpMyStreetFE.Services
             return jobs?.OrderOpenJobsForDisplay();
         }
 
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
+        {
+            return await _requestHelpRepository.GetJobSummaryAsync(jobId);
+        }
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {

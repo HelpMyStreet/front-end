@@ -136,20 +136,21 @@ async function setJobStatus(job, newStatus, targetUser) {
 
 
 async function loadJobDetails(job, forceRefresh) {
-    let jobDetail = $(job).find('.job__detail');
+  const jobDetail = $(job).find('.job__detail');
 
-    if (!forceRefresh && jobDetail.data('status') !== undefined) {
-        return;
-    }
+  if (!forceRefresh && jobDetail.data('status') !== undefined) {
+    return;
+  }
 
-    let jobId = $(job).attr("id");
-    jobDetail.data('status', 'updating' );
-    const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId);
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-        jobDetail.html(await response.fetchPayload);
-        jobDetail.data('status', { 'updated': new Date() });
-    } else {
-        jobDetail.removeData('status');
-        return false;
-    }
+  const jobId = $(job).attr("id");
+  const jobSet = $('input[name="JobSet"]').val();
+  jobDetail.data('status', 'updating');
+  const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId + '&js=' + jobSet);
+  if (response.fetchResponse == fetchResponses.SUCCESS) {
+    jobDetail.html(await response.fetchPayload);
+    jobDetail.data('status', { 'updated': new Date() });
+  } else {
+    jobDetail.removeData('status');
+    return false;
+  }
 }
