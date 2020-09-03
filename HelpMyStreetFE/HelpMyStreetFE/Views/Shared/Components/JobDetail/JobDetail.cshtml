@@ -1,4 +1,4 @@
-@using HelpMyStreetFE.Helpers;
+﻿@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 
@@ -58,6 +58,21 @@
                             </dl>
                         </div>
                     }
+                    @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
+                    {
+                        var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+                        <div class="sm6">
+                            <h5>Volunteer</h5>
+                            <dl>
+                                <dt>Name</dt>
+                                <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
+                                <dt>Email</dt>
+                                <dd>@volunteerDetails.EmailAddress</dd>
+                                <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                            </dl>
+                        </div>
+                    }
                     @if (Model.JobDetail.Requestor != null && Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself)
                     {
                         <div class="sm6">
@@ -73,21 +88,6 @@
                                 <dd>
                                     @Model.JobDetail.Requestor.Address.Postcode
                                 </dd>
-                            </dl>
-                        </div>
-                    }
-                    @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
-                    {
-                        var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
-                        <div class="sm6">
-                            <h5>Volunteer</h5>
-                            <dl>
-                                <dt>Name</dt>
-                                <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
-                                <dt>Email</dt>
-                                <dd>@volunteerDetails.EmailAddress</dd>
-                                <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
                             </dl>
                         </div>
                     }
