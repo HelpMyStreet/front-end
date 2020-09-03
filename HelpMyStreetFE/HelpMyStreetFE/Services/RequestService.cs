@@ -179,7 +179,7 @@ namespace HelpMyStreetFE.Services
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
                 JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
-                _ => throw new ArgumentException(message: "Invalid JobStatuses value", paramName: nameof(status)),
+                _ => throw new ArgumentException(message: $"Invalid JobStatuses value: {status}", paramName: nameof(status)),
             };
 
             if (success)

@@ -25,7 +25,7 @@ namespace HelpMyStreetFE.Services
             {
                 JobSet.GroupRequests => GroupRequestsDefaultFilterSet,
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsDefaultFilterSet(user),
-                _ => throw new ArgumentException(message: "JobFilterRequest.JobSet value", paramName: nameof(jobSet))
+                _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
 
