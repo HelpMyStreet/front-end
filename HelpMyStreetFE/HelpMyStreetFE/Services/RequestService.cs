@@ -240,7 +240,8 @@ namespace HelpMyStreetFE.Services
                 List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
                 if (userGroups != null)
                 {
-                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g => {
+                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>
+                    {
                         _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                         {
                             return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
@@ -257,8 +258,8 @@ namespace HelpMyStreetFE.Services
                 return null;
             }
 
-            var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly, SupportActivities.CommunityConnector };
-            var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+            var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities
+                .Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
             var jobsByFilterRequest = new GetJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,

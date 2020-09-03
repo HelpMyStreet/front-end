@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Models.Email
 {
@@ -9,5 +10,6 @@ namespace HelpMyStreetFE.Models.Email
     {
         public int OpenRequestsRadius { get; set; }
         public int MaxNonCriteriaOpenJobsToDisplay { get; set; }
+        public List<SupportActivities> NationalSupportActivities { get; set; }
     }
 }
