@@ -107,7 +107,7 @@ export function initialiseRequests(isVerified) {
 export function showStatusUpdatePopup(btn) {
     const job = btn.closest(".job");
     const targetState = $(btn).data("target-state");
-    const targetUser = $(btn).data("target-user") ?? "";
+    const targetUser = $(btn).data("target-user") ?? "self";
 
     let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
 

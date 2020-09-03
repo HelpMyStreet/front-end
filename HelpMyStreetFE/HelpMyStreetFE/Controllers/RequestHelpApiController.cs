@@ -1,4 +1,4 @@
-﻿using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -45,7 +45,7 @@ namespace HelpMyStreetFE.Controllers {
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
                 {
-                    targetUserId = string.IsNullOrEmpty(u) ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
+                    targetUserId = u == "self" ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
                 }
 
                 bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
