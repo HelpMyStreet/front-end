@@ -38,7 +38,7 @@ namespace HelpMyStreetFE.ViewComponents
                 var user = HttpContext.Session.GetObjectFromJson<User>("User");
                 if(user == null || user.ID != id)
                 {               
-                    user = await _userService.GetUserAsync(id);
+                    user = await _userService.GetUserAsync(id, cancellationToken);
                     HttpContext.Session.SetObjectAsJson("User", user);
                 }
                 viewModel.AccountVM = await GetAccountViewModel(user, cancellationToken);

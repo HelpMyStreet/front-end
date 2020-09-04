@@ -74,7 +74,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -92,7 +92,7 @@ namespace HelpMyStreetFE.Controllers
 
         public async Task<IActionResult> Profile(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -109,7 +109,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Streets(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -161,7 +161,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
         {
 
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -176,7 +176,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -191,7 +191,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> CompletedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -206,7 +206,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -227,7 +227,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -250,7 +250,7 @@ namespace HelpMyStreetFE.Controllers
         [AuthorizeAttributeNoRedirect]
         public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return 0;
@@ -264,7 +264,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -290,10 +290,10 @@ namespace HelpMyStreetFE.Controllers
             return Ok();
         }
 
-        private async Task<User> GetCurrentUser()
+        private async Task<User> GetCurrentUser(CancellationToken cancellationToken)
         {
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id);
+            var user = await _userService.GetUserAsync(id, cancellationToken);
             HttpContext.Session.SetObjectAsJson("User", user);
             return user;
         }

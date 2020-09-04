@@ -156,7 +156,7 @@ namespace HelpMyStreetFE.Services
                 User currentVolunteer = null;
                 if (jobDetails.JobSummary?.VolunteerUserID != null)
                 {
-                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value);
+                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value, cancellationToken);
                 }
 
                 return new JobDetail()
@@ -237,7 +237,7 @@ namespace HelpMyStreetFE.Services
 
                 _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId));
+                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken));
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
