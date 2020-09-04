@@ -148,7 +148,6 @@ namespace HelpMyStreetFE.Services
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var jobStatusHistory = _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
             if (jobDetails != null)
@@ -164,7 +163,7 @@ namespace HelpMyStreetFE.Services
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
-                    JobStatusHistory = (await jobStatusHistory)?.History,
+                    JobStatusHistory = jobDetails.History,
                     CurrentVolunteer = currentVolunteer,
                 };
             }
