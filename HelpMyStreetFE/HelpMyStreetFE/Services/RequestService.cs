@@ -241,7 +241,7 @@ namespace HelpMyStreetFE.Services
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
-                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
+                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
                     userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>

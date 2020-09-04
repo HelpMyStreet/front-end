@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             if (menuPage == MenuPage.GroupRequests)
             {
-                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
+                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
                 {
                     return 0;
                 }
