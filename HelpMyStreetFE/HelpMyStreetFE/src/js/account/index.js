@@ -48,8 +48,10 @@ async function refreshBadge(badge, interval) {
     }
   } else if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
     if (window.location.pathname.startsWith('/account/')) {
+      // Session expired on logged-in page; redirect to login
       window.location.replace('/account/Login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
     } else {
+      // Session expired on public page; don't redirect, but also don't bother trying to get any more badge refreshes
       clearInterval(interval);
     }
   } else {
