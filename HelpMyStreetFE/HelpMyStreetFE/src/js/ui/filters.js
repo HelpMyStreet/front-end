@@ -146,10 +146,10 @@ function updateFilterSummary(list) {
 
   const summarySpan = $(list).find('.filter__list__category__summary');
 
+  summarySpan.html(summary);
   if (summary === "") {
     summarySpan.addClass("dnone");
   } else {
-    summarySpan.html(summary);
     summarySpan.removeClass("dnone");
   }
 }
