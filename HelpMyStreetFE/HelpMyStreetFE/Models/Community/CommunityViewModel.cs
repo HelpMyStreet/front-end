@@ -49,6 +49,7 @@ namespace HelpMyStreetFE.Models.Community
 
         public bool showFeedback { get; set; } = false;
         public FeedbackMessageType showFeedbackType { get; set; } = FeedbackMessageType.Other;
+        public string groupKey { get; set; }
 
         private static string GetDefaultHeaderHtml()
         {

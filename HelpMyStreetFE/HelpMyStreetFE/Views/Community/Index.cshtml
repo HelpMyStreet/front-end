@@ -246,7 +246,7 @@ else
     }
 
     <div>
-            @await Component.InvokeAsync("Feedback", new {feedbackMessageType = Model.showFeedbackType })
+            @await Component.InvokeAsync("Feedback", new {feedbackMessageType = Model.showFeedbackType,  groupKey = Model.groupKey })
     </div>
 
 

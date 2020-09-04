@@ -161,6 +161,9 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = -1.488587;
             communityViewModel.ZoomLevel = 14;
 
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "tankersley";
+
             communityViewModel.CommunityName = "Tankersley & Pilley";
 
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
@@ -238,6 +241,9 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = 9;
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "ageuklsl";
 
             communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
             communityViewModel.CommunityShortName = "Age UK LSL";
