@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 
@@ -15,7 +15,7 @@
 }
 
 
-@if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin)
+@if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobDetail.JobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
 {
     @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null || Model.JobDetail.Requestor != null || (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null))
     {
