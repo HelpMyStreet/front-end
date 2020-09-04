@@ -44,10 +44,29 @@ namespace HelpMyStreetFE.Services
 
         public async Task<User> GetUserAsync(int id, CancellationToken cancellationToken)
         {
-            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            User user = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await _userRepository.GetUser(id);
-            }, $"{CACHE_KEY_PREFIX}-user-{id}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+                return null;
+            }, $"{CACHE_KEY_PREFIX}-user-{id}", RefreshBehaviour.DontRefreshData, cancellationToken, NotInCacheBehaviour.DontGetData);
+
+            if (user != null)
+            {
+                // Found in cache
+                return user;
+            }
+
+            user = await _userRepository.GetUser(id);
+
+            if (user.IsVerified ?? false)
+            {
+                // Don't put users into the cache until registration is complete
+                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return user;
+                }, $"{CACHE_KEY_PREFIX}-user-{id}", cancellationToken);
+            }
+
+            return user;
         }
 
         public async Task CreateUserStepTwoAsync(
@@ -83,7 +102,6 @@ namespace HelpMyStreetFE.Services
                 DateOfBirth = dob,
                 DisplayName = FormatName(firstName)
             });
-            RefreshUserCache(id, cancellationToken);
         }
 
         public async Task CreateUserStepThreeAsync(
@@ -100,7 +118,6 @@ namespace HelpMyStreetFE.Services
                 SupportVolunteersByPhone = null,
                 UnderlyingMedicalCondition = null
             });
-            RefreshUserCache(id, cancellationToken);
         }
 
         public async Task CreateUserStepFourAsync(
@@ -115,7 +132,6 @@ namespace HelpMyStreetFE.Services
                 StreetChampionRoleUnderstood = roleUnderstood,
                 ChampionPostcodes = postcodes
             });
-            RefreshUserCache(id, cancellationToken);
         }
 
         public async Task CreateUserStepFiveAsync(
@@ -128,7 +144,11 @@ namespace HelpMyStreetFE.Services
                 UserID = id,
                 IsVerified = verified
             });
-            RefreshUserCache(id, cancellationToken);
+
+            if (verified)
+            {
+                RefreshUserCache(id, cancellationToken);
+            }
         }
 
         public async Task<int> GetStreetChampions()
