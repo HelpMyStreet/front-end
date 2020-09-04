@@ -1,4 +1,4 @@
-@using HelpMyStreetFE.Helpers;
+﻿@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 
@@ -23,73 +23,100 @@
             <h4>Contact Details<span></span></h4>
             <div class="job__expander__content">
                 <div class="row">
-                    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
+                    @if (Model.JobDetail.JobSummary.Archive ?? false)
                     {
                         <div class="sm6">
                             <h5>Recipient</h5>
                             <dl>
+                                <dd><i>The @(Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself ? "requestor and" : "" ) recipient contact details for this request have been archived.</i></dd>
                                 @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
                                 {
                                     <dt>Organisation</dt>
                                     <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
                                 }
-                                @if (@Model.JobDetail.Recipient != null)
-                                {
+                            </dl>
+                        </div>
+                        @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
+                        {
+                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+                            <div class="sm6">
+                                <h5>Volunteer</h5>
+                                <dl>
+                                    <dd>@volunteerDetails.DisplayName</dd>
+                                </dl>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
+                        {
+                            <div class="sm6">
+                                <h5>Recipient</h5>
+                                <dl>
+                                    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                                    {
+                                        <dt>Organisation</dt>
+                                        <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                                    }
+                                    @if (@Model.JobDetail.Recipient != null)
+                                    {
+                                        <dt>Name</dt>
+                                        <dd>@Model.JobDetail.Recipient.FirstName @Model.JobDetail.Recipient.LastName</dd>
+                                        <dt>Email</dt>
+                                        <dd>@(string.IsNullOrEmpty(Model.JobDetail.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.JobDetail.Recipient.EmailAddress) </dd>
+                                        <dt>@(Model.JobDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                        <dd>
+                                            @if (String.IsNullOrEmpty(Model.JobDetail.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.JobDetail.Recipient.OtherNumber))
+                                            {
+                                                @userDetailsNotProvidedText
+                                            }
+                                            else
+                                            {
+                                                @string.Join(" / ", Model.JobDetail.Recipient.PhoneNumbers())
+                                            }
+                                        </dd>
+                                        <dt>Address</dt>
+                                        <dd>
+                                            @Html.DisplayFor(x => Model.JobDetail.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
+                                        </dd>
+                                    }
+                                </dl>
+                            </div>
+                        }
+                        @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
+                        {
+                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+                            <div class="sm6">
+                                <h5>Volunteer</h5>
+                                <dl>
                                     <dt>Name</dt>
-                                    <dd>@Model.JobDetail.Recipient.FirstName @Model.JobDetail.Recipient.LastName</dd>
+                                    <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
                                     <dt>Email</dt>
-                                    <dd>@(string.IsNullOrEmpty(Model.JobDetail.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.JobDetail.Recipient.EmailAddress) </dd>
-                                    <dt>@(Model.JobDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>
-                                        @if (String.IsNullOrEmpty(Model.JobDetail.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.JobDetail.Recipient.OtherNumber))
-                                        {
-                                            @userDetailsNotProvidedText
-                                        }
-                                        else
-                                        {
-                                            @string.Join(" / ", Model.JobDetail.Recipient.PhoneNumbers())
-                                        }
-                                    </dd>
+                                    <dd>@volunteerDetails.EmailAddress</dd>
+                                    <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                    <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                                </dl>
+                            </div>
+                        }
+                        @if (Model.JobDetail.Requestor != null && Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself)
+                        {
+                            <div class="sm6">
+                                <h5>Requester</h5>
+                                <dl>
+                                    <dt>Name</dt>
+                                    <dd>@Model.JobDetail.Requestor.FirstName @Model.JobDetail.Requestor.LastName</dd>
+                                    <dt>Email</dt>
+                                    <dd>@Model.JobDetail.Requestor.EmailAddress</dd>
+                                    <dt>@(Model.JobDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                    <dd>@string.Join(" / ", Model.JobDetail.Requestor.PhoneNumbers())</dd>
                                     <dt>Address</dt>
                                     <dd>
-                                        @Html.DisplayFor(x => Model.JobDetail.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
+                                        @Model.JobDetail.Requestor.Address.Postcode
                                     </dd>
-                                }
-                            </dl>
-                        </div>
-                    }
-                    @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
-                    {
-                        var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
-                        <div class="sm6">
-                            <h5>Volunteer</h5>
-                            <dl>
-                                <dt>Name</dt>
-                                <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
-                                <dt>Email</dt>
-                                <dd>@volunteerDetails.EmailAddress</dd>
-                                <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
-                            </dl>
-                        </div>
-                    }
-                    @if (Model.JobDetail.Requestor != null && Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself)
-                    {
-                        <div class="sm6">
-                            <h5>Requester</h5>
-                            <dl>
-                                <dt>Name</dt>
-                                <dd>@Model.JobDetail.Requestor.FirstName @Model.JobDetail.Requestor.LastName</dd>
-                                <dt>Email</dt>
-                                <dd>@Model.JobDetail.Requestor.EmailAddress</dd>
-                                <dt>@(Model.JobDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                <dd>@string.Join(" / ", Model.JobDetail.Requestor.PhoneNumbers())</dd>
-                                <dt>Address</dt>
-                                <dd>
-                                    @Model.JobDetail.Requestor.Address.Postcode
-                                </dd>
-                            </dl>
-                        </div>
+                                </dl>
+                            </div>
+                        }
                     }
                 </div>
             </div>
