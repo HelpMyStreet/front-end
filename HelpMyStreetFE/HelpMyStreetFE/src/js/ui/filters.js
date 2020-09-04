@@ -137,7 +137,7 @@ function updateFilterSummary(list) {
     }
   } else if (inputs.first().is('[type="radio"]')) {
     const selectedInput = $(inputs).filter(':checked').first();
-    if (selectedInput.val() == 999) {
+    if (selectedInput.val() === $(inputs).last().val()) {
       // Nothing filtered out
     } else {
       summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
