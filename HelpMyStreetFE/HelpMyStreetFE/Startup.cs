@@ -165,6 +165,7 @@ namespace HelpMyStreetFE
             services.AddMemCache();
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
 
             services.AddControllers();
             services.AddRazorPages()

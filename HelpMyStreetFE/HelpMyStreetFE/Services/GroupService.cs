@@ -14,22 +14,27 @@ namespace HelpMyStreetFE.Services
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
+        private readonly IMemDistCache<int> _memDistCache_int;
 
-        private const string CACHE_KEY_PREFIX = "group-service-user-roles";
+        private const string CACHE_KEY_PREFIX = "group-service-";
 
-        public GroupService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache)
+        public GroupService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IMemDistCache<int> memDistCache_int)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
+            _memDistCache_int = memDistCache_int;
         }
 
-        public async Task<int> GetGroupIdByKey(string groupKey)
+        public async Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken)
         {
-            var groupServiceResponse = await _groupRepository.GetGroupByKey(groupKey);
+            return await _memDistCache_int.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var groupServiceResponse = await _groupRepository.GetGroupByKey(groupKey);
 
-            if (groupServiceResponse == null) { throw new Exception($"Could not identify group for key '{groupKey}'"); }
+                if (groupServiceResponse == null) { throw new Exception($"Could not identify group for key '{groupKey}'"); }
 
-            return groupServiceResponse.GroupId;
+                return groupServiceResponse.GroupId;
+            }, $"{CACHE_KEY_PREFIX}-group-id-{groupKey}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
         public async Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source)
@@ -81,7 +86,7 @@ namespace HelpMyStreetFE.Services
                 }
 
                 return response;
-            }, $"{CACHE_KEY_PREFIX}-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
         public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId)

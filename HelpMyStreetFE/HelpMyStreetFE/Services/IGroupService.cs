@@ -9,7 +9,7 @@ namespace HelpMyStreetFE.Services
 {
     public interface IGroupService
     {
-        Task<int> GetGroupIdByKey(string groupKey);
+        Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);
 
         Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
 

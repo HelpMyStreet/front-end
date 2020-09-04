@@ -196,7 +196,7 @@ namespace HelpMyStreetFE.Services
         }
         public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
-            int groupId = (await _groupService.GetGroupIdByKey(groupKey));
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
