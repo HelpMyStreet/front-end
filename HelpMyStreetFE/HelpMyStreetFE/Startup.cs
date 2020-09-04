@@ -18,13 +18,11 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
 using System;
 using Microsoft.Extensions.Internal;
-using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
 using HelpMyStreet.Cache.Extensions;
 using HelpMyStreet.Cache;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Account.Jobs;
 
 namespace HelpMyStreetFE
 {
@@ -157,7 +155,8 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IGroupService, GroupService>();
-          
+            services.AddSingleton<IFilterService, FilterService>();
+
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
             services.AddTransient<ISystemClock, MockableDateTime>();

@@ -141,6 +141,10 @@ namespace HelpMyStreetFE.Services
             return jobs?.OrderOpenJobsForDisplay();
         }
 
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
+        {
+            return await _requestHelpRepository.GetJobSummaryAsync(jobId);
+        }
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {
@@ -175,7 +179,7 @@ namespace HelpMyStreetFE.Services
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
                 JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
-                _ => throw new ArgumentException(message: "Invalid JobStatuses value", paramName: nameof(status)),
+                _ => throw new ArgumentException(message: $"Invalid JobStatuses value: {status}", paramName: nameof(status)),
             };
 
             if (success)
@@ -240,7 +244,8 @@ namespace HelpMyStreetFE.Services
                 List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
                 if (userGroups != null)
                 {
-                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g => {
+                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>
+                    {
                         _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                         {
                             return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
@@ -257,8 +262,8 @@ namespace HelpMyStreetFE.Services
                 return null;
             }
 
-            var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly, SupportActivities.CommunityConnector };
-            var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+            var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities
+                .Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
             var jobsByFilterRequest = new GetJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,

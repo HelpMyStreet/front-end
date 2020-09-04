@@ -9,5 +9,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public int DisplayedJobs { get { return Jobs.Count(); } }
         public int FilteredJobs { get; set; }
         public int UnfilteredJobs { get; set; }
+        public int ResultsToShowIncrement { get; set; }
     }
 }

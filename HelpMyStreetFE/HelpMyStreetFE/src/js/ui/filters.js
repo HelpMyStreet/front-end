@@ -12,11 +12,14 @@ toggleButtons.forEach((btn) => {
 
     if (!target.classList.contains("filter--show")) {
       target.classList.remove("applied");
+    } else {
+      updateFilterSummary(target);
     }
 
     if (target) {
       target.classList.toggle("filter--show");
     }
+
 
     const g = document.getElementById(btn.getAttribute("data-target-group"));
     g.querySelectorAll(".btn--apply-filter").forEach((b) => {
@@ -33,6 +36,7 @@ applyButtons.forEach((b) => {
     e.preventDefault();
     //buttonLoad($(b)); // Removing for now due to size jumping bug
     b.classList.remove("applied");
+    updateFilterSummaries();
 
     if (loadRequests($(b).closest("form"))) {
       const g = document.getElementById(b.getAttribute("data-target-group"));
@@ -48,6 +52,22 @@ applyButtons.forEach((b) => {
 });
 
 
+// Initialise select all checkboxes
+$('.job-filter-panel input[type="checkbox"].filter-select-all').each(function () {
+  const inputsInWrapper = $(this).closest('.form-group__wrapper').find('input[type="checkbox"]:not(".filter-select-all")');
+  $(this).prop('checked', !$(inputsInWrapper).is(':not(:checked)'));
+});
+
+// Update select all checkboxes
+$('.job-filter-panel').on('click', 'input[type="checkbox"]', function () {
+  const inputsInWrapper = $(this).closest('.form-group__wrapper').find('input[type="checkbox"]:not(".filter-select-all")');
+  if (this.classList.contains('filter-select-all')) {
+    inputsInWrapper.prop('checked', $(this).is(':checked'));
+  } else {
+    const selectAllInput = $(this).closest('.form-group__wrapper').find('input[type="checkbox"].filter-select-all');
+    $(selectAllInput).prop('checked', !$(inputsInWrapper).is(':not(:checked)'));
+  }
+});
 
 $('.job-filter-panel').on('click', '.show-more-jobs', function (e) {
   e.preventDefault();
@@ -94,4 +114,42 @@ async function loadRequests(form) {
     return true;
   }
   return false;
+}
+
+$(function() {
+  updateFilterSummaries();
+});
+
+function updateFilterSummaries() {
+  $('.filter__list__category').each(function () { updateFilterSummary(this); });
+}
+
+function updateFilterSummary(list) {
+  let summary = "";
+  const inputs = $(list).find('input');
+  if (inputs.first().is('[type="checkbox"]')) {
+    if (!$(inputs).is(':not(:checked)')) {
+      // All selected; nothing filtered out
+    } else {
+      summary = $.map($(inputs).filter(':checked'), function (i) {
+        return $(list).find('label[for="' + i.id + '"]').first().html();
+      }).join(', ');
+    }
+  } else if (inputs.first().is('[type="radio"]')) {
+    const selectedInput = $(inputs).filter(':checked').first();
+    if (selectedInput.val() == 999) {
+      // Nothing filtered out
+    } else {
+      summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
+    }
+  }
+
+  const summarySpan = $(list).find('.filter__list__category__summary');
+
+  if (summary === "") {
+    summarySpan.addClass("dnone");
+  } else {
+    summarySpan.html(summary);
+    summarySpan.removeClass("dnone");
+  }
 }

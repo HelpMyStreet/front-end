@@ -58,6 +58,11 @@
       text-align: center;
       flex-direction: column;
 
+      .job__status__new {
+        font-weight: bold;
+        color: $black;
+      }
+
       span,
       img {
         padding: 0 5px;
@@ -78,7 +83,7 @@
         }
       }
 
-      @media (min-width: $sm-screen) {
+      @media (min-width: $sm-med-screen) {
         flex-direction: row;
       }
 
@@ -162,11 +167,20 @@
           margin-left: 3px;
         }
 
-
         &.open {
           span {
             @include arrow( 8px, 3px, $dark-blue, down, $white);
             height: 10px;
+          }
+        }
+
+        &.close {
+          display: none;
+
+          span {
+            @include arrow( 8px, 3px, $dark-blue, up, $white);
+            height: 10px;
+            margin: 0 0 3px 12px;
           }
         }
       }
