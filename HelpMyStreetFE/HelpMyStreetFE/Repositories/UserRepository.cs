@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using HelpMyStreet.Contracts.UserService.Response;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +18,7 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<User> GetUserByAuthId(string authId)
         {
-            var resp = await GetAsync<GetUserResponse>($"/api/getuserbyfirebaseuserid?firebaseuid={authId}");
+            var resp = await GetAsync<GetUserByFirebaseUIDResponse>($"/api/getuserbyfirebaseuserid?firebaseuid={authId}");
 
             return resp.User;
         }
@@ -26,7 +27,7 @@ namespace HelpMyStreetFE.Repositories
         {
             try
             {
-                var resp = await GetAsync<GetUserResponse>($"/api/getuserbyid?id={id}");
+                var resp = await GetAsync<GetUserByIDResponse>($"/api/getuserbyid?id={id}");
                 return resp.User;
             }
             catch
@@ -37,7 +38,7 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<int> CreateUser(string email, string authId, int referringGroupId, string source)
         {
-            var response = await PostAsync<ModifyUserResponse>("/api/postcreateuser", new
+            var response = await PostAsync<PostCreateUserResponse>("/api/postcreateuser", new
             {
                 RegistrationStepOne = new RegistrationStepOne
                 {
@@ -49,99 +50,99 @@ namespace HelpMyStreetFE.Repositories
                 }
             });
 
-            return response.Id;
+            return response.ID;
         }
 
         public async Task<int> CreateUserStepTwo(RegistrationStepTwo data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageTwo", new
+            var response = await PutAsync<PutModifyRegistrationPageTwoResponse>("/api/PutModifyRegistrationPageTwo", new
             {
                 RegistrationStepTwo = data
             });
 
-            return response.Id;
+            return response.ID;
         }
 
         public async Task<int> CreateUserStepThree(RegistrationStepThree data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageThree", new
+            var response = await PutAsync<PutModifyRegistrationPageThreeResponse>("/api/PutModifyRegistrationPageThree", new
             {
                 RegistrationStepThree = data
             });
 
-            return response.Id;
+            return response.ID;
         }
 
         public async Task<int> CreateUserStepFour(RegistrationStepFour data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageFour", new
+            var response = await PutAsync<PutModifyRegistrationPageFourResponse>("/api/PutModifyRegistrationPageFour", new
             {
                 RegistrationStepFour = data
             });
 
-            return response.Id;
+            return response.ID;
         }
 
         public async Task<int> CreateUserStepFive(RegistrationStepFive data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageFive", new
+            var response = await PutAsync<PutModifyRegistrationPageFiveResponse>("/api/PutModifyRegistrationPageFive", new
             {
                 RegistrationStepFive = data
             });
 
-            return response.Id;
+            return response.ID;
         }
 
         public async Task<int> UpdateUser(User user)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/putmodifyuser", new { user });
+            var response = await PutAsync<PutModifyUserResponse>("/api/putmodifyuser", new { user });
 
-            return response.Id;
+            return response.UserID;
         }
 
         public async Task<int> GetChampionCountByPostcode(string postcode)
         {
-            var response = await GetAsync<GetCountResponse>($"/api/getchampioncountbypostcode?postcode={postcode}");
+            var response = await GetAsync<GetChampionCountByPostcodeResponse>($"/api/getchampioncountbypostcode?postcode={postcode}");
 
             return response.Count;
         }
 
         public async Task<int> GetDistinctChampionUserCount()
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctChampionUserCount");
+            var response = await GetAsync<GetDistinctChampionUserCountResponse>($"/api/GetDistinctChampionUserCount");
 
             return response.Count;
         }
 
         public async Task<int> GetChampionPostcodesCoveredCount()
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetChampionPostcodesCoveredCount");
+            var response = await GetAsync<GetChampionPostcodesCoveredCountResponse>($"/api/GetChampionPostcodesCoveredCount");
 
             return response.Count;
         }
 
         public async Task<int> GetDistinctVolunteerUserCount()
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctVolunteerUserCount");
+            var response = await GetAsync<GetDistinctVolunteerUserCountResponse>($"/api/GetDistinctVolunteerUserCount");
 
             return response.Count;
         }
 
         public async Task<int> GetVolunteerCountByPostcode(string postcode)
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
+            var response = await GetAsync<GetVolunteerCountByPostcodeResponse>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
             return response.Count;
         }
 
-        public async Task<GetHelperResponse> GetHelpersByPostcode(string postcode)
+        public async Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode)
         {
-            var response = await GetAsync<GetHelperResponse>($"/api/GetHelpersByPostcode?postCode={postcode}");
+            var response = await GetAsync<GetHelpersByPostcodeResponse>($"/api/GetHelpersByPostcode?postCode={postcode}");
             return response;
         }
 
-        public async Task<GetHelperResponse> GetChampionsByPostcode(string postcode)
+        public async Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode)
         {
-            var response = await GetAsync<GetHelperResponse>($"/api/GetChampionsByPostcode?postCode={postcode}");
+            var response = await GetAsync<GetChampionsByPostcodeResponse>($"/api/GetChampionsByPostcode?postCode={postcode}");
             return response;
         }
 
