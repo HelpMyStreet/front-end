@@ -26,13 +26,13 @@ function initialiseNavBadges() {
     $('.account__nav .account__nav__badge').each(function () {
         const badge = $(this);
         refreshBadge(badge);
-        setInterval(async function () {
-            refreshBadge(badge);
+        const interval = setInterval(async function () {
+            refreshBadge(badge, interval);
         }, 5000);
     });
 }
 
-async function refreshBadge(badge) {
+async function refreshBadge(badge, interval) {
   var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'));
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     var newCount = await response.fetchPayload;
@@ -45,6 +45,12 @@ async function refreshBadge(badge) {
       $(badge).find('.number').html(newCount);
     } else {
       $(badge).removeClass('updated');
+    }
+  } else if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
+    if (window.location.pathname.startsWith('/account/')) {
+      window.location.replace('/account/Login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
+    } else {
+      clearInterval(interval);
     }
   } else {
     // No badges today
