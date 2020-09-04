@@ -94,6 +94,15 @@
         height: auto;
         border: 1px solid transparent;
     }
+
+    &:only-of-type {
+      .card-feedback {
+        @media screen and (min-width: 750px) {
+          width: 500px;
+          left: -55px;
+        }
+      }
+    }
 }
 .slick-arrow.slick-hidden {
     display: none;
