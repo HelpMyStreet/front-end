@@ -33,22 +33,22 @@ function initialiseNavBadges() {
 }
 
 async function refreshBadge(badge) {
-    var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'))
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-        var newCount = await response.fetchPayload;
-        if ($(badge).html() != newCount) {
-            if ($(badge).is(':visible')) {
-                $(badge).addClass('updated');
-            } else {
-                $(badge).removeClass('dnone');
-            }
-            $(badge).html(newCount);
-        } else {
-            $(badge).removeClass('updated');
-        }
+  var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'));
+  if (response.fetchResponse == fetchResponses.SUCCESS) {
+    var newCount = await response.fetchPayload;
+    if ($(badge).find('.number').html() != newCount) {
+      if ($(badge).is(':visible')) {
+        $(badge).addClass('updated');
+      } else {
+        $(badge).removeClass('dnone');
+      }
+      $(badge).find('.number').html(newCount);
     } else {
-        // No badges today
+      $(badge).removeClass('updated');
     }
+  } else {
+    // No badges today
+  }
 }
 
 function subMenuToggle(container, slideDuration = 400) {

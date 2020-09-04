@@ -9,6 +9,7 @@
                 Open Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                 {
+                    CssClass = "bg-green",
                     User = Model.UserDetails.User,
                     MenuPage = MenuPage.OpenRequests
                 })
@@ -20,6 +21,7 @@
                 My Accepted Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                    {
+                       CssClass = "bg-green",
                        User = Model.UserDetails.User,
                        MenuPage = MenuPage.AcceptedRequests
                    })
@@ -31,6 +33,7 @@
                 My Completed Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                    {
+                       CssClass = "bg-gray-8",
                        User = Model.UserDetails.User,
                        MenuPage = MenuPage.CompletedRequests
                    })
@@ -57,6 +60,7 @@
                         {
                             @await Component.InvokeAsync("AccountNavBadge", new
                                {
+                                   CssClass = "bg-green",
                                    User = Model.UserDetails.User,
                                    MenuPage = MenuPage.GroupRequests,
                                    GroupKey = userGroup.GroupKey
@@ -71,6 +75,7 @@
                                     Requests
                                     @await Component.InvokeAsync("AccountNavBadge", new
                                        {
+                                           CssClass = "bg-green",
                                            User = Model.UserDetails.User,
                                            MenuPage = MenuPage.GroupRequests,
                                            GroupKey = userGroup.GroupKey

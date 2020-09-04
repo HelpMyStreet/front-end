@@ -1,5 +1,7 @@
 ﻿@model HelpMyStreetFE.Models.Account.AccountNavBadgeViewModel;
 
-<span class="account__nav__badge count @(Model.Count > 0 ? "" : "dnone")" data-menu-page="@Model.MenuPage" data-group-key="@Model.GroupKey">
-    @Model.Count
+<span class="account__nav__badge count @(Model.Count > 0 ? "" : "dnone") @Model.CssClass" data-menu-page="@Model.MenuPage" data-group-key="@Model.GroupKey">
+    <span class="number">
+        @Model.Count
+    </span>
 </span>

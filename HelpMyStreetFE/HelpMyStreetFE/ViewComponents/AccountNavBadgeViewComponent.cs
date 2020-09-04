@@ -23,10 +23,11 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, string cssClass, CancellationToken cancellationToken)
         {
             var viewModel = new AccountNavBadgeViewModel()
             {
+                CssClass = cssClass,
                 MenuPage = menuPage,
                 GroupKey = groupKey,
                 Count = await GetCount(user, menuPage, groupKey, cancellationToken)
