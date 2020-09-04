@@ -19,7 +19,7 @@
                 `<p>Have you become aware that this request has not been completed (though it has been marked as such)?</p>
 		         <p>We can set its status back to "In Progress" for you.</p>
 		         <p>It will return to the "My Accepted Requests" page of the last volunteer with who it was In Progress.</p>
-		         <p>If you need to set it right back to "Open", you can do that from this page by exiting and returning to it, finding the request again (whcih will now be marked as "In Progress") and using the "Mark as Open" button.`;
+		         <p>If you need to set it right back to "Open", you can do that from this page by exiting and returning to it, finding the request again (which will now be marked as "In Progress") and using the "Mark as Open" button.`;
             settings.messageOnFalse = "We couldn't update this request at the moment, please try again later";
 
         }
