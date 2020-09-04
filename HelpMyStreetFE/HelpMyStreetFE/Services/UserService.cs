@@ -57,7 +57,7 @@ namespace HelpMyStreetFE.Services
 
             user = await _userRepository.GetUser(id);
 
-            if (user.IsVerified ?? false)
+            if (user?.IsVerified ?? false)
             {
                 // Don't put users into the cache until registration is complete
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
