@@ -104,7 +104,7 @@
             </span>
             <span class="activity__detail">
                 @Model.JobSummary.PostCode
-                @if (!Model.UserActingAsAdmin)
+                @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
                 {
                     <span>(@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
                 }
