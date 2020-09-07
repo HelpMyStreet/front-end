@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using HelpMyStreet.Contracts.UserService.Response;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 
@@ -19,8 +20,8 @@ namespace HelpMyStreetFE.Repositories
         Task<int> GetDistinctChampionUserCount();
         Task<int> GetChampionPostcodesCoveredCount();
         Task<int> GetDistinctVolunteerUserCount();
-        Task<GetHelperResponse> GetHelpersByPostcode(string postcode);
-        Task<GetHelperResponse> GetChampionsByPostcode(string postcode);
+        Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode);
+        Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode);
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
     }
 }
