@@ -10,22 +10,24 @@ toggleButtons.forEach((btn) => {
       btn.getAttribute("data-target-item")
     );
 
-    if (!target.classList.contains("filter--show")) {
-      target.classList.remove("applied");
+    target.classList.toggle("filter--show");
+
+    if (target.classList.contains("filter__list-wrapper")) {
+      // Div containing all filters
+      if (target.classList.contains("filter--show")) {
+        lockWindowScroll();
+      } else {
+        unlockWindowScroll();
+      }
     } else {
+      // Just one list
       updateFilterSummary(target);
+      const g = document.getElementById(btn.getAttribute("data-target-group"));
+      g.querySelectorAll(".btn--apply-filter").forEach((b) => {
+        b.classList.remove("applied");
+        b.classList.remove("disabled");
+      });
     }
-
-    if (target) {
-      target.classList.toggle("filter--show");
-    }
-
-
-    const g = document.getElementById(btn.getAttribute("data-target-group"));
-    g.querySelectorAll(".btn--apply-filter").forEach((b) => {
-      b.classList.remove("applied");
-      b.classList.remove("disabled");
-    });
   });
 });
 
@@ -44,6 +46,8 @@ applyButtons.forEach((b) => {
         t.classList.remove("filter--show");
       });
       b.classList.add("applied");
+      g.classList.remove("filter--show");
+      unlockWindowScroll();
     }
 
     //buttonUnload($(b));
@@ -152,4 +156,16 @@ function updateFilterSummary(list) {
   } else {
     summarySpan.removeClass("dnone");
   }
+}
+
+function lockWindowScroll() {
+  document.body.style.top = `-${window.scrollY}px`;
+  document.body.style.position = 'fixed';
+}
+
+function unlockWindowScroll() {
+  const scrollY = document.body.style.top;
+  document.body.style.position = '';
+  document.body.style.top = '';
+  window.scrollTo(0, parseInt(scrollY || '0') * -1);
 }
