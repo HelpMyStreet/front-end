@@ -95,11 +95,11 @@ namespace HelpMyStreetFE.Repositories
                     Message = "The ability to shape the content and presentation of local material - on the website and with the posters and flyers - makes it much more likely that local people will access and use this service",
                     Person = "Kate organises a local group in South Yorkshire who built a community page on HelpMyStreet",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "ageuklsl"
+                    GroupKey = "tankersley"
                 },
                 new FeedbackMessage()
                 {
-                    Tagline = "A priviledge",
+                    Tagline = "A privilege",
                     Message = "It has been a privilege to join HelpMyStreet and to deliver the wellbeing packages for Age UK. To be able to give something back to others who have given to us in the past is most rewarding.",
                     Person = "Sharon in Stamford provided some help",
                     Type = FeedbackMessageType.Group,
