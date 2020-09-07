@@ -29,8 +29,8 @@
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
                     <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">
-                        <span class="filter__list__category__title">Status</span>
-                        <span class="filter__list__category__summary"></span>
+                        <div class="filter__list__category__title">Status</div>
+                        <div class="filter__list__category__summary"></div>
                     </button>
                     <div class="form-group__wrapper">
                         <div class="form-group select-all">
@@ -52,8 +52,8 @@
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
                     <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">
-                        <span class="filter__list__category__title">Support Activities</span>
-                        <span class="filter__list__category__summary"></span>
+                        <div class="filter__list__category__title">Support Activities</div>
+                        <div class="filter__list__category__summary"></div>
                     </button>
                     <div class="form-group__wrapper">
                         <div class="form-group select-all">
@@ -75,8 +75,8 @@
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
                     <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">
-                        <span class="filter__list__category__title">Distance</span>
-                        <span class="filter__list__category__summary"></span>
+                        <div class="filter__list__category__title">Distance</div>
+                        <div class="filter__list__category__summary"></div>
                     </button>
                     <div class="form-group__wrapper">
                         @foreach (var distance in Model.FilterSet.MaxDistanceInMiles)
@@ -94,8 +94,8 @@
             {
                 <fieldset class="filter__list__category group--filters-jobs" id="list-due">
                     <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">
-                        <span class="filter__list__category__title">Due</span>
-                        <span class="filter__list__category__summary"></span>
+                        <div class="filter__list__category__title">Due</div>
+                        <div class="filter__list__category__summary"></div>
                     </button>
                     <div class="form-group__wrapper">
                         @foreach (var dueInNextXDays in Model.FilterSet.DueInNextXDays)

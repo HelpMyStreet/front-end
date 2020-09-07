@@ -86,7 +86,7 @@
     }
 
     @media screen and (min-width: $breakpointSm) {
-      .icon--close {
+      .icon--close.btn__filter-toggle {
         display: none;
       }
     }

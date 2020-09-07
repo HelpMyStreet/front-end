@@ -52,20 +52,26 @@
             }
             else
             {
-                <span class="job__info__urgency__dates">
-                    <img src="~/img/icons/calendar.svg" />
-                    <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
-                </span>
+                @if (Model.UserActingAsAdmin)
+                {
+                    <span class="job__info__urgency__dates job__status">@Model.JobSummary.JobStatus.FriendlyName()</span>
+                    <span class="job__info__urgency__dates">
+                        <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
+                    </span>
+                }
+                else
+                {
+                    <span class="job__info__urgency__dates">
+                        <img src="~/img/icons/calendar.svg" />
+                        <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
+                    </span>
+                }
 
                 <span class="job__info__urgency__dates due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">
                     Due @Model.JobSummary.DueDate.FriendlyFutureDate()
-                    @if (Model.UserActingAsAdmin && (Model.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobSummary.JobStatus == JobStatuses.Open))
-                    {
-                        <span class="no-wrap">@($"({Model.JobSummary.JobStatus.FriendlyName()})")</span>
-                    }
                 </span>
             }
-            <span class="job__status__new">
+            <span class="job__status job__status__new">
             </span>
             @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
             {
@@ -98,7 +104,7 @@
             </span>
             <span class="activity__detail">
                 @Model.JobSummary.PostCode
-                @if (!Model.UserActingAsAdmin)
+                @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
                 {
                     <span>(@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
                 }

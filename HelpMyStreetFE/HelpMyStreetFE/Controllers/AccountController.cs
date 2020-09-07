@@ -72,9 +72,9 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -86,19 +86,19 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                return await Profile();
+                return await Profile(cancellationToken);
             }
         }
 
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Profile(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
             viewModel.PageModel = userDetails;
@@ -107,15 +107,15 @@ namespace HelpMyStreetFE.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Streets()
+        public async Task<IActionResult> Streets(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -158,82 +158,82 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> OpenRequests()
+        public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
         {
 
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             return View("Index", viewModel);
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> AcceptedRequests()
+        public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> CompletedRequests()
+        public async Task<IActionResult> CompletedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.CompletedRequests;
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Group(string groupKey)
+        public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
+            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
             {
-                return await GroupRequests(groupKey);
+                return await GroupRequests(groupKey, cancellationToken);
             }
-            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin))
+            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
             {
-                return await GroupVolunteers(groupKey);
+                return await GroupVolunteers(groupKey, cancellationToken);
             }
 
             return Redirect(PROFILE_URL);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GroupRequests(string groupKey)
+        public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
@@ -250,7 +250,7 @@ namespace HelpMyStreetFE.Controllers
         [AuthorizeAttributeNoRedirect]
         public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return 0;
@@ -262,15 +262,15 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GroupVolunteers(string groupKey)
+        public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
             {
                 return Redirect(PROFILE_URL);
@@ -290,15 +290,15 @@ namespace HelpMyStreetFE.Controllers
             return Ok();
         }
 
-        private async Task<User> GetCurrentUser()
+        private async Task<User> GetCurrentUser(CancellationToken cancellationToken)
         {
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id);
+            var user = await _userService.GetUserAsync(id, cancellationToken);
             HttpContext.Session.SetObjectAsJson("User", user);
             return user;
         }
 
-        private async Task<AccountViewModel> GetAccountViewModel(User user)
+        private async Task<AccountViewModel> GetAccountViewModel(User user, CancellationToken cancellationToken)
         {
             var viewModel = new AccountViewModel();
 
@@ -334,7 +334,7 @@ namespace HelpMyStreetFE.Controllers
 
                 viewModel.UserDetails = userDetails;
 
-                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
+                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 
             return viewModel;

@@ -2,6 +2,7 @@
 using HelpMyStreetFE.Enums.Account;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
@@ -19,5 +20,25 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? RequestedBefore { get; set; }
         public int ResultsToShow { get; set; }
         public int ResultsToShowIncrement { get; set; }
+
+        public void UpdateFromFilterSet(FilterSet filterSet)
+        {
+            if (filterSet.JobStatuses != null)
+            {
+                JobStatuses = filterSet.JobStatuses.Where(a => a.IsSelected).Select(a => a.Value);
+            }
+            if (filterSet.SupportActivities != null)
+            {
+                SupportActivities = filterSet.SupportActivities.Where(a => a.IsSelected).Select(a => a.Value);
+            }
+            if (filterSet.MaxDistanceInMiles != null)
+            {
+                MaxDistanceInMiles = filterSet.MaxDistanceInMiles.Where(a => a.IsSelected).First().Value;
+            }
+            if (filterSet.DueInNextXDays != null)
+            {
+                DueInNextXDays = filterSet.DueInNextXDays.Where(a => a.IsSelected).First().Value;
+            }
+        }
     }
 }

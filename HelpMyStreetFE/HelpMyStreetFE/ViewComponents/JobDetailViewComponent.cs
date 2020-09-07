@@ -25,6 +25,8 @@ namespace HelpMyStreetFE.ViewComponents
             JobDetail jobDetails = jobSet switch
             {
                 JobSet.GroupRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                JobSet.UserCompletedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                JobSet.UserAcceptedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
                 _ => new JobDetail() { JobSummary = await _requestService.GetJobSummaryAsync(jobId, cancellationToken) }
             };
 

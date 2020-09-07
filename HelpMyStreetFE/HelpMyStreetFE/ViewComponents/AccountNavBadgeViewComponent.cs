@@ -23,10 +23,11 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, string cssClass, CancellationToken cancellationToken)
         {
             var viewModel = new AccountNavBadgeViewModel()
             {
+                CssClass = cssClass,
                 MenuPage = menuPage,
                 GroupKey = groupKey,
                 Count = await GetCount(user, menuPage, groupKey, cancellationToken)
@@ -39,7 +40,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             if (menuPage == MenuPage.GroupRequests)
             {
-                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin))
+                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
                 {
                     return 0;
                 }

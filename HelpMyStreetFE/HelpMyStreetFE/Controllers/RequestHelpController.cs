@@ -185,7 +185,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> RequestHelp(string referringGroup, string source)
+        public async Task<IActionResult> RequestHelp(string referringGroup, string source, CancellationToken cancellationToken)
         {
             _logger.LogInformation("request-help");
 
@@ -194,7 +194,7 @@ namespace HelpMyStreetFE.Controllers
             // Fix to allow existing routing
             if (referringGroup == "v4v")
             {
-                referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl");
+                referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             }
 
             RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source) ?? RequestHelpFormVariant.Default;

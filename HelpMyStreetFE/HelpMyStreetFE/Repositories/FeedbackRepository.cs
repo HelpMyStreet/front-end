@@ -29,7 +29,8 @@ namespace HelpMyStreetFE.Repositories
                     Tagline = "Lovely chat",
                     Message = "I volunteered to help out with the Age UK Vitals for Veterans campaign. Delivering the wellbeing package was very easy, I collected it from my local Age UK branch and was told where to drop it off. I had a lovely chat with the recipient of the parcel, an RAF veteran who was out tending to his garden when I arrived. I'm looking forward to the next delivery!",
                     Person = "Sean in Boston provided some help",
-                    Type = FeedbackMessageType.Group
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuklsl"
                 },
                 new FeedbackMessage()
                 {
@@ -78,7 +79,8 @@ namespace HelpMyStreetFE.Repositories
                     Tagline = "Can't recommend it enough",
                     Message = "HelpMyStreet has allowed us to keep what was great about our COVID-19 response, but set ourselves up to keep this going even when things hopefully get back to being a bit more normal. We can’t recommend it highly enough.",
                     Person = "Dave is a Community Organiser in Tankersley",
-                    Type = FeedbackMessageType.Group
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "tankersley"
                 },
                 new FeedbackMessage()
                 {
@@ -92,21 +94,24 @@ namespace HelpMyStreetFE.Repositories
                     Tagline = "Local people",
                     Message = "The ability to shape the content and presentation of local material - on the website and with the posters and flyers - makes it much more likely that local people will access and use this service",
                     Person = "Kate organises a local group in South Yorkshire who built a community page on HelpMyStreet",
-                    Type = FeedbackMessageType.Group
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuklsl"
                 },
                 new FeedbackMessage()
                 {
                     Tagline = "A priviledge",
                     Message = "It has been a privilege to join HelpMyStreet and to deliver the wellbeing packages for Age UK. To be able to give something back to others who have given to us in the past is most rewarding.",
                     Person = "Sharon in Stamford provided some help",
-                    Type = FeedbackMessageType.Group
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuklsl"
                 },
                 new FeedbackMessage()
                 {
                     Tagline = "Very rewarding",
                     Message = "I am enjoying being a volunteer for the Age UK Vitals for Veterans campaign. Helping those who have served their country is very rewarding and I am only too pleased to be able to help.",
                     Person = "Steve in Spalding provided some help",
-                    Type = FeedbackMessageType.Group
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuklsl"
                 }
 
             };

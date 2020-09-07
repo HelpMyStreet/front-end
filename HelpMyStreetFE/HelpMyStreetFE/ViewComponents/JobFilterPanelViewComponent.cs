@@ -21,6 +21,8 @@ namespace HelpMyStreetFE.ViewComponents
                 jobFilterViewModel.FilterSet = _filterService.GetDefaultFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.User);
             }
 
+            jobFilterViewModel.JobFilterRequest.UpdateFromFilterSet(jobFilterViewModel.FilterSet);
+
             return View("JobFilterPanel", jobFilterViewModel);
         }
 

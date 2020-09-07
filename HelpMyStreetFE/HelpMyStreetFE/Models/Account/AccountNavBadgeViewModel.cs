@@ -7,5 +7,6 @@ namespace HelpMyStreetFE.Models.Account
         public MenuPage MenuPage { get; set; }
         public string GroupKey { get; set; }
         public int Count { get; set; }
+        public string CssClass { get; set; }
     }
 }

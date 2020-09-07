@@ -57,7 +57,7 @@ namespace HelpMyStreetFE.Controllers
                 {
                     if (response.Status == ValidationStatus.Success)
                     {
-                        await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true);
+                        await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true, cancellationToken);
                     }
 
                     if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)

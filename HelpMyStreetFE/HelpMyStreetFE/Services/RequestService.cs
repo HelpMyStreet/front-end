@@ -148,7 +148,6 @@ namespace HelpMyStreetFE.Services
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var jobStatusHistory = _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
             if (jobDetails != null)
@@ -156,7 +155,7 @@ namespace HelpMyStreetFE.Services
                 User currentVolunteer = null;
                 if (jobDetails.JobSummary?.VolunteerUserID != null)
                 {
-                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value);
+                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value, cancellationToken);
                 }
 
                 return new JobDetail()
@@ -164,7 +163,7 @@ namespace HelpMyStreetFE.Services
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
-                    JobStatusHistory = (await jobStatusHistory)?.History,
+                    JobStatusHistory = jobDetails.History,
                     CurrentVolunteer = currentVolunteer,
                 };
             }
@@ -196,7 +195,7 @@ namespace HelpMyStreetFE.Services
         }
         public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
-            int groupId = (await _groupService.GetGroupIdByKey(groupKey));
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
@@ -237,11 +236,11 @@ namespace HelpMyStreetFE.Services
 
                 _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId));
+                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken));
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
-                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
+                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
                     userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>

@@ -55,17 +55,6 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetJobStatusHistoryResponse> GetJobStatusHistoryAsync(int jobId)
-        {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobStatusHistoryResponse>>($"/api/GetJobStatusHistory?jobID={jobId}");
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content;
-            }
-            return null;
-        }
-
         public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);

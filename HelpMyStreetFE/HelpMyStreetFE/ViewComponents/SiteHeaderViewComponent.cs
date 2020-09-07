@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.ViewComponents
@@ -25,7 +26,7 @@ namespace HelpMyStreetFE.ViewComponents
 
  
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(CancellationToken cancellationToken)
         {
             SiteHeaderViewModel viewModel = new SiteHeaderViewModel
             {
@@ -37,15 +38,15 @@ namespace HelpMyStreetFE.ViewComponents
                 var user = HttpContext.Session.GetObjectFromJson<User>("User");
                 if(user == null || user.ID != id)
                 {               
-                    user = await _userService.GetUserAsync(id);
+                    user = await _userService.GetUserAsync(id, cancellationToken);
                     HttpContext.Session.SetObjectAsJson("User", user);
                 }
-                viewModel.AccountVM = await GetAccountViewModel(user);
+                viewModel.AccountVM = await GetAccountViewModel(user, cancellationToken);
             }                                 
             return View(viewModel);
         }
 
-        private async Task<AccountViewModel> GetAccountViewModel(User user)
+        private async Task<AccountViewModel> GetAccountViewModel(User user, CancellationToken cancellationToken)
         {
             var viewModel = new AccountViewModel();
 
@@ -54,7 +55,7 @@ namespace HelpMyStreetFE.ViewComponents
                 viewModel.Notifications = new List<NotificationModel>();
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.UserDetails = userDetails;
-                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
+                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 
             return viewModel;

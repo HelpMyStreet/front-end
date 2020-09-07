@@ -7,58 +7,61 @@
 }
 
 .account__nav {
-    &__item {
-        list-style: none;
+  &__item {
+    list-style: none;
 
-        a {
-            display: block;
-            border: 1px solid $gray-10;
-            border-radius: 4px;
-            margin-bottom: 0.5rem;
-            padding: 0.5rem 1rem;
-            color: $black;
-            font-weight: 600;
-            text-decoration: none;
+    a {
+      display: block;
+      border: 1px solid $gray-10;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem 1rem;
+      color: $black;
+      font-weight: 600;
+      text-decoration: none;
 
-            .count {
-                position: absolute;
-                min-width: 29px;
-                right: -12px;
-                top: -9px;
-                font-size: 12px;
-                background: $green;
-                border-radius: 15px;
-                padding: 1px 7px;
-                color: $white;
-                text-align: center;
-                box-shadow: 0 0 4px rgba(0, 0, 0, 0.29);
+      .count {
+        position: absolute;
+        min-width: 30px;
+        right: -12px;
+        top: -7px;
+        border-radius: 15px;
+        padding: 1px 7px;
+        text-align: center;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.29);
 
-                @keyframes update {
-                    from {
-                        color: $green;
-                    }
+        .number {
+          font-size: 12px;
+          color: $white;
+        }
 
-                    to {
-                        color: $white;
-                    }
-                }
-
-                &.updated {
-                    animation-name: update;
-                    animation-duration: 3s;
-                }
-
+        &.updated {
+          @keyframes update {
+            from {
+              opacity: 0;
             }
-        }
 
-        a.selected {
-            background-color: white;
-        }
-
-        &.submenu__container {
-            ul {
-                display: none;
+            to {
+              opacity: 1;
             }
+          }
+
+          .number {
+            animation-name: update;
+            animation-duration: 3s;
+          }
         }
+      }
     }
+
+    a.selected {
+      background-color: white;
+    }
+
+    &.submenu__container {
+      ul {
+        display: none;
+      }
+    }
+  }
 }

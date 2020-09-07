@@ -35,8 +35,8 @@ namespace HelpMyStreetFE.Services
                 {
                     new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true },
                     new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Done, IsSelected = true },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
                 },
             DueInNextXDays = new List<FilterField<int>>()
                 {
