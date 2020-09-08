@@ -71,12 +71,13 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobs.Count() == 0 && emptyListCallback != null) { emptyListCallback.Invoke(); }
 
-            jobListViewModel.Jobs = jobs.Select(a => new JobViewModel()
+            jobListViewModel.Jobs = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
             {
                 JobSummary = a,
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
-                UserIsVerified = user.IsVerified ?? false
-            });
+                UserIsVerified = user.IsVerified ?? false,
+                ReferringGroup = a.ReferringGroupID.HasValue ? (await _groupService.GetGroupById(a.ReferringGroupID.Value, cancellationToken))?.GroupName : ""
+            })));
 
             return View("JobList", jobListViewModel);
         }
