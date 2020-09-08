@@ -7,6 +7,7 @@ using HelpMyStreet.Utils.Enums;
 using System;
 using HelpMyStreet.Cache;
 using System.Threading;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Services
 {
@@ -15,14 +16,16 @@ namespace HelpMyStreetFE.Services
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
         private readonly IMemDistCache<int> _memDistCache_int;
+        private readonly IMemDistCache<Group> _memDistCache_group;
 
         private const string CACHE_KEY_PREFIX = "group-service-";
 
-        public GroupService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IMemDistCache<int> memDistCache_int)
+        public GroupService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IMemDistCache<int> memDistCache_int, IMemDistCache<Group> memDistCache_group)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
             _memDistCache_int = memDistCache_int;
+            _memDistCache_group = memDistCache_group;
         }
 
         public async Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken)
@@ -72,15 +75,15 @@ namespace HelpMyStreetFE.Services
 
                 foreach (var groupRoles in userRoles.UserGroupRoles)
                 {
-                    var group = await _groupRepository.GetGroup(groupRoles.Key);
+                    var group = await GetGroupById(groupRoles.Key, cancellationToken);
                     var roles = groupRoles.Value.Select(role => (GroupRoles)role);
 
                     response.Add(new UserGroup()
                     {
                         UserId = userId,
-                        GroupId = group.Group.GroupId,
-                        GroupKey = group.Group.GroupKey,
-                        GroupName = group.Group.GroupName,
+                        GroupId = group.GroupId,
+                        GroupKey = group.GroupKey,
+                        GroupName = group.GroupName,
                         UserRoles = roles
                     });
                 }
@@ -89,9 +92,9 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId)
+        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId, CancellationToken cancellationToken)
         {
-            var thisGroup = (await _groupRepository.GetGroup(groupId)).Group;
+            var thisGroup = await GetGroupById(groupId, cancellationToken);
             var groupMemberRoles = await _groupRepository.GetGroupMemberRoles(groupId, userId);
 
             List<UserGroup> response = new List<UserGroup>();
@@ -127,6 +130,15 @@ namespace HelpMyStreetFE.Services
         public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
         {
             return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public async Task<Group> GetGroupById(int groupId, CancellationToken cancellationToken)
+        {
+            return await _memDistCache_group.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return (await _groupRepository.GetGroup(groupId)).Group;
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+
         }
     }
 }
