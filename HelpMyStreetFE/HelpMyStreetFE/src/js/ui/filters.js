@@ -133,7 +133,7 @@ function updateFilterSummary(list) {
   const inputs = $(list).find('input');
   if (inputs.first().is('[type="checkbox"]')) {
     if (!$(inputs).is(':not(:checked)')) {
-      // All selected; nothing filtered out
+      summary = 'Select all';
     } else {
       summary = $.map($(inputs).filter(':checked'), function (i) {
         return $(list).find('label[for="' + i.id + '"]').first().html();
@@ -141,21 +141,9 @@ function updateFilterSummary(list) {
     }
   } else if (inputs.first().is('[type="radio"]')) {
     const selectedInput = $(inputs).filter(':checked').first();
-    if (selectedInput.val() === $(inputs).last().val()) {
-      // Nothing filtered out
-    } else {
-      summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
-    }
+    summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
   }
-
-  const summarySpan = $(list).find('.filter__list__category__summary');
-
-  summarySpan.html(summary);
-  if (summary === "") {
-    summarySpan.addClass("dnone");
-  } else {
-    summarySpan.removeClass("dnone");
-  }
+  $(list).find('.filter__list__category__summary').html(summary);
 }
 
 function lockWindowScroll() {
