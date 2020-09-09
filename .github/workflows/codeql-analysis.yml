@@ -42,6 +42,9 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
+    - name: Setup NuGet Sources
+      run: nuget sources add -name "HelpMyStreet" -Source "https://pkgs.dev.azure.com/HelpMyStreet/nuget-package/_packaging/nuget.HelpMyStreet/nuget/v3/index.json"
+
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
