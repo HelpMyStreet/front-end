@@ -149,7 +149,6 @@ namespace HelpMyStreetFE
             services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
-            //services.AddSingleton<ICommunicationService, CommunicationService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
