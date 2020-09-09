@@ -5,30 +5,41 @@ using Microsoft.AspNetCore.Mvc;
 using HelpMyStreet.Utils.Enums;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.ViewComponents
 {
     public class JobDetailViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IUserService _userService;
         private readonly IGroupService _groupService;
-        public JobDetailViewComponent(IRequestService requestService, IUserService userService, IGroupService groupService)
+        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService)
         {
             _requestService = requestService;
-            _userService = userService;
             _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int JobID, User user, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken)
         {
-            var jobDetails = await _requestService.GetJobDetailsAsync(JobID, user.ID, cancellationToken);
+            JobDetail jobDetails = jobSet switch
+            {
+                JobSet.GroupRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                JobSet.UserCompletedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                JobSet.UserAcceptedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                _ => new JobDetail() { JobSummary = await _requestService.GetJobSummaryAsync(jobId, cancellationToken) }
+            };
+
+            if (jobDetails == null)
+            {
+                throw new Exception($"Failed to retrieve job details for JobId {jobId}");
+            }
 
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
                 JobDetail = jobDetails,
                 UserIsVerified = user.IsVerified ?? false,
-                UserActingAsAdmin = await _groupService.GetUserHasRole(user.ID, jobDetails.JobSummary.ReferringGroupID.Value, GroupRoles.TaskAdmin)
+                UserActingAsAdmin = jobSet == JobSet.GroupRequests,
             };
 
             return View("JobDetail", jobDetailViewModel);

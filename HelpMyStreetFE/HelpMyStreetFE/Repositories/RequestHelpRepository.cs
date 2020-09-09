@@ -33,20 +33,20 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID={jobId}&userID={userId}");
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.JobSummary;
             }
             return null;
         }
 
-        public async Task<GetJobStatusHistoryResponse> GetJobStatusHistoryAsync(int jobId)
+        public async Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetJobStatusHistoryResponse>>($"/api/GetJobStatusHistory?jobID={jobId}");
+            var response = await GetAsync<BaseRequestHelpResponse<GetJobDetailsResponse>>($"/api/GetJobDetails?jobID={jobId}&userID={userId}");
 
             if (response.HasContent && response.IsSuccessful)
             {

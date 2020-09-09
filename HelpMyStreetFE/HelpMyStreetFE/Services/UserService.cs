@@ -1,7 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Enums.Account;
-using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
@@ -9,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using HelpMyStreet.Cache;
+using System.Threading;
 using HelpMyStreet.Contracts.UserService.Response;
 
 namespace HelpMyStreetFE.Services
@@ -17,11 +17,15 @@ namespace HelpMyStreetFE.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ILogger<UserService> _logger;
+        private readonly IMemDistCache<User> _memDistCache;
 
-        public UserService(IUserRepository userRepository, ILogger<UserService> logger)
+        private const string CACHE_KEY_PREFIX = "user-service-";
+
+        public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache)
         {
             _userRepository = userRepository;
             _logger = logger;
+            _memDistCache = memDistCache;
         }
 
         public async Task<int> CreateUserAsync(string email, string authId, int referringGroupId, string source)
@@ -30,14 +34,38 @@ namespace HelpMyStreetFE.Services
             return await _userRepository.CreateUser(email, authId, referringGroupId, source);
         }
 
-        public async Task<int> UpdateUserAsync(User user)
+        public async Task<int> UpdateUserAsync(User user, CancellationToken cancellationToken)
         {
-            return await _userRepository.UpdateUser(user);
+            int val = await _userRepository.UpdateUser(user);
+            RefreshUserCache(user.ID, cancellationToken);
+            return val;
         }
 
-        public async Task<User> GetUserAsync(int id)
+        public async Task<User> GetUserAsync(int id, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetUser(id);
+            User user = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return null;
+            }, $"{CACHE_KEY_PREFIX}-user-{id}", RefreshBehaviour.DontRefreshData, cancellationToken, NotInCacheBehaviour.DontGetData);
+
+            if (user != null)
+            {
+                // Found in cache
+                return user;
+            }
+
+            user = await _userRepository.GetUser(id);
+
+            if (user?.IsVerified ?? false)
+            {
+                // Don't put users into the cache until registration is complete
+                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return user;
+                }, $"{CACHE_KEY_PREFIX}-user-{id}", cancellationToken);
+            }
+
+            return user;
         }
 
         public async Task CreateUserStepTwoAsync(
@@ -51,7 +79,8 @@ namespace HelpMyStreetFE.Services
             string locality,
             string mobile,
             string otherPhone,
-            DateTime dob)
+            DateTime dob,
+            CancellationToken cancellationToken)
         {
             await _userRepository.CreateUserStepTwo(new RegistrationStepTwo
             {
@@ -77,7 +106,8 @@ namespace HelpMyStreetFE.Services
         public async Task CreateUserStepThreeAsync(
             int id,
             List<SupportActivities> activities,
-            float supportRadius)
+            float supportRadius,
+            CancellationToken cancellationToken)
         {
             await _userRepository.CreateUserStepThree(new RegistrationStepThree
             {
@@ -92,7 +122,8 @@ namespace HelpMyStreetFE.Services
         public async Task CreateUserStepFourAsync(
             int id,
             bool roleUnderstood,
-            List<string> postcodes)
+            List<string> postcodes,
+            CancellationToken cancellationToken)
         {
             await _userRepository.CreateUserStepFour(new RegistrationStepFour
             {
@@ -104,13 +135,19 @@ namespace HelpMyStreetFE.Services
 
         public async Task CreateUserStepFiveAsync(
          int id,
-         bool verified)
+         bool verified,
+         CancellationToken cancellationToken)
         {
             await _userRepository.CreateUserStepFive(new RegistrationStepFive
             {
                 UserID = id,
                 IsVerified = verified
             });
+
+            if (verified)
+            {
+                RefreshUserCache(id, cancellationToken);
+            }
         }
 
         public async Task<int> GetStreetChampions()
@@ -161,6 +198,14 @@ namespace HelpMyStreetFE.Services
             }
             
             return user.RegistrationHistory.Count > 0 && user.RegistrationHistory.Max(a => a.Key) > 3;
+        }
+
+        private void RefreshUserCache(int userId, CancellationToken cancellationToken)
+        {
+            _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+            {
+                return await _userRepository.GetUser(userId);
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}", cancellationToken);
         }
     }
 }

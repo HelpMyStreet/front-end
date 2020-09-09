@@ -24,20 +24,25 @@ namespace HelpMyStreetFE.ViewComponents
             _feedbackRepository = feedbackRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow)
+        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow, string groupKey)
         {
             var viewModel = new FeedbackViewModel();
             var messages = await _feedbackRepository.GetFeedback();
-            if (feedbackMessageType != FeedbackMessageType.Other)
-            {
-                messages = messages.FindAll(e => e.Type == feedbackMessageType);
-            }
-            else
+            if (feedbackMessageType == FeedbackMessageType.Other)
             {
                 var faceMasks = messages.FindAll(e => e.Type == FeedbackMessageType.FaceCovering);
 
                 var notMasks = messages.FindAll(e => e.Type != FeedbackMessageType.FaceCovering);
                 messages = notMasks.Concat(faceMasks.OrderBy(x => Guid.NewGuid()).Take(3)).ToList(); //get fewer masks involved
+            }
+            else
+            {
+                messages = messages.FindAll(e => e.Type == feedbackMessageType);
+
+                if (feedbackMessageType == FeedbackMessageType.Group)
+                {
+                    messages = messages.FindAll(e => e.GroupKey == groupKey);
+                }
             }
 
             if (numberToShow != null)

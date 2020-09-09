@@ -6,69 +6,119 @@
     bool jobsToDisplay = true;
 }
 
-<form action="/api/requesthelp/get-filtered-jobs" method="post">
-    <h6>Filter jobs here</h6>
+
+<form method="post" class="filter">
+    <header class="filter__header">
+        <button class="btn btn__filter-toggle btn__toggle-show" data-target-item="filters-jobs">Filter requests</button>
+    </header>
 
     <input type="hidden" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
     <input type="hidden" name="GroupId" value="@Model.JobFilterRequest.GroupId" />
     <input type="hidden" name="ResultsToShowIncrement" value="@Model.JobFilterRequest.ResultsToShowIncrement" />
     <input type="hidden" name="ResultsToShow" value="@Model.JobFilterRequest.ResultsToShow" />
 
-    @if (Model.FilterSet.JobStatuses != null)
-    {
-        <fieldset>
-            <p>Status:</p>
-            @foreach (var status in Model.FilterSet.JobStatuses)
+    <div class="filter__list-wrapper" id="filters-jobs">
+        <button class="btn--close btn__filter-toggle btn__toggle-show" data-target-item="filters-jobs">
+            <svg xmlns="" viewBox="0 0 100 100" class="icon--close" width="32" height="32">
+                <circle cx="50" cy="50" r="50" class="bg" />
+                <path d="M30,30 L70,70 M30,70 L70,30" class="cross" stroke-linecap="round" />
+            </svg>
+        </button>
+        <div class="filter__list">
+            @if (Model.FilterSet.JobStatuses != null)
             {
-                <label for="filter-status-@status.Value">@status.Value.FriendlyName()</label>
-                <input name="JobStatuses[]" type="checkbox" id="filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
+                <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">
+                        <div class="filter__list__category__title">Status</div>
+                        <div class="filter__list__category__summary"></div>
+                    </button>
+                    <div class="form-group__wrapper">
+                        <div class="form-group select-all">
+                            <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
+                            <label for="filter-status-select-all">Select all</label>
+                        </div>
+                        @foreach (var status in Model.FilterSet.JobStatuses)
+                        {
+                            <div class="form-group">
+                                <input name="JobStatuses[]" type="checkbox" id="filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
+                                <label for="filter-status-@status.Value">@status.Value.FriendlyName()</label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
             }
-            <label for="filter-status-select-all">Select all</label>
-            <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
-            @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
-        </fieldset>
-    }
 
-    @if (Model.FilterSet.SupportActivities != null)
-    {
-        <fieldset>
-            <p>Activity:</p>
-            @foreach (var supportActivity in Model.FilterSet.SupportActivities)
+            @if (Model.FilterSet.SupportActivities != null)
             {
-                <label for="filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName()</label>
-                <input name="SupportActivities[]" type="checkbox" id="filter-supportActivity-@supportActivity.Value" value="@((int)supportActivity.Value)" checked="@supportActivity.IsSelected" />
+                <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">
+                        <div class="filter__list__category__title">Support Activities</div>
+                        <div class="filter__list__category__summary"></div>
+                    </button>
+                    <div class="form-group__wrapper">
+                        <div class="form-group select-all">
+                            <input id="filter-supportActivity-select-all" type="checkbox" class="filter-select-all" />
+                            <label for="filter-supportActivity-select-all">Select all</label>
+                        </div>
+                        @foreach (var supportActivity in Model.FilterSet.SupportActivities)
+                        {
+                            <div class="form-group">
+                                <input name="SupportActivities[]" type="checkbox" id="filter-supportActivity-@supportActivity.Value" value="@((int)supportActivity.Value)" checked="@supportActivity.IsSelected" />
+                                <label for="filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName()</label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
             }
-            <label for="filter-supportActivity-select-all">Select all</label>
-            <input id="filter-supportActivity-select-all" type="checkbox" class="filter-select-all" />
-            @* TODO: Add some JS to tick/untick other boxes when select-all is clicked *@
-        </fieldset>
-    }
 
-    @if (Model.FilterSet.MaxDistanceInMiles != null)
-    {
-        <fieldset>
-            <p>Distance:</p>
-            @foreach (var distance in Model.FilterSet.MaxDistanceInMiles)
+            @if (Model.FilterSet.MaxDistanceInMiles != null)
             {
-                <label for="filter-distance-@distance.Value">@distance.Label</label>
-                <input type="radio" name="MaxDistanceInMiles" id="filter-distance-@distance.Value" value="@distance.Value" checked="@distance.IsSelected" />
+                <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">
+                        <div class="filter__list__category__title">Distance</div>
+                        <div class="filter__list__category__summary"></div>
+                    </button>
+                    <div class="form-group__wrapper">
+                        @foreach (var distance in Model.FilterSet.MaxDistanceInMiles)
+                        {
+                            <div class="form-group">
+                                <input type="radio" name="MaxDistanceInMiles" id="filter-distance-@distance.Value" value="@distance.Value" checked="@distance.IsSelected" />
+                                <label for="filter-distance-@distance.Value">@distance.Label</label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
             }
-        </fieldset>
-    }
 
-    @if (Model.FilterSet.DueInNextXDays != null)
-    {
-        <fieldset>
-            <p>Due:</p>
-            @foreach (var dueInNextXDays in Model.FilterSet.DueInNextXDays)
+            @if (Model.FilterSet.DueInNextXDays != null)
             {
-                <label for="filter-due-@dueInNextXDays.Value">@dueInNextXDays.Label</label>
-                <input type="radio" name="DueInNextXDays" id="filter-due-@dueInNextXDays.Value" value="@dueInNextXDays.Value" checked="@dueInNextXDays.IsSelected" />
+                <fieldset class="filter__list__category group--filters-jobs" id="list-due">
+                    <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">
+                        <div class="filter__list__category__title">Due</div>
+                        <div class="filter__list__category__summary"></div>
+                    </button>
+                    <div class="form-group__wrapper">
+                        @foreach (var dueInNextXDays in Model.FilterSet.DueInNextXDays)
+                        {
+                            <div class="form-group">
+                                <input type="radio" name="DueInNextXDays" id="filter-due-@dueInNextXDays.Value" value="@dueInNextXDays.Value" checked="@dueInNextXDays.IsSelected" />
+                                <label for="filter-due-@dueInNextXDays.Value">@dueInNextXDays.Label</label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
             }
-        </fieldset>
-    }
 
-    <button type="submit" class="update">Update</button>
+            <div class="filter__list__apply__wrapper">
+                <button type="submit" class="btn cta small btn--apply-filter disabled" data-target-group="filters-jobs">
+                    <span class="text">Apply</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading"}' /></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
 </form>
 
 <div class="profile__section job-filter-results-panel">
@@ -81,9 +131,4 @@
             Model.EmptyJobSetCallback?.Invoke();
         }),
     })
-
-    @if (!jobsToDisplay)
-    {
-        <p>No jobs to display</p>
-    }
 </div>

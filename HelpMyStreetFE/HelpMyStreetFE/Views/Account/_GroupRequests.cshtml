@@ -15,7 +15,6 @@
         @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
            {
                JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupRequests, GroupId = Model.CurrentGroup.GroupId, ResultsToShow = 50, ResultsToShowIncrement = 50 },
-               FilterSet = FilterSet.DefaultFilterSet.GroupRequestsDefaultFilterSet,
            })
     </div>
 

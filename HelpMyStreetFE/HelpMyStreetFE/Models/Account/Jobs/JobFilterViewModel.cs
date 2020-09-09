@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Enums.Account;
+﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Enums.Account;
 using System;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
@@ -8,5 +9,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public FilterSet FilterSet { get; set; }
         public JobFilterRequest JobFilterRequest { get; set; }
         public Action EmptyJobSetCallback { get; set; }
+        public User User { get; set; }
     }
 }

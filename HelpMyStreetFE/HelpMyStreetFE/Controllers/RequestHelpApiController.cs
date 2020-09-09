@@ -12,6 +12,7 @@ using System.Threading;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreet.Utils.Extensions;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -32,7 +33,7 @@ namespace HelpMyStreetFE.Controllers {
         }
 
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
         public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
@@ -44,7 +45,7 @@ namespace HelpMyStreetFE.Controllers {
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
                 {
-                    targetUserId = string.IsNullOrEmpty(u) ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
+                    targetUserId = u == "self" ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
                 }
 
                 bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
@@ -65,9 +66,9 @@ namespace HelpMyStreetFE.Controllers {
             }
         }
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("get-job-details")]
-        public async Task<IActionResult> GetJobDetails(string j)
+        public async Task<IActionResult> GetJobDetails(string j, JobSet js)
         {
             var jobId = DecodeJobID(j);
 
@@ -78,11 +79,10 @@ namespace HelpMyStreetFE.Controllers {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            return ViewComponent("JobDetail", new { jobId, user });
-
+            return ViewComponent("JobDetail", new { jobId, user, jobSet = js });
         }
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpPost("get-filtered-jobs")]
         public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
@@ -96,8 +96,6 @@ namespace HelpMyStreetFE.Controllers {
                 throw new Exception("Could not decode Job ID: " + encodedJobId);
             }
             return jobId;
-
         }
-
     }
 }

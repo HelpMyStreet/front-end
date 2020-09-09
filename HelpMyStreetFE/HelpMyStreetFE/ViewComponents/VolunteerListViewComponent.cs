@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.ViewComponents
@@ -22,7 +23,7 @@ namespace HelpMyStreetFE.ViewComponents
             _userService = userService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int groupId)
+        public async Task<IViewComponentResult> InvokeAsync(int groupId, CancellationToken cancellationToken)
         {
             User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
@@ -40,7 +41,7 @@ namespace HelpMyStreetFE.ViewComponents
                 return new VolunteerViewModel()
                 {
                     Roles = userGroup.UserRoles,
-                    User = await _userService.GetUserAsync(userGroup.UserId)
+                    User = await _userService.GetUserAsync(userGroup.UserId, cancellationToken)
                 };
             });
 

@@ -15,6 +15,7 @@ using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Contracts.GroupService.Request;
+using System.Threading;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -96,10 +97,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/step-two")]
-        public async Task<ActionResult> StepTwo()
+        public async Task<ActionResult> StepTwo(CancellationToken cancellationToken)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            string correctPage = await GetCorrectPage(userId);
+            string correctPage = await GetCorrectPage(userId, cancellationToken);
             if (!correctPage.StartsWith("/registration/step-two"))
             {
                 // A different step needs to be completed at this point
@@ -109,17 +110,17 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 2,
-                RegistrationFormVariant = await GetRegistrationJourney(userId)
+                RegistrationFormVariant = await GetRegistrationJourney(userId, cancellationToken)
             });
         }
 
         [HttpPost("[controller]/step-two")]
-        public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form)
+        public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form, CancellationToken cancellationToken)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(userId);
+            string correctPage = await GetCorrectPage(userId, cancellationToken);
             if (!correctPage.StartsWith("/registration/step-two"))
             {
                 // A different step needs to be completed at this point
@@ -128,7 +129,7 @@ namespace HelpMyStreetFE.Controllers
 
             try
             {
-                await _userService.CreateUserStepTwoAsync(userId, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth);
+                await _userService.CreateUserStepTwoAsync(userId, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth, cancellationToken);
                 return Redirect("/registration/step-three");
             }
             catch (Exception ex)
@@ -140,10 +141,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/step-three")]
-        public async Task<ActionResult> StepThree()
+        public async Task<ActionResult> StepThree(CancellationToken cancellationToken)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            string correctPage = await GetCorrectPage(userId);
+            string correctPage = await GetCorrectPage(userId, cancellationToken);
             if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
@@ -153,17 +154,17 @@ namespace HelpMyStreetFE.Controllers
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
-                RegistrationFormVariant = await GetRegistrationJourney(userId),
+                RegistrationFormVariant = await GetRegistrationJourney(userId, cancellationToken),
             });
         }
 
         [HttpPost("[controller]/step-three")]
-        public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form)
+        public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form, CancellationToken cancellationToken)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(userId);
+            string correctPage = await GetCorrectPage(userId, cancellationToken);
             if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
@@ -182,7 +183,8 @@ namespace HelpMyStreetFE.Controllers
                 await _userService.CreateUserStepThreeAsync(
                     userId,
                     form.VolunteerOptions,
-                    form.VolunteerDistance);
+                    form.VolunteerDistance,
+                    cancellationToken);
 
                 await _groupService.AddUserToDefaultGroups(userId);
 
@@ -197,18 +199,18 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("[controller]/step-four")]
-        public async Task<ActionResult> StepFour()
+        public async Task<ActionResult> StepFour(CancellationToken cancellationToken)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            string correctPage = await GetCorrectPage(userId);
+            string correctPage = await GetCorrectPage(userId, cancellationToken);
             if (!correctPage.StartsWith("/registration/step-four"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
             }
 
-            var user = await _userService.GetUserAsync(userId);
+            var user = await _userService.GetUserAsync(userId, cancellationToken);
             var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
 
             var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
@@ -235,12 +237,12 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpPost("[controller]/step-four")]
-        public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form)
+        public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form, CancellationToken cancellationToken)
         {
             var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
             // Remove any references to User in session so on next Load it fetches the updated values;
             HttpContext.Session.Remove("User");
-            string correctPage = await GetCorrectPage(userId);
+            string correctPage = await GetCorrectPage(userId, cancellationToken);
             if (!correctPage.StartsWith("/registration/step-four"))
             {
                 // A different step needs to be completed at this point
@@ -257,7 +259,8 @@ namespace HelpMyStreetFE.Controllers
                 await _userService.CreateUserStepFourAsync(
                     userId,
                     form.ChampionRoleUnderstood,
-                    form.ChampionPostcodes);
+                    form.ChampionPostcodes,
+                    cancellationToken);
 
                 return Redirect("/account");
             }
@@ -269,9 +272,9 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
-        private async Task<RegistrationFormVariant> GetRegistrationJourney(int userId)
+        private async Task<RegistrationFormVariant> GetRegistrationJourney(int userId, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUserAsync(userId);
+            User user = await _userService.GetUserAsync(userId, cancellationToken);
 
             if (!user.ReferringGroupId.HasValue)
             {
@@ -283,9 +286,9 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
-        private async Task<string> GetCorrectPage(int userId)
+        private async Task<string> GetCorrectPage(int userId, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUserAsync(userId);
+            User user = await _userService.GetUserAsync(userId, cancellationToken);
             if (user != null && user.RegistrationHistory.Count > 0)
             {
                 int maxStep = user.RegistrationHistory.Max(a => a.Key);

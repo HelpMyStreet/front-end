@@ -2,6 +2,7 @@
 using HelpMyStreetFE.Models.Community;
 using HelpMyStreetFE.Services;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
@@ -15,29 +16,29 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string communityName)
+        public async Task<CommunityViewModel> GetCommunity(string communityName, CancellationToken cancellationToken)
         {
             switch (communityName.Trim().ToLower())
             {
                 case "tankersley":
-                    return await GetTankersley();
+                    return await GetTankersley(cancellationToken);
                 case "ageuklsl":
-                    return await GetAgeUKLSL();
+                    return await GetAgeUKLSL(cancellationToken);
                 case "hlp":
-                    return await GetHLP();
+                    return await GetHLP(cancellationToken);
                 case "ftlos":
-                    return await GetFtLOS();
+                    return await GetFtLOS(cancellationToken);
                 default:
                     return null;
             }
         }
         
-        private async Task<CommunityViewModel> GetHLP()
+        private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
 
-            int groupId = await _groupService.GetGroupIdByKey("hlp");
+            int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "hlp";
@@ -149,16 +150,19 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetTankersley()
+        private async Task<CommunityViewModel> GetTankersley(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            int groupId = await _groupService.GetGroupIdByKey("tankersley");
+            int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "tankersley";
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
             communityViewModel.ZoomLevel = 14;
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "tankersley";
 
             communityViewModel.CommunityName = "Tankersley & Pilley";
 
@@ -227,16 +231,19 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetAgeUKLSL()
+        private async Task<CommunityViewModel> GetAgeUKLSL(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
-            int groupId = await _groupService.GetGroupIdByKey("ageuklsl");
+            int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "ageUK";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = 9;
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "ageuklsl";
 
             communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
             communityViewModel.CommunityShortName = "Age UK LSL";
@@ -330,14 +337,14 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetFtLOS()
+        private async Task<CommunityViewModel> GetFtLOS(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
             communityViewModel.showFeedback = true;
             communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
 
-            int groupId = await _groupService.GetGroupIdByKey("ftlos");
+            int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
             communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";

@@ -9,6 +9,7 @@
                 Open Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                 {
+                    CssClass = "bg-green",
                     User = Model.UserDetails.User,
                     MenuPage = MenuPage.OpenRequests
                 })
@@ -20,6 +21,7 @@
                 My Accepted Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                    {
+                       CssClass = "bg-green",
                        User = Model.UserDetails.User,
                        MenuPage = MenuPage.AcceptedRequests
                    })
@@ -31,6 +33,7 @@
                 My Completed Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                    {
+                       CssClass = "bg-gray-8",
                        User = Model.UserDetails.User,
                        MenuPage = MenuPage.CompletedRequests
                    })
@@ -53,12 +56,16 @@
                 <li class="account__nav__item submenu__container">
                     <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">
                         @userGroup.GroupName
-                        @await Component.InvokeAsync("AccountNavBadge", new
-                           {
-                               User = Model.UserDetails.User,
-                               MenuPage = MenuPage.GroupRequests,
-                               GroupKey = userGroup.GroupKey
-                           })
+                        @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+                        {
+                            @await Component.InvokeAsync("AccountNavBadge", new
+                               {
+                                   CssClass = "bg-green",
+                                   User = Model.UserDetails.User,
+                                   MenuPage = MenuPage.GroupRequests,
+                                   GroupKey = userGroup.GroupKey
+                               })
+                        }
                     </a>
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
@@ -68,6 +75,7 @@
                                     Requests
                                     @await Component.InvokeAsync("AccountNavBadge", new
                                        {
+                                           CssClass = "bg-green",
                                            User = Model.UserDetails.User,
                                            MenuPage = MenuPage.GroupRequests,
                                            GroupKey = userGroup.GroupKey

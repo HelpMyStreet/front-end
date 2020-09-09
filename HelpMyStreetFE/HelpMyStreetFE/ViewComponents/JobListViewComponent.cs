@@ -41,7 +41,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobFilterRequest.JobSet == JobSet.GroupRequests)
             {
-                if (!(await _groupService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin)))
+                if (!(await _groupService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin, cancellationToken)))
                 {
                     throw new UnauthorizedAccessException("User not authorized to view group tasks");
                 }
@@ -54,7 +54,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken)).OtherJobs,
                 JobSet.UserAcceptedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
                 JobSet.UserCompletedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled),
-                _ => throw new ArgumentException(message: "Invalid JobSet value", paramName: nameof(jobFilterRequest.JobSet))
+                _ => throw new ArgumentException(message: $"Invalid JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
             jobListViewModel.UnfilteredJobs = jobs.Count();
@@ -62,6 +62,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredJobs = jobs.Count();
+            jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
 
             if (jobFilterRequest.ResultsToShow > 0)
             {

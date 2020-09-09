@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Enums;
+﻿using System;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Helpers
 {
@@ -20,7 +21,9 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "Homework",
                 SupportActivities.WellbeingPackage => "Wellbeing Package",
                 SupportActivities.CommunityConnector => "Community Connector",
-                _ => "Other"
+                SupportActivities.MedicalAppointmentTransport => "Medical Appointment Transport",
+                SupportActivities.Other => "Other",
+                _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
             };
         }
 

@@ -2,13 +2,14 @@
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
     public interface IGroupService
     {
-        Task<int> GetGroupIdByKey(string groupKey);
+        Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);
 
         Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
 
@@ -18,12 +19,12 @@ namespace HelpMyStreetFE.Services
 
         Task<List<int>> GetUserGroups(int userId);
 
-        Task<List<UserGroup>> GetUserGroupRoles(int userId);
+        Task<List<UserGroup>> GetUserGroupRoles(int userId, CancellationToken cancellationToken);
 
         Task<List<UserGroup>> GetGroupMembers(int groupId, int userId);
 
-        Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role);
-        Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role);
+        Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken);
+        Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken);
         bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role);
     }
 }

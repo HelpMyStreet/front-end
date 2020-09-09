@@ -141,10 +141,13 @@ namespace HelpMyStreetFE.Services
             return jobs?.OrderOpenJobsForDisplay();
         }
 
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
+        {
+            return await _requestHelpRepository.GetJobSummaryAsync(jobId);
+        }
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var jobStatusHistory = _requestHelpRepository.GetJobStatusHistoryAsync(jobId);
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
             if (jobDetails != null)
@@ -152,7 +155,7 @@ namespace HelpMyStreetFE.Services
                 User currentVolunteer = null;
                 if (jobDetails.JobSummary?.VolunteerUserID != null)
                 {
-                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value);
+                    currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value, cancellationToken);
                 }
 
                 return new JobDetail()
@@ -160,7 +163,7 @@ namespace HelpMyStreetFE.Services
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
-                    JobStatusHistory = (await jobStatusHistory)?.History,
+                    JobStatusHistory = jobDetails.History,
                     CurrentVolunteer = currentVolunteer,
                 };
             }
@@ -175,7 +178,7 @@ namespace HelpMyStreetFE.Services
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
                 JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
-                _ => throw new ArgumentException(message: "Invalid JobStatuses value", paramName: nameof(status)),
+                _ => throw new ArgumentException(message: $"Invalid JobStatuses value: {status}", paramName: nameof(status)),
             };
 
             if (success)
@@ -192,7 +195,7 @@ namespace HelpMyStreetFE.Services
         }
         public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
-            int groupId = (await _groupService.GetGroupIdByKey(groupKey));
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
@@ -233,14 +236,15 @@ namespace HelpMyStreetFE.Services
 
                 _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId));
+                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken));
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
-                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId);
+                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
-                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g => {
+                    userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>
+                    {
                         _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                         {
                             return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
@@ -257,8 +261,8 @@ namespace HelpMyStreetFE.Services
                 return null;
             }
 
-            var nationalSupportActivities = new List<SupportActivities>() { SupportActivities.FaceMask, SupportActivities.HomeworkSupport, SupportActivities.PhoneCalls_Anxious, SupportActivities.PhoneCalls_Friendly, SupportActivities.CommunityConnector };
-            var activitySpecificSupportDistancesInMiles = nationalSupportActivities.Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+            var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities
+                .Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
             var jobsByFilterRequest = new GetJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,

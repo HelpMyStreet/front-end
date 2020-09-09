@@ -3,74 +3,70 @@
 @import "../mixins//effects";
 
 .popup {
-    position: absolute;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  display: none;
+  top: 0;
+
+  &__content {
+
+
+    .btn--close {
+      margin: 0 0 0 auto;
+    }
+
+    .error {
+      color: red;
+      line-height: 2.5;
+    }
+
+    position: inherit;
+    top: 30%;
+    left: 53%;
+    transform: translate(-50%, -28%);
+    min-width: 300px;
+    width: 50%;
+    background: white;
+    z-index: 4;
+    border: 8px solid $green;
+    text-align: center;
+    @include shadow-md;
+    padding: 20px;
+
+    &.warning {
+      border-color: $orange
+    }
+
+    @media screen and (min-width: $sm-screen) {
+      transform: translate(-50%, -50%);
+    }
+
+    &__header {
+      color: $dark-blue;
+      @include title-sz-3;
+      margin: 1rem 0 2rem 0;
+    }
+
+    &__text {
+      p {
+        @include copy-sz-md;
+        margin-bottom: 2rem;
+      }
+    }
+
+    &__buttons {
+      &__button {
+        margin-bottom: 1.5rem;
+      }
+    }
+  }
+
+
+  &__backdrop {
+    background: $popup-backdrop;
     width: 100%;
     height: 100%;
-    z-index: 3;
-    display: none;
-    top: 0;
-
-    &__content {
-
-
-        .cross-button {
-            float: right;
-            font-weight: 600;
-            cursor: pointer;
-            color: $gray-10;
-            font-size: 1.3rem;          
-        }
-
-        .error {
-            color: red;
-            line-height: 2.5;
-        }
-
-        position: inherit;
-        top: 30%;
-        left: 53%;
-        transform: translate(-50%, -28%);
-        min-width: 300px;
-        width: 50%;
-        background: white;
-        z-index: 4;
-        border: 8px solid $green;
-        text-align: center;
-        @include shadow-md;
-        padding: 20px;
-
-        &.warning {
-            border-color: $orange
-        }
-
-        @media screen and (min-width: $sm-screen) {
-            transform: translate(-50%, -50%);
-        }
-
-        &__header {
-            color: $dark-blue;
-            @include title-sz-3;
-            margin: 1rem 0 2rem 0;
-        }
-
-        &__text {
-            p {
-                @include copy-sz-md;
-                margin-bottom: 2rem;
-            }
-        }
-
-        &__buttons {
-            &__button {
-                margin-bottom: 1.5rem;
-            }
-        }
-    }
-
-
-    &__backdrop {
-        background: $popup-backdrop;
-        width: 100%;
-        height: 100%;
-    }
+  }
 }

@@ -38,45 +38,56 @@
         <div class="job__info__urgency">
             @if (Model.JobSummary.JobStatus == JobStatuses.Done)
             {
-                <span>
+                <span class="job__info__urgency__dates">
                     <img src="~/img/icons/green-tick.svg" alt="Done" />
                     <span class="due-date" title="@Model.JobSummary.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobSummary.DateStatusLastChanged.FriendlyFutureDate()</span>
                 </span>
             }
             else if (Model.JobSummary.JobStatus == JobStatuses.Cancelled)
             {
-                <span>
+                <span class="job__info__urgency__dates">
                     <img src="~/img/icons/gray-tick.svg" alt="Cancelled" />
                     <span class="due-date" title="@Model.JobSummary.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobSummary.DateStatusLastChanged.FriendlyFutureDate()</span>
                 </span>
             }
             else
             {
-                <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
-                @if (Model.JobSummary.IsHealthCritical)
+                @if (Model.UserActingAsAdmin)
                 {
-                    <span>
-                        <span class="critical-icon">!</span>
-                        <span class="critical">Critical</span>
+                    <span class="job__info__urgency__dates job__status">@Model.JobSummary.JobStatus.FriendlyName()</span>
+                    <span class="job__info__urgency__dates">
+                        <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
+                    </span>
+                }
+                else
+                {
+                    <span class="job__info__urgency__dates">
+                        <img src="~/img/icons/calendar.svg" />
+                        <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
                     </span>
                 }
 
-                <span>
-                    @if (!Model.JobSummary.IsHealthCritical)
-                    {
-                    <img src="~/img/icons/calendar.svg" />
-                    }
-                    <span class="due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">Due @Model.JobSummary.DueDate.FriendlyFutureDate()</span>
+                <span class="job__info__urgency__dates due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">
+                    Due @Model.JobSummary.DueDate.FriendlyFutureDate()
+                </span>
+            }
+            <span class="job__status job__status__new">
+            </span>
+            @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
+            {
+                <span class="next-step dnone">
+                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString())">Go to My Accepted Requests</a>
                 </span>
             }
         </div>
         <div class="job__info__activity column">
-            <span class="activity__title job__status">
-                @if (Model.UserActingAsAdmin && (Model.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobSummary.JobStatus == JobStatuses.Open))
-                {
-                    @Model.JobSummary.JobStatus.FriendlyName()
-                }
-            </span>
+            @if (Model.JobSummary.IsHealthCritical)
+            {
+                <span class="">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
             <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
                 @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
                 {
@@ -93,7 +104,7 @@
             </span>
             <span class="activity__detail">
                 @Model.JobSummary.PostCode
-                @if (!Model.UserActingAsAdmin)
+                @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
                 {
                     <span>(@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
                 }
@@ -111,9 +122,6 @@
                                 <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
                                     <span class="text">Accept</span>
                                 </button>
-                                <div class="job__info__footer next-step dnone">
-                                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString())">Go to My Accepted Requests</a>
-                                </div>
                             }
                             else
                             {
@@ -164,6 +172,7 @@
                 @if (Model.UserIsVerified)
                 {
                     <a href="#" class="open">View more info <span></span></a>
+                    <a href="#" class="close">View less info <span></span></a>
                 }
             </div>
         </div>

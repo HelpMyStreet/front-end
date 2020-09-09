@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
+using System.Threading;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -33,7 +34,7 @@ namespace HelpMyStreetFE.Controllers
             _groupService = groupService;
         }
 
-        public async Task<IActionResult> Index(string communityName)
+        public async Task<IActionResult> Index(string communityName, CancellationToken cancellationToken)
         {
             bool testBanner = false;
             string strTestBanner = _configuration["TestBanner"];
@@ -47,7 +48,7 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction(nameof(ErrorsController.Error404), "Errors");
             }
 
-            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(communityName);
+            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(communityName, cancellationToken);
 
             if (communityViewModel == null)
             {
@@ -78,9 +79,9 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> FaceCoverings()
+        public async Task<IActionResult> FaceCoverings(CancellationToken cancellationToken)
         {
-            var genericGetGroupByKeyResponse = await _groupService.GetGroupIdByKey("Generic");
+            var genericGetGroupByKeyResponse = await _groupService.GetGroupIdByKey("Generic", cancellationToken);
             var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse.ToString());
 
             FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
@@ -92,7 +93,7 @@ namespace HelpMyStreetFE.Controllers
             return View(faceCoveringsViewModel);
         }
 
-        public async Task<IActionResult> FaceMasks()
+        public async Task<IActionResult> FaceMasks(CancellationToken cancellationToken)
         {
             return Redirect("/face-coverings");
         }

@@ -18,13 +18,12 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
 using System;
 using Microsoft.Extensions.Internal;
-using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
 using HelpMyStreet.Cache.Extensions;
 using HelpMyStreet.Cache;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Account.Jobs;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE
 {
@@ -156,13 +155,17 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IGroupService, GroupService>();
-          
+            services.AddSingleton<IFilterService, FilterService>();
+
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
             services.AddMemCache();
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
 
             services.AddControllers();
             services.AddRazorPages()
