@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "hlp";
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
@@ -155,7 +155,7 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "tankersley";
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
@@ -236,7 +236,7 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ageUK";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
@@ -345,7 +345,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";
 

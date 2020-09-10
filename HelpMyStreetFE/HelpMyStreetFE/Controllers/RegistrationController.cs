@@ -58,7 +58,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 try
                 {
-                    referringGroupId = Convert.ToInt32(Base64Utils.Base64Decode(referringGroup));
+                    referringGroupId = Base64Utils.Base64DecodeToInt(referringGroup);
                 }
                 catch { }
             }

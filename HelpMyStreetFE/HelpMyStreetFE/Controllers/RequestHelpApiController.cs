@@ -39,13 +39,13 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                var jobId = DecodeJobID(j);
+                int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                int jobId = Base64Utils.Base64DecodeToInt(j);
 
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
                 {
-                    targetUserId = u == "self" ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
+                    targetUserId = u == "self" ? userId : Base64Utils.Base64DecodeToInt(u);
                 }
 
                 bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
@@ -70,7 +70,7 @@ namespace HelpMyStreetFE.Controllers {
         [HttpGet("get-job-details")]
         public async Task<IActionResult> GetJobDetails(string j, JobSet js)
         {
-            var jobId = DecodeJobID(j);
+            int jobId = Base64Utils.Base64DecodeToInt(j);
 
             User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
@@ -87,15 +87,6 @@ namespace HelpMyStreetFE.Controllers {
         public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
             return ViewComponent("JobList", new { jobFilterRequest });
-        }
-
-        private int DecodeJobID(string encodedJobId)
-        {
-            if (!int.TryParse(Base64Utils.Base64Decode(encodedJobId), out int jobId))
-            {
-                throw new Exception("Could not decode Job ID: " + encodedJobId);
-            }
-            return jobId;
         }
     }
 }

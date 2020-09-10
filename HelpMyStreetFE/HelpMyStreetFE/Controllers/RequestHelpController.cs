@@ -197,7 +197,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
             {
-                string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId.ToString());
+                string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId);
                 return Redirect($"/login?ReturnUrl=request-help/{encodedReferringGroupId}/{source}");
             }
 
@@ -334,7 +334,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                return Convert.ToInt32(Base64Utils.Base64Decode(encodedGroupId));
+                return Base64Utils.Base64DecodeToInt(encodedGroupId);
             }
             catch
             {
