@@ -12,7 +12,7 @@ namespace HelpMyStreetFE.Models.Community
         public bool ShowMap { get; set; } = true;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public int ZoomLevel { get; set; }
+        public double ZoomLevel { get; set; }
         public int HeaderButtonWidth { get; set; } = 6;
         public string HeaderPostButtonsHTML { get; set; }
         public string CommunityName { get; set; }

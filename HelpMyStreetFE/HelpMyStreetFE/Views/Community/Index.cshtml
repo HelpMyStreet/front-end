@@ -27,11 +27,14 @@
 }
 else
 {
-    <div class="container">
-        <div class="community-banner">
-            <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+    @if (!string.IsNullOrEmpty(Model.BannerImageLocation))
+    {
+        <div class="container">
+            <div class="community-banner">
+                <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+            </div>
         </div>
-    </div>
+    }
     <div class="outer-container">
         <div class="container">
             <div class="row flex hero mb-lg">
@@ -246,7 +249,7 @@ else
     }
 
     <div class="container mt-md mb-lg">
-            @await Component.InvokeAsync("Feedback", new {feedbackMessageType = Model.showFeedbackType,  groupKey = Model.groupKey })
+        @await Component.InvokeAsync("Feedback", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
     </div>
 
 

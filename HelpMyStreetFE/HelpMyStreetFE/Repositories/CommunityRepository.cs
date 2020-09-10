@@ -22,6 +22,8 @@ namespace HelpMyStreetFE.Repositories
             {
                 case "tankersley":
                     return await GetTankersley(cancellationToken);
+                case "ruddington":
+                    return await GetRuddington(cancellationToken);
                 case "ageuklsl":
                     return await GetAgeUKLSL(cancellationToken);
                 case "hlp":
@@ -98,7 +100,7 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.CommunityVolunteersTextHtml =
-            @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners' health and wellbeing so everyone can live healthier lives.</p>
+            @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners’ health and wellbeing so everyone can live healthier lives.</p>
             <p>Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
             London, Public Health England and London Councils.</p>";
 
@@ -193,11 +195,11 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
 
-            communityViewModel.RequestHelpText = @"We've got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
-            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -226,6 +228,85 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a></p>";
+
+
+            return communityViewModel;
+        }
+
+        private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            communityViewModel.groupKey = "ruddington";
+            int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            communityViewModel.HomeFolder = "ruddington";
+            communityViewModel.Latitude = 52.8925;
+            communityViewModel.Longitude = -1.150;
+            communityViewModel.ZoomLevel = 14.6;
+
+            communityViewModel.ShowHelpExampleCards = false;
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
+
+            communityViewModel.CommunityName = "Ruddington";
+
+            communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
+
+            communityViewModel.HeaderHTML = @"
+                    <p class='mt-sm mb-xs'>
+                        	In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
+                            We’re the Ruddington Community Response Team, here to help with:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm compact-list'>
+                        <li>Shopping for essentials</li>
+                        <li>Collecting prescriptions</li>
+                        <li>A friendly chat</li>
+                        <li>Local errands</li>
+                        <li>Anything else, just ask!</li>
+                    </ul>
+                    ";
+
+
+            communityViewModel.HeaderVolunteerButtonText = "";
+            communityViewModel.HeaderHelpButtonText = "";
+
+            communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
+            communityViewModel.CommunityVolunteersTextHtml =
+                 @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP). We’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
+                    <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page, or if you’d prefer you can give the parish council a ring on 0115 914 6660. Our volunteers are local people supporting our wonderful village.</p>
+                    <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
+                    ";
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Ruddington Parish Council",
+                    Role = "Proudly supported by the parish council",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/RPC-logo.jpeg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Ruddington Village Centre Partnership",
+                    Role = "Proudly supported by local business",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/RCVP.png"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = @"<p><a href='https://ruddingtonparishcouncil.gov.uk'>Ruddington Parish Council</a></p>
+                                                   <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
+                                                   <p><a href='http://ruddington.info'>Ruddington.info</a></p>";
 
 
             return communityViewModel;
