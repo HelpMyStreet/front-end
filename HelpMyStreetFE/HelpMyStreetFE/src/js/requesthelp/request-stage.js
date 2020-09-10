@@ -56,7 +56,12 @@ var intialiseRequestTiles = function () {
             case "request-for":
                 handleRequestFor($(this));
                 break;
-        }
+      }
+
+      $('html, body').animate({
+        scrollTop:
+          $(this).parentsUntil("form").last().next().offset().top
+      }, 1000);
     })
 }
 var handleRequestFor = function (el) {
