@@ -8,9 +8,9 @@
             settings.htmlContent =
                 `<p>It will appear on your "My Accepted Requests" page and you’ll be able to view more information about it.</p>
                  <p>Please use the information in the request to fulfil it as soon as possible (this may involve contacting the recipient) – the ball’s in your court, someone may be depending on you.</p>
-		         <p>The requester will be notified that their request has been accepted, but won't be given your contact details.</p>
+		         <p>The requester will be notified that their request has been accepted, but won’t be given your contact details.</p>
                  <p>Thank you for helping people in your community to stay safe.</p>`;
-            settings.messageOnFalse = "We couldn't accept this request at the moment, please try again later";
+            settings.messageOnFalse = "We couldn’t accept this request at the moment, please try again later";
 
         } else if (currentState === "Done") {
 
@@ -20,7 +20,7 @@
 		         <p>We can set its status back to "In Progress" for you.</p>
 		         <p>It will return to the "My Accepted Requests" page of the last volunteer with who it was In Progress.</p>
 		         <p>If you need to set it right back to "Open", you can do that from this page by exiting and returning to it, finding the request again (which will now be marked as "In Progress") and using the "Mark as Open" button.`;
-            settings.messageOnFalse = "We couldn't update this request at the moment, please try again later";
+            settings.messageOnFalse = "We couldn’t update this request at the moment, please try again later";
 
         }
     } else if (targetState === "Done") {
@@ -37,7 +37,7 @@
 		             <p>We’ll remove this request from your "My Accepted Requests" page.</p>
                      <p>The requester will be notified that the request has been marked as Complete.</p>`;
             }
-            settings.messageOnFalse = "We couldn't complete this request at the moment, please try again later";
+            settings.messageOnFalse = "We couldn’t complete this request at the moment, please try again later";
 
         }
     } else if (targetState === "Open") {
@@ -51,14 +51,14 @@
 		             <p>If there's a problem with the request (e.g. incorrect contact details) please let us know: 
 		             <a href="mailto:support@helpmystreet.org">support@helpmystreet.org</a></p>`;
             } else {
-                settings.header = "Can't do?";
+                settings.header = "Can’t do?";
                 settings.htmlContent =
                     `<p>Not able to complete the request?</p>
                      <p>If you're not able to complete a request for help, we can return it to the 'Open Requests' list so that other volunteers can accept it.</p>
                      <p>If there's a problem with the request (e.g. incorrect contact details) please let us know:
                      <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>`;
             }
-            settings.messageOnFalse = "We couldn't release this request at the moment, please try again later";
+            settings.messageOnFalse = "We couldn’t release this request at the moment, please try again later";
 
         }
     } else if (targetState === "Cancelled") {
@@ -84,7 +84,7 @@
                  <p>We can mark is as Cancelled for your records.</p>`;
 
         }
-        settings.messageOnFalse = "We couldn't cancel this request at the moment, please try again later";
+        settings.messageOnFalse = "We couldn’t cancel this request at the moment, please try again later";
     }
     return settings;
 }
