@@ -67,25 +67,7 @@ namespace HelpMyStreetFE.Services
         {
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                List<UserGroup> response = new List<UserGroup>();
-                var userRoles = await _groupRepository.GetUserRoles(userId);
-
-                foreach (var groupRoles in userRoles.UserGroupRoles)
-                {
-                    var group = await _groupRepository.GetGroup(groupRoles.Key);
-                    var roles = groupRoles.Value.Select(role => (GroupRoles)role);
-
-                    response.Add(new UserGroup()
-                    {
-                        UserId = userId,
-                        GroupId = group.Group.GroupId,
-                        GroupKey = group.Group.GroupKey,
-                        GroupName = group.Group.GroupName,
-                        UserRoles = roles
-                    });
-                }
-
-                return response;
+                return await GetUserRoles(userId);
             }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
@@ -127,6 +109,53 @@ namespace HelpMyStreetFE.Services
         public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
         {
             return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public async Task<bool> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
+        {
+            bool success = await _groupRepository.PostAssignRole(userId, groupId, role, authorisedByUserID);
+
+            await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+            {
+                return await GetUserRoles(userId);
+            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
+
+            return success;
+        }
+
+        public async Task<bool> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
+        {
+            bool success = await _groupRepository.PostRevokeRole(userId, groupId, role, authorisedByUserID);
+
+            await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+            {
+                return await GetUserRoles(userId);
+            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
+
+            return success;
+        }
+
+        private async Task<List<UserGroup>> GetUserRoles(int userId)
+        {
+            List<UserGroup> response = new List<UserGroup>();
+            var userRoles = await _groupRepository.GetUserRoles(userId);
+
+            foreach (var groupRoles in userRoles.UserGroupRoles)
+            {
+                var group = await _groupRepository.GetGroup(groupRoles.Key);
+                var roles = groupRoles.Value.Select(role => (GroupRoles)role);
+
+                response.Add(new UserGroup()
+                {
+                    UserId = userId,
+                    GroupId = group.Group.GroupId,
+                    GroupKey = group.Group.GroupKey,
+                    GroupName = group.Group.GroupName,
+                    UserRoles = roles
+                });
+            }
+
+            return response;
         }
     }
 }

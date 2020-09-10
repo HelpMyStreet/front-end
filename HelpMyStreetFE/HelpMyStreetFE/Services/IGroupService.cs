@@ -26,5 +26,8 @@ namespace HelpMyStreetFE.Services
         Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken);
         Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken);
         bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role);
+
+        Task<bool> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken);
+        Task<bool> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken);
     }
 }
