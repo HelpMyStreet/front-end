@@ -168,10 +168,25 @@ namespace HelpMyStreetFE.Services
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.Ruddington)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
+                    new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealPreparation },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.DogWalking },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
-            {
+                {
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
                     new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
                     new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
@@ -181,7 +196,7 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.HomeworkSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
-             });
+                 });
             }
 
             return tasks;
