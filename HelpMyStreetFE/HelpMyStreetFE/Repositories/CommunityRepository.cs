@@ -4,6 +4,7 @@ using HelpMyStreetFE.Services;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -308,6 +309,13 @@ namespace HelpMyStreetFE.Repositories
                                                    <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
                                                    <p><a href='http://ruddington.info'>Ruddington.info</a></p>";
 
+
+            communityViewModel.ShowRequestHelpPopup = true;
+            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Ruddington</b>?</p>";
+            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
+            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Ruddington Community Response Team</b> offer help in <b>Ruddington</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
+                                                            <p>Request help from someone near you by clicking below.</p>";
+            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/ruddington";
 
             return communityViewModel;
         }

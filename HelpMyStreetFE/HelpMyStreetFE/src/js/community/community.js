@@ -1,5 +1,7 @@
 import { initialiseSliders } from "../shared/image-slider.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+import { showPopup, hidePopup } from "../shared/popup";
+
 
 $(document).ready(function () {
     initialiseSliders();
@@ -276,3 +278,38 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
         return [];
     }
 }
+
+$(document).ready(function () {
+  if ($("#ShowRequestHelpPopup").val() == "True") {
+    $('.btn--request-help').on('click', function (event) {
+      event.preventDefault();
+      var popup;
+
+      var popupSettings = {
+        header: "Request Help",
+        htmlContent: $("#RequestHelpPopupText").val(),
+        actionBtnText: "Yes",
+        rejectBtnText: $("#RequestHelpPopupRejectButtonText").val(),
+        acceptCallbackAsync: () => {
+          window.location.href = $(this).attr('href');
+          return true;
+        },
+        rejectCallbackAsync: () => {
+          var popupSettings = {
+            noFade: true,
+            header: "Request Help",
+            htmlContent: $("#RequestHelpPopup2Text").val(),
+            actionBtnText: "Request Help near me",
+            acceptCallbackAsync: () => {
+              window.location.href = $("#RequestHelpPopup2Destination").val();
+              return true;
+            }
+          };
+          showPopup(popupSettings);
+          hidePopup(popup, 0);
+        }
+      };
+      popup = showPopup(popupSettings);
+    });
+  }
+});

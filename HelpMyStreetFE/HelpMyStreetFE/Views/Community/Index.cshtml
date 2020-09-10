@@ -331,6 +331,12 @@ else
     @Html.Hidden(nameof(Model.Latitude))
     @Html.Hidden(nameof(Model.ZoomLevel))
 
+    @Html.Hidden(nameof(Model.ShowRequestHelpPopup))
+    @Html.Hidden(nameof(Model.RequestHelpPopupText))
+    @Html.Hidden(nameof(Model.RequestHelpPopupRejectButtonText))
+    @Html.Hidden(nameof(Model.RequestHelpPopup2Text))
+    @Html.Hidden(nameof(Model.RequestHelpPopup2Destination))
+
 
     @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
     {
