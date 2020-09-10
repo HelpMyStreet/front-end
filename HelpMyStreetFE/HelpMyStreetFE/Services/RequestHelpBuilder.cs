@@ -110,18 +110,13 @@ namespace HelpMyStreetFE.Services
 
         private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            return requestHelpFormVariant switch
             {
-                return "How can For the Love of Scrubs help?";
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                return "Get in touch with a Community Connector";
-            }
-            else
-            {
-                return "What type of help are you looking for?";
-            }
+                RequestHelpFormVariant.FtLOS => "How can For the Love of Scrubs help?",
+                RequestHelpFormVariant.HLP_CommunityConnector => "Get in touch with a Community Connector",
+                RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
+                _ => "What type of help are you looking for?"
+            };
         }
 
         private string GetHelpRequestPageIntroText(RequestHelpFormVariant requestHelpFormVariant)
