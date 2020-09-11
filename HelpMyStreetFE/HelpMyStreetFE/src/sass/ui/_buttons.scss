@@ -111,6 +111,7 @@
 .cta {
   @extend .white;
   @extend .bg-green;
+  display: inline-block;
 
   &:hover {
     @extend .white;
@@ -118,7 +119,12 @@
 
   &--orange {
     @extend .bg-orange;
-    display: inline-block;
+  }
+
+  &--blue {
+    @extend .border-blue;
+    @extend .blue;
+    @extend .bg-white;
   }
 
   &--orange-border {
@@ -128,6 +134,16 @@
 
     &:hover {
       @extend .orange;
+    }
+  }
+
+  &--green-border {
+    @extend .border-green;
+    @extend .green;
+    @extend .bg-white;
+
+    &:hover {
+      @extend .green;
     }
   }
 
