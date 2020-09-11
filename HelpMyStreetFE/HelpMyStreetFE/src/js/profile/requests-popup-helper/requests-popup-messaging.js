@@ -9,7 +9,7 @@
         `<p>It will appear on your “My Accepted Requests” page and you’ll be able to view more information about it.</p>
          <p>Please use the information in the request to fulfil it as soon as possible (this may involve contacting the recipient) – the ball’s in your court, someone may be depending on you.</p>
 		     <p>The requester will be notified that their request has been accepted, but won’t be given your contact details.</p>`
-      + (referringGroup !== "Generic" ? (`<p>This request was made via a group: ` + referringGroup + `. If you accept this request, we’ll need to share your details with the administrator(s) of that group. By clicking “Continue” below, you are acknowledging your acceptance of this.</p>`) : ``)
+      + (referringGroup !== "Generic" ? (`<p>This request was made via a group: <b>` + referringGroup + `</b>. If you accept this request, we’ll need to share your details with the administrator(s) of that group. By clicking “Continue” below, you are acknowledging your acceptance of this.</p>`) : ``)
       + `<p>Thank you for helping people in your community to stay safe.</p>`;
       settings.messageOnFalse = "We couldn’t accept this request at the moment, please try again later";
 
