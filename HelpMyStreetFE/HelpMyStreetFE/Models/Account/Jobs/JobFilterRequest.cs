@@ -1,17 +1,44 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Enums.Account;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobFilterRequest
     {
+        public JobSet JobSet { get; set; }
+        public int? GroupId { get; set; }
         public IEnumerable<SupportActivities> SupportActivities { get; set; }
         public IEnumerable<JobStatuses> JobStatuses { get; set; }
         public int? MaxDistanceInMiles { get; set; }
+        public int? DueInNextXDays { get; set; }
         public DateTime? DueAfter { get; set; }
         public DateTime? DueBefore { get; set; }
         public DateTime? RequestedAfter { get; set; }
         public DateTime? RequestedBefore { get; set; }
+        public int ResultsToShow { get; set; }
+        public int ResultsToShowIncrement { get; set; }
+
+        public void UpdateFromFilterSet(FilterSet filterSet)
+        {
+            if (filterSet.JobStatuses != null)
+            {
+                JobStatuses = filterSet.JobStatuses.Where(a => a.IsSelected).Select(a => a.Value);
+            }
+            if (filterSet.SupportActivities != null)
+            {
+                SupportActivities = filterSet.SupportActivities.Where(a => a.IsSelected).Select(a => a.Value);
+            }
+            if (filterSet.MaxDistanceInMiles != null)
+            {
+                MaxDistanceInMiles = filterSet.MaxDistanceInMiles.Where(a => a.IsSelected).First().Value;
+            }
+            if (filterSet.DueInNextXDays != null)
+            {
+                DueInNextXDays = filterSet.DueInNextXDays.Where(a => a.IsSelected).First().Value;
+            }
+        }
     }
 }

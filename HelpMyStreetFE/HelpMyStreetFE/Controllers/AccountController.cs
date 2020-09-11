@@ -20,6 +20,8 @@ using HelpMyStreetFE.Models.Email;
 using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
+using System.Threading;
+using HelpMyStreetFE.ViewComponents;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -32,7 +34,6 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
 
@@ -46,7 +47,6 @@ namespace HelpMyStreetFE.Controllers
             IAddressService addressService,
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
-            IOptions<RequestSettings> requestSettings,
             IRequestService requestService,
             IGroupService groupService
             )
@@ -57,7 +57,6 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
             _yotiOptions = yotiOptions;
             _requestService = requestService;
-            _requestSettings = requestSettings;
             _groupService = groupService;
         }
 
@@ -73,9 +72,9 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -87,19 +86,19 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                return await Profile();
+                return await Profile(cancellationToken);
             }
         }
 
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> Profile(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
             viewModel.PageModel = userDetails;
@@ -108,15 +107,15 @@ namespace HelpMyStreetFE.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Streets()
+        public async Task<IActionResult> Streets(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.Notifications.Clear();
             viewModel.CurrentPage = MenuPage.MyStreets;
             var streetsViewModel = new StreetsViewModel();
@@ -159,161 +158,126 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> OpenRequests()
+        public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
         {
 
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenRequests;
             return View("Index", viewModel);
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> AcceptedRequests()
+        public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> CompletedRequests()
+        public async Task<IActionResult> CompletedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.CompletedRequests;
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Group(string groupKey)
+        public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-
-            if (currentGroup != null)
+            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
             {
-                if (currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
-                {
-                    return await GroupRequests(groupKey);
-                }
-                else if (currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
-                {
-                    return await GroupVolunteers(groupKey);
-                }
+                return await GroupRequests(groupKey, cancellationToken);
+            }
+            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
+            {
+                return await GroupVolunteers(groupKey, cancellationToken);
             }
 
             return Redirect(PROFILE_URL);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GroupRequests(string groupKey)
+        public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
             viewModel.CurrentPage = MenuPage.GroupRequests;
-            viewModel.CurrentGroup = currentGroup;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }
 
         [HttpGet]
-        public async Task<CountNavViewModel> NavigationBadge(MenuPage menuPage, string groupKey)
+        [AllowAnonymous]
+        [AuthorizeAttributeNoRedirect]
+        public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            CountNavViewModel countNavViewModel = new CountNavViewModel();
-
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
-                return countNavViewModel;
+                return 0;
             }
 
-            UserGroup currentGroup = null;
-            if (groupKey != null)
-            {
-                var userGroups = await _groupService.GetUserGroupRoles(user.ID);
-                currentGroup = userGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            }
+            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
 
-            int count;
-            switch (menuPage)
-            {
-                case MenuPage.GroupRequests:
-                    if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.TaskAdmin)) { return countNavViewModel; }
-                    var groupRequests = await _requestService.GetGroupRequestsAsync(currentGroup.GroupId, HttpContext);
-                    count = groupRequests.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress).Count();
-                    break;
-                case MenuPage.AcceptedRequests:
-                    var acceptedRequests = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
-                    count = acceptedRequests.Where(x => x.JobStatus == JobStatuses.InProgress).Count();
-                    break;
-                case MenuPage.OpenRequests:
-                    var openRequests = await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext);
-                    count = openRequests.CriteriaJobs.Count() + openRequests.OtherJobs.Count();
-                    break;
-                default:
-                    return countNavViewModel;
-            }
-
-            countNavViewModel.Count = count;
-
-            return countNavViewModel;
+            return count;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GroupVolunteers(string groupKey)
+        public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user);
-            var currentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            if (currentGroup == null || !currentGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
 
             viewModel.CurrentPage = MenuPage.GroupVolunteers;
-            viewModel.CurrentGroup = currentGroup;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }
@@ -326,15 +290,15 @@ namespace HelpMyStreetFE.Controllers
             return Ok();
         }
 
-        private async Task<User> GetCurrentUser()
+        private async Task<User> GetCurrentUser(CancellationToken cancellationToken)
         {
             var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id);
+            var user = await _userService.GetUserAsync(id, cancellationToken);
             HttpContext.Session.SetObjectAsJson("User", user);
             return user;
         }
 
-        private async Task<AccountViewModel> GetAccountViewModel(User user)
+        private async Task<AccountViewModel> GetAccountViewModel(User user, CancellationToken cancellationToken)
         {
             var viewModel = new AccountViewModel();
 
@@ -368,12 +332,11 @@ namespace HelpMyStreetFE.Controllers
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
-
                 };
 
                 viewModel.UserDetails = userDetails;
 
-                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID);
+                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 
             return viewModel;

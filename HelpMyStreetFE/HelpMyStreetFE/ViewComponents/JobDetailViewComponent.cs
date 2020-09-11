@@ -1,29 +1,45 @@
-﻿using HelpMyStreetFE.Models.Account.Jobs;
+﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using HelpMyStreet.Utils.Enums;
+using System.Threading;
 using System.Threading.Tasks;
+using System;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.ViewComponents
 {
     public class JobDetailViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IUserService _userService;
-        public JobDetailViewComponent(IRequestService requestService, IUserService userService)
+        private readonly IGroupService _groupService;
+        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService)
         {
             _requestService = requestService;
-            _userService = userService;
+            _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int JobID, int UserId)
+        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken)
         {
+            JobDetail jobDetails = jobSet switch
+            {
+                JobSet.GroupRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                JobSet.UserCompletedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                JobSet.UserAcceptedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                _ => new JobDetail() { JobSummary = await _requestService.GetJobSummaryAsync(jobId, cancellationToken) }
+            };
+
+            if (jobDetails == null)
+            {
+                throw new Exception($"Failed to retrieve job details for JobId {jobId}");
+            }
+
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
-                JobDetail = await _requestService.GetJobDetailsAsync(JobID, UserId),
-                UserIsVerified = (await _userService.GetUserAsync(UserId)).IsVerified ?? false,
+                JobDetail = jobDetails,
+                UserIsVerified = user.IsVerified ?? false,
+                UserActingAsAdmin = jobSet == JobSet.GroupRequests,
             };
 
             return View("JobDetail", jobDetailViewModel);

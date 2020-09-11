@@ -1,7 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.Account
 @using HelpMyStreetFE.Enums.Account
 @using HelpMyStreetFE.Models.Account.Jobs;
-@using HelpMyStreet.Utils.Enums;
 
 @model AccountViewModel
 
@@ -35,7 +34,7 @@
                 <p>Requests meeting the criteria you set when you signed up</p>
                 @await Component.InvokeAsync("JobList", new
                    {
-                       JobSet = JobSet.UserOpenRequests_MatchingCriteria,
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = -1 },
                        EmptyListCallback = new Action(() => NoCriteriaJobsToDisplay = true),
                    })
                 @if (NoCriteriaJobsToDisplay)
@@ -50,50 +49,15 @@
 
                 <p>Other Requests</p>
 
-
-                <div class="job-filter-panel">
+                <div class="job-filter-panel @(NoNonCriteriaJobsToDisplay? "dnone" : "")">
                     @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
-               {
-                   SupportActivities = new List<FilterField<SupportActivities>>()
-                   {
-                       new FilterField<SupportActivities>(){Value = SupportActivities.CheckingIn, IsSelected = true },
-                       new FilterField<SupportActivities>(){Value = SupportActivities.WellbeingPackage, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.Shopping, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.MealPreparation, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.Errands, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.DogWalking, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.HomeworkSupport, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.Other, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.PhoneCalls_Friendly, IsSelected = true},
-                       new FilterField<SupportActivities>(){Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true},
-                   },
-                   DueInNextXDays = new List<FilterField<int>>()
-                   {
-                       new FilterField<int>{Value = 1, Label = "Today" },
-                       new FilterField<int>{Value = 7, Label = "This week"},
-                       new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
-                       new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
-                   },
-                   MaxDistanceInMiles = new List<FilterField<int>>()
-                   {
-                       new FilterField<int>{Value = 0, Label = "My street only"},
-                       new FilterField<int>{Value = 1, Label ="Within 1 mile"},
-                       new FilterField<int>{Value = 5, Label = "within 5 miles"},
-                       new FilterField<int>{Value = 10, Label = "within 10 miles"},
-                       new FilterField<int>{Value = 20, Label = "within 20 miles"},
-                       new FilterField<int>{Value = 50, Label = "within 50 miles"},
-                       new FilterField<int>{Value = Int32.MaxValue, Label = "Show all", IsSelected = true},
-                   }
-               })
-                </div>
-
-                <div class="profile__section job-filter-results-panel">
-                    @await Component.InvokeAsync("JobList", new
                        {
-                           JobSet = JobSet.UserOpenRequests_NotMatchingCriteria,
-                           EmptyListCallback = new Action(() => NoNonCriteriaJobsToDisplay = true),
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+                           User = @Model.UserDetails.User,
+                           EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
                        })
                 </div>
+
                 @if (NoNonCriteriaJobsToDisplay)
                 {
                     <div class="profile__empty">

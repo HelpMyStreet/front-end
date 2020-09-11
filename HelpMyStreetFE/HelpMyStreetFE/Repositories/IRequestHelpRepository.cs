@@ -1,5 +1,4 @@
-﻿using HelpMyStreetFE.Models.Reponses;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using System.Collections.Generic;
@@ -10,14 +9,13 @@ namespace HelpMyStreetFE.Repositories
 	public interface IRequestHelpRepository
 	{
         Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
-        Task<IEnumerable<JobSummary>> GetJobsAllocatedToUserAsync(int volunteerUserId);
+        Task<JobSummary> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
-        Task<GetJobStatusHistoryResponse> GetJobStatusHistoryAsync(int jobId);
         Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
-        Task<bool> UpdateJobStatusToDoneAsync(PutUpdateJobStatusToDoneRequest request);
-        Task<bool> UpdateJobStatusToOpenAsync(PutUpdateJobStatusToOpenRequest request);
-        Task<bool> UpdateJobStatusToCancelledAsync(PutUpdateJobStatusToCancelledRequest request);
-        Task<bool> UpdateJobStatusToInProgressAsync(PutUpdateJobStatusToInProgressRequest request);
+        Task<bool> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId);
+        Task<bool> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId);
+        Task<bool> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId);
+        Task<bool> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId);
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
     }
 }

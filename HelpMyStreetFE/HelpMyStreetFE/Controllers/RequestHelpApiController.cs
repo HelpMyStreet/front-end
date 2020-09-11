@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
+using System.Threading;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Enums.Account;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace HelpMyStreetFE.Controllers { 
+namespace HelpMyStreetFE.Controllers {
 
 
     [Route("api/requesthelp")]
@@ -31,27 +33,30 @@ namespace HelpMyStreetFE.Controllers {
         }
 
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<bool>> SetJobStatus(string j, JobStatuses s, string u)
+        public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
             try
             {
                 var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 var jobId = DecodeJobID(j);
-                switch (s)
+
+                int? targetUserId = null;
+                if (s == JobStatuses.InProgress)
                 {
-                    case JobStatuses.InProgress:
-                        int targetUserId = string.IsNullOrEmpty(u) ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
-                        return await _requestService.UpdateJobStatusToInProgressAsync(jobId, userId, targetUserId, HttpContext);
-                    case JobStatuses.Done:
-                        return await _requestService.UpdateJobStatusToDoneAsync(jobId, userId, HttpContext);
-                    case JobStatuses.Cancelled:
-                        return await _requestService.UpdateJobStatusToCancelledAsync(jobId, userId, HttpContext);
-                    case JobStatuses.Open:
-                        return await _requestService.UpdateJobStatusToOpenAsync(jobId, userId, HttpContext);
-                    default:
-                        throw new Exception($"Unexpected JobStatus {s}");
+                    targetUserId = u == "self" ? userId : Convert.ToInt32(Base64Utils.Base64Decode(u));
+                }
+
+                bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
+
+                if (success)
+                {
+                    return s.FriendlyName();
+                }
+                else
+                {
+                    return StatusCode(400);
                 }
             }
             catch (Exception ex)
@@ -61,39 +66,27 @@ namespace HelpMyStreetFE.Controllers {
             }
         }
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("get-job-details")]
-        public async Task<IActionResult> GetJobDetails(string j)
+        public async Task<IActionResult> GetJobDetails(string j, JobSet js)
         {
             var jobId = DecodeJobID(j);
-            var userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            return ViewComponent("JobDetail", new { jobId, userId });
+            User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            return ViewComponent("JobDetail", new { jobId, user, jobSet = js });
         }
 
-        [Authorize]
+        [AuthorizeAttributeNoRedirect]
         [HttpPost("get-filtered-jobs")]
         public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
-            var referrerComponents = Request.Headers["Referer"].ToString().Split('/');
-
-            JobSet jobSet;
-            int? groupId = null;
-            switch (referrerComponents[4])
-            {
-                case "accepted-requests": jobSet = JobSet.UserAcceptedRequests; break;
-                case "completed-requests": jobSet = JobSet.UserCompletedRequests; break;
-                case "open-requests": jobSet = JobSet.UserOpenRequests_NotMatchingCriteria; break;
-                case "g":
-                    jobSet = JobSet.GroupRequests;
-                    groupId = await _groupService.GetGroupIdByKey(referrerComponents[5]);
-                    break;
-                default:
-                    throw new Exception($"Unexpected URL component: {referrerComponents[4]}");
-            }
-
-            return ViewComponent("JobList", new { jobSet, groupId, jobFilterRequest });
+            return ViewComponent("JobList", new { jobFilterRequest });
         }
 
         private int DecodeJobID(string encodedJobId)
@@ -103,8 +96,6 @@ namespace HelpMyStreetFE.Controllers {
                 throw new Exception("Could not decode Job ID: " + encodedJobId);
             }
             return jobId;
-
         }
-
     }
 }

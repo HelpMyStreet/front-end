@@ -5,143 +5,136 @@ $breakpointSm: 900px;
 
 /* Collapsed states */
 .collapsed {
-    .header-login {
-        &__collapsed-nav {
-            display: flex;
-            justify-content: center;
-        }
-
-        &__form {
-            display: none;
-        }
-
-        &__form-header {
-            justify-content: space-between;
-        }
-
-        @media screen and (min-width: $breakpointSm) {
-            &__collapsed-nav {
-                display: none;
-            }
-
-            &__form {
-                display: flex;
-            }
-        }
-    }
-}
-
-.header-login {
-    width: 100%;
-
+  .header-login {
     &__collapsed-nav {
-        display: none;
+      display: flex;
+      justify-content: center;
     }
 
-    .btn--close {
-        &:before {
-            @include copy-sz-xs;
-            color: $gray-8;
-            margin-right: 0.5rem;
-            content: "Close";
-        }
-    }
-
-    &__btn--toggle {
-        background: transparent;
-        border: none;
-        display: flex;
-        align-items: center;
-
-        .icon--close {
-            .bg {
-                fill: $gray-8;
-            }
-
-            .cross {
-                stroke: white;
-                stroke-width: 12px;
-            }
-        }
-
-        @media screen and (min-width: $breakpointSm) {
-            .icon--close {
-                display: none;
-            }
-        }
+    &__form {
+      display: none;
     }
 
     &__form-header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    &__input {
-        display: flex;
-        flex-direction: column;
-
-        label {
-            @include copy-sz-sm;
-            font-weight: bold;
-            font-size: 0.7em;
-        }
-
-        input {
-            @include input-default;
-            font-size: 0.7em;
-
-            @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-                padding: 0.2rem 0px 0.8rem 10px;
-            }
-        }
-
-        .link--forgot-pw {
-            @include copy-sz-sm;
-            color: $black;
-            text-decoration: none;
-            transition: color 0.5s;
-            font-size: 0.7em;
-
-            &:hover {
-                text-decoration: underline;
-                color: $blue;
-                transition: color 0.1s;
-            }
-        }
-    }
-    /* button container */
-    &__btn {
-        align-self: center;
-    }
-
-    .btn {
-        @include copy-sz-md;
-        padding: 0.25rem 1rem;
-        img{
-            height:28px;
-        }
-        @media screen and (min-width: $breakpointSm) {
-        min-width:180px;
-        }
-    }
-
-    .btn--sign-up {
-        white-space: nowrap;
-        display: inline-block;
-    }
-
-    .btn--request-help {
-        white-space: nowrap;
-        display: inline-block;
+      justify-content: space-between;
     }
 
     @media screen and (min-width: $breakpointSm) {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
+      &__collapsed-nav {
+        display: none;
+      }
 
-        &__form-header {
-            display: none;
-        }
+      &__form {
+        display: flex;
+        align-items: flex-start;
+      }
     }
+  }
+}
+
+.header-login {
+  width: 100%;
+
+  &__collapsed-nav {
+    display: none;
+  }
+
+  &__form-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      @include copy-sz-sm;
+      font-weight: bold;
+      font-size: 0.7em;
+    }
+
+    input {
+      @include input-default;
+      font-size: 0.7em;
+
+      @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        padding: 0.2rem 0px 0.8rem 10px;
+      }
+    }
+
+    /** forgot pw link moves so use grid */
+    &--password {
+      display: grid;
+      grid-template-columns: 1fr;
+
+      .link--forgot-pw {
+        padding: 0.5rem 0;
+      }
+
+      @media screen and (min-width: $breakpointSm) {
+        grid-template-columns: max-content 1fr;
+
+        .link--forgot-pw {
+          padding: 0 0;
+          grid-column: 2;
+          grid-row: 1;
+          text-align: right;
+        }
+
+        .password--input {
+          grid-column: 1 /3;
+        }
+      }
+    }
+
+    .link--forgot-pw {
+      @include copy-sz-sm;
+      color: $black;
+      text-decoration: none;
+      transition: color 0.5s;
+      font-size: 0.7em;
+
+      &:hover {
+        text-decoration: underline;
+        color: $blue;
+        transition: color 0.1s;
+      }
+    }
+  }
+  /* button container */
+  &__btn {
+    align-self: center;
+  }
+
+  .btn {
+    @include copy-sz-md;
+    padding: 0.25rem 1rem;
+    img {
+      height: 28px;
+    }
+    @media screen and (min-width: $breakpointSm) {
+      min-width: 180px;
+    }
+  }
+
+  .btn--sign-up {
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .btn--request-help {
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  @media screen and (min-width: $breakpointSm) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+    &__form-header {
+      display: none;
+    }
+  }
 }

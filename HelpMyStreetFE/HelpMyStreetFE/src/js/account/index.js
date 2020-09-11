@@ -22,23 +22,41 @@ function initialiseAccountNavExpanders() {
     });
 }
 
-async function initialiseNavBadges() {
-    $('.account__nav .account__nav__badge').each(async function () {
+function initialiseNavBadges() {
+    $('.account__nav .account__nav__badge').each(function () {
         const badge = $(this);
-        var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(this).data('group-key') + '&menuPage=' + $(this).data('menu-page'))
-        if (response.fetchResponse == fetchResponses.SUCCESS) {
-            const count = (await response.fetchPayload).count;
-            if (count > 0) {
-                $(badge).html(count);
-                $(badge).addClass('count');
-            } else {
-                $(badge).html('');
-                $(badge).removeClass('count');
-            }
-        } else {
-            // No badges today
-        }
+        refreshBadge(badge);
+        const interval = setInterval(async function () {
+            refreshBadge(badge, interval);
+        }, 5000);
     });
+}
+
+async function refreshBadge(badge, interval) {
+  var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'));
+  if (response.fetchResponse == fetchResponses.SUCCESS) {
+    var newCount = await response.fetchPayload;
+    if ($(badge).find('.number').html() != newCount) {
+      if ($(badge).is(':visible')) {
+        $(badge).addClass('updated');
+      } else {
+        $(badge).removeClass('dnone');
+      }
+      $(badge).find('.number').html(newCount);
+    } else {
+      $(badge).removeClass('updated');
+    }
+  } else if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
+    if (window.location.pathname.startsWith('/account/')) {
+      // Session expired on logged-in page; redirect to login
+      window.location.replace('/account/Login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
+    } else {
+      // Session expired on public page; don't redirect, but also don't bother trying to get any more badge refreshes
+      clearInterval(interval);
+    }
+  } else {
+    // No badges today
+  }
 }
 
 function subMenuToggle(container, slideDuration = 400) {

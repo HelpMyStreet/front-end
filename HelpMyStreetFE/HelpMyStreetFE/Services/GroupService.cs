@@ -5,25 +5,36 @@ using HelpMyStreetFE.Models.Account;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
 using System;
+using HelpMyStreet.Cache;
+using System.Threading;
 
 namespace HelpMyStreetFE.Services
 {
     public class GroupService : IGroupService
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IMemDistCache<List<UserGroup>> _memDistCache;
+        private readonly IMemDistCache<int> _memDistCache_int;
 
-        public GroupService(IGroupRepository groupRepository)
+        private const string CACHE_KEY_PREFIX = "group-service-";
+
+        public GroupService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IMemDistCache<int> memDistCache_int)
         {
             _groupRepository = groupRepository;
+            _memDistCache = memDistCache;
+            _memDistCache_int = memDistCache_int;
         }
 
-        public async Task<int> GetGroupIdByKey(string groupKey)
+        public async Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken)
         {
-            var groupServiceResponse = await _groupRepository.GetGroupByKey(groupKey);
+            return await _memDistCache_int.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var groupServiceResponse = await _groupRepository.GetGroupByKey(groupKey);
 
-            if (groupServiceResponse == null) { throw new Exception($"Could not identify group for key '{groupKey}'"); }
+                if (groupServiceResponse == null) { throw new Exception($"Could not identify group for key '{groupKey}'"); }
 
-            return groupServiceResponse.GroupId;
+                return groupServiceResponse.GroupId;
+            }, $"{CACHE_KEY_PREFIX}-group-id-{groupKey}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
         public async Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source)
@@ -52,51 +63,70 @@ namespace HelpMyStreetFE.Services
             return (await _groupRepository.GetUserGroups(userId)).Groups;
         }
 
-        public async Task<List<UserGroup>> GetUserGroupRoles(int userId)
+        public async Task<List<UserGroup>> GetUserGroupRoles(int userId, CancellationToken cancellationToken)
         {
-            List<UserGroup> response = new List<UserGroup>();
-            var userRoles = await _groupRepository.GetUserRoles(userId);
-
-            foreach (var groupRoles in userRoles.UserGroupRoles)
+            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                var group = await _groupRepository.GetGroup(groupRoles.Key);
-                var roles = groupRoles.Value.Select(role => (GroupRoles)role);
+                List<UserGroup> response = new List<UserGroup>();
+                var userRoles = await _groupRepository.GetUserRoles(userId);
 
+                foreach (var groupRoles in userRoles.UserGroupRoles)
+                {
+                    var group = await _groupRepository.GetGroup(groupRoles.Key);
+                    var roles = groupRoles.Value.Select(role => (GroupRoles)role);
+
+                    response.Add(new UserGroup()
+                    {
+                        UserId = userId,
+                        GroupId = group.Group.GroupId,
+                        GroupKey = group.Group.GroupKey,
+                        GroupName = group.Group.GroupName,
+                        UserRoles = roles
+                    });
+                }
+
+                return response;
+            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+        }
+
+        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId)
+        {
+            var thisGroup = (await _groupRepository.GetGroup(groupId)).Group;
+            var groupMemberRoles = await _groupRepository.GetGroupMemberRoles(groupId, userId);
+
+            List<UserGroup> response = new List<UserGroup>();
+            foreach (var userRoles in groupMemberRoles.GroupMemberRoles)
+            {
                 response.Add(new UserGroup()
                 {
-                    UserId = userId,
-                    GroupId = group.Group.GroupId,
-                    GroupKey = group.Group.GroupKey,
-                    GroupName = group.Group.GroupName,
-                    UserRoles = roles
+                    UserId = userRoles.Key,
+                    GroupId = groupId,
+                    GroupKey = thisGroup.GroupKey,
+                    GroupName = thisGroup.GroupName,
+                    UserRoles = userRoles.Value.Select(role => (GroupRoles)role)
                 });
             }
 
             return response;
         }
 
-        public async Task<List<UserGroup>> GetGroupMembers(int groupId)
+        public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken)
         {
-            var thisGroup = (await _groupRepository.GetGroup(groupId)).Group;
-            List<int> userIds = (await _groupRepository.GetGroupMembers(groupId)).Users;
+            var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
 
-            List<UserGroup> response = new List<UserGroup>();
-            foreach (int userId in userIds)
-            {
-                // TODO: Remove this call (once we have GetGroupMemberRoles)
-                var userRoles = await _groupRepository.GetUserRoles(userId);
-                response.AddRange(userRoles.UserGroupRoles.Where(group => group.Key == groupId).Select(group => new UserGroup()
-                {
-                    UserId = userId,
-                    GroupId = groupId,
-                    GroupKey = thisGroup.GroupKey,
-                    GroupName = thisGroup.GroupName,
-                    UserRoles = group.Value.Select(role => (GroupRoles)role)
-                }));
-            }
-
-            return response;
+            return userGroupRoles?.Where(g => g.GroupId == groupId).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
         }
 
+        public async Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
+
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
+        {
+            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
     }
 }

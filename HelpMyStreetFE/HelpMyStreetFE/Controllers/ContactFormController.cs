@@ -17,12 +17,12 @@ namespace HelpMyStreetFE.Controllers
     public class ContactFormController : Controller
     {
         private readonly IOptions<EmailConfig> appSettings;
-        private readonly IEmailService _emailService;
+        private readonly ICommunicationService _communicationService;
 
-        public ContactFormController(IOptions<EmailConfig> app, IEmailService emailService)
+        public ContactFormController(IOptions<EmailConfig> app, ICommunicationService communicationService)
         {
             appSettings = app;
-            _emailService = emailService;
+            _communicationService = communicationService;
         }
 
         public ViewResult Index()
@@ -43,15 +43,7 @@ namespace HelpMyStreetFE.Controllers
                     var textContent = $"Name: {vm.Name} \r\nEmail: {vm.Email} \r\nMobile: {vm.MobileNumber} \r\nOther phone: {vm.OtherNumber} \r\nOrganisation: {vm.Organisation} \r\nRole: {vm.Role} \r\nMessage: {vm.Message}";
                     var htmlContent = $"<p>Name: {vm.Name} <br>Email: {vm.Email} <br>Mobile: {vm.MobileNumber} <br>Other phone: {vm.OtherNumber} <br>Organisation: {vm.Organisation} <br>Role: {vm.Role} <br>Message: {vm.Message}";
 
-                    List<RecipientModel> recipients = new List<RecipientModel>
-                    {
-                        new RecipientModel
-                        {
-                            Email = appSettings.Value.ToEmail,
-                            Name = appSettings.Value.ToName
-                        }
-                    };
-                    _emailService.SendEmail(subject, textContent, htmlContent, recipients).Wait();                    
+                    _communicationService.SendEmail(subject, textContent, htmlContent, new RecipientModel() { Email = appSettings.Value.ToEmail, Name = appSettings.Value.ToName }).Wait();                    
                 }
                 catch (Exception ex)
                 {

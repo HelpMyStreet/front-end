@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.ViewComponents
@@ -17,16 +19,18 @@ namespace HelpMyStreetFE.ViewComponents
     public class JobListViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IOptions<RequestSettings> _requestSettings;
+        private readonly IGroupService _groupService;
 
-        public JobListViewComponent(IRequestService requestService, IOptions<RequestSettings> requestSettings)
+        public JobListViewComponent(IRequestService requestService, IGroupService groupService)
         {
             _requestService = requestService;
-            _requestSettings = requestSettings;
+            _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobSet jobSet, int? groupId, JobFilterRequest jobFilterRequest, Action emptyListCallback)
+        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
         {
+            JobListViewModel jobListViewModel = new JobListViewModel();
+
             User user = HttpContext.Session.GetObjectFromJson<User>("User");
 
             if (user == null)
@@ -34,43 +38,47 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            bool admin = false;
-            IEnumerable<JobSummary> jobs = null;
-            switch (jobSet)
+
+            if (jobFilterRequest.JobSet == JobSet.GroupRequests)
             {
-                case JobSet.GroupRequests:
-                    jobs = await _requestService.GetGroupRequestsAsync(groupId.Value, HttpContext);
-                    admin = true;
-                    break;
-                case JobSet.UserOpenRequests_MatchingCriteria:
-                    jobs = (await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext)).CriteriaJobs;
-                    break;
-                case JobSet.UserOpenRequests_NotMatchingCriteria:
-                    jobs = (await _requestService.GetOpenJobsAsync(_requestSettings.Value.OpenRequestsRadius, _requestSettings.Value.MaxNonCriteriaOpenJobsToDisplay, user, HttpContext)).OtherJobs;
-                    break;
-                case JobSet.UserAcceptedRequests:
-                    jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
-                    break;
-                case JobSet.UserCompletedRequests:
-                    jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
-                    break;
+                if (!(await _groupService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin, cancellationToken)))
+                {
+                    throw new UnauthorizedAccessException("User not authorized to view group tasks");
+                }
             }
 
-            if (jobFilterRequest != null)
+            IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
             {
-                jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
+                JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
+                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken)).CriteriaJobs,
+                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken)).OtherJobs,
+                JobSet.UserAcceptedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
+                JobSet.UserCompletedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled),
+                _ => throw new ArgumentException(message: $"Invalid JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
+            };
+
+            jobListViewModel.UnfilteredJobs = jobs.Count();
+
+            jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
+
+            jobListViewModel.FilteredJobs = jobs.Count();
+            jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
+
+            if (jobFilterRequest.ResultsToShow > 0)
+            {
+                jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
             if (jobs.Count() == 0 && emptyListCallback != null) { emptyListCallback.Invoke(); }
 
-            var jobs2 = jobs.Select(a => new JobViewModel()
+            jobListViewModel.Jobs = jobs.Select(a => new JobViewModel()
             {
                 JobSummary = a,
-                UserActingAsAdmin = admin,
+                UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false
             });
 
-            return View("JobList", jobs2);
+            return View("JobList", jobListViewModel);
         }
     }
 }

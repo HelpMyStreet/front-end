@@ -7,21 +7,36 @@
         <li class="account__nav__item">
             <a href="/account/open-requests" class="@(Model.CurrentPage == MenuPage.OpenRequests ? "selected" : string.Empty)">
                 Open Requests
-                <span class="account__nav__badge" data-menu-page="@MenuPage.OpenRequests"></span>
+                @await Component.InvokeAsync("AccountNavBadge", new
+                {
+                    CssClass = "bg-green",
+                    User = Model.UserDetails.User,
+                    MenuPage = MenuPage.OpenRequests
+                })
             </a>
         </li>
 
         <li class="account__nav__item">
             <a href="/account/accepted-requests" class="@(Model.CurrentPage == MenuPage.AcceptedRequests ? "selected" : string.Empty)">
                 My Accepted Requests
-                <span class="account__nav__badge" data-menu-page="@MenuPage.AcceptedRequests"></span>
+                @await Component.InvokeAsync("AccountNavBadge", new
+                   {
+                       CssClass = "bg-green",
+                       User = Model.UserDetails.User,
+                       MenuPage = MenuPage.AcceptedRequests
+                   })
             </a>
         </li>
 
         <li class="account__nav__item">
             <a href="/account/completed-requests" class="@(Model.CurrentPage == MenuPage.CompletedRequests ? "selected" : string.Empty)">
                 My Completed Requests
-                <span class="account__nav__badge" data-menu-page="@MenuPage.CompletedRequests"></span>
+                @await Component.InvokeAsync("AccountNavBadge", new
+                   {
+                       CssClass = "bg-gray-8",
+                       User = Model.UserDetails.User,
+                       MenuPage = MenuPage.CompletedRequests
+                   })
             </a>
         </li>
 
@@ -41,7 +56,16 @@
                 <li class="account__nav__item submenu__container">
                     <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">
                         @userGroup.GroupName
-                        <span class="account__nav__badge" data-group-key="@userGroup.GroupKey" data-menu-page="@MenuPage.GroupRequests"></span>
+                        @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
+                        {
+                            @await Component.InvokeAsync("AccountNavBadge", new
+                               {
+                                   CssClass = "bg-green",
+                                   User = Model.UserDetails.User,
+                                   MenuPage = MenuPage.GroupRequests,
+                                   GroupKey = userGroup.GroupKey
+                               })
+                        }
                     </a>
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
@@ -49,7 +73,13 @@
                             <li class="account__nav__item">
                                 <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
                                     Requests
-                                    <span class="account__nav__badge" data-group-key="@userGroup.GroupKey" data-menu-page="@MenuPage.GroupRequests"></span>
+                                    @await Component.InvokeAsync("AccountNavBadge", new
+                                       {
+                                           CssClass = "bg-green",
+                                           User = Model.UserDetails.User,
+                                           MenuPage = MenuPage.GroupRequests,
+                                           GroupKey = userGroup.GroupKey
+                                       })
                                 </a>
                             </li>
                         }
@@ -63,6 +93,5 @@
                 </li>
             }
         }
-
     </ul>
 </nav>

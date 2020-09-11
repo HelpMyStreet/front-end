@@ -18,8 +18,12 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.Rewrite;
 using System;
 using Microsoft.Extensions.Internal;
-using Polly;
 using HelpMyStreet.Utils.PollyPolicies;
+using HelpMyStreet.Cache.Extensions;
+using HelpMyStreet.Cache;
+using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE
 {
@@ -44,7 +48,7 @@ namespace HelpMyStreetFE
                 });
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
-            services.Configure<EmailConfig>(Configuration.GetSection("SendGrid"));
+            services.Configure<EmailConfig>(Configuration.GetSection("EmailConfig"));
             services.Configure<RequestSettings>(Configuration.GetSection("RequestSettings"));
 
 
@@ -130,23 +134,40 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+
+            services.AddHttpClient<ICommunicationService, CommunicationService>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
-            services.AddSingleton<IEmailService, EmailService>();
+            //services.AddSingleton<ICommunicationService, CommunicationService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IGroupService, GroupService>();
-          
+            services.AddSingleton<IFilterService, FilterService>();
+
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
+            services.AddMemCache();
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
 
             services.AddControllers();
             services.AddRazorPages()
@@ -317,11 +338,14 @@ namespace HelpMyStreetFE
                     name: "OpenRequests",
                     pattern: "account/open-requests",
                     defaults: new { controller = "Account", action = "OpenRequests" });
-
                 endpoints.MapControllerRoute(
                    name: "AcceptedRequests",
                    pattern: "account/accepted-requests",
                    defaults: new { controller = "Account", action = "AcceptedRequests" });
+                endpoints.MapControllerRoute(
+                   name: "CompletedRequests",
+                   pattern: "account/completed-requests",
+                   defaults: new { controller = "Account", action = "CompletedRequests" });
 
                 endpoints.MapControllerRoute(
                    name: "registration/step-one",
