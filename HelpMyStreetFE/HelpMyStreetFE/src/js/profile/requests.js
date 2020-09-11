@@ -110,7 +110,7 @@ export function showStatusUpdatePopup(btn) {
   const targetState = $(btn).data("target-state");
   const targetUser = $(btn).data("target-user") ?? "self";
 
-  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
+  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"));
 
   popupSettings.acceptCallbackAsync = async () => {
     let newStatus = await setJobStatus(job, targetState, targetUser);

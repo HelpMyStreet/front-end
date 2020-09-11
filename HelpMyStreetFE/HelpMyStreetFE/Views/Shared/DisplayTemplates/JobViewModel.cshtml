@@ -33,7 +33,7 @@
     var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus">
+<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus" data-referring-group-name="@Model.ReferringGroup">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.JobSummary.JobStatus == JobStatuses.Done)
