@@ -204,6 +204,13 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> LoadComponent(CancellationToken cancellationToken)
+        {
+            var user = await GetCurrentUser(cancellationToken); 
+            return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
             var user = await GetCurrentUser(cancellationToken);
@@ -323,7 +330,7 @@ namespace HelpMyStreetFE.Controllers
                 };
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.Notifications = notifications;
-                var jobs = await _requestService.GetJobsForUserAsync(user.ID, HttpContext);
+                var jobs = await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken);
                 viewModel.Jobs = jobs.ToList();
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {

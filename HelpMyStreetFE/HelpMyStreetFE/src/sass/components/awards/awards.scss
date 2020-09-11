@@ -1,0 +1,30 @@
+﻿.awards-component{
+    @media screen and (min-width: $med-screen){
+    max-width: calc(100% - 300px)}
+    }
+
+.award {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: $sm-screen) {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    img {
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+    }
+
+    p {
+        font-size: 18px;
+        margin-top: 5px;
+    }
+
+    h3 {
+        @include title-sz-5
+    }
+}

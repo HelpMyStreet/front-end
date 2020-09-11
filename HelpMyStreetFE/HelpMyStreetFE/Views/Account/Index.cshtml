@@ -26,9 +26,11 @@
             </div>
         </div>
 
-    <div class="mb-md">
-        @*@await Component.InvokeAsync("Awards", new { awardsLevel = 5 })*@
+    <div class="mb-md row">
+
         <partial name="_MiniUserProfile" for="@Model.UserDetails" />
+        @*await Component.InvokeAsync("Awards", new { user = @Model.UserDetails.User })*@
+        <div class="awards-component"></div>
     </div>
 
 

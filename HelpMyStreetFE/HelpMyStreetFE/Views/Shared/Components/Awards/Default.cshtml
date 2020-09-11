@@ -1,17 +1,17 @@
 ﻿@model HelpMyStreetFE.Models.Awards.AwardsViewModel;
 @using HelpMyStreetFE.Models.Awards;
 
-<div class="row">
+
     @if (Model.Award != null)
     {
         <div class="award">
             <img src="@Model.Award.ImageLocation"/>
             <div>
                 <h3>@Model.Award.AwardName</h3>
-                <p>@Model.Award.AwardDescription</p>
+                <p>@Html.Raw(Model.Award.AwardDescription)</p>
             </div>
-            <label for="progress-bar">Only @(Model.NextAwardLevel - Model.CurrentAwardLevel) more requests to complete to reach the next level!</label>
-            <progress id="progress-bar" value="@(Model.CurrentAwardLevel - Model.Award.AwardValue)" max="@Model.NextAwardLevel"></progress>
         </div>
+
+        <script>var nextAwardLevel = @Model.NextAwardLevel</script>
     }
-</div>
+

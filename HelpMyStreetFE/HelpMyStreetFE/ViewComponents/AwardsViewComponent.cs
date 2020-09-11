@@ -18,7 +18,10 @@ namespace HelpMyStreetFE.ViewComponents
 {
     public class AwardsViewComponent : ViewComponent
     {
+        private IRequestService _requestService;
         private IAwardsRepository _awardsRepository;
+        private IUserService _userService;
+
         private Dictionary<SupportActivities, string> friendlySupport = new Dictionary<SupportActivities, string>()
         {
         { SupportActivities.Shopping, "shopping trip" },
@@ -53,13 +56,17 @@ namespace HelpMyStreetFE.ViewComponents
         };
 
 
-        public AwardsViewComponent(IAwardsRepository awardsRepository)
+        public AwardsViewComponent(IAwardsRepository awardsRepository, IRequestService requestService, IUserService userService)
         {
+            _requestService = requestService;
             _awardsRepository = awardsRepository;
+            _userService = userService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(List<JobSummary> jobs, User user)
+        public async Task<IViewComponentResult> InvokeAsync(int userID, System.Threading.CancellationToken cancellationToken)
         {
+            var user = await _userService.GetUserAsync(userID, cancellationToken);
+            var jobs = await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken);
             var viewModel = new AwardsViewModel();
             var awards = await _awardsRepository.GetAwards();
             var predicates = new List<Object>() { user };
@@ -90,7 +97,8 @@ namespace HelpMyStreetFE.ViewComponents
             if (relevantAwards.Count() >= 1)
             {
                 viewModel.Award = relevantAwards.LastOrDefault();
-                viewModel.Award.AwardDescription = viewModel.Award.AwardDescription(completedJobs, listString);
+                viewModel.Award.JobCount = completedJobs;
+                viewModel.Award.JobDetail = listString;
                 viewModel.NextAwardLevel = awards.Where(x => x.AwardValue > completedJobs).FirstOrDefault().AwardValue;
             }
             else
