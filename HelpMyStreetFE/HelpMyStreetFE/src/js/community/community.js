@@ -283,9 +283,7 @@ $(document).ready(function () {
   if ($("#ShowRequestHelpPopup").val() == "True") {
     $('.btn--request-help').on('click', function (event) {
       event.preventDefault();
-      var popup;
-
-      var popupSettings = {
+      var popup = showPopup({
         header: "Request Help",
         htmlContent: $("#RequestHelpPopupText").val(),
         actionBtnText: "Yes",
@@ -295,7 +293,7 @@ $(document).ready(function () {
           return true;
         },
         rejectCallbackAsync: () => {
-          var popupSettings = {
+          showPopup({
             noFade: true,
             header: "Request Help",
             htmlContent: $("#RequestHelpPopup2Text").val(),
@@ -304,12 +302,51 @@ $(document).ready(function () {
               window.location.href = $("#RequestHelpPopup2Destination").val();
               return true;
             }
-          };
-          showPopup(popupSettings);
+          });
           hidePopup(popup, 0);
         }
-      };
-      popup = showPopup(popupSettings);
+      });
     });
   }
+
+  $('.btn--join-group').on('click', function (event) {
+    event.preventDefault();
+    showPopup({
+      header: "Join Group",
+      htmlContent: $("#JoinGroupPopupText").val(),
+      actionBtnText: "Join now",
+      acceptCallbackAsync: async () => {
+        const content = await hmsFetch("/api/groups/join-group?g=" + $(this).data("target-group"));
+        if (content.fetchResponse == fetchResponses.SUCCESS) {
+          $('.show-to-members').removeClass('dnone');
+          $('.show-to-non-members').addClass('dnone');
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  });
+
+  $('.btn--leave-group').on('click', function (event) {
+    event.preventDefault();
+    showPopup({
+      header: "Leave Group",
+      htmlContent: $("#LeaveGroupPopupText").val(),
+      actionBtnText: "Yes, leave group",
+      rejectBtnText: "Cancel",
+      cssClass: "warning",
+      acceptCallbackAsync: async () => {
+        const content = await hmsFetch("/api/groups/leave-group?g=" + $(this).data("target-group"));
+        if (content.fetchResponse == fetchResponses.SUCCESS) {
+          $('.show-to-members').addClass('dnone');
+          $('.show-to-non-members').removeClass('dnone');
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  });
+
 });

@@ -8,6 +8,7 @@ namespace HelpMyStreetFE.Models.Community
     {
         public bool TestBanner { get; set; }
         public bool IsLoggedIn { get; set; }
+        public bool IsGroupMember { get; set; }
         public string EncodedGroupId { get; set; }
         public bool ShowMap { get; set; } = true;
         public double Latitude { get; set; }
@@ -35,11 +36,12 @@ namespace HelpMyStreetFE.Models.Community
         public string RequestHelpHeading { get; set; }
         public string RequestHelpText { get; set; }
         public string RequestHelpButtonText { get; set; } = "Request Help";
-        public string ProvideHelpLoggedOutButtonText { get; set; } = "Sign Up Now";
-        public string ProvideHelpLoggedInButtonText { get; set; } = "Provide Help";
+        public string ProvideHelpButtonText_LoggedOut { get; set; } = "Sign Up Now";
+        public string ProvideHelpButtonText_LoggedIn { get; set; } = "View Open Requests";
 
         public string ProvideHelpHeading { get; set; }
-        public string ProvideHelpText { get; set; }
+        public string ProvideHelpText_NotGroupMember { get; set; }
+        public string ProvideHelpText_GroupMember { get; set; }
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
         public string UsefulLinksHtml { get; set; }
         public string HomeFolder { get; set; }
@@ -56,6 +58,11 @@ namespace HelpMyStreetFE.Models.Community
         public string RequestHelpPopup2Text { get; set; }
         public string RequestHelpPopup2Destination { get; set; }
 
+        public bool AllowJoinOurGroup { get; set; }
+        public bool AllowLeaveOurGroup { get; set; }
+        public string JoinOurGroupButtonText { get; set; }
+        public string JoinGroupPopupText { get; set; }
+        public string LeaveGroupPopupText { get; set; }
 
         private static string GetDefaultHeaderHtml()
         {

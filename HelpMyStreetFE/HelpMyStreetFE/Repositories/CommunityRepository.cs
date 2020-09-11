@@ -200,7 +200,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
-            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -284,7 +285,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
-            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of the Ruddington Community Response Team. Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -315,7 +317,14 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
             communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Ruddington Community Response Team</b> offer help in <b>Ruddington</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
                                                             <p>Request help from someone near you by clicking below.</p>";
-            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/ruddington";
+            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Ruddington Community Response Team</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Ruddington Community Response Team</b>?</p>";
 
             return communityViewModel;
         }
@@ -532,8 +541,9 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.RequestHelpButtonText = "Request Face Coverings";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-            communityViewModel.ProvideHelpText = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpLoggedOutButtonText = "Sew with FTLOS";
+            communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
+            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
+            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {
