@@ -96,7 +96,7 @@ $screen-md-min: 767px;
                     img {
                         display: inline-block;
                         vertical-align: middle;
-                        margin-right: 0.5rem;
+                        margin-right: 0.25rem;
                     }
                 }
 
@@ -114,20 +114,8 @@ $screen-md-min: 767px;
                         }
                     }
 
-                    &--app {
-                        width: 165px;
-
-                        @media screen and (max-width: $sm-screen) {
-                            width: 120px;
-                        }
-                    }
-
-                    &--play {
-                        width: 180px;
-
-                        @media screen and (max-width: $sm-screen) {
-                            width: 135px;
-                        }
+                    &--logo {
+                        height: 50px;
                     }
                 }
             }
