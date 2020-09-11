@@ -23,13 +23,11 @@ namespace HelpMyStreetFE.Controllers {
     {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
-        private readonly IGroupService _groupService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IGroupService groupService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
-            _groupService = groupService;
         }
 
 
