@@ -10,6 +10,7 @@ using System.Text;
 using Microsoft.Extensions.Logging;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Reponses;
+using System;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -159,7 +160,7 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<bool> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID)
+        public async Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID)
         {
             PostAssignRoleRequest postAssignRoleRequest = new PostAssignRoleRequest()
             {
@@ -173,12 +174,12 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Outcome == GroupPermissionOutcome.Success;
+                return response.Content.Outcome;
             }
-            return false;
+            throw new Exception("Bad response from PostAssignRole");
         }
 
-        public async Task<bool> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID)
+        public async Task<GroupPermissionOutcome> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID)
         {
             PostRevokeRoleRequest postRevokeRoleRequest = new PostRevokeRoleRequest()
             {
@@ -192,9 +193,9 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Outcome == GroupPermissionOutcome.Success;
+                return response.Content.Outcome;
             }
-            return false;
+            throw new Exception("Bad response from PostRevokeRole");
         }
     }
 }

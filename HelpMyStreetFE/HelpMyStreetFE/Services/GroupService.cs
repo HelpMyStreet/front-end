@@ -111,28 +111,34 @@ namespace HelpMyStreetFE.Services
             return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
         }
 
-        public async Task<bool> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
+        public async Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
         {
-            bool success = await _groupRepository.PostAssignRole(userId, groupId, role, authorisedByUserID);
+            var result = await _groupRepository.PostAssignRole(userId, groupId, role, authorisedByUserID);
 
-            await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+            if (result == GroupPermissionOutcome.Success)
             {
-                return await GetUserRoles(userId);
-            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
+                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await GetUserRoles(userId);
+                }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
+            }
 
-            return success;
+            return result;
         }
 
-        public async Task<bool> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
+        public async Task<GroupPermissionOutcome> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
         {
-            bool success = await _groupRepository.PostRevokeRole(userId, groupId, role, authorisedByUserID);
+            var result = await _groupRepository.PostRevokeRole(userId, groupId, role, authorisedByUserID);
 
-            await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+            if (result == GroupPermissionOutcome.Success)
             {
-                return await GetUserRoles(userId);
-            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
+                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await GetUserRoles(userId);
+                }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
+            }
 
-            return success;
+            return result;
         }
 
         private async Task<List<UserGroup>> GetUserRoles(int userId)
