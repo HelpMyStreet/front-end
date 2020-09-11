@@ -90,8 +90,7 @@ namespace HelpMyStreetFE.ViewComponents
             if (relevantAwards.Count() >= 1)
             {
                 viewModel.Award = relevantAwards.LastOrDefault();
-                viewModel.Award.AwardDescription = viewModel.Award.AwardDescription.Replace("{{count}}", completedJobs.ToString());
-                viewModel.Award.AwardDescription = viewModel.Award.AwardDescription.Replace("{{list}}", listString);
+                viewModel.Award.AwardDescription = viewModel.Award.AwardDescription(completedJobs, listString);
                 viewModel.NextAwardLevel = awards.Where(x => x.AwardValue > completedJobs).FirstOrDefault().AwardValue;
             }
             else
