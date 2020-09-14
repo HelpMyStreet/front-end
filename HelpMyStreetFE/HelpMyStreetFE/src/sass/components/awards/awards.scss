@@ -1,15 +1,18 @@
 ﻿
 .user-badge{
     display: flex;
+
+    @media screen and (max-width: $sm-screen){
+        align-self: center;
+    }
 }
 .award {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
 
     @media screen and (max-width: $sm-screen) {
         flex-direction: column;
-        text-align: center;
     }
 
     img {
@@ -19,8 +22,14 @@
     }
 
     p {
+        
         font-size: 18px;
         margin-top: 5px;
+
+        @media screen and (max-width: $sm-screen){
+            font-size: 12px;
+            text-align: center;
+        }
     }
 
     h3 {
