@@ -1,31 +1,36 @@
-﻿export function loadQuestions(supportActivity) {
-    $('button#btnNext').addClass('disabled prevent-submit');
+﻿export function loadQuestions(supportActivity, successCallback) {
+  $('button#btnNext').addClass('disabled prevent-submit');
 
-    var qRequest = {
-        SupportActivity: supportActivity,
-        formVariant: $('input#FormVariant').val(),
-        formStage: $('input#currentStep_FormStage').val(),
-        answers: GetCurrentQuestionAnswers(),
-    };
+  var qRequest = {
+    SupportActivity: supportActivity,
+    formVariant: $('input#FormVariant').val(),
+    formStage: $('input#currentStep_FormStage').val(),
+    answers: GetCurrentQuestionAnswers(),
+  };
 
-    $('.questions').each(function () {
-        qRequest.position = $(this).attr("data-position");
-        var el = $(this);
-        $.ajax({
-            url: "/RequestHelp/Questions",
-            type: "POST",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            dataType: "html",
-            data: JSON.stringify(qRequest),
-            success: function (data) {
-                el.html(data);
-                $('button#btnNext').removeClass('disabled prevent-submit');
-            }
-        });
-    })
+  $('.questions').attr('data-loading', true);
+  $('.questions').each(function () {
+    qRequest.position = $(this).attr("data-position");
+    var el = $(this);
+    $.ajax({
+      url: "/RequestHelp/Questions",
+      type: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      dataType: "html",
+      data: JSON.stringify(qRequest),
+      success: function (data) {
+        el.html(data);
+        el.removeAttr('data-loading');
+        if ($('.questions[data-loading]').length == 0) {
+          $('button#btnNext').removeClass('disabled prevent-submit');
+          successCallback();
+        }
+      }
+    });
+  });
 }
 
 export function validateQuestions () {

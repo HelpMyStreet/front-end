@@ -6,7 +6,7 @@
 @model HelpMyStreetFE.Models.Account.Jobs.JobViewModel
 
 @{
-    var id = Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString());
+    var id = Base64Utils.Base64Encode(Model.JobSummary.JobID);
 
     var className = "";
     if (Model.JobSummary.JobStatus == JobStatuses.Open || Model.JobSummary.JobStatus == JobStatuses.InProgress)
@@ -33,7 +33,7 @@
     var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus">
+<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus" data-referring-group-name="@Model.ReferringGroup">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.JobSummary.JobStatus == JobStatuses.Done)
@@ -76,7 +76,7 @@
             @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
             {
                 <span class="next-step dnone">
-                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobSummary.JobID.ToString())">Go to My Accepted Requests</a>
+                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobSummary.JobID)">Go to My Accepted Requests</a>
                 </span>
             }
         </div>
@@ -135,7 +135,7 @@
                         <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.Done">
                             <span class="text">Mark as Done</span>
                         </button>
-                        <button class="btn border-dark-blue dark-blue large bg-white trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                        <button class="btn cta--dark-blue-border large trigger-status-update-popup" data-target-state="@JobStatuses.Open">
                             @if (Model.UserActingAsAdmin)
                             {
                                 <span class="text">Mark as Open</span>
@@ -149,7 +149,7 @@
                     case JobStatuses.Done:
                         if (Model.UserActingAsAdmin)
                         {
-                            <button class="btn border-orange orange large bg-white trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.ToString())">
+                            <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
@@ -157,11 +157,11 @@
                 }
                 @if (Model.UserActingAsAdmin && Model.JobSummary.JobStatus != JobStatuses.Cancelled)
                 {
-                    <button class="btn border-orange orange large bg-white trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                    <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>
                     </button>
                 }
-                <button class="btn border-green green large bg-white undo-request dnone" data-target-state="@Model.JobSummary.JobStatus" data-target-user="@Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.ToString())">
+                <button class="btn cta--green-border large undo-request dnone" data-target-state="@Model.JobSummary.JobStatus" data-target-user="@(Model.JobSummary.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.Value) : "")">
                     <span class="text">Undo</span>
                     <div class="loader dnone">
                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />

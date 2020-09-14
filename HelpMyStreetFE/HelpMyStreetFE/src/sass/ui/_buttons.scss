@@ -8,6 +8,7 @@
   padding: 13px 40px;
   text-decoration: none;
   text-align: center;
+  transition: border-color 0.5s;
 
   .text, .loading-spinner__label {
     font-size: 1rem;
@@ -42,7 +43,7 @@
   }
 
   &.wide {
-    min-width: 250px;
+    min-width: 17em;
     border-radius: 32px;
   }
 
@@ -61,6 +62,7 @@
   &:hover {
     cursor: pointer;
     border-color: $black;
+    transition: border-color 0.1s;
   }
 
   &:focus {
@@ -107,15 +109,51 @@
 }
 
 .cta {
+  @extend .white;
+  @extend .bg-green;
+  display: inline-block;
+
+  &:hover {
     @extend .white;
-    @extend .bg-green;
+  }
+
+  &--orange {
+    @extend .bg-orange;
+  }
+
+  &--blue {
+    @extend .border-blue;
+    @extend .blue;
+    @extend .bg-white;
+  }
+
+  &--orange-border {
+    @extend .border-orange;
+    @extend .orange;
+    @extend .bg-white;
 
     &:hover {
-        @extend .white;
+      @extend .orange;
     }
+  }
 
-    &--orange {
-        @extend .bg-orange;
-        display: inline-block;
+  &--green-border {
+    @extend .border-green;
+    @extend .green;
+    @extend .bg-white;
+
+    &:hover {
+      @extend .green;
     }
+  }
+
+  &--dark-blue-border {
+    @extend .border-dark-blue;
+    @extend .dark-blue;
+    @extend .bg-white;
+
+    &:hover {
+      @extend .dark-blue;
+    }
+  }
 }

@@ -44,20 +44,20 @@ var validateForm = function () {
 
 
 var intialiseRequestTiles = function () {
-    $('.tiles__tile').click(function () {
-        let type = $(this).attr("data-type");
-        switch (type) {
-            case "activities":
-                handleActivity($(this));    
-                break;
-            case "timeframe":
-                handleTimeFrame($(this));
-                break;
-            case "request-for":
-                handleRequestFor($(this));
-                break;
-        }
-    })
+  $('.tiles__tile').click(function () {
+    let type = $(this).attr("data-type");
+    switch (type) {
+      case "activities":
+        handleActivity($(this));
+        break;
+      case "timeframe":
+        handleTimeFrame($(this));
+        break;
+      case "request-for":
+        handleRequestFor($(this));
+        break;
+    }
+  });
 }
 var handleRequestFor = function (el) {
     $('*[data-type="request-for"]').removeClass("selected");
@@ -88,16 +88,21 @@ var handleTimeFrame = function (el) {
 }
 
 var handleActivity = function (el) {
-    $('*[data-type="activities"]').removeClass("selected");
-    el.addClass("selected");
-    let taskId = el.attr("data-id");
-    $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
+  $('*[data-type="activities"]').removeClass("selected");
+  el.addClass("selected");
+  let taskId = el.attr("data-id");
+  $('input[name="currentStep.SelectedTask.Id"]').val(taskId);
 
-    let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
-    trackEvent("Request form", "Select activity", selectedValue, 0);
+  let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+  trackEvent("Request form", "Select activity", selectedValue, 0);
 
-    updateOptionsForActivity(taskId);
-    loadQuestions(taskId);
+  updateOptionsForActivity(taskId);
+  loadQuestions(taskId, function () {
+    $('html, body').animate({
+      scrollTop:
+        $(el).parentsUntil("form").last().next().offset().top
+    }, 1000);
+  });
 }
 
 var updateOptionsForActivity = function (taskId) {

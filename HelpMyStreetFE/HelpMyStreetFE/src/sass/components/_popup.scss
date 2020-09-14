@@ -57,8 +57,20 @@
     }
 
     &__buttons {
+      margin-bottom: 1.0rem;
+
       &__button {
-        margin-bottom: 1.5rem;
+        display: inline-block;
+        margin: 0.5rem;
+
+        @media screen and (max-width: $sm-med-screen) {
+          display: block;
+
+          .btn.wide.fill {
+            min-width: auto;
+            width: 100%;
+          }
+        }
       }
     }
   }

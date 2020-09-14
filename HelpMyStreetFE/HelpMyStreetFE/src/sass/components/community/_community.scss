@@ -73,9 +73,16 @@
 
 
 .card {
-    &.min-height {
-        min-height: 280px;
+  &.min-height {
+    min-height: 280px;
+  }
+
+  &__buttons {
+    .btn:not(.dnone) {
+      display: inline-block;
+      margin: 0 0.5rem;
     }
+  }
 }
 
 .help-examples{

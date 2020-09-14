@@ -7,6 +7,20 @@
 @{
     bool NoCriteriaJobsToDisplay = false;
     bool NoNonCriteriaJobsToDisplay = false;
+
+    var criteriaJobsList = await Component.InvokeAsync("JobList", new
+    {
+        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = -1 },
+        EmptyListCallback = new Action(() => NoCriteriaJobsToDisplay = true),
+    });
+
+    var nonCriteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+    {
+        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+        User = @Model.UserDetails.User,
+        EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
+    });
+
 }
 
 <div class="verification-panel">
@@ -32,11 +46,7 @@
             else
             {
                 <p>Requests meeting the criteria you set when you signed up</p>
-                @await Component.InvokeAsync("JobList", new
-                   {
-                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = -1 },
-                       EmptyListCallback = new Action(() => NoCriteriaJobsToDisplay = true),
-                   })
+                @criteriaJobsList
                 @if (NoCriteriaJobsToDisplay)
                 {
                     <div class="profile__empty">
@@ -49,21 +59,18 @@
 
                 <p>Other Requests</p>
 
-                <div class="job-filter-panel @(NoNonCriteriaJobsToDisplay? "dnone" : "")">
-                    @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
-                       {
-                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
-                           User = @Model.UserDetails.User,
-                           EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
-                       })
-                </div>
-
                 @if (NoNonCriteriaJobsToDisplay)
                 {
                     <div class="profile__empty">
                         <p class="profile__empty__text--left">
                             There are no further open requests nearby at present
                         </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="job-filter-panel">
+                        @nonCriteriaJobsList
                     </div>
                 }
             }

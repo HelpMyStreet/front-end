@@ -7,5 +7,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public JobSummary JobSummary { get; set; }
         public bool UserIsVerified { get; set; }
         public bool UserActingAsAdmin { get; set; }
+        public string ReferringGroup { get; set; }
     }
 }

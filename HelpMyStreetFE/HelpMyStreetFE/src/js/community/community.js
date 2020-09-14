@@ -1,5 +1,7 @@
 import { initialiseSliders } from "../shared/image-slider.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+import { showPopup, hidePopup } from "../shared/popup";
+
 
 $(document).ready(function () {
     initialiseSliders();
@@ -276,3 +278,75 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
         return [];
     }
 }
+
+$(document).ready(function () {
+  if ($("#ShowRequestHelpPopup").val() == "True") {
+    $('.btn--request-help').on('click', function (event) {
+      event.preventDefault();
+      var popup = showPopup({
+        header: "Request Help",
+        htmlContent: $("#RequestHelpPopupText").val(),
+        actionBtnText: "Yes",
+        rejectBtnText: $("#RequestHelpPopupRejectButtonText").val(),
+        acceptCallbackAsync: () => {
+          window.location.href = $(this).attr('href');
+          return true;
+        },
+        rejectCallbackAsync: () => {
+          showPopup({
+            noFade: true,
+            header: "Request Help",
+            htmlContent: $("#RequestHelpPopup2Text").val(),
+            actionBtnText: "Request Help near me",
+            acceptCallbackAsync: () => {
+              window.location.href = $("#RequestHelpPopup2Destination").val();
+              return true;
+            }
+          });
+          hidePopup(popup, 0);
+        }
+      });
+    });
+  }
+
+  $('.btn--join-group').on('click', function (event) {
+    event.preventDefault();
+    showPopup({
+      header: "Join Group",
+      htmlContent: $("#JoinGroupPopupText").val(),
+      actionBtnText: "Join now",
+      acceptCallbackAsync: async () => {
+        const content = await hmsFetch("/api/groups/join-group?g=" + $(this).data("target-group"));
+        if (content.fetchResponse == fetchResponses.SUCCESS) {
+          $('.show-to-members').removeClass('dnone');
+          $('.show-to-non-members').addClass('dnone');
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  });
+
+  $('.btn--leave-group').on('click', function (event) {
+    event.preventDefault();
+    showPopup({
+      header: "Leave Group",
+      htmlContent: $("#LeaveGroupPopupText").val(),
+      actionBtnText: "Yes, leave group",
+      rejectBtnText: "Cancel",
+      cssClass: "warning",
+      acceptCallbackAsync: async () => {
+        const content = await hmsFetch("/api/groups/leave-group?g=" + $(this).data("target-group"));
+        if (content.fetchResponse == fetchResponses.SUCCESS) {
+          $('.show-to-members').addClass('dnone');
+          $('.show-to-non-members').removeClass('dnone');
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  });
+
+});
