@@ -1,0 +1,126 @@
+@using HelpMyStreetFE.Helpers;
+
+@{
+    ViewData["Title"] = "Case Studies";
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = "Case Studies", PrimaryMobileText = "Case Studies", ShowSecondaryText = true };
+}
+
+
+    <article class="content-page content-page--community">
+
+        <div class="outer-container">
+            <section class="container content-page__outer">
+                <div class="content-page__inner">
+                    <header class="content-page__header content-page__section__body">
+                        <h3 class="content-page__title">Every volunteer is ID checked</h3>
+                        <p>HelpMyStreet has partnered with Yoti, a leading provider of ID checking.</p>
+                        <p>Every volunteer is ID-checked to confirm they are who they say they are. This is important because vulnerable people use HelpMyStreet to ask for help.</p>
+                        <p>Yoti is quick and easy to use – you just need a smartphone and a valid driving licence or passport.</p>
+                    </header>
+                </div>
+                <div class="content-page__inner">
+                    <div class="yt-video-placeholder"><img src="~/img/case-studies/yoti-verified.svg" alt="Yoti Verified" /></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="outer-container outer-container--darker">
+            <section class="container content-page__outer content-page__outer--reverse">
+                <div class="content-page__inner">
+                    <header class="content-page__header content-page__section__body">
+                        <h3 class="content-page__title">Matching Help Requests with Volunteers</h3>
+                        <p>HelpMyStreet has an integrated task management module that matches requests for help with suitable helpers (matching by request type and proximity).</p>
+                        <p>Helpers will be alerted when relevant requests for help come in, and helpers can accept as many or as few requests as they’d like. There’s no ongoing commitment – helpers are simply encouraged to help out when they have the time.</p>
+                        <p>Finally, we collect feedback from everyone involved to ensure it was a positive experience.</p>
+                    </header>
+                </div>
+                <div class="content-page__inner">
+                    <div class="yt-video-placeholder"><img src="~/img/case-studies/tasks.svg" alt="Task management" /></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="outer-container">
+            <section class="container content-page__outer">
+                <div class="content-page__inner">
+                    <header class="content-page__header content-page__section__body">
+                        <h3 class="content-page__title">Charity: Age UK partnership in Lincoln and South Lincolnshire</h3>
+                        <p>We helped Age UK in Lincoln and South Lincolnshire launch their Vitals For Veterans campaign; a program to deliver 1,800 care packages to elderly veterans.</p>
+                        <p>Every week the Age UK team find veterans who would benefit from a bit of a boost (including one gentleman who is 103 and received a parcel on his wife’s 97th birthday - quite a couple!).</p>
+                        <p>They enter them into the system and then amazing Helpers sign in to HelpMyStreet, grab tasks that are close to them, pick up the parcels from a few central locations and then drop them off with the veterans.</p>
+                        <p>Often they have a bit of a chat with the veteran – which is probably as important as the care package itself.</p>
+                        <div class="centered-button">
+                            <a href="/ageuklsl" class="btn cta small btn--sign-up">Visit the Age UK LSL Page</a>
+                        </div>
+                    </header>
+                </div>
+                <div class="content-page__inner">
+                    
+                        <a href="/ageuklsl"><img src="~/img/case-studies/ageuk-vitals.svg" alt="AgeUK Partnership" /></a>
+                </div>
+            </section>
+        </div>
+
+        <div class="outer-container outer-container--darker">
+            <section class="container content-page__outer content-page__outer--reverse">
+                <div class="content-page__inner">
+                    <header class="content-page__header content-page__section__body">
+                        <h3 class="content-page__title">Campaign: Face Coverings for the Nation</h3>
+                        <p><i>For The Love Of Scrubs</i> is an incredible collaboration of 70,000 sewers across the country (with one central facebook page and 130+ local ones) who have made 500,000+ sets of scrubs and other pieces of vital equipment for frontline NHS and care workers.</p>
+                        <p>Now, they have partnered with HelpMyStreet to spearhead our Face Coverings campaign.</p>
+                        <div class="centered-button">
+                            <a href="/face-coverings" class="btn cta small btn--sign-up">Visit the Face Coverings Page</a>
+                        </div>
+                    </header>
+                </div>
+                <div class="content-page__inner">
+                    
+                        <a href="/face-coverings"><img src="~/img/case-studies/masks.svg" alt="Face Coverings" /></a>
+                    
+                </div>
+            </section>
+        </div>
+
+        <div class="outer-container">
+            <section class="container content-page__outer">
+                <div class="content-page__inner">
+                    <header class="content-page__header content-page__section__body">
+                        <h3 class="content-page__title">Community: Tankersley and Pilley</h3>
+                        <p>Tankersley and Pilley are neighbouring villages in South Yorkshire. Organisers in their community wanted a platform to match volunteers with people who needed help.</p>
+                        <p>HelpMyStreet built a dedicated landing page for them, with images of their local church and pictures of their organisers to make it all feel personal and relevant.</p>
+                        <p>The community can access the full suite of HelpMyStreet functions; including ID checking and task management.</p>
+                        <div class="centered-button">
+                            <a href="/tankersley" class="btn cta small btn--sign-up">Visit their community page</a>
+                        </div>
+                    </header>
+</div>
+                <div class="content-page__inner">
+                    <div class="centered-button">
+                        <a href="/tankersley"><img src="~/img/case-studies/tankersley-phone.svg" alt="Tankersley" /></a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <article class="content-page content-page--contact-us">
+
+            <div class="outer-container">
+                <div class="container content-page__outer content-page__contact-us">
+
+                    <div class="content-page__inner">
+                        <partial name="_ContactUsSummary" />
+                    </div>
+
+                    <div class="content-page__inner content-page__contact-us__form card">
+                        <partial name="_ContactForm" model="null" />
+                    </div>
+                </div>
+            </div>
+
+        </article>
+
+    </article>
+
+@section Scripts {
+    @Html.PageScripts()
+}
