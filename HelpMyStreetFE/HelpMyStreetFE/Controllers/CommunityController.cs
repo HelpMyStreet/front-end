@@ -13,6 +13,9 @@ using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using System.Threading;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -55,7 +58,12 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction("Error404", "Errors");
             }
 
-            communityViewModel.IsLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated);
+            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+            if (user != null)
+            {
+                communityViewModel.IsLoggedIn = true;
+                communityViewModel.IsGroupMember = await _groupService.GetUserHasRole(user.ID, communityViewModel.groupKey, GroupRoles.Member, cancellationToken);
+            }
             communityViewModel.TestBanner = testBanner;
             
             string carousel1Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel1";
@@ -82,7 +90,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> FaceCoverings(CancellationToken cancellationToken)
         {
             var genericGetGroupByKeyResponse = await _groupService.GetGroupIdByKey("Generic", cancellationToken);
-            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse.ToString());
+            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse);
 
             FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
             {

@@ -1,4 +1,4 @@
-﻿@model HelpMyStreetFE.Models.Community.CommunityViewModel;
+@model HelpMyStreetFE.Models.Community.CommunityViewModel;
 
 @{
     ViewData["Title"] = Model.CommunityName;
@@ -27,11 +27,14 @@
 }
 else
 {
-    <div class="container">
-        <div class="community-banner">
-            <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+    @if (!string.IsNullOrEmpty(Model.BannerImageLocation))
+    {
+        <div class="container">
+            <div class="community-banner">
+                <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+            </div>
         </div>
-    </div>
+    }
     <div class="outer-container">
         <div class="container">
             <div class="row flex hero mb-lg">
@@ -53,22 +56,28 @@ else
                         </div>
                     }
 
-                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
-                        @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
+                <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
+                    @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
+                    {
+                        <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
+                    }
+                    @if (!Model.IsLoggedIn)
+                    {
+                        <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                    }
+                    else
+                    {
+                        if (Model.AllowJoinOurGroup)
                         {
-                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
-                        }
-                        @if (!Model.IsLoggedIn)
-                        {
-                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
-
+                            <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                            <a href="/account" class="btn cta small btn--sign-up show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
                         else
                         {
-                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedInButtonText</a>
-
+                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
-                    </div>
+                    }
+                </div>
 
                     @if (Model.ShowRequestHelp)
                     {
@@ -176,23 +185,39 @@ else
                     </div>
                 }
 
-                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText))
+                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
                 {
                     <div class="sm6">
                         <div class="card">
                             <h2>@Model.ProvideHelpHeading</h2>
-                            <p class="text-left mt-sm mb-md">
-                                @Model.ProvideHelpText
+                            <p class="text-left mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                                @Model.ProvideHelpText_NotGroupMember
+                            </p>
+                            <p class="text-left mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                                @Model.ProvideHelpText_GroupMember
                             </p>
 
-                            <div class="" style="text-align: center">
+                            <div class="card__buttons" style="text-align: center">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a id="first-button" href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
-                                    <a id="first-button" href="/account" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedInButtonText</a>
+                                    @if (Model.AllowJoinOurGroup)
+                                    {
+                                        <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                                        <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/account/open-requests" class="btn cta btn--view-requests @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                    }
+
+                                    @if (Model.AllowLeaveOurGroup)
+                                    {
+                                        <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
+                                    }
                                 }
                             </div>
                         </div>
@@ -246,7 +271,7 @@ else
     }
 
     <div class="container mt-md mb-lg">
-            @await Component.InvokeAsync("Feedback", new {feedbackMessageType = Model.showFeedbackType,  groupKey = Model.groupKey })
+        @await Component.InvokeAsync("Feedback", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
     </div>
 
 
@@ -298,23 +323,39 @@ else
                     </div>
                 }
 
-                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText))
+                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
                 {
                     <div class="sm6">
                         <div class="card">
                             <h2>@Model.ProvideHelpHeading</h2>
-                            <p class="text-left mt-sm mb-md">
-                                @Model.ProvideHelpText
+                            <p class="text-left mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                                @Model.ProvideHelpText_NotGroupMember
+                            </p>
+                            <p class="text-left mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                                @Model.ProvideHelpText_GroupMember
                             </p>
 
-                            <div class="" style="text-align: center">
+                            <div class="card__buttons" style="text-align: center">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a id="first-button" href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedOutButtonText</a>
+                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
-                                    <a id="first-button" href="/account" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpLoggedInButtonText</a>
+                                    @if (Model.AllowJoinOurGroup)
+                                    {
+                                        <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                                        <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/account/open-requests" class="btn cta btn--view-requests @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                    }
+
+                                    @if (Model.AllowLeaveOurGroup)
+                                    {
+                                        <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
+                                    }
                                 }
                             </div>
                         </div>
@@ -327,6 +368,15 @@ else
     @Html.Hidden(nameof(Model.Longitude))
     @Html.Hidden(nameof(Model.Latitude))
     @Html.Hidden(nameof(Model.ZoomLevel))
+
+    @Html.Hidden(nameof(Model.ShowRequestHelpPopup))
+    @Html.Hidden(nameof(Model.RequestHelpPopupText))
+    @Html.Hidden(nameof(Model.RequestHelpPopupRejectButtonText))
+    @Html.Hidden(nameof(Model.RequestHelpPopup2Text))
+    @Html.Hidden(nameof(Model.RequestHelpPopup2Destination))
+
+    @Html.Hidden(nameof(Model.JoinGroupPopupText))
+    @Html.Hidden(nameof(Model.LeaveGroupPopupText))
 
 
     @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)

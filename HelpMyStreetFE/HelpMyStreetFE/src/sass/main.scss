@@ -1,4 +1,4 @@
-﻿@import "./variables.scss";
+@import "./variables.scss";
 @import "./colours.scss";
 @import "./grid.scss";
 @import "./header.scss";
@@ -113,6 +113,10 @@ h6 {
 
 h6 + p {
   margin-top: 0;
+}
+
+span {
+  font-size: inherit;
 }
 
 ul.tick-list {

@@ -33,7 +33,7 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
 
-            var groupMembers = await _groupService.GetGroupMembers(groupId, user.ID);
+            var groupMembers = await _groupService.GetGroupMembers(groupId, user.ID, cancellationToken);
 
 
             var getEachUser = groupMembers.Select(async (userGroup) =>

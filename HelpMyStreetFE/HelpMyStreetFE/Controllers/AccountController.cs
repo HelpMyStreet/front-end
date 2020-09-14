@@ -326,7 +326,7 @@ namespace HelpMyStreetFE.Controllers
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
-                    EncodedUserID = Base64Utils.Base64Encode(user.ID.ToString()),
+                    EncodedUserID = Base64Utils.Base64Encode(user.ID),
                     DisplayName = userDetails.DisplayName,
                     IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
