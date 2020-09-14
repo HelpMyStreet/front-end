@@ -70,7 +70,9 @@ namespace HelpMyStreetFE.ViewComponents
             var viewModel = new AwardsViewModel();
             var awards = await _awardsRepository.GetAwards();
             var predicates = new List<Object>() { user };
-            var completedJobs = jobs.Where(x => x.JobStatus == JobStatuses.Done).Count();
+
+            jobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
+            var completedJobs = jobs.Count();
 
             awards = awards.OrderBy(x => x.AwardValue).ToList();
             var relevantAwards = awards.Where(x => completedJobs >= x.AwardValue && x.SpecificPredicate(predicates));
@@ -107,6 +109,7 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
             viewModel.CurrentAwardLevel = completedJobs;
+            viewModel.User = user;
             return View(viewModel);
         }
     }

@@ -7,11 +7,15 @@
         <div class="award">
             <img src="@Model.Award.ImageLocation"/>
             <div>
-                <h3>@Model.Award.AwardName</h3>
+                <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
+                <h5>@Model.Award.AwardName</h5>
+            </div>
+            <div>
                 <p>@Html.Raw(Model.Award.AwardDescription)</p>
+                <progress id="pg-bar" max="@Model.NextAwardLevel" value="@Model.CurrentAwardLevel"></progress>
+                <label for="pg-bar">@(Model.NextAwardLevel-Model.CurrentAwardLevel) until next level</label>
             </div>
         </div>
-
         <script>var nextAwardLevel = @Model.NextAwardLevel</script>
     }
 
