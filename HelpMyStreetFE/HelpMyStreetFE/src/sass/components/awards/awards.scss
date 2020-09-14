@@ -1,8 +1,7 @@
-﻿.awards-component{
-    @media screen and (min-width: $med-screen){
-    max-width: calc(100% - 300px)}
-    }
-
+﻿
+.user-badge{
+    display: flex;
+}
 .award {
     display: flex;
     justify-content: center;
@@ -26,5 +25,26 @@
 
     h3 {
         @include title-sz-5
+    }
+
+    h5 {
+        font-size: 1rem;
+    }
+
+    span {
+        display: flex;
+        flex-direction: column;
+        margin-top: 5px;
+    }
+
+    progress {
+        max-width: 80%;
+        height: 14px;
+        margin-top: 0px;
+    }
+
+    label {
+        font-size: 12px;
+        line-height: 14px;
     }
 }
