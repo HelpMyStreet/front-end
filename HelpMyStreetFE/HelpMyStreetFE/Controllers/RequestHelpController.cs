@@ -193,7 +193,7 @@ namespace HelpMyStreetFE.Controllers
                 referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             }
 
-            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source) ?? RequestHelpFormVariant.Default;
+            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
             {

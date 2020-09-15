@@ -95,15 +95,36 @@
         border: 1px solid transparent;
     }
 
-    &:only-of-type {
-      .card-feedback {
-        @media screen and (min-width: 750px) {
-          width: 500px;
-          left: -55px;
-        }
-      }
-    }
 }
 .slick-arrow.slick-hidden {
     display: none;
+}
+
+.slick-track {
+  @extend .flex;
+
+  .slick-slide {
+    @extend .flex;
+    height: auto;
+
+    div {
+      @extend .flex;
+
+      div.card-feedback {
+        .card-feedback-inner {
+          @extend .flex-column;
+          height: 100%;
+
+          * {
+            @extend .flex-grow;
+
+            &.person {
+              font-style: italic;
+              flex-grow: 0;
+            }
+          }
+        }
+      }
+    }
+  }
 }

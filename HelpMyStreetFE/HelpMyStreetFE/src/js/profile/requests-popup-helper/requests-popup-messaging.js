@@ -31,7 +31,7 @@
       if (userActingAsAdmin) {
         settings.htmlContent =
           `<p>Have you become aware that this task has been completed, but not marked as such?</p>
-           <p>We can mark it as mark it as Complete on behalf of the volunteer for you.</p>`;
+           <p>We can mark it as Complete on behalf of the volunteer for you.</p>`;
       } else {
         settings.htmlContent =
           `<p>Thank you so much for helping people in your community stay safe!</p>

@@ -124,7 +124,7 @@
   &--blue {
     @extend .border-blue;
     @extend .blue;
-    @extend .bg-white;
+    @extend .transparent;
   }
 
   &--orange-border {
