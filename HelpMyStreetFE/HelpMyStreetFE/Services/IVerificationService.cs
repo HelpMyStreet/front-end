@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
-    public interface IValidationService
+    public interface IVerificationService
     {
         public Task<ValidationResponse> ValidateUserAsync(ValidationRequest request, CancellationToken token = default);
     }

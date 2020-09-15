@@ -17,15 +17,15 @@ namespace HelpMyStreetFE.Controllers
     public class YotiController : Controller
     {
         private readonly YotiOptions _options;
-        private readonly IValidationService _validationService;
+        private readonly IVerificationService _verificationService;
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
 
-        public YotiController(IOptions<YotiOptions> options, IValidationService validationService, IUserService userService, IAuthService authService)
+        public YotiController(IOptions<YotiOptions> options, IVerificationService verificationService, IUserService userService, IAuthService authService)
         {
             _userService = userService;
             _options = options.Value;
-            _validationService = validationService;
+            _verificationService = verificationService;
             _authService = authService;
         }
 
@@ -52,7 +52,7 @@ namespace HelpMyStreetFE.Controllers
             var validUserId = DecodedAndCheckedUserId(u, token != null);
             if (validUserId != null && token != null)
             {                           
-                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);           
+                var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success || response.Status == ValidationStatus.Unauthorized)
                 {
                     if (response.Status == ValidationStatus.Success)

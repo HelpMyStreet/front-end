@@ -13,15 +13,15 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
-    public class ValidationService : BaseHttpService, IValidationService
+    public class VerificationService : BaseHttpService, IVerificationService
     {
-        private readonly IValidationRepository _validationRepository;
-        private readonly ILogger<ValidationService> _logger;
+        private readonly IVerificationRepository _validationRepository;
+        private readonly ILogger<VerificationService> _logger;
 
-        public ValidationService(
-            ILogger<ValidationService> logger, 
+        public VerificationService(
+            ILogger<VerificationService> logger, 
             IConfiguration config, 
-            IValidationRepository validationRepository,
+            IVerificationRepository validationRepository,
             HttpClient client) : base(client,config, "Services:Validation")
         {
             _logger = logger;
@@ -52,7 +52,7 @@ namespace HelpMyStreetFE.Services
             {
                 HttpStatusCode.OK => ValidationResponse.Success(),
                 HttpStatusCode.Unauthorized => ValidationResponse.Unauthorized(),
-                _ => ValidationResponse.UnexepectedError()
+                _ => throw new Exception($"Unexpected response from Verification Service: {responseMessage.Content}")
             };
         }
 

@@ -64,7 +64,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
-            services.AddHttpClient<IValidationRepository, ValidationRepository>(client =>
+            services.AddHttpClient<IVerificationRepository, VerificationRepository>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
@@ -104,7 +104,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
-            services.AddHttpClient<IValidationService, ValidationService>(client =>
+            services.AddHttpClient<IVerificationService, VerificationService>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
