@@ -83,8 +83,6 @@ namespace HelpMyStreetFE.Services
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
-            httpContext.Session.SetObjectAsJson("User", user);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity), new AuthenticationProperties
                 {
@@ -98,8 +96,6 @@ namespace HelpMyStreetFE.Services
             var user = await _userService.GetUserAsync(userId, cancellationToken);
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
-            httpContext.Session.SetObjectAsJson("User", user);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity), new AuthenticationProperties
                 {
@@ -110,9 +106,15 @@ namespace HelpMyStreetFE.Services
 
         public async Task<User> GetCurrentUser(HttpContext httpContext, CancellationToken cancellationToken)
         {
-            var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id, cancellationToken);
-            return user;
+            if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
+            {
+                var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return await _userService.GetUserAsync(id, cancellationToken);
+            }
+            else
+            {
+                return null;
+            }
         }
 
 

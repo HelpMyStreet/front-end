@@ -27,14 +27,16 @@ namespace HelpMyStreetFE.Controllers
         private const string communityImageStore = "/img/community/";
         private readonly IConfiguration _configuration;
         private readonly IGroupService _groupService;
+        private readonly IAuthService _authService;
 
-        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService)
+        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService, IAuthService authService)
         {
             _env = env;
             _logger = logger;
             _communityRepository = communityRepository;
             _configuration = configuration;
             _groupService = groupService;
+            _authService = authService;
         }
 
         public async Task<IActionResult> Index(string communityName, CancellationToken cancellationToken)
@@ -58,7 +60,7 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction("Error404", "Errors");
             }
 
-            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (user != null)
             {
                 communityViewModel.IsLoggedIn = true;

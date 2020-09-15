@@ -16,16 +16,18 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public VolunteerListViewComponent(IGroupService groupService, IUserService userService)
+        public VolunteerListViewComponent(IGroupService groupService, IUserService userService, IAuthService authService)
         {
             _groupService = groupService;
             _userService = userService;
+            _authService = authService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int groupId, CancellationToken cancellationToken)
         {
-            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (user == null)
             {

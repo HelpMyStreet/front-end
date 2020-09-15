@@ -20,18 +20,20 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
+        private readonly IAuthService _authService;
 
-        public JobListViewComponent(IRequestService requestService, IGroupService groupService)
+        public JobListViewComponent(IRequestService requestService, IGroupService groupService, IAuthService authService)
         {
             _requestService = requestService;
             _groupService = groupService;
+            _authService = authService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
         {
             JobListViewModel jobListViewModel = new JobListViewModel();
 
-            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (user == null)
             {

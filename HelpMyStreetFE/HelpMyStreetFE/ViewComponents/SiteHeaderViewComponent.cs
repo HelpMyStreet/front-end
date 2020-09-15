@@ -18,29 +18,25 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IUserService _userService;
         private readonly IGroupService _groupService;
-        public SiteHeaderViewComponent(IUserService userService, IGroupService groupService)
+        private readonly IAuthService _authService;
+        public SiteHeaderViewComponent(IUserService userService, IGroupService groupService, IAuthService authService)
         {
             _userService = userService;
             _groupService = groupService;
+            _authService = authService;
         }
 
- 
+
 
         public async Task<IViewComponentResult> InvokeAsync(CancellationToken cancellationToken)
         {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             SiteHeaderViewModel viewModel = new SiteHeaderViewModel
             {
-                isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated)
+                isLoggedIn = (user != null)
             };            
             if (viewModel.isLoggedIn)
             {
-                var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                var user = HttpContext.Session.GetObjectFromJson<User>("User");
-                if(user == null || user.ID != id)
-                {               
-                    user = await _userService.GetUserAsync(id, cancellationToken);
-                    HttpContext.Session.SetObjectAsJson("User", user);
-                }
                 viewModel.AccountVM = await GetAccountViewModel(user, cancellationToken);
             }                                 
             return View(viewModel);
