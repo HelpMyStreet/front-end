@@ -1,4 +1,4 @@
-.mb0 {
+﻿.mb0 {
   margin-bottom: 0px;
 }
 .mb15 {
@@ -17,6 +17,10 @@
   padding-top: 32px !important;
 }
 
+.mlmr-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
 
 // Proposal: use sass function to generate a batch of spacing utility classes
 // (used non-explicit naming so doesn't clash with existing classes above)
