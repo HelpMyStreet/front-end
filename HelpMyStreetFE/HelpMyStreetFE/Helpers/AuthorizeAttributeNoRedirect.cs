@@ -6,7 +6,7 @@ namespace HelpMyStreetFE.Helpers
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
+            if (filterContext.HttpContext.User == null || !filterContext.HttpContext.User.Identity.IsAuthenticated)
             {
                 filterContext.Result = new Microsoft.AspNetCore.Mvc.UnauthorizedResult();
             }
