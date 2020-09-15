@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,8 +51,13 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
             var validUserId = DecodedAndCheckedUserId(u, token != null);
-            if (validUserId != null && token != null)
-            {                           
+            if (validUserId == null || token == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
                 var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
                 if (response.Status == ValidationStatus.Success || response.Status == ValidationStatus.Unauthorized)
                 {
@@ -65,12 +71,12 @@ namespace HelpMyStreetFE.Controllers
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
                         await _authService.LoginWithUserId(int.Parse(validUserId), HttpContext);
                     }
-                }                      
+                }
                 return handleValidationTokenResponse(response);
             }
-            else
+            catch (Exception ex)
             {
-                return Unauthorized();
+                return StatusCode(500, ex);
             }
         }
 

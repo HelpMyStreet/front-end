@@ -63,7 +63,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from postcreateuser.  Errors: {response.Errors}");
             }
 
         }
@@ -83,7 +83,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageTwo.  Errors: {response.Errors}");
             }
         }
 
@@ -102,7 +102,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageThree.  Errors: {response.Errors}");
             }
         }
 
@@ -121,7 +121,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageFour.  Errors: {response.Errors}");
             }
         }
 
@@ -140,7 +140,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageFive.  Errors: {response.Errors}");
             }
         }
 
@@ -159,7 +159,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from putmodifyuser.  Errors: { response.Errors}");
             }
         }
 
@@ -173,7 +173,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from getchampioncountbypostcode.  Errors: { response.Errors}");
             }
         }
 
@@ -187,7 +187,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetDistinctChampionUserCount.  Errors: {response.Errors}");
             }
         }
 
@@ -201,7 +201,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetChampionPostcodesCoveredCount.  Errors: { response.Errors}");
             }
         }
 
@@ -215,7 +215,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetDistinctVolunteerUserCount.  Errors: { response.Errors}");
             }
         }
 
@@ -229,7 +229,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetVolunteerCountByPostcode.  Errors: { response.Errors}");
             }
         }
 
@@ -243,7 +243,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetHelpersByPostcode.  Errors: { response.Errors}");
             }
         }
 
@@ -257,7 +257,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetChampionsByPostcode.  Errors: { response.Errors}");
             }
         }
 
@@ -270,7 +270,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                throw new Exception(response.Errors.ToString());
+                throw new Exception($"Unsuccessful response from GetVolunteerCoordinates.  Errors: {response.Errors}");
             }
         }
     }
