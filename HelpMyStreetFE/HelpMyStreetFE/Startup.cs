@@ -233,6 +233,10 @@ namespace HelpMyStreetFE
                     name: "community-organisers",
                     pattern: "community-organisers",
                     defaults: new { controller = "Pages", action = "CommunityOrganisers" });
+                endpoints.MapControllerRoute(
+                    name: "case-studies",
+                    pattern: "case-studies",
+                    defaults: new { controller = "Pages", action = "CaseStudies" });
 
                 endpoints.MapControllerRoute(
                     name: "community",
