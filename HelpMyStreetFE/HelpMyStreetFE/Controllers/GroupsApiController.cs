@@ -18,11 +18,13 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<GroupsApiController> _logger;
         private readonly IGroupService _groupService;
+        private readonly IAuthService _authService;
 
-        public GroupsApiController(ILogger<GroupsApiController> logger, IGroupService groupService)
+        public GroupsApiController(ILogger<GroupsApiController> logger, IGroupService groupService, IAuthService authService)
         {
             _logger = logger;
             _groupService = groupService;
+            _authService = authService;
         }
 
         [AuthorizeAttributeNoRedirect]
@@ -31,10 +33,10 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int groupId = Base64Utils.Base64DecodeToInt(g);
 
-                var result = await _groupService.PostAssignRole(userId, groupId, GroupRoles.Member, userId, cancellationToken);
+                var result = await _groupService.PostAssignRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
 
                 return result switch
                 {
@@ -56,10 +58,10 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int groupId = Base64Utils.Base64DecodeToInt(g);
 
-                var result = await _groupService.PostRevokeRole(userId, groupId, GroupRoles.Member, userId, cancellationToken);
+                var result = await _groupService.PostRevokeRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
 
                 return result switch
                 {

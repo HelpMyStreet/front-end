@@ -70,11 +70,11 @@ else
                         if (Model.AllowJoinOurGroup)
                         {
                             <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                            <a href="/account" class="btn cta small btn--sign-up show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
                         else
                         {
-                            <a href="/account" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
                     }
                 </div>
@@ -169,8 +169,8 @@ else
 
                 @if (Model.ShowRequestHelp)
                 {
-                    <div class="sm6 mb-md">
-                        <div class="card">
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
 
                             <h2>@Model.RequestHelpHeading</h2>
                             <p class="text-left mt-sm mb-md">
@@ -187,8 +187,8 @@ else
 
                 @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
                 {
-                    <div class="sm6">
-                        <div class="card">
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
                             <h2>@Model.ProvideHelpHeading</h2>
                             <p class="text-left mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
                                 @Model.ProvideHelpText_NotGroupMember
@@ -197,7 +197,7 @@ else
                                 @Model.ProvideHelpText_GroupMember
                             </p>
 
-                            <div class="card__buttons" style="text-align: center">
+                            <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
                                     <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
@@ -276,7 +276,7 @@ else
 
 
 
-    <div class="outer-container @(Model.ShowHelpExampleCards ? "outer-container--darker" : "")">
+    <div class="outer-container outer-container--darker">
         <div class="container">
             <div class="row">
                 <div class="sm12">
@@ -307,8 +307,8 @@ else
 
                 @if (Model.ShowRequestHelp)
                 {
-                    <div class="sm6 mb-md">
-                        <div class="card">
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
 
                             <h2>@Model.RequestHelpHeading</h2>
                             <p class="text-left mt-sm mb-md">
@@ -325,8 +325,8 @@ else
 
                 @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
                 {
-                    <div class="sm6">
-                        <div class="card">
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
                             <h2>@Model.ProvideHelpHeading</h2>
                             <p class="text-left mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
                                 @Model.ProvideHelpText_NotGroupMember
@@ -335,7 +335,7 @@ else
                                 @Model.ProvideHelpText_GroupMember
                             </p>
 
-                            <div class="card__buttons" style="text-align: center">
+                            <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
                                     <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
