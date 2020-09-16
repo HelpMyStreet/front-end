@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
-            var validUserId = DecodedAndCheckedUserId(u, token != null);
+            var validUserId = await DecodedAndCheckedUserId(u, token != null, cancellationToken);
             if (validUserId == null || token == null)
             {
                 return Unauthorized();
@@ -58,7 +58,7 @@ namespace HelpMyStreetFE.Controllers
 
             try
             {
-                var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId }, cancellationToken);
+                var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId.Value }, cancellationToken);
                 if (response.Status == ValidationStatus.Success || response.Status == ValidationStatus.Unauthorized)
                 {
                     if (response.Status == ValidationStatus.Success)
