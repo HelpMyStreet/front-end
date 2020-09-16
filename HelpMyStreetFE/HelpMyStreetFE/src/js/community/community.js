@@ -297,7 +297,7 @@ $(document).ready(function () {
             noFade: true,
             header: "Request Help",
             htmlContent: $("#RequestHelpPopup2Text").val(),
-            actionBtnText: "Request Help near me",
+            actionBtnText: "Request Help Near Me",
             acceptCallbackAsync: () => {
               window.location.href = $("#RequestHelpPopup2Destination").val();
               return true;

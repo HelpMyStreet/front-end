@@ -32,11 +32,11 @@ namespace HelpMyStreetFE.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Authenticate(string token, string u, bool mobile)
+        public async Task<IActionResult> Authenticate(string token, string u, bool mobile, CancellationToken cancellationToken)
         {
-            var validUserId = DecodedAndCheckedUserId(u, token != null);
+            var validUserId = await DecodedAndCheckedUserId(u, token != null, cancellationToken);
 
-            if (validUserId != null)
+            if (validUserId.HasValue)
             {                                      
                 return View();
             }
@@ -63,13 +63,14 @@ namespace HelpMyStreetFE.Controllers
                 {
                     if (response.Status == ValidationStatus.Success)
                     {
-                        await _userService.CreateUserStepFiveAsync(int.Parse(validUserId), true, cancellationToken);
+                        await _userService.CreateUserStepFiveAsync(validUserId.Value, true, cancellationToken);
                     }
 
-                    if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+                    var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                    if (user == null)
                     {
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
-                        await _authService.LoginWithUserId(int.Parse(validUserId), HttpContext);
+                        await _authService.LoginWithUserId(validUserId.Value, HttpContext, cancellationToken);
                     }
                 }
                 return handleValidationTokenResponse(response);
@@ -97,15 +98,15 @@ namespace HelpMyStreetFE.Controllers
         /// </summary>
         /// <param name="encodedQueryStringUserId"></param>
         /// <returns></returns>
-        private string DecodedAndCheckedUserId(string encodedQueryStringUserId, bool tokenSupplied)
+        private async Task<int?> DecodedAndCheckedUserId(string encodedQueryStringUserId, bool tokenSupplied, CancellationToken cancellationToken)
         {
             try
             {
-                var queryStringUserId = Base64Utils.Base64Decode(encodedQueryStringUserId);
+                var queryStringUserId = Base64Utils.Base64DecodeToInt(encodedQueryStringUserId);
 
-                var authenticatedUserIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-                if (tokenSupplied || authenticatedUserIdClaim != null && authenticatedUserIdClaim.Value == queryStringUserId)
+                if (tokenSupplied || user != null && user.ID == queryStringUserId)
                 {
                     return queryStringUserId;
                 }

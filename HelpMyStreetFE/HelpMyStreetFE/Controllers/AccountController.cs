@@ -36,6 +36,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
+        private readonly IAuthService _authService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account";
@@ -48,7 +49,8 @@ namespace HelpMyStreetFE.Controllers
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
-            IGroupService groupService
+            IGroupService groupService,
+            IAuthService authService
             )
         {
             _logger = logger;
@@ -58,6 +60,7 @@ namespace HelpMyStreetFE.Controllers
             _yotiOptions = yotiOptions;
             _requestService = requestService;
             _groupService = groupService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -74,7 +77,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -92,7 +95,7 @@ namespace HelpMyStreetFE.Controllers
 
         public async Task<IActionResult> Profile(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -109,7 +112,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Streets(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -161,7 +164,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
         {
 
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -176,7 +179,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -191,7 +194,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> CompletedRequests(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -206,7 +209,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -227,7 +230,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -250,7 +253,7 @@ namespace HelpMyStreetFE.Controllers
         [AuthorizeAttributeNoRedirect]
         public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return 0;
@@ -264,7 +267,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -288,14 +291,6 @@ namespace HelpMyStreetFE.Controllers
             //TODO: Pass this id to something that will stop that notification from being sent
             await Task.CompletedTask;
             return Ok();
-        }
-
-        private async Task<User> GetCurrentUser(CancellationToken cancellationToken)
-        {
-            var id = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var user = await _userService.GetUserAsync(id, cancellationToken);
-            HttpContext.Session.SetObjectAsJson("User", user);
-            return user;
         }
 
         private async Task<AccountViewModel> GetAccountViewModel(User user, CancellationToken cancellationToken)

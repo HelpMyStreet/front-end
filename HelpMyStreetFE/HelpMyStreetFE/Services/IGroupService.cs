@@ -16,7 +16,7 @@ namespace HelpMyStreetFE.Services
 
         Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
 
-        Task<RequestHelpFormVariant?> GetRequestHelpFormVariant(int groupId, string source = "");
+        Task<RequestHelpFormVariant> GetRequestHelpFormVariant(int groupId, string source = "");
 
         Task AddUserToDefaultGroups(int userId);
 

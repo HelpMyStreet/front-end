@@ -23,11 +23,13 @@ namespace HelpMyStreetFE.Controllers {
     {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
+        private readonly IAuthService _authService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _authService = authService;
         }
 
 
@@ -37,16 +39,16 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                int userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int jobId = Base64Utils.Base64DecodeToInt(j);
 
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
                 {
-                    targetUserId = u == "self" ? userId : Base64Utils.Base64DecodeToInt(u);
+                    targetUserId = u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u);
                 }
 
-                bool success = await _requestService.UpdateJobStatusAsync(jobId, s, userId, targetUserId, cancellationToken);
+                bool success = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
 
                 if (success)
                 {
@@ -66,11 +68,11 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("get-job-details")]
-        public async Task<IActionResult> GetJobDetails(string j, JobSet js)
+        public async Task<IActionResult> GetJobDetails(string j, JobSet js, CancellationToken cancellationToken)
         {
             int jobId = Base64Utils.Base64DecodeToInt(j);
 
-            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (user == null)
             {

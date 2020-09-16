@@ -13,6 +13,7 @@ using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,12 +31,14 @@ namespace HelpMyStreetFE.Controllers
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder)
+        private readonly IAuthService _authService;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder, IAuthService authService)
         {
             _logger = logger;
             _requestService = requestService;
             _groupService = groupService;
             _requestHelpBuilder = requestHelpBuilder;
+            _authService = authService;
         }
 
         [ValidateAntiForgeryToken]
@@ -81,9 +84,9 @@ namespace HelpMyStreetFE.Controllers
                         detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
                         detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
 
-                        if (HttpContext.Session.Keys.Contains("User"))
+                        var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                        if (loggedInUser != null)
                         {
-                            var loggedInUser = HttpContext.Session.GetObjectFromJson<User>("User");
                             switch (detailStage.Type)
                             {
                                 case RequestorType.Myself:
@@ -140,20 +143,16 @@ namespace HelpMyStreetFE.Controllers
                 {
                     var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
-                    int userId = 0;
-                    if (HttpContext.User != null && HttpContext.User.Identity.IsAuthenticated)
-                    {
-                        userId = int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                    }
+                    var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
                     // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
-                    if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && userId == 0)
+                    if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && user == null)
                     {
                         requestHelp.Errors.Add("To \"Submit & Accept\" a Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
                         throw new ValidationException("User tired to submit DIY Request without being logged in");
                     }
 
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, userId, cancellationToken);
+                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
                     if (response != null)
                     {
                         return RedirectToRoute("request-help/success", new
@@ -193,7 +192,7 @@ namespace HelpMyStreetFE.Controllers
                 referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             }
 
-            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source) ?? RequestHelpFormVariant.Default;
+            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
 
             if (requestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
             {

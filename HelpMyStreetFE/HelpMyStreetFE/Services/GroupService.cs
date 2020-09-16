@@ -47,11 +47,16 @@ namespace HelpMyStreetFE.Services
             return groupServiceResponse?.RegistrationFormVariant;
         }
 
-        public async Task<RequestHelpFormVariant?> GetRequestHelpFormVariant(int groupId, string source)
+        public async Task<RequestHelpFormVariant> GetRequestHelpFormVariant(int groupId, string source)
         {
             var groupServiceResponse = await _groupRepository.GetRequestHelpFormVariant(groupId, source);
 
-            return groupServiceResponse?.RequestHelpFormVariant;
+            if (groupServiceResponse == null)
+            {
+                throw new Exception($"Could not find RequestHelpFormVariant for group {groupId} and source {source}");
+            }
+
+            return groupServiceResponse.RequestHelpFormVariant;
         }
 
         public async Task AddUserToDefaultGroups(int userId)

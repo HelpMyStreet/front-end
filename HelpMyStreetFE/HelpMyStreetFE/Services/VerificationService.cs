@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Services
         {
             if (request is null) return ValidationResponse.ValidationFailed("Request object is null");
             if(string.IsNullOrEmpty(request.Token)) return ValidationResponse.ValidationFailed("Token is null or empty");
-            if (string.IsNullOrEmpty(request.UserId)) return ValidationResponse.ValidationFailed("UserId is null or empty");
+            if (request.UserId == 0) return ValidationResponse.ValidationFailed("UserId is zero");
 
             return null;
         }

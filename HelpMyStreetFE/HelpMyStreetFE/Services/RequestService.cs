@@ -119,6 +119,11 @@ namespace HelpMyStreetFE.Services
 
         public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs)
         {
+            if (jobs == null)
+            {
+                return null;
+            }
+
             var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
             return new OpenJobsViewModel
@@ -258,7 +263,7 @@ namespace HelpMyStreetFE.Services
         {
             if (user.PostalCode == null)
             {
-                return null;
+                throw new Exception("Cannot get open jobs for user without postcode");
             }
 
             var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities

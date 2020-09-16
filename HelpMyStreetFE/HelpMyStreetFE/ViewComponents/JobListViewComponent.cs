@@ -20,18 +20,20 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
+        private readonly IAuthService _authService;
 
-        public JobListViewComponent(IRequestService requestService, IGroupService groupService)
+        public JobListViewComponent(IRequestService requestService, IGroupService groupService, IAuthService authService)
         {
             _requestService = requestService;
             _groupService = groupService;
+            _authService = authService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
         {
             JobListViewModel jobListViewModel = new JobListViewModel();
 
-            User user = HttpContext.Session.GetObjectFromJson<User>("User");
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (user == null)
             {
@@ -50,8 +52,8 @@ namespace HelpMyStreetFE.ViewComponents
             IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
             {
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
-                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken)).CriteriaJobs,
-                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken)).OtherJobs,
+                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
+                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.OtherJobs,
                 JobSet.UserAcceptedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
                 JobSet.UserCompletedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled),
                 _ => throw new ArgumentException(message: $"Invalid JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
