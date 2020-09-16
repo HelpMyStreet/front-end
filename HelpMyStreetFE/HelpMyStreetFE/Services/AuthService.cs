@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
@@ -21,13 +22,13 @@ namespace HelpMyStreetFE.Services
     {
         private readonly FirebaseAuth _firebase;
         private readonly IConfiguration _configuration;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
         private readonly ILogger<AuthService> _logger;
 
-        public AuthService(IConfiguration configuration, IUserRepository userRepository, ILogger<AuthService> logger)
+        public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger)
         {
             _configuration = configuration;
-            _userRepository = userRepository;
+            _userService = userService;
             _logger = logger;
 
             var firebaseCredentials = _configuration["Firebase:Credentials"];
@@ -73,7 +74,7 @@ namespace HelpMyStreetFE.Services
 
             try
             {
-                user = await _userRepository.GetUserByAuthId(uid);
+                user = await _userService.GetUserByAuthId(uid);
             }
             catch (Exception ex)
             {
@@ -82,8 +83,6 @@ namespace HelpMyStreetFE.Services
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
-            httpContext.Session.SetObjectAsJson("User", user);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity), new AuthenticationProperties
                 {
@@ -92,13 +91,11 @@ namespace HelpMyStreetFE.Services
                 });
         }
 
-        public async Task LoginWithUserId(int userId, HttpContext httpContext)
+        public async Task LoginWithUserId(int userId, HttpContext httpContext, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUser(userId);            
+            var user = await _userService.GetUserAsync(userId, cancellationToken);
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Email, user.UserPersonalDetails.EmailAddress));
-            httpContext.Session.SetObjectAsJson("User", user);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(identity), new AuthenticationProperties
                 {
@@ -106,6 +103,20 @@ namespace HelpMyStreetFE.Services
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(20)
                 });
         }
+
+        public async Task<User> GetCurrentUser(HttpContext httpContext, CancellationToken cancellationToken)
+        {
+            if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
+            {
+                var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                return await _userService.GetUserAsync(id, cancellationToken);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
 
         public async Task Logout(HttpContext httpContext)
         {
