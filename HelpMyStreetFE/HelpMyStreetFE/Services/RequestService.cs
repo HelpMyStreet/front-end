@@ -135,13 +135,12 @@ namespace HelpMyStreetFE.Services
 
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
-            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
-            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
 
             return jobs?.OrderOpenJobsForDisplay();
         }
