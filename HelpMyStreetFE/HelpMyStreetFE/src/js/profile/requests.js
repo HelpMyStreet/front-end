@@ -122,7 +122,7 @@ export function showStatusUpdatePopup(btn) {
       $(job).find('.next-step').toggle();
       return true;
     }
-    return success;
+    return false;
   };
 
   showPopup(popupSettings);
