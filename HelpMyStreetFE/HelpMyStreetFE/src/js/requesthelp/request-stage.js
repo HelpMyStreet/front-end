@@ -96,12 +96,16 @@ var handleActivity = function (el) {
   let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
   trackEvent("Request form", "Select activity", selectedValue, 0);
 
+  let scrollTop = $(window).scrollTop();
+
   updateOptionsForActivity(taskId);
   loadQuestions(taskId, function () {
-    $('html, body').animate({
-      scrollTop:
-        $(el).parentsUntil("form").last().next().offset().top
-    }, 1000);
+    if (scrollTop == $(window).scrollTop()) {
+      $('html, body').animate({
+        scrollTop:
+          $(el).parentsUntil("form").last().next().offset().top
+      }, 1000);
+    }
   });
 }
 
