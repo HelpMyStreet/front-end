@@ -185,6 +185,7 @@ namespace HelpMyStreetFE.Controllers
             _logger.LogInformation("request-help");
 
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
+            source = ValidateSource(source);
 
             // Fix to allow existing routing
             if (referringGroup == "v4v")
@@ -214,6 +215,8 @@ namespace HelpMyStreetFE.Controllers
 
         public IActionResult Success(Fulfillable fulfillable, RequestHelpFormVariant requestHelpFormVariant, string referringGroup, string source)
         {
+            source = ValidateSource(source);
+
             string message;
             string button;
 
@@ -341,5 +344,16 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
+        private string ValidateSource(string source)
+        {
+            if (source.All(c => char.IsLetterOrDigit(c) || c == '-'))
+            {
+                return source;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
     }
 }
