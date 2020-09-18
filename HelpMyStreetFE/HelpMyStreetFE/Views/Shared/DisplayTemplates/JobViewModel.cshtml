@@ -140,7 +140,7 @@
                         </button>
                         break;
                     case JobStatuses.Done:
-                        if (Model.UserActingAsAdmin)
+                        if (Model.UserActingAsAdmin && !(Model.JobHeader.Archive ?? false))
                         {
                             <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
@@ -148,7 +148,7 @@
                         }
                         break;
                 }
-                @if (Model.UserActingAsAdmin && Model.JobHeader.JobStatus != JobStatuses.Cancelled)
+                @if (Model.UserActingAsAdmin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
                 {
                     <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>
