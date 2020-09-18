@@ -24,9 +24,6 @@
 
     var AgeUk = Model.JobHeader.SupportActivity == SupportActivities.WellbeingPackage;
     string iconClass = AgeUk ? "limit-width" : "";
-
-    var forFaceMask = Model.JobHeader.SupportActivity == SupportActivities.FaceMask;    
-    var friendlyName = Model.JobHeader.SupportActivity.FriendlyName();
 }
 
 <div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobHeader.JobStatus" data-referring-group-name="@Model.ReferringGroup">
@@ -90,7 +87,7 @@
                 <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" class="@iconClass" />
             }
 
-            @friendlyName
+            @Model.JobHeader.SupportActivity.FriendlyName()
 
             @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
             {
