@@ -49,7 +49,7 @@ namespace HelpMyStreetFE.ViewComponents
                 }
             }
 
-            IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<JobHeader> jobs = jobFilterRequest.JobSet switch
             {
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
@@ -73,7 +73,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.Jobs = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
             {
-                JobSummary = a,
+                JobHeader = a,                
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false,
                 ReferringGroup = a.ReferringGroupID.HasValue ? (await _groupService.GetGroupById(a.ReferringGroupID.Value, cancellationToken))?.GroupName : ""
