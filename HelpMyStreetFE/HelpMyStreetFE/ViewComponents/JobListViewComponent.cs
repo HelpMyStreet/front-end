@@ -59,6 +59,11 @@ namespace HelpMyStreetFE.ViewComponents
                 _ => throw new ArgumentException(message: $"Invalid JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
+            if (jobs == null)
+            {
+                throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
+            }
+
             jobListViewModel.UnfilteredJobs = jobs.Count();
 
             jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
