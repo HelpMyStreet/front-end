@@ -24,9 +24,6 @@
 
     var AgeUk = Model.JobHeader.SupportActivity == SupportActivities.WellbeingPackage;
     string iconClass = AgeUk ? "limit-width" : "";
-
-    var forFaceMask = Model.JobHeader.SupportActivity == SupportActivities.FaceMask;    
-    var friendlyName = Model.JobHeader.SupportActivity.FriendlyName();
 }
 
 <div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobHeader.JobStatus" data-referring-group-name="@Model.ReferringGroup">
@@ -90,7 +87,7 @@
                 <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" class="@iconClass" />
             }
 
-            @friendlyName
+            @Model.JobHeader.SupportActivity.FriendlyName()
 
             @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
             {
@@ -143,7 +140,7 @@
                         </button>
                         break;
                     case JobStatuses.Done:
-                        if (Model.UserActingAsAdmin)
+                        if (Model.UserActingAsAdmin && !(Model.JobHeader.Archive ?? false))
                         {
                             <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
@@ -151,7 +148,7 @@
                         }
                         break;
                 }
-                @if (Model.UserActingAsAdmin && Model.JobHeader.JobStatus != JobStatuses.Cancelled)
+                @if (Model.UserActingAsAdmin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
                 {
                     <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>

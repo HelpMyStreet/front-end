@@ -346,13 +346,13 @@ namespace HelpMyStreetFE.Controllers
 
         private string ValidateSource(string source)
         {
-            if (source.All(c => char.IsLetterOrDigit(c) || c == '-'))
+            if (source != null && source.All(c => char.IsLetterOrDigit(c) || c == '-'))
             {
                 return source;
             }
             else
             {
-                return string.Empty;
+                return null;
             }
         }
     }
