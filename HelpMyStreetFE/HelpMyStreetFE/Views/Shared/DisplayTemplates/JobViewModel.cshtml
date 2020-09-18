@@ -6,113 +6,113 @@
 @model HelpMyStreetFE.Models.Account.Jobs.JobViewModel
 
 @{
-    var id = Base64Utils.Base64Encode(Model.JobSummary.JobID);
+    var id = Base64Utils.Base64Encode(Model.JobHeader.JobID);
 
     var className = "";
-    if (Model.JobSummary.JobStatus == JobStatuses.Open || Model.JobSummary.JobStatus == JobStatuses.InProgress)
+    if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
     {
-        if (Model.JobSummary.DueDate.Date <= DateTime.Today)
+        if (Model.JobHeader.DueDate.Date <= DateTime.Today)
         {
             className = "job--hot";
         }
 
-        if (Model.JobSummary.DueDate.Date == DateTime.Today.AddDays(1))
+        if (Model.JobHeader.DueDate.Date == DateTime.Today.AddDays(1))
         {
             className = "job--warm";
         }
     }
 
-    var AgeUk = Model.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
+    var AgeUk = Model.JobHeader.SupportActivity == SupportActivities.WellbeingPackage;
     string iconClass = AgeUk ? "limit-width" : "";
 
-    var forFaceMask = Model.JobSummary.SupportActivity == SupportActivities.FaceMask;
-    var friendlyNamePrefix = forFaceMask ?
-    Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer : "";
-    bool removePluralisation = forFaceMask && Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
-    var friendlyName = friendlyNamePrefix + " " + (removePluralisation ? Model.JobSummary.SupportActivity.FriendlyName().Remove(Model.JobSummary.SupportActivity.FriendlyName().Length - 1) : Model.JobSummary.SupportActivity.FriendlyName());
-    var ageUKReference = Model.JobSummary?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
+    var forFaceMask = Model.JobHeader.SupportActivity == SupportActivities.FaceMask;
+    //var friendlyNamePrefix = forFaceMask ?
+    //Model.JobHeader?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer : "";
+    //bool removePluralisation = forFaceMask && Model.JobHeader?.Questions.Where(x => x.Id == (int)Questions.FaceMask_Amount).FirstOrDefault()?.Answer == "1";
+    var friendlyName = Model.JobHeader.SupportActivity.FriendlyName();
+    //var ageUKReference = Model.JobHeader?.Questions.Where(x => x.Id == (int)Questions.AgeUKReference).FirstOrDefault()?.Answer;
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobSummary.JobStatus" data-referring-group-name="@Model.ReferringGroup">
+<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobHeader.JobStatus" data-referring-group-name="@Model.ReferringGroup">
     <div class="job__info">
         <div class="job__info__urgency">
-            @if (Model.JobSummary.JobStatus == JobStatuses.Done)
+            @if (Model.JobHeader.JobStatus == JobStatuses.Done)
             {
                 <span class="job__info__urgency__dates">
                     <img src="~/img/icons/green-tick.svg" alt="Done" />
-                    <span class="due-date" title="@Model.JobSummary.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobSummary.DateStatusLastChanged.FriendlyFutureDate()</span>
+                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobHeader.DateStatusLastChanged.FriendlyFutureDate()</span>
                 </span>
             }
-            else if (Model.JobSummary.JobStatus == JobStatuses.Cancelled)
+            else if (Model.JobHeader.JobStatus == JobStatuses.Cancelled)
             {
                 <span class="job__info__urgency__dates">
                     <img src="~/img/icons/gray-tick.svg" alt="Cancelled" />
-                    <span class="due-date" title="@Model.JobSummary.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobSummary.DateStatusLastChanged.FriendlyFutureDate()</span>
+                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobHeader.DateStatusLastChanged.FriendlyFutureDate()</span>
                 </span>
             }
             else
             {
                 @if (Model.UserActingAsAdmin)
                 {
-                    <span class="job__info__urgency__dates job__status">@Model.JobSummary.JobStatus.FriendlyName()</span>
+                    <span class="job__info__urgency__dates job__status">@Model.JobHeader.JobStatus.FriendlyName()</span>
                     <span class="job__info__urgency__dates">
-                        <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
+                        <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                     </span>
                 }
                 else
                 {
                     <span class="job__info__urgency__dates">
                         <img src="~/img/icons/calendar.svg" />
-                        <span class="" title="@Model.JobSummary.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobSummary.DateRequested.FriendlyPastDate()</span>
+                        <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                     </span>
                 }
 
-                <span class="job__info__urgency__dates due-date" title="@Model.JobSummary.DueDate.ToString("dd/MM/yyyy")">
-                    Due @Model.JobSummary.DueDate.FriendlyFutureDate()
+                <span class="job__info__urgency__dates due-date" title="@Model.JobHeader.DueDate.ToString("dd/MM/yyyy")">
+                    Due @Model.JobHeader.DueDate.FriendlyFutureDate()
                 </span>
             }
             <span class="job__status job__status__new">
             </span>
-            @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
+            @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
             {
                 <span class="next-step dnone">
-                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobSummary.JobID)">Go to My Accepted Requests</a>
+                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobHeader.JobID)">Go to My Accepted Requests</a>
                 </span>
             }
         </div>
         <div class="job__info__activity column">
-            @if (Model.JobSummary.IsHealthCritical)
+            @if (Model.JobHeader.IsHealthCritical)
             {
                 <span class="">
                     <span class="critical-icon">!</span>
                     <span class="critical">Critical</span>
                 </span>
             }
-            <span class="activity__title @Model.JobSummary.SupportActivity.Class()">
-                @if (Model.JobSummary.SupportActivity != SupportActivities.Other)
-                {
-                    <img src="~/img/icons/@Model.JobSummary.SupportActivity.Icon()" class="@iconClass" />
-                }
+        <span class="activity__title @Model.JobHeader.SupportActivity.Class()">
+            @if (Model.JobHeader.SupportActivity != SupportActivities.Other)
+            {
+                <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" class="@iconClass" />
+            }
 
-                @friendlyName
+            @friendlyName
 
-                @if (!string.IsNullOrWhiteSpace(ageUKReference))
-                {
-                    @($"({ageUKReference})")
-                }
+            @*@if (!string.IsNullOrWhiteSpace(ageUKReference))
+            {
+                @($"({ageUKReference})")
+            }*@
 
-            </span>
+        </span>
             <span class="activity__detail">
-                @Model.JobSummary.PostCode
-                @if (!Model.UserActingAsAdmin && Model.JobSummary.JobStatus == JobStatuses.Open)
+                @Model.JobHeader.PostCode
+                @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
                 {
-                    <span>(@Math.Round(Model.JobSummary.DistanceInMiles, 1) miles away)</span>
+                    <span>(@Math.Round(Model.JobHeader.DistanceInMiles, 1) miles away)</span>
                 }
             </span>
         </div>
         <div class="column flex-end mt-sm">
             <div class="job__info__actions">
-                @switch (Model.JobSummary.JobStatus)
+                @switch (Model.JobHeader.JobStatus)
                 {
                     case JobStatuses.Open:
                         @if (!Model.UserActingAsAdmin)
@@ -149,19 +149,19 @@
                     case JobStatuses.Done:
                         if (Model.UserActingAsAdmin)
                         {
-                            <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.ToString())">
+                            <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
                         break;
                 }
-                @if (Model.UserActingAsAdmin && Model.JobSummary.JobStatus != JobStatuses.Cancelled)
+                @if (Model.UserActingAsAdmin && Model.JobHeader.JobStatus != JobStatuses.Cancelled)
                 {
                     <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>
                     </button>
                 }
-                <button class="btn cta--green-border large undo-request dnone" data-target-state="@Model.JobSummary.JobStatus" data-target-user="@(Model.JobSummary.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.JobSummary.VolunteerUserID.Value) : "")">
+                <button class="btn cta--green-border large undo-request dnone" data-target-state="@Model.JobHeader.JobStatus" data-target-user="@(Model.JobHeader.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.Value) : "")">
                     <span class="text">Undo</span>
                     <div class="loader dnone">
                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />

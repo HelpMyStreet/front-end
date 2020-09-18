@@ -55,13 +55,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
+        public async Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.JobSummaries;
+                return response.Content.JobHeaders;
             }
             return null;
         }

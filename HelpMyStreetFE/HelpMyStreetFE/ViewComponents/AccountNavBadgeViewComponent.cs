@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.ViewComponents
                 }
             }
 
-            IEnumerable<JobSummary> jobs = menuPage switch
+            IEnumerable<JobHeader> jobs = menuPage switch
             {
                 MenuPage.GroupRequests
                     => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress),
