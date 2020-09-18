@@ -13,7 +13,6 @@
     <EmbeddedResource Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
-    <Content Remove="appsettings.Development.json" />
   </ItemGroup>
 
   <ItemGroup>

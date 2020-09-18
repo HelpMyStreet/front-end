@@ -7,8 +7,8 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class OpenJobsViewModel
     {
-        public IEnumerable<JobSummary> CriteriaJobs { get; set; }
-        public IEnumerable<JobSummary> OtherJobs { get; set; }
+        public IEnumerable<JobHeader> CriteriaJobs { get; set; }
+        public IEnumerable<JobHeader> OtherJobs { get; set; }
 
         public bool HasNoJobs { get
             {

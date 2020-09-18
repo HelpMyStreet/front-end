@@ -49,7 +49,7 @@ namespace HelpMyStreetFE.ViewComponents
                 }
             }
 
-            IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<JobHeader> jobs = jobFilterRequest.JobSet switch
             {
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
@@ -58,6 +58,11 @@ namespace HelpMyStreetFE.ViewComponents
                 JobSet.UserCompletedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled),
                 _ => throw new ArgumentException(message: $"Invalid JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
+
+            if (jobs == null)
+            {
+                throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
+            }
 
             jobListViewModel.UnfilteredJobs = jobs.Count();
 
@@ -73,7 +78,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.Jobs = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
             {
-                JobSummary = a,
+                JobHeader = a,                
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false,
                 ReferringGroup = a.ReferringGroupID.HasValue ? (await _groupService.GetGroupById(a.ReferringGroupID.Value, cancellationToken))?.GroupName : ""
