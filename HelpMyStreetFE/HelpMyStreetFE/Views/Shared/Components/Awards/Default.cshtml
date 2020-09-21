@@ -2,26 +2,26 @@
 @using HelpMyStreetFE.Models.Awards;
 
 
-    @if (Model.Award != null)
+    @if (Model.CurrentAward.Award != null)
     {
         <div class="award">
             <div class="user-badge">
-                <img src="@Model.Award.ImageLocation" />
+                <img src="@Model.CurrentAward.Award.ImageLocation" />
 
                 <div>
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
-                    <h5>@Model.Award.AwardName</h5>
+                    <h5>@Model.CurrentAward.Award.AwardName</h5>
                     <span>
-                        <progress id="pg-bar" max="@Model.NextAwardLevel" value="@Model.CurrentAwardLevel"></progress>
-                        <label for="pg-bar">@(Model.NextAwardLevel-Model.CurrentAwardLevel) requests until next level</label>
+                        <progress id="pg-bar" max="@Model.CurrentAward.NextAwardLevel" value="@Model.CurrentAward.CurrentAwardLevel"></progress>
+                        <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel-Model.CurrentAward.CurrentAwardLevel) requests until next level</label>
                     </span>
                 </div>
             </div>
             <div>
-                <p class="mb0">@Html.Raw(Model.Award.AwardDescription)</p>
+                <p class="mb0">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
 
             </div>
         </div>
-        <script>var nextAwardLevel = @Model.NextAwardLevel</script>
+        <script>var nextAwardLevel = @Model.CurrentAward.NextAwardLevel</script>
     }
 

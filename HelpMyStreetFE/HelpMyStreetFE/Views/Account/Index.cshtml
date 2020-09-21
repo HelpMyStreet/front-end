@@ -1,5 +1,6 @@
 @model HelpMyStreetFE.Models.Account.AccountViewModel;
 @using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Awards
 
 @section Scripts {
     <script src="~/profile.js" asp-append-version="true"></script>
@@ -61,7 +62,8 @@
                         <partial name="_GroupVolunteers" for="@Model" />
                         break;
                     default:
-                        
+
+
                         <partial name="_Verification" for="VerificationViewModel" />
                         <partial name="_UserData" for="@Model.PageModel" />
                         break;

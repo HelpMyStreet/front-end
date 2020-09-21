@@ -66,49 +66,10 @@ namespace HelpMyStreetFE.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(int userID, System.Threading.CancellationToken cancellationToken)
         {
             var user = await _userService.GetUserAsync(userID, cancellationToken);
-            var jobs = await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken);
+            var currentAward = await _awardsRepository.GetAwardsByUserID(userID, cancellationToken);
             var viewModel = new AwardsViewModel();
-            var awards = await _awardsRepository.GetAwards();
-            var predicates = new List<Object>() { user };
 
-            jobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
-            var completedJobs = jobs.Count();
-
-            awards = awards.OrderBy(x => x.AwardValue).ToList();
-            var relevantAwards = awards.Where(x => completedJobs >= x.AwardValue && x.SpecificPredicate(predicates));
-
-            var listOfJobs = jobs.GroupBy(x => x.SupportActivity, x => x.JobID, (activity, jobID) => new { Activity = activity, Count = jobID.Count() });
-            listOfJobs = listOfJobs.OrderByDescending(x => x.Count);
-
-            var listArray = new List<string>();
-            foreach (var result in listOfJobs)
-            {
-                if (result.Activity != SupportActivities.CommunityConnector)
-                {
-                    if (result.Count == 1) {
-                        listArray.Add(result.Count + " " + friendlySupport[result.Activity]);
-                    }
-                    else {
-                        listArray.Add(result.Count + " " + friendlySupports[result.Activity]);
-                    }
-                }
-            }
-
-            var listString = listArray.Count() > 0 ? ", including " + String.Join(", ", listArray) : " ";
-
-            if (relevantAwards.Count() >= 1)
-            {
-                viewModel.Award = relevantAwards.LastOrDefault();
-                viewModel.Award.JobCount = completedJobs;
-                viewModel.Award.JobDetail = listString;
-                viewModel.NextAwardLevel = awards.Where(x => x.AwardValue > completedJobs).FirstOrDefault().AwardValue;
-            }
-            else
-            {
-                viewModel.NextAwardLevel = awards.FirstOrDefault().AwardValue;
-            }
-
-            viewModel.CurrentAwardLevel = completedJobs;
+            viewModel.CurrentAward = currentAward;
             viewModel.User = user;
             return View(viewModel);
         }
