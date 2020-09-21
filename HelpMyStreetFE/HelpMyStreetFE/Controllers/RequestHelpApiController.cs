@@ -48,15 +48,19 @@ namespace HelpMyStreetFE.Controllers {
                     targetUserId = u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u);
                 }
 
-                bool success = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
+                UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
 
-                if (success)
+                switch (outcome)
                 {
-                    return s.FriendlyName();
-                }
-                else
-                {
-                    return StatusCode(400);
+                    case UpdateJobStatusOutcome.AlreadyInThisStatus:
+                    case UpdateJobStatusOutcome.Success:
+                        return s.FriendlyName();
+                    case UpdateJobStatusOutcome.BadRequest:
+                        return StatusCode(400);
+                    case UpdateJobStatusOutcome.Unauthorized:
+                        return StatusCode(401);
+                    default:
+                        return StatusCode(500);
                 }
             }
             catch (Exception ex)

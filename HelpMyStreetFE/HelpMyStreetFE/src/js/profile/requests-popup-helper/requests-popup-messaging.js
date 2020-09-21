@@ -11,7 +11,7 @@
 		     <p>The requester will be notified that their request has been accepted, but won’t be given your contact details.</p>`
       + (referringGroup !== "Generic" ? (`<p>This request was made via a group: <b>` + referringGroup + `</b>. If you accept this request, we’ll need to share your details with the administrator(s) of that group. By clicking “Continue” below, you are acknowledging your acceptance of this.</p>`) : ``)
       + `<p>Thank you for helping people in your community to stay safe.</p>`;
-      settings.messageOnFalse = "We couldn’t accept this request at the moment, please try again later";
+      settings.messageOnFalse = "Oops, we couldn’t accept this request at the moment.";
 
     } else if (currentState === "Done") {
 
@@ -21,7 +21,7 @@
 		     <p>We can set its status back to “In Progress” for you.</p>
 		     <p>It will return to the “My Accepted Requests” page of the last volunteer with who it was In Progress.</p>
 		     <p>If you need to set it right back to “Open”, you can do that from this page by exiting and returning to it, finding the request again (which will now be marked as “In Progress”) and using the “Mark as Open” button.`;
-      settings.messageOnFalse = "We couldn’t update this request at the moment, please try again later";
+      settings.messageOnFalse = "Oops, we couldn’t update this request at the moment.";
 
     }
   } else if (targetState === "Done") {
@@ -35,10 +35,10 @@
       } else {
         settings.htmlContent =
           `<p>Thank you so much for helping people in your community stay safe!</p>
-		       <p>We’ll remove this request from your "My Accepted Requests” page.</p>
+		       <p>We’ll remove this request from your “My Accepted Requests” page.</p>
            <p>The requester will be notified that the request has been marked as Complete.</p>`;
       }
-      settings.messageOnFalse = "We couldn’t complete this request at the moment, please try again later";
+      settings.messageOnFalse = "Oops, we couldn’t complete this request at the moment.";
 
     }
   } else if (targetState === "Open") {
@@ -59,7 +59,7 @@
            <p>If there’s a problem with the request (e.g. incorrect contact details) please let us know:
            <a href="mailto:requests@helpmystreet.org">requests@helpmystreet.org</a></p>`;
       }
-      settings.messageOnFalse = "We couldn’t release this request at the moment, please try again later";
+      settings.messageOnFalse = "Oops, we couldn’t release this request at the moment.";
 
     }
   } else if (targetState === "Cancelled") {
@@ -85,7 +85,7 @@
          <p>We can mark is as Cancelled for your records.</p>`;
 
     }
-    settings.messageOnFalse = "We couldn’t cancel this request at the moment, please try again later";
+    settings.messageOnFalse = "Oops, we couldn’t cancel this request at the moment.";
   }
   return settings;
 }
