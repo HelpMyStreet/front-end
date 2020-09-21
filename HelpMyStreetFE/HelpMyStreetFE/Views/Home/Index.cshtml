@@ -7,7 +7,7 @@
 @section Scripts {
     <script src="~/coverageMap.js" asp-append-version="true"></script>
     <script src="~/stickynav.js" asp-append-version="true"></script>
-    <script src="~/helpertabs.js" asp-append-version="true"></script>
+    
 }
 
 @if (Model.TestBanner)
@@ -142,27 +142,10 @@ else
 
         </div>
 
-        <div class="how-to-use row mt752 justify-center">
+        <div class="how-to-use row mt72 justify-center card">
             <partial name="_HowToUse" model="null" />
         </div>
 
-
-            <div class="row justify-center text-center mb-lg">
-                <div>
-                    @if (!Model.isLoggedIn)
-                    {
-        <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a> }
-                        else
-                        {
-        <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>                }
-                </div>
-            </div>
-
-            <div class="row justify-center text-center mt-lg">
-                <div class="sm4">
-                    <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
-                </div>
-            </div>
             <div class="row justify-center text-center mt72">
                 <div class="sm12">
                     <h2>We’re working with communities&hellip;</h2>

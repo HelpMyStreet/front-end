@@ -1,16 +1,34 @@
 ﻿.tab {
-    @media screen and (min-width: $med-screen){
-        display:none;
+    @media screen and (min-width: $med-screen) {
+        display: none;
+    }
+
+
+}
+
+.tabcontent {
+    @media screen and (max-width: $sm-screen) {
+        text-align: center;
+    }
+
+    .tab-content-title {
+        @media screen and (max-width: $sm-screen) {
+            font-size: 1rem;
+            display: none;
+        }
+    }
+
+    h2 {
+        font-size: 1.5rem;
     }
 }
 
 .tab button {
     background-color: inherit;
-    float: left;
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
+    padding: 8px 8px;
     transition: 0.3s;
 }
 
@@ -23,8 +41,12 @@
     background-color: #ccc;
 }
 
-.tabs .inactive{
-    @media screen and (max-width: $sm-screen){
-        display: none;
+.tabs {
+    .inactive {
+        @media screen and (max-width: $sm-screen) {
+            display: none;
+        }
+
+
     }
 }

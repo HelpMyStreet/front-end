@@ -3,25 +3,34 @@
 $(function () {
     console.log("loaded");
 
-$(".tablinks").click(function (){
-    console.log("click fired");
-    var tablinks = document.getElementsByClassName("tablinks");
-    var tabcontent = document.getElementsByClassName("tabcontent");
-
-    tablinks.forEach(tab => {
-        tab.className.replace(" active", "");
+    $("#sign-up-helper").click(function (){
+        switcheroo('sign-up-helper');
     })
 
-    $(this).addClass("active");
 
-    tabcontent.forEach(tab => {
-        if (tabcontent.id == $(this).id + "-content") {
-            tab.className.replace("inactive", "active");
-
-        }
-        else {
-            tab.className.replace("active", "inactive");
-        }
+    $("#request-help-helper").click(function () {
+        switcheroo('request-help-helper');
     })
-})
+
+    function switcheroo(elementID) {
+        var tablinks = document.getElementsByClassName("tablinks");
+        var tabcontent = document.getElementsByClassName("tabcontent");
+
+        tablinks.forEach(tab => {
+            $("#" + tab.id).removeClass("active");
+        })
+
+        $("#"+elementID).addClass("active");
+
+        tabcontent.forEach(tab => {
+            if (tab.id == elementID + "-content") {
+                $("#" + tab.id).removeClass("inactive");
+                $("#" + tab.id).addClass("active");
+            }
+            else {
+                $("#" + tab.id).removeClass("active");
+                $("#" + tab.id).addClass("inactive");
+            }
+        })
+    }
 })
