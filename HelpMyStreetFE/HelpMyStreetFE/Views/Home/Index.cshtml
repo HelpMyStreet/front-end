@@ -7,6 +7,7 @@
 @section Scripts {
     <script src="~/coverageMap.js" asp-append-version="true"></script>
     <script src="~/stickynav.js" asp-append-version="true"></script>
+    <script src="~/helpertabs.js" asp-append-version="true"></script>
 }
 
 @if (Model.TestBanner)
@@ -141,87 +142,57 @@ else
 
         </div>
 
-        <div class="row mt72 justify-center">
-            <div class="sm8 text-center justify-center">
-                <h2>Help people shelter safely at home…</h2>
-                <p>
-                    HelpMyStreet.org supports community organisers and  makes volunteering in your local community simple, safe and effective for everyone. Sign up today to help people in your street shelter safely at home:
-                </p>
-            </div>
-        </div>
-        <div class="row mb15 justify-center step">
-            <div class="sm1"><span class="fab circle">1</span></div>
-            <div class="sm7">
-                <h4>
-                    Sign up as a Street Champion
-                </h4>
-                <p>
-                    Street Champions look after a street and lead the helping activities in that street. They are in touch with the people who are sheltering safely at home and work with local Helpers to complete their requests for help.
-                </p>
-            </div>
-        </div>
-        <div class="row justify-center step">
-            <div class="sm1"><span class="fab circle">2</span></div>
-            <div class="sm7">
-                <h4>
-                    Sign up as a Volunteer
-                </h4>
-                <p>
-                    Helpers provide direct help such as collecting prescription medicines, running local errands and shopping for essentials. They work with Street Champions to ensure the right help is getting to the right people in need.
-                </p>
-            </div>
+        <div class="how-to-use row mt752 justify-center">
+            <partial name="_HowToUse" model="null" />
         </div>
 
-        <div class="row justify-center text-center mb-lg">
-            <div>
-                @if (!Model.isLoggedIn)
-                {
-                    <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
-                }
-                else
-                {
-                    <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
-                }
-            </div>
-        </div>
 
-        <div class="row justify-center text-center mt-lg">
-            <div class="sm4">
-                <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
-            </div>
-        </div>
-        <div class="row justify-center text-center mt72">
-            <div class="sm12">
-                <h2>We’re working with communities&hellip;</h2>
-            </div>
-            <div class="sm8">
-                <p>
-                    Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
-                </p>
-            </div>
-            <div class="sm8 list mb-lg">
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
-                <span>
-                    <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
-                </span>
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
-            </div>
-        </div>
-        <div class="row justify-center text-center">
-            @if (Model.isLoggedIn)
-            {
+            <div class="row justify-center text-center mb-lg">
                 <div>
-                    <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
+                    @if (!Model.isLoggedIn)
+                    {
+        <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a> }
+                        else
+                        {
+        <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>                }
                 </div>
-            }
-            else
-            {
-                <div>
-                    <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+            </div>
+
+            <div class="row justify-center text-center mt-lg">
+                <div class="sm4">
+                    <a href="/request-help" class="btn cta large fill mt16 btn--request-help cta--orange">Request Help</a>
                 </div>
-            }
+            </div>
+            <div class="row justify-center text-center mt72">
+                <div class="sm12">
+                    <h2>We’re working with communities&hellip;</h2>
+                </div>
+                <div class="sm8">
+                    <p>
+                        Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
+                    </p>
+                </div>
+                <div class="sm8 list mb-lg">
+                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
+                    <span>
+                        <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
+                    </span>
+                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
+                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
+                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
+                </div>
+            </div>
+            <div class="row justify-center text-center">
+                @if (Model.isLoggedIn)
+                {
+        <div>
+            <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
+        </div> }
+                        else
+                        {
+        <div>
+            <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
+        </div>}
+            </div>
         </div>
-    </div>
 }

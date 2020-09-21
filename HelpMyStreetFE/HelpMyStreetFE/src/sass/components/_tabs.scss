@@ -1,0 +1,30 @@
+﻿.tab {
+    @media screen and (min-width: $med-screen){
+        display:none;
+    }
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+.tabs .inactive{
+    @media screen and (max-width: $sm-screen){
+        display: none;
+    }
+}
