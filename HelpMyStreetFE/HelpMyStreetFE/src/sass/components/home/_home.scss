@@ -5,14 +5,15 @@
 @import "./stats.scss";
 
 
-.btn--sign-up {
-    white-space: nowrap;
-    display: block;
-    text-align: center;
+.btn--sign-up,
+.btn--request-help {
+  white-space: nowrap;
+  display: block;
+  text-align: center;
 
-    @media screen and (min-width: $sm-screen) {
-        display: inline-block;
-    }
+  @media screen and (min-width: $sm-screen) {
+    display: inline-block;
+  }
 }
 
 .requesthelp_link {
