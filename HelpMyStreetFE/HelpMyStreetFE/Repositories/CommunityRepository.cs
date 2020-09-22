@@ -274,9 +274,10 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
             communityViewModel.CommunityVolunteersTextHtml =
-                 @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP). We’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
+                 @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
                     <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page, or if you’d prefer you can give the parish council a ring on 0115 914 6660. Our volunteers are local people supporting our wonderful village.</p>
                     <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
+                    <p>* RVCP is a collaboration of local business owners, Ruddington parish councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
                     ";
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
@@ -300,9 +301,9 @@ namespace HelpMyStreetFE.Repositories
                 new CommunityVolunteer()
                 {
                     Name = "Ruddington Village Centre Partnership",
-                    Role = "Proudly supported by local business",
+                    Role = "Proudly supported by RVCP*",
                     Location = "",
-                    ImageLocation = "/img/community/ruddington/RCVP.png"
+                    ImageLocation = "/img/community/ruddington/RVCP.png"
                 },
             };
 
