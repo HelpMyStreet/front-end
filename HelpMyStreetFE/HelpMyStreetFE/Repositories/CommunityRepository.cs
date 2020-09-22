@@ -249,7 +249,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ZoomLevel = 14.6;
 
             communityViewModel.ShowHelpExampleCards = false;
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
 
             communityViewModel.CommunityName = "Ruddington";
 

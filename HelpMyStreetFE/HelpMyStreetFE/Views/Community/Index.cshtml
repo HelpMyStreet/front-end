@@ -52,7 +52,7 @@ else
                             {
                                 <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
@@ -63,18 +63,18 @@ else
                     }
                     @if (!Model.IsLoggedIn)
                     {
-                        <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                        <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                     }
                     else
                     {
                         if (Model.AllowJoinOurGroup)
                         {
                             <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
                         else
                         {
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
                     }
                 </div>
@@ -86,7 +86,7 @@ else
                             {
                                 <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
@@ -178,7 +178,7 @@ else
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -200,7 +200,7 @@ else
                             <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
@@ -316,7 +316,7 @@ else
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -338,7 +338,7 @@ else
                             <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
