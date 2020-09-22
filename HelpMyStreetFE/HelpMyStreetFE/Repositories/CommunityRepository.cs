@@ -252,6 +252,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityName = "Ruddington";
 
+            communityViewModel.BannerImageLocation = "/img/community/ruddington/banner.jpg";
+
             communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
 
             communityViewModel.HeaderHTML = @"
