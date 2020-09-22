@@ -6,7 +6,7 @@ import { showPopup, hidePopup } from "../shared/popup";
 $(document).ready(function () {
     initialiseSliders();
 
-    $('#community-volunteers-text').readmore({
+    $('.read-more-text').readmore({
         moreLink: '<a href="#">Read more</a>',
         lessLink: '<a href="#">Read less</a>',
         collapsedHeight: 200

@@ -239,6 +239,7 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
@@ -251,6 +252,8 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
 
             communityViewModel.CommunityName = "Ruddington";
+
+            communityViewModel.BannerImageLocation = "/img/community/ruddington/banner.jpg";
 
             communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
 
@@ -273,10 +276,13 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HeaderHelpButtonText = "";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
+            communityViewModel.CommunityVolunteersTextReadMore = false;
             communityViewModel.CommunityVolunteersTextHtml =
-                 @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP). We’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
-                    <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page, or if you’d prefer you can give the parish council a ring on 0115 914 6660. Our volunteers are local people supporting our wonderful village.</p>
+                 @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
+                    <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the parish council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
                     <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
+                    <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers.</p> 
+                    <p>* RVCP is a collaboration of local business owners, Ruddington parish councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
                     ";
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
@@ -300,9 +306,30 @@ namespace HelpMyStreetFE.Repositories
                 new CommunityVolunteer()
                 {
                     Name = "Ruddington Village Centre Partnership",
-                    Role = "Proudly supported by local business",
+                    Role = "Proudly supported by RVCP*",
                     Location = "",
-                    ImageLocation = "/img/community/ruddington/RCVP.png"
+                    ImageLocation = "/img/community/ruddington/RVCP.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Han, Mark & Stella",
+                    Role = "Market Volunteers",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/HanMarkStella.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Leia",
+                    Role = "Market Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/Leia.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Alex",
+                    Role = "Community volunteer",
+                    Location = "(photograph supplied by Pam Pearce)",
+                    ImageLocation = "/img/community/ruddington/Alex.png"
                 },
             };
 
