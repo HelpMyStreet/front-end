@@ -132,7 +132,7 @@ else
         </div>
 
         <div class="mt-lg">
-            @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other })
+            @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
         </div>
 
         <div class="row mt-lg justify-center">
