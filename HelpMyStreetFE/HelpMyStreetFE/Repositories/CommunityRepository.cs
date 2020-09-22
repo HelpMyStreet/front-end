@@ -305,6 +305,27 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     ImageLocation = "/img/community/ruddington/RVCP.png"
                 },
+                new CommunityVolunteer()
+                {
+                    Name = "Han, Mark & Stella",
+                    Role = "Market Volunteers",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/HanMarkStella.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Leia",
+                    Role = "Market Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/icons/anonymous-user.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Alex",
+                    Role = "Community volunteer",
+                    Location = "(photograph supplied by Pam Pearce)",
+                    ImageLocation = "/img/community/ruddington/Alex.png"
+                },
             };
 
 
