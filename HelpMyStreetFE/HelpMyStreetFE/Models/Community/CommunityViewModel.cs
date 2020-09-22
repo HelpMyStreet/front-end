@@ -82,7 +82,7 @@ namespace HelpMyStreetFE.Models.Community
                     </div>
                     <p class='row sm12 mt-sm mb-sm'>It's OK to ask for a little help</p>
                     <div class='row sm12 text-center justify-center small-screen-only mb-sm'>
-                        <a href='/request-help' class='btn cta small btn--request-help cta--orange'>Request Help</a>
+                        <a href='/request-help' class='btn cta small btn--request-help fill cta--orange'>Request Help</a>
                     </div>
                     <p class='row sm12 mt-sm mb-sm'>Help your neighbours in need</p>";
         }

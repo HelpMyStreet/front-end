@@ -5,36 +5,12 @@
 @import "./stats.scss";
 
 
-.btn--sign-up,
-.btn--request-help {
-  white-space: nowrap;
-  display: block;
-  text-align: center;
-
-  @media screen and (min-width: $sm-screen) {
-    display: inline-block;
-  }
-}
-
-.requesthelp_link {
-    text-align: center;
-    display: inline-block;
-    white-space: nowrap;
-    padding: 1rem;
-}
-
-
-
 
 .home-link {
     font-size: 1.333rem;
     text-decoration: none;
 }
 
-.img-border{
-    border:10px solid $orange;
-    padding:5px;
-}
 
 .face-coverings-panel {
     .ftlos-partnership {
