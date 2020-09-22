@@ -239,6 +239,7 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);

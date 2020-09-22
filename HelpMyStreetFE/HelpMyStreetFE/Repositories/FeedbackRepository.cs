@@ -134,6 +134,38 @@ namespace HelpMyStreetFE.Repositories
                     GroupKey = "ageuklsl",
                     B2BFeedback = true,
                  },
+                new FeedbackMessage()
+                {
+                    Tagline = "A wonderful village",
+                    Message = "Thank you from the bottom of my heart to you and the team for helping my parents through this difficult time. It's so appreciated. What you guys did and will continue to do was/is amazing. Ruddington is a wonderful village ❤",
+                    Person = "Leigh requested help for her parents is Ruddington",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ruddington",
+                 },
+                new FeedbackMessage()
+                {
+                    Tagline = "A caring bunch",
+                    Message = "I am proud and pleased to help with the Covid-19 group in my village. There was an obvious need for our services and we came together as a community in a brilliant way. Lots of people volunteered to assist without hesitation which just shows what a caring bunch we are.",
+                    Person = "Pam from Ruddington provided help",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ruddington",
+                 },
+                new FeedbackMessage()
+                {
+                    Tagline = "Really keen to get involved",
+                    Message = "When I heard that Ruddington was in need of volunteers to assist with the Covid response I was really keen to get involved. I have children at both local schools and it was great to be able to deliver schoolwork out to their classmates who were stuck at home. Although they knew what it meant when they saw me walking towards the door, most of the kids were excited to be getting a delivery from school and to see what fresh challenges had been set by their teachers.",
+                    Person = "Harvey from Ruddington provided help",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ruddington",
+                 },
+                new FeedbackMessage()
+                {
+                    Tagline = "A poem of thanks!",
+                    Message = "Thank you to our local Pub, Thank you for all for our delicious grub, Thank you to everyone involved in the Ruddington Covid 19 Mutual Aid Group, Thank you also for keeping us all in the Loop, For arranging this, Fabulous dish xx",
+                    Person = "Pat and George wanted to say thanks",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ruddington",
+                 },
             };
 
             return messageList;
