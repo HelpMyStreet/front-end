@@ -318,7 +318,7 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Leia",
                     Role = "Market Volunteer",
                     Location = "",
-                    ImageLocation = "/img/icons/anonymous-user.png"
+                    ImageLocation = "/img/community/ruddington/Leia.jpg"
                 },
                 new CommunityVolunteer()
                 {
