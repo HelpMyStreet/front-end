@@ -276,6 +276,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HeaderHelpButtonText = "";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
+            communityViewModel.CommunityVolunteersTextReadMore = false;
             communityViewModel.CommunityVolunteersTextHtml =
                  @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
                     <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the parish council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>

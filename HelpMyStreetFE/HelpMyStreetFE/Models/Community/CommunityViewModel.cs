@@ -27,6 +27,7 @@ namespace HelpMyStreetFE.Models.Community
         public string HeaderHTML { get; set; } = GetDefaultHeaderHtml();
         public string CommunityVolunteersHeader { get; set; }
         public string CommunityVolunteersTextHtml { get; set; }
+        public bool CommunityVolunteersTextReadMore { get; set; } = true;
 
         public bool ShowRequestHelp { get; set; } = true;
         public bool ShowHelpExampleCards {get;set;} = true;
