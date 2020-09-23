@@ -223,7 +223,7 @@ namespace HelpMyStreetFE.Controllers
             if (fulfillable == Fulfillable.Accepted_DiyRequest)
             {
                 message = @"<p>Your request will now be available in the 'My Accepted Requests' area of your profile.</p>";
-                button = "<a href='/account/accepted-requests' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+                button = "<a href='/account/accepted-requests' class='btn cta large fill mt16 cta--orange'>Done</a>";
             }
             else
             {
@@ -238,13 +238,13 @@ namespace HelpMyStreetFE.Controllers
 
                 if (User.Identity.IsAuthenticated)
                 {
-                    button = $"<a href='/account' class='btn cta large fill mt16 btn--request-help cta--orange'>Done</a>";
+                    button = $"<a href='/account' class='btn cta large fill mt16 cta--orange'>Done</a>";
                 }
                 else
                 {    
                     message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
                     message += "<p>Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
-                    button = $"<a href='/registration/step-one/{referringGroup}/help-request-success' class='btn cta large fill mt16 btn--sign-up '>Sign up</a>";
+                    button = $"<a href='/registration/step-one/{referringGroup}/help-request-success' class='btn cta large fill mt16 '>Sign up</a>";
                 }
 
             }

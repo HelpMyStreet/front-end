@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Services
         Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken);
         Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken);
-        Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
+        Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source);
         IEnumerable<JobHeader> FilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jobFilterRequest);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs);

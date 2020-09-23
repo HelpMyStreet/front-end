@@ -311,6 +311,11 @@ namespace HelpMyStreetFE
                     pattern: "tankersley",
                     defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
 
+                endpoints.MapControllerRoute(
+                    name: "Ruddington",
+                    pattern: "ruddington",
+                    defaults: new { controller = "Community", action = "Index", communityName = "ruddington" });
+
 
                 endpoints.MapControllerRoute(
                     name: "healthylondonpartnership",

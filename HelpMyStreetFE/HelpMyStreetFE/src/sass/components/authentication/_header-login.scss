@@ -118,16 +118,6 @@ $breakpointSm: 900px;
     }
   }
 
-  .btn--sign-up {
-    white-space: nowrap;
-    display: inline-block;
-  }
-
-  .btn--request-help {
-    white-space: nowrap;
-    display: inline-block;
-  }
-
   @media screen and (min-width: $breakpointSm) {
     display: flex;
     flex-wrap: wrap;

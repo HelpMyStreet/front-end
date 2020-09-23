@@ -24,7 +24,7 @@ namespace HelpMyStreetFE.ViewComponents
             _feedbackRepository = feedbackRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow, string groupKey)
+        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow, string groupKey, bool? b2bFeedback)
         {
             var viewModel = new FeedbackViewModel();
             var messages = await _feedbackRepository.GetFeedback();
@@ -45,12 +45,17 @@ namespace HelpMyStreetFE.ViewComponents
                 }
             }
 
+            if (b2bFeedback != null)
+            {
+                messages = messages.Where(m => m.B2BFeedback == b2bFeedback).ToList();
+            }
+
             if (numberToShow != null)
             {
                 messages = messages.OrderBy(x => Guid.NewGuid()).Take(numberToShow.Value).ToList();
             }
 
-            viewModel.FeedbackMessages = messages;
+            viewModel.FeedbackMessages = messages.OrderBy(x => Guid.NewGuid()).ToList();
             return View(viewModel);
         }
     }

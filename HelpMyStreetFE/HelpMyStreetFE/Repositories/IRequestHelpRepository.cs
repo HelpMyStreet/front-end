@@ -3,6 +3,7 @@ using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -12,10 +13,10 @@ namespace HelpMyStreetFE.Repositories
         Task<JobSummary> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
         Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
-        Task<bool> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId);
-        Task<bool> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId);
-        Task<bool> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId);
-        Task<bool> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId);
+        Task<UpdateJobStatusOutcome?> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId);
+        Task<UpdateJobStatusOutcome?> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId);
+        Task<UpdateJobStatusOutcome?> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId);
+        Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId);
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
     }
 }

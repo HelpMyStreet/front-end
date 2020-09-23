@@ -27,6 +27,7 @@ namespace HelpMyStreetFE.Models.Community
         public string HeaderHTML { get; set; } = GetDefaultHeaderHtml();
         public string CommunityVolunteersHeader { get; set; }
         public string CommunityVolunteersTextHtml { get; set; }
+        public bool CommunityVolunteersTextReadMore { get; set; } = true;
 
         public bool ShowRequestHelp { get; set; } = true;
         public bool ShowHelpExampleCards {get;set;} = true;
@@ -81,7 +82,7 @@ namespace HelpMyStreetFE.Models.Community
                     </div>
                     <p class='row sm12 mt-sm mb-sm'>It's OK to ask for a little help</p>
                     <div class='row sm12 text-center justify-center small-screen-only mb-sm'>
-                        <a href='/request-help' class='btn cta small btn--request-help cta--orange'>Request Help</a>
+                        <a href='/request-help' class='btn cta small btn--request-help fill cta--orange'>Request Help</a>
                     </div>
                     <p class='row sm12 mt-sm mb-sm'>Help your neighbours in need</p>";
         }

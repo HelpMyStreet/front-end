@@ -9,7 +9,7 @@
     <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
     <script>
         $(document).ready(function () {            
-            $('#read-more-text').readmore({
+            $('.read-more-text').readmore({
         moreLink: '<a href="#">Read more</a>',
         lessLink: '<a href="#">Read less</a>',
         collapsedHeight: 200
@@ -48,7 +48,7 @@
                             </ul>
 
                             <div class="mt-md text-center">
-                                <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request Face Coverings</a>
+                                <a href="@Model.RequestHelpURL" class="btn cta fill cta--orange">Request Face Coverings</a>
                             </div>
                         </div>
                     </div>
@@ -70,11 +70,11 @@
                                 <div class="mt-sm text-center">
                                     @if (isLoggedIn)
                                     {
-                                        <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
+                                        <a id="first-button" href="/account" class="btn cta fixed-width fill">My Account</a>
                                     }
                                     else
                                     {
-                                        <a href="@Model.GenericSignUpURL" class="btn cta fixed-width btn--sign-up">Join Us Now</a>
+                                        <a href="@Model.GenericSignUpURL" class="btn cta fill">Join Us Now</a>
                                     }
                                 </div>
                             </div>
@@ -93,7 +93,7 @@
                                 </p>
 
                                 <div class="mt-sm text-center">
-                                    <a href="/for-the-love-of-scrubs" class="btn cta fixed-width btn--sign-up">Find Out More</a>
+                                    <a href="/for-the-love-of-scrubs" class="btn cta fill">Find Out More</a>
                                 </div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
 
             <div class="row">
                 <div class="sm12">
-                    <div class="community-volunteers-text" id="read-more-text">
+                    <div class="read-more-text">
                         <p>
                             Wearing a face covering can help protect everyone and reduce the spread of coronavirus, so face coverings are compulsory in some public spaces such as shops and public transport. We’re all urged to use home-made fabric face coverings so we can save medical masks for the medics!
                         </p>
@@ -159,7 +159,7 @@
                         </p>
 
                         <div class="">
-                            <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request Face Coverings</a>
+                            <a href="@Model.RequestHelpURL" class="btn cta fill cta--orange">Request Face Coverings</a>
                         </div>
 
                     </div>
@@ -175,11 +175,11 @@
                         <div class="">
                             @if (isLoggedIn)
                             {
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
+                                <a id="first-button" href="/account" class="btn cta fill">My Account</a>
                             }
                             else
                             {
-                                <a href="@Model.GenericSignUpURL" class="btn cta fixed-width btn--sign-up">Join Us Now</a>
+                                <a href="@Model.GenericSignUpURL" class="btn cta fill">Join Us Now</a>
                             }
                         </div>
                     </div>
@@ -263,7 +263,7 @@
                         </p>
 
                         <div class="">
-                            <a href="@Model.RequestHelpURL" class="btn cta btn--request-help cta--orange">Request Face Coverings</a>
+                            <a href="@Model.RequestHelpURL" class="btn cta fill cta--orange">Request Face Coverings</a>
                         </div>
 
                     </div>
@@ -279,11 +279,11 @@
                         <div class="">
                             @if (isLoggedIn)
                             {
-                                <a id="first-button" href="/account" class="btn cta fixed-width btn--sign-up">My Account</a>
+                                <a id="first-button" href="/account" class="btn cta fill">My Account</a>
                             }
                             else
                             {
-                                <a href="@Model.GenericSignUpURL" class="btn cta fixed-width btn--sign-up">Join Us Now</a>
+                                <a href="@Model.GenericSignUpURL" class="btn cta fill">Join Us Now</a>
                             }
                         </div>
                     </div>

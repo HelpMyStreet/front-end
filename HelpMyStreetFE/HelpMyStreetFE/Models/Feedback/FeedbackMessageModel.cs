@@ -15,5 +15,6 @@ namespace HelpMyStreetFE.Models.Feedback
         public string Person { get; set; }
         public FeedbackMessageType Type { get; set; }
         public string GroupKey { get; set; }
+        public bool B2BFeedback { get; set; }
     }
 }
