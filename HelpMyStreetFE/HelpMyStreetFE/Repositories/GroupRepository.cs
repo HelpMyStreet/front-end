@@ -8,6 +8,9 @@ using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Contracts.GroupService.Request;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.Reponses;
+using System;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -155,6 +158,44 @@ namespace HelpMyStreetFE.Repositories
                 return deserializedResponse.Content;
             }
             return null;
+        }
+
+        public async Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID)
+        {
+            PostAssignRoleRequest postAssignRoleRequest = new PostAssignRoleRequest()
+            {
+                AuthorisedByUserID = authorisedByUserID,
+                GroupID = groupId,
+                UserID = userId,
+                Role = new RoleRequest() { GroupRole = role }
+            };
+
+            var response = await PostAsync<BaseRequestHelpResponse<PostAssignRoleResponse>>($"/api/PostAssignRole", postAssignRoleRequest);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            throw new Exception("Bad response from PostAssignRole");
+        }
+
+        public async Task<GroupPermissionOutcome> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID)
+        {
+            PostRevokeRoleRequest postRevokeRoleRequest = new PostRevokeRoleRequest()
+            {
+                AuthorisedByUserID = authorisedByUserID,
+                GroupID = groupId,
+                UserID = userId,
+                Role = new RoleRequest() { GroupRole = role }
+            };
+
+            var response = await PostAsync<BaseRequestHelpResponse<PostAssignRoleResponse>>($"/api/PostRevokeRole", postRevokeRoleRequest);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            throw new Exception("Bad response from PostRevokeRole");
         }
     }
 }

@@ -29,12 +29,12 @@ namespace HelpMyStreetFE.Services
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
-        private readonly IMemDistCache<IEnumerable<JobSummary>> _memDistCache;
+        private readonly IMemDistCache<IEnumerable<JobHeader>> _memDistCache;
         private readonly IOptions<RequestSettings> _requestSettings;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IOptions<RequestSettings> requestSettings)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
@@ -104,7 +104,7 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
-        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobHeader>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
@@ -117,8 +117,13 @@ namespace HelpMyStreetFE.Services
             return jobs;
         }
 
-        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs)
+        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs)
         {
+            if (jobs == null)
+            {
+                return null;
+            }
+
             var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
 
             return new OpenJobsViewModel
@@ -128,15 +133,14 @@ namespace HelpMyStreetFE.Services
             };
         }
 
-        public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobHeader>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
-            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
-            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
 
             return jobs?.OrderOpenJobsForDisplay();
         }
@@ -170,9 +174,9 @@ namespace HelpMyStreetFE.Services
             return null;
         }
 
-        public async Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
-            bool success = status switch
+            UpdateJobStatusOutcome? outcome = status switch
             {
                 JobStatuses.InProgress => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value),
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
@@ -181,26 +185,26 @@ namespace HelpMyStreetFE.Services
                 _ => throw new ArgumentException(message: $"Invalid JobStatuses value: {status}", paramName: nameof(status)),
             };
 
-            if (success)
+            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
                 TriggerCacheRefresh(createdByUserId, cancellationToken);
             }
 
-            return success;
+            return outcome;
         }
 
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
         }
-        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
 
-        public async Task<IEnumerable<JobSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
@@ -211,7 +215,7 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
-        public IEnumerable<JobSummary> FilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jfr)
+        public IEnumerable<JobHeader> FilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
         {
             return jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
@@ -254,11 +258,11 @@ namespace HelpMyStreetFE.Services
             });
         }
 
-        private async Task<IEnumerable<JobSummary>> GetOpenJobsForUserFromRepo(User user)
+        private async Task<IEnumerable<JobHeader>> GetOpenJobsForUserFromRepo(User user)
         {
             if (user.PostalCode == null)
             {
-                return null;
+                throw new Exception("Cannot get open jobs for user without postcode");
             }
 
             var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities

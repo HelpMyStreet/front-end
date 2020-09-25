@@ -4,6 +4,7 @@ using HelpMyStreetFE.Services;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -22,6 +23,8 @@ namespace HelpMyStreetFE.Repositories
             {
                 case "tankersley":
                     return await GetTankersley(cancellationToken);
+                case "ruddington":
+                    return await GetRuddington(cancellationToken);
                 case "ageuklsl":
                     return await GetAgeUKLSL(cancellationToken);
                 case "hlp":
@@ -40,7 +43,7 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "hlp";
             communityViewModel.Latitude = 51.507602;
             communityViewModel.Longitude = -0.127816;
@@ -98,7 +101,7 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.CommunityVolunteersTextHtml =
-            @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners' health and wellbeing so everyone can live healthier lives.</p>
+            @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners’ health and wellbeing so everyone can live healthier lives.</p>
             <p>Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
             London, Public Health England and London Councils.</p>";
 
@@ -155,7 +158,7 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "tankersley";
             communityViewModel.Latitude = 53.498113;
             communityViewModel.Longitude = -1.488587;
@@ -193,11 +196,12 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.RequestHelpHeading = @"How can we help?";
 
-            communityViewModel.RequestHelpText = @"We've got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
-            communityViewModel.ProvideHelpText = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -231,12 +235,132 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
+        private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "ruddington";
+            int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            communityViewModel.HomeFolder = "ruddington";
+            communityViewModel.Latitude = 52.8925;
+            communityViewModel.Longitude = -1.150;
+            communityViewModel.ZoomLevel = 14.6;
+
+            communityViewModel.ShowHelpExampleCards = false;
+
+            communityViewModel.CommunityName = "Ruddington";
+
+            communityViewModel.BannerImageLocation = "/img/community/ruddington/banner.jpg";
+
+            communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
+
+            communityViewModel.HeaderHTML = @"
+                    <p class='mt-sm mb-xs'>
+                        	In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
+                            We’re the Ruddington Community Response Team, here to help with:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm compact-list'>
+                        <li>Shopping for essentials</li>
+                        <li>Collecting prescriptions</li>
+                        <li>A friendly chat</li>
+                        <li>Local errands</li>
+                        <li>Anything else, just ask!</li>
+                    </ul>
+                    ";
+
+
+            communityViewModel.HeaderVolunteerButtonText = "";
+            communityViewModel.HeaderHelpButtonText = "";
+
+            communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
+            communityViewModel.CommunityVolunteersTextReadMore = false;
+            communityViewModel.CommunityVolunteersTextHtml =
+                 @"<p>Supported by the parish council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
+                    <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the parish council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
+                    <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
+                    <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers.</p> 
+                    <p>* RVCP is a collaboration of local business owners, Ruddington parish councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
+                    ";
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of the Ruddington Community Response Team. Click below to view help requests in your area.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Ruddington Parish Council",
+                    Role = "Proudly supported by the parish council",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/RPC-logo.jpeg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Ruddington Village Centre Partnership",
+                    Role = "Proudly supported by RVCP*",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/RVCP.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Han, Mark & Stella",
+                    Role = "Market Volunteers",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/HanMarkStella.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Leia",
+                    Role = "Market Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/Leia.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Alex",
+                    Role = "Community volunteer",
+                    Location = "(photograph supplied by Pam Pearce)",
+                    ImageLocation = "/img/community/ruddington/Alex.png"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = @"<p><a href='https://ruddingtonparishcouncil.gov.uk'>Ruddington Parish Council</a></p>
+                                                   <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
+                                                   <p><a href='http://ruddington.info'>Ruddington.info</a></p>";
+
+
+            communityViewModel.ShowRequestHelpPopup = true;
+            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Ruddington</b>?</p>";
+            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
+            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Ruddington Community Response Team</b> offer help in <b>Ruddington</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
+                                                            <p>Request help from someone near you by clicking below.</p>";
+            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Ruddington Community Response Team</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Ruddington Community Response Team</b>?</p>";
+
+            return communityViewModel;
+        }
+
         private async Task<CommunityViewModel> GetAgeUKLSL(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ageUK";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
@@ -345,7 +469,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId.ToString());
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
@@ -443,8 +567,9 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.RequestHelpButtonText = "Request Face Coverings";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-            communityViewModel.ProvideHelpText = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpLoggedOutButtonText = "Sew with FTLOS";
+            communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
+            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
+            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {

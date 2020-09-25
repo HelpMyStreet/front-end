@@ -1,4 +1,4 @@
-﻿@import "./variables.scss";
+@import "./variables.scss";
 @import "./colours.scss";
 @import "./grid.scss";
 @import "./header.scss";
@@ -116,6 +116,10 @@ h6 + p {
   margin-top: 0;
 }
 
+span {
+  font-size: inherit;
+}
+
 ul.tick-list {
   list-style: none;
   padding-left: 0.5em;
@@ -134,6 +138,14 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .flex {
   display: flex;
+
+  &-column {
+    flex-direction: column;
+  }
+
+  &-grow {
+    flex-grow: 1;
+  }
 
   &.justifycontent {
     &-center {
@@ -252,6 +264,19 @@ input[type="number"]::-webkit-outer-spin-button {
     max-width: 100%;
   }
 
+  &__buttons {
+    .btn {
+      @extend .mt-sm;
+      @extend .ml-sm;
+      @extend .mr-sm;
+      display: inline-block;
+
+      &.dnone {
+        display: none;
+      }
+    }
+  }
+
   &-feedback {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -266,6 +291,16 @@ input[type="number"]::-webkit-outer-spin-button {
 
     h3 {
       color: darkgray;
+    }
+  }
+
+  &.flex {
+    @extend .flex-column;
+    @extend .mt-sm;
+    @extend .mb-sm;
+
+    p {
+      flex-grow: 1;
     }
   }
 }

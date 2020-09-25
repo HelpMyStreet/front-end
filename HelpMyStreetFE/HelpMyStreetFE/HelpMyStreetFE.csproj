@@ -13,8 +13,6 @@
     <EmbeddedResource Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
-    <Content Remove="appsettings.Development.json" />
-    <Content Remove="wwwroot\profile.js~13f1cc15978c1bf79b0dfc86e1040f05f2cac27f" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,9 +22,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
-    <PackageReference Include="HelpMyStreet.Cache" Version="1.1.339" />
-    <PackageReference Include="HelpMyStreet.Contracts" Version="1.1.339" />
-    <PackageReference Include="HelpMyStreet.Utils" Version="1.1.339" />
+    <PackageReference Include="HelpMyStreet.Cache" Version="1.1.391" />
+    <PackageReference Include="HelpMyStreet.Contracts" Version="1.1.391" />
+    <PackageReference Include="HelpMyStreet.Utils" Version="1.1.391" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.3" />
@@ -58,5 +56,6 @@
     <Folder Include="Views\Shared\Components\Awards\" />
     <Folder Include="wwwroot\img\awards\" />
     <Folder Include="src\sass\components\awards\" />
+    <Folder Include="wwwroot\img\case-studies\" />
   </ItemGroup>
 </Project>

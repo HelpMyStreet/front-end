@@ -1,4 +1,4 @@
-﻿<div id="popup" class="popup">
+﻿<div id="popup-template" class="popup">
     <div class="popup__backdrop popup-close"></div>
     <div class="popup__content">
         <button class="btn--close popup-close">
@@ -12,11 +12,16 @@
 
         </div>
         <div class="popup__content__buttons">
-            <span class="error"></span>
+            <p class="error"></p>
             <div class="popup__content__buttons__button">
                 <button id="popup-accept" class="btn cta  wide fill ">
                     <span class="text">Accept</span>
                     <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
+                </button>
+            </div>
+            <div class="popup__content__buttons__button dnone">
+                <button id="popup-reject" class="btn cta--dark-blue-border wide fill">
+                    <span class="text">Reject</span>
                 </button>
             </div>
         </div>

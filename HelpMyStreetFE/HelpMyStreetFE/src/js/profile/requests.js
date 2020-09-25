@@ -92,8 +92,8 @@ export function initialiseRequests(isVerified) {
     const targetUser = $(this).data("target-user") ?? "";
 
     buttonLoad($(this));
-    let newStatus = await setJobStatus(job, targetState, targetUser);
-    if (newStatus) {
+    let response = await setJobStatus(job, targetState, targetUser);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
       $(job).find('.job__status__new').html('');
       $(job).find('.job__info__urgency__dates').toggle();
       $(job).find('button').toggle();
@@ -110,19 +110,32 @@ export function showStatusUpdatePopup(btn) {
   const targetState = $(btn).data("target-state");
   const targetUser = $(btn).data("target-user") ?? "self";
 
-  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True");
+  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"));
+  popupSettings.messageOnFalse_Base = popupSettings.messageOnFalse;
 
   popupSettings.acceptCallbackAsync = async () => {
-    let newStatus = await setJobStatus(job, targetState, targetUser);
+    let response = await setJobStatus(job, targetState, targetUser);
 
-    if (newStatus) {
-      $(job).find('.job__status__new').html(newStatus);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+      $(job).find('.job__status__new').html(response.fetchPayload);
       $(job).find('.job__info__urgency__dates').toggle();
       $(job).find('button').toggle();
       $(job).find('.next-step').toggle();
       return true;
+    } else {
+      switch (response.fetchResponse) {
+        case fetchResponses.UNAUTHORISED:
+        case fetchResponses.BAD_REQUEST:
+          popupSettings.messageOnFalse = popupSettings.messageOnFalse_Base + " Another user may have updated the same request; please refresh your browser window.";
+          break;
+        case fetchResponses.SERVER_ERROR:
+        case fetchResponses.SERVER_NOT_FOUND:
+        case fetchResponses.TIMEOUT:
+        case fetchResponses.BAD_FETCH:
+          popupSettings.messageOnFalse = popupSettings.messageOnFalse_Base + " Please try again using the button below.";
+      }
+      return false;
     }
-    return success;
   };
 
   showPopup(popupSettings);
@@ -134,13 +147,7 @@ export function showStatusUpdatePopup(btn) {
 async function setJobStatus(job, newStatus, targetUser) {
     let jobId = job.attr("id");
 
-    var response = await hmsFetch('/api/requesthelp/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-        return response.fetchPayload;
-    }
-    else {
-        return false;
-    }
+    return await hmsFetch('/api/requesthelp/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
 }
 
 

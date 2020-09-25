@@ -55,18 +55,18 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<JobSummary>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
+        public async Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.JobSummaries;
+                return response.Content.JobHeaders;
             }
             return null;
         }
 
-        public async Task<bool> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId)
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId)
         {
             var request = new PutUpdateJobStatusToDoneRequest()
             {
@@ -78,12 +78,12 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Outcome == UpdateJobStatusOutcome.Success;
+                return response.Content.Outcome;
             }
-            return false;
+            return null;
         }
 
-        public async Task<bool> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId)
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId)
         {
             var request = new PutUpdateJobStatusToOpenRequest()
             {
@@ -95,12 +95,12 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Outcome == UpdateJobStatusOutcome.Success;
+                return response.Content.Outcome;
             }
-            return false;
+            return null;
         }
 
-        public async Task<bool> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId)
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId)
         {
             var request = new PutUpdateJobStatusToCancelledRequest()
             {
@@ -112,12 +112,12 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Outcome == UpdateJobStatusOutcome.Success;
+                return response.Content.Outcome;
             }
-            return false;
+            return null;
         }
 
-        public async Task<bool> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId)
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId)
         {
             var request = new PutUpdateJobStatusToInProgressRequest()
             {
@@ -130,9 +130,9 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Outcome == UpdateJobStatusOutcome.Success;
+                return response.Content.Outcome;
             }
-            return false;
+            return null;
         }
 
         public async Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request)

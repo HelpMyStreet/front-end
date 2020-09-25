@@ -58,24 +58,12 @@
     }
 }
 
-.community-volunteers-text {
+.read-more-text {
     overflow: hidden;
 }
 
-.community-useful-links {
-
-}
-
-
-.outer-container--padding {
-    padding: 2rem 0 2rem 0;
-}
-
-
-.card {
-    &.min-height {
-        min-height: 280px;
-    }
+.yt-video-placeholder {
+  cursor: pointer;
 }
 
 .help-examples{
@@ -84,33 +72,6 @@
     }
 }
 
-.mask-of-the-week {
-    background: $white;
-    max-width: 400px;
-    margin: auto;
-    padding: 10px;
-    @include shadow-md;
-    .img {
-        
-        margin: 10px auto;
-        width: 95%;
-        text-align:center;
-        img{
-            width:95%;
-        }
-        
-    }
-
-    .header {
-        font-size:1.2rem;
-        text-align: center;
-        font-weight:600;
-    }
-
-    .text {
-        text-align:left;
-    }
-}
 
 .gfm-embed {
     max-width: 480px;

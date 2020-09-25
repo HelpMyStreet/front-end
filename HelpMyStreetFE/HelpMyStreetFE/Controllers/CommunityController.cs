@@ -13,6 +13,9 @@ using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Utils;
 using System.Linq;
 using System.Threading;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -24,14 +27,16 @@ namespace HelpMyStreetFE.Controllers
         private const string communityImageStore = "/img/community/";
         private readonly IConfiguration _configuration;
         private readonly IGroupService _groupService;
+        private readonly IAuthService _authService;
 
-        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService)
+        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService, IAuthService authService)
         {
             _env = env;
             _logger = logger;
             _communityRepository = communityRepository;
             _configuration = configuration;
             _groupService = groupService;
+            _authService = authService;
         }
 
         public async Task<IActionResult> Index(string communityName, CancellationToken cancellationToken)
@@ -55,7 +60,12 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction("Error404", "Errors");
             }
 
-            communityViewModel.IsLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (user != null)
+            {
+                communityViewModel.IsLoggedIn = true;
+                communityViewModel.IsGroupMember = await _groupService.GetUserHasRole(user.ID, communityViewModel.groupKey, GroupRoles.Member, cancellationToken);
+            }
             communityViewModel.TestBanner = testBanner;
             
             string carousel1Path = _env.WebRootPath + communityImageStore + communityViewModel.HomeFolder + "/carousel1";
@@ -82,7 +92,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> FaceCoverings(CancellationToken cancellationToken)
         {
             var genericGetGroupByKeyResponse = await _groupService.GetGroupIdByKey("Generic", cancellationToken);
-            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse.ToString());
+            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse);
 
             FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
             {

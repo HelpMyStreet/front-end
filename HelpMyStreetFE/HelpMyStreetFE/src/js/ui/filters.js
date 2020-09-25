@@ -10,22 +10,24 @@ toggleButtons.forEach((btn) => {
       btn.getAttribute("data-target-item")
     );
 
-    if (!target.classList.contains("filter--show")) {
-      target.classList.remove("applied");
+    target.classList.toggle("filter--show");
+
+    if (target.classList.contains("filter__list-wrapper")) {
+      // Div containing all filters
+      if (target.classList.contains("filter--show")) {
+        lockWindowScroll();
+      } else {
+        unlockWindowScroll();
+      }
     } else {
+      // Just one list
       updateFilterSummary(target);
+      const g = document.getElementById(btn.getAttribute("data-target-group"));
+      g.querySelectorAll(".btn--apply-filter").forEach((b) => {
+        b.classList.remove("applied");
+        b.classList.remove("disabled");
+      });
     }
-
-    if (target) {
-      target.classList.toggle("filter--show");
-    }
-
-
-    const g = document.getElementById(btn.getAttribute("data-target-group"));
-    g.querySelectorAll(".btn--apply-filter").forEach((b) => {
-      b.classList.remove("applied");
-      b.classList.remove("disabled");
-    });
   });
 });
 
@@ -44,6 +46,8 @@ applyButtons.forEach((b) => {
         t.classList.remove("filter--show");
       });
       b.classList.add("applied");
+      g.classList.remove("filter--show");
+      unlockWindowScroll();
     }
 
     //buttonUnload($(b));
@@ -129,7 +133,7 @@ function updateFilterSummary(list) {
   const inputs = $(list).find('input');
   if (inputs.first().is('[type="checkbox"]')) {
     if (!$(inputs).is(':not(:checked)')) {
-      // All selected; nothing filtered out
+      summary = 'Select all';
     } else {
       summary = $.map($(inputs).filter(':checked'), function (i) {
         return $(list).find('label[for="' + i.id + '"]').first().html();
@@ -137,19 +141,19 @@ function updateFilterSummary(list) {
     }
   } else if (inputs.first().is('[type="radio"]')) {
     const selectedInput = $(inputs).filter(':checked').first();
-    if (selectedInput.val() === $(inputs).last().val()) {
-      // Nothing filtered out
-    } else {
-      summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
-    }
+    summary = $(list).find('label[for="' + selectedInput.attr('id') + '"]').first().html()
   }
+  $(list).find('.filter__list__category__summary').html(summary);
+}
 
-  const summarySpan = $(list).find('.filter__list__category__summary');
+function lockWindowScroll() {
+  document.body.style.top = `-${window.scrollY}px`;
+  document.body.style.position = 'fixed';
+}
 
-  summarySpan.html(summary);
-  if (summary === "") {
-    summarySpan.addClass("dnone");
-  } else {
-    summarySpan.removeClass("dnone");
-  }
+function unlockWindowScroll() {
+  const scrollY = document.body.style.top;
+  document.body.style.position = '';
+  document.body.style.top = '';
+  window.scrollTo(0, parseInt(scrollY || '0') * -1);
 }

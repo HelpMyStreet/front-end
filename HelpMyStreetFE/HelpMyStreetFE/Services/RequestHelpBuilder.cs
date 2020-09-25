@@ -110,46 +110,32 @@ namespace HelpMyStreetFE.Services
 
         private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            return requestHelpFormVariant switch
             {
-                return "How can For the Love of Scrubs help?";
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                return "Get in touch with a Community Connector";
-            }
-            else
-            {
-                return "What type of help are you looking for?";
-            }
+                RequestHelpFormVariant.FtLOS => "How can For the Love of Scrubs help?",
+                RequestHelpFormVariant.HLP_CommunityConnector => "Get in touch with a Community Connector",
+                RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
+                _ => "What type of help are you looking for?"
+            };
         }
 
         private string GetHelpRequestPageIntroText(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            return requestHelpFormVariant switch
             {
-                return "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.";
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                return "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.";
-            }
-            else
-            {
-                return "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help.";
-            }
+                RequestHelpFormVariant.FtLOS => "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.",
+                RequestHelpFormVariant.HLP_CommunityConnector => "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.",
+                _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
+            };
         }
 
         private bool GetFullRecipientAddressRequired(RequestHelpFormVariant requestHelpFormVariant)
         {
-            if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
+            return requestHelpFormVariant switch
             {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+                RequestHelpFormVariant.HLP_CommunityConnector => false,
+                _ => true
+            };
         }
 
         private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpFormVariant requestHelpFormVariant)
@@ -168,10 +154,25 @@ namespace HelpMyStreetFE.Services
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.Ruddington)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
+                    new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealPreparation },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.DogWalking },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
-            {
+                {
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
                     new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
                     new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
@@ -181,7 +182,7 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.HomeworkSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
-             });
+                 });
             }
 
             return tasks;

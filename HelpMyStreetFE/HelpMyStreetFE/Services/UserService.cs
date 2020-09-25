@@ -208,5 +208,10 @@ namespace HelpMyStreetFE.Services
                 return await _userRepository.GetUser(userId);
             }, $"{CACHE_KEY_PREFIX}-user-{userId}", cancellationToken);
         }
+
+        public async Task<User> GetUserByAuthId(string authId)
+        {
+            return await _userRepository.GetUserByAuthId(authId);
+        }
     }
 }

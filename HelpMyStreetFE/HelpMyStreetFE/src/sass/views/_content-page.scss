@@ -64,6 +64,8 @@
         }
 
         img {
+            width: 520px;
+
             max-width: calc(100vw - 32px);
 
             @media screen and (min-width: $med-screen) {
@@ -120,9 +122,5 @@
                 margin-bottom: 0;
             }
         }
-    }
-
-    .cta {
-        display: inline-block;
     }
 }
