@@ -15,11 +15,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 namespace HelpMyStreetFE.ViewComponents
 {
-    public class FeedbackViewComponent : ViewComponent
+    public class TestimonialsViewComponent : ViewComponent
     {
         private IFeedbackRepository _feedbackRepository;
 
-        public FeedbackViewComponent(IFeedbackRepository feedbackRepository)
+        public TestimonialsViewComponent(IFeedbackRepository feedbackRepository)
         {
             _feedbackRepository = feedbackRepository;
         }

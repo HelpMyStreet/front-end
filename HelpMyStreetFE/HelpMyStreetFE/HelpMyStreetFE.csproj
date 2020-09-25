@@ -51,7 +51,7 @@
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel2\" />
     <Folder Include="Models\Feedback\" />
-    <Folder Include="Views\Shared\Components\Feedback\" />
+    <Folder Include="Views\Shared\Components\Testimonials\" />
     <Folder Include="wwwroot\img\case-studies\" />
   </ItemGroup>
 </Project>
