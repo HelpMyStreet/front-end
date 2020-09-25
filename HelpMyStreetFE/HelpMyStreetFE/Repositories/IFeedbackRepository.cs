@@ -6,6 +6,6 @@ namespace HelpMyStreetFE.Repositories
 {
     public interface IFeedbackRepository
     {
-        Task<List<FeedbackMessage>> GetFeedback();
+        Task<List<Testimonial>> GetTestimonials();
     }
 }

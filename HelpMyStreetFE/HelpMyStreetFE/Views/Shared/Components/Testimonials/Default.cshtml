@@ -1,19 +1,19 @@
-﻿@model HelpMyStreetFE.Models.Feedback.FeedbackViewModel;
+﻿@model HelpMyStreetFE.Models.Feedback.TestimonialsViewModel;
 @using HelpMyStreetFE.Models.Feedback;
 
 <script type="text/javascript" src="~/feedback.js" asp-append-version="true"></script>
 
 <div class="ml-md mr-md">
-    @if (Model.FeedbackMessages.Count() > 0)
+    @if (Model.Testimonials.Count() > 0)
     {
         <div class="feedback-message">
-            @foreach (FeedbackMessage feedbackMessage in Model.FeedbackMessages)
+            @foreach (Testimonial testimonial in Model.Testimonials)
             {
                 <div class="card-feedback mr-sm ml-sm mb-sm">
                     <div class="card-feedback-inner">
-                        <h3>&ldquo;@feedbackMessage.Tagline&bdquo;</h3>
-                        <p>@feedbackMessage.Message</p>
-                        <p class="person">@feedbackMessage.Person</p>
+                        <h3>&ldquo;@testimonial.Tagline&bdquo;</h3>
+                        <p>@testimonial.Message</p>
+                        <p class="person">@testimonial.Person</p>
                     </div>
                 </div>
             }
