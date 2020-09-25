@@ -1,0 +1,101 @@
+﻿@using HelpMyStreetFE.Models.Feedback
+@using HelpMyStreet.Utils.Enums;
+
+
+@model FeedbackCaptureViewModel
+
+<form class="feedback-capture">
+    <h2>Tell us how it went?</h2>
+
+    <div class="row">
+        <div class="sm12 input">
+            <label for="rating">How was your experience with HelpMyStreet?</label>
+            <div class="tiles">
+                <input id="rating" type="hidden" name="rating" />
+                <div class="row">
+                    <div class="sm4">
+                        <div class="tiles__tile" data-type="rating" data-id="1">
+                            <div class="tiles__tile__content">
+                                <div class="tiles__tile__content__icon">
+                                    :)
+                                </div>
+                                <div class="tiles__tile__content__description">
+                                    Great
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sm4">
+                        <div class="tiles__tile" data-type="rating" data-id="2">
+                            <div class="tiles__tile__content">
+                                <div class="tiles__tile__content__icon">
+                                    :(
+                                </div>
+                                <div class="tiles__tile__content__description">
+                                    Not so great
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.ShowVolunteerMessage)
+    {
+        <div class="row">
+            <div class="sm12 input">
+                <label for="recipient-message">Would you like to pass a message on to @Model.VolunteerName, @(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your volunteer?" : "who completed this task?")</label>
+                <textarea id="recipient-message" name="RecipientMessage" placeholder="Leave your message for @(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") volunteer here."></textarea>
+            </div>
+        </div>
+    }
+
+    @if (Model.ShowRecipientMessage)
+    {
+        <div class="row">
+            <div class="sm12 input">
+                <label for="recipient-message">Would you like to pass a message on to @Model.RecipientName?</label>
+                <textarea id="recipient-message" name="RecipientMessage" placeholder="Leave your message for the person you helped here."></textarea>
+            </div>
+        </div>
+    }
+
+    @if (Model.ShowRequestorMessage)
+    {
+        <div class="row">
+            <div class="sm12 input">
+                @if (Model.RoleSubmittingFeedback == RequestRoles.Recipient)
+                {
+                    <label for="requestor-message">@Model.RequestorName submitted this help on your behalf.  Would you like to pass on a message so they know how it went?</label>
+                }
+                else
+                {
+                    <label for="requestor-message">This help was requested by @Model.RequestorName form @Model.RequestorName.  Would you like to pass a message on to @Model.RequestorName?</label>
+                }
+                <textarea id="requestor-message" name="RequestorMessage" placeholder="Leave your message for the person who requested help here."></textarea>
+            </div>
+        </div>
+    }
+
+    @if (Model.ShowGroupMessage)
+    {
+        <div class="row">
+            <div class="sm12 input">
+                <label for="recipient-message">This request was managed by <b>@Model.GroupName</b> on the HelpMyStreet platform; use the buttons below to share your comments and compliments.</label>
+                <textarea id="group-message" name="GroupMessage" placeholder="Got some feedback for the team managing this request? Leave your comments and compliments for the @Model.GroupName team here."></textarea>
+            </div>
+        </div>
+    }
+
+    @if (Model.ShowHMSMessage)
+    {
+        <div class="row">
+            <div class="sm12 input">
+                <textarea id="hms-message" name="HMSMessage" placeholder="Got some feedback about our site? Leave your comments and compliments for the HelpMyStreet team here."></textarea>
+            </div>
+        </div>
+    }
+
+</form>

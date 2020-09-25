@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Utils;
+﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Services;
@@ -10,6 +11,11 @@ namespace HelpMyStreetFE.Repositories
     {
         public FeedbackRepository()
         {
+        }
+
+        public async Task<bool> GetFeedbackExists(int JobId, RequestRoles requestRole)
+        {
+            return false;
         }
 
         public async Task<List<Testimonial>> GetTestimonials()
