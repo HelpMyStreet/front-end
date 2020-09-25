@@ -174,9 +174,9 @@ namespace HelpMyStreetFE.Services
             return null;
         }
 
-        public async Task<bool> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
-            bool success = status switch
+            UpdateJobStatusOutcome? outcome = status switch
             {
                 JobStatuses.InProgress => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value),
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
@@ -185,12 +185,12 @@ namespace HelpMyStreetFE.Services
                 _ => throw new ArgumentException(message: $"Invalid JobStatuses value: {status}", paramName: nameof(status)),
             };
 
-            if (success)
+            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
                 TriggerCacheRefresh(createdByUserId, cancellationToken);
             }
 
-            return success;
+            return outcome;
         }
 
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)

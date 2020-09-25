@@ -34,13 +34,13 @@ else
             <div class="row sm12 justify-center">
                 <div class="flex row">
                     <div class="sm6 mr-sm">
-                        <a href="/registration/step-one" class="btn cta small mb-sm mt-sm btn--sign-up">Sign Up Now</a>
+                        <a href="/registration/step-one" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up Now</a>
                         <span>  </span>
 
                     </div>
                     <div class="sm6">
                         <span>  </span>
-                        <a href="/request-help" class="btn cta small mb-sm mt-sm btn--request-help cta--orange">Request Help</a>
+                        <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ else
                 <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
 
                 <div class="row sm12 text-center justify-center mb-sm">
-                    <a href="/request-help" class="btn cta btn--request-help cta--orange">Request Help</a>
+                    <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
                 </div>
 
                 <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
@@ -79,12 +79,12 @@ else
                 <div class="row sm12 text-center justify-center mb-lg">
                     @if (!Model.isLoggedIn)
                     {
-                        <a href="/registration/step-one" class="btn cta btn--sign-up">Sign Up Now</a>
+                        <a href="/registration/step-one" class="btn cta btn--sign-up fill">Sign Up Now</a>
 
                     }
                     else
                     {
-                        <a href="/account" class="btn cta btn--sign-up">Provide Help</a>
+                        <a href="/account" class="btn cta btn--sign-up fill">Provide Help</a>
 
                     }
                 </div>
@@ -106,7 +106,7 @@ else
                 <p class="mt-xs flex-grow">
                     HelpMyStreet is supporting local volunteers who have been making face coverings for their communities. We’ve also partnered with the amazing For the Love of Scrubs! Find out how to sign up and how to request yours now.
                 </p>
-                <a href="/face-coverings" class="btn cta btn--request-help cta--orange mlmr-auto">More Info</a>
+                <a href="/face-coverings" class="btn cta fill cta--orange mlmr-auto">More Info</a>
             </div>
         </div>
 
@@ -133,7 +133,7 @@ else
         </div>
 
         <div class="mt-lg">
-            @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other })
+            @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
         </div>
 
         <div class="row mt-lg justify-center">
@@ -168,14 +168,12 @@ else
             <div class="row justify-center text-center">
                 @if (Model.isLoggedIn)
                 {
-        <div>
-            <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
-        </div> }
-                        else
-                        {
-        <div>
-            <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up">Sign Up Now</a>
-        </div>}
+                    <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
+                }
+                else
+                {
+                    <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
+                }
             </div>
         </div>
 }
