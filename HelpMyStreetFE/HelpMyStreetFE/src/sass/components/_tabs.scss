@@ -1,44 +1,56 @@
 ﻿.tab {
-    @media screen and (min-width: $med-screen) {
-        display: none;
+  @media screen and (min-width: $med-screen) {
+    display: none;
+  }
+
+  h4 {
+  }
+
+  button {
+    @extend .btn;
+    @extend .cta--dark-blue-border;
+    @extend .small;
+    outline: none;
+    transition: 0.3s;
+    margin: 1em 0.4em;
+
+    &.active {
+      @extend .bg-dark-blue;
+      @extend .white;
+
+      &:hover {
+        @extend .white;
+      }
     }
-
-
+  }
 }
 
 .tabcontent {
+  padding: 1.5em;
+
+  @media screen and (max-width: $sm-screen) {
+    padding: 0.5em;
+    text-align: center;
+  }
+
+  .tab-content-title {
     @media screen and (max-width: $sm-screen) {
-        text-align: center;
+      font-size: 1rem;
+      display: none;
     }
+  }
 
-    .tab-content-title {
-        @media screen and (max-width: $sm-screen) {
-            font-size: 1rem;
-            display: none;
-        }
+  .tab-content-p1 {
+    flex-basis: 4em;
+
+    @media screen and (max-width: $sm-screen) {
+      flex-basis: auto;
     }
+  }
 
-    h2 {
-        font-size: 1.5rem;
-    }
-}
-
-.tab button {
-    background-color: inherit;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 8px 8px;
-    transition: 0.3s;
-}
-
-.tab button:hover {
-    background-color: #ddd;
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    background-color: #ccc;
+  h2 {
+    font-size: 1.5rem;
+  }
 }
 
 .tabs {
@@ -46,7 +58,5 @@
         @media screen and (max-width: $sm-screen) {
             display: none;
         }
-
-
     }
 }
