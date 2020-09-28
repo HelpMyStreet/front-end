@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
-    <PackageReference Include="HelpMyStreet.Cache" Version="1.1.391" />
+    <PackageReference Include="HelpMyStreet.Cache" Version="1.1.406" />
     <PackageReference Include="HelpMyStreet.Contracts" Version="1.1.391" />
     <PackageReference Include="HelpMyStreet.Utils" Version="1.1.406" />
     <PackageReference Include="MediatR" Version="8.0.1" />
