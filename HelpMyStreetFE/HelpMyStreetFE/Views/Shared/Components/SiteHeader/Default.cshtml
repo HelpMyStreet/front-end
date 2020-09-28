@@ -12,14 +12,13 @@
             </div>
         }    
         <div class="outer-container nav-holder">
-            <div class="container-fluid page-header align-center">
+            <div class="container-fluid page-header @(Model.isLoggedIn ? "" : "logged-out") align-center">
                 <partial name="_HMSLogo" model="@ViewData["HMSLogoViewModel"] != null ? @ViewData["HMSLogoViewModel"] : new HMSLogoViewModel()" />
                 <div class="page-header__nav">
                     <partial name="_SiteNavigation" />
                 </div>
         
-                    
-            <div id="profile-header-account" class="page-header__account__header collapsed">
+            <div id="profile-header-account" class="page-header__account__header collapsed @(Model.isLoggedIn ? "" : "logged-out")">
                 <div class="page-header__account__header__wrapper">
                     @if (Model.isLoggedIn)
                     {
@@ -63,8 +62,8 @@
                 </div>
                 
             </div>
-        
-               
+            
+
                 <div class="page-header__toggle">
                     <button id="site-nav-toggle" class="page-header__btn--menu-toggle">
                         <svg xmlns="" viewBox="0 0 100 100" class="toggle-icon" width="32" height="32">
