@@ -176,6 +176,10 @@ namespace HelpMyStreetFE.Repositories
 
             return messageList;
         }
-        
+
+        public async Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, int FeedbackRating)
+        {
+            return true;
+        }
     }
 }
