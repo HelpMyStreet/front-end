@@ -5,10 +5,11 @@
     @if (Model.CurrentAward.Award != null)
     {
         <div class="award">
+            <span class="tooltiptext">As a HelpMyStreet.org volunteer, you gain awards for completing tasks. Complete another @(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) tasks to get to the next award level!</span>
             <div class="user-badge">
                 <img src="@Model.CurrentAward.Award.ImageLocation" />
 
-                <div>
+                <div class="user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
                     <h5>@Model.CurrentAward.Award.AwardName</h5>
                     <span>

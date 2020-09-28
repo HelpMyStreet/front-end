@@ -25,7 +25,7 @@ function initialiseAccountNavExpanders() {
 
 function initialiseAwardsView() {
     updateAwards();
-    const awardsInterval = setInterval(async function () { updateAwards() }, 5000);
+    const awardsInterval = setInterval(async function () { updateAwards() }, 15000);
 }
 
 function initialiseNavBadges() {

@@ -15,6 +15,5 @@ namespace HelpMyStreetFE.Models.Account
         public List<UserGroup> UserGroups { get; set; }
         public List<NotificationModel> Notifications { get; set; }
         public VerificationViewModel VerificationViewModel { get; set; }
-        public List<JobSummary> Jobs { get; set; }
     }
 }

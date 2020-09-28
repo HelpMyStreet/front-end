@@ -209,7 +209,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadComponent(CancellationToken cancellationToken)
         {
-            var user = await GetCurrentUser(cancellationToken); 
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken); 
             return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
         }
 
@@ -325,8 +325,6 @@ namespace HelpMyStreetFE.Controllers
                 };
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.Notifications = notifications;
-                var jobs = await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken);
-                viewModel.Jobs = jobs.ToList();
                 viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,

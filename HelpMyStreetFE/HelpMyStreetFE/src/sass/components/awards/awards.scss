@@ -6,10 +6,35 @@
         align-self: center;
     }
 }
+.user-detail{
+    display: inline-flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    transition: visibility 2s;
+    transition-delay: 1s;
+    font-size: 14px;
+    opacity: 0.75;
+}
+
 .award {
+
+    
+
     display: flex;
     justify-content: center;
-    align-items: baseline;
+    align-items: flex-end;
 
     @media screen and (max-width: $sm-screen) {
         flex-direction: column;
@@ -23,7 +48,7 @@
 
     p {
         
-        font-size: 18px;
+        font-size: 16px;
         margin-top: 5px;
 
         @media screen and (max-width: $sm-screen){
@@ -56,4 +81,8 @@
         font-size: 12px;
         line-height: 14px;
     }
+}
+
+.award:hover .tooltiptext{
+    visibility:visible;
 }

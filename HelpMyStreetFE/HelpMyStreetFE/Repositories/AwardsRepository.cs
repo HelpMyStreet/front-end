@@ -115,7 +115,7 @@ namespace HelpMyStreetFE.Repositories
                 new AwardsModel()
                 {
                     AwardName = "Top Neighbour",
-                    AwardValue = 11,
+                    AwardValue = 5,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the great work!",
                     DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/top-neighbour.png"
@@ -123,7 +123,7 @@ namespace HelpMyStreetFE.Repositories
                 new AwardsModel()
                 {
                     AwardName = "Budding Humanitarian",
-                    AwardValue = 21,
+                    AwardValue = 10,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're awesome!",
                     DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/budding-humanitarian.png"
@@ -131,7 +131,7 @@ namespace HelpMyStreetFE.Repositories
                 new AwardsModel()
                 {
                     AwardName = "Helping Hero",
-                    AwardValue = 51,
+                    AwardValue = 20,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
                     DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/helping-hero.png"
@@ -139,7 +139,7 @@ namespace HelpMyStreetFE.Repositories
                 new AwardsModel()
                 {
                     AwardName = "Volunteer Superstar",
-                    AwardValue = 101,
+                    AwardValue = 50,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're amazing!",
                     DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
                     ImageLocation = "/img/awards/volunteer-superstar.png"
@@ -205,5 +205,5 @@ namespace HelpMyStreetFE.Repositories
             return returnAward;
         }
     }
-    }
-}
+ }
+
