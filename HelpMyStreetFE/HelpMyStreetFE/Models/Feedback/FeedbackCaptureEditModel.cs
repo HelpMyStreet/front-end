@@ -6,8 +6,9 @@ using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Models.Feedback
 {
-    public class FeedbackCaptureViewModel
+    public class FeedbackCaptureEditModel
     {
+        public string EncodedJobId { get; set; }
         public RequestRoles RoleSubmittingFeedback { get; set; }
 
         public bool ShowRecipientMessage { get; set; }
@@ -21,5 +22,11 @@ namespace HelpMyStreetFE.Models.Feedback
         public string VolunteerName { get; set; }
         public string GroupName { get; set; }
 
+        public int FeedbackRating { get; set; }
+        public string RecipientMessage { get; set; }
+        public string RequestorMessage { get; set; }
+        public string VolunteerMessage { get; set; }
+        public string GroupMessage { get; set; }
+        public string HMSMessage { get; set; }
     }
 }

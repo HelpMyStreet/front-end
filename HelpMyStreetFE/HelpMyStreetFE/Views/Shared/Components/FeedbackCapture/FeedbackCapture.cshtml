@@ -2,19 +2,23 @@
 @using HelpMyStreet.Utils.Enums;
 
 
-@model FeedbackCaptureViewModel
+@model FeedbackCaptureEditModel
 
-<form class="feedback-capture">
+<form class="feedback-capture" asp-action="Submit">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.EncodedJobId)
+    @Html.HiddenFor(m => m.RoleSubmittingFeedback)
+
     <h2>Tell us how it went?</h2>
 
     <div class="row">
-        <div class="sm12 input">
+        <div class="sm12 input tile-selector">
+            @Html.HiddenFor(m => m.FeedbackRating)
             <label for="rating">How was your experience with HelpMyStreet?</label>
             <div class="tiles">
-                <input id="rating" type="hidden" name="rating" />
                 <div class="row">
                     <div class="sm4">
-                        <div class="tiles__tile" data-type="rating" data-id="1">
+                        <div class="tiles__tile tile-selector__tile" data-type="rating" data-value="1">
                             <div class="tiles__tile__content">
                                 <div class="tiles__tile__content__icon">
                                     :)
@@ -26,7 +30,7 @@
                         </div>
                     </div>
                     <div class="sm4">
-                        <div class="tiles__tile" data-type="rating" data-id="2">
+                        <div class="tiles__tile tile-selector__tile" data-type="rating" data-value="2">
                             <div class="tiles__tile__content">
                                 <div class="tiles__tile__content__icon">
                                     :(
@@ -46,8 +50,8 @@
     {
         <div class="row">
             <div class="sm12 input">
-                <label for="recipient-message">Would you like to pass a message on to @Model.VolunteerName, @(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your volunteer?" : "who completed this task?")</label>
-                <textarea id="recipient-message" name="RecipientMessage" placeholder="Leave your message for @(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") volunteer here."></textarea>
+                @Html.LabelFor(m => m.VolunteerMessage, $"Would you like to pass a message on to {Model.VolunteerName}, {(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your volunteer?" : "who completed this task?")}")
+                @Html.TextAreaFor(m => m.VolunteerMessage, new { @placeholder = "Leave your message for " + (Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") + " volunteer here." })
             </div>
         </div>
     }
@@ -56,8 +60,8 @@
     {
         <div class="row">
             <div class="sm12 input">
-                <label for="recipient-message">Would you like to pass a message on to @Model.RecipientName?</label>
-                <textarea id="recipient-message" name="RecipientMessage" placeholder="Leave your message for the person you helped here."></textarea>
+                @Html.LabelFor(m => m.RecipientMessage, $"Would you like to pass a message on to {Model.RecipientName}?")
+                @Html.TextAreaFor(m => m.RecipientMessage, new { @placeholder = "Leave your message for the person you helped here." })
             </div>
         </div>
     }
@@ -66,15 +70,10 @@
     {
         <div class="row">
             <div class="sm12 input">
-                @if (Model.RoleSubmittingFeedback == RequestRoles.Recipient)
-                {
-                    <label for="requestor-message">@Model.RequestorName submitted this help on your behalf.  Would you like to pass on a message so they know how it went?</label>
-                }
-                else
-                {
-                    <label for="requestor-message">This help was requested by @Model.RequestorName for @Model.RecipientName.  Would you like to pass a message on to @Model.RequestorName?</label>
-                }
-                <textarea id="requestor-message" name="RequestorMessage" placeholder="Leave your message for the person who requested help here."></textarea>
+                @Html.LabelFor(m => m.RequestorMessage, Model.RoleSubmittingFeedback == RequestRoles.Recipient ?
+                        $"{Model.RequestorName} submitted this help on your behalf.  Would you like to pass on a message so they know how it went?" :
+                        $"This help was requested by {Model.RequestorName} for {Model.RecipientName}.  Would you like to pass a message on to {Model.RequestorName}?")
+                @Html.TextAreaFor(m => m.RequestorMessage, new { @placeholder = "Leave your message for the person who requested help here." })
             </div>
         </div>
     }
@@ -83,8 +82,8 @@
     {
         <div class="row">
             <div class="sm12 input">
-                <label for="recipient-message">This request was managed by <b>@Model.GroupName</b> on the HelpMyStreet platform; use the buttons below to share your comments and compliments.</label>
-                <textarea id="group-message" name="GroupMessage" placeholder="Got some feedback for the team managing this request? Leave your comments and compliments for the @Model.GroupName team here."></textarea>
+                @Html.LabelFor(m => m.GroupMessage, $"This request was managed by <b>{Model.GroupName}</b> on the HelpMyStreet platform; use the buttons below to share your comments and compliments.")
+                @Html.TextAreaFor(m => m.GroupMessage, new { @placeholder = $"Got some feedback for the team managing this request? Leave your comments and compliments for the {Model.GroupName} team here." })
             </div>
         </div>
     }
@@ -93,9 +92,11 @@
     {
         <div class="row">
             <div class="sm12 input">
-                <textarea id="hms-message" name="HMSMessage" placeholder="Got some feedback about our site? Leave your comments and compliments for the HelpMyStreet team here."></textarea>
+                @Html.TextAreaFor(m => m.HMSMessage, new { @placeholder = "Got some feedback about our site? Leave your comments and compliments for the HelpMyStreet team here." })
             </div>
         </div>
     }
+
+    <button type="submit" class="btn cta">Submit</button>
 
 </form>

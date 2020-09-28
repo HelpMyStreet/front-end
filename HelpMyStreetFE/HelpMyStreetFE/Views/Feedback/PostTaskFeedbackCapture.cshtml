@@ -1,0 +1,5 @@
+﻿@using HelpMyStreetFE.Models.Feedback;
+
+@model FeedbackCaptureViewComponentParameters
+
+@await Component.InvokeAsync("FeedbackCapture", new { parameters = Model })

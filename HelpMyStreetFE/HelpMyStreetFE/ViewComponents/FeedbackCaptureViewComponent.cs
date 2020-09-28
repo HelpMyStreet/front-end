@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
@@ -31,22 +32,33 @@ namespace HelpMyStreetFE.ViewComponents
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             // user may be null for Requestor/Recipient feedback
 
-            var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, user.ID, cancellationToken);
+            var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, user?.ID ?? -1, cancellationToken);
 
-            FeedbackCaptureViewModel viewModel = new FeedbackCaptureViewModel();
-
-            if (jobDetails.JobSummary.JobStatus == JobStatuses.Open || jobDetails.JobSummary.JobStatus == JobStatuses.InProgress || 
-                await _feedbackRepository.GetFeedbackExists(parameters.JobId, parameters.RequestRole))
+            if (jobDetails == null || jobDetails.JobSummary == null)
             {
-                return View("FeedbackCapture", viewModel);
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we can't find that job." });
             }
 
+            if (jobDetails.JobSummary.JobStatus == JobStatuses.Open || jobDetails.JobSummary.JobStatus == JobStatuses.InProgress)
+            {
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, feedback can only be submitted for jobs which are completed." });
+            }
 
+            if (await _feedbackRepository.GetFeedbackExists(parameters.JobId, parameters.RequestRole))
+            {
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, feedback for this job has already been submitted." });
+            }
+
+            FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel();
+
+            viewModel.EncodedJobId = Base64Utils.Base64Encode(parameters.JobId);
+            viewModel.RoleSubmittingFeedback = parameters.RequestRole;
+
+            viewModel.VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName;
             viewModel.RecipientName = jobDetails.Recipient.FirstName;
             viewModel.RequestorName = jobDetails.Requestor.FirstName;
-            viewModel.VolunteerName = jobDetails.CurrentVolunteer.UserPersonalDetails.DisplayName;
 
-            viewModel.ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer;
+            viewModel.ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null;
             viewModel.ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient;
             viewModel.ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && jobDetails.JobSummary.RequestorType != RequestorType.Myself;
 
@@ -61,7 +73,7 @@ namespace HelpMyStreetFE.ViewComponents
                 viewModel.ShowGroupMessage = false;
             }
 
-            return View("FeedbackCapture", new FeedbackCaptureViewModel());
+            return View("FeedbackCapture", viewModel);
         }
     }
 }
