@@ -12,7 +12,7 @@
     @extend .small;
     outline: none;
     transition: 0.3s;
-    margin: 1em 0.4em;
+    //margin: 1em 0.4em;
 
     &.active {
       @extend .bg-dark-blue;
