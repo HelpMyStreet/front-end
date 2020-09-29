@@ -15,13 +15,13 @@
         <div class="sm12 input tile-selector">
             @Html.HiddenFor(m => m.FeedbackRating)
             <label for="rating">How was your experience with HelpMyStreet?</label>
-            <div class="tiles">
+            <div class="tiles reduce-width">
                 <div class="row">
-                    <div class="sm4">
+                    <div class="sm6">
                         <div class="tiles__tile tile-selector__tile" data-type="rating" data-value="1">
                             <div class="tiles__tile__content">
                                 <div class="tiles__tile__content__icon">
-                                    :)
+                                    <img src="~/img/icons/happy-face.svg" alt="Happy face" class="limit-width-150" />
                                 </div>
                                 <div class="tiles__tile__content__description">
                                     Great
@@ -29,11 +29,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="sm4">
+                    <div class="sm6">
                         <div class="tiles__tile tile-selector__tile" data-type="rating" data-value="2">
                             <div class="tiles__tile__content">
                                 <div class="tiles__tile__content__icon">
-                                    :(
+                                    <img src="~/img/icons/sad-face.svg" alt="Sad face" class="limit-width-150" />
                                 </div>
                                 <div class="tiles__tile__content__description">
                                     Not so great
