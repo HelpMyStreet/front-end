@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <None Remove="src\sass\components\home\StyleSheet.scss" />
-    <None Remove="webpack.config.js" />
   </ItemGroup>
 
   <ItemGroup>
