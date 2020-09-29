@@ -2,6 +2,11 @@
 
 @model FeedbackCaptureViewComponentParameters
 
+@section Scripts {
+
+    <script src="~/feedback.js" asp-append-version="true"></script>
+}
+
 <div class="container">
     @await Component.InvokeAsync("FeedbackCapture", new { parameters = Model })
 </div>

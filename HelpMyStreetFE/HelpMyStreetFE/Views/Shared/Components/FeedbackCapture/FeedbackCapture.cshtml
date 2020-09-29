@@ -4,6 +4,9 @@
 
 @model FeedbackCaptureEditModel
 
+
+
+
 <form class="feedback-capture" asp-action="Submit">
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.EncodedJobId)
@@ -100,7 +103,12 @@
 
     <div class="row">
         <div class="sm12 input">
-            <button type="submit" class="btn cta fill">Submit feedback</button>
+            <button type="submit" id="btnSubmit" class="btn cta fill">
+                <span class="text">Submit</span>
+                <div class="loader">
+                    <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' />
+                </div>
+            </button>
         </div>
     </div>
 

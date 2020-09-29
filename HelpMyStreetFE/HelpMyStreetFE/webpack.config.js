@@ -15,6 +15,7 @@ module.exports = {
     registration: "./js/registration.js",
     auth: "./js/authenticate.js",
     requesthelp: "./js/requesthelp/requesthelp.js",
+    feedback: "./js/feedback/feedback.js",
     profile: "./js/profile/profile.js",
     coveragemap: "./js/coveragemap.js",
     stickynav: "./js/stickynav.js",

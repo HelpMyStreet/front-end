@@ -1,4 +1,4 @@
-﻿$(function () {
+﻿export function initialiseTileSelector() {
 
   $('.tile-selector').each(function () {
     var selector = this;
@@ -14,4 +14,4 @@
     });
   });
 
-});
+};
