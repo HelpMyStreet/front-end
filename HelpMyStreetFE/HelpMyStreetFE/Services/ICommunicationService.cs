@@ -9,5 +9,6 @@ namespace HelpMyStreetFE.Services
     public interface ICommunicationService
     {
         Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient);
+        Task<bool> SendInterUserMessage(string content);
     }
 }

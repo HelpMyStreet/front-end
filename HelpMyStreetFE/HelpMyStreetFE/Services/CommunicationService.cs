@@ -48,5 +48,10 @@ namespace HelpMyStreetFE.Services
             }
             return false;
         }
+
+        public async Task<bool> SendInterUserMessage(string content)
+        {
+            return true;
+        }
     }
 }
