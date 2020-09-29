@@ -19,7 +19,7 @@ module.exports = {
     coveragemap: "./js/coveragemap.js",
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js",
-    feedback: "./js/feedbackSliders.js" 
+    testimonials: "./js/testimonialSliders.js" 
   },
   output: {
     path: path.resolve(__dirname, "wwwroot"),
