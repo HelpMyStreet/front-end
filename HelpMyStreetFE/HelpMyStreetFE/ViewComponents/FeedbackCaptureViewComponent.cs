@@ -61,6 +61,7 @@ namespace HelpMyStreetFE.ViewComponents
             viewModel.ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null;
             viewModel.ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient;
             viewModel.ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && jobDetails.JobSummary.RequestorType != RequestorType.Myself;
+            viewModel.ShowHMSMessage = true;
 
             if (jobDetails.JobSummary.ReferringGroupID != -1)
             {

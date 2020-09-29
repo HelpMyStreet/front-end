@@ -2,4 +2,6 @@
 
 @model FeedbackCaptureViewComponentParameters
 
-@await Component.InvokeAsync("FeedbackCapture", new { parameters = Model })
+<div class="container">
+    @await Component.InvokeAsync("FeedbackCapture", new { parameters = Model })
+</div>

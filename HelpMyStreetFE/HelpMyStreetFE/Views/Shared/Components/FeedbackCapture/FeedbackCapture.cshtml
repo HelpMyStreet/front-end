@@ -1,4 +1,4 @@
-@using HelpMyStreetFE.Models.Feedback
+﻿@using HelpMyStreetFE.Models.Feedback
 @using HelpMyStreet.Utils.Enums;
 
 
@@ -9,7 +9,7 @@
     @Html.HiddenFor(m => m.EncodedJobId)
     @Html.HiddenFor(m => m.RoleSubmittingFeedback)
 
-    <h2>Tell us how it went?</h2>
+    <h2 class="text-center mt-xl">Tell us how it went?</h2>
 
     <div class="row">
         <div class="sm12 input tile-selector">
@@ -82,7 +82,7 @@
     {
         <div class="row">
             <div class="sm12 input">
-                @Html.LabelFor(m => m.GroupMessage, $"This request was managed by <b>{Model.GroupName}</b> on the HelpMyStreet platform; use the buttons below to share your comments and compliments.")
+                <label for="@nameof(Model.GroupMessage)">This request was managed by <b>@Model.GroupName</b>. Got some feedback for them?</label>
                 @Html.TextAreaFor(m => m.GroupMessage, new { @placeholder = $"Leave your comments and compliments for their team here.", @class = "shrink grow-on-focus" })
             </div>
         </div>
@@ -92,12 +92,16 @@
     {
         <div class="row">
             <div class="sm12 input">
-                @Html.TextAreaFor(m => m.HMSMessage, new { @placeholder = "Got some feedback about our site? Leave your comments and compliments for the HelpMyStreet team here." })
+                <label for="@nameof(Model.HMSMessage)">Got some feedback about HelpMyStreet?</label>
                 @Html.TextAreaFor(m => m.HMSMessage, new { @placeholder = "Leave your comments and compliments for the team here.", @class = "shrink grow-on-focus" })
             </div>
         </div>
     }
 
-    <button type="submit" class="btn cta">Submit</button>
+    <div class="row">
+        <div class="sm12 input">
+            <button type="submit" class="btn cta fill">Submit feedback</button>
+        </div>
+    </div>
 
 </form>
