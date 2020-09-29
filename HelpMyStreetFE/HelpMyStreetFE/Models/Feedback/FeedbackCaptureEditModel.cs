@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.Models.Feedback
 {
     public class FeedbackCaptureEditModel
     {
+        [Required]
         public string EncodedJobId { get; set; }
+
+        [Required]
         public RequestRoles RoleSubmittingFeedback { get; set; }
 
         public bool ShowRecipientMessage { get; set; }
@@ -22,6 +27,8 @@ namespace HelpMyStreetFE.Models.Feedback
         public string VolunteerName { get; set; }
         public string GroupName { get; set; }
 
+        [Required]
+        [Range(1, 2)]
         public int FeedbackRating { get; set; }
         public string RecipientMessage { get; set; }
         public string RequestorMessage { get; set; }
