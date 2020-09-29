@@ -8,6 +8,7 @@ import "./shared/info-popup";
 import "./shared/site-header";
 import "./ui/filters";
 import "./ui/tile-selector";
+import "./ui/grow-on-focus";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
 import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
