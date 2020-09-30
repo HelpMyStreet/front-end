@@ -20,8 +20,8 @@ module.exports = {
     coveragemap: "./js/coveragemap.js",
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js",
-    testimonials: "./js/testimonialSliders.js" 
-    helpertabs: "./js/helperTabs.js"
+    testimonials: "./js/testimonialSliders.js",
+    helpertabs: "./js/helperTabs.js",
   },
   output: {
     path: path.resolve(__dirname, "wwwroot"),
