@@ -27,19 +27,22 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public IActionResult PostTaskFeedbackCapture(int jobId, RequestRoles requestRole)
+        public IActionResult PostTaskFeedbackCapture(string j, string r)
         {
             if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
             {
                 return Redirect("/Error/401");
             }
 
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+            RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
+
             return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostTaskFeedbackCapture(int jobId, RequestRoles requestRole, FeedbackCaptureEditModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> PostTaskFeedbackCapture(string j, string r, FeedbackCaptureEditModel model, CancellationToken cancellationToken)
         {
             if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
             {
@@ -51,11 +54,12 @@ namespace HelpMyStreetFE.Controllers
                 return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, that didn't work." });
             }
 
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+            RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
+
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            //var jobId = Base64Utils.Base64DecodeToInt(model.EncodedJobId);
-
-            await _feedbackRepository.PostRecordFeedback(jobId, model.RoleSubmittingFeedback, user?.ID, model.FeedbackRating);
+            await _feedbackRepository.PostRecordFeedback(jobId, requestRole, user?.ID, model.FeedbackRating);
 
             if (!string.IsNullOrEmpty(model.RecipientMessage))
             {

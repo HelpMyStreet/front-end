@@ -25,7 +25,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task<string> GetLinkDestination(string token)
         {
-            return "/Feedback/PostTaskFeedbackCapture?jobId=359&requestRole=2";
+            return "/Feedback/PostTaskFeedbackCapture?j=MzU5&r=Mg==";
         }
 
         public async Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient)
