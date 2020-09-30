@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Services
     {
         Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient);
         Task<bool> SendInterUserMessage(string content);
+        Task<string> GetLinkDestination(string token);
     }
 }

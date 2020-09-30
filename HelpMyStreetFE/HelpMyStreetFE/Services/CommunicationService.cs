@@ -23,6 +23,11 @@ namespace HelpMyStreetFE.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public async Task<string> GetLinkDestination(string token)
+        {
+            return "/Feedback/PostTaskFeedbackCapture?jobId=359&requestRole=2";
+        }
+
         public async Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient)
         {
             SendEmailRequest sendEmailRequest = new SendEmailRequest()
