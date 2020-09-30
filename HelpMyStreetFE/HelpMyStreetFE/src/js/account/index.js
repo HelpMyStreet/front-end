@@ -68,7 +68,7 @@ async function refreshBadge(badge, interval) {
 }
 
 async function updateAwards() {
-    var response = await hmsFetch('/account/LoadComponent');
+    var response = await hmsFetch('/account/LoadAwardsComponent');
     if (response.fetchResponse == fetchResponses.SUCCESS) {
         var html = await response.fetchPayload;
         $(".awards-component").html(html);

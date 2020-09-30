@@ -4,11 +4,6 @@ using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Models.Awards
 {
-    public enum AwardsDescriptionModifiers
-    {
-        StandardDescription,
-        CountListDescription
-    }
     public class AwardsModel
     {
         private string _awardDescription;
@@ -30,7 +25,6 @@ namespace HelpMyStreetFE.Models.Awards
         public string ImageLocation { get; set; } = "/img/icons/thumbs-up.svg";
         public Func<List<Object>, bool> SpecificPredicate { get; set; } = x => true;
         public Func<int, string, string, string> DescriptionModifier { get; set; } = (x, y, z) => z;
-        //public Func<int, string, string> AwardDescription { get; set; }
 
         public AwardsModel(){
             JobCount = 0;

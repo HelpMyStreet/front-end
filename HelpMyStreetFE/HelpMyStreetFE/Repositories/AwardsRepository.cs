@@ -1,5 +1,6 @@
 ﻿using System;
 using HelpMyStreetFE.Models.Awards;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreet.Utils.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,48 +19,6 @@ namespace HelpMyStreetFE.Repositories
         {
             _requestService = requestService;
             _userService = userService;
-        }
-
-        public Dictionary<SupportActivities, string> GetFriendlySupports(bool pleural)
-        {
-            if (pleural)
-            {
-                return new Dictionary<SupportActivities, string>()
-                    {
-                    { SupportActivities.Shopping, "shopping trips" },
-                    { SupportActivities.CollectingPrescriptions, "prescriptions collected" },
-                    { SupportActivities.Errands, "errands run" },
-                    { SupportActivities.DogWalking, "dogs walked" },
-                    { SupportActivities.MealPreparation, "meals prepared" },
-                    { SupportActivities.PhoneCalls_Friendly, "friendly chats" },
-                    { SupportActivities.PhoneCalls_Anxious, "supportive chats" },
-                    { SupportActivities.HomeworkSupport, "homework assignments" },
-                    { SupportActivities.CheckingIn, "check ins" },
-                    { SupportActivities.Other, "other tasks" },
-                    { SupportActivities.FaceMask, "face coverings sent" },
-                    { SupportActivities.WellbeingPackage, "wellbeing packages" },
-                    { SupportActivities.CommunityConnector, "Community Connectors" },
-                    };
-            }
-            else
-            {
-                return new Dictionary<SupportActivities, string>()
-                    {
-                    { SupportActivities.Shopping, "shopping trip" },
-                    { SupportActivities.CollectingPrescriptions, "prescription collected" },
-                    { SupportActivities.Errands, "errand run" },
-                    { SupportActivities.DogWalking, "dog walked" },
-                    { SupportActivities.MealPreparation, "meal prepared" },
-                    { SupportActivities.PhoneCalls_Friendly, "friendly chat" },
-                    { SupportActivities.PhoneCalls_Anxious, "supportive chat" },
-                    { SupportActivities.HomeworkSupport, "homework assignment" },
-                    { SupportActivities.CheckingIn, "check in" },
-                    { SupportActivities.Other, "other task" },
-                    { SupportActivities.FaceMask, "face covering sent" },
-                    { SupportActivities.WellbeingPackage, "wellbeing package" },
-                    { SupportActivities.CommunityConnector, "Community Connectors" },
-                    };
-            }
         }
 
         public async Task<List<AwardsModel>> GetAwards()
@@ -155,8 +114,6 @@ namespace HelpMyStreetFE.Repositories
             var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
             var viewModel = new AwardsViewModel();
             var awards = await GetAwards();
-            var friendlySupport = GetFriendlySupports(false);
-            var friendlySupports = GetFriendlySupports(true);
 
             var predicates = new List<Object>() { user };
 
@@ -172,17 +129,8 @@ namespace HelpMyStreetFE.Repositories
             var listArray = new List<string>();
             foreach (var result in listOfJobs)
             {
-                if (result.Activity != SupportActivities.CommunityConnector)
-                {
-                    if (result.Count == 1)
-                    {
-                        listArray.Add(result.Count + " " + friendlySupport[result.Activity]);
-                    }
-                    else
-                    {
-                        listArray.Add(result.Count + " " + friendlySupports[result.Activity]);
-                    }
-                }
+                var friendlyName = SupportActivityHelpers.Sentences(result.Activity, (result.Count > 1));
+                listArray.Add(result.Count + " " + friendlyName);
             }
 
             var listString = listArray.Count() > 0 ? ", including " + String.Join(", ", listArray) : " ";
