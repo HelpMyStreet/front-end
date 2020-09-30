@@ -1,0 +1,62 @@
+﻿.tab {
+  @media screen and (min-width: $med-screen) {
+    display: none;
+  }
+
+  h4 {
+  }
+
+  button {
+    @extend .btn;
+    @extend .cta--dark-blue-border;
+    @extend .small;
+    outline: none;
+    transition: 0.3s;
+    margin: 0.4em 0em;
+
+    &.active {
+      @extend .bg-dark-blue;
+      @extend .white;
+
+      &:hover {
+        @extend .white;
+      }
+    }
+  }
+}
+
+.tabcontent {
+  padding: 1.5em;
+
+  @media screen and (max-width: $med-screen) {
+    padding: 0.5em;
+    text-align: center;
+  }
+
+  .tab-content-title {
+    @media screen and (max-width: $med-screen) {
+      font-size: 1rem;
+      display: none;
+    }
+  }
+
+  .tab-content-p1 {
+    flex-basis: 4em;
+
+    @media screen and (max-width: $med-screen) {
+      flex-basis: auto;
+    }
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.tabs {
+    .inactive {
+        @media screen and (max-width: $med-screen) {
+            display: none;
+        }
+    }
+}
