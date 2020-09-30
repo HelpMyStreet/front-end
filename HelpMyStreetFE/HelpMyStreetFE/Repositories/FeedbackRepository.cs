@@ -144,7 +144,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "A wonderful village",
                     Message = "Thank you from the bottom of my heart to you and the team for helping my parents through this difficult time. It's so appreciated. What you guys did and will continue to do was/is amazing. Ruddington is a wonderful village ❤",
-                    Person = "Leigh requested help for her parents is Ruddington",
+                    Person = "Leigh requested help for her parents in Ruddington",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
                  },

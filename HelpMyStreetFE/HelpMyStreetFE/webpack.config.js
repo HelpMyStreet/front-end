@@ -21,6 +21,7 @@ module.exports = {
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js",
     testimonials: "./js/testimonialSliders.js" 
+    helpertabs: "./js/helperTabs.js"
   },
   output: {
     path: path.resolve(__dirname, "wwwroot"),
