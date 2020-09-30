@@ -330,6 +330,13 @@ namespace HelpMyStreetFE.Repositories
                     Location = "(photograph supplied by Pam Pearce)",
                     ImageLocation = "/img/community/ruddington/Alex.png"
                 },
+                new CommunityVolunteer()
+                {
+                    Name = "Andrew",
+                    Role = "Market Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/Andrew.jpg"
+                },
             };
 
 
