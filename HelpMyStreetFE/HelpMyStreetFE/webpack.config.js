@@ -19,7 +19,8 @@ module.exports = {
     coveragemap: "./js/coveragemap.js",
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js",
-    feedback: "./js/feedbackSliders.js" 
+    feedback: "./js/feedbackSliders.js",
+    helpertabs: "./js/helperTabs.js"
   },
   output: {
     path: path.resolve(__dirname, "wwwroot"),
