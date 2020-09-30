@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Claims;
 using System.Threading;
@@ -24,6 +25,8 @@ namespace HelpMyStreetFE.Services
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ILogger<AuthService> _logger;
+
+        private static readonly string AUTHORISED_URLS_SESSION_KEY = "authorised-urls";
 
         public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger)
         {
@@ -122,6 +125,32 @@ namespace HelpMyStreetFE.Services
         {
             httpContext.Session.Clear();
             await httpContext.SignOutAsync();            
+        }
+
+        public void PutSessionAuthorisedUrl(HttpContext httpContext, string authorisedURL)
+        {
+            var authorisedURLs = httpContext.Session.GetObjectFromJson<List<string>>(AUTHORISED_URLS_SESSION_KEY);
+
+            if (authorisedURLs == null)
+            {
+                authorisedURLs = new List<string>();
+            }
+
+            authorisedURLs.Add(authorisedURL);
+
+            httpContext.Session.SetObjectAsJson(AUTHORISED_URLS_SESSION_KEY, authorisedURLs);
+        }
+
+        public bool GetUrlIsSessionAuthorised(HttpContext httpContext)
+        {
+            return GetUrlIsSessionAuthorised(httpContext, httpContext.Request.Path + httpContext.Request.QueryString);
+        }
+
+        public bool GetUrlIsSessionAuthorised(HttpContext httpContext, string url)
+        {
+            var authorisedURLs = httpContext.Session.GetObjectFromJson<List<string>>(AUTHORISED_URLS_SESSION_KEY);
+
+            return authorisedURLs != null && authorisedURLs.Contains(url);
         }
     }
 }

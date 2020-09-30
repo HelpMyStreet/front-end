@@ -11,9 +11,6 @@ namespace HelpMyStreetFE.Models.Feedback
     public class FeedbackCaptureEditModel
     {
         [Required]
-        public string EncodedJobId { get; set; }
-
-        [Required]
         public RequestRoles RoleSubmittingFeedback { get; set; }
 
         public bool ShowRecipientMessage { get; set; }

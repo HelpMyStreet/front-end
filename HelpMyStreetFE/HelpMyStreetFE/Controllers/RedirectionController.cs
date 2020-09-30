@@ -10,10 +10,12 @@ namespace HelpMyStreetFE.Controllers
     public class RedirectionController : Controller
     {
         private readonly ICommunicationService _communicationService;
+        private readonly IAuthService _authService;
 
-        public RedirectionController(ICommunicationService communicationService)
+        public RedirectionController(ICommunicationService communicationService, IAuthService authService)
         {
             _communicationService = communicationService;
+            _authService = authService;
         }
 
         [Route("link/{token}")]
@@ -25,6 +27,8 @@ namespace HelpMyStreetFE.Controllers
             {
                 return Redirect("/link-expired"); 
             }
+
+            _authService.PutSessionAuthorisedUrl(HttpContext, destination);
 
             return Redirect(destination);
         }

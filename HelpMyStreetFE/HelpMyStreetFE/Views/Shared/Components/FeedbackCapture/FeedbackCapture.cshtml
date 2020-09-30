@@ -7,10 +7,8 @@
 
 
 
-<form class="feedback-capture" asp-action="Submit">
+<form class="feedback-capture" method="post">
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.EncodedJobId)
-    @Html.HiddenFor(m => m.RoleSubmittingFeedback)
 
     <h2 class="text-center mt-xl">Tell us how it went?</h2>
 

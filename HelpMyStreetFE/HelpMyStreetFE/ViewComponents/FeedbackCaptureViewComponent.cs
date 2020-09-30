@@ -51,7 +51,6 @@ namespace HelpMyStreetFE.ViewComponents
 
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel();
 
-            viewModel.EncodedJobId = Base64Utils.Base64Encode(parameters.JobId);
             viewModel.RoleSubmittingFeedback = parameters.RequestRole;
 
             viewModel.VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName;

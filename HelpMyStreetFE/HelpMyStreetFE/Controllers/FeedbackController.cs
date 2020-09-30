@@ -26,15 +26,26 @@ namespace HelpMyStreetFE.Controllers
             _communicationService = communicationService;
         }
 
+        [HttpGet]
         public IActionResult PostTaskFeedbackCapture(int jobId, RequestRoles requestRole)
         {
+            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            {
+                return Redirect("/Error/401");
+            }
+
             return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(FeedbackCaptureEditModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> PostTaskFeedbackCapture(int jobId, RequestRoles requestRole, FeedbackCaptureEditModel model, CancellationToken cancellationToken)
         {
+            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            {
+                return Redirect("/Error/401");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, that didn't work." });
@@ -42,7 +53,7 @@ namespace HelpMyStreetFE.Controllers
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            var jobId = Base64Utils.Base64DecodeToInt(model.EncodedJobId);
+            //var jobId = Base64Utils.Base64DecodeToInt(model.EncodedJobId);
 
             await _feedbackRepository.PostRecordFeedback(jobId, model.RoleSubmittingFeedback, user?.ID, model.FeedbackRating);
 
