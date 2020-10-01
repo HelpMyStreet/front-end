@@ -270,7 +270,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 
     let coords = await getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres);
     let communityMarkerCoords = await getCommunities();
-
+    console.log(communityMarkerCoords)
 
     if (zoomLevel <= largeAreaZoomNumber) {
         deleteMarkers();
@@ -303,26 +303,28 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     });
 
 
-    if (zoomLevel < 10) {
+    if (zoomLevel > 10) {
         communityMarkerCoords.map(coord => {
             let thisMarker;
             let thisInfoWindow;
-            thisInfoWindow = new goodle.maps.InfoWindow({
-                content: `<h4>${coord.friendlyName}</h4><p><a hlink="${coord.linkURL}">Visit homepage</a></p>`
+            thisInfoWindow = new google.maps.InfoWindow({
+                content: `<div class="community-marker"><p>Local Group</p><h4>${coord.friendlyName}</h4><p><a href="${coord.linkURL}">Visit homepage</a></p></div>`
             });
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
-                icon: { url: "/img/logos/markers/hms1.png", scaledSize: new google.maps.Size(40, 40) };
+                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(40, 40) },
+                zIndex: 100
             });
             thisMarker.addListener("click", () => {
                 thisInfoWindow.open(googleMap, thisMarker);
             });
             addMarker(thisMarker);
         });
-        showMarkers();
-        previousZoomLevel = zoomLevel;
     }
+    showMarkers();
+    previousZoomLevel = zoomLevel;
+    
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
@@ -390,9 +392,9 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
 async function getCommunities() {
     let endpoint = '/api/Maps/getCommunities';
     const content = await hmsFetch(endpoint);
-    if (content.fetchResponses == fetchResponses.SUCCESS) {
-        var payload = await content.fetchPayload;
-        return payload.communityDetails;
+    if (content.fetchResponse == fetchResponses.SUCCESS) {
+        let thisPayload = await content.fetchPayload;
+        return thisPayload.communityDetails;
     } else {
         return [];
     }

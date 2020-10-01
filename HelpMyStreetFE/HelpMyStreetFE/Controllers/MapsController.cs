@@ -55,7 +55,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult<GetCommunitiesResponse>> GetCommunities()
         {
             var communityData = await _communityRepository.GetCommunities();
-            var communityDetails = new List<CommunityDetail>;
+            var communityDetails = new List<CommunityDetail>();
             foreach (CommunityModel community in communityData)
             {
                 var communityDetail = new CommunityDetail()
