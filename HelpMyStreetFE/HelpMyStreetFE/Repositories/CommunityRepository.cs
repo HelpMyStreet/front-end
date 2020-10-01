@@ -5,12 +5,20 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using System.Linq;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
         private readonly IGroupService _groupService;
+        private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
+        {
+            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/hlp"} },
+            {"tankerlsey", new CommunityModel(){FriendlyName = "Tankersley & Pilley", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington"} },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln (& SL)", Latitude = 52.95, Longitude = -0.2, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl"} }
+        };
 
         public CommunityRepository(IGroupService groupService)
         {
@@ -35,21 +43,36 @@ namespace HelpMyStreetFE.Repositories
                     return null;
             }
         }
+
+        public async Task<List<CommunityModel>> GetCommunities()
+        {
+            List<CommunityModel> returnCommunities = new List<CommunityModel>();
+            foreach (var item in Communities){
+                returnCommunities.Add(item.Value);
+            }
+            return returnCommunities;
+
+        }
+
+        public async Task<CommunityModel> GetCommunityDetailByKey(string key)
+        {
+            return Communities[key];
+        }
         
         private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-
+            CommunityModel communityModel = await GetCommunityDetailByKey("hlp");
 
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "hlp";
-            communityViewModel.Latitude = 51.507602;
-            communityViewModel.Longitude = -0.127816;
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = 10;
 
-            communityViewModel.CommunityName = "Healthy London Partnership";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
 
             communityViewModel.BannerImageLocation = "/img/community/hlp/hlp-banner.png";
@@ -156,18 +179,19 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetTankersley(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("tankersley");
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "tankersley";
-            communityViewModel.Latitude = 53.498113;
-            communityViewModel.Longitude = -1.488587;
+            communityViewModel.Latitude = communityModel.Longitude;
+            communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = 14;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "tankersley";
 
-            communityViewModel.CommunityName = "Tankersley & Pilley";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
 
             communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
 
@@ -238,19 +262,20 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("ruddington");
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ruddington";
-            communityViewModel.Latitude = 52.8925;
-            communityViewModel.Longitude = -1.150;
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = 14.6;
 
             communityViewModel.ShowHelpExampleCards = false;
 
-            communityViewModel.CommunityName = "Ruddington";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
 
             communityViewModel.BannerImageLocation = "/img/community/ruddington/banner.jpg";
 
@@ -365,18 +390,19 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetAgeUKLSL(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("ageuklsl");
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ageUK";
-            communityViewModel.Latitude = 52.95;
-            communityViewModel.Longitude = -0.2;
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = 9;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ageuklsl";
 
-            communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
 
             communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";

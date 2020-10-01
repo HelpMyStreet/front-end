@@ -269,6 +269,8 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     }
 
     let coords = await getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres);
+    let communityMarkerCoords = await getCommunities();
+
 
     if (zoomLevel <= largeAreaZoomNumber) {
         deleteMarkers();
@@ -300,8 +302,27 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         addMarker(thisMarker);
     });
 
-    showMarkers();
-    previousZoomLevel = zoomLevel;
+
+    if (zoomLevel < 10) {
+        communityMarkerCoords.map(coord => {
+            let thisMarker;
+            let thisInfoWindow;
+            thisInfoWindow = new goodle.maps.InfoWindow({
+                content: `<h4>${coord.friendlyName}</h4><p><a hlink="${coord.linkURL}">Visit homepage</a></p>`
+            });
+            thisMarker = new google.maps.Marker({
+                position: { lat: coord.latitude, lng: coord.longitude },
+                title: coord.friendlyName,
+                icon: { url: "/img/logos/markers/hms1.png", scaledSize: new google.maps.Size(40, 40) };
+            });
+            thisMarker.addListener("click", () => {
+                thisInfoWindow.open(googleMap, thisMarker);
+            });
+            addMarker(thisMarker);
+        });
+        showMarkers();
+        previousZoomLevel = zoomLevel;
+    }
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
@@ -361,6 +382,17 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
     if (content.fetchResponse == fetchResponses.SUCCESS) {
         var payload = await content.fetchPayload;
         return payload.volunteerCoordinates;
+    } else {
+        return [];
+    }
+}
+
+async function getCommunities() {
+    let endpoint = '/api/Maps/getCommunities';
+    const content = await hmsFetch(endpoint);
+    if (content.fetchResponses == fetchResponses.SUCCESS) {
+        var payload = await content.fetchPayload;
+        return payload.communityDetails;
     } else {
         return [];
     }
