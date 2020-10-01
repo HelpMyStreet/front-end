@@ -97,16 +97,18 @@ else
         <div class="row card p-md mb-md face-coverings-panel">
             <div class="sm5">
                 <div class="text-center">
-                    <img class="" alt="family wearing face coverings" src="~/img/section-images/facemask.png" width="100%" />
+                    <img class="" alt="Ruddington" src="~/img/community/ruddington/banner.jpg" />
                 </div>
-                <img class="ftlos-partnership" alt="in partnership with For the Love of Scrubs" src="~/img/community/fortheloveofscrubs/InPartnershipWithFTLOS.png" width="100%" />
             </div>
             <div class="sm7 text-center flex flex-column">
-                <h2 class="mb-xs flex-grow">Looking for a face covering?</h2>
+                <h2 class="mb-xs flex-grow">Ruddington Launch</h2>
                 <p class="mt-xs flex-grow">
-                    HelpMyStreet is supporting local volunteers who have been making face coverings for their communities. We’ve also partnered with the amazing For the Love of Scrubs! Find out how to sign up and how to request yours now.
+                    The Ruddington Community Response Team are excited to be launching HelpMyStreet at their village fair on Saturday 3rd October.
                 </p>
-                <a href="/face-coverings" class="btn cta fill cta--orange mlmr-auto">More Info</a>
+                <p class="mt-xs flex-grow">
+                    If you’re in the area, why not visit their stall - or click below to find out more.
+                </p>
+                <a href="/ruddington" class="btn cta fill mlmr-auto">Ruddington page</a>
             </div>
         </div>
 
@@ -124,11 +126,10 @@ else
                 <p><strong>From Cardiff to Cambridge, Dover to Dundee, HelpMyStreet gets help to people in need.</strong></p>
                 <div>
                     <a class="home-link" href="/request-help"><h4 class="orange mb-xs text-center">How can we help?</h4></a>
-                    <p class="mt-sm">We've got shoppers, sewers and hot meal makers; walkers, talkers and homework helpers. All ready and waiting to help you!</p>
+                    <p class="mt-sm">We’ve got shoppers, sewers and hot meal makers; walkers, talkers and homework helpers. All ready and waiting to help you!</p>
                     <a class="home-link" href="/registration/step-one"><h4 class="green text-center">Join our volunteers</h4></a>
                     <p class="mt-sm">Help people stay safe - on your street and across your community. Just let us know when, where and how you can help.</p>
                 </div>
-
             </div>
         </div>
 
@@ -136,44 +137,59 @@ else
             @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
         </div>
 
-        <div class="row mt-lg justify-center">
-            <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
-            <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
-
+        <div class="row card p-md mb-md mt-xl face-coverings-panel">
+            <div class="sm5">
+                <div class="text-center">
+                    <img class="" alt="family wearing face coverings" src="~/img/section-images/facemask.png" width="100%" />
+                </div>
+                <img class="ftlos-partnership" alt="in partnership with For the Love of Scrubs" src="~/img/community/fortheloveofscrubs/InPartnershipWithFTLOS.png" width="100%" />
+            </div>
+            <div class="sm7 text-center flex flex-column">
+                <h2 class="mb-xs flex-grow">Looking for a face covering?</h2>
+                <p class="mt-xs flex-grow">
+                    HelpMyStreet is supporting local volunteers who have been making face coverings for their communities. We’ve also partnered with the amazing For the Love of Scrubs! Find out how to sign up and how to request yours now.
+                </p>
+                <a href="/face-coverings" class="btn cta fill cta--orange mlmr-auto">More Info</a>
+            </div>
         </div>
 
         <div class="how-to-use row mt72 justify-center card">
             <partial name="_HowToUse" model="null" />
         </div>
 
-            <div class="row justify-center text-center mt72">
-                <div class="sm12">
-                    <h2>We’re working with communities&hellip;</h2>
-                </div>
-                <div class="sm8">
-                    <p>
-                        Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
-                    </p>
-                </div>
-                <div class="sm8 list mb-lg">
-                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
-                    <span>
-                        <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
-                    </span>
-                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
-                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
-                    <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
-                </div>
+        <div class="row mt-lg justify-center">
+            <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
+            <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
+        </div>
+
+        <div class="row justify-center text-center mt72">
+            <div class="sm12">
+                <h2>We’re working with communities&hellip;</h2>
             </div>
-            <div class="row justify-center text-center">
-                @if (Model.isLoggedIn)
-                {
-                    <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
-                }
-                else
-                {
-                    <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
-                }
+            <div class="sm8">
+                <p>
+                    Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
+                </p>
+            </div>
+            <div class="sm8 list mb-lg">
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
+                <span>
+                    <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
+                </span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
+                <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
             </div>
         </div>
+        <div class="row justify-center text-center">
+            @if (Model.isLoggedIn)
+            {
+                <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
+            }
+            else
+            {
+                <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
+            }
+        </div>
+    </div>
 }
