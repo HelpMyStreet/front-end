@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Models.Email;
+﻿using HelpMyStreet.Contracts.CommunicationService.Request;
+using HelpMyStreetFE.Models.Email;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace HelpMyStreetFE.Services
     public interface ICommunicationService
     {
         Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient);
-        Task<bool> SendInterUserMessage(string content);
+        Task<bool> SendInterUserMessage(MessageParticipant from, MessageParticipant to, string message, int? jobId = null);
         Task<string> GetLinkDestination(string token);
     }
 }

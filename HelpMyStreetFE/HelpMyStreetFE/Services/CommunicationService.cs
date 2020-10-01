@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
-    public class CommunicationService : BaseHttpService,ICommunicationService
+    public class CommunicationService : BaseHttpService, ICommunicationService
     {
         private readonly ILogger<CommunicationService> _logger;
         public CommunicationService(
@@ -54,9 +54,29 @@ namespace HelpMyStreetFE.Services
             return false;
         }
 
-        public async Task<bool> SendInterUserMessage(string content)
+        public async Task<bool> SendInterUserMessage(MessageParticipant from, MessageParticipant to, string message, int? jobId)
         {
-            return true;
+            var interUserMessageRequest = new InterUserMessageRequest()
+            {
+                From = from,
+                To = to,
+                Content = message,
+                JobId = jobId,
+            };
+
+            string json = JsonConvert.SerializeObject(interUserMessageRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (HttpResponseMessage response = await Client.PostAsync("/api/InterUserMessage", data))
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                // What here?
+                if (true)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
