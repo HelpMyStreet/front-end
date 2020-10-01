@@ -251,6 +251,14 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         [AllowAnonymous]
         [AuthorizeAttributeNoRedirect]
+        public async Task<bool> GetLoggedInStatus()
+        {
+            return true;
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [AuthorizeAttributeNoRedirect]
         public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
