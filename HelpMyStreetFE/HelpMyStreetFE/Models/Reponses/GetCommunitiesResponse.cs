@@ -34,5 +34,13 @@ namespace HelpMyStreetFE.Models.Reponses
         [DataMember(Name = "longitude")]
         [JsonPropertyName("longitude")]
         public double Longitude { get; set; }
+
+        [DataMember(Name ="displayOnMap")]
+        [JsonPropertyName("displayOnMap")]
+        public bool DisplayOnMap { get; set; }
+
+        [DataMember(Name ="bannerLocation")]
+        [JsonPropertyName("bannerLocation")]
+        public string BannerLocation { get; set; }
     }
 }

@@ -14,10 +14,10 @@ namespace HelpMyStreetFE.Repositories
         private readonly IGroupService _groupService;
         private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
         {
-            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/hlp"} },
-            {"tankerlsey", new CommunityModel(){FriendlyName = "Tankersley & Pilley", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington"} },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln (& SL)", Latitude = 52.95, Longitude = -0.2, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl"} }
+            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
+            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", BannerLocation = "/img/community/ruddington/banner.jpg"} },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln (& SL)", Latitude = 52.95, Longitude = -0.2, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", BannerLocation = "/img/community/ageUK/ageUKlogo.png"} }
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -75,7 +75,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
 
-            communityViewModel.BannerImageLocation = "/img/community/hlp/hlp-banner.png";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "What are Community Connectors?";
             communityViewModel.DisableButtons = true;
@@ -193,7 +193,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
-            communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
 
@@ -277,7 +277,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
-            communityViewModel.BannerImageLocation = "/img/community/ruddington/banner.jpg";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
 
@@ -405,7 +405,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
 
-            communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "Veterans need your help!";
             communityViewModel.HeaderHTML = @"

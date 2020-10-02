@@ -270,6 +270,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 
     let coords = await getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres);
     let communityMarkerCoords = await getCommunities();
+    console.log(coords);
     console.log(communityMarkerCoords)
 
     if (zoomLevel <= largeAreaZoomNumber) {
@@ -308,7 +309,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             let thisMarker;
             let thisInfoWindow;
             thisInfoWindow = new google.maps.InfoWindow({
-                content: `<div class="community-marker"><p>Local Group</p><h4>${coord.friendlyName}</h4><p><a href="${coord.linkURL}">Visit homepage</a></p></div>`
+                content: `<div class="community-marker"><div><img src="${coord.bannerLocation}"></img><div class="marker-title"><h4>${coord.friendlyName}</h4><p>Local Group</p></div></div><p><a href="${coord.linkURL}">Visit homepage</a></p></div>`
             });
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
@@ -383,7 +384,12 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
     const content = await hmsFetch(endpoint);
     if (content.fetchResponse == fetchResponses.SUCCESS) {
         var payload = await content.fetchPayload;
-        return payload.volunteerCoordinates;
+        if (payload.volunteerCoordinates != null) {
+            return payload.volunteerCoordinates;
+        }
+        else {
+            return [];
+        }
     } else {
         return [];
     }

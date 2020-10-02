@@ -8,5 +8,7 @@ namespace HelpMyStreetFE.Models.Community
         public string LinkURL { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public bool DisplayOnMap { get; set; } = true;
+        public string BannerLocation { get; set; }
     }
 }

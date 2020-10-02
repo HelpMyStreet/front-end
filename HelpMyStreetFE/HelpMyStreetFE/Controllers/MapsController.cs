@@ -64,7 +64,9 @@ namespace HelpMyStreetFE.Controllers
                     Latitude = community.Latitude,
                     Longitude = community.Longitude,
                     LinkURL = community.LinkURL,
-                    ReferenceName = community.ReferenceName
+                    ReferenceName = community.ReferenceName,
+                    BannerLocation = community.BannerLocation,
+                    DisplayOnMap = community.DisplayOnMap
                 };
                 communityDetails.Add(communityDetail);
             }

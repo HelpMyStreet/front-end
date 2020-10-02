@@ -1,11 +1,37 @@
-﻿.community-marker{
-    p{
-        margin: 0px;
+﻿.community-marker {
+
+    .marker-title {
+        position: absolute;
+        bottom: 10%;
+        left: 3%;
+        p {
+            color: white;
+        }
     }
+
+    p {
+        margin: 0px;
+        text-align: right;
+    }
+
     h4 {
         margin: 0px;
+        color: white;
+
+        @media screen and (max-width: $sm-screen) {
+            font-size: 1em;
+        }
     }
+
     a {
         font-size: 1em;
+    }
+
+    img {
+        width: 24vw;
+
+        @media screen and (max-width: $sm-screen){
+            width: 100vw;
+        }
     }
 }
