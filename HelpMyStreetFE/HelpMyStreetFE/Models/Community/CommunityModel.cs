@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Models.Community
         public double Longitude { get; set; }
         public bool DisplayOnMap { get; set; } = true;
         public string BannerLocation { get; set; }
+        public double ZoomLevel { get; set; }
     }
 }

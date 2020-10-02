@@ -270,8 +270,6 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 
     let coords = await getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres);
     let communityMarkerCoords = await getCommunities();
-    console.log(coords);
-    console.log(communityMarkerCoords)
 
     if (zoomLevel <= largeAreaZoomNumber) {
         deleteMarkers();
@@ -303,9 +301,10 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         addMarker(thisMarker);
     });
 
+    var infoWindows = [];
 
-    if (zoomLevel > 10) {
-        communityMarkerCoords.map(coord => {
+    communityMarkerCoords.map(coord => {
+        if (zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
             let thisMarker;
             let thisInfoWindow;
             thisInfoWindow = new google.maps.InfoWindow({
@@ -317,13 +316,24 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                 icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(40, 40) },
                 zIndex: 100
             });
-            thisMarker.addListener("click", () => {
+            infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
+            thisMarker.addListener("mouseover", () => {
                 thisInfoWindow.open(googleMap, thisMarker);
             });
             addMarker(thisMarker);
+        }
         });
-    }
+
     showMarkers();
+
+    /*
+    infoWindows.forEach(pair => {
+        if (googleMap.getBounds().contains(pair.marker.getPosition())) {
+            pair.infoWindow.open(googleMap, pair.marker);
+        }
+    });
+    */
+
     previousZoomLevel = zoomLevel;
     
 }
@@ -363,7 +373,9 @@ function getMarkerKey(marker) {
 }
 
 function setMapOnAll(googleMap) {
-    googleMapMarkers.forEach(function (value, key, mapCollection) { value.setMap(googleMap); });
+    googleMapMarkers.forEach(function (value, key, mapCollection) {
+        value.setMap(googleMap);
+    });
 }
 
 function clearMarkers() {

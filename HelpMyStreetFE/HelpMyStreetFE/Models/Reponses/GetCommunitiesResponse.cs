@@ -42,5 +42,9 @@ namespace HelpMyStreetFE.Models.Reponses
         [DataMember(Name ="bannerLocation")]
         [JsonPropertyName("bannerLocation")]
         public string BannerLocation { get; set; }
+
+        [DataMember(Name = "zoomLevel")]
+        [JsonPropertyName("zoomLevel")]
+        public double ZoomLevel { get; set; }
     }
 }
