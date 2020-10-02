@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,15 +18,15 @@ namespace HelpMyStreetFE.Controllers
     public class YotiController : Controller
     {
         private readonly YotiOptions _options;
-        private readonly IValidationService _validationService;
+        private readonly IVerificationService _verificationService;
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
 
-        public YotiController(IOptions<YotiOptions> options, IValidationService validationService, IUserService userService, IAuthService authService)
+        public YotiController(IOptions<YotiOptions> options, IVerificationService verificationService, IUserService userService, IAuthService authService)
         {
             _userService = userService;
             _options = options.Value;
-            _validationService = validationService;
+            _verificationService = verificationService;
             _authService = authService;
         }
 
@@ -50,9 +51,14 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> ValidateToken(string token, string u, CancellationToken cancellationToken)
         {
             var validUserId = await DecodedAndCheckedUserId(u, token != null, cancellationToken);
-            if (validUserId.HasValue && token != null)
-            {                           
-                var response = await _validationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId.Value }, cancellationToken);           
+            if (validUserId == null || token == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId.Value }, cancellationToken);
                 if (response.Status == ValidationStatus.Success || response.Status == ValidationStatus.Unauthorized)
                 {
                     if (response.Status == ValidationStatus.Success)
@@ -66,12 +72,12 @@ namespace HelpMyStreetFE.Controllers
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
                         await _authService.LoginWithUserId(validUserId.Value, HttpContext, cancellationToken);
                     }
-                }                      
+                }
                 return handleValidationTokenResponse(response);
             }
-            else
+            catch (Exception ex)
             {
-                return Unauthorized();
+                return StatusCode(500, ex);
             }
         }
 

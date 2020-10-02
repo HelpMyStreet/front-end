@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
 using HelpMyStreetFE.Models.ContactForm;
 using HelpMyStreetFE.Models.Email;
-using SendGrid;
-using SendGrid.Helpers.Mail;
 using HelpMyStreetFE.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace HelpMyStreetFE.Controllers

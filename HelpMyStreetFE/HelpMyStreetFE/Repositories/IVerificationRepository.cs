@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
 {
-    public interface IValidationRepository
+    public interface IVerificationRepository
     {
         Task<HttpResponseMessage> ValidateUser(ValidationRequest request);
     }
