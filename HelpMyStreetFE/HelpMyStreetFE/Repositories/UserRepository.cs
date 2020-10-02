@@ -1,4 +1,8 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.Shared;
+using HelpMyStreet.Contracts.UserService.Request;
+using HelpMyStreet.Contracts.UserService.Response;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
@@ -17,27 +21,29 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<User> GetUserByAuthId(string authId)
         {
-            var resp = await GetAsync<GetUserResponse>($"/api/getuserbyfirebaseuserid?firebaseuid={authId}");
+            var response = await GetAsync<ResponseWrapper<GetUserByFirebaseUIDResponse,UserServiceErrorCode>>($"/api/getuserbyfirebaseuserid?firebaseuid={authId}");
 
-            return resp.User;
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.User;
+            }
+            return null;
         }
 
         public async Task<User> GetUser(int id)
         {
-            try
+            var response = await GetAsync<ResponseWrapper<GetUserByIDResponse, UserServiceErrorCode>>($"/api/getuserbyid?id={id}");
+
+            if (response.HasContent && response.IsSuccessful)
             {
-                var resp = await GetAsync<GetUserResponse>($"/api/getuserbyid?id={id}");
-                return resp.User;
+                return response.Content.User;
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
 
         public async Task<int> CreateUser(string email, string authId, int referringGroupId, string source)
         {
-            var response = await PostAsync<ModifyUserResponse>("/api/postcreateuser", new
+            var request = new PostCreateUserRequest()
             {
                 RegistrationStepOne = new RegistrationStepOne
                 {
@@ -47,108 +53,225 @@ namespace HelpMyStreetFE.Repositories
                     Source = source,
                     DateCreated = DateTime.Now
                 }
-            });
+            };
 
-            return response.Id;
+            var response = await PostAsync<ResponseWrapper<PostCreateUserResponse,UserServiceErrorCode>>("/api/postcreateuser", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ID;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from postcreateuser.  Errors: {response.Errors}");
+            }
+
         }
 
         public async Task<int> CreateUserStepTwo(RegistrationStepTwo data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageTwo", new
+            var request = new PutModifyRegistrationPageTwoRequest()
             {
                 RegistrationStepTwo = data
-            });
+            };
 
-            return response.Id;
+            var response = await PutAsync<ResponseWrapper<PutModifyRegistrationPageTwoResponse, UserServiceErrorCode>>("/api/PutModifyRegistrationPageTwo", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ID;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageTwo.  Errors: {response.Errors}");
+            }
         }
 
         public async Task<int> CreateUserStepThree(RegistrationStepThree data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageThree", new
+            var request = new PutModifyRegistrationPageThreeRequest()
             {
                 RegistrationStepThree = data
-            });
+            };
 
-            return response.Id;
+            var response = await PutAsync<ResponseWrapper<PutModifyRegistrationPageThreeResponse, UserServiceErrorCode>>("/api/PutModifyRegistrationPageThree", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ID;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageThree.  Errors: {response.Errors}");
+            }
         }
 
         public async Task<int> CreateUserStepFour(RegistrationStepFour data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageFour", new
+            var request = new PutModifyRegistrationPageFourRequest()
             {
                 RegistrationStepFour = data
-            });
+            };
 
-            return response.Id;
+            var response = await PutAsync<ResponseWrapper<PutModifyRegistrationPageFourResponse, UserServiceErrorCode>>("/api/PutModifyRegistrationPageFour", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ID;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageFour.  Errors: {response.Errors}");
+            }
         }
 
         public async Task<int> CreateUserStepFive(RegistrationStepFive data)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/PutModifyRegistrationPageFive", new
+            var request = new PutModifyRegistrationPageFiveRequest()
             {
                 RegistrationStepFive = data
-            });
+            };
 
-            return response.Id;
+            var response = await PutAsync<ResponseWrapper<PutModifyRegistrationPageFiveResponse, UserServiceErrorCode>>("/api/PutModifyRegistrationPageFive", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ID;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageFive.  Errors: {response.Errors}");
+            }
         }
 
         public async Task<int> UpdateUser(User user)
         {
-            var response = await PutAsync<ModifyUserResponse>("/api/putmodifyuser", new { user });
+            var request = new PutModifyUserRequest()
+            {
+                User = user
+            };
 
-            return response.Id;
+            var response = await PutAsync<ResponseWrapper<PutModifyUserResponse, UserServiceErrorCode>>("/api/putmodifyuser", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.UserID;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from putmodifyuser.  Errors: { response.Errors}");
+            }
         }
 
         public async Task<int> GetChampionCountByPostcode(string postcode)
         {
-            var response = await GetAsync<GetCountResponse>($"/api/getchampioncountbypostcode?postcode={postcode}");
+            var response = await GetAsync<ResponseWrapper<GetChampionCountByPostcodeResponse, UserServiceErrorCode>>($"/api/getchampioncountbypostcode?postcode={postcode}");
 
-            return response.Count;
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Count;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from getchampioncountbypostcode.  Errors: { response.Errors}");
+            }
         }
 
         public async Task<int> GetDistinctChampionUserCount()
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctChampionUserCount");
+            var response = await GetAsync<ResponseWrapper<GetDistinctChampionUserCountResponse, UserServiceErrorCode>>($"/api/GetDistinctChampionUserCount");
 
-            return response.Count;
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Count;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetDistinctChampionUserCount.  Errors: {response.Errors}");
+            }
         }
 
         public async Task<int> GetChampionPostcodesCoveredCount()
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetChampionPostcodesCoveredCount");
+            var response = await GetAsync<ResponseWrapper<GetChampionPostcodesCoveredCountResponse, UserServiceErrorCode>>($"/api/GetChampionPostcodesCoveredCount");
 
-            return response.Count;
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Count;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetChampionPostcodesCoveredCount.  Errors: { response.Errors}");
+            }
         }
 
         public async Task<int> GetDistinctVolunteerUserCount()
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetDistinctVolunteerUserCount");
+            var response = await GetAsync<ResponseWrapper<GetDistinctVolunteerUserCountResponse, UserServiceErrorCode>>($"/api/GetDistinctVolunteerUserCount");
 
-            return response.Count;
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Count;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetDistinctVolunteerUserCount.  Errors: { response.Errors}");
+            }
         }
 
         public async Task<int> GetVolunteerCountByPostcode(string postcode)
         {
-            var response = await GetAsync<GetCountResponse>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
-            return response.Count;
+            var response = await GetAsync<ResponseWrapper<GetVolunteerCountByPostcodeResponse, UserServiceErrorCode>>($"/api/GetVolunteerCountByPostcode?postcode={postcode}");
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Count;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetVolunteerCountByPostcode.  Errors: { response.Errors}");
+            }
         }
 
-        public async Task<GetHelperResponse> GetHelpersByPostcode(string postcode)
+        public async Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode)
         {
-            var response = await GetAsync<GetHelperResponse>($"/api/GetHelpersByPostcode?postCode={postcode}");
-            return response;
+            var response = await GetAsync<ResponseWrapper<GetHelpersByPostcodeResponse, UserServiceErrorCode>>($"/api/GetHelpersByPostcode?postCode={postcode}");
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetHelpersByPostcode.  Errors: { response.Errors}");
+            }
         }
 
-        public async Task<GetHelperResponse> GetChampionsByPostcode(string postcode)
+        public async Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode)
         {
-            var response = await GetAsync<GetHelperResponse>($"/api/GetChampionsByPostcode?postCode={postcode}");
-            return response;
+            var response = await GetAsync<ResponseWrapper<GetChampionsByPostcodeResponse, UserServiceErrorCode>>($"/api/GetChampionsByPostcode?postCode={postcode}");
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetChampionsByPostcode.  Errors: { response.Errors}");
+            }
         }
 
         public async Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres)
         {
-            VolunteerCoordinatesResponse response = await GetAsync<VolunteerCoordinatesResponse>($"/api/GetVolunteerCoordinates?SWLatitude={swLatitude}&SWLongitude={swLongitude}&NELatitude={neLatitude}&NELongitude={neLongitude}&MinDistanceBetweenInMetres={minDistanceBetweenInMetres}&VolunteerType=3&IsVerifiedType=3");
-            return response;
+            var response = await GetAsync<ResponseWrapper<VolunteerCoordinatesResponse, UserServiceErrorCode>>($"/api/GetVolunteerCoordinates?SWLatitude={swLatitude}&SWLongitude={swLongitude}&NELatitude={neLatitude}&NELongitude={neLongitude}&MinDistanceBetweenInMetres={minDistanceBetweenInMetres}&VolunteerType=3&IsVerifiedType=3");
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from GetVolunteerCoordinates.  Errors: {response.Errors}");
+            }
         }
     }
 }

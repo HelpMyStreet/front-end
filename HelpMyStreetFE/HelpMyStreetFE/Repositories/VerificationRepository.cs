@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Repositories
 {
-    public class ValidationRepository : BaseHttpRepository, IValidationRepository
+    public class VerificationRepository : BaseHttpRepository, IVerificationRepository
     {
-        public ValidationRepository(HttpClient client, IConfiguration config, ILogger<ValidationRepository> logger) : base(client,config, logger, "Services:Validation")
+        public VerificationRepository(HttpClient client, IConfiguration config, ILogger<VerificationRepository> logger) : base(client,config, logger, "Services:Validation")
         {
         }
 
