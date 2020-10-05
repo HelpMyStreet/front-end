@@ -14,6 +14,6 @@ namespace HelpMyStreetFE.Enums.Account
         AcceptedRequests,
         CompletedRequests,
         GroupRequests,
-        GroupVolunteers,
+        GroupVolunteers
     }
 }
