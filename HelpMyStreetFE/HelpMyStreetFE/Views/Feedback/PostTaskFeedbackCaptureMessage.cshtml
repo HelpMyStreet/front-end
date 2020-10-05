@@ -1,0 +1,8 @@
+﻿@using HelpMyStreetFE.Models.Feedback;
+
+@model FeedbackCaptureMessageViewModel
+
+
+<div class="container">
+    @await Component.InvokeAsync("FeedbackCapture", new { message = Model })
+</div>
