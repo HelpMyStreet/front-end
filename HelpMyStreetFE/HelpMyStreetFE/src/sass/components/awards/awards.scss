@@ -5,12 +5,14 @@
     @media screen and (max-width: $sm-screen){
         align-self: center;
     }
+
 }
-.user-detail{
+.user-detail {
     display: inline-flex;
     align-items: flex-start;
     flex-direction: column;
     justify-content: center;
+
 }
 
 .tooltiptext {
@@ -48,10 +50,11 @@
         margin-right: 10px;
     }
 
-    p {
+    .award-description {
         
-        font-size: 16px;
+        font-size: 14px;
         margin-top: 5px;
+        margin-bottom: 0px;
 
         @media screen and (max-width: $sm-screen){
             font-size: 12px;
