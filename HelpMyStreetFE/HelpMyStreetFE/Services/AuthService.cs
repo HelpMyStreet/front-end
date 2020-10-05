@@ -94,6 +94,10 @@ namespace HelpMyStreetFE.Services
         public async Task LoginWithUserId(int userId, HttpContext httpContext, CancellationToken cancellationToken)
         {
             var user = await _userService.GetUserAsync(userId, cancellationToken);
+            if (user == null)
+            {
+                throw new Exception($"Failed to get user {userId}");
+            }
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,

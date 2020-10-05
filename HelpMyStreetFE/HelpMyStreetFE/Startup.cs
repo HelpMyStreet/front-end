@@ -64,7 +64,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
-            services.AddHttpClient<IValidationRepository, ValidationRepository>(client =>
+            services.AddHttpClient<IVerificationRepository, VerificationRepository>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
@@ -104,7 +104,7 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             }).AddPolicyHandler(pollyHttpPolicies.InternalHttpRetryPolicy);
 
-            services.AddHttpClient<IValidationService, ValidationService>(client =>
+            services.AddHttpClient<IVerificationService, VerificationService>(client =>
             {
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
                 client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
@@ -150,7 +150,6 @@ namespace HelpMyStreetFE
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
-            //services.AddSingleton<ICommunicationService, CommunicationService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
             services.AddSession();
