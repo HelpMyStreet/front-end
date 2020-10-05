@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.CommunicationService.Request;
+using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.CommunicationService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreetFE.Models.Email;
@@ -70,10 +70,10 @@ namespace HelpMyStreetFE.Services
             using (HttpResponseMessage response = await Client.PostAsync("/api/InterUserMessage", data))
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-                // What here?
-                if (true)
+                var interUserMessageResponse = JsonConvert.DeserializeObject<ResponseWrapper<bool, CommunicationServiceErrorCode>>(jsonResponse);
+                if (interUserMessageResponse.HasContent && interUserMessageResponse.IsSuccessful)
                 {
-                    return true;
+                    return interUserMessageResponse.Content;
                 }
             }
             return false;
