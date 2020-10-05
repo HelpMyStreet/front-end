@@ -7,6 +7,14 @@ namespace HelpMyStreetFE.Models.Feedback
 {
     public class FeedbackCaptureMessageViewModel
     {
-        public string Message { get; set; }
+        public enum Messages
+        {
+            Success,
+            FeedbackAlreadyRecorded,
+            IncorrectJobStatus,
+            ServerError,
+        }
+
+        public Messages Message { get; set; }
     }
 }

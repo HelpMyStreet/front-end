@@ -70,7 +70,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (job.JobSummary.JobStatus == JobStatuses.Open || job.JobSummary.JobStatus == JobStatuses.InProgress)
             {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we can't accept feedback for that request at this time; our records suggest the request is not yet complete." });
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus });
             }
 
 
@@ -82,11 +82,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 if (await _feedbackRepository.GetFeedbackExists(jobId, requestRole))
                 {
-                    return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we already have feedback for that request." });
+                    return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded});
                 }
                 else
                 {
-                    return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we were not able to ." });
+                    return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.ServerError });
                 }
             }
 
@@ -130,7 +130,7 @@ namespace HelpMyStreetFE.Controllers
                 await _communicationService.SendInterUserMessage(from, to, model.HMSMessage, jobId);
             }
 
-            return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Thanks for your feedback." });
+            return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.Success });
         }
 
         private MessageParticipant GetFromBlock(User user, RequestRoles requestRole, GetJobDetailsResponse job)

@@ -2,4 +2,18 @@
 
 @model FeedbackCaptureMessageViewModel;
 
-<p>@Model.Message</p>
+@switch (Model.Message)
+{
+    case FeedbackCaptureMessageViewModel.Messages.Success:
+        <p>Thank you for your feedback.</p>
+        break;
+    case FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded:
+        <p>Sorry, we already have feedback for that request.</p>
+        break;
+    case FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus:
+        <p>Sorry, we can't accept feedback for that request at this time; our records suggest the request is not yet complete.</p>
+        break;
+    case FeedbackCaptureMessageViewModel.Messages.ServerError:
+        <p>Sorry, we weren't able to record your feedback.  Please press back to try again.</p>
+        break;
+}

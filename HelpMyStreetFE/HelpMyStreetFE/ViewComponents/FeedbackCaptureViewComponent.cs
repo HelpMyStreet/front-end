@@ -41,12 +41,12 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobDetails.JobSummary.JobStatus == JobStatuses.Open || jobDetails.JobSummary.JobStatus == JobStatuses.InProgress)
             {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we can't accept feedback for that request at this time; our records suggest the request is not yet complete." });
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus });
             }
 
             if (await _feedbackRepository.GetFeedbackExists(parameters.JobId, parameters.RequestRole))
             {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we already have feedback for that request." });
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded });
             }
 
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel();
