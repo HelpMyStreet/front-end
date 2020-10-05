@@ -33,6 +33,16 @@ $breakpointLg: 1550px;
     display: grid;
     grid-template-rows: auto auto auto;
 
+    &.logged-out {
+        @media screen and (min-width: $breakpointSm) {
+            grid-template-areas: "logo nav";
+        }
+
+        @media screen and (max-width: $breakpointSm) {
+            grid-template-areas: "logo toggle" "userDetails userDetails";
+            grid-template-columns: auto 0.5fr;
+        }
+    }
 
     @media screen and (min-width: $breakpointSm) {
         grid-template-areas: "logo nav userDetails";
@@ -50,6 +60,8 @@ $breakpointLg: 1550px;
         &__header {
             grid-area: userDetails;
 
+
+
             @media screen and (max-width: $breakpointSm) {
                 margin: 10px 33px;
             }
@@ -61,6 +73,12 @@ $breakpointLg: 1550px;
             @media screen and (min-width: $breakpointSm) {
                 &.collapsed {
                     display: block;
+
+                    &.logged-out {
+                        @media screen and (min-width: $breakpointSm) {
+                            display: none;
+                        }
+                    }
                 }
 
                 &__wrapper {

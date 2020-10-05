@@ -1,7 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Enums.Account;
-using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
@@ -11,6 +9,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using HelpMyStreet.Cache;
 using System.Threading;
+using HelpMyStreet.Contracts.UserService.Response;
 
 namespace HelpMyStreetFE.Services
 {
@@ -166,12 +165,12 @@ namespace HelpMyStreetFE.Services
             return await _userRepository.GetDistinctVolunteerUserCount();
         }
 
-        public async Task<GetHelperResponse> GetHelpersByPostcode(string postcode)
+        public async Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode)
         {
             return await _userRepository.GetHelpersByPostcode(postcode);
         }
 
-        public async Task<GetHelperResponse> GetChampionsByPostcode(string postcode)
+        public async Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode)
         {
             return await _userRepository.GetChampionsByPostcode(postcode);
         }
@@ -181,9 +180,9 @@ namespace HelpMyStreetFE.Services
             return await _userRepository.GetVolunteerCoordinates(swLatitude, swLongitude, neLatitude, neLongitude, minDistanceBetweenInMetres);
         }
 
-        public UserDetails GetUserDetails(User user)
+        public Models.Account.UserDetails GetUserDetails(User user)
         {
-            return new UserDetails(user);
+            return new Models.Account.UserDetails(user);
         }
 
         public string FormatName(string name)
