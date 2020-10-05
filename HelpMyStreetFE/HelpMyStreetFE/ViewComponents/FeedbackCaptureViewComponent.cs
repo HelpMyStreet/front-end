@@ -36,17 +36,17 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobDetails == null || jobDetails.JobSummary == null)
             {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we can't find that job." });
+                throw new Exception($"Attempt to load feedback form for job {parameters.JobId} which could not be found");
             }
 
             if (jobDetails.JobSummary.JobStatus == JobStatuses.Open || jobDetails.JobSummary.JobStatus == JobStatuses.InProgress)
             {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, feedback can only be submitted for jobs which are completed." });
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we can't accept feedback for that request at this time; our records suggest the request is not yet complete." });
             }
 
             if (await _feedbackRepository.GetFeedbackExists(parameters.JobId, parameters.RequestRole))
             {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, feedback for this job has already been submitted." });
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we already have feedback for that request." });
             }
 
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel();

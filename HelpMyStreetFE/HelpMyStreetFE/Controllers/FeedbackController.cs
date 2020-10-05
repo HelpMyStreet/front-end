@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -54,19 +54,41 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/Error/401");
             }
 
-            if (!ModelState.IsValid)
-            {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, that didn't work." });
-            }
-
-            int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
-
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            int jobId = Base64Utils.Base64DecodeToInt(j);
             var job = await _requestHelpRepository.GetJobDetailsAsync(jobId, -1);
 
-            await _feedbackRepository.PostRecordFeedback(jobId, requestRole, user?.ID, model.FeedbackRating);
+            if (!ModelState.IsValid)
+            {
+                throw new Exception($"Invalid model state in PostTaskFeedbackCapture for job {jobId}");
+            }
 
+            if (job == null || job.JobSummary == null)
+            {
+                throw new Exception($"Attempt to submit feedback for job {jobId} which could not be found");
+            }
+
+            if (job.JobSummary.JobStatus == JobStatuses.Open || job.JobSummary.JobStatus == JobStatuses.InProgress)
+            {
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we can't accept feedback for that request at this time; our records suggest the request is not yet complete." });
+            }
+
+
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            bool postRecordFeedbackSuccess = await _feedbackRepository.PostRecordFeedback(jobId, requestRole, user?.ID, model.FeedbackRating);
+
+            if (!postRecordFeedbackSuccess)
+            {
+                if (await _feedbackRepository.GetFeedbackExists(jobId, requestRole))
+                {
+                    return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we already have feedback for that request." });
+                }
+                else
+                {
+                    return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = "Sorry, we were not able to ." });
+                }
+            }
 
             MessageParticipant from = GetFromBlock(user, requestRole, job);
 
