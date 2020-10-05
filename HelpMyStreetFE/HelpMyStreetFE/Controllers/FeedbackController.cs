@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -94,53 +94,25 @@ namespace HelpMyStreetFE.Controllers
 
             if (!string.IsNullOrEmpty(model.RecipientMessage))
             {
-                var to = new MessageParticipant()
-                {
-                    EmailDetails = new EmailDetails()
-                    {
-                        DisplayName = job.Recipient.FirstName,
-                        EmailAddress = job.Recipient.EmailAddress
-                    },
-                    RequestRoleType = new RequestRoleType() { RequestRole = RequestRoles.Recipient }
-                };
+                var to = GetToBlock(job, RequestRoles.Recipient);
                 await _communicationService.SendInterUserMessage(from, to, model.RecipientMessage, jobId);
             }
 
             if (!string.IsNullOrEmpty(model.RequestorMessage))
             {
-                var to = new MessageParticipant()
-                {
-                    EmailDetails = new EmailDetails()
-                    {
-                        DisplayName = job.Requestor.FirstName,
-                        EmailAddress = job.Requestor.EmailAddress
-                    },
-                    RequestRoleType = new RequestRoleType() { RequestRole = RequestRoles.Requestor }
-                };
+                var to = GetToBlock(job, RequestRoles.Requestor);
                 await _communicationService.SendInterUserMessage(from, to, model.RequestorMessage, jobId);
             }
 
             if (!string.IsNullOrEmpty(model.VolunteerMessage))
             {
-                var to = new MessageParticipant()
-                {
-                    UserId = job.JobSummary.VolunteerUserID,
-                    RequestRoleType = new RequestRoleType() { RequestRole = RequestRoles.Volunteer }
-                };
+                var to = GetToBlock(job, RequestRoles.Volunteer);
                 await _communicationService.SendInterUserMessage(from, to, model.VolunteerMessage, jobId);
             }
 
             if (!string.IsNullOrEmpty(model.GroupMessage))
             {
-                var to = new MessageParticipant()
-                {
-                    GroupRoleType = new GroupRoleType()
-                    {
-                        GroupId = job.JobSummary.ReferringGroupID,
-                        GroupRoles = GroupRoles.Owner
-                    },
-                    RequestRoleType = new RequestRoleType() { RequestRole = RequestRoles.GroupAdmin }
-                };
+                var to = GetToBlock(job, RequestRoles.GroupAdmin);
                 await _communicationService.SendInterUserMessage(from, to, model.GroupMessage, jobId);
             }
 
@@ -193,6 +165,29 @@ namespace HelpMyStreetFE.Controllers
             from.RequestRoleType = new RequestRoleType() { RequestRole = requestRole };
 
             return from;
+        }
+
+        private MessageParticipant GetToBlock(GetJobDetailsResponse job, RequestRoles requestRole)
+        {
+            MessageParticipant to = new MessageParticipant() { RequestRoleType = new RequestRoleType() { RequestRole = requestRole } };
+
+            switch (requestRole)
+            {
+                case RequestRoles.Recipient:
+                    to.EmailDetails = new EmailDetails() { DisplayName = job.Recipient.FirstName, EmailAddress = job.Recipient.EmailAddress };
+                    break;
+                case RequestRoles.Requestor:
+                    to.EmailDetails = new EmailDetails() { DisplayName = job.Requestor.FirstName, EmailAddress = job.Requestor.EmailAddress };
+                    break;
+                case RequestRoles.Volunteer:
+                    to.UserId = job.JobSummary.VolunteerUserID;
+                    break;
+                case RequestRoles.GroupAdmin:
+                    to.GroupRoleType = new GroupRoleType() { GroupId = job.JobSummary.ReferringGroupID, GroupRoles = GroupRoles.Owner };
+                    break;
+            }
+
+            return to;
         }
     }
 }
