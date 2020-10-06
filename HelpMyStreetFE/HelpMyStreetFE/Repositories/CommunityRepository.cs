@@ -17,7 +17,7 @@ namespace HelpMyStreetFE.Repositories
             {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
             {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
             {"ruddington", new CommunityModel(){FriendlyName = "Ruddington", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg"} },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln (& SL)", Latitude = 53.201396, Longitude = -0.459146, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, BannerLocation = "/img/community/ageUK/lincoln_cathedral.jpg"} }
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln (& SL)", Latitude = 53.201396, Longitude = -0.459146, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/lincoln_cathedral.jpg"} }
         };
 
         public CommunityRepository(IGroupService groupService)
