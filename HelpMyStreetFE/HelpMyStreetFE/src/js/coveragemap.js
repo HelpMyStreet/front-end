@@ -313,27 +313,20 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
-                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(80, 80) },
+                icon: { url: "/img/logos/markers/hms-group.png", scaledSize: new google.maps.Size(80, 80) },
                 zIndex: 1000,
                 animation: google.maps.Animation.BOUNCE
             });
             infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
             thisMarker.addListener("mouseover", () => {
                 thisInfoWindow.open(googleMap, thisMarker);
+                thisMarker.setAnimation(null);
             });
             addMarker(thisMarker);
         }
         });
 
     showMarkers();
-
-    /*
-    infoWindows.forEach(pair => {
-        if (googleMap.getBounds().contains(pair.marker.getPosition())) {
-            pair.infoWindow.open(googleMap, pair.marker);
-        }
-    });
-    */
 
     previousZoomLevel = zoomLevel;
     
