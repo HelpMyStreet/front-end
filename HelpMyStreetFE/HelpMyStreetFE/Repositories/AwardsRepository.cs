@@ -139,10 +139,19 @@ namespace HelpMyStreetFE.Repositories
 
             if (relevantAwards.Count() >= 1)
             {
+
+                var higherAwards = awards.Where(x => x.AwardValue > completedJobs);
                 returnAward.Award = relevantAwards.LastOrDefault();
                 returnAward.Award.JobCount = completedJobs;
                 returnAward.Award.JobDetail = listString;
-                returnAward.NextAwardLevel = awards.Where(x => x.AwardValue > completedJobs).FirstOrDefault().AwardValue;
+                if (higherAwards.Count() != 0)
+                {
+                    
+                    returnAward.NextAwardLevel = awards.Where(x => x.AwardValue > completedJobs).FirstOrDefault().AwardValue;
+                } else
+                {
+                    returnAward.NextAwardLevel = 0;
+                }
             }
             else
             {
