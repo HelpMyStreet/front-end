@@ -10,6 +10,6 @@ namespace HelpMyStreetFE.Repositories
     {
         Task<List<Testimonial>> GetTestimonials();
         Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole);
-        Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, int FeedbackRating);
+        Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, int feedbackRating);
     }
 }
