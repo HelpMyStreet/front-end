@@ -1,20 +1,46 @@
-﻿using HelpMyStreet.Utils.Enums;
+﻿using HelpMyStreet.Contracts.FeedbackService.Request;
+using HelpMyStreet.Contracts.FeedbackService.Response;
+using HelpMyStreet.Contracts.Shared;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 namespace HelpMyStreetFE.Repositories
 {
-    public class FeedbackRepository : IFeedbackRepository
+    public class FeedbackRepository : BaseHttpRepository, IFeedbackRepository
     {
-        public FeedbackRepository()
+        public FeedbackRepository(
+            IConfiguration configuration,
+            ILogger<BaseHttpRepository> logger,
+            HttpClient client) : base(client, configuration, logger, "Services:Feedback")
         {
         }
 
         public async Task<bool> GetFeedbackExists(int JobId, RequestRoles requestRole)
         {
+            GetFeedbackExistsRequest request = new GetFeedbackExistsRequest()
+            {
+                JobId = JobId,
+                RequestRoleType = new RequestRoleType() { RequestRole = requestRole }
+            };
+            string json = JsonConvert.SerializeObject(request);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetFeedbackExists", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<bool, FeedbackServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content;
+            }
             return false;
         }
 
@@ -177,9 +203,25 @@ namespace HelpMyStreetFE.Repositories
             return messageList;
         }
 
-        public async Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, int FeedbackRating)
+        public async Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, int feedbackRating)
         {
-            return true;
+            PostRecordFeedbackRequest request = new PostRecordFeedbackRequest()
+            {
+                JobId = jobId,
+                RequestRoleType = new RequestRoleType() { RequestRole = requestRoles },
+                UserId = userId,
+                FeedbackRatingType = new FeedbackRatingType() { FeedbackRating = (FeedbackRating) feedbackRating}
+            };
+            string json = JsonConvert.SerializeObject(request);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/PostRecordFeedback", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostRecordFeedbackResponse, FeedbackServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.Success;
+            }
+            return false;
         }
     }
 }
