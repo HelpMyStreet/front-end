@@ -27,16 +27,29 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(FeedbackCaptureViewComponentParameters parameters, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(FeedbackCaptureViewComponentParameters parameters, FeedbackCaptureMessageViewModel message, CancellationToken cancellationToken)
+        {
+            if (message != null)
+            {
+                return View("FeedbackCaptureMessage", message);
+            }
+            else
+            {
+                return await InvokeAsync(parameters, cancellationToken);
+            }
+        }
+
+        private async Task<IViewComponentResult> InvokeAsync(FeedbackCaptureViewComponentParameters parameters, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            // user may be null for Requestor/Recipient feedback
 
-            var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, user?.ID ?? -1, cancellationToken);
+            int authorisingUserId = parameters.RequestRole == RequestRoles.Volunteer || parameters.RequestRole == RequestRoles.GroupAdmin ? user.ID : -1;
+
+            var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, authorisingUserId, cancellationToken);
 
             if (jobDetails == null || jobDetails.JobSummary == null)
             {
-                throw new Exception($"Attempt to load feedback form for job {parameters.JobId} which could not be found");
+                throw new Exception($"Attempt to load feedback form for job {parameters.JobId} which could not be found (authorising user id {authorisingUserId})");
             }
 
             if (jobDetails.JobSummary.JobStatus == JobStatuses.Open || jobDetails.JobSummary.JobStatus == JobStatuses.InProgress)

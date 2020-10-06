@@ -121,6 +121,9 @@ export function showStatusUpdatePopup(btn) {
       $(job).find('.job__info__urgency__dates').toggle();
       $(job).find('button').toggle();
       $(job).find('.next-step').toggle();
+      if (targetState === "Done") {
+        showFeedbackPopup(job);
+      }
       return true;
     } else {
       switch (response.fetchResponse) {
@@ -169,4 +172,12 @@ async function loadJobDetails(job, forceRefresh) {
     jobDetail.removeData('status');
     return false;
   }
+}
+
+async function showFeedbackPopup(job) {
+  const jobId = $(job).attr("id");
+  let popupSettings = {
+    htmlContent_source: '/api/feedback/post-task-feedback?j=' + jobId + '&r='
+  };
+  showPopup(popupSettings);
 }
