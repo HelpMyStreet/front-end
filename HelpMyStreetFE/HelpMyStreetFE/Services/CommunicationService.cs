@@ -1,6 +1,8 @@
-using HelpMyStreet.Contracts.CommunicationService.Request;
+﻿using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.CommunicationService.Response;
 using HelpMyStreet.Contracts.Shared;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -25,7 +27,15 @@ namespace HelpMyStreetFE.Services
 
         public async Task<string> GetLinkDestination(string token)
         {
-            return "/Feedback/PostTaskFeedbackCapture?j=MzU5&r=Mg==";
+            int jobId = 0;
+            RequestRoles requestRoleType = RequestRoles.Recipient;
+            if (token == "a")
+            {
+                jobId = 575;
+                requestRoleType = RequestRoles.Recipient;
+            }
+
+            return $"/Feedback/PostTaskFeedbackCapture?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)requestRoleType)}";
         }
 
         public async Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient)

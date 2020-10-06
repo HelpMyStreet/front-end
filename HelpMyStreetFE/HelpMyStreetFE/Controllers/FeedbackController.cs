@@ -12,6 +12,7 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.Controllers

@@ -1,11 +1,22 @@
 import { buttonLoad, buttonUnload } from "./btn";
+import { hmsFetch, fetchResponses } from "./hmsFetch"
 
-export function showPopup(settings) {
+export async function showPopup(settings) {
 
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
   popup.find(".popup__content").centerPopup();
   popup.find(".popup__content__header").first().text(settings.header);
+
   popup.find(".popup__content__text").first().html(settings.htmlContent);
+  if (settings.htmlContent_source) {
+    var response = await hmsFetch(settings.htmlContent_source);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+      popup.find(".popup__content__text").first().html(await response.fetchPayload);
+    } else {
+      popup.find(".popup__content__text").first().html("Sorry, we couldn't load this content.");
+    }
+  }
+
   popup.find("#popup-accept > .text").text(settings.actionBtnText);
   if (settings.cssClass) {
     popup.find(".popup__content").addClass(settings.cssClass);
