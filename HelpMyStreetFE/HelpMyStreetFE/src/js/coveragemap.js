@@ -304,7 +304,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     var infoWindows = [];
 
     communityMarkerCoords.map(coord => {
-        if (zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
+        if (zoomLevel >= (coord.zoomLevel) || zoomLevel > 10 && coord.displayOnMap) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
             let thisMarker;
             let thisInfoWindow;
             thisInfoWindow = new google.maps.InfoWindow({
