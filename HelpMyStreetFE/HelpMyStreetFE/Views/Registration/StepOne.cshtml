@@ -23,9 +23,6 @@
             <div class="sm8">
                 <h1>Sign up to help</h1>
                 <p>
-                    Join today as a Helper to give as little or as much time as you can spare. Or join as a Street Champion and coordinate the activity in your street. You'll be helping neighbours help each other.
-                </p>
-                <p>
                     <span class="bold">Registering is quick and easy.</span> We’ll collect your details and verify your identity with our partner Yoti. Anyone who's over 18 and can confirm their identity with a valid passport or driving licence can register with HelpMyStreet.org. You'll need a smartphone running iOS or Android.
                 </p>
                 @if (Context.Request.Query["failure"] == "error")
@@ -53,10 +50,6 @@
                         <input name="confirm_password" id="confirm-password" type="Password" placeholder="Password" />
                         <span class="error"></span>
                     </div>
-                    <p>
-                        The information you provide will be shared with Street Champions in your local area to help organise volunteers.
-                        You can read more in our <a href="/privacy-policy">Privacy Notice</a>
-                    </p>
                     <div class="input input--checkbox">
                         <label for="privacy-notice">
                             <input name="privacy_notice" id="privacy-notice" type="checkbox" hidden />

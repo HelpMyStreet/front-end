@@ -16,11 +16,8 @@ namespace HelpMyStreetFE.Services
         Task CreateUserStepThreeAsync(int id, System.Collections.Generic.List<HelpMyStreet.Utils.Enums.SupportActivities> activities, float supportRadius, CancellationToken cancellationToken);
         Task CreateUserStepFourAsync(int id, bool roleUnderstood, System.Collections.Generic.List<string> postcodes, CancellationToken cancellationToken);
         Task CreateUserStepFiveAsync(int id, bool verified, CancellationToken cancellationToken);
-        Task<int> GetStreetChampions();
-        Task<int> GetStreetsCovered();
         Task<int> GetVolunteers();
         Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode);
-        Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode);
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
         Models.Account.UserDetails GetUserDetails(User user);
         bool GetRegistrationIsComplete(User user);

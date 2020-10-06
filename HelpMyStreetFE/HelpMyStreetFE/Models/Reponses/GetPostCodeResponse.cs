@@ -36,6 +36,5 @@ namespace HelpMyStreetFE.Models.Reponses
     {
         public GetPostCodeResponse PostCodeResponse { get; set; }
         public int VolunteerCount { get; set; }
-        public int ChampionCount { get; set; }
     }
 }
