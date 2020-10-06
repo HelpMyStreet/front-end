@@ -313,8 +313,9 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
-                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(40, 40) },
-                zIndex: 100
+                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(80, 80) },
+                zIndex: 1000,
+                animation: google.maps.Animation.BOUNCE
             });
             infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
             thisMarker.addListener("mouseover", () => {
