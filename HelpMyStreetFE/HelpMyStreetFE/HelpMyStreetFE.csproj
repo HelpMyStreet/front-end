@@ -50,10 +50,6 @@
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel2\" />
     <Folder Include="Models\Feedback\" />
     <Folder Include="Views\Shared\Components\Feedback\" />
-    <Folder Include="Models\Awards\" />
-    <Folder Include="Views\Shared\Components\Awards\" />
-    <Folder Include="wwwroot\img\awards\" />
-    <Folder Include="src\sass\components\awards\" />
     <Folder Include="wwwroot\img\case-studies\" />
   </ItemGroup>
 </Project>

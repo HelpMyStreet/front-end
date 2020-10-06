@@ -39,7 +39,7 @@
 @import "./components/_tabs";
 @import "./components/slick-carousel/slick";
 @import "./components/slick-carousel/slick-theme";
-@import "./components/awards/awards";
+@import "./components/_map-markers";
 * {
   font-family: "Montserrat", sans-serif;
   font-size: 18px;
@@ -457,6 +457,7 @@ dd {
     }
   }
 }
+
 
 .no-wrap {
   white-space: nowrap;

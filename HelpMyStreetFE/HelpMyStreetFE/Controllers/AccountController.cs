@@ -207,13 +207,6 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken); 
-            return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);

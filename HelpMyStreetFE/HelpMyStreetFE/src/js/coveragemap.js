@@ -269,6 +269,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     }
 
     let coords = await getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres);
+    let communityMarkerCoords = await getCommunities();
 
     if (zoomLevel <= largeAreaZoomNumber) {
         deleteMarkers();
@@ -300,8 +301,41 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         addMarker(thisMarker);
     });
 
+    var infoWindows = [];
+
+    communityMarkerCoords.map(coord => {
+        if (zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
+            let thisMarker;
+            let thisInfoWindow;
+            thisInfoWindow = new google.maps.InfoWindow({
+                content: `<div class="community-marker"><div><img src="${coord.bannerLocation}"></img><div class="marker-title"><h4>${coord.friendlyName}</h4><p>Local Group</p></div></div><p><a href="${coord.linkURL}">Visit homepage</a></p></div>`
+            });
+            thisMarker = new google.maps.Marker({
+                position: { lat: coord.latitude, lng: coord.longitude },
+                title: coord.friendlyName,
+                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(40, 40) },
+                zIndex: 100
+            });
+            infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
+            thisMarker.addListener("mouseover", () => {
+                thisInfoWindow.open(googleMap, thisMarker);
+            });
+            addMarker(thisMarker);
+        }
+        });
+
     showMarkers();
+
+    /*
+    infoWindows.forEach(pair => {
+        if (googleMap.getBounds().contains(pair.marker.getPosition())) {
+            pair.infoWindow.open(googleMap, pair.marker);
+        }
+    });
+    */
+
     previousZoomLevel = zoomLevel;
+    
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {
@@ -339,7 +373,9 @@ function getMarkerKey(marker) {
 }
 
 function setMapOnAll(googleMap) {
-    googleMapMarkers.forEach(function (value, key, mapCollection) { value.setMap(googleMap); });
+    googleMapMarkers.forEach(function (value, key, mapCollection) {
+        value.setMap(googleMap);
+    });
 }
 
 function clearMarkers() {
@@ -360,7 +396,23 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
     const content = await hmsFetch(endpoint);
     if (content.fetchResponse == fetchResponses.SUCCESS) {
         var payload = await content.fetchPayload;
-        return payload.volunteerCoordinates;
+        if (payload.volunteerCoordinates != null) {
+            return payload.volunteerCoordinates;
+        }
+        else {
+            return [];
+        }
+    } else {
+        return [];
+    }
+}
+
+async function getCommunities() {
+    let endpoint = '/api/Maps/getCommunities';
+    const content = await hmsFetch(endpoint);
+    if (content.fetchResponse == fetchResponses.SUCCESS) {
+        let thisPayload = await content.fetchPayload;
+        return thisPayload.communityDetails;
     } else {
         return [];
     }
