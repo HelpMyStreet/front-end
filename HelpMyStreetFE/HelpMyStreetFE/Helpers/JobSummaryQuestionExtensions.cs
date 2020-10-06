@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return question.Id switch
             {
+                (int)Questions.FaceMask_Amount => true,
                 (int)Questions.FaceMask_Recipient => true,
                 (int)Questions.FaceMask_Cost => true,
                 (int)Questions.SupportRequesting => true,
