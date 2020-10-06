@@ -2,11 +2,7 @@
 using HelpMyStreet.Contracts.FeedbackService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Models;
-using HelpMyStreet.Utils.Utils;
-using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Feedback;
-using HelpMyStreetFE.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
