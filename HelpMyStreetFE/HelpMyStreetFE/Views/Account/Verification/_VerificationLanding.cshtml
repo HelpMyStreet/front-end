@@ -10,7 +10,7 @@
                     <img src="~/img/icons/green-tick.svg" />
                 </div>
                 <div class="verification-step__status__title">
-                    You're fully Verified and ready to go!
+                    @Model.DisplayName, you're a verified volunteer!
 
                 </div>
             </div>
@@ -21,8 +21,9 @@
             <div class="verification-step___text">
                 <span class="verification-step__text__header">Verified</span>
                 <div class="verification-step__text__copy">
-                        <p>Congratulations @Model.DisplayName, you’re a verified volunteer!</p>
-                        <p>You can view requests and volunteer to help with them on your account page</p>                      
+                    <p>Congratulations John, you’re a verified volunteer!</p>
+                    <p>Take a look at the Open Requests tab to see what help is needed near you.</p>
+                    <p>Just so you know, some of the organisations we work with may require additional checks for some types of request. If any are needed we’ll let you know.</p>
                 </div>
             </div>
         
@@ -40,8 +41,8 @@ else
                         <img src="~/img/icons/anonymous-user.png" width="120" />
                     </div>
                     <div class="verification-step__status__title">
-                        You're nearly there! <br />
-                        Just your ID Verification to complete.
+                        @Model.DisplayName, you're nearly there! <br />
+                        Confirm your ID to become a verified volunteer
                     </div>
                 </div>
             </div>
@@ -51,8 +52,8 @@ else
                 <div class="verification-step___text">
                     <span class="verification-step__text__header">Why Verify?</span>
                     <div class="verification-step__text__copy">
-                            <p>@Model.DisplayName, you're currently registered as an unverified volunteer. As soon as you've completed your ID verification, you'll be a verified Helper and will be able to start helping people in your local area. </p>
-                            <p>We are now receiving requests from people who need to shelter safely at home. Complete your ID Verification today so that you can start helping these people!</p>
+                        <p>To keep everyone safe, most requests for help on our platform need a verified volunteer – that means we’ve been able to confirm you are who you say you are.</p>
+                        <p>Verifying your ID is easy, simply click the green ‘Confirm ID’ button below to get started.</p>
                     </div>
                 </div>
             </div>
