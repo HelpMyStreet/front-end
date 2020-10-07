@@ -163,47 +163,7 @@ namespace HelpMyStreetFE.Repositories
             }
         }
 
-        public async Task<int> GetChampionCountByPostcode(string postcode)
-        {
-            var response = await GetAsync<ResponseWrapper<GetChampionCountByPostcodeResponse, UserServiceErrorCode>>($"/api/getchampioncountbypostcode?postcode={postcode}");
 
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content.Count;
-            }
-            else
-            {
-                throw new Exception($"Unsuccessful response from getchampioncountbypostcode.  Errors: { response.Errors}");
-            }
-        }
-
-        public async Task<int> GetDistinctChampionUserCount()
-        {
-            var response = await GetAsync<ResponseWrapper<GetDistinctChampionUserCountResponse, UserServiceErrorCode>>($"/api/GetDistinctChampionUserCount");
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content.Count;
-            }
-            else
-            {
-                throw new Exception($"Unsuccessful response from GetDistinctChampionUserCount.  Errors: {response.Errors}");
-            }
-        }
-
-        public async Task<int> GetChampionPostcodesCoveredCount()
-        {
-            var response = await GetAsync<ResponseWrapper<GetChampionPostcodesCoveredCountResponse, UserServiceErrorCode>>($"/api/GetChampionPostcodesCoveredCount");
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content.Count;
-            }
-            else
-            {
-                throw new Exception($"Unsuccessful response from GetChampionPostcodesCoveredCount.  Errors: { response.Errors}");
-            }
-        }
 
         public async Task<int> GetDistinctVolunteerUserCount()
         {
@@ -247,19 +207,6 @@ namespace HelpMyStreetFE.Repositories
             }
         }
 
-        public async Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode)
-        {
-            var response = await GetAsync<ResponseWrapper<GetChampionsByPostcodeResponse, UserServiceErrorCode>>($"/api/GetChampionsByPostcode?postCode={postcode}");
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content;
-            }
-            else
-            {
-                throw new Exception($"Unsuccessful response from GetChampionsByPostcode.  Errors: { response.Errors}");
-            }
-        }
 
         public async Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres)
         {

@@ -184,84 +184,19 @@ namespace HelpMyStreetFE.Controllers
 
                 await _groupService.AddUserToDefaultGroups(user.ID);
 
-                return Redirect("/registration/step-four");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error executing step 3");
-                _logger.LogError(ex.ToString());
-                return Redirect("/registration/step-three?failure=error");
-            }
-        }
-
-        [HttpGet("[controller]/step-four")]
-        public async Task<ActionResult> StepFour(CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-
-            string correctPage = await GetCorrectPage(user);
-            if (!correctPage.StartsWith("/registration/step-four"))
-            {
-                // A different step needs to be completed at this point
-                return Redirect(correctPage);
-            }
-
-            var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
-
-            var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
-            var nearbyToDisplay = nearby.Where(p => p.Postcode != user.PostalCode).OrderBy(p => p.ChampionCount).ThenBy(p => p.DistanceInMetres).Take(4).ToList();
-
-            // Insert user postcode at the top of the list...
-            nearbyToDisplay.Insert(0, userPostcode);
-
-            // ...but re-sort if there are already 2 champions there
-            if (userPostcode.ChampionCount >= 2)
-            {
-                nearbyToDisplay = nearbyToDisplay.OrderBy(p => p.ChampionCount).ThenBy(p => p.DistanceInMetres).ToList();
-            }
-
-            var championsNeeded = nearbyToDisplay.Aggregate(false, (acc, next) => acc || next.ChampionCount < 2);
-
-            return View(new StepFourRegistrationViewModel
-            {
-                ActiveStep = 4,
-                NearbyPostCodes = nearbyToDisplay,
-                UsersPostCode = userPostcode,
-                LocalAvailability = championsNeeded
-            });
-        }
-
-        [HttpPost("[controller]/step-four")]
-        public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form, CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            string correctPage = await GetCorrectPage(user);
-            if (!correctPage.StartsWith("/registration/step-four"))
-            {
-                // A different step needs to be completed at this point
-                return Redirect(correctPage);
-            }
-
-            try
-            {
-                if (!form.ChampionRoleUnderstood)
-                {
-                    form.ChampionPostcodes = new System.Collections.Generic.List<string>();
-                }
-                _logger.LogInformation($"Step 4 submission for {user.ID}");
                 await _userService.CreateUserStepFourAsync(
                     user.ID,
-                    form.ChampionRoleUnderstood,
-                    form.ChampionPostcodes,
+                    false,
+                    new System.Collections.Generic.List<string>(),
                     cancellationToken);
 
                 return Redirect("/account");
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error executing step 4");
+                _logger.LogError("Error executing step 3");
                 _logger.LogError(ex.ToString());
-                return Redirect("/registration/step-four?failure=error");
+                return Redirect("/registration/step-three?failure=error");
             }
         }
 
@@ -291,8 +226,6 @@ namespace HelpMyStreetFE.Controllers
                         return "/registration/step-two";
                     case 2:
                         return "/registration/step-three";
-                    case 3:
-                        return "/registration/step-four";
                     default:
                         return "/account"; //Registration journey is complete
                 }

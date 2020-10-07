@@ -110,57 +110,6 @@ namespace HelpMyStreetFE.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Streets(CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (!_userService.GetRegistrationIsComplete(user))
-            {
-                return Redirect(REGISTRATION_URL);
-            }
-
-            var viewModel = await GetAccountViewModel(user, cancellationToken);
-            viewModel.Notifications.Clear();
-            viewModel.CurrentPage = MenuPage.MyStreets;
-            var streetsViewModel = new StreetsViewModel();
-
-            var friendlyPostcodes = await _addressService.GetFriendlyNames(viewModel.UserDetails.ChampionPostcodes);
-
-            foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
-            {
-                Street street = new Street();
-                street.Name = postcode;
-                if (friendlyPostcodes.Content != null)
-                {
-                    street.FriendlyName = friendlyPostcodes.Content.PostcodesResponse[HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode)].FriendlyName;
-                }
-                var helpers = await _userService.GetHelpersByPostcode(postcode);
-                var champs = await _userService.GetChampionsByPostcode(postcode);
-                helpers.Users.AddRange(champs.Users);
-                if (helpers.Users != null)
-                {
-                    foreach (var helper in helpers.Users.GroupBy(x => x.ID).Select(g => g.First()).ToList())// de duping
-                    {
-                        if (helper.ID == user.ID) continue;
-                        if (!helper.IsVerified.HasValue || !helper.IsVerified.Value) continue;
-                        bool isStreetChampion = (helper.StreetChampionRoleUnderstood.Value && helper.ChampionPostcodes.Contains(postcode));
-                        street.Helpers.Add(new Helper
-                        {
-                            Name = helper.UserPersonalDetails.DisplayName,
-                            PhoneNumber = helper.UserPersonalDetails.MobilePhone,
-                            AlternatePhoneNumber = helper.UserPersonalDetails.OtherPhone,
-                            Email = helper.UserPersonalDetails.EmailAddress,
-                            SupportedActivites = helper.SupportActivities,
-                            IsStreetChampion = isStreetChampion
-                        });
-                    }
-                    streetsViewModel.Streets.Add(street);
-                }
-            }
-            viewModel.PageModel = streetsViewModel;
-            return View("Index", viewModel);
-        }
-
-        [HttpGet]
         public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
         {
 
@@ -316,7 +265,6 @@ namespace HelpMyStreetFE.Controllers
                         " <div> Coming Soon: " +
                             "<ul style='margin-top:2px;'> " +
                                 "<li>You will soon be able to update the personal and volunteering details on your profile page. </li>" +
-                                "<li>Street Champions will be able to manage their streets, search for local volunteers, and handle requests for help.</li>" +
                             "</ul> " +
                         "</div>" +
                         "<p>Keep an eye on your email inbox for the latest updates. Thanks for joining HelpMyStreet!</p>",
@@ -330,7 +278,6 @@ namespace HelpMyStreetFE.Controllers
                     YotiOptions = _yotiOptions.Value,
                     EncodedUserID = Base64Utils.Base64Encode(user.ID),
                     DisplayName = userDetails.DisplayName,
-                    IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
                 };
 
