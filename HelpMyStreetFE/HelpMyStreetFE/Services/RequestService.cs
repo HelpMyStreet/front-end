@@ -270,7 +270,7 @@ namespace HelpMyStreetFE.Services
             var jobsByFilterRequest = new GetJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,
-                DistanceInMiles = _requestSettings.Value.OpenRequestsRadius,
+                DistanceInMiles = Math.Max(_requestSettings.Value.OpenRequestsRadius, user.SupportRadiusMiles ?? 0),
                 ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
                 JobStatuses = new JobStatusRequest()
                 {
