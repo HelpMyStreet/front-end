@@ -313,7 +313,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
-                icon: { url: "/img/logos/markers/hms-group.png", scaledSize: new google.maps.Size(80, 80) },
+                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(70, 70) },
                 zIndex: 1000,
                 animation: google.maps.Animation.BOUNCE
             });
@@ -322,6 +322,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                 thisInfoWindow.open(googleMap, thisMarker);
                 thisMarker.setAnimation(null);
             });
+            setTimeout(() => thisMarker.setAnimation(null), 2000);
             addMarker(thisMarker);
         }
         });
