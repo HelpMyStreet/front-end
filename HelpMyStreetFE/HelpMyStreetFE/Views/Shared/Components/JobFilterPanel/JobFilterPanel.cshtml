@@ -20,7 +20,7 @@
 {
     <form method="post" class="filter" id="@Model.PanelId">
         <header class="filter__header">
-            <button class="btn btn__filter-toggle btn__toggle-show" data-target-item="filters-jobs">Filter requests</button>
+            <button class="btn cta--blue btn__filter-toggle btn__toggle-show fill" data-target-item="filters-jobs">Sort and Filter Requests</button>
         </header>
 
         <input type="hidden" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
@@ -35,6 +35,9 @@
                     <path d="M30,30 L70,70 M30,70 L70,30" class="cross" stroke-linecap="round" />
                 </svg>
             </button>
+
+            <h6>Sort and Filter Requests</h6>
+
             <div class="filter__list">
                 @if (Model.FilterSet.JobStatuses != null)
                 {

@@ -21,10 +21,11 @@ body {
   }
 
   &__list-wrapper {
-    background-color: #f0ede8;
+    background-color: $washed-orange;
     border-top-left-radius: 24px;
     border-bottom-left-radius: 24px;
     @include shadow-xs;
+    border: 1px solid $gray-8;
     width: 80%;
     max-width: 300px;
     position: fixed;
@@ -43,6 +44,12 @@ body {
       transition: transform 0.2s ease-out;
     }
 
+    h6 {
+      display: none;
+      margin-top: 0;
+      margin-bottom: 0.25em;
+    }
+
     @media screen and (min-width: $bp) {
       z-index: auto;
       position: relative;
@@ -52,8 +59,12 @@ body {
       width: auto;
       max-width: none;
       transition: none;
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px;
+      border-radius: 5px;
+      align-items: flex-start;
+
+      h6 {
+        display: block;
+      }
 
       &.filter--show {
         transform: translate(0, 0);
@@ -86,11 +97,7 @@ body {
       width: 100%;
       min-height: 4rem;
       padding-right: 1rem;
-      border: 2px solid transparent;
-
-      &:hover {
-        border-color: $blue;
-      }
+      border: 2px solid $blue;
 
       &:after {
         content: " ";
@@ -152,19 +159,25 @@ body {
 
       .form-group__wrapper {
         display: none;
-        padding: 0.5rem;
+        padding: 0 0.5rem 0.5rem 0.5rem;
+        border-left: 2px solid $blue;
+        border-right: 2px solid $blue;
+        border-bottom: 2px solid $blue;
+        transition: border-color 0.5s;
+        background-color: white;
       }
       /** When category toggled on */
       &.filter--show {
-        background-color: white;
-
-        @include shadow-md;
 
         .form-group__wrapper {
           display: block;
         }
 
         .filter__list__toggle {
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
+          border-bottom: none;
+
           &:after {
             transform: rotate(-135deg);
           }
@@ -182,6 +195,13 @@ body {
 
         &.select-all {
           border-bottom: 1px dashed $gray-10;
+        }
+      }
+
+      &:hover {
+        .filter__list__toggle, .form-group__wrapper {
+          border-color: $dark-blue;
+          transition: border-color 0.1s;
         }
       }
     }
