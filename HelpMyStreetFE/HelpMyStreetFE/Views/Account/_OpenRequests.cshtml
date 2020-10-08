@@ -10,7 +10,7 @@
 
     var criteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
     {
-        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = -1 },
+        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
         EmptyJobSetCallback = new Action(() => NoCriteriaJobsToDisplay = true),
     });
 
