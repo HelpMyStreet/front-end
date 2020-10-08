@@ -19,17 +19,19 @@ namespace HelpMyStreetFE.Services
             _requestSettings = requestSettings;
         }
 
-        public FilterSet GetDefaultFilterSet(JobSet jobSet, User user)
+        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, User user)
         {
             return jobSet switch
             {
-                JobSet.GroupRequests => GroupRequestsDefaultFilterSet,
-                JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsDefaultFilterSet(user),
+                JobSet.GroupRequests => GroupRequestsDefaultSortAndFilterSet,
+                JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsDefaultSortAndFilterSet(user),
+                JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
+                JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
 
-        private FilterSet GroupRequestsDefaultFilterSet = new FilterSet()
+        private SortAndFilterSet GroupRequestsDefaultSortAndFilterSet = new SortAndFilterSet()
         {
             JobStatuses = new List<FilterField<JobStatuses>>()
                 {
@@ -45,11 +47,20 @@ namespace HelpMyStreetFE.Services
                     new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
                     new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
                 },
+            OrderBy = new List<OrderByField>()
+                {
+                    new OrderByField(){Value = OrderBy.DateDue_Descending, Label = "Help needed soonest", IsSelected = true },
+                    new OrderByField(){Value = OrderBy.DateDue_Ascending, Label = "Help needed least soon" },
+                    new OrderByField(){Value = OrderBy.DateRequested_Descending, Label = "Requested most recently" },
+                    new OrderByField(){Value = OrderBy.DateRequested_Ascending, Label = "Requested least recently" },
+                    new OrderByField(){Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
+                    new OrderByField(){Value = OrderBy.DateStatusLastChanged_Descending, Label = "Updated most recently" },
+                },
         };
 
-        private FilterSet GetOpenRequestsDefaultFilterSet(User user)
+        private SortAndFilterSet GetOpenRequestsDefaultSortAndFilterSet(User user)
         {
-            FilterSet filterSet = new FilterSet()
+            SortAndFilterSet filterSet = new SortAndFilterSet()
             {
                 SupportActivities = new List<FilterField<SupportActivities>>()
                     {
@@ -75,6 +86,11 @@ namespace HelpMyStreetFE.Services
                         new FilterField<int> { Value = 7, Label = "This week" },
                         new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
                         new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                    },
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField(){Value = OrderBy.DateDue_Descending, Label = "Help needed soonest", IsSelected = true },
+                        new OrderByField(){Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
                     },
             };
 
@@ -107,6 +123,35 @@ namespace HelpMyStreetFE.Services
                         new FilterField<int> { Value = 20, Label = "Within 20 miles", IsSelected = true },
                     };
             }
+
+            return filterSet;
+        }
+
+        private SortAndFilterSet GetAcceptedRequestsDefaultSortAndFilterSet()
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet()
+            {
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField(){Value = OrderBy.DateDue_Descending, Label = "Help needed soonest", IsSelected = true },
+                        new OrderByField(){Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Accepted longest ago" },
+                        new OrderByField(){Value = OrderBy.DateStatusLastChanged_Descending, Label = "Accepted most recently" },
+                    },
+            };
+
+            return filterSet;
+        }
+
+        private SortAndFilterSet GetCompletedRequestsDefaultSortAndFilterSet()
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet()
+            {
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField(){Value = OrderBy.DateStatusLastChanged_Descending, Label = "Completed most recently", IsSelected = true },
+                        new OrderByField(){Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Completed longest ago" },
+                    },
+            };
 
             return filterSet;
         }

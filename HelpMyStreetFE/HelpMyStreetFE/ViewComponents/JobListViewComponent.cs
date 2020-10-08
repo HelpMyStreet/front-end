@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.UnfilteredJobs = jobs.Count();
 
-            jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
+            jobs = _requestService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredJobs = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
