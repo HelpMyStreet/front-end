@@ -59,7 +59,8 @@ namespace HelpMyStreetFE.Services
                 OrderBy = new List<OrderByField>()
                     {
                         new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
-                    },
+                        new OrderByField() { Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
+                  },
             };
 
             return filterSet;
