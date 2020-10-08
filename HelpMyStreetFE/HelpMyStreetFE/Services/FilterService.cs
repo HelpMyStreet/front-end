@@ -41,13 +41,6 @@ namespace HelpMyStreetFE.Services
                     new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                     new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
                 },
-            DueInNextXDays = new List<FilterField<int>>()
-                {
-                    new FilterField<int>{Value = 1, Label = "Today" },
-                    new FilterField<int>{Value = 7, Label = "This week"},
-                    new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
-                    new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
-                },
             OrderBy = new List<OrderByField>()
                 {
                     new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
