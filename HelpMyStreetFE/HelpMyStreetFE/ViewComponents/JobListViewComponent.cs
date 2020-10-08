@@ -7,6 +7,7 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace HelpMyStreetFE.ViewComponents
             _authService = authService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action<int> listLengthCallback, CancellationToken cancellationToken)
         {
             JobListViewModel jobListViewModel = new JobListViewModel();
 
@@ -84,9 +85,9 @@ namespace HelpMyStreetFE.ViewComponents
                 ReferringGroup = a.ReferringGroupID.HasValue ? (await _groupService.GetGroupById(a.ReferringGroupID.Value, cancellationToken))?.GroupName : ""
             })));
 
-            if (jobListViewModel.UnfilteredJobs == 0 && emptyListCallback != null)
+            if (listLengthCallback != null)
             {
-                emptyListCallback.Invoke();
+                listLengthCallback.Invoke(jobListViewModel.UnfilteredJobs);
             }
 
             return View("JobList", jobListViewModel);

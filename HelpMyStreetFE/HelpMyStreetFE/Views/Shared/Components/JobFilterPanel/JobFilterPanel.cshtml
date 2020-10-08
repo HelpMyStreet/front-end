@@ -8,10 +8,10 @@
     var joblist = await Component.InvokeAsync("JobList", new
     {
         JobFilterRequest = Model.JobFilterRequest,
-        EmptyListCallback = new Action(() =>
+        ListLengthCallback = new Action<int>((length) =>
         {
-            showFilterPanel = false;
-            Model.EmptyJobSetCallback?.Invoke();
+            if (length <= 5) { showFilterPanel = false; }
+            if (length == 0) { Model.EmptyJobSetCallback?.Invoke(); }
         }),
     });
 }
