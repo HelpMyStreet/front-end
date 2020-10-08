@@ -6,6 +6,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobFilterViewModel
     {
+        public string PanelId { get; set; }
         public SortAndFilterSet FilterSet { get; set; }
         public JobFilterRequest JobFilterRequest { get; set; }
         public Action EmptyJobSetCallback { get; set; }
