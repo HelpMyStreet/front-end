@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Models.Account
 @using HelpMyStreetFE.Enums.Account
 
 @model AccountViewModel
@@ -22,7 +22,7 @@
             {
                 @await Component.InvokeAsync("JobList", new
                    {
-                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = -1 },
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20 },
                        EmptyListCallback = new Action(() => NoJobsToDisplay = true)
                    })
                 @if (NoJobsToDisplay)
