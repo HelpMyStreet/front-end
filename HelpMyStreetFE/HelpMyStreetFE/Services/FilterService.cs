@@ -45,10 +45,10 @@ namespace HelpMyStreetFE.Services
                 {
                     new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
                     new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Help needed least soon" },
-                    new OrderByField() { Value = OrderBy.DateRequested_Descending, Label = "Requested most recently" },
-                    new OrderByField() { Value = OrderBy.DateRequested_Ascending, Label = "Requested least recently" },
-                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
+                    new OrderByField() { Value = OrderBy.DateRequested_Descending, Label = "Requested last" },
+                    new OrderByField() { Value = OrderBy.DateRequested_Ascending, Label = "Requested first" },
                     new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Updated most recently" },
+                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
                 },
         };
 
@@ -142,8 +142,8 @@ namespace HelpMyStreetFE.Services
                 OrderBy = new List<OrderByField>()
                     {
                         new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Accepted longest ago" },
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Accepted most recently" },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Accepted first" },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Accepted last" },
                     },
             };
 
@@ -156,8 +156,8 @@ namespace HelpMyStreetFE.Services
             {
                 OrderBy = new List<OrderByField>()
                     {
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Completed most recently", IsSelected = true },
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Completed longest ago" },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Completed last", IsSelected = true },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Completed first" },
                     },
             };
 
