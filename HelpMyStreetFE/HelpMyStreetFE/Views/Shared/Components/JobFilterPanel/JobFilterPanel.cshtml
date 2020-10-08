@@ -42,29 +42,32 @@
                 @if (Model.FilterSet.JobStatuses != null)
                 {
                     <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
-                        <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">
-                            <div class="filter__list__category__title">Status</div>
-                            <div class="filter__list__category__summary"></div>
-                        </button>
-                        <div class="form-group__wrapper">
-                            <div class="form-group select-all">
-                                <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
-                                <label for="filter-status-select-all">Select all</label>
-                            </div>
-                            @foreach (var status in Model.FilterSet.JobStatuses)
-                            {
-                                <div class="form-group">
-                                    <input name="JobStatuses[]" type="checkbox" id="@Model.PanelId-filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
-                                    <label for="@Model.PanelId-filter-status-@status.Value">@status.Value.FriendlyName()</label>
+                        <div class="filter__list__category__inner">
+                            <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">
+                                <div class="filter__list__category__title">Status</div>
+                                <div class="filter__list__category__summary"></div>
+                            </button>
+                            <div class="form-group__wrapper">
+                                <div class="form-group select-all">
+                                    <input id="filter-status-select-all" type="checkbox" class="filter-select-all" />
+                                    <label for="filter-status-select-all">Select all</label>
                                 </div>
-                            }
+                                @foreach (var status in Model.FilterSet.JobStatuses)
+                                {
+                                    <div class="form-group">
+                                        <input name="JobStatuses[]" type="checkbox" id="@Model.PanelId-filter-status-@status.Value" value="@((int)status.Value)" checked="@status.IsSelected" />
+                                        <label for="@Model.PanelId-filter-status-@status.Value">@status.Value.FriendlyName()</label>
+                                    </div>
+                                }
+                            </div>
                         </div>
                     </fieldset>
                 }
 
                 @if (Model.FilterSet.SupportActivities != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
+                <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
+                    <div class="filter__list__category__inner">
                         <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">
                             <div class="filter__list__category__title">Support Activities</div>
                             <div class="filter__list__category__summary"></div>
@@ -82,12 +85,14 @@
                                 </div>
                             }
                         </div>
-                    </fieldset>
+                     </div>
+                </fieldset>
                 }
 
                 @if (Model.FilterSet.MaxDistanceInMiles != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
+                <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
+                    <div class="filter__list__category__inner">
                         <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">
                             <div class="filter__list__category__title">Distance</div>
                             <div class="filter__list__category__summary"></div>
@@ -101,12 +106,14 @@
                                 </div>
                             }
                         </div>
-                    </fieldset>
+                    </div>
+                </fieldset>
                 }
 
                 @if (Model.FilterSet.DueInNextXDays != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-due">
+                <fieldset class="filter__list__category group--filters-jobs" id="list-due">
+                    <div class="filter__list__category__inner">
                         <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">
                             <div class="filter__list__category__title">Due</div>
                             <div class="filter__list__category__summary"></div>
@@ -120,12 +127,14 @@
                                 </div>
                             }
                         </div>
-                    </fieldset>
+                    </div>
+                </fieldset>
                 }
 
                 @if (Model.FilterSet.OrderBy != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-orderby">
+                <fieldset class="filter__list__category group--filters-jobs" id="list-orderby">
+                    <div class="filter__list__category__inner">
                         <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-orderby" data-target-group="filters-jobs">
                             <div class="filter__list__category__title">Order by</div>
                             <div class="filter__list__category__summary"></div>
@@ -139,12 +148,14 @@
                                 </div>
                             }
                         </div>
-                    </fieldset>
+                    </div>
+                </fieldset>
                 }
 
                 <div class="filter__list__apply__wrapper">
                     <button type="submit" class="btn cta small btn--apply-filter disabled" data-target-group="filters-jobs">
-                        <span class="text">Apply</span>
+                        <span class="text apply">Apply</span>
+                        <span class="text applied dnone">Applied</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading"}' /></div>
                     </button>
                 </div>

@@ -2,7 +2,6 @@
 
 /** Environment */
 $bp: 600px;
-$toggleBtnBg: white;
 
 html,
 body {
@@ -66,6 +65,10 @@ body {
         display: block;
       }
 
+      .filter__list__category__inner {
+        border-radius: 24px;
+      }
+
       &.filter--show {
         transform: translate(0, 0);
         transition: none;
@@ -89,15 +92,11 @@ body {
 
     &__toggle {
       padding: 0.5rem;
-      color: $blue;
-      background-color: $toggleBtnBg;
-      position: relative;
+      background-color: $white;
       border: 0;
-      display: initial;
       width: 100%;
       min-height: 4rem;
       padding-right: 1rem;
-      border: 2px solid $blue;
 
       &:after {
         content: " ";
@@ -131,64 +130,73 @@ body {
 
     &__category {
       margin: 0.6rem;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
       padding: 0;
       border: none;
       min-width: 0;
 
-      input {
-        + label {
-          display: inline-block;
-          cursor: pointer;
-          padding: 0.5rem;
-        }
-
-        &:checked {
-          + label {
-            color: $blue;
-          }
-        }
-
-        &:focus {
-          + label {
-            color: $green;
-          }
-        }
-      }
-
-      .form-group__wrapper {
-        display: none;
-        padding: 0 0.5rem 0.5rem 0.5rem;
-        border-left: 2px solid $blue;
-        border-right: 2px solid $blue;
-        border-bottom: 2px solid $blue;
+      &__inner {
+        border-radius: 12px;
+        border: 2px solid $blue;
         transition: border-color 0.5s;
         background-color: white;
-      }
-      /** When category toggled on */
-      &.filter--show {
 
-        .form-group__wrapper {
-          display: block;
-        }
-
-        .filter__list__toggle {
-          border-bottom-left-radius: 0px;
-          border-bottom-right-radius: 0px;
-          border-bottom: none;
-
-          &:after {
-            transform: rotate(-135deg);
-          }
+        &:hover {
+          border-color: $dark-blue;
+          transition: border-color 0.1s;
 
           .filter__list__category__title {
             color: $dark-blue;
             transition: color 0.1s;
           }
+        }
 
-          .filter__list__category__summary {
-            display: none;
+        input {
+          + label {
+            display: inline-block;
+            cursor: pointer;
+            padding: 0.5rem;
+          }
+
+          &:checked {
+            + label {
+              color: $blue;
+            }
+          }
+
+          &:focus {
+            + label {
+              color: $green;
+            }
+          }
+        }
+
+        .form-group__wrapper {
+          display: none;
+          padding: 0 0.5rem 0.5rem 0.5rem;
+          margin-top: -0.5em;
+        }
+      }
+      /** When category toggled on */
+      &.filter--show {
+
+        .filter__list__category__inner {
+          .form-group__wrapper {
+            display: block;
+          }
+
+          .filter__list__toggle {
+            &:after {
+              transform: rotate(-135deg);
+            }
+
+            .filter__list__category__title {
+              color: $dark-blue;
+              transition: color 0.1s;
+            }
+
+            .filter__list__category__summary {
+              display: none;
+            }
           }
         }
       }
@@ -199,24 +207,12 @@ body {
         padding-left: 0.25rem;
 
         &.select-all {
-          border-bottom: 1px dashed $gray-10;
+          border-bottom: 1px dashed $blue;
         }
       }
 
       .filter__list__category__title {
         transition: color 0.5s;
-      }
-
-      &:hover {
-        .filter__list__category__title {
-          color: $dark-blue;
-          transition: color 0.1s;
-        }
-
-        .filter__list__toggle, .form-group__wrapper {
-          border-color: $dark-blue;
-          transition: border-color 0.1s;
-        }
       }
     }
 
@@ -231,16 +227,21 @@ body {
         &.applied {
           animation-duration: 1s;
           animation-name: action-feedback;
+
+          span.applied {
+            display: inline;
+          }
+
+          span.apply {
+            display: none;
+          }
         }
 
         &.disabled, &.applied {
           cursor: default;
-          background-color: $white;
-          color: $gray-8;
-
-          &:hover {
-            border-color: $white;
-          }
+          @extend .border-green;
+          background-color: white;
+          color: $green;
         }
       }
     }
@@ -260,7 +261,7 @@ body {
     background-color: $green;
   }
   to {
-    color: $gray-8;
+    color: $green;
     background-color: $white;
   }
 }
