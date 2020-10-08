@@ -2,12 +2,12 @@
 {
     public enum OrderBy
     {
-        Distance_Ascending,
-        DateRequested_Ascending,
-        DateRequested_Descending,
-        DateDue_Ascending,
-        DateDue_Descending,
-        DateStatusLastChanged_Ascending,
-        DateStatusLastChanged_Descending,
+        Distance_Ascending = 1,
+        DateRequested_Ascending = 2,
+        DateRequested_Descending = 3,
+        DateDue_Ascending = 4,
+        DateDue_Descending = 5,
+        DateStatusLastChanged_Ascending = 6,
+        DateStatusLastChanged_Descending = 7,
     }
 }

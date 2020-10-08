@@ -120,6 +120,25 @@
                     </fieldset>
                 }
 
+                @if (Model.FilterSet.OrderBy != null)
+                {
+                    <fieldset class="filter__list__category group--filters-jobs" id="list-orderby">
+                        <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-orderby" data-target-group="filters-jobs">
+                            <div class="filter__list__category__title">Order by</div>
+                            <div class="filter__list__category__summary"></div>
+                        </button>
+                        <div class="form-group__wrapper">
+                            @foreach (var orderBy in Model.FilterSet.OrderBy)
+                            {
+                                <div class="form-group">
+                                    <input type="radio" name="OrderBy" id="filter-orderby-@orderBy.Value" value="@((int)orderBy.Value)" checked="@orderBy.IsSelected" />
+                                    <label for="filter-orderby-@orderBy.Value">@orderBy.Label</label>
+                                </div>
+                            }
+                        </div>
+                    </fieldset>
+                }
+
                 <div class="filter__list__apply__wrapper">
                     <button type="submit" class="btn cta small btn--apply-filter disabled" data-target-group="filters-jobs">
                         <span class="text">Apply</span>

@@ -8,10 +8,10 @@
     bool NoCriteriaJobsToDisplay = false;
     bool NoNonCriteriaJobsToDisplay = false;
 
-    var criteriaJobsList = await Component.InvokeAsync("JobList", new
+    var criteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
     {
         JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = -1 },
-        EmptyListCallback = new Action(() => NoCriteriaJobsToDisplay = true),
+        EmptyJobSetCallback = new Action(() => NoCriteriaJobsToDisplay = true),
     });
 
     var nonCriteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()

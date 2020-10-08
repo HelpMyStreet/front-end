@@ -43,6 +43,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             {
                 DueInNextXDays = filterSet.DueInNextXDays.Where(a => a.IsSelected).First().Value;
             }
+            if (filterSet.OrderBy != null)
+            {
+                OrderBy = filterSet.OrderBy.Where(a => a.IsSelected).First().Value;
+            }
         }
     }
 }
