@@ -182,6 +182,11 @@ body {
             transform: rotate(-135deg);
           }
 
+          .filter__list__category__title {
+            color: $dark-blue;
+            transition: color 0.1s;
+          }
+
           .filter__list__category__summary {
             display: none;
           }
@@ -198,7 +203,16 @@ body {
         }
       }
 
+      .filter__list__category__title {
+        transition: color 0.5s;
+      }
+
       &:hover {
+        .filter__list__category__title {
+          color: $dark-blue;
+          transition: color 0.1s;
+        }
+
         .filter__list__toggle, .form-group__wrapper {
           border-color: $dark-blue;
           transition: border-color 0.1s;
