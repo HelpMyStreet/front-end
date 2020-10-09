@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FirebaseAdmin" Version="1.15.0" />
+    <PackageReference Include="FirebaseAdmin" Version="1.17.0" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.416" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.416" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.416" />  
