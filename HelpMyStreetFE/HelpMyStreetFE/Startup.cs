@@ -24,6 +24,9 @@ using HelpMyStreet.Cache;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE
 {
@@ -147,8 +150,8 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
+            services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
-            services.AddSingleton<IUserService, Services.UserService>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
@@ -156,6 +159,7 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IGroupService, GroupService>();
+            services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
 
             // cache
