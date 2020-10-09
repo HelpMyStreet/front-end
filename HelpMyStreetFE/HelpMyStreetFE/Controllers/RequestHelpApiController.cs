@@ -1,20 +1,18 @@
-﻿using HelpMyStreetFE.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -26,12 +24,14 @@ namespace HelpMyStreetFE.Controllers {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
-            _authService = authService;
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _groupMemberService = groupMemberService ?? throw new ArgumentNullException(nameof(groupMemberService));
         }
 
 
@@ -93,6 +93,31 @@ namespace HelpMyStreetFE.Controllers {
         public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
             return ViewComponent("JobList", new { jobFilterRequest });
+        }
+
+        [AuthorizeAttributeNoRedirect]
+        [Route("get-accept-popup")]
+        public async Task<IActionResult> GetAcceptRequestPopup(string j, CancellationToken cancellationToken)
+        {
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(job.ReferringGroupID, job.SupportActivity, user.ID, user.ID, cancellationToken);
+
+            if (credentials.IsSatisfied)
+            {
+                return ViewComponent("AcceptRequestPopup", job);
+            }
+            else
+            {
+                return ViewComponent("CredentialsRequiredPopup", new CredentialsRequiredViewModel { AnnotatedGroupActivityCredentialSets = credentials, JobSummary = job });
+            }
         }
     }
 }
