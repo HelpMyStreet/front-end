@@ -7,6 +7,7 @@ using HelpMyStreet.Cache;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services.Groups
 {
@@ -15,14 +16,16 @@ namespace HelpMyStreetFE.Services.Groups
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
         private readonly IGroupService _groupService;
+        private readonly IUserService _userService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
 
-        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService)
+        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
             _groupService = groupService;
+            _userService = userService;
         }
 
         public async Task AddUserToDefaultGroups(int userId)
@@ -136,6 +139,21 @@ namespace HelpMyStreetFE.Services.Groups
             }
 
             return response;
+        }
+
+        public async Task<AnnotatedGroupActivityCredentialSets> GetAnnotatedGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
+        {
+            var gacs = await _groupService.GetGroupActivityCredentials(groupId, supportActivitiy, cancellationToken);
+
+            var userCredentials = (await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId)).UserCredentials.Select(uc => uc.CredentialId).ToList();
+
+            // Should this be done in the Group Service?
+            var user = await _userService.GetUserAsync(userId, cancellationToken);
+            if (user.IsVerified == true) { userCredentials.Add(-1); }
+
+            var annotatedGacs = gacs.Select(gac => gac.Select(gc => new AnnotatedGroupCredential() { GroupCredential = gc, UserHasCredential = userCredentials.Contains(gc.CredentialID) }));
+
+            return new AnnotatedGroupActivityCredentialSets() { AnnotatedCredentialSets = annotatedGacs };
         }
     }
 }

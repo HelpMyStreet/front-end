@@ -3,6 +3,7 @@ using HelpMyStreet.Contracts.GroupService.Response;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -23,6 +24,8 @@ namespace HelpMyStreetFE.Repositories
         Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId);
 
         Task<GetUserGroupsResponse> GetUserGroups(int userId);
+
+        Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId);
 
         Task<GetUserRolesResponse> GetUserRoles(int userId);
 

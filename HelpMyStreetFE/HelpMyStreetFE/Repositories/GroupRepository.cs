@@ -12,6 +12,7 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Reponses;
 using System;
 using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -130,6 +131,18 @@ namespace HelpMyStreetFE.Repositories
             if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
             {
                 return deserializedResponse.Content;
+            }
+            return null;
+        }
+
+        public async Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMember?groupId={groupId}&userId={userId}&authorisingUserId={authorisingUserId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMemberResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.UserInGroup;
             }
             return null;
         }
