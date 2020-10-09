@@ -10,24 +10,19 @@ using System;
 using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Models.Home;
 using System.Linq;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IAddressService _addressService;
-        private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
-        private readonly IFeedbackRepository _feedbackRepository;
 
-        public HomeController(ILogger<HomeController> logger, IAddressService addressService, IUserService userService, IConfiguration configuration, IFeedbackRepository feedbackRepository)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
         {
             _logger = logger;
-            _addressService = addressService;
-            _userService = userService;
             _configuration = configuration;
-            _feedbackRepository = feedbackRepository;
         }
 
         public async Task<IActionResult> Index()

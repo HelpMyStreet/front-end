@@ -9,7 +9,7 @@ using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestService
     {

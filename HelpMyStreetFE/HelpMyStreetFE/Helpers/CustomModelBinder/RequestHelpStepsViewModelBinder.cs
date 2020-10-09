@@ -3,7 +3,7 @@ using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
-using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Requests;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 using System;

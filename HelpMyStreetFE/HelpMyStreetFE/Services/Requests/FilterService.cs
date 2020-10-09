@@ -9,7 +9,7 @@ using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.Extensions.Options;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {

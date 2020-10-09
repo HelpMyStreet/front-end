@@ -2,7 +2,7 @@
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Models.Account.Jobs;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public interface IFilterService
     {
