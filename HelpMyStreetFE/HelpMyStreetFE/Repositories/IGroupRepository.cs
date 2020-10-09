@@ -2,6 +2,7 @@
 using HelpMyStreet.Contracts.GroupService.Response;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -32,5 +33,8 @@ namespace HelpMyStreetFE.Repositories
         Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID);
 
         Task<GroupPermissionOutcome> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID);
+
+        Task<List<List<int>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy);
+        Task<List<GroupCredential>> GetGroupCredentials(int groupId);
     }
 }

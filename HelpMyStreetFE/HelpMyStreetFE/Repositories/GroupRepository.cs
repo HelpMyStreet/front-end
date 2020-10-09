@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Reponses;
 using System;
+using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -196,6 +197,38 @@ namespace HelpMyStreetFE.Repositories
                 return response.Content.Outcome;
             }
             throw new Exception("Bad response from PostRevokeRole");
+        }
+
+        public async Task<List<List<int>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy)
+        {
+            var getGroupActivityCredentialsRequest = new GetGroupActivityCredentialsRequest()
+            {
+                GroupId = groupId,
+                SupportActivityType = new SupportActivityType() { SupportActivity = supportActivitiy },
+            };
+
+            string json = JsonConvert.SerializeObject(getGroupActivityCredentialsRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetGroupActivityCredentials", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupActivityCredentialsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.CredentialSets;
+            }
+            return null;
+        }
+
+        public async Task<List<GroupCredential>> GetGroupCredentials(int groupId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupCredentials?groupId={groupId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupCredentialsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.GroupCredentials;
+            }
+            return null;
         }
     }
 }

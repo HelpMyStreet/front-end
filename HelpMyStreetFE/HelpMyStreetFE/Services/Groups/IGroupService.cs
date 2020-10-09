@@ -1,6 +1,5 @@
 ﻿using HelpMyStreet.Contracts.GroupService.Response;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreetFE.Models.Account;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,5 +16,7 @@ namespace HelpMyStreetFE.Services.Groups
         Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
 
         Task<RequestHelpFormVariant> GetRequestHelpFormVariant(int groupId, string source = "");
+
+        Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, CancellationToken cancellationToken);
     }
 }
