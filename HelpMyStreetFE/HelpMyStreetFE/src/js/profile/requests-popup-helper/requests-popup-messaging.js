@@ -1,16 +1,11 @@
-﻿export function getPopupMessaging(currentState, targetState, userActingAsAdmin, referringGroup) {
+﻿export function getPopupMessaging(currentState, targetState, userActingAsAdmin, referringGroup, jobId) {
   let settings = { actionBtnText: "Confirm" };
 
   if (targetState === "InProgress") {
     if (currentState === "Open") {
 
       settings.header = "Accept this Request for Help?";
-      settings.htmlContent =
-        `<p>It will appear on your “My Accepted Requests” page and you’ll be able to view more information about it.</p>
-         <p>Please use the information in the request to fulfil it as soon as possible (this may involve contacting the recipient) – the ball’s in your court, someone may be depending on you.</p>
-		     <p>The requester will be notified that their request has been accepted, but won’t be given your contact details.</p>`
-      + (referringGroup !== "Generic" ? (`<p>This request was made via <b>` + referringGroup + `</b>. When you accept this request by clicking “Continue” below, your details will become visible to their administrator(s), who may use these details only in relation to this request.</p>`) : ``)
-      + `<p>Thank you for helping people in your community to stay safe.</p>`;
+      settings.htmlContent_source = `/api/requesthelp/get-accept-popup?j=${jobId}`;
       settings.messageOnFalse = "Oops, we couldn’t accept this request at the moment.";
 
     } else if (currentState === "Done") {

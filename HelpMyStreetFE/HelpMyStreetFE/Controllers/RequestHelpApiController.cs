@@ -112,7 +112,7 @@ namespace HelpMyStreetFE.Controllers {
 
             if (credentials.IsSatisfied)
             {
-                return ViewComponent("AcceptRequestPopup", job);
+                return ViewComponent("AcceptRequestPopup", new JobStatusChangePopupViewModel() { JobSummary = job, TargetStatus = JobStatuses.InProgress, UserActingAsAdmin = false });
             }
             else
             {

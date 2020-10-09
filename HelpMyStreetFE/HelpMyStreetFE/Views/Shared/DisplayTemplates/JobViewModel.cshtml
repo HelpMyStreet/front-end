@@ -110,18 +110,9 @@
                     case JobStatuses.Open:
                         @if (!Model.UserActingAsAdmin)
                         {
-                            @if (Model.UserIsVerified)
-                            {
-                                <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
-                                    <span class="text">Accept</span>
-                                </button>
-                            }
-                            else
-                            {
-                                <button class="btn cta large accept-request-unverified bg-gray-8">
-                                    <span class="text">Accept</span>
-                                </button>
-                            }
+                            <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                                <span class="text">Accept</span>
+                            </button>
                         }
                         break;
                     case JobStatuses.InProgress:

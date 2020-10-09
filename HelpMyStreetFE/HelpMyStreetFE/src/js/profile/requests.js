@@ -4,9 +4,6 @@ import {
     removeQueryStringParam
 } from "../shared/querystring-helper";
 import {
-    showUnVerifiedAcceptPopup,
-} from "./requests-popup-helper/open-requests"
-import {
     buttonLoad,
     buttonUnload
 } from "../shared/btn";
@@ -54,14 +51,10 @@ export function initialiseRequests(isVerified) {
   $('.job-list').on('click', '.job a.open', function (e) {
     e.preventDefault();
     const job = $(this).closest('.job');
-    if (isVerified) {
-      updateQueryStringParam('j', $(job).attr('id'));
-      job.toggleClass('open');
-      job.find('.job__detail').slideToggle();
-      loadJobDetails(job);
-    } else {
-      showUnVerifiedAcceptPopup();
-    }
+    updateQueryStringParam('j', $(job).attr('id'));
+    job.toggleClass('open');
+    job.find('.job__detail').slideToggle();
+    loadJobDetails(job);
   });
 
   $('.job-list').on('click', '.job a.close', function (e) {
@@ -80,10 +73,6 @@ export function initialiseRequests(isVerified) {
 
   $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
     showStatusUpdatePopup($(this));
-  });
-
-  $('.job-list').on('click', '.accept-request-unverified', function () {
-    showUnVerifiedAcceptPopup();
   });
 
   $('.job-list').on('click', '.undo-request', async function (evt) {
@@ -110,7 +99,7 @@ export function showStatusUpdatePopup(btn) {
   const targetState = $(btn).data("target-state");
   const targetUser = $(btn).data("target-user") ?? "self";
 
-  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"));
+  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"), job.attr("id"));
   popupSettings.messageOnFalse_Base = popupSettings.messageOnFalse;
 
   popupSettings.acceptCallbackAsync = async () => {
