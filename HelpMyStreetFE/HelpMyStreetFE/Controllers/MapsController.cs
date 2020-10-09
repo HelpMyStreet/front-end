@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+
 using System.Collections.Generic;
 using HelpMyStreet.Contracts.AddressService.Request;
 using HelpMyStreet.Contracts.AddressService.Response;
@@ -9,6 +10,8 @@ using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Models.Community;
 using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services.Users;
+
 
 namespace HelpMyStreetFE.Controllers
 {

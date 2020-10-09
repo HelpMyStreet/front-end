@@ -1,13 +1,11 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
-using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Models.Email;
-using HelpMyStreetFE.Services;
-using Microsoft.AspNetCore.Http;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +19,14 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public JobListViewComponent(IRequestService requestService, IGroupService groupService, IAuthService authService)
+        public JobListViewComponent(IRequestService requestService, IGroupService groupService, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
             _groupService = groupService;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobFilterRequest.JobSet == JobSet.GroupRequests)
             {
-                if (!(await _groupService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin, cancellationToken)))
+                if (!(await _groupMemberService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin, cancellationToken)))
                 {
                     throw new UnauthorizedAccessException("User not authorized to view group tasks");
                 }
@@ -81,7 +81,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobHeader = a,                
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false,
-                ReferringGroup = a.ReferringGroupID.HasValue ? (await _groupService.GetGroupById(a.ReferringGroupID.Value, cancellationToken))?.GroupName : ""
+                ReferringGroup = (await _groupService.GetGroupById(a.ReferringGroupID, cancellationToken)).GroupName
             })));
 
             if (jobListViewModel.UnfilteredJobs == 0 && emptyListCallback != null)

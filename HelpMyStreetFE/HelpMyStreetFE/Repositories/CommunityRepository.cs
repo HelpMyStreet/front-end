@@ -1,11 +1,11 @@
 ﻿using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Community;
-using HelpMyStreetFE.Services;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using System.Linq;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Repositories
 {
