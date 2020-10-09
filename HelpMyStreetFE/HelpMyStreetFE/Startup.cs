@@ -155,6 +155,7 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IGroupService, GroupService>();
+            services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
 
             // cache
