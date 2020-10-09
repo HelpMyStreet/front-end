@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using HelpMyStreetFE.Services.Users;
+
 namespace HelpMyStreetFE.ViewComponents
 {
     public class AwardsViewComponent : ViewComponent

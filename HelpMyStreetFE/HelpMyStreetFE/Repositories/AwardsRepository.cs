@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using HelpMyStreetFE.Services;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Repositories
 {
