@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
 
@@ -15,18 +14,14 @@ namespace HelpMyStreetFE.Services
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
-        private readonly IMemDistCache<int> _memDistCache_int;
-        private readonly IMemDistCache<Group> _memDistCache_group;
         private readonly IGroupService _groupService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
 
-        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IMemDistCache<int> memDistCache_int, IMemDistCache<Group> memDistCache_group, IGroupService groupService)
+        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
-            _memDistCache_int = memDistCache_int;
-            _memDistCache_group = memDistCache_group;
             _groupService = groupService;
         }
 
