@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Users
 {
     public interface IAuthService
     {

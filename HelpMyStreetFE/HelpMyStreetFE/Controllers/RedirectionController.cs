@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.Controllers

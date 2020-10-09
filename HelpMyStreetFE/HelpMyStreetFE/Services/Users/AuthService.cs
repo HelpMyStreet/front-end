@@ -3,21 +3,18 @@ using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
-using HelpMyStreetFE.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Users
 {
     public class AuthService : IAuthService
     {

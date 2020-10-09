@@ -8,6 +8,9 @@ using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.ViewComponents
