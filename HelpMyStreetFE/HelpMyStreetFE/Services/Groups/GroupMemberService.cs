@@ -8,7 +8,7 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Groups
 {
     public class GroupMemberService : IGroupMemberService
     {

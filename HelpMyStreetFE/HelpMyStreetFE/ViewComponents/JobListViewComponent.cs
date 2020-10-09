@@ -1,13 +1,11 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
-using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Models.Email;
-using HelpMyStreetFE.Services;
-using Microsoft.AspNetCore.Http;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

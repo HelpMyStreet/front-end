@@ -1,13 +1,11 @@
 using System;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Enums.Validation;
 using HelpMyStreetFE.Models.Validation;
 using HelpMyStreetFE.Models.Yoti;
-using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

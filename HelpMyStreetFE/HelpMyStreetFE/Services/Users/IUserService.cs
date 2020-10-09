@@ -4,7 +4,7 @@ using HelpMyStreet.Contracts.UserService.Response;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Users
 {
     public interface IUserService
     {

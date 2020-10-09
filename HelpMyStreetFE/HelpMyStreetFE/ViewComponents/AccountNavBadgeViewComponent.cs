@@ -8,6 +8,8 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.ViewComponents

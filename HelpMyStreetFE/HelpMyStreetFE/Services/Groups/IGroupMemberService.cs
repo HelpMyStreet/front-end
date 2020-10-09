@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Groups
 {
     public interface IGroupMemberService
     {

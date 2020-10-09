@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using HelpMyStreet.Contracts.AddressService.Request;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Controllers
 {

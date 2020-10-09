@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Helpers;
@@ -11,11 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Contracts.GroupService.Request;
 using System.Threading;
+using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Controllers
 {

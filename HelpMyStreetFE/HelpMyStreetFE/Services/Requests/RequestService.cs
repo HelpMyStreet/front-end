@@ -19,8 +19,10 @@ using System.Threading;
 using HelpMyStreetFE.Models.Account;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Users;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public class RequestService : IRequestService
     {

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HelpMyStreetFE.Repositories;
 using System.Collections.Generic;
-using HelpMyStreetFE.Models.Account;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
 using System;
@@ -9,7 +8,7 @@ using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreet.Utils.Models;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Groups
 {
     public class GroupService : IGroupService
     {
