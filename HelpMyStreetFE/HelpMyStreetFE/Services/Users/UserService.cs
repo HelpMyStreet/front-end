@@ -11,7 +11,7 @@ using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreet.Contracts.UserService.Response;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Users
 {
     public class UserService : IUserService
     {

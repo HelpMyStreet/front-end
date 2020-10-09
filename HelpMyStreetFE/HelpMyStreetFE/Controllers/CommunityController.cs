@@ -16,6 +16,8 @@ using System.Threading;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -28,8 +30,9 @@ namespace HelpMyStreetFE.Controllers
         private readonly IConfiguration _configuration;
         private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService, IAuthService authService)
+        public CommunityController(ILogger<CommunityController> logger, ICommunityRepository communityRepository, IWebHostEnvironment env, IConfiguration configuration, IGroupService groupService, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _env = env;
             _logger = logger;
@@ -37,6 +40,7 @@ namespace HelpMyStreetFE.Controllers
             _configuration = configuration;
             _groupService = groupService;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
 
         public async Task<IActionResult> Index(string communityName, CancellationToken cancellationToken)
@@ -64,7 +68,7 @@ namespace HelpMyStreetFE.Controllers
             if (user != null)
             {
                 communityViewModel.IsLoggedIn = true;
-                communityViewModel.IsGroupMember = await _groupService.GetUserHasRole(user.ID, communityViewModel.groupKey, GroupRoles.Member, cancellationToken);
+                communityViewModel.IsGroupMember = await _groupMemberService.GetUserHasRole(user.ID, communityViewModel.groupKey, GroupRoles.Member, cancellationToken);
             }
             communityViewModel.TestBanner = testBanner;
             

@@ -1,8 +1,6 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
-using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -10,15 +8,15 @@ using HelpMyStreetFE.Models.RequestHelp.Stages;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
-using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 

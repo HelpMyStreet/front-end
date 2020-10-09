@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Requests;
 
 namespace HelpMyStreetFE.ViewComponents
 {
