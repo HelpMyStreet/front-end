@@ -265,7 +265,7 @@ namespace HelpMyStreetFE.Controllers
                 return 0;
             }
 
-            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService, _groupMemberService).GetCount(user, menuPage, groupKey, cancellationToken);
+            int count = await new AccountNavBadgeViewComponent(_requestService, _groupMemberService).GetCount(user, menuPage, groupKey, cancellationToken);
 
             return count;
         }

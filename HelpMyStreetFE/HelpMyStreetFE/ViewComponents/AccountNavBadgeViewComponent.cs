@@ -7,7 +7,6 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Models.Account;
-using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +16,11 @@ namespace HelpMyStreetFE.ViewComponents
     public class AccountNavBadgeViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IGroupService _groupService;
         private readonly IGroupMemberService _groupMemberService;
 
-        public AccountNavBadgeViewComponent(IRequestService requestService, IGroupService groupService, IGroupMemberService groupMemberService)
+        public AccountNavBadgeViewComponent(IRequestService requestService, IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
-            _groupService = groupService;
             _groupMemberService = groupMemberService;
         }
 
