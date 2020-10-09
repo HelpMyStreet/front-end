@@ -31,10 +31,11 @@ namespace HelpMyStreetFE.Services
         private readonly IUserService _userService;
         private readonly IMemDistCache<IEnumerable<JobHeader>> _memDistCache;
         private readonly IOptions<RequestSettings> _requestSettings;
+        private readonly IGroupMemberService _groupMemberService;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
@@ -43,6 +44,7 @@ namespace HelpMyStreetFE.Services
             _userService = userService;
             _memDistCache = memDistCache;
             _requestSettings = requestSettings;
+            _groupMemberService = groupMemberService;
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -244,7 +246,7 @@ namespace HelpMyStreetFE.Services
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
-                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId, cancellationToken);
+                List<UserGroup> userGroups = await _groupMemberService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
                     userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>
@@ -276,7 +278,7 @@ namespace HelpMyStreetFE.Services
                 {
                     JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
                 },
-                Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
+                Groups = new GroupRequest() { Groups = await _groupMemberService.GetUserGroups(user.ID) }
             };
 
             return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);

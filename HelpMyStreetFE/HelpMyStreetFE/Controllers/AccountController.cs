@@ -37,6 +37,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
+        private readonly IGroupMemberService _groupMemberService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account";
@@ -50,7 +51,8 @@ namespace HelpMyStreetFE.Controllers
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
             IGroupService groupService,
-            IAuthService authService
+            IAuthService authService,
+            IGroupMemberService groupMemberService
             )
         {
             _logger = logger;
@@ -61,6 +63,7 @@ namespace HelpMyStreetFE.Controllers
             _requestService = requestService;
             _groupService = groupService;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
 
         [HttpGet]
@@ -215,11 +218,11 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
+            if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
             {
                 return await GroupRequests(groupKey, cancellationToken);
             }
-            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
             {
                 return await GroupVolunteers(groupKey, cancellationToken);
             }
@@ -237,7 +240,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
+            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
@@ -259,7 +262,7 @@ namespace HelpMyStreetFE.Controllers
                 return 0;
             }
 
-            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
+            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService, _groupMemberService).GetCount(user, menuPage, groupKey, cancellationToken);
 
             return count;
         }
@@ -274,7 +277,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
+            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
@@ -329,7 +332,7 @@ namespace HelpMyStreetFE.Controllers
 
                 viewModel.UserDetails = userDetails;
 
-                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID, cancellationToken);
+                viewModel.UserGroups = await _groupMemberService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 
             return viewModel;

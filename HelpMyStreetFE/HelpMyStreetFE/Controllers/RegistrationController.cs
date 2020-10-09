@@ -28,13 +28,15 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IGroupService _groupService;
+        private readonly IGroupMemberService _groupMemberService;
         public RegistrationController(
             ILogger<RegistrationController> logger,
             IUserService userService,
             IAuthService authService,
             IAddressService addressService,
             IConfiguration configuration,
-            IGroupService groupService)
+            IGroupService groupService,
+            IGroupMemberService groupMemberService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService;
@@ -42,6 +44,7 @@ namespace HelpMyStreetFE.Controllers
             _addressService = addressService;
             _configuration = configuration;
             _groupService = groupService;
+            _groupMemberService = groupMemberService;
         }
 
         [AllowAnonymous]
@@ -182,7 +185,7 @@ namespace HelpMyStreetFE.Controllers
                     form.VolunteerDistance,
                     cancellationToken);
 
-                await _groupService.AddUserToDefaultGroups(user.ID);
+                await _groupMemberService.AddUserToDefaultGroups(user.ID);
 
                 return Redirect("/registration/step-four");
             }

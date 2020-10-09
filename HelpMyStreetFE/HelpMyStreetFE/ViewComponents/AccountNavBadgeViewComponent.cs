@@ -16,11 +16,13 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public AccountNavBadgeViewComponent(IRequestService requestService, IGroupService groupService)
+        public AccountNavBadgeViewComponent(IRequestService requestService, IGroupService groupService, IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
             _groupService = groupService;
+            _groupMemberService = groupMemberService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, string cssClass, CancellationToken cancellationToken)
@@ -40,7 +42,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             if (menuPage == MenuPage.GroupRequests)
             {
-                if (!await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
+                if (!await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
                 {
                     return 0;
                 }

@@ -17,16 +17,15 @@ namespace HelpMyStreetFE.ViewComponents
     public class SiteHeaderViewComponent : ViewComponent
     {
         private readonly IUserService _userService;
-        private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
-        public SiteHeaderViewComponent(IUserService userService, IGroupService groupService, IAuthService authService)
+        private readonly IGroupMemberService _groupMemberService;
+
+        public SiteHeaderViewComponent(IUserService userService, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _userService = userService;
-            _groupService = groupService;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
-
-
 
         public async Task<IViewComponentResult> InvokeAsync(CancellationToken cancellationToken)
         {
@@ -51,7 +50,7 @@ namespace HelpMyStreetFE.ViewComponents
                 viewModel.Notifications = new List<NotificationModel>();
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.UserDetails = userDetails;
-                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID, cancellationToken);
+                viewModel.UserGroups = await _groupMemberService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 
             return viewModel;
