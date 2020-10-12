@@ -15,7 +15,7 @@ namespace HelpMyStreetFE.Models.Account
 
         public IEnumerable<IEnumerable<AnnotatedGroupCredential>> AnnotatedCredentialSets { get; set; }
 
-        public bool IsSatisfied
+        public bool AreSatisfied
         {
             get
             {

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -110,7 +110,7 @@ namespace HelpMyStreetFE.Controllers {
 
             var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(job.ReferringGroupID, job.SupportActivity, user.ID, user.ID, cancellationToken);
 
-            if (credentials.IsSatisfied)
+            if (credentials.AreSatisfied)
             {
                 return ViewComponent("AcceptRequestPopup", new JobStatusChangePopupViewModel() { JobSummary = job, TargetStatus = JobStatuses.InProgress, UserActingAsAdmin = false });
             }
