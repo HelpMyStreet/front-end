@@ -19,17 +19,20 @@ namespace HelpMyStreetFE.Services.Requests
             _requestSettings = requestSettings;
         }
 
-        public FilterSet GetDefaultFilterSet(JobSet jobSet, User user)
+        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, User user)
         {
             return jobSet switch
             {
-                JobSet.GroupRequests => GroupRequestsDefaultFilterSet,
-                JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsDefaultFilterSet(user),
+                JobSet.GroupRequests => GroupRequestsDefaultSortAndFilterSet,
+                JobSet.UserOpenRequests_MatchingCriteria => GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet(),
+                JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
+                JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
+                JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
 
-        private FilterSet GroupRequestsDefaultFilterSet = new FilterSet()
+        private SortAndFilterSet GroupRequestsDefaultSortAndFilterSet = new SortAndFilterSet()
         {
             JobStatuses = new List<FilterField<JobStatuses>>()
                 {
@@ -38,18 +41,34 @@ namespace HelpMyStreetFE.Services.Requests
                     new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                     new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
                 },
-            DueInNextXDays = new List<FilterField<int>>()
+            OrderBy = new List<OrderByField>()
                 {
-                    new FilterField<int>{Value = 1, Label = "Today" },
-                    new FilterField<int>{Value = 7, Label = "This week"},
-                    new FilterField<int>{Value = 14, Label = "Next 2 weeks"},
-                    new FilterField<int>{Value = 999, Label = "Show all", IsSelected = true}
+                    new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
+                    new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Help needed least soon" },
+                    new OrderByField() { Value = OrderBy.DateRequested_Descending, Label = "Requested last" },
+                    new OrderByField() { Value = OrderBy.DateRequested_Ascending, Label = "Requested first" },
+                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Updated most recently" },
+                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
                 },
         };
 
-        private FilterSet GetOpenRequestsDefaultFilterSet(User user)
+        private SortAndFilterSet GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet()
         {
-            FilterSet filterSet = new FilterSet()
+            SortAndFilterSet filterSet = new SortAndFilterSet()
+            {
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
+                        new OrderByField() { Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
+                  },
+            };
+
+            return filterSet;
+        }
+
+        private SortAndFilterSet GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(User user)
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet()
             {
                 SupportActivities = new List<FilterField<SupportActivities>>()
                     {
@@ -75,6 +94,11 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<int> { Value = 7, Label = "This week" },
                         new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
                         new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                    },
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
+                        new OrderByField() { Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
                     },
             };
 
@@ -107,6 +131,35 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<int> { Value = 20, Label = "Within 20 miles", IsSelected = true },
                     };
             }
+
+            return filterSet;
+        }
+
+        private SortAndFilterSet GetAcceptedRequestsDefaultSortAndFilterSet()
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet()
+            {
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Accepted first" },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Accepted last" },
+                    },
+            };
+
+            return filterSet;
+        }
+
+        private SortAndFilterSet GetCompletedRequestsDefaultSortAndFilterSet()
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet()
+            {
+                OrderBy = new List<OrderByField>()
+                    {
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Completed last", IsSelected = true },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Completed first" },
+                    },
+            };
 
             return filterSet;
         }

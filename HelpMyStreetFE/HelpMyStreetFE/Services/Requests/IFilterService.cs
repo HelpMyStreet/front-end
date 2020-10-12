@@ -6,6 +6,6 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IFilterService
     {
-        public FilterSet GetDefaultFilterSet(JobSet jobSet, User user);
+        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, User user);
     }
 }

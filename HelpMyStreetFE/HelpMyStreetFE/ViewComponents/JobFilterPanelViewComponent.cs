@@ -18,7 +18,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             if (jobFilterViewModel.FilterSet == null)
             {
-                jobFilterViewModel.FilterSet = _filterService.GetDefaultFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.User);
+                jobFilterViewModel.FilterSet = _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.User);
             }
 
             jobFilterViewModel.JobFilterRequest.UpdateFromFilterSet(jobFilterViewModel.FilterSet);

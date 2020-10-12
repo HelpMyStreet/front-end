@@ -1,5 +1,6 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Review.RequestHelpReviewStageViewModel;
 @using HelpMyStreet.Utils.Enums;
+@using HelpMyStreetFE.Helpers;
 
 @{
     var onBehalf = Model.RequestedFor.Type == RequestorType.OnBehalf;
@@ -78,7 +79,7 @@
                                             answer = radioInput != null ? radioInput.Value : "Not Answered";
                                         }
                                     }
-                                    @answer
+                                    @Html.Raw(answer.ToHtmlSafeStringWithLineBreaks())
                                 </div>
                             }
                             <hr class="input--separator" />
@@ -162,7 +163,7 @@
                                             answer = radioInput != null ? radioInput.Value : "Not Answered";
                                         }
                                     }
-                                    @answer
+                                    @Html.Raw(answer.ToHtmlSafeStringWithLineBreaks())
                                 </div>
                             }
                             <hr class="input--separator" />
