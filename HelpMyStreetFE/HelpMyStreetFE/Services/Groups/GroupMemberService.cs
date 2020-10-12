@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services.Users;
@@ -15,17 +16,19 @@ namespace HelpMyStreetFE.Services.Groups
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
+        private readonly IMemDistCache<UserInGroup> _memDistCache_userInGroup;
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
 
-        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService)
+        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
             _groupService = groupService;
             _userService = userService;
+            _memDistCache_userInGroup = memDistCache_userInGroup;
         }
 
         public async Task AddUserToDefaultGroups(int userId)
@@ -141,19 +144,32 @@ namespace HelpMyStreetFE.Services.Groups
             return response;
         }
 
+        public async Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId, CancellationToken cancellationToken)
+        {
+            var result = await _memDistCache_userInGroup.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId);
+            }, $"{CACHE_KEY_PREFIX}-group-member-{groupId}-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+
+            return result;
+        }
+
         public async Task<AnnotatedGroupActivityCredentialSets> GetAnnotatedGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
         {
             var gacs = await _groupService.GetGroupActivityCredentials(groupId, supportActivitiy, cancellationToken);
-            var groupMember = await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId);
+            var groupMember = await GetGroupMember(groupId, userId, authorisingUserId, cancellationToken);
 
             if (gacs == null) { throw new Exception("Null response from GetGroupActivityCredentials"); }
             if (groupMember == null) { throw new Exception("Null response from GetGroupMember"); }
 
-            // This will be done in the Group Service?
-            var user = await _userService.GetUserAsync(userId, cancellationToken);
-            if (user.IsVerified == true) { groupMember.ValidCredentials.Add(-1); }
-
             return new AnnotatedGroupActivityCredentialSets(gacs, groupMember.ValidCredentials);
+        }
+
+        public async Task<bool> GetUserHasCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
+        {
+            var annotatedGacs = await GetAnnotatedGroupActivityCredentials(groupId, supportActivitiy, userId, authorisingUserId, cancellationToken);
+
+            return annotatedGacs.AreSatisfied;
         }
     }
 }
