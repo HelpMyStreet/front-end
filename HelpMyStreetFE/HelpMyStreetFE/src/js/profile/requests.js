@@ -131,8 +131,6 @@ export function showStatusUpdatePopup(btn) {
 }
 
 
-
-
 async function setJobStatus(job, newStatus, targetUser) {
     let jobId = job.attr("id");
 

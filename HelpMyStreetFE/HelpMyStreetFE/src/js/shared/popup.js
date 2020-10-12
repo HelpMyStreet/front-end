@@ -5,36 +5,44 @@ export async function showPopup(settings) {
 
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
   popup.find(".popup__content").centerPopup();
-  popup.find(".popup__content__header").first().text(settings.header);
-
-  popup.find(".popup__content__text").first().html(settings.htmlContent);
   if (settings.htmlContent_source) {
+    if (settings.noFade) {
+      popup.show();
+    } else {
+      popup.fadeIn(200);
+    }
     var response = await hmsFetch(settings.htmlContent_source);
     if (response.fetchResponse == fetchResponses.SUCCESS) {
-      popup.find(".popup__content__text").first().html(await response.fetchPayload);
+      popup.find(".popup__content__wrapper").first().html(await response.fetchPayload);
     } else {
-      popup.find(".popup__content__text").first().html("Sorry, we couldn't load this content.");
+      popup.find(".popup__content__header").first().text("That didn't work.");
+      popup.find(".popup__content__text").first().html("<p>Sorry, we couldn't load this popup.  Please try again.</p>");
     }
-  }
-
-popup.find("#popup-accept > .text").text(settings.actionBtnText);
-  if (settings.cssClass) {
-    popup.find(".popup__content").addClass(settings.cssClass);
-  }
-  if (settings.buttonCssClass) {
-    popup.find("#popup-accept").addClass(settings.buttonCssClass);
-  }
-  if (settings.rejectBtnText) {
-    popup.find('#popup-reject').parent().removeClass('dnone');
-    popup.find("#popup-reject > .text").text(settings.rejectBtnText);
-  }
-  if (settings.rejectbuttonCssClass) {
-    popup.find("#popup-reject").addClass(settings.rejectbuttonCssClass);
-  }
-  if (settings.noFade) {
-    popup.show();
   } else {
-    popup.fadeIn(200);
+    popup.find(".popup__content__header").first().text(settings.header);
+    popup.find(".popup__content__text").first().html(settings.htmlContent);
+
+    popup.find("#popup-accept > .text").text(settings.actionBtnText);
+    if (settings.cssClass) {
+      popup.find(".popup__content").addClass(settings.cssClass);
+    }
+    popup.find(".popup__content__buttons").first().removeClass('dnone');
+    if (settings.buttonCssClass) {
+      popup.find("#popup-accept").addClass(settings.buttonCssClass);
+    }
+    if (settings.rejectBtnText) {
+      popup.find('#popup-reject').parent().removeClass('dnone');
+      popup.find("#popup-reject > .text").text(settings.rejectBtnText);
+    }
+    if (settings.rejectbuttonCssClass) {
+      popup.find("#popup-reject").addClass(settings.rejectbuttonCssClass);
+    }
+
+    if (settings.noFade) {
+      popup.show();
+    } else {
+      popup.fadeIn(200);
+    }
   }
 
   popup.find('#popup-accept').unbind().bind("click", async function (evt) {
