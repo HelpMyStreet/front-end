@@ -1,21 +1,24 @@
 ﻿@model HelpMyStreet.Utils.Models.Address
 
-@{ 
+@{
     var MaskAddress = ViewData["MaskAddress"] != null & ViewData["MaskAddress"] is bool ? (bool)ViewData["MaskAddress"] : false;
+    var Truncate = ViewData["Truncate"] != null ? (bool)ViewData["Truncate"] : false;
 }
 
 
 @if (!MaskAddress)
 {
-
-    <span>@Model.AddressLine1, </span>
-    @if (!String.IsNullOrEmpty(Model.AddressLine2))
+    @if (!Truncate)
     {
-        <span>@Model.AddressLine2, </span>
-    }
-    @if (!String.IsNullOrEmpty(Model.AddressLine3))
-    {
-        <span>@Model.AddressLine3, </span>
+        <span>@Model.AddressLine1, </span>
+        @if (!String.IsNullOrEmpty(Model.AddressLine2))
+        {
+            <span>@Model.AddressLine2, </span>
+        }
+        @if (!String.IsNullOrEmpty(Model.AddressLine3))
+        {
+            <span>@Model.AddressLine3, </span>
+        }
     }
     @if (!String.IsNullOrEmpty(Model.Locality))
     {
@@ -24,5 +27,12 @@
 }
 @if (!String.IsNullOrEmpty(Model.Postcode))
 {
-    <span>@Model.Postcode</span>
+    @if (!Truncate)
+    {
+        <span>@Model.Postcode</span>
+    }
+    else
+    {
+        <span>@{Model.Postcode.Split(" ")[0]}</span>
+    }
 }
