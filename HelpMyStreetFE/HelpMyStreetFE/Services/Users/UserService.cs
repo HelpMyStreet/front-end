@@ -119,20 +119,6 @@ namespace HelpMyStreetFE.Services.Users
             });
         }
 
-        public async Task CreateUserStepFourAsync(
-            int id,
-            bool roleUnderstood,
-            List<string> postcodes,
-            CancellationToken cancellationToken)
-        {
-            await _userRepository.CreateUserStepFour(new RegistrationStepFour
-            {
-                UserID = id,
-                StreetChampionRoleUnderstood = roleUnderstood,
-                ChampionPostcodes = postcodes
-            });
-        }
-
         public async Task CreateUserStepFiveAsync(
          int id,
          bool verified,

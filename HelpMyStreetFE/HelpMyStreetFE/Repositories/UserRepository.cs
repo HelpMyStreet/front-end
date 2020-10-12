@@ -106,25 +106,6 @@ namespace HelpMyStreetFE.Repositories
             }
         }
 
-        public async Task<int> CreateUserStepFour(RegistrationStepFour data)
-        {
-            var request = new PutModifyRegistrationPageFourRequest()
-            {
-                RegistrationStepFour = data
-            };
-
-            var response = await PutAsync<ResponseWrapper<PutModifyRegistrationPageFourResponse, UserServiceErrorCode>>("/api/PutModifyRegistrationPageFour", request);
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content.ID;
-            }
-            else
-            {
-                throw new Exception($"Unsuccessful response from PutModifyRegistrationPageFour.  Errors: {response.Errors}");
-            }
-        }
-
         public async Task<int> CreateUserStepFive(RegistrationStepFive data)
         {
             var request = new PutModifyRegistrationPageFiveRequest()

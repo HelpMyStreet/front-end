@@ -385,11 +385,6 @@ namespace HelpMyStreetFE
                    name: "registration/step-three",
                    pattern: "registration/step-three",
                    defaults: new { controller = "Registration", action = "StepThree" });
-
-                endpoints.MapControllerRoute(
-                   name: "registration/step-four",
-                   pattern: "registration/step-four",
-                   defaults: new { controller = "Registration", action = "StepFour" });
             });
         }
     }

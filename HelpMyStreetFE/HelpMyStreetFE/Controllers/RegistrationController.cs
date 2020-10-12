@@ -185,12 +185,6 @@ namespace HelpMyStreetFE.Controllers
 
                 await _groupMemberService.AddUserToDefaultGroups(user.ID);
 
-                await _userService.CreateUserStepFourAsync(
-                    user.ID,
-                    false,
-                    new System.Collections.Generic.List<string>(),
-                    cancellationToken);
-
                 return Redirect("/account");
             }
             catch (Exception ex)
