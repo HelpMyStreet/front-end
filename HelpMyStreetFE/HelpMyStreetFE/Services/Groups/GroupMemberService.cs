@@ -144,8 +144,12 @@ namespace HelpMyStreetFE.Services.Groups
         public async Task<AnnotatedGroupActivityCredentialSets> GetAnnotatedGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
         {
             var gacs = await _groupService.GetGroupActivityCredentials(groupId, supportActivitiy, cancellationToken);
+            var groupMember = await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId);
 
-            var userCredentials = (await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId)).UserCredentials.Select(uc => uc.CredentialId).ToList();
+            if (gacs == null) { throw new Exception("Null response from GetGroupActivityCredentials"); }
+            if (groupMember == null) { throw new Exception("Null response from GetGroupMember"); }
+
+            var userCredentials = groupMember.ValidCredentials;
 
             // Should this be done in the Group Service?
             var user = await _userService.GetUserAsync(userId, cancellationToken);
