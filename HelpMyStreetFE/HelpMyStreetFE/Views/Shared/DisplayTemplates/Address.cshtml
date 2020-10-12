@@ -33,6 +33,6 @@
     }
     else
     {
-        <span>@{Model.Postcode.Split(" ")[0]}</span>
+        <span>@{Model.Postcode.Split(" ").FirstOrDefault();}</span>
     }
 }
