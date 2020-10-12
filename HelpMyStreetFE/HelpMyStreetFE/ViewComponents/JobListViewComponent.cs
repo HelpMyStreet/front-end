@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.ViewComponents
             _groupMemberService = groupMemberService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action emptyListCallback, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action<int> listLengthCallback, CancellationToken cancellationToken)
         {
             JobListViewModel jobListViewModel = new JobListViewModel();
 
@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.UnfilteredJobs = jobs.Count();
 
-            jobs = _requestService.FilterJobs(jobs, jobFilterRequest);
+            jobs = _requestService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredJobs = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
@@ -84,9 +84,9 @@ namespace HelpMyStreetFE.ViewComponents
                 ReferringGroup = (await _groupService.GetGroupById(a.ReferringGroupID, cancellationToken)).GroupName
             })));
 
-            if (jobListViewModel.UnfilteredJobs == 0 && emptyListCallback != null)
+            if (listLengthCallback != null)
             {
-                emptyListCallback.Invoke();
+                listLengthCallback.Invoke(jobListViewModel.UnfilteredJobs);
             }
 
             return View("JobList", jobListViewModel);

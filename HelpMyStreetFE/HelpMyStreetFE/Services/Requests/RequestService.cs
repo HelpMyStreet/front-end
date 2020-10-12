@@ -219,9 +219,9 @@ namespace HelpMyStreetFE.Services.Requests
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
-        public IEnumerable<JobHeader> FilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
+        public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
         {
-            return jobs.Where(
+            var jobsToDisplay = jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
                     && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
                     && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
@@ -230,6 +230,18 @@ namespace HelpMyStreetFE.Services.Requests
                     && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
                     && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
                     && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.DateDue_Ascending => jobsToDisplay.OrderBy(j => j.DueDate),
+                OrderBy.DateDue_Descending => jobsToDisplay.OrderByDescending(j => j.DueDate),
+                OrderBy.DateRequested_Ascending => jobsToDisplay.OrderBy(j => j.DateRequested),
+                OrderBy.DateRequested_Descending => jobsToDisplay.OrderByDescending(j => j.DateRequested),
+                OrderBy.DateStatusLastChanged_Ascending => jobsToDisplay.OrderBy(j => j.DateStatusLastChanged),
+                OrderBy.DateStatusLastChanged_Descending => jobsToDisplay.OrderByDescending(j => j.DateStatusLastChanged),
+                OrderBy.Distance_Ascending => jobsToDisplay.OrderBy(j => j.DistanceInMiles),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)

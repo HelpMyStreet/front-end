@@ -18,10 +18,14 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? DueBefore { get; set; }
         public DateTime? RequestedAfter { get; set; }
         public DateTime? RequestedBefore { get; set; }
+
+        public OrderBy OrderBy { get; set; }
+        public bool OrderByAscending { get; set; }
+
         public int ResultsToShow { get; set; }
         public int ResultsToShowIncrement { get; set; }
 
-        public void UpdateFromFilterSet(FilterSet filterSet)
+        public void UpdateFromFilterSet(SortAndFilterSet filterSet)
         {
             if (filterSet.JobStatuses != null)
             {
@@ -38,6 +42,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             if (filterSet.DueInNextXDays != null)
             {
                 DueInNextXDays = filterSet.DueInNextXDays.Where(a => a.IsSelected).First().Value;
+            }
+            if (filterSet.OrderBy != null)
+            {
+                OrderBy = filterSet.OrderBy.Where(a => a.IsSelected).First().Value;
             }
         }
     }
