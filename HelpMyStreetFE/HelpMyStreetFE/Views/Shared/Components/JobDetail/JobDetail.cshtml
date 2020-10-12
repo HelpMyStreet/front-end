@@ -131,7 +131,7 @@
                         {
                             <dl>
                                 <dt>@q.FriendlyName()</dt>
-                                <dd>@q.Answer</dd>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
                             </dl>
                         }
                     </div>
@@ -157,7 +157,7 @@ else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSumma
                 {
                     <dl>
                         <dt>@q.FriendlyName()</dt>
-                        <dd>@q.Answer</dd>
+                        <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
                     </dl>
                 }
             </div>

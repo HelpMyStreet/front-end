@@ -20,11 +20,13 @@
         <div class="profile">
             @if (Model.UserDetails.IsVerified)
             {
-                @await Component.InvokeAsync("JobList", new
-                   {
-                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = -1 },
-                       EmptyListCallback = new Action(() => NoJobsToDisplay = true)
-                   })
+                <div class="job-filter-panel">
+                    @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+                       {
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+                           EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
+                       })
+                </div>
                 @if (NoJobsToDisplay)
                 {
                     <div class="profile__empty">
