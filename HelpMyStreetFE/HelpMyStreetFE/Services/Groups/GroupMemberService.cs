@@ -149,13 +149,11 @@ namespace HelpMyStreetFE.Services.Groups
             if (gacs == null) { throw new Exception("Null response from GetGroupActivityCredentials"); }
             if (groupMember == null) { throw new Exception("Null response from GetGroupMember"); }
 
-            var userCredentials = groupMember.ValidCredentials;
-
-            // Should this be done in the Group Service?
+            // This will be done in the Group Service?
             var user = await _userService.GetUserAsync(userId, cancellationToken);
-            if (user.IsVerified == true) { userCredentials.Add(-1); }
+            if (user.IsVerified == true) { groupMember.ValidCredentials.Add(-1); }
 
-            var annotatedGacs = gacs.Select(gac => gac.Select(gc => new AnnotatedGroupCredential() { GroupCredential = gc, UserHasCredential = userCredentials.Contains(gc.CredentialID) }));
+            var annotatedGacs = gacs.Select(gac => gac.Select(gc => new AnnotatedGroupCredential(gc, groupMember.ValidCredentials)));
 
             return new AnnotatedGroupActivityCredentialSets() { AnnotatedCredentialSets = annotatedGacs };
         }
