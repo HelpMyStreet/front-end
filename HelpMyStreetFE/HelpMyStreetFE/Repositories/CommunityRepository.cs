@@ -225,7 +225,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
             communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley &amp; Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -255,6 +255,12 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a></p>";
 
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             return communityViewModel;
         }
@@ -416,7 +422,7 @@ namespace HelpMyStreetFE.Repositories
                         <i>veterans should not be forgotten</i>.
                     </p>
                     <p class='mt-sm mb-s'>
-                        If you can help us deliver wellbeing packs to veterans in your area please sign up below.
+                        If you can help us deliver wellbeing packs to veterans in your area please sign up below - and click to view open requests in your area.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
             communityViewModel.HeaderVolunteerButtonText = null;
@@ -489,6 +495,13 @@ namespace HelpMyStreetFE.Repositories
                 Example2 = "Collect a prescription for an older lady in Lincoln",
                 Example3 = "Post a letter for a gentleman in Spalding"
             };
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             return communityViewModel;
         }
@@ -600,7 +613,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of For the Love of Scrubs.  Click below to view help requests.";
             communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
@@ -610,6 +623,12 @@ namespace HelpMyStreetFE.Repositories
                 Example3 = "10 donated face coverings for care home visitors"
             };
 
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>For the Love of Scrubs</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>For the Love of Scrubs</b>?</p>";
 
             return communityViewModel;
         }

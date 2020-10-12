@@ -4,17 +4,15 @@ import { buttonUnload, buttonLoad } from '../shared/btn';
 const toggleButtons = document.querySelectorAll(".btn__toggle-show");
 
 toggleButtons.forEach((btn) => {
+  const form = $(btn).closest('form');
   btn.addEventListener("click", (e) => {
     e.preventDefault();
-    const target = document.getElementById(
-      btn.getAttribute("data-target-item")
-    );
+    const target = form.find('#' + btn.getAttribute("data-target-item"));
+    target.toggleClass("filter--show");
 
-    target.classList.toggle("filter--show");
-
-    if (target.classList.contains("filter__list-wrapper")) {
+    if (target.hasClass("filter__list-wrapper")) {
       // Div containing all filters
-      if (target.classList.contains("filter--show")) {
+      if (target.hasClass("filter--show")) {
         lockWindowScroll();
       } else {
         unlockWindowScroll();
@@ -22,31 +20,24 @@ toggleButtons.forEach((btn) => {
     } else {
       // Just one list
       updateFilterSummary(target);
-      const g = document.getElementById(btn.getAttribute("data-target-group"));
-      g.querySelectorAll(".btn--apply-filter").forEach((b) => {
-        b.classList.remove("applied");
-        b.classList.remove("disabled");
-      });
+      form.find(".btn--apply-filter").removeClass("applied").removeClass("disabled");
     }
   });
 });
 
 // Apply filter button
 const applyButtons = document.querySelectorAll(".btn--apply-filter");
-applyButtons.forEach((b) => {
-  b.addEventListener("click", async (e) => {
+applyButtons.forEach((btn) => {
+  const form = $(btn).closest('form');
+  btn.addEventListener("click", async (e) => {
     e.preventDefault();
     //buttonLoad($(b)); // Removing for now due to size jumping bug
-    b.classList.remove("applied");
+    btn.classList.remove("applied");
     updateFilterSummaries();
 
-    if (loadRequests($(b).closest("form"))) {
-      const g = document.getElementById(b.getAttribute("data-target-group"));
-      g.querySelectorAll('.group--filters-jobs').forEach((t) => {
-        t.classList.remove("filter--show");
-      });
-      b.classList.add("applied");
-      g.classList.remove("filter--show");
+    if (loadRequests(form)) {
+      form.find(".filter--show").removeClass("filter--show");
+      btn.classList.add("applied");
       unlockWindowScroll();
     }
 
@@ -114,7 +105,7 @@ async function loadRequests(form) {
   };
   var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
-    $('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+    $(form).closest('.job-filter-panel').find('.job-filter-results-panel .job-list').html(await response.fetchPayload);
     return true;
   }
   return false;
@@ -152,8 +143,10 @@ function lockWindowScroll() {
 }
 
 function unlockWindowScroll() {
-  const scrollY = document.body.style.top;
-  document.body.style.position = '';
-  document.body.style.top = '';
-  window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  if (document.body.style.position == 'fixed') {
+    const scrollY = document.body.style.top;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+  }
 }
