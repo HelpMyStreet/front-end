@@ -152,6 +152,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
+            services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
@@ -384,11 +385,6 @@ namespace HelpMyStreetFE
                    name: "registration/step-three",
                    pattern: "registration/step-three",
                    defaults: new { controller = "Registration", action = "StepThree" });
-
-                endpoints.MapControllerRoute(
-                   name: "registration/step-four",
-                   pattern: "registration/step-four",
-                   defaults: new { controller = "Registration", action = "StepFour" });
             });
         }
     }

@@ -119,20 +119,6 @@ namespace HelpMyStreetFE.Services.Users
             });
         }
 
-        public async Task CreateUserStepFourAsync(
-            int id,
-            bool roleUnderstood,
-            List<string> postcodes,
-            CancellationToken cancellationToken)
-        {
-            await _userRepository.CreateUserStepFour(new RegistrationStepFour
-            {
-                UserID = id,
-                StreetChampionRoleUnderstood = roleUnderstood,
-                ChampionPostcodes = postcodes
-            });
-        }
-
         public async Task CreateUserStepFiveAsync(
          int id,
          bool verified,
@@ -150,15 +136,6 @@ namespace HelpMyStreetFE.Services.Users
             }
         }
 
-        public async Task<int> GetStreetChampions()
-        {
-            return await _userRepository.GetDistinctChampionUserCount();
-        }
-
-        public async Task<int> GetStreetsCovered()
-        {
-            return await _userRepository.GetChampionPostcodesCoveredCount();
-        }
 
         public async Task<int> GetVolunteers()
         {
@@ -170,10 +147,6 @@ namespace HelpMyStreetFE.Services.Users
             return await _userRepository.GetHelpersByPostcode(postcode);
         }
 
-        public async Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode)
-        {
-            return await _userRepository.GetChampionsByPostcode(postcode);
-        }
 
         public async Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres)
         {
