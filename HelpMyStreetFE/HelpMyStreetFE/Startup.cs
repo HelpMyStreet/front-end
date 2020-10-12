@@ -150,6 +150,7 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
+            services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IAuthService, AuthService>();
