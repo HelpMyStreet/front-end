@@ -170,7 +170,7 @@ namespace HelpMyStreetFE.Services.Users
                 return false;
             }
             
-            return user.RegistrationHistory.Count > 0 && user.RegistrationHistory.Max(a => a.Key) > 3;
+            return user.RegistrationHistory.Count > 0 && user.RegistrationHistory.Max(a => a.Key) > 2;
         }
 
         private void RefreshUserCache(int userId, CancellationToken cancellationToken)
