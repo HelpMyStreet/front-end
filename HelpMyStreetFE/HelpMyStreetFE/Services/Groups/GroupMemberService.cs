@@ -153,9 +153,7 @@ namespace HelpMyStreetFE.Services.Groups
             var user = await _userService.GetUserAsync(userId, cancellationToken);
             if (user.IsVerified == true) { groupMember.ValidCredentials.Add(-1); }
 
-            var annotatedGacs = gacs.Select(gac => gac.Select(gc => new AnnotatedGroupCredential(gc, groupMember.ValidCredentials)));
-
-            return new AnnotatedGroupActivityCredentialSets() { AnnotatedCredentialSets = annotatedGacs };
+            return new AnnotatedGroupActivityCredentialSets(gacs, groupMember.ValidCredentials);
         }
     }
 }
