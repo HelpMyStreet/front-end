@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Repositories
             {
                 return deserializedResponse.Content;
             }
-            return null;
+            throw new Exception($"Bad response from GetGroup for GroupId {groupId}");
         }
 
         public async Task<GetGroupByKeyResponse> GetGroupByKey(string groupKey)
