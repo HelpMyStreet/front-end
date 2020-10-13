@@ -8,7 +8,7 @@ import {
     buttonUnload
 } from "../shared/btn";
 import {
-    showPopup
+    showServerSidePopup
 } from "../shared/popup";
 import {
     hmsFetch,
@@ -97,38 +97,36 @@ export function showStatusUpdatePopup(btn) {
   const targetUser = $(btn).data("target-user") ?? "self";
   let jobId = job.attr("id");
 
-  let popupSettings = {};
+  let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
 
-  popupSettings.htmlContent_source = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
+  let popupSettings = {
+    acceptCallbackAsync: async () => {
+      let response = await setJobStatus(job, targetState, targetUser);
 
-  popupSettings.messageOnFalse_Base = popupSettings.messageOnFalse;
-
-  popupSettings.acceptCallbackAsync = async () => {
-    let response = await setJobStatus(job, targetState, targetUser);
-
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-      $(job).find('.job__status__new').html(response.fetchPayload);
-      $(job).find('.job__info__urgency__dates').toggle();
-      $(job).find('button').toggle();
-      $(job).find('.next-step').toggle();
-      return true;
-    } else {
-      switch (response.fetchResponse) {
-        case fetchResponses.UNAUTHORISED:
-        case fetchResponses.BAD_REQUEST:
-          popupSettings.messageOnFalse = popupSettings.messageOnFalse_Base + " Another user may have updated the same request; please refresh your browser window.";
-          break;
-        case fetchResponses.SERVER_ERROR:
-        case fetchResponses.SERVER_NOT_FOUND:
-        case fetchResponses.TIMEOUT:
-        case fetchResponses.BAD_FETCH:
-          popupSettings.messageOnFalse = popupSettings.messageOnFalse_Base + " Please try again using the button below.";
+      if (response.fetchResponse == fetchResponses.SUCCESS) {
+        $(job).find('.job__status__new').html(response.fetchPayload);
+        $(job).find('.job__info__urgency__dates').toggle();
+        $(job).find('button').toggle();
+        $(job).find('.next-step').toggle();
+        return true;
+      } else {
+        switch (response.fetchResponse) {
+          case fetchResponses.UNAUTHORISED:
+          case fetchResponses.BAD_REQUEST:
+            popupSettings.messageOnFalse = "BASE MESSAGE + Another user may have updated the same request; please refresh your browser window.";
+            break;
+          case fetchResponses.SERVER_ERROR:
+          case fetchResponses.SERVER_NOT_FOUND:
+          case fetchResponses.TIMEOUT:
+          case fetchResponses.BAD_FETCH:
+            popupSettings.messageOnFalse = "BASE MESSAGE + Please try again using the button below.";
+        }
+        return false;
       }
-      return false;
     }
   };
 
-  showPopup(popupSettings);
+  showServerSidePopup(popupSource, popupSettings);
 }
 
 
