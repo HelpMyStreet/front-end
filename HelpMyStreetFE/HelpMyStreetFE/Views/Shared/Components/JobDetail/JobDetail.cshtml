@@ -94,6 +94,10 @@
                                 <dd>@volunteerDetails.EmailAddress</dd>
                                 <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
                                 <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                                <dt>Address</dt>
+                                <dd>
+                                    @Html.DisplayFor(x => volunteerDetails.Address, new { MaskAddress = false, Truncate = true })
+                                </dd>
                             </dl>
                         </div>
                     }
