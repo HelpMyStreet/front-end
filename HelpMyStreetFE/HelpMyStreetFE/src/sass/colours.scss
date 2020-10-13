@@ -16,8 +16,10 @@ $background-main: #f7f6f4;
 $background-darker-1: #f0ede8;
 
 $black: #131614;
-$gray-10: #dddddd;
+$gray-4: #2C332E;
+$gray-5: #56635A;
 $gray-8: #a0a0a0;
+$gray-10: #dddddd;
 $white: #ffffff;
 
 $loading-transparant: rgba(240,237,232, 0.9);
@@ -59,8 +61,16 @@ $popup-backdrop: rgba(0,0,0, 0.7);
     color: $light-purple;
 }
 
+.gray-4 {
+  color: $gray-4;
+}
+
+.gray-5 {
+  color: $gray-5;
+}
+
 .gray-8 {
-    color: $gray-8;
+  color: $gray-8;
 }
 
 
@@ -94,7 +104,7 @@ $popup-backdrop: rgba(0,0,0, 0.7);
 }
 
 .border-orange {
-    border-color: $orange;
+  border-color: $orange;
 }
 
 .transparent {
