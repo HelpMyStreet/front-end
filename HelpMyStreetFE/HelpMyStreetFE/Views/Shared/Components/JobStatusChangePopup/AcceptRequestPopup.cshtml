@@ -1,4 +1,4 @@
-﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
 
 
 <div class="popup__content__header">Accept this Request for Help?</div>
@@ -16,11 +16,6 @@
 </div>
 <div class="popup__content__buttons">
     <p class="error dnone">Oops, we couldn’t accept this request at the moment.</p>
-    <div class="popup__content__buttons__button">
-        <button id="popup-accept" class="btn cta  wide fill ">
-            <span class="text">Accept</span>
-            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
-        </button>
-    </div>
+    <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Accept" }' />
 </div>
 
