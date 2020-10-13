@@ -98,8 +98,12 @@ export function showStatusUpdatePopup(btn) {
   const job = btn.closest(".job");
   const targetState = $(btn).data("target-state");
   const targetUser = $(btn).data("target-user") ?? "self";
+  let jobId = job.attr("id");
 
   let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"), job.attr("id"));
+
+  popupSettings.htmlContent_source = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
+
   popupSettings.messageOnFalse_Base = popupSettings.messageOnFalse;
 
   popupSettings.acceptCallbackAsync = async () => {

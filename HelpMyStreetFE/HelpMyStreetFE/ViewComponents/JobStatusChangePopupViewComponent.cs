@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.ViewComponents
 {
-    public class AcceptRequestPopupViewComponent : ViewComponent
+    public class JobStatusChangePopupViewComponent : ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync(JobStatusChangePopupViewModel jobStatusChangePopupViewModel)
         {
-            return View("AcceptRequestPopup", jobStatusChangePopupViewModel);
+            return View("JobStatusChangePopup", jobStatusChangePopupViewModel);
         }
     }
 }

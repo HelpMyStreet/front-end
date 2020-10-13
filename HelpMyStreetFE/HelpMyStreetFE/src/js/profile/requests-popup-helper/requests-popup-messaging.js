@@ -5,7 +5,6 @@
     if (currentState === "Open") {
 
       settings.header = "Accept this Request for Help?";
-      settings.htmlContent_source = `/api/requesthelp/get-accept-popup?j=${jobId}`;
       settings.messageOnFalse = "Oops, we couldn’t accept this request at the moment.";
 
     } else if (currentState === "Done") {

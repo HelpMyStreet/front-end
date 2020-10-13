@@ -96,8 +96,8 @@ namespace HelpMyStreetFE.Controllers {
         }
 
         [AuthorizeAttributeNoRedirect]
-        [Route("get-accept-popup")]
-        public async Task<IActionResult> GetAcceptRequestPopup(string j, CancellationToken cancellationToken)
+        [Route("get-status-change-popup")]
+        public async Task<IActionResult> GetStatusChangePopup(string j, JobStatuses s, CancellationToken cancellationToken)
         {
             int jobId = Base64Utils.Base64DecodeToInt(j);
             var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
@@ -112,7 +112,7 @@ namespace HelpMyStreetFE.Controllers {
 
             if (credentials.AreSatisfied)
             {
-                return ViewComponent("AcceptRequestPopup", new JobStatusChangePopupViewModel() { JobSummary = job, TargetStatus = JobStatuses.InProgress, UserActingAsAdmin = false });
+                return ViewComponent("JobStatusChangePopup", new JobStatusChangePopupViewModel() { JobSummary = job, TargetStatus = JobStatuses.InProgress, UserActingAsAdmin = false });
             }
             else
             {
