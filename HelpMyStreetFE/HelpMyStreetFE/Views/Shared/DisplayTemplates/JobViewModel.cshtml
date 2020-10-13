@@ -26,7 +26,7 @@
     string iconClass = AgeUk ? "limit-width" : "";
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobHeader.JobStatus" data-referring-group-name="@Model.ReferringGroup">
+<div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.JobHeader.JobStatus == JobStatuses.Done)

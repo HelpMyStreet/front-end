@@ -54,7 +54,10 @@ export async function showPopup(settings) {
       hidePopup(popup);
     } else {
       bindCloseClick(popup);
-      popup.find('.error').show().text(settings.messageOnFalse);
+      if (settings.messageOnFalse) {
+        popup.find('.error').text(settings.messageOnFalse);
+      }
+      popup.find('.error').show();
     }
   });
 
@@ -67,7 +70,10 @@ export async function showPopup(settings) {
           hidePopup(popup);
         } else {
           bindCloseClick(popup);
-          popup.find('.error').show().text(settings.messageOnFalse);
+          if (settings.messageOnFalse) {
+            popup.find('.error').text(settings.messageOnFalse);
+          }
+          popup.find('.error').show();
         }
       } else {
         hidePopup(popup);

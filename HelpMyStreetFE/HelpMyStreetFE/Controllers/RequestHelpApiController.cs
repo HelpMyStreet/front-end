@@ -97,27 +97,11 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-status-change-popup")]
-        public async Task<IActionResult> GetStatusChangePopup(string j, JobStatuses s, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetStatusChangePopup(string j, JobStatuses s)
         {
             int jobId = Base64Utils.Base64DecodeToInt(j);
-            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            if (user == null)
-            {
-                throw new UnauthorizedAccessException("No user in session");
-            }
-
-            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(job.ReferringGroupID, job.SupportActivity, user.ID, user.ID, cancellationToken);
-
-            if (credentials.AreSatisfied)
-            {
-                return ViewComponent("JobStatusChangePopup", new JobStatusChangePopupViewModel() { JobSummary = job, TargetStatus = JobStatuses.InProgress, UserActingAsAdmin = false });
-            }
-            else
-            {
-                return ViewComponent("CredentialsRequiredPopup", new CredentialsRequiredViewModel { AnnotatedGroupActivityCredentialSets = credentials, JobSummary = job });
-            }
+            return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
         }
     }
 }

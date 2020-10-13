@@ -9,8 +9,9 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobStatusChangePopupViewModel
     {
+        public AnnotatedGroupActivityCredentialSets AnnotatedGroupActivityCredentialSets { get; set; }
         public JobSummary JobSummary { get; set; }
+        public string ReferringGroup { get; set; }
         public JobStatuses TargetStatus { get; set; }
-        public bool UserActingAsAdmin { get; set; }
     }
 }

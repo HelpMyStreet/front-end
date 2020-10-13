@@ -1,0 +1,38 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+
+
+@if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
+{
+    <div class="popup__content__header">Mark as cancelled?</div>
+}
+else
+{
+    <div class="popup__content__header">Cancel?</div>
+}
+<div class="popup__content__text">
+    <p>Is there a problem with this request (e.g. you have become aware that it was entered in error or that the help is no longer needed)?</p>
+
+    @if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Open)
+    {
+        <p>We can mark is as Cancelled and remove it from the “Open Requests” list.</p>
+    }
+    else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.InProgress)
+    {
+        <p>We can mark is as Cancelled and remove it from the relevant volunteer’s “My Accepted Requests” page.</p>
+    }
+    else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
+    {
+        <p>We can mark is as Cancelled for your records.</p>
+    }
+
+</div>
+<div class="popup__content__buttons">
+    <p class="error dnone">Oops, we couldn’t cancel this request at the moment.</p>
+    <div class="popup__content__buttons__button">
+        <button id="popup-accept" class="btn cta  wide fill ">
+            <span class="text">Confirm</span>
+            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
+        </button>
+    </div>
+</div>
+

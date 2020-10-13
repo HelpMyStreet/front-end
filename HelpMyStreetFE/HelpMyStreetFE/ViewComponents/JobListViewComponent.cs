@@ -81,8 +81,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobHeader = a,                
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false,
-                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
-                ReferringGroup = (await _groupService.GetGroupById(a.ReferringGroupID, cancellationToken)).GroupName
+                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken)
             })));
 
             if (listLengthCallback != null)

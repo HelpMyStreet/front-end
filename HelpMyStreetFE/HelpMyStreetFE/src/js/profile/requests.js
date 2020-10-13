@@ -11,9 +11,6 @@ import {
     showPopup
 } from "../shared/popup";
 import {
-    getPopupMessaging
-} from "./requests-popup-helper/requests-popup-messaging";
-import {
     hmsFetch,
     fetchResponses
 } from "../shared/hmsFetch";
@@ -100,7 +97,7 @@ export function showStatusUpdatePopup(btn) {
   const targetUser = $(btn).data("target-user") ?? "self";
   let jobId = job.attr("id");
 
-  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"), job.attr("id"));
+  let popupSettings = {};
 
   popupSettings.htmlContent_source = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
 
