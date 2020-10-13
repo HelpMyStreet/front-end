@@ -17,7 +17,7 @@ using HelpMyStreetFE.Models.Account;
 namespace HelpMyStreetFE.Controllers {
 
 
-    [Route("api/requesthelp")]
+    [Route("api/request-help")]
     [ApiController]
     public class RequestHelpAPIController : Controller
     {

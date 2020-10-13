@@ -134,7 +134,7 @@ export function showStatusUpdatePopup(btn) {
 async function setJobStatus(job, newStatus, targetUser) {
     let jobId = job.attr("id");
 
-    return await hmsFetch('/api/requesthelp/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    return await hmsFetch('/api/request-help/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
 }
 
 
@@ -148,7 +148,7 @@ async function loadJobDetails(job, forceRefresh) {
   const jobId = $(job).attr("id");
   const jobSet = $('input[name="JobSet"]').val();
   jobDetail.data('status', 'updating');
-  const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId + '&js=' + jobSet);
+  const response = await hmsFetch('/api/request-help/get-job-details?j=' + jobId + '&js=' + jobSet);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     jobDetail.html(await response.fetchPayload);
     jobDetail.data('status', { 'updated': new Date() });
