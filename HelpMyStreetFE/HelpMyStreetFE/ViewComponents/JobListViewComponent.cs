@@ -17,14 +17,12 @@ namespace HelpMyStreetFE.ViewComponents
     public class JobListViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
 
-        public JobListViewComponent(IRequestService requestService, IGroupService groupService, IAuthService authService, IGroupMemberService groupMemberService)
+        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
-            _groupService = groupService;
             _authService = authService;
             _groupMemberService = groupMemberService;
         }
@@ -80,7 +78,6 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobHeader = a,                
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
-                UserIsVerified = user.IsVerified ?? false,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken)
             })));
 
