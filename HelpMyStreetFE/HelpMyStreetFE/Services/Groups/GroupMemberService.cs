@@ -154,6 +154,11 @@ namespace HelpMyStreetFE.Services.Groups
             return result;
         }
 
+        public async Task<List<UserInGroup>> GetAllGroupMembers(int groupId, int authorisingUserId)
+        {
+            return await _groupRepository.GetAllGroupMembers(groupId, authorisingUserId);
+        }
+
         public async Task<AnnotatedGroupActivityCredentialSets> GetAnnotatedGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
         {
             var gacs = await _groupService.GetGroupActivityCredentials(groupId, supportActivitiy, cancellationToken);

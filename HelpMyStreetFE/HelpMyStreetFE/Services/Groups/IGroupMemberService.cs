@@ -17,6 +17,7 @@ namespace HelpMyStreetFE.Services.Groups
         Task<List<UserGroup>> GetUserGroupRoles(int userId, CancellationToken cancellationToken);
         Task<List<UserGroup>> GetGroupMembers(int groupId, int userId, CancellationToken cancellationToken);
         Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId, CancellationToken cancellationToken);
+        Task<List<UserInGroup>> GetAllGroupMembers(int groupId, int authorisingUserId);
 
         Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken);
         Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken);

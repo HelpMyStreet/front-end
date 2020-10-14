@@ -85,5 +85,10 @@ namespace HelpMyStreetFE.Services.Groups
 
             return result;
         }
+
+        public async Task<List<GroupCredential>> GetGroupCredentials (int groupId)
+        {
+            return await _groupRepository.GetGroupCredentials(groupId);
+        }
     }
 }

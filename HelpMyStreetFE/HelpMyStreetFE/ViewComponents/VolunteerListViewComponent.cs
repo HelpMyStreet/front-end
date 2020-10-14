@@ -42,17 +42,18 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-
-            var groupMembers = await _groupMemberService.GetGroupMembers(groupId, user.ID, cancellationToken);
+            var groupMembers = await _groupMemberService.GetAllGroupMembers(groupId, user.ID);
             var groupCompletedRequests = await _requestService.GetGroupRequestsAsync(groupId, true, cancellationToken);
+            var groupCredentials = await _groupService.GetGroupCredentials(groupId);
 
-            var getEachUser = groupMembers.Select(async (userGroup) =>
+            var getEachUser = groupMembers.Select(async (userInGroup) =>
             {
                 return new VolunteerViewModel()
                 {
-                    Roles = userGroup.UserRoles,
-                    User = await _userService.GetUserAsync(userGroup.UserId, cancellationToken),
-                    CompletedRequests = groupCompletedRequests.Where(j => j.JobStatus == JobStatuses.Done && j.VolunteerUserID == userGroup.UserId).Count()
+                    Roles = userInGroup.GroupRoles,
+                    User = await _userService.GetUserAsync(userInGroup.UserId, cancellationToken),
+                    CompletedRequests = groupCompletedRequests.Where(j => j.JobStatus == JobStatuses.Done && j.VolunteerUserID == userInGroup.UserId).Count(),
+                    Credentials = groupCredentials.Select(gc => new AnnotatedGroupCredential(gc, userInGroup.ValidCredentials)).ToList()
                 };
             });
 

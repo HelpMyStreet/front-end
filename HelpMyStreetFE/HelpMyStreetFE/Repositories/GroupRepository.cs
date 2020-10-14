@@ -147,6 +147,18 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<List<UserInGroup>> GetAllGroupMembers(int groupId, int authorisingUserId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetAllGroupMembers?groupId={groupId}&authorisingUserId={authorisingUserId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetAllGroupMembersResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.UserInGroups;
+            }
+            return null;
+        }
+
         public async Task<PostAddUserToDefaultGroupsResponse> PostAddUserToDefaultGroups(int userId)
         {
             PostAddUserToDefaultGroupsRequest postAddUserToDefaultGroupsRequest = new PostAddUserToDefaultGroupsRequest() { UserID = userId };

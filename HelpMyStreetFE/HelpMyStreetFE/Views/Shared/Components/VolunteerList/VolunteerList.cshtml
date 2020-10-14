@@ -17,6 +17,13 @@
                 <span>
                     @volunteer.CompletedRequests
                 </span>
+                <span>
+                    @foreach(var credential in volunteer.Credentials.OrderBy(c => c.GroupCredential.DisplayOrder))
+                    {
+                        @credential.GroupCredential.Name
+                        @credential.UserHasCredential
+                    }
+                </span>
             </dt>
             <dd>
                 <span>

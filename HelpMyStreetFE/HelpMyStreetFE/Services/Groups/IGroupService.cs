@@ -18,5 +18,6 @@ namespace HelpMyStreetFE.Services.Groups
         Task<RequestHelpFormVariant> GetRequestHelpFormVariant(int groupId, string source = "");
 
         Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, CancellationToken cancellationToken);
+        Task<List<GroupCredential>> GetGroupCredentials(int groupId);
     }
 }
