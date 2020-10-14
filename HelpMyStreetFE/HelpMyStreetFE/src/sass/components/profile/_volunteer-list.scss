@@ -1,27 +1,12 @@
 ﻿.volunteer-list {
-    dl {
-        dt {
-            font-weight: bold;
-            color: $black;
-            margin-top: 1.2rem;
+  &__volunteer__detail {
+    border-bottom: 1px solid $gray-8;
+    margin: 1rem 0;
+    padding: 1rem 0;
 
-            .volunteer-list__roles {
-                font-weight: normal;
-                margin-left: 0.25rem
-            }
-        }
-
-        dd {
-            word-wrap: break-word;
-            margin-top: 0.15rem;
-
-            span {
-                margin-right: 0.25rem;
-
-                @media (max-width: $sm-screen) {
-                    display: block;
-                }
-            }
-        }
+    dt {
+      font-weight: bold;
+      padding-top: 0.25rem;
     }
+  }
 }

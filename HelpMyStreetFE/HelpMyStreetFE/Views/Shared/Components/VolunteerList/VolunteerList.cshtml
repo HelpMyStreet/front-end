@@ -7,23 +7,28 @@
     {
         <div class="volunteer-list__volunteer generic-expander">
             <div class="volunteer-list__volunteer__summary">
-                @volunteer.User.UserPersonalDetails.FullName()
-                <span class="volunteer-list__roles">
-                    @volunteer.RolesSummary
-                </span>
-                <span>
-                    @volunteer.User.UserPersonalDetails.LocationSummary()
-                </span>
-                <span>
-                    @volunteer.CompletedRequests
-                </span>
-                <span>
-                    @foreach (var credential in volunteer.Credentials.OrderBy(c => c.GroupCredential.DisplayOrder))
-                    {
-                        @credential.GroupCredential.Name
-                        @credential.UserHasCredential
-                    }
-                </span>
+                <div class="row">
+                    <div class="sm3">
+                        @volunteer.User.UserPersonalDetails.FullName()
+                        <span class="volunteer-list__roles">
+                            @volunteer.RolesSummary
+                        </span>
+                    </div>
+                    <div class="sm2">
+                        @volunteer.User.UserPersonalDetails.LocationSummary()
+                    </div>
+                    <div class="sm1">
+                        @volunteer.CompletedRequests
+                    </div>
+                    <div class="sm6">
+                        @foreach (var credential in volunteer.Credentials.OrderBy(c => c.GroupCredential.DisplayOrder))
+                        {
+                            @credential.GroupCredential.Name
+                            @credential.UserHasCredential
+                        }
+                    </div>
+
+                </div>
                 <a href="#" class="generic-expander__controls">
                     <span class="open">View more info</span>
                     <span class="close">View less info</span>
