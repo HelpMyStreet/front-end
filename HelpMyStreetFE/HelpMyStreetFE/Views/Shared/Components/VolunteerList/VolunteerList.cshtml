@@ -28,6 +28,12 @@
                 <span>
                     @string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())
                 </span>
+                <span>
+                    @string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyName()))
+                </span>
+                <span>
+                    @volunteer.User.SupportRadiusMiles miles
+                </span>
             </dd>
         }
     </dl>
