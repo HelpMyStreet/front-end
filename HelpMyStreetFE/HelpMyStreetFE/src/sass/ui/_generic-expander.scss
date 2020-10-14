@@ -1,0 +1,17 @@
+﻿.generic-expander {
+  &__content {
+    display: none;
+  }
+
+  &:not(.open) {
+    .generic-expander__control.close {
+      display: none;
+    }
+  }
+
+  &.open {
+    .generic-expander__control.open {
+      display: none;
+    }
+  }
+}

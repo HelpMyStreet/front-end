@@ -3,10 +3,10 @@
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
 
 <div class="volunteer-list">
-    <dl>
-        @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.FullName()))
-        {
-            <dt>
+    @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.FullName()))
+    {
+        <div class="volunteer-list__volunteer generic-expander">
+            <div class="volunteer-list__volunteer__summary">
                 @volunteer.User.UserPersonalDetails.FullName()
                 <span class="volunteer-list__roles">
                     @volunteer.RolesSummary
@@ -18,14 +18,18 @@
                     @volunteer.CompletedRequests
                 </span>
                 <span>
-                    @foreach(var credential in volunteer.Credentials.OrderBy(c => c.GroupCredential.DisplayOrder))
+                    @foreach (var credential in volunteer.Credentials.OrderBy(c => c.GroupCredential.DisplayOrder))
                     {
                         @credential.GroupCredential.Name
                         @credential.UserHasCredential
                     }
                 </span>
-            </dt>
-            <dd>
+                <span>
+                    <a href="#" class="generic-expander__control open">View more info <span></span></a>
+                    <a href="#" class="generic-expander__control close">View less info <span></span></a>
+                </span>
+            </div>
+            <div class="volunteer-list__volunteer__detail generic-expander__content">
                 <span>
                     @Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)
                 </span>
@@ -41,7 +45,8 @@
                 <span>
                     @volunteer.User.SupportRadiusMiles miles
                 </span>
-            </dd>
-        }
-    </dl>
+            </div>
+
+        </div>
+    }
 </div>
