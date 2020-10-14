@@ -20,6 +20,9 @@
             </dt>
             <dd>
                 <span>
+                    @Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)
+                </span>
+                <span>
                     <a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a>
                 </span>
                 <span>
