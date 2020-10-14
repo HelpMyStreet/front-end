@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Helpers
@@ -16,6 +17,35 @@ namespace HelpMyStreetFE.Helpers
         public static IEnumerable<string> PhoneNumbers(this RequestPersonalDetails requestPersonalDetails)
         {
             return (new[] { requestPersonalDetails.MobileNumber, requestPersonalDetails.OtherNumber }).Where(a => !string.IsNullOrEmpty(a));
+        }
+
+        public static string LocationSummary(this UserPersonalDetails userPersonalDetails)
+        {
+            return LocationSummary(userPersonalDetails?.Address?.Locality, userPersonalDetails?.Address?.Postcode);
+        }
+
+        public static string LocationSummary(this RequestPersonalDetails requestPersonalDetails)
+        {
+            return LocationSummary(requestPersonalDetails?.Address?.Locality, requestPersonalDetails?.Address?.Postcode);
+        }
+
+        public static string LocationSummary(string locality, string postcode)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(locality))
+            {
+                sb.Append(locality.ToTitleCase());
+            }
+
+            if (!string.IsNullOrEmpty(postcode))
+            {
+                sb.Append(" (");
+                sb.Append(postcode.Split(' ').First().ToUpper());
+                sb.Append(")");
+            }
+
+            return sb.ToString().Trim();
         }
     }
 }

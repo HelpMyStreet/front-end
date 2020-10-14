@@ -1,4 +1,4 @@
-﻿@using HelpMyStreet.Utils.Extensions
+﻿@using HelpMyStreetFE.Helpers;
 
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
 
@@ -17,10 +17,10 @@
                     <a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a>
                 </span>
                 <span>
-                    @volunteer.User.UserPersonalDetails.Address.Postcode
+                    @volunteer.User.UserPersonalDetails.LocationSummary()
                 </span>
                 <span>
-                    @string.Join(" / ", (new[] { volunteer.User.UserPersonalDetails.MobilePhone, volunteer.User.UserPersonalDetails.OtherPhone }).Where(s => !string.IsNullOrEmpty(s)))
+                    @string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())
                 </span>
             </dd>
         }
