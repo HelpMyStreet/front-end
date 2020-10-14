@@ -1,5 +1,5 @@
 ﻿export function initialiseGenericExpanders() {
-  $('body').on('click', '.generic-expander__controls a', function (e) {
+  $('body').on('click', '.generic-expander__controls', function (e) {
     e.preventDefault();
     const expander = $(this).closest('.generic-expander');
     expander.toggleClass('open');
