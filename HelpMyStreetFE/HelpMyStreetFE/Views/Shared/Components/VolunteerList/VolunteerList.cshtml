@@ -7,7 +7,7 @@
         @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.DisplayName))
         {
             <dt>
-                @volunteer.User.UserPersonalDetails.DisplayName (@volunteer.User.UserPersonalDetails.FirstName @volunteer.User.UserPersonalDetails.LastName)
+                @volunteer.User.UserPersonalDetails.FirstName @volunteer.User.UserPersonalDetails.LastName
                 <span class="volunteer-list__roles">
                     @string.Join(", ", volunteer.Roles.Select(r => r.FriendlyName()))
                 </span>
