@@ -162,7 +162,7 @@ async function loadJobDetails(job, forceRefresh) {
   }
 
   const jobId = $(job).attr("id");
-  const jobSet = $('input[name="JobSet"]').val();
+  const jobSet = $(job).closest('.job-filter-results-panel').data('jobset');
   jobDetail.data('status', 'updating');
   const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId + '&js=' + jobSet);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
