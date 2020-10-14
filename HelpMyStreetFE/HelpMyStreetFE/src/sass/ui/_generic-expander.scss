@@ -3,15 +3,44 @@
     display: none;
   }
 
+  &__controls {
+    display: block;
+
+    &:after {
+      content: " ";
+      width: 0.5rem;
+      height: 0.5rem;
+      border-right: 2px solid $blue;
+      border-bottom: 2px solid #333;
+      position: absolute;
+      top: 1.5rem;
+      right: 1rem;
+      transform: rotate(45deg);
+      transition: transform 0.3s;
+    }
+
+    &.open:after {
+    }
+
+    &.close:after {
+    }
+  }
+
   &:not(.open) {
-    .generic-expander__control.close {
+    .generic-expander__controls .close {
       display: none;
     }
   }
 
   &.open {
-    .generic-expander__control.open {
-      display: none;
+    .generic-expander__controls {
+      .open {
+        display: none;
+      }
+
+      &:after {
+        transform: rotate(-135deg);
+      }
     }
   }
 }

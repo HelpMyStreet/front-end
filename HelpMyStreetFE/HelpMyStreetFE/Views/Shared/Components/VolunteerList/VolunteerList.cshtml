@@ -24,27 +24,24 @@
                         @credential.UserHasCredential
                     }
                 </span>
-                <span>
-                    <a href="#" class="generic-expander__control open">View more info <span></span></a>
-                    <a href="#" class="generic-expander__control close">View less info <span></span></a>
-                </span>
+                <div class="generic-expander__controls">
+                    <a href="#" class="open">View more info</a>
+                    <a href="#" class="close">View less info</a>
+                </div>
             </div>
             <div class="volunteer-list__volunteer__detail generic-expander__content">
-                <span>
-                    @Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)
-                </span>
-                <span>
-                    <a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a>
-                </span>
-                <span>
-                    @string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())
-                </span>
-                <span>
-                    @string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyName()))
-                </span>
-                <span>
-                    @volunteer.User.SupportRadiusMiles miles
-                </span>
+                <dl>
+                    <dt>Address</dt>
+                    <dd>@Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)</dd>
+                    <dt>Email Address</dt>
+                    <dd><a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a></dd>
+                    <dt>@(volunteer.User.UserPersonalDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                    <dd>@string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())</dd>
+                    <dt>Volunteering Radius</dt>
+                    <dd>@volunteer.User.SupportRadiusMiles miles</dd>
+                    <dt>Selected Activities</dt>
+                    <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyName()))</dd>
+                </dl>
             </div>
 
         </div>
