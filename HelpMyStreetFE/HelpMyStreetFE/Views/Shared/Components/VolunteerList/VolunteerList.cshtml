@@ -9,7 +9,7 @@
             <dt>
                 @volunteer.User.UserPersonalDetails.FirstName @volunteer.User.UserPersonalDetails.LastName
                 <span class="volunteer-list__roles">
-                    @string.Join(", ", volunteer.Roles.Select(r => r.FriendlyName()))
+                    @volunteer.RolesSummary
                 </span>
             </dt>
             <dd>
