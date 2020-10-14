@@ -4,20 +4,23 @@
 
 <div class="volunteer-list">
     <dl>
-        @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.DisplayName))
+        @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.FullName()))
         {
             <dt>
-                @volunteer.User.UserPersonalDetails.FirstName @volunteer.User.UserPersonalDetails.LastName
+                @volunteer.User.UserPersonalDetails.FullName()
                 <span class="volunteer-list__roles">
                     @volunteer.RolesSummary
+                </span>
+                <span>
+                    @volunteer.User.UserPersonalDetails.LocationSummary()
+                </span>
+                <span>
+                    @volunteer.CompletedRequests
                 </span>
             </dt>
             <dd>
                 <span>
                     <a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a>
-                </span>
-                <span>
-                    @volunteer.User.UserPersonalDetails.LocationSummary()
                 </span>
                 <span>
                     @string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())

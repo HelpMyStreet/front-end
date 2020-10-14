@@ -9,6 +9,11 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class PersonalDetailsExtensions
     {
+        public static string FullName(this UserPersonalDetails userPersonalDetails)
+        {
+            return $"{userPersonalDetails.FirstName} {userPersonalDetails.LastName}";
+        }
+
         public static IEnumerable<string> PhoneNumbers(this UserPersonalDetails userPersonalDetails)
         {
             return (new[] { userPersonalDetails.MobilePhone, userPersonalDetails.OtherPhone }).Where(a => !string.IsNullOrEmpty(a));
