@@ -1,12 +1,82 @@
-﻿.volunteer-list {
-  &__volunteer__detail {
-    border-bottom: 1px solid $gray-8;
-    margin: 1rem 0;
-    padding: 1rem 0;
+﻿.container {
+  .volunteer-list {
+    .name-wrapper {
+      width: 15rem;
+    }
+    .parallel-scroll-wrapper{
+      width: calc(100% - 15rem);
+     }
+    
+    .parallel-scroller {
 
-    dt {
-      font-weight: bold;
-      padding-top: 0.25rem;
+      .row {
+        flex-wrap: nowrap !important;
+      }
+
+      .location {
+        min-width: 15rem;
+      }
+
+      .completed-requests {
+        min-width: 3rem;
+      }
+
+      .credential {
+        min-width: 3.5rem;
+      }
+    }
+
+    &__table-header {
+      text-align: center;
+
+      &__credentials {
+        .credential {
+          overflow: hidden;
+        }
+      }
+    }
+
+    &__volunteer {
+      &__summary {
+        .name {
+          font-weight: bold;
+        }
+
+
+        .credential {
+          img, span.cross {
+            display: block;
+            width: 3rem;
+            height: 3rem;
+            margin: 0 auto;
+          }
+
+          span.cross {
+            background-color: $gray-10;
+            border: 1px solid $gray-4;
+            color: $gray-4;
+            opacity: 30%;
+            border-radius: 50%;
+            text-align: center;
+            cursor: default;
+            font-size: 1.5rem;
+            padding: 0.6rem;
+            vertical-align: top;
+          }
+        }
+      }
+
+
+      &__detail {
+        border-bottom: 1px solid $gray-8;
+        margin: 1rem 0;
+        padding: 1rem 0;
+
+        dt {
+          font-weight: bold;
+          padding-top: 0.25rem;
+        }
+      }
     }
   }
 }
