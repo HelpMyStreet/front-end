@@ -1,29 +1,21 @@
 ﻿.container {
   .volunteer-list {
-    .name-wrapper {
-      width: 15rem;
+    @media screen and (min-width: $med-screen){
+      display: grid;
+      grid-auto-columns: auto;
+      grid-template-columns: 20rem min-content min-content repeat(var(--numberOfCredentials), min-content);
     }
-    .parallel-scroll-wrapper{
-      width: calc(100% - 15rem);
-     }
-    
-    .parallel-scroller {
 
-      .row {
-        flex-wrap: nowrap !important;
-      }
+    .name-wrapper {
+      grid-column-start: 1;
+    }
 
-      .location {
-        min-width: 15rem;
-      }
+    .location {
+      grid-column-start: 2;
+    }
 
-      .completed-requests {
-        min-width: 3rem;
-      }
-
-      .credential {
-        min-width: 3.5rem;
-      }
+    .completed-requests {
+      grid-column-start: 3;
     }
 
     &__table-header {
@@ -36,8 +28,6 @@
       }
     }
 
-    &__volunteer {
-      &__summary {
         .name {
           font-weight: bold;
         }
@@ -63,11 +53,11 @@
             padding: 0.6rem;
             vertical-align: top;
           }
-        }
-      }
 
 
       &__detail {
+        grid-column-start: 1;
+        grid-column-end: -1;
         border-bottom: 1px solid $gray-8;
         margin: 1rem 0;
         padding: 1rem 0;
