@@ -51,27 +51,6 @@ namespace HelpMyStreetFE.Services.Groups
             }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId, CancellationToken cancellationToken)
-        {
-            var thisGroup = await _groupService.GetGroupById(groupId, cancellationToken);
-            var groupMemberRoles = await _groupRepository.GetGroupMemberRoles(groupId, userId);
-
-            List<UserGroup> response = new List<UserGroup>();
-            foreach (var userRoles in groupMemberRoles.GroupMemberRoles)
-            {
-                response.Add(new UserGroup()
-                {
-                    UserId = userRoles.Key,
-                    GroupId = groupId,
-                    GroupKey = thisGroup.GroupKey,
-                    GroupName = thisGroup.GroupName,
-                    UserRoles = userRoles.Value.Select(role => (GroupRoles)role)
-                });
-            }
-
-            return response;
-        }
-
         public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken)
         {
             var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);

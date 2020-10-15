@@ -123,18 +123,6 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetGroupMembersResponse> GetGroupMembers(int groupId)
-        {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMembers?groupId={groupId}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMembersResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
-        }
-
         public async Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId)
         {
             HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMember?groupId={groupId}&userId={userId}&authorisingUserId={authorisingUserId}");
@@ -167,18 +155,6 @@ namespace HelpMyStreetFE.Repositories
             HttpResponseMessage response = await Client.PostAsync("/api/PostAddUserToDefaultGroups", data);
             string str = await response.Content.ReadAsStringAsync();
             var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostAddUserToDefaultGroupsResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
-        }
-
-        public async Task<GetGroupMemberRolesResponse> GetGroupMemberRoles(int groupId, int userId)
-        {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMemberRoles?groupId={groupId}&userId={userId}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMemberRolesResponse, GroupServiceErrorCode>>(str);
             if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
             {
                 return deserializedResponse.Content;

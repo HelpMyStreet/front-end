@@ -30,10 +30,6 @@ namespace HelpMyStreetFE.Repositories
 
         Task<GetUserRolesResponse> GetUserRoles(int userId);
 
-        Task<GetGroupMembersResponse> GetGroupMembers(int groupId);
-
-        Task<GetGroupMemberRolesResponse> GetGroupMemberRoles(int groupId, int authorisedByUserID);
-
         Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID);
 
         Task<GroupPermissionOutcome> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID);
