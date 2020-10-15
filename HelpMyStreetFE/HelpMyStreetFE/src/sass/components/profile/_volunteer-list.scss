@@ -1,9 +1,21 @@
 ﻿.container {
+  .header {
+    display: none;
+  }
+
   .volunteer-list {
     @media screen and (min-width: $med-screen){
       display: grid;
       grid-auto-columns: auto;
       grid-template-columns: 20rem min-content min-content repeat(var(--numberOfCredentials), min-content);
+      column-gap: 1rem;
+      grid-row-gap: 1rem;
+
+      .header {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+      }
     }
 
     .name-wrapper {

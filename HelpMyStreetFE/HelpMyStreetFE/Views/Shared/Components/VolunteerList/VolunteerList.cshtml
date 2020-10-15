@@ -8,11 +8,11 @@
 
 <div class="volunteer-list generic-expander">
 
-    <div class="location">Location</div>
-    <div class="completed-requests">Completed Requests</div>
+    <div class="location header">Location</div>
+    <div class="completed-requests header">Completed Requests</div>
     @foreach (var credential in Model.GroupCredentials.OrderBy(c => c.DisplayOrder))
     {
-        <div class="pad-xs credential">@credential.Name</div>
+        <div class="pad-xs credential header">@credential.Name</div>
     }
 
     @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.FullName()))
