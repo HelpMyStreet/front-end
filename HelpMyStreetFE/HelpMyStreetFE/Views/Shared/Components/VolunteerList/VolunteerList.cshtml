@@ -51,7 +51,17 @@
                 }
                 else
                 {
-                    <span class="cross" title="@credential.GroupCredential.Name: No"><span>X</span></span>
+                    if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin)
+                    {
+                        <a href="#" title="Add @credential.GroupCredential.Name">
+                            <span class="cross"><span>X</span></span>
+                            <span class="add">Add</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="cross" title="@credential.GroupCredential.Name: No"><span>X</span></span>
+                    }
                 }
                 <span class="small-screen-only">
                     @credential.GroupCredential.Name

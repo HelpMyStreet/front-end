@@ -91,6 +91,16 @@
           margin: 0 auto;
         }
       }
+
+      a {
+        text-decoration: none;
+        span.cross {
+          cursor: pointer;
+        }
+        span.add {
+          text-decoration: underline;
+        }
+      }
     }
 
     &__volunteer-detail {
@@ -152,6 +162,12 @@
             font-size: 2rem;
             margin: 20% auto;
           }
+        }
+
+        span.add {
+          text-align: center;
+          display: block;
+          font-size: 0.9rem;
         }
       }
     }
