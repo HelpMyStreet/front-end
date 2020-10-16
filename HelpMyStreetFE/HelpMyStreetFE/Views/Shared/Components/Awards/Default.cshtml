@@ -2,7 +2,7 @@
 @using HelpMyStreetFE.Models.Awards;
 
 
-@if (Model.CurrentAward.Award != null)
+@if (Model.CurrentAward.Award != null && Model.CurrentAward.CurrentAwardLevel != 0)
 {
     @if (Model.CurrentAward.NextAwardLevel != 0)
     {

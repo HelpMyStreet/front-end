@@ -28,7 +28,7 @@
         </div>
 
     <div class="mb-md row">
-        <div class="awards-component"></div>
+        <div class="awards-component">@await Component.InvokeAsync("Awards", new {userID = Model.UserDetails.User.ID, cancellationToken = System.Threading.CancellationToken.None})</div>
     </div>
 
 
