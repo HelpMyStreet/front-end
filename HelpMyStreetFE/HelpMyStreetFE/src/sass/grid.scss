@@ -82,9 +82,10 @@
       }
     }
   }
-    .small-screen-only {
-        display: none;
-    }
+
+  .small-screen-only {
+    display: none;
+  }
 }
 
 @media screen and (min-width: $sm-screen) and (max-width: $med-screen) {
@@ -107,6 +108,6 @@
         flex-direction: column;
     }
     .large-screen-only {
-            display: none;
+      display: none;
     }
 }

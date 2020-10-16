@@ -10,7 +10,7 @@
     document.documentElement.style.setProperty("--numberOfCredentials", @Model.GroupCredentials.Count());
 </script>
 
-<div class="volunteer-list generic-expander">
+<div class="volunteer-list generic-expander pt-sm">
 
     <div class="location header">Location</div>
     <div class="completed-requests header">Completed Requests</div>
@@ -29,10 +29,10 @@
             <span class="roles">
                 @volunteer.RolesSummary
             </span>
-            <a href="#" class="generic-expander__controls" data-expander-target="volunteer-details-@i">
-                <span class="open">View more info</span>
-                <span class="close">View less info</span>
-            </a>
+            <div class="generic-expander__controls large-screen-only" data-expander-target="volunteer-details-@i">
+                <a href="#" class="open">View volunteer details</a>
+                <a href="#" class="close">Hide volunteer details</a>
+            </div>
         </div>
         <div class="location">
             <span class="small-screen-only">Location: </span>
@@ -51,27 +51,35 @@
                 }
                 else
                 {
-                    <span class="cross" title="@credential.GroupCredential.Name: No">X</span>
+                    <span class="cross" title="@credential.GroupCredential.Name: No"><span>X</span></span>
                 }
                 <span class="small-screen-only">
                     @credential.GroupCredential.Name
                 </span>
             </div>
         }
+        <div class="generic-expander__controls small-screen-only mt-sm" data-expander-target="volunteer-details-@i">
+            <a href="#" class="open">View volunteer details</a>
+            <a href="#" class="close">Hide volunteer details</a>
+        </div>
 
         <div id="volunteer-details-@i" class="volunteer-list__volunteer-detail generic-expander__content">
-            <dl>
-                <dt>Address</dt>
-                <dd>@Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)</dd>
-                <dt>Email Address</dt>
-                <dd><a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a></dd>
-                <dt>@(volunteer.User.UserPersonalDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                <dd>@string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())</dd>
-                <dt>Volunteering Radius</dt>
-                <dd>@volunteer.User.SupportRadiusMiles miles</dd>
-                <dt>Selected Activities</dt>
-                <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyName()))</dd>
-            </dl>
+            <div class="row">
+                <dl class="sm6">
+                    <dt>Address</dt>
+                    <dd>@Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)</dd>
+                    <dt>Email Address</dt>
+                    <dd><a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a></dd>
+                    <dt>@(volunteer.User.UserPersonalDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                    <dd>@string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())</dd>
+                </dl>
+                <dl class="sm6">
+                    <dt>Volunteering Radius</dt>
+                    <dd>@volunteer.User.SupportRadiusMiles miles</dd>
+                    <dt>Selected Activities</dt>
+                    <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyName()))</dd>
+                </dl>
+            </div>
         </div>
     }
 </div>

@@ -4,21 +4,6 @@
   }
 
   &__controls {
-    display: block;
-
-    &:after {
-      content: " ";
-      width: 0.5rem;
-      height: 0.5rem;
-      border-right: 2px solid $blue;
-      border-bottom: 2px solid #333;
-      position: absolute;
-      top: 1.5rem;
-      right: 1rem;
-      transform: rotate(45deg);
-      transition: transform 0.3s;
-    }
-
     &:not(.open) {
       .close {
         display: none;
@@ -29,11 +14,6 @@
       .open {
         display: none;
       }
-
-      &:after {
-        transform: rotate(-135deg);
-      }
     }
   }
-
 }
