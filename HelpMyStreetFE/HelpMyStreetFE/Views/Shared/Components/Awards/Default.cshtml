@@ -2,7 +2,7 @@
 @using HelpMyStreetFE.Models.Awards;
 
 
-@if (Model.CurrentAward.Award != null && Model.CurrentAward.CurrentAwardLevel != 0)
+@if (Model.CurrentAward.Award != null)
 {
     @if (Model.CurrentAward.NextAwardLevel != 0)
     {
@@ -15,10 +15,13 @@
                 <div class="user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
                     <h5>@Model.CurrentAward.Award.AwardName</h5>
+                    @if (Model.CurrentAward.CurrentAwardLevel > 0)
+                    {
                     <span>
                         <progress id="pg-bar" max="@Model.CurrentAward.NextAwardLevel" value="@Model.CurrentAward.CurrentAwardLevel"></progress>
                         <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") until next level</label>
                     </span>
+                    }
                 </div>
             </div>
             <div>

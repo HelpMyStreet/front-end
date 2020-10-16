@@ -31,8 +31,8 @@ namespace HelpMyStreetFE.Repositories
                 {
                     AwardName = "Ready to start helping?",
                     AwardValue = 0,
-                    AwardDescription = "<a href='/account/verify'>Verify your ID</a> and see what help is needed near you in the Open Requests tab.",
-                    ImageLocation = "/img/awards/question.svg",
+                    AwardDescription = "Verify your ID in the My Profile tab so you can start accepting requests near you.",
+                    ImageLocation = "/img/awards/round-placeholder.svg",
                     SpecificPredicate = u => {
                         foreach (Object o in u) {
                             if (o is User){
@@ -46,8 +46,8 @@ namespace HelpMyStreetFE.Repositories
                 {
                     AwardName = "Ready to start helping?",
                     AwardValue = 0,
-                    AwardDescription = "Find out what help is needed near you in the <a href='/account/open-requests'>open requests</a> tab!",
-                    ImageLocation = "/img/awards/question.svg",
+                    AwardDescription = "Find out what help is needed near you in the Open Requests tab.",
+                    ImageLocation = "/img/awards/round-placeholder.svg",
                     SpecificPredicate = u => {
                         foreach (Object o in u) {
                             if (o is User){
