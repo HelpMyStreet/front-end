@@ -4,10 +4,10 @@
   }
 
   .volunteer-list {
-    @media screen and (min-width: $med-screen){
+    @media screen and (min-width: $med-screen) {
       display: grid;
       grid-auto-columns: auto;
-      grid-template-columns: 20rem min-content min-content repeat(var(--numberOfCredentials), min-content);
+      grid-template-columns: 20rem auto auto repeat(var(--numberOfCredentials), auto);
       column-gap: 1rem;
       grid-row-gap: 1rem;
 
@@ -20,6 +20,15 @@
 
     .name-wrapper {
       grid-column-start: 1;
+
+      .name {
+        font-weight: bold;
+      }
+
+      .roles {
+        @extend .orange;
+        padding-left: 0.5rem;
+      }
     }
 
     .location {
@@ -40,45 +49,45 @@
       }
     }
 
-        .name {
-          font-weight: bold;
-        }
 
+    .completed-requests {
+      text-align: center;
+    }
 
-        .credential {
-          img, span.cross {
-            display: block;
-            width: 3rem;
-            height: 3rem;
-            margin: 0 auto;
-          }
-
-          span.cross {
-            background-color: $gray-10;
-            border: 1px solid $gray-4;
-            color: $gray-4;
-            opacity: 30%;
-            border-radius: 50%;
-            text-align: center;
-            cursor: default;
-            font-size: 1.5rem;
-            padding: 0.6rem;
-            vertical-align: top;
-          }
-
-
-      &__detail {
-        grid-column-start: 1;
-        grid-column-end: -1;
-        border-bottom: 1px solid $gray-8;
-        margin: 1rem 0;
-        padding: 1rem 0;
-
-        dt {
-          font-weight: bold;
-          padding-top: 0.25rem;
-        }
+    .credential {
+      img, span.cross {
+        display: block;
+        width: 3rem;
+        height: 3rem;
+        margin: 0 auto;
       }
+
+      span.cross {
+        background-color: $gray-10;
+        border: 1px solid $gray-4;
+        color: $gray-4;
+        opacity: 30%;
+        border-radius: 50%;
+        text-align: center;
+        cursor: default;
+        font-size: 1.5rem;
+        padding: 0.6rem;
+        vertical-align: top;
+      }
+    }
+
+    &__volunteer-detail {
+      grid-column-start: 1;
+      grid-column-end: -1;
+      border-bottom: 1px solid $gray-8;
+      margin: 1rem 0;
+      padding: 1rem 0;
+
+      dt {
+        font-weight: bold;
+        padding-top: 0.25rem;
+      }
+      
     }
   }
 }
