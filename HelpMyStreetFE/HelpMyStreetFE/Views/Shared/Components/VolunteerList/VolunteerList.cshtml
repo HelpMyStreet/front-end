@@ -1,6 +1,10 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
+
+@{ 
+    int i = 0;
+}
 
 <script>
     document.documentElement.style.setProperty("--numberOfCredentials", @Model.GroupCredentials.Count());
@@ -17,7 +21,7 @@
 
     @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.FullName()))
     {
-
+        i++;
         <div class="name-wrapper">
             <span class="name">
                 @volunteer.User.UserPersonalDetails.FullName()
@@ -25,7 +29,7 @@
             <span class="volunteer-list__roles">
                 @volunteer.RolesSummary
             </span>
-            <a href="#" class="generic-expander__controls">
+            <a href="#" class="generic-expander__controls" data-expander-target="volunteer-details-@i">
                 <span class="open">View more info</span>
                 <span class="close">View less info</span>
             </a>
@@ -55,7 +59,7 @@
             </div>
         }
 
-        <div class="volunteer-list__volunteer__detail generic-expander__content">
+        <div id="volunteer-details-@i" class="volunteer-list__volunteer-detail generic-expander__content">
             <dl>
                 <dt>Address</dt>
                 <dd>@Html.DisplayFor(x => volunteer.User.UserPersonalDetails.Address)</dd>

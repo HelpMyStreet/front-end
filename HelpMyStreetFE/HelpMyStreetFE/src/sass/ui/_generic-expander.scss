@@ -19,21 +19,13 @@
       transition: transform 0.3s;
     }
 
-    &.open:after {
+    &:not(.open) {
+      .close {
+        display: none;
+      }
     }
 
-    &.close:after {
-    }
-  }
-
-  &:not(.open) {
-    .generic-expander__controls .close {
-      display: none;
-    }
-  }
-
-  &.open {
-    .generic-expander__controls {
+    &.open {
       .open {
         display: none;
       }
@@ -43,4 +35,5 @@
       }
     }
   }
+
 }

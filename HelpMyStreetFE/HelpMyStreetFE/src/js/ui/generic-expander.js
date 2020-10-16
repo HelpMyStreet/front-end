@@ -1,8 +1,8 @@
 ﻿export function initialiseGenericExpanders() {
-  $('body').on('click', '.generic-expander__controls', function (e) {
+  $('body').on('click', '.generic-expander .generic-expander__controls', function (e) {
     e.preventDefault();
-    const expander = $(this).closest('.generic-expander');
-    expander.toggleClass('open');
-    expander.find('.generic-expander__content').slideToggle();
+    $(this).toggleClass('open');
+    const target = $(document).find('#' + $(this).data('expander-target'));
+    target.slideToggle();
   });
 }
