@@ -24,14 +24,12 @@ namespace HelpMyStreetFE.Controllers {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
-        private readonly IGroupMemberService _groupMemberService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-            _groupMemberService = groupMemberService ?? throw new ArgumentNullException(nameof(groupMemberService));
         }
 
 
@@ -90,14 +88,14 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [HttpPost("get-filtered-jobs")]
-        public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
+        public IActionResult GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
             return ViewComponent("JobList", new { jobFilterRequest });
         }
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-status-change-popup")]
-        public async Task<IActionResult> GetStatusChangePopup(string j, JobStatuses s)
+        public IActionResult GetStatusChangePopup(string j, JobStatuses s)
         {
             int jobId = Base64Utils.Base64DecodeToInt(j);
 
