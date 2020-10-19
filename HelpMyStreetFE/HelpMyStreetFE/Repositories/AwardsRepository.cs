@@ -157,6 +157,8 @@ namespace HelpMyStreetFE.Repositories
             }
 
             var listString = listArray.Count() > 0 ? ", including " + String.Join(", ", listArray) : " ";
+            var lastComma = listString.LastIndexOf(",");
+            if (lastComma != -1) listString = listString.Remove(lastComma, 1).Insert(lastComma, " and");
 
             var returnAward = new CurrentAwardModel();
 
