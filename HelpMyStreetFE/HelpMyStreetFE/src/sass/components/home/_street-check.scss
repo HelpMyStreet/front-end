@@ -1,152 +1,89 @@
-﻿.street-check {
-    @media screen and (min-width: $med-screen) {
-        > div {
-            margin: 0 auto;
-        }
+.map {
+  &.homepage-map {
+    min-width: 80%;
+    min-height: 500px;
+  }
 
         .max {
             max-width: 830px;
         }
 
-        h3 {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            font-size: 36px;
-            line-height: 48px;
-        }
-
-        input {
-            width: 392px;
-            font-size: 18px;
-            line-height: 22px;
-            padding: 20px 32px;
-        }
+  &.static-map {
+    div {
+      cursor: default !important;
     }
+  }
 
-    @media screen and (min-width: $sm-screen) and (max-width: $med-screen) {
-        > div {
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .postcode-input-button {
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-column-gap: $sm-margin;
-        }
+  div.gm-style-cc {
+    div:nth-child(2) {
+      top: -6px;
     }
-
-    @media screen and (max-width: $med-screen) {
-        .align-center {
-            justify-content: center;
-        }
-
-        span {
-            width: 100%;
-        }
-
-        p > span:first-of-type {
-            padding-bottom: $xxs-margin;
-        }
-
-        .ml32 {
-            margin-left: 0;
-        }
-
-        h3 {
-            margin-top: 0;
-            margin-bottom: $sm-margin;
-            font-size: 27px;
-            line-height: 36px;
-        }
-
-        .input {
-            margin-bottom: 0;
-        }
-
-        input {
-            width: 100%;
-            font-size: 14px;
-            line-height: 18px;
-            padding: 15px 24px;
-        }
-    }
-
-    .progress {
-        display: inline-block;
-        width: 227px;
-        height: 3px;
-        background-color: #eee;
-        margin: 0 10px;
-        border-radius: 5px;
-
-        .indicator {
-            border-radius: 5px;
-            display: inline-block;
-            width: 15%;
-            height: 3px;
-            background-color: #48a415;
-        }
-
-        @media screen and (max-width: $sm-screen) {
-            width: 100%;
-        }
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    .btn {        
-        @media screen and (max-width: $sm-screen) {
-            width: 100%;
-            margin-top: $sm-margin;
-        }
-    }
+  }
 }
 
-.postcode__info {
-    background: $background-main;
-    padding: 10px;
+#pac-input {
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+  border: none;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: 400;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 2px 11px 2px 13px;
+  text-overflow: ellipsis;
+  height: 40px;
+  width: 75%;
 
-    @media screen and (min-width: $sm-screen) {
-        margin: 0px;
-    }
-    margin-top:10px;
-
-    @media screen and (min-width: $sm-screen) {
-        width: 80%;
-    }
-
-    width: 100%;
-
-    &__message {
-        display: block;
-
-        @media screen and (min-width: $sm-screen) {
-            margin: 0 0px;
-        }
-
-        @media screen and (min-width: $med-screen) {
-            display: flex;
-            align-items: center;
-        }
-
-        &__text {
-            padding: 20px;
-            color: $dark-blue;
-            font-weight: 600;
-
-            p {
-                color: $dark-blue;
-            }
-
-            &__warning {
-                color: $orange;
-                font-weight: 600;
-            }
-        }
-    }
+  &:focus {
+    border-color: #4d90fe;
+  }
 }
 
+.pac-item {
+  padding-top: 2px;
+  line-height: 26px;
+
+  .pac-icon {
+    margin-top: 4px;
+  }
+
+  span {
+    font-size: 13px;
+
+    &.pac-item-query {
+      font-size: 15px;
+
+      .pac-matched {
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+#street-map {
+  #your-location {
+    button {
+      background-color: #fff;
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+      border: none;
+      border-radius: 2px;
+      height: 40px;
+      width: 75%;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      padding: 0px;
+      margin: 10px;
+      outline: none;
+
+      #your-location-image {
+        margin: 8px;
+        width: 24px;
+        height: 24px;
+        background: url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png) no-repeat;
+        background-size: auto 100%;
+      }
+    }
+  }
+}
