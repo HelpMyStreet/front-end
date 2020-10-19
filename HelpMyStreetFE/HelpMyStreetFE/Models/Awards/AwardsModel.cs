@@ -7,7 +7,7 @@ namespace HelpMyStreetFE.Models.Awards
     public class AwardsModel
     {
         private string _awardDescription;
-        public Dictionary<string,Object> AwardAttributes { get; set }
+        public Dictionary<string,Object> AwardAttributes { get; set; }
         public string AwardName { get; set; }
         public int AwardValue { get; set; }
         public string AwardDescription { set { _awardDescription = value; } get
