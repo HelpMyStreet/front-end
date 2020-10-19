@@ -1,12 +1,12 @@
-.map {
+﻿.map {
   &.homepage-map {
     min-width: 80%;
     min-height: 500px;
   }
 
-        .max {
-            max-width: 830px;
-        }
+  * {
+    position: initial;
+  }
 
   &.static-map {
     div {
