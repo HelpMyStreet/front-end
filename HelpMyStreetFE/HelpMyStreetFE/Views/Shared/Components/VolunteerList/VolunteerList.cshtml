@@ -53,7 +53,7 @@
                 {
                     if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin)
                     {
-                        <a href="#" title="Add @credential.GroupCredential.Name">
+                        <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential" data-target-user="@volunteer.User.ID" data-credential="@credential.GroupCredential.CredentialID">
                             <span class="cross"><span>X</span></span>
                             <span class="add">Add</span>
                         </a>
