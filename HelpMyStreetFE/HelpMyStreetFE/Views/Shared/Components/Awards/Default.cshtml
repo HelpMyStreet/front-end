@@ -18,7 +18,7 @@
                     <a id="what-is-this">What is this?</a>
                     }
                 </div>
-                <div class="user-detail">
+                <div class="awards-user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
                     <h5>@Model.CurrentAward.Award.AwardName</h5>
                     @if (Model.CurrentAward.CurrentAwardLevel > 0)
@@ -44,7 +44,7 @@
             <div class="user-badge">
                 <img src="@Model.CurrentAward.Award.ImageLocation" />
 
-                <div class="user-detail">
+                <div class="awards-user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
                     <h5>@Model.CurrentAward.Award.AwardName</h5>
                     <span>
