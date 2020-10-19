@@ -19,7 +19,7 @@
                     {
                     <span>
                         <progress id="pg-bar" max="@Model.CurrentAward.NextAwardLevel" value="@Model.CurrentAward.CurrentAwardLevel"></progress>
-                        <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") until next level</label>
+                        <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more to reach next level</label>
                     </span>
                     }
                 </div>
