@@ -13,6 +13,7 @@ using HelpMyStreetFE.Models.Reponses;
 using System;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -23,20 +24,6 @@ namespace HelpMyStreetFE.Repositories
             ILogger<BaseHttpRepository> logger,
             HttpClient client) : base(client, configuration, logger, "Services:Group")
         {
-        }
-
-        public async Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest)
-        {
-            string json = JsonConvert.SerializeObject(postAssignRoleRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/PostAssignRole", data);
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostAssignRoleResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
         }
 
         public async Task<GetChildGroupsResponse> GetChildGroups(int groupId)
@@ -230,6 +217,31 @@ namespace HelpMyStreetFE.Repositories
                 return deserializedResponse.Content.GroupCredentials;
             }
             throw new Exception("Bad response from GetGroupCredentials");
+        }
+
+        public async Task<bool> PutGroupMemberCredentials(int groupId, int userId, int credentialId, DateTime? validUntil, string reference, string notes, int authorisingUserId)
+        {
+            var putGroupMemberCredentialsRequest = new PutGroupMemberCredentialsRequest()
+            {
+                GroupId = groupId,
+                UserId = userId,
+                CredentialId = credentialId,
+                ValidUntil = validUntil,
+                Reference = reference,
+                Notes = notes,
+                AuthorisedByUserID = authorisingUserId,
+            };
+
+            string json = JsonConvert.SerializeObject(putGroupMemberCredentialsRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PutAsync("/api/PutGroupMemberCredentials", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserialisedResponse = JsonConvert.DeserializeObject<ResponseWrapper<bool, GroupServiceErrorCode>>(str);
+            if (deserialisedResponse.HasContent && deserialisedResponse.IsSuccessful)
+            {
+                return deserialisedResponse.Content;
+            }
+            return false;
         }
     }
 }

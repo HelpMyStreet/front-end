@@ -155,5 +155,11 @@ namespace HelpMyStreetFE.Services.Groups
 
             return annotatedGacs.AreSatisfied;
         }
+
+        public async Task<bool> PutGroupMemberCredentials(int groupId, int userId, int credentialId, DateTime? validUntil, string reference, string notes, int authorisingUserId)
+        {
+            return await _groupRepository.PutGroupMemberCredentials(groupId, userId, credentialId, validUntil, reference, notes, authorisingUserId);
+        }
+
     }
 }
