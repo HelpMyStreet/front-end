@@ -47,7 +47,7 @@ export function validateDob(val, id) {
                 $('#' + id).find("~ .error").text("You must be at least 18 years old to create an account");
                 return false;
             } else {
-                $('#' + id).val(moment(dateObject).format('DD MMM YYYY'));
+                $('#' + id).val(dateObject.toShortFormat());
                 return true;
             }
         } else {
@@ -70,4 +70,16 @@ function _calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - birthday.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+Date.prototype.toShortFormat = function () {
+  let monthNames = ["Jan", "Feb", "Mar", "Apr",
+    "May", "Jun", "Jul", "Aug",
+    "Sep", "Oct", "Nov", "Dec"];
+
+  let day = ('0' + this.getDate()).slice(-2);
+  let monthName = monthNames[this.getMonth()];
+  let year = this.getFullYear();
+
+  return `${day} ${monthName} ${year}`;
 }
