@@ -16,8 +16,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public List<RequestHelpTimeViewModel> Timeframes { get; set; }
-        public bool AgreeToTerms { get; set; }
-        public bool AgreeToPrivacy { get; set; }
+        public bool AgreeToPrivacyAndTerms { get; set; }
     }
 }
 

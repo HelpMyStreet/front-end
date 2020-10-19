@@ -137,11 +137,9 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 question.Model = bindingContext.ValueProvider.GetValue($"currentStep.Questions.[{question.ID}].Model").FirstValue;
             }
 
-            bool AgreeToTerms, AgreeToPrivacy = false;            
-            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToPrivacy)).FirstValue, out AgreeToPrivacy);
-            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToTerms)).FirstValue, out AgreeToTerms);
-            model.AgreeToPrivacy = AgreeToPrivacy;
-            model.AgreeToTerms = AgreeToTerms;
+            bool AgreeToPrivacyAndTerms = false;            
+            bool.TryParse(bindingContext.ValueProvider.GetValue("currentStep." + nameof(model.AgreeToPrivacyAndTerms)).FirstValue, out AgreeToPrivacyAndTerms);
+            model.AgreeToPrivacyAndTerms = AgreeToPrivacyAndTerms;
 
             return model;
 

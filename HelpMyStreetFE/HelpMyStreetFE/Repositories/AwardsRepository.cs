@@ -23,6 +23,27 @@ namespace HelpMyStreetFE.Repositories
             _userService = userService;
         }
 
+        public Dictionary<string, Func<Dictionary<string, Object>, string, string>> DescriptionModifiers = new Dictionary<string, Func<Dictionary<string, Object>, string, string>>()
+        {
+            {"default",
+                (attributes, description) => {
+                    if (attributes.ContainsKey("countOfJobsCompleted") && attributes.ContainsKey("listOfJobsCompleted"))
+                    {
+                        var count = (int)attributes["countOfJobsCompleted"];
+                        var list = attributes["listOfJobsCompleted"];
+                        var desc = description;
+                        desc = count == 1 ? desc.Replace("requests", "request") : desc;
+                        return desc.Replace("{{count}}",count.ToString()).Replace("{{list}}",list.ToString());
+                    }
+                    else
+                    {
+                        return description;
+                    }
+                }
+
+            }
+        };
+
         public async Task<List<AwardsModel>> GetAwards()
         {
             var awardsList = new List<AwardsModel>()
@@ -62,7 +83,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Good Samaritan",
                     AwardValue = 1,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
-                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/good-samaritan.png"
                 },
                 new AwardsModel()
@@ -70,7 +91,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Helping Hand",
                     AwardValue = 2,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're brill!",
-                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/helping-hand.png"
                 },
                 new AwardsModel()
@@ -78,7 +99,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Top Neighbour",
                     AwardValue = 5,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the great work!",
-                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/top-neighbour.png"
                 },
                 new AwardsModel()
@@ -86,7 +107,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Budding Humanitarian",
                     AwardValue = 10,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're awesome!",
-                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/budding-humanitarian.png"
                 },
                 new AwardsModel()
@@ -94,7 +115,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Helping Hero",
                     AwardValue = 20,
                     AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
-                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/helping-hero.png"
                 },
                 new AwardsModel()
@@ -102,7 +123,7 @@ namespace HelpMyStreetFE.Repositories
                     AwardName = "Volunteer Superstar",
                     AwardValue = 50,
                     AwardDescription = "{{count}} requests completed so far{{list}} - you're amazing!",
-                    DescriptionModifier = (count, list, description) => {return description.Replace("{{count}}",count.ToString()).Replace("{{list}}",list); },
+                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/volunteer-superstar.png"
                 }
             };
@@ -144,8 +165,12 @@ namespace HelpMyStreetFE.Repositories
 
                 var higherAwards = awards.Where(x => x.AwardValue > completedJobs);
                 returnAward.Award = relevantAwards.LastOrDefault();
-                returnAward.Award.JobCount = completedJobs;
-                returnAward.Award.JobDetail = listString;
+                var attributes = new Dictionary<string, Object>()
+                {
+                    {"countOfJobsCompleted",  completedJobs},
+                    {"listOfJobsCompleted", listString }
+                };
+                returnAward.Award.AwardAttributes = attributes;
                 if (higherAwards.Count() != 0)
                 {
                     
