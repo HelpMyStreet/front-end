@@ -1,12 +1,61 @@
-﻿.community-marker {
+﻿
+
+.community-marker {
+    min-width: 400px;
+
+    @media screen and (max-width: $sm-screen) {
+        width: 40vw;
+        min-width: unset;
+    }
 
     .marker-title {
+        margin-top: -10%;
+        background: #0098D4;
+        bottom: 5%;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 30vw;
         position: absolute;
-        bottom: 10%;
-        left: 3%;
-        p {
+
+        @media screen and (max-width: $sm-screen) {
+            width: 40vw;
+            margin-bottom: 10px;
+            background: none;
+            margin-top: unset;
+            bottom: 10%;
+        }
+
+        h4 {
+            margin: 0px;
             color: white;
-            text-align: left;
+            font-size: 1.2rem;
+
+            @media screen and (max-width: $sm-screen) {
+                font-size: 0.8em;
+            }
+        }
+
+        .marker-subtitle {
+            @media screen and (max-width: $sm-screen) {
+                display: none;
+            }
+
+            display: flex;
+            flex-direction: row;
+
+            p {
+                color: white;
+                text-align: left;
+                margin-bottom: 5px;
+            }
+
+            a {
+                color: white;
+                font-size: 1rem;
+                margin-bottom: 5px;
+                margin-left: auto;
+                line-height: 1.333;
+            }
         }
     }
 
@@ -15,23 +64,12 @@
         text-align: right;
     }
 
-    h4 {
-        margin: 0px;
-        color: white;
 
-        @media screen and (max-width: $sm-screen) {
-            font-size: 1em;
-        }
-    }
-
-    a {
-        font-size: 1em;
-    }
 
     img {
         width: 30vw;
 
-        @media screen and (max-width: $sm-screen){
+        @media screen and (max-width: $sm-screen) {
             width: 100vw;
         }
     }

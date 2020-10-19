@@ -13,7 +13,10 @@
             <div class="user-badge">
                 <div class="user-icon">
                     <img src="@Model.CurrentAward.Award.ImageLocation" />
+                    @if (Model.CurrentAward.CurrentAwardLevel > 0)
+                    {
                     <a id="what-is-this">What is this?</a>
+                    }
                 </div>
                 <div class="user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
