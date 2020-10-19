@@ -52,5 +52,33 @@ namespace HelpMyStreetFE.Helpers
 
             return sb.ToString().Trim();
         }
+
+        public static string CommaSeparatedAddress(this UserPersonalDetails userPersonalDetails)
+        {
+            string[] elements = new[]
+            {
+                userPersonalDetails.Address.AddressLine1,
+                userPersonalDetails.Address.AddressLine2,
+                userPersonalDetails.Address.AddressLine3,
+                userPersonalDetails.Address.Locality.ToTitleCase(),
+                userPersonalDetails.Address.Postcode
+            };
+
+            return string.Join(", ", elements.Where(e => !string.IsNullOrEmpty(e)));
+        }
+
+        public static string CommaSeparatedAddress(this RequestPersonalDetails requestPersonalDetails)
+        {
+            string[] elements = new[]
+            {
+                requestPersonalDetails.Address.AddressLine1,
+                requestPersonalDetails.Address.AddressLine2,
+                requestPersonalDetails.Address.AddressLine3,
+                requestPersonalDetails.Address.Locality.ToTitleCase(),
+                requestPersonalDetails.Address.Postcode
+            };
+
+            return string.Join(", ", elements.Where(e => !string.IsNullOrEmpty(e)));
+        }
     }
 }

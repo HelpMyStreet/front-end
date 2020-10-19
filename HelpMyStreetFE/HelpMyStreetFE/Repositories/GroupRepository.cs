@@ -229,7 +229,7 @@ namespace HelpMyStreetFE.Repositories
             {
                 return deserializedResponse.Content.GroupCredentials;
             }
-            return null;
+            throw new Exception("Bad response from GetGroupCredentials");
         }
     }
 }

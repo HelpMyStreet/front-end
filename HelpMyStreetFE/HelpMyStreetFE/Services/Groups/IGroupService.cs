@@ -19,5 +19,6 @@ namespace HelpMyStreetFE.Services.Groups
 
         Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, CancellationToken cancellationToken);
         Task<List<GroupCredential>> GetGroupCredentials(int groupId);
+        Task<GroupCredential> GetGroupCredential(int groupId, int credentialId);
     }
 }

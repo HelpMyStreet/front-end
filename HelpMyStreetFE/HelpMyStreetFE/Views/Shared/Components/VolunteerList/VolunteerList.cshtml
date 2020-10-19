@@ -1,4 +1,5 @@
 ﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Utils;
 
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
 
@@ -53,7 +54,10 @@
                 {
                     if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin)
                     {
-                        <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential" data-target-user="@volunteer.User.ID" data-credential="@credential.GroupCredential.CredentialID">
+                        <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential" 
+                           data-target-user="@Base64Utils.Base64Encode(volunteer.User.ID)" 
+                           data-credential="@Base64Utils.Base64Encode(credential.GroupCredential.CredentialID)" 
+                           data-target-group="@Base64Utils.Base64Encode(credential.GroupCredential.GroupID)" >
                             <span class="cross"><span>X</span></span>
                             <span class="add">Add</span>
                         </a>

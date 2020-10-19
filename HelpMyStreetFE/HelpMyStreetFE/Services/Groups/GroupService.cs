@@ -90,5 +90,17 @@ namespace HelpMyStreetFE.Services.Groups
         {
             return await _groupRepository.GetGroupCredentials(groupId);
         }
+
+        public async Task<GroupCredential> GetGroupCredential(int groupId, int credentialId)
+        {
+            var credential = (await GetGroupCredentials(groupId)).FirstOrDefault(c => c.CredentialID == credentialId);
+
+            if (credential == null)
+            {
+                throw new Exception($"Unable to find credential {credentialId} for group {groupId}");
+            }
+
+            return credential;
+        }
     }
 }
