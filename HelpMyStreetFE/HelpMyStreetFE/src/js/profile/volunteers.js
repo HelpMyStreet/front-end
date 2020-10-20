@@ -3,6 +3,12 @@ import { hmsFetch, fetchResponses } from '../shared/hmsFetch';
 import { datepickerLoad, validateDate, dateValidationSchemes } from '../shared/date-picker';
 
 export function initialiseVolunteerList() {
+  initialiseAddCredentialLinks();
+  initialiseWhatIsThisLinks();
+  intialiseCredentialPopupTiles();
+}
+
+var initialiseAddCredentialLinks = function () {
   $('.volunteer-list').on('click', '.add-credential', async function (e) {
     e.preventDefault();
     const el = this;
@@ -41,9 +47,19 @@ export function initialiseVolunteerList() {
     popup = await showServerSidePopup(url, settings);
     datepickerLoad('datepicker', 'datepicker-error', dateValidationSchemes.FUTURE_DATES);
   });
+};
 
-  intialiseCredentialPopupTiles();
-}
+var initialiseWhatIsThisLinks = function () {
+  $('.volunteer-list').on('click', '.what-is-this', async function (e) {
+    e.preventDefault();
+    const el = this;
+    const group = $(this).data('target-group');
+    const credential = $(this).data('credential');
+    const url = `/api/volunteers/get-what-is-this-credential-popup?g=${group}&c=${credential}`;
+
+    await showServerSidePopup(url, {});
+  });
+};
 
 var intialiseCredentialPopupTiles = function () {
   console.log('init');

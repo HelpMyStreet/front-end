@@ -143,6 +143,15 @@
         font-weight: bold;
         text-align: center;
         padding-bottom: 1rem;
+
+        .what-is-this {
+          margin-top: 0.3rem;
+          display: block;
+          font-size: 0.9rem;
+          font-weight: normal;
+          text-decoration: underline;
+          line-height: initial;
+        }
       }
 
       .name-wrapper {

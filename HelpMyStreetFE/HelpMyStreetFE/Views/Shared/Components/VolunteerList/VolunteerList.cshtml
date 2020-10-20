@@ -17,7 +17,18 @@
     <div class="completed-requests header">Completed Requests</div>
     @foreach (var credential in Model.GroupCredentials.OrderBy(c => c.DisplayOrder))
     {
-        <div class="pad-xs credential header">@credential.Name</div>
+        <div class="pad-xs credential header">
+            @credential.Name
+
+            @if (!string.IsNullOrEmpty(credential.WhatIsThis))
+            {
+                <a class="what-is-this" href="#" 
+                    data-credential="@Base64Utils.Base64Encode(credential.CredentialID)" 
+                    data-target-group="@Base64Utils.Base64Encode(credential.GroupID)">
+                      What is this?
+                </a>
+            }
+        </div>
     }
 
     @foreach (var volunteer in Model.Volunteers.OrderBy(v => v.User.UserPersonalDetails.FullName()))
@@ -69,6 +80,14 @@
                 }
                 <span class="small-screen-only">
                     @credential.GroupCredential.Name
+                    @if (!string.IsNullOrEmpty(credential.GroupCredential.WhatIsThis))
+                    {
+                        <a class="what-is-this" href="#" 
+                            data-credential="@Base64Utils.Base64Encode(credential.GroupCredential.CredentialID)" 
+                            data-target-group="@Base64Utils.Base64Encode(credential.GroupCredential.GroupID)">
+                              (What is this?)
+                        </a>
+                    }
                 </span>
             </div>
         }

@@ -27,6 +27,16 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AuthorizeAttributeNoRedirect]
+        [Route("get-what-is-this-credential-popup")]
+        public IActionResult GetAssignCredentialPopup(string g, string c)
+        {
+            int groupId = Base64Utils.Base64DecodeToInt(g);
+            int credentialId = Base64Utils.Base64DecodeToInt(c);
+
+            return ViewComponent("WhatIsThisCredentialPopup", new { groupId, credentialId });
+        }
+
+        [AuthorizeAttributeNoRedirect]
         [Route("get-assign-credential-popup")]
         public IActionResult GetAssignCredentialPopup(string u, string g, string c)
         {
