@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
+using HelpMyStreet.Contracts.GroupService.Request;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
@@ -156,9 +157,9 @@ namespace HelpMyStreetFE.Services.Groups
             return annotatedGacs.AreSatisfied;
         }
 
-        public async Task<bool> PutGroupMemberCredentials(int groupId, int userId, int credentialId, DateTime? validUntil, string reference, string notes, int authorisingUserId)
+        public async Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest)
         {
-            return await _groupRepository.PutGroupMemberCredentials(groupId, userId, credentialId, validUntil, reference, notes, authorisingUserId);
+            return await _groupRepository.PutGroupMemberCredentials(putGroupMemberCredentialsRequest);
         }
 
     }

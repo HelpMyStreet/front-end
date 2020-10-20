@@ -31,6 +31,6 @@ namespace HelpMyStreetFE.Repositories
 
         Task<List<List<int>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy);
         Task<List<GroupCredential>> GetGroupCredentials(int groupId);
-        Task<bool> PutGroupMemberCredentials(int groupId, int userId, int credentialId, DateTime? validUntil, string reference, string notes, int authorisingUserId);
+        Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest);
     }
 }

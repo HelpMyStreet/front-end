@@ -62,6 +62,7 @@ export function hidePopup(popup, duration = 100) {
 function bindAcceptClick(popup, settings) {
   popup.find('#popup-accept').unbind().bind("click", async function (evt) {
     buttonLoad($(this));
+    popup.find('.popup__content__buttons .error').hide();
     popup.find('.popup-close').off('click');
     var result = await settings.acceptCallbackAsync();
     buttonUnload($(this));
@@ -69,10 +70,12 @@ function bindAcceptClick(popup, settings) {
       hidePopup(popup);
     } else {
       bindCloseClick(popup);
-      if (settings.messageOnFalse) {
-        popup.find('.error').text(settings.messageOnFalse);
+      if (typeof result == 'string') {
+        popup.find('.popup__content__buttons .error').text(result);
+      } else if (settings.messageOnFalse) {
+        popup.find('.popup__content__buttons .error').text(settings.messageOnFalse);
       }
-      popup.find('.error').show();
+      popup.find('.popup__content__buttons .error').show();
     }
   });
 }
@@ -80,16 +83,19 @@ function bindAcceptClick(popup, settings) {
 function bindRejectClick(popup, settings) {
   popup.find('#popup-reject').unbind().bind("click", async function (evt) {
     if (settings.rejectCallbackAsync) {
+      popup.find('.popup__content__buttons .error').hide();
       popup.find('.popup-close').off('click');
       var result = await settings.rejectCallbackAsync();
       if (result == true) {
         hidePopup(popup);
       } else {
         bindCloseClick(popup);
-        if (settings.messageOnFalse) {
-          popup.find('.error').text(settings.messageOnFalse);
+        if (typeof result == 'string') {
+          popup.find('.popup__content__buttons .error').text(result);
+        } else if (settings.messageOnFalse) {
+          popup.find('.popup__content__buttons .error').text(settings.messageOnFalse);
         }
-        popup.find('.error').show();
+        popup.find('.popup__content__buttons .error').show();
       }
     } else {
       hidePopup(popup);

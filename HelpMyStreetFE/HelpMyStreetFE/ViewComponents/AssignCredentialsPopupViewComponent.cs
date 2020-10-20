@@ -9,6 +9,7 @@ using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Volunteers;
+using HelpMyStreetFE.Models;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -49,10 +50,22 @@ namespace HelpMyStreetFE.ViewComponents
             var viewModel = new AssignCredentialsViewModel()
             {
                 TargetUser = await _userService.GetUserAsync(targetUserId, cancellationToken),
-                Credential = await _groupService.GetGroupCredential(groupId, credentialId)
+                Credential = await _groupService.GetGroupCredential(groupId, credentialId),
+                ValidUntilOptions = GetValidUntilOptions(),
             };
 
             return View("AssignCredentialsPopup", viewModel);
+        }
+
+        private List<ValidUntilViewModel> GetValidUntilOptions()
+        {
+            return new List<ValidUntilViewModel>() {
+                new ValidUntilViewModel() { ID = "1", Label = "Never", Value = "Null" } ,
+                new ValidUntilViewModel() { ID = "2", Label = "In one month", Value = DateTime.Now.AddMonths(1).ToString("dd MMM yyyy") } ,
+                new ValidUntilViewModel() { ID = "3", Label = "In one year", Value = DateTime.Now.AddYears(1).ToString("dd MMM yyyy") } ,
+                new ValidUntilViewModel() { ID = "4", Label = "In two years", Value = DateTime.Now.AddYears(2).ToString("dd MMM yyyy") } ,
+                new ValidUntilViewModel() { ID = "5", Label = "Enter a date", Value = "", ShowDatePicker = true } ,
+            };
         }
     }
 }

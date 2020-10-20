@@ -219,19 +219,8 @@ namespace HelpMyStreetFE.Repositories
             throw new Exception("Bad response from GetGroupCredentials");
         }
 
-        public async Task<bool> PutGroupMemberCredentials(int groupId, int userId, int credentialId, DateTime? validUntil, string reference, string notes, int authorisingUserId)
+        public async Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest)
         {
-            var putGroupMemberCredentialsRequest = new PutGroupMemberCredentialsRequest()
-            {
-                GroupId = groupId,
-                UserId = userId,
-                CredentialId = credentialId,
-                ValidUntil = validUntil,
-                Reference = reference,
-                Notes = notes,
-                AuthorisedByUserID = authorisingUserId,
-            };
-
             string json = JsonConvert.SerializeObject(putGroupMemberCredentialsRequest);
             StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await Client.PutAsync("/api/PutGroupMemberCredentials", data);

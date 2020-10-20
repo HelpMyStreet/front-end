@@ -12,7 +12,9 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
         public User TargetUser { get; set; }
         public GroupCredential Credential { get; set; }
 
+        public List<ValidUntilViewModel> ValidUntilOptions { get; set; }
         public string Reference { get; set; }
         public string Notes { get; set; }
+        public string ValidUntil { get; set; }
     }
 }

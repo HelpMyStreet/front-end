@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HelpMyStreet.Contracts.GroupService.Request;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Volunteers;
@@ -46,7 +47,20 @@ namespace HelpMyStreetFE.Controllers
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            return await _groupMemberService.PutGroupMemberCredentials(groupId, targetUserId, credentialId, null, assignCredentialsViewModel.Reference, assignCredentialsViewModel.Notes, user.ID);
+            DateTime? validUntil = assignCredentialsViewModel.ValidUntil == "Null" ? (DateTime?)null : DateTime.Parse(assignCredentialsViewModel.ValidUntil);
+
+            PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest = new PutGroupMemberCredentialsRequest()
+            {
+                AuthorisedByUserID = user.ID,
+                UserId = targetUserId,
+                GroupId = groupId,
+                CredentialId = credentialId,
+                Reference = assignCredentialsViewModel.Reference,
+                Notes = assignCredentialsViewModel.Notes,
+                ValidUntil = validUntil,
+            };
+
+            return await _groupMemberService.PutGroupMemberCredentials(putGroupMemberCredentialsRequest);
         }
     }
 }

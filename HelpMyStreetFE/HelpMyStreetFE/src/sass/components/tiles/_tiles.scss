@@ -8,6 +8,10 @@
         }
     }
 
+    .sm4 {
+        @extend .pad-sm;
+    }
+
     &__tile {
         text-align: center;
         background: white;
@@ -19,7 +23,6 @@
         cursor: pointer;
         border: 2px solid $white;
         display: table;
-
 
         &--large {
             min-height: 200px;
@@ -172,4 +175,16 @@
             }
         }
     }
+
+}
+
+form {
+  .tiles__textbox {
+    margin-top: 10px;
+
+    input {
+      border: 2px solid $light-orange;
+      height: 3.6rem;
+    }
+  }
 }

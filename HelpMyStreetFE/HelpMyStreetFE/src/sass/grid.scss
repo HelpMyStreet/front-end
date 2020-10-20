@@ -15,71 +15,69 @@
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
- .container{
-    .row{
-            @for $i from 1 through 12 {
-                .sm#{$i} {                          
-                        padding-left: 0px !important;                    
-                }
-            }
-           }
+  .row {
+    @for $i from 1 through 12 {
+      .sm#{$i} {                          
+        padding-left: 0px !important;                    
+      }
     }
+  }
 }
 
 @media screen and (min-width: $med-screen) {
-    .container-fluid {
-        max-width: 1400px + 24px;
-        margin:auto;
-    }
+  .container-fluid {
+    max-width: 1400px + 24px;
+    margin:auto;
+  }
 
   .container {
     max-width: 1224px + 24px;
     margin: auto;
+  }
 
-    .row {
-      &:not(.small-screen-only) {
-        display: flex;
-        flex: 1;
-      }
+  .row {
+    &:not(.small-screen-only) {
+      display: flex;
+      flex: 1;
+    }
 
-      flex-wrap: wrap;
+    flex-wrap: wrap;
 
-      @for $i from 1 through 12 {
-        .sm#{$i} {
-          flex-basis: 100% * ($i / 12);
+    @for $i from 1 through 12 {
+      .sm#{$i} {
+        flex-basis: 100% * ($i / 12);
 
-          &.pad-xs {
-            padding-left: 0.25rem;
-            padding-right: 0.25rem;
-          }
+        &.pad-xs {
+          padding-left: 0.25rem;
+          padding-right: 0.25rem;
+        }
 
-          &.pad-sm {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
-          }
+        &.pad-sm {
+          padding-left: 0.5rem;
+          padding-right: 0.5rem;
+        }
 
-          &.pad-md {
-            padding-left: 1.6666rem;
-            padding-right: 1.6666rem;
-          }
+        &.pad-md {
+          padding-left: 1.6666rem;
+          padding-right: 1.6666rem;
+        }
 
-          @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-            padding-left: 0px;
-          }
+        @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+          padding-left: 0px;
         }
       }
+    }
 
-      &.justify-center {
-        justify-content: center;
-      }
+    &.justify-center {
+      justify-content: center;
+    }
 
-      &.justify-right {
-        justify-content: flex-end;
-      }
+    &.justify-right {
+      justify-content: flex-end;
+    }
 
-      &.align-center {
-        align-content: center;
-      }
+    &.align-center {
+      align-content: center;
     }
   }
 
