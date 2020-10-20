@@ -79,10 +79,41 @@
         }
       }
     }
+
+    form {
+      .input {
+
+        @extend .mt-md;
+
+        label {
+          position: relative;
+          top: initial;
+          @extend .mb-sm;
+        }
+
+        .tiles {
+          margin: 0;
+        }
+
+        input, textarea, .tiles__tile {
+          background-color: $background-main;
+        }
+
+        .tiles__tile {
+          border-color: $background-main;
+
+          &.selected {
+            border: 2px solid $light-orange;
+            background: $light-orange-opaque;
+          }
+        }
+      }
+    }
   }
 
 
   &__backdrop {
+    position: fixed;
     background: $popup-backdrop;
     width: 100%;
     height: 100%;

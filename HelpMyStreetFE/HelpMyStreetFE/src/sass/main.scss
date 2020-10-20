@@ -54,7 +54,7 @@ body {
   margin: 0;
 }
 
-p {
+p, p strong, p span {
   @include copy-sz-md;
   color: $p-color;
 
@@ -233,6 +233,10 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .text {
+  &-left {
+    text-align: left;
+  }
+
   &-right {
     text-align: right;
   }
