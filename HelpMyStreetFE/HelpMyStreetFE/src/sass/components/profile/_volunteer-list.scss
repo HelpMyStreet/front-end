@@ -103,6 +103,12 @@
           text-decoration: underline;
         }
       }
+
+      span.added {
+        color: $green;
+        font-weight: bold;
+        padding-top: 0.6rem;
+      }
     }
 
     &__volunteer-detail {
@@ -172,6 +178,12 @@
           text-align: center;
           display: block;
           font-size: 0.9rem;
+        }
+
+        span.added {
+          text-align: center;
+          display: block;
+          padding-top: 0.6rem;
         }
       }
 

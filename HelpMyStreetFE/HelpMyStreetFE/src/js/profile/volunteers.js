@@ -1,11 +1,11 @@
 ﻿import { showServerSidePopup } from '../shared/popup';
 import { hmsFetch, fetchResponses } from '../shared/hmsFetch';
 import { datepickerLoad, validateDate, dateValidationSchemes } from '../shared/date-picker';
-import { validateFormData } from '../shared/validator';
 
 export function initialiseVolunteerList() {
   $('.volunteer-list').on('click', '.add-credential', async function (e) {
     e.preventDefault();
+    const el = this;
     const user = $(this).data('target-user');
     const group = $(this).data('target-group');
     const credential = $(this).data('credential');
@@ -31,6 +31,7 @@ export function initialiseVolunteerList() {
         };
         var response = await hmsFetch(`/api/volunteers/put-volunteer-credential?u=${user}&g=${group}&c=${credential}`, fetchRequestData);
         if (response.fetchResponse == fetchResponses.SUCCESS) {
+          $(el).replaceWith('<span class="added">Added</span>');
           return true;
         }
         return 'Oops, we couldn’t add that credential at the moment.';
