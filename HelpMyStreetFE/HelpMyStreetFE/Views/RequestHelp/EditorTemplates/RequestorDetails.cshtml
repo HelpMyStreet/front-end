@@ -2,36 +2,36 @@
 
 <div class="user-detail">
     <div class="row">
-        <div class="input sm6">
+        <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_Firstname">Your first name</label>
             @Html.TextBoxFor(x => x.Firstname)
             <span class="error"></span>
         </div>
-        <div class="input sm6">
+        <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_Lastname">Your last name</label>
             @Html.TextBoxFor(x => x.Lastname)
             <span class="error"></span>
         </div>
     </div>
     <div class="row">
-        <div class="input sm6">
+        <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_MobileNumber">Your mobile number</label>
             @Html.TextBoxFor(x => x.MobileNumber, new { type = "number"})
             <span class="error"></span>
         </div>
-        <div class="input sm6">
+        <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_AlternatePhoneNumber">Your alternative phone number</label>
             @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { type = "number"})
             <span class="error"></span>
         </div>
     </div>
     <div class="row">
-        <div class="input sm6">
+        <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_Email">Your email address</label>
             @Html.TextBoxFor(x => x.Email)
             <span class="error"></span>
         </div>
-        <div class="input sm6">
+        <div class="input sm6 pad-md">
             <label id="currentStep_Requestor_Postcode">Your postcode</label>
             @Html.TextBoxFor(x => x.Postcode, new { @class= "postcode-input"})
             <span class="error"></span>
