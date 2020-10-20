@@ -100,11 +100,6 @@ namespace HelpMyStreetFE.Services.Requests
 
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
             }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.DIY) {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
-            }
             return model;
         }
 
