@@ -1,0 +1,131 @@
+﻿
+.user-badge {
+    display: flex;
+
+    @media screen and (max-width: $sm-screen) {
+        align-self: center;
+    }
+
+
+
+    .user-icon {
+        width: 100px;
+        margin-right: 10px;
+        text-align: center;
+
+        a {
+            font-size: 14px;
+        }
+
+        img {
+            width: 100px;
+        }
+    }
+}
+.awards-user-detail {
+    display: inline-flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@keyframes boing {
+    0% {transform:scale(0.8);}
+    80% {transform:scale(1.01);}
+    100% {transform:scale(1.0);}
+}
+
+
+.tooltiptext {
+    visibility: hidden;
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    position: absolute;
+    top: 105%;
+    left: 5%;
+    z-index: 1;
+    font-size: 14px;
+    opacity: 1;
+    box-shadow: 0px 2px 8px 0px black;
+
+
+    &.visible {
+        visibility: visible;
+        animation-name: boing;
+        animation-duration: 0.3s;
+    }
+
+    button {
+        background-image: url("/img/icons/close.svg");
+        background-color: white;
+        height: 20px;
+        width: 20px;
+        border-color: black;
+        border-radius: 10px;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        cursor: pointer;
+    }
+
+    p {
+        margin: 10px;
+        color: white;
+    }
+}
+
+.award {
+
+    
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    @media screen and (max-width: $sm-screen) {
+        flex-direction: column;
+    }
+
+
+
+    .award-description {
+        
+        font-size: 14px;
+        margin-top: 5px;
+        margin-bottom: 0px;
+
+        @media screen and (max-width: $sm-screen){
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+
+    h3 {
+        @include title-sz-5
+    }
+
+    h5 {
+        font-size: 1rem;
+    }
+
+    span {
+        display: flex;
+        flex-direction: column;
+        margin-top: 5px;
+    }
+
+    progress {
+        max-width: 80%;
+        height: 14px;
+        margin-top: 0px;
+    }
+
+    label {
+        font-size: 12px;
+        line-height: 14px;
+    }
+}
+

@@ -35,7 +35,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.8" />
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-    <PackageReference Include="NewRelic.Agent" Version="8.32.0" />
+    <PackageReference Include="NewRelic.Agent" Version="8.33.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
     <PackageReference Include="Polly.Contrib.DuplicateRequestCollapser" Version="0.2.1" />
@@ -50,6 +50,10 @@
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel2\" />
     <Folder Include="Models\Feedback\" />
     <Folder Include="Views\Shared\Components\Feedback\" />
+    <Folder Include="Models\Awards\" />
+    <Folder Include="Views\Shared\Components\Awards\" />
+    <Folder Include="wwwroot\img\awards\" />
+    <Folder Include="src\sass\components\awards\" />
     <Folder Include="wwwroot\img\case-studies\" />
   </ItemGroup>
 </Project>

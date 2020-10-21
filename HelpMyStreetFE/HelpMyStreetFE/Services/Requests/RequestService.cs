@@ -67,11 +67,11 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 HelpRequest = new HelpRequest
                 {
-                    AcceptedTerms = requestStage.AgreeToTerms,
-                    ConsentForContact = requestStage.AgreeToTerms,
+                    AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
+                    ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
-                    ReadPrivacyNotice = requestStage.AgreeToPrivacy,
+                    ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
                     CreatedByUserId = userId,
                     Recipient = recipient,
                     Requestor = requestor,

@@ -8,11 +8,10 @@ namespace HelpMyStreetFE.Enums.Account
     public enum MenuPage
     {
         UserDetails,
-        MyStreets,
         OpenRequests,
         AcceptedRequests,
         CompletedRequests,
         GroupRequests,
-        GroupVolunteers,
+        GroupVolunteers
     }
 }

@@ -51,22 +51,6 @@ namespace HelpMyStreetFE.Services
             return JsonConvert.DeserializeObject<GetPostCodeResponse>(str);
         }
 
-        public async Task<List<PostCodeDetail>> GetPostcodeDetailsNearUser(User user)
-        {
-            var postCodes = await _addressRepository.GetNearbyPostcodes(user.PostalCode);
-
-            var nearby = new List<PostCodeDetail>();
-
-            foreach (var postcode in postCodes.Content.Postcodes)
-            {
-                var street = string.Concat(postcode.AddressDetails[0].AddressLine1.Where(c => !char.IsNumber(c)));
-                var champs = await _userRepository.GetChampionCountByPostcode(postcode.Postcode);
-                nearby.Add(new PostCodeDetail { StreetName = street, ChampionCount = champs, Postcode = postcode.Postcode, DistanceInMetres = postcode.DistanceInMetres, FriendlyName = postcode.FriendlyName });
-            }
-
-            return nearby;
-        }
-
         public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
         {
 
@@ -75,7 +59,6 @@ namespace HelpMyStreetFE.Services
             response.PostCodeResponse = await CheckPostCode(postcode);
             if (response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
             {
-                response.ChampionCount = await _userRepository.GetChampionCountByPostcode(postcode);
                 response.VolunteerCount = await _userRepository.GetVolunteerCountByPostcode(postcode);
             }
 
