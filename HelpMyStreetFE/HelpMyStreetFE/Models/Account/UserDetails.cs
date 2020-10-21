@@ -38,9 +38,6 @@ namespace HelpMyStreetFE.Models.Account
         public string MobileNumber { get { return User?.UserPersonalDetails?.MobilePhone ?? "Not Set"; } }
         public string OtherNumber { get { return User?.UserPersonalDetails?.OtherPhone ?? "Not Set"; } }
         public string DateOfBirth { get { return User?.UserPersonalDetails?.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Not Set"; } }
-        public string StreetChampion { get { return IsStreetChampion ? "Street Champion" : "Helper"; } }
-        public List<string> ChampionPostcodes { get { return User?.ChampionPostcodes ?? new List<string>(); } }
-        public bool IsStreetChampion { get { return User != null && User.StreetChampionRoleUnderstood.HasValue && User.StreetChampionRoleUnderstood.Value; } }
         public bool IsVerified { get { return User?.IsVerified ?? false; } }
 
     }
