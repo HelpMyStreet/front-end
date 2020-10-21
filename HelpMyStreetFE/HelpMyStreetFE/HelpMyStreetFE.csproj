@@ -22,9 +22,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.17.0" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.423" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.423" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.423" />  
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.434" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.434" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.434" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
@@ -35,7 +35,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.8" />
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-    <PackageReference Include="NewRelic.Agent" Version="8.32.0" />
+    <PackageReference Include="NewRelic.Agent" Version="8.33.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
     <PackageReference Include="Polly.Contrib.DuplicateRequestCollapser" Version="0.2.1" />
