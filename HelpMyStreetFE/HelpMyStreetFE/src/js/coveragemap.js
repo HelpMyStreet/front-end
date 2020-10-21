@@ -308,7 +308,23 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             let thisMarker;
             let thisInfoWindow;
             thisInfoWindow = new google.maps.InfoWindow({
-                content: `<div class="community-marker"><div><a href="${coord.linkURL}"><img src="${coord.bannerLocation}"></img></a><div class="marker-title"><h4>${coord.friendlyName}</h4><div class="marker-subtitle"><p>Local Group</p><a href="${coord.linkURL}">Visit homepage</a></div></div></div></div>`
+              content: `
+                  <div class="community-marker">
+                    <div>
+                      <a href="${coord.linkURL}">
+                        <img src="${coord.bannerLocation}"></img>
+                        <div class="marker-title">
+                          <h4>${coord.friendlyName}</h4>
+                          <div class="marker-subtitle">
+                            <p>
+                              Local Group
+                              <span class="visit-homepage">Visit homepage</span>
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>`
             });
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
