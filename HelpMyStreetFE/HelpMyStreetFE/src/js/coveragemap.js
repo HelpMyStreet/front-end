@@ -313,14 +313,16 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                     <div>
                       <a href="${coord.linkURL}">
                         <img src="${coord.bannerLocation}"></img>
-                      </a>
-                      <div class="marker-title">
-                        <h4>${coord.friendlyName}</h4>
-                        <div class="marker-subtitle">
-                          <p>Local Group</p>
-                          <a href="${coord.linkURL}">Visit homepage</a>
+                        <div class="marker-title">
+                          <h4>${coord.friendlyName}</h4>
+                          <div class="marker-subtitle">
+                            <p>
+                              Local Group
+                              <span class="visit-homepage">Visit homepage</span>
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      </a>
                     </div>
                   </div>`
             });
