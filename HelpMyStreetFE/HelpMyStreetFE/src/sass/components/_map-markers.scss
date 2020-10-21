@@ -7,11 +7,12 @@
     img {
       display: block;
       width: 30vw;
+      min-width: 100%;
       max-height: 10vw;
       object-fit: cover;
       object-position: 0 20%;
 
-      @media screen and (max-width: $sm-screen) {
+      @media screen and (max-width: $sm-med-screen) {
         width: 100vw;
         max-height: initial;
       }
@@ -26,19 +27,20 @@
         color: $white;
         font-size: 1.2rem;
 
-        @media screen and (max-width: $sm-screen) {
+        @media screen and (max-width: $sm-med-screen) {
           font-size: 0.8em;
         }
       }
 
       .marker-subtitle {
-        @media screen and (max-width: $sm-screen) {
+        @media screen and (max-width: $sm-med-screen) {
           display: none;
         }
 
         p {
           color: $white;
           text-align: left;
+          margin: 0px;
 
           span.visit-homepage {
             float: right;
@@ -54,11 +56,5 @@
         }
       }
     }
-  }
-
-
-  p {
-    margin: 0px;
-    text-align: right;
   }
 }
