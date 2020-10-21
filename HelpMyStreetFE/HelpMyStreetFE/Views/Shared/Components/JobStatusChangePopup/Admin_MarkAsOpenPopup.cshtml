@@ -1,0 +1,17 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+
+
+<div class="popup__content__header">Mark as Open?</div>
+<div class="popup__content__text">
+    <p>Have you become aware that the volunteer who accepted this request is unable to complete it?</p>
+    <p>We can return it to the “Open Requests” list so that other volunteers can accept it.</p>
+    <p>
+        If there’s a problem with the request (e.g. incorrect contact details) please let us know:
+        <a href="mailto:support@helpmystreet.org">support@helpmystreet.org</a>
+    </p>
+</div>
+<div class="popup__content__buttons">
+    <p class="error dnone">Oops, we couldn’t release this request at the moment.</p>
+    <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
+</div>
+

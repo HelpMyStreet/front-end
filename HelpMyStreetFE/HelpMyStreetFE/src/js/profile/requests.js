@@ -4,18 +4,12 @@ import {
     removeQueryStringParam
 } from "../shared/querystring-helper";
 import {
-    showUnVerifiedAcceptPopup,
-} from "./requests-popup-helper/open-requests"
-import {
     buttonLoad,
     buttonUnload
 } from "../shared/btn";
 import {
-    showPopup
+    showServerSidePopup
 } from "../shared/popup";
-import {
-    getPopupMessaging
-} from "./requests-popup-helper/requests-popup-messaging";
 import {
     hmsFetch,
     fetchResponses
@@ -54,14 +48,10 @@ export function initialiseRequests(isVerified) {
   $('.job-list').on('click', '.job a.open', function (e) {
     e.preventDefault();
     const job = $(this).closest('.job');
-    if (isVerified) {
-      updateQueryStringParam('j', $(job).attr('id'));
-      job.toggleClass('open');
-      job.find('.job__detail').slideToggle();
-      loadJobDetails(job);
-    } else {
-      showUnVerifiedAcceptPopup();
-    }
+    updateQueryStringParam('j', $(job).attr('id'));
+    job.toggleClass('open');
+    job.find('.job__detail').slideToggle();
+    loadJobDetails(job);
   });
 
   $('.job-list').on('click', '.job a.close', function (e) {
@@ -80,10 +70,6 @@ export function initialiseRequests(isVerified) {
 
   $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
     showStatusUpdatePopup($(this));
-  });
-
-  $('.job-list').on('click', '.accept-request-unverified', function () {
-    showUnVerifiedAcceptPopup();
   });
 
   $('.job-list').on('click', '.undo-request', async function (evt) {
@@ -109,45 +95,45 @@ export function showStatusUpdatePopup(btn) {
   const job = btn.closest(".job");
   const targetState = $(btn).data("target-state");
   const targetUser = $(btn).data("target-user") ?? "self";
+  let jobId = job.attr("id");
 
-  let popupSettings = getPopupMessaging($(job).data("job-status"), targetState, $(job).data("user-acting-as-admin") === "True", $(job).data("referring-group-name"));
-  popupSettings.messageOnFalse_Base = popupSettings.messageOnFalse;
+  let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
 
-  popupSettings.acceptCallbackAsync = async () => {
-    let response = await setJobStatus(job, targetState, targetUser);
+  let popupSettings = {
+    acceptCallbackAsync: async () => {
+      let response = await setJobStatus(job, targetState, targetUser);
 
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-      $(job).find('.job__status__new').html(response.fetchPayload);
-      $(job).find('.job__info__urgency__dates').toggle();
-      $(job).find('button').toggle();
-      $(job).find('.next-step').toggle();
-      return true;
-    } else {
-      switch (response.fetchResponse) {
-        case fetchResponses.UNAUTHORISED:
-        case fetchResponses.BAD_REQUEST:
-          popupSettings.messageOnFalse = popupSettings.messageOnFalse_Base + " Another user may have updated the same request; please refresh your browser window.";
-          break;
-        case fetchResponses.SERVER_ERROR:
-        case fetchResponses.SERVER_NOT_FOUND:
-        case fetchResponses.TIMEOUT:
-        case fetchResponses.BAD_FETCH:
-          popupSettings.messageOnFalse = popupSettings.messageOnFalse_Base + " Please try again using the button below.";
+      if (response.fetchResponse == fetchResponses.SUCCESS) {
+        $(job).find('.job__status__new').html(response.fetchPayload);
+        $(job).find('.job__info__urgency__dates').toggle();
+        $(job).find('button').toggle();
+        $(job).find('.next-step').toggle();
+        return true;
+      } else {
+        switch (response.fetchResponse) {
+          case fetchResponses.UNAUTHORISED:
+          case fetchResponses.BAD_REQUEST:
+            popupSettings.messageOnFalse = "BASE MESSAGE + Another user may have updated the same request; please refresh your browser window.";
+            break;
+          case fetchResponses.SERVER_ERROR:
+          case fetchResponses.SERVER_NOT_FOUND:
+          case fetchResponses.TIMEOUT:
+          case fetchResponses.BAD_FETCH:
+            popupSettings.messageOnFalse = "BASE MESSAGE + Please try again using the button below.";
+        }
+        return false;
       }
-      return false;
     }
   };
 
-  showPopup(popupSettings);
+  showServerSidePopup(popupSource, popupSettings);
 }
-
-
 
 
 async function setJobStatus(job, newStatus, targetUser) {
     let jobId = job.attr("id");
 
-    return await hmsFetch('/api/requesthelp/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
+    return await hmsFetch('/api/request-help/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser);
 }
 
 
@@ -161,7 +147,7 @@ async function loadJobDetails(job, forceRefresh) {
   const jobId = $(job).attr("id");
   const jobSet = $(job).closest('.job-filter-results-panel').data('jobset');
   jobDetail.data('status', 'updating');
-  const response = await hmsFetch('/api/requesthelp/get-job-details?j=' + jobId + '&js=' + jobSet);
+  const response = await hmsFetch('/api/request-help/get-job-details?j=' + jobId + '&js=' + jobSet);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     jobDetail.html(await response.fetchPayload);
     jobDetail.data('status', { 'updated': new Date() });

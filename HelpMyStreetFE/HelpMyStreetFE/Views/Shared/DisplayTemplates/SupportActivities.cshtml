@@ -1,6 +1,5 @@
 @model HelpMyStreet.Utils.Enums.SupportActivities;
-@using HelpMyStreet.Utils.Enums
-@using HelpMyStreetFE.Helpers 
+@using HelpMyStreet.Utils.Extensions;
 
-    <span class="csl">@Model.FriendlyName()</span>
+<span class="csl">@Model.FriendlyNameShort()</span>
 

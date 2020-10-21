@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Reponses;
 using System;
+using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -21,20 +24,6 @@ namespace HelpMyStreetFE.Repositories
             ILogger<BaseHttpRepository> logger,
             HttpClient client) : base(client, configuration, logger, "Services:Group")
         {
-        }
-
-        public async Task<PostAssignRoleResponse> AssignRole(PostAssignRoleRequest postAssignRoleRequest)
-        {
-            string json = JsonConvert.SerializeObject(postAssignRoleRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/PostAssignRole", data);
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostAssignRoleResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
         }
 
         public async Task<GetChildGroupsResponse> GetChildGroups(int groupId)
@@ -121,14 +110,26 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetGroupMembersResponse> GetGroupMembers(int groupId)
+        public async Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMembers?groupId={groupId}");
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMember?groupId={groupId}&userId={userId}&authorisingUserId={authorisingUserId}");
             string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMembersResponse, GroupServiceErrorCode>>(str);
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMemberResponse, GroupServiceErrorCode>>(str);
             if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
             {
-                return deserializedResponse.Content;
+                return deserializedResponse.Content.UserInGroup;
+            }
+            return null;
+        }
+
+        public async Task<List<UserInGroup>> GetAllGroupMembers(int groupId, int authorisingUserId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetAllGroupMembers?groupId={groupId}&authorisingUserId={authorisingUserId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetAllGroupMembersResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.UserInGroups;
             }
             return null;
         }
@@ -141,18 +142,6 @@ namespace HelpMyStreetFE.Repositories
             HttpResponseMessage response = await Client.PostAsync("/api/PostAddUserToDefaultGroups", data);
             string str = await response.Content.ReadAsStringAsync();
             var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<PostAddUserToDefaultGroupsResponse, GroupServiceErrorCode>>(str);
-            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
-            {
-                return deserializedResponse.Content;
-            }
-            return null;
-        }
-
-        public async Task<GetGroupMemberRolesResponse> GetGroupMemberRoles(int groupId, int userId)
-        {
-            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupMemberRoles?groupId={groupId}&userId={userId}");
-            string str = await response.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupMemberRolesResponse, GroupServiceErrorCode>>(str);
             if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
             {
                 return deserializedResponse.Content;
@@ -196,6 +185,52 @@ namespace HelpMyStreetFE.Repositories
                 return response.Content.Outcome;
             }
             throw new Exception("Bad response from PostRevokeRole");
+        }
+
+        public async Task<List<List<int>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy)
+        {
+            var getGroupActivityCredentialsRequest = new GetGroupActivityCredentialsRequest()
+            {
+                GroupId = groupId,
+                SupportActivityType = new SupportActivityType() { SupportActivity = supportActivitiy },
+            };
+
+            string json = JsonConvert.SerializeObject(getGroupActivityCredentialsRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetGroupActivityCredentials", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupActivityCredentialsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.CredentialSets;
+            }
+            return null;
+        }
+
+        public async Task<List<GroupCredential>> GetGroupCredentials(int groupId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupCredentials?groupId={groupId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupCredentialsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.GroupCredentials;
+            }
+            throw new Exception("Bad response from GetGroupCredentials");
+        }
+
+        public async Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest)
+        {
+            string json = JsonConvert.SerializeObject(putGroupMemberCredentialsRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PutAsync("/api/PutGroupMemberCredentials", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserialisedResponse = JsonConvert.DeserializeObject<ResponseWrapper<bool, GroupServiceErrorCode>>(str);
+            if (deserialisedResponse.HasContent && deserialisedResponse.IsSuccessful)
+            {
+                return deserialisedResponse.Content;
+            }
+            return false;
         }
     }
 }
