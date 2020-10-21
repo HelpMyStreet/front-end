@@ -1,70 +1,76 @@
 ﻿
 
 .community-marker {
-    min-width: 400px;
+  @media screen and (max-width: $sm-screen) {
+    width: 40vw;
+    min-width: unset;
+  }
 
-    @media screen and (max-width: $sm-screen) {
-        width: 40vw;
-        min-width: unset;
+  a, a:hover {
+    text-decoration: none;
+
+    img {
+      display: block;
+      width: 30vw;
+      max-height: 10vw;
+      object-fit: cover;
+      object-position: 0 20%;
+
+      @media screen and (max-width: $sm-screen) {
+        width: 100vw;
+      }
     }
 
     .marker-title {
-        margin-top: -10%;
-        background: #0098D4;
-        bottom: 5%;
-        padding-left: 10px;
-        padding-right: 10px;
-        width: 30vw;
-        position: absolute;
+      background: $blue;
+      padding: 8px 10px 10px 10px;
 
-        @media screen and (max-width: $sm-screen) {
-            width: 40vw;
-            margin-bottom: 10px;
-            background: none;
-            margin-top: unset;
-            bottom: 10%;
-        }
+      @media screen and (max-width: $sm-screen) {
+        width: 40vw;
+        margin-bottom: 10px;
+        background: none;
+        margin-top: unset;
+        bottom: 10%;
+      }
 
-        h4 {
-            margin: 0px;
-            color: white;
-            font-size: 1.2rem;
-
-            @media screen and (max-width: $sm-screen) {
-                font-size: 0.8em;
-            }
-        }
-
-        .marker-subtitle {
-            @media screen and (max-width: $sm-screen) {
-                display: none;
-            }
-
-            p {
-                color: white;
-                text-align: left;
-
-                span.visit-homepage {
-                    float: right;
-                    text-decoration: underline;
-                }
-            }
-
-        }
-    }
-
-    p {
+      h4 {
         margin: 0px;
-        text-align: right;
-    }
-
-
-
-    img {
-        width: 30vw;
+        color: $white;
+        font-size: 1.2rem;
 
         @media screen and (max-width: $sm-screen) {
-            width: 100vw;
+          font-size: 0.8em;
         }
+      }
+
+      .marker-subtitle {
+        @media screen and (max-width: $sm-screen) {
+          display: none;
+        }
+
+        p {
+          color: $white;
+          text-align: left;
+
+          span.visit-homepage {
+            float: right;
+            text-decoration: underline;
+            color: $white;
+            transition: color 0.5s;
+
+            &:hover {
+              color: $black;
+              transition: color 0.1s;
+            }
+          }
+        }
+      }
     }
+  }
+
+
+  p {
+    margin: 0px;
+    text-align: right;
+  }
 }
