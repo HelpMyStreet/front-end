@@ -105,6 +105,14 @@ namespace HelpMyStreetFE.Services
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type ==  RequestorType.Myself);                
             }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral)
+            {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
+                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
+
+            }
             return model;
         }
 
@@ -125,6 +133,7 @@ namespace HelpMyStreetFE.Services
             {
                 RequestHelpFormVariant.FtLOS => "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.",
                 RequestHelpFormVariant.HLP_CommunityConnector => "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.",
+                RequestHelpFormVariant.AgeUKWirral => string.Empty,
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
             };
         }
@@ -166,6 +175,16 @@ namespace HelpMyStreetFE.Services
                     new TasksViewModel { SupportActivity = SupportActivities.MealPreparation },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.DogWalking },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.ColdWeatherArmy },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }

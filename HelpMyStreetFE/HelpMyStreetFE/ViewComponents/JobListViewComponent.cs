@@ -81,7 +81,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobHeader = a,                
                 UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
                 UserIsVerified = user.IsVerified ?? false,
-                ReferringGroup = a.ReferringGroupID.HasValue ? (await _groupService.GetGroupById(a.ReferringGroupID.Value, cancellationToken))?.GroupName : ""
+                ReferringGroup = (await _groupService.GetGroupById(a.ReferringGroupID, cancellationToken))?.GroupName
             })));
 
             if (jobListViewModel.UnfilteredJobs == 0 && emptyListCallback != null)

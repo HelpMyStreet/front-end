@@ -19,6 +19,7 @@
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled", IconClass="double-line-alignment"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector,  Description= "I want to get in touch with a Community Connector", IconClass="limit-width"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.ColdWeatherArmy, Description = "Getting help in an emergency during a cold snap", IconClass="limit-width"}
         };
 
     var activity = activties.Where(x => x.Activity == Model.SupportActivity).First();

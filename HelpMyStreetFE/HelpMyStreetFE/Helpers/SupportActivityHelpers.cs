@@ -23,6 +23,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.CommunityConnector => "Community Connector",
                 SupportActivities.MedicalAppointmentTransport => "Medical Appointment Transport",
                 SupportActivities.Other => "Other",
+                SupportActivities.ColdWeatherArmy => "Cold Weather Army",
                 _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
             };
         }
@@ -88,6 +89,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "homework.svg",
                 SupportActivities.WellbeingPackage => "vitalsforveterans.png",
                 SupportActivities.CommunityConnector => "communityconnector.png",
+                SupportActivities.ColdWeatherArmy => "snowflake.svg",
                 _ => "question-mark.svg"
             };
         }
