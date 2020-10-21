@@ -1,4 +1,4 @@
-
+﻿
 
 .community-marker {
     min-width: 400px;
@@ -39,9 +39,6 @@
             @media screen and (max-width: $sm-screen) {
                 display: none;
             }
-
-            display: flex;
-            flex-direction: row;
 
             p {
                 color: white;
