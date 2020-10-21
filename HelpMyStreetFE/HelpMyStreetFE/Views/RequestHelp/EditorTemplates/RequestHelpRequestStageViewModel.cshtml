@@ -138,29 +138,14 @@
 
 <div class="row">
     <div class="sm10">
-        <p>
-            The information you provide will be shared with Street Champions in your local area to help organise volunteers.
-            You can read more in our <a href="/privacy-policy">Privacy Notice</a>
-        </p>
         <div class="input input--checkbox">
-            <label for="currentStep_AgreeToPrivacy" class="small">
-                @Html.CheckBoxFor(x => x.AgreeToPrivacy, new { hidden = true })
+            <label for="currentStep_AgreeToPrivacyAndTerms" class="small">
+                @Html.CheckBoxFor(x => x.AgreeToPrivacyAndTerms, new { hidden = true })
                 <span class="input--checkbox__checkbox">
                     <span class="mdi mdi-check"></span>
                 </span>
-                I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
+                By checking this box you agree to our <a href="/terms-conditions">Terms</a> and that you have read our <a href="/privacy-policy">Privacy Policy</a>. If you are submitting a request for help on behalf of someone else, you also consent to your information being shared with the person receiving the help.
             </label>
-        </div>
-        <div class="input input--checkbox">
-            <label for="currentStep_AgreeToTerms" class="small">
-                @Html.CheckBoxFor(x => x.AgreeToTerms, new { hidden = true })
-                <span class="input--checkbox__checkbox">
-                    <span class="mdi mdi-check"></span>
-                </span>
-                I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
-
-            </label>
-            <span class="termsprivacy error"></span>
         </div>
     </div>
 </div>
