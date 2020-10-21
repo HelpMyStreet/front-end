@@ -332,29 +332,6 @@ dd {
   }
 }
 
-.map {
-  &.homepage-map {
-    min-width: 80%;
-    min-height: 500px;
-  }
-
-  &.static-map {
-    div {
-      cursor: default !important;
-    }
-  }
-
-  div.gm-style-cc {
-    div:nth-child(1) {
-      top: 6px;
-    }
-
-    div:nth-child(2) {
-      top: -6px;
-    }
-  }
-}
-
 .force-width {
   flex-basis: 50%;
 }
@@ -392,74 +369,6 @@ dd {
   cursor: not-allowed;
   z-index: 100;
   display: none;
-}
-
-#pac-input {
-  background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-  border: none;
-  border-radius: 2px;
-  font-size: 18px;
-  font-weight: 400;
-  margin-top: 10px;
-  margin-left: 10px;
-  padding: 2px 11px 2px 13px;
-  text-overflow: ellipsis;
-  height: 40px;
-  width: 75%;
-
-  &:focus {
-    border-color: #4d90fe;
-  }
-}
-
-.pac-item {
-  padding-top: 2px;
-  line-height: 26px;
-
-  .pac-icon {
-    margin-top: 4px;
-  }
-
-  span {
-    font-size: 13px;
-
-    &.pac-item-query {
-      font-size: 15px;
-
-      .pac-matched {
-        font-size: 15px;
-      }
-    }
-  }
-}
-
-#street-map {
-  #your-location {
-    button {
-      background-color: #fff;
-      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
-      border: none;
-      border-radius: 2px;
-      height: 40px;
-      width: 75%;
-      cursor: pointer;
-      width: 40px;
-      height: 40px;
-      padding: 0px;
-      margin: 10px;
-      outline: none;
-
-      #your-location-image {
-        margin: 8px;
-        width: 24px;
-        height: 24px;
-        background: url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-2x.png)
-          no-repeat;
-        background-size: auto 100%;
-      }
-    }
-  }
 }
 
 .no-wrap {
