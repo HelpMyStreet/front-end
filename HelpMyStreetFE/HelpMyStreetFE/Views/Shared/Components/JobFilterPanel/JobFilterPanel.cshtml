@@ -81,7 +81,7 @@
                             {
                                 <div class="form-group">
                                     <input name="SupportActivities[]" type="checkbox" id="@Model.PanelId-filter-supportActivity-@supportActivity.Value" value="@((int)supportActivity.Value)" checked="@supportActivity.IsSelected" />
-                                    <label for="@Model.PanelId-filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyName()</label>
+                                    <label for="@Model.PanelId-filter-supportActivity-@supportActivity.Value">@supportActivity.Value.FriendlyNameShort()</label>
                                 </div>
                             }
                         </div>

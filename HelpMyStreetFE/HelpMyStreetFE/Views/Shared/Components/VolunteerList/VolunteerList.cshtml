@@ -1,9 +1,9 @@
-﻿@using HelpMyStreetFE.Helpers;
-@using HelpMyStreet.Utils.Utils;
+﻿@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Extensions;
 
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
 
-@{ 
+@{
     int i = 0;
 }
 
@@ -22,10 +22,10 @@
 
             @if (!string.IsNullOrEmpty(credential.WhatIsThis))
             {
-                <a class="what-is-this" href="#" 
-                    data-credential="@Base64Utils.Base64Encode(credential.CredentialID)" 
-                    data-target-group="@Base64Utils.Base64Encode(credential.GroupID)">
-                      What is this?
+                <a class="what-is-this" href="#"
+                   data-credential="@Base64Utils.Base64Encode(credential.CredentialID)"
+                   data-target-group="@Base64Utils.Base64Encode(credential.GroupID)">
+                    What is this?
                 </a>
             }
         </div>
@@ -65,10 +65,10 @@
                 {
                     if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin)
                     {
-                        <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential" 
-                           data-target-user="@Base64Utils.Base64Encode(volunteer.User.ID)" 
-                           data-credential="@Base64Utils.Base64Encode(credential.GroupCredential.CredentialID)" 
-                           data-target-group="@Base64Utils.Base64Encode(credential.GroupCredential.GroupID)" >
+                        <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential"
+                           data-target-user="@Base64Utils.Base64Encode(volunteer.User.ID)"
+                           data-credential="@Base64Utils.Base64Encode(credential.GroupCredential.CredentialID)"
+                           data-target-group="@Base64Utils.Base64Encode(credential.GroupCredential.GroupID)">
                             <span class="cross"><span>X</span></span>
                             <span class="add">Add</span>
                         </a>
@@ -82,10 +82,10 @@
                     @credential.GroupCredential.Name
                     @if (!string.IsNullOrEmpty(credential.GroupCredential.WhatIsThis))
                     {
-                        <a class="what-is-this" href="#" 
-                            data-credential="@Base64Utils.Base64Encode(credential.GroupCredential.CredentialID)" 
-                            data-target-group="@Base64Utils.Base64Encode(credential.GroupCredential.GroupID)">
-                              (What is this?)
+                        <a class="what-is-this" href="#"
+                           data-credential="@Base64Utils.Base64Encode(credential.GroupCredential.CredentialID)"
+                           data-target-group="@Base64Utils.Base64Encode(credential.GroupCredential.GroupID)">
+                            (What is this?)
                         </a>
                     }
                 </span>
@@ -111,7 +111,7 @@
                         <dt>Volunteering Radius</dt>
                         <dd>@volunteer.User.SupportRadiusMiles miles</dd>
                         <dt>Selected Activities</dt>
-                        <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyName()))</dd>
+                        <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyNameShort()))</dd>
                     </dl>
                 </div>
             </div>

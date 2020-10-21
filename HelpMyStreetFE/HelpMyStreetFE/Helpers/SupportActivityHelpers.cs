@@ -5,28 +5,6 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class SupportActivityHelpers
     {
-        public static string FriendlyName(this SupportActivities activity)
-        {
-            return activity switch
-            {
-                SupportActivities.Shopping => "Shopping",
-                SupportActivities.FaceMask => "Homemade Face Coverings",
-                SupportActivities.CheckingIn => "Check in",
-                SupportActivities.CollectingPrescriptions => "Prescriptions",
-                SupportActivities.Errands => "Errands",
-                SupportActivities.DogWalking => "Dog Walking",
-                SupportActivities.MealPreparation => "A Meal",
-                SupportActivities.PhoneCalls_Friendly => "Friendly chat",
-                SupportActivities.PhoneCalls_Anxious => "Supportive chat",
-                SupportActivities.HomeworkSupport => "Homework",
-                SupportActivities.WellbeingPackage => "Wellbeing Package",
-                SupportActivities.CommunityConnector => "Community Connector",
-                SupportActivities.MedicalAppointmentTransport => "Medical Appointment Transport",
-                SupportActivities.Other => "Other",
-                _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
-            };
-        }
-
         public static string Sentences(this SupportActivities activity, bool pleural)
         {
             if (pleural)
