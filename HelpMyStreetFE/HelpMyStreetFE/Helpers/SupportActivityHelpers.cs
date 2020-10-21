@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Helpers
                 return activity switch
                 {
                     SupportActivities.Shopping => "shopping trips",
-                    SupportActivities.FaceMask => "face coverings sent",
+                    SupportActivities.FaceMask => "requests for face coverings",
                     SupportActivities.CheckingIn => "people checked on",
                     SupportActivities.CollectingPrescriptions => "prescriptions collected",
                     SupportActivities.Errands => "errands run",
@@ -54,7 +54,7 @@ namespace HelpMyStreetFE.Helpers
                 return activity switch
                 {
                     SupportActivities.Shopping => "shopping trip",
-                    SupportActivities.FaceMask => "face covering sent",
+                    SupportActivities.FaceMask => "request for face coverings",
                     SupportActivities.CheckingIn => "person checked on",
                     SupportActivities.CollectingPrescriptions => "prescription collected",
                     SupportActivities.Errands => "errand run",

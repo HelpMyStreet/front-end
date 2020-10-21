@@ -6,26 +6,35 @@
 {
     @if (Model.CurrentAward.NextAwardLevel != 0)
     {
-        <div class="award">
-
-            <span class="tooltiptext">As a HelpMyStreet.org volunteer, you gain awards for completing tasks. Complete another @(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") to get to the next award level!</span>
+    <div class="award">
+        
+        <div class="tooltiptext"><p>HelpMyStreet volunteers earn badges for helping their neighbours. Complete @(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") to reveal your next award!</p><button id="close-tooltip"></button></div>
+        
             <div class="user-badge">
-                <img src="@Model.CurrentAward.Award.ImageLocation" />
-
-                <div class="user-detail">
+                <div class="user-icon">
+                    <img src="@Model.CurrentAward.Award.ImageLocation" />
+                    @if (Model.CurrentAward.CurrentAwardLevel > 0)
+                    {
+                    <a id="what-is-this">What is this?</a>
+                    }
+                </div>
+                <div class="awards-user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
                     <h5>@Model.CurrentAward.Award.AwardName</h5>
-                    <span>
-                        <progress id="pg-bar" max="@Model.CurrentAward.NextAwardLevel" value="@Model.CurrentAward.CurrentAwardLevel"></progress>
-                        <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") until next level</label>
-                    </span>
+                    @if (Model.CurrentAward.CurrentAwardLevel > 0)
+                    {
+                        <span>
+                            <progress id="pg-bar" max="@Model.CurrentAward.NextAwardLevel" value="@Model.CurrentAward.CurrentAwardLevel"></progress>
+                            <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more to reach next level</label>
+                        </span>
+                    }
                 </div>
             </div>
             <div>
                 <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
 
             </div>
-        </div>
+    </div>
     }
     else
     {
@@ -35,7 +44,7 @@
             <div class="user-badge">
                 <img src="@Model.CurrentAward.Award.ImageLocation" />
 
-                <div class="user-detail">
+                <div class="awards-user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
                     <h5>@Model.CurrentAward.Award.AwardName</h5>
                     <span>
