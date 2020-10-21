@@ -1,9 +1,14 @@
-export function datepickerLoad(id) {
+export const dateValidationSchemes = {
+  OVER_18: "Permit only dates over 18 years ago",
+  FUTURE_DATES: "Permit only dates in the future",
+}
+
+export function datepickerLoad(id, errorId, dateValidationScheme = dateValidationSchemes.OVER_18) {
     let datepicker = document.getElementById(id);
 
 
     datepicker.addEventListener("focusout", function (e) {
-        validateDob(this.value, id);
+      validateDate(this.value, id, errorId, dateValidationScheme);
     });
 
      // event listner to add slashes whilst entering input
@@ -25,35 +30,43 @@ export function datepickerLoad(id) {
 
 }
 
-export function validateDob(val, id) {    
-    var regexFormatString = RegExp(/^(([0-9])|([0-2][0-9])|([3][0-1]))\ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\ \d{4}$/);
-    var regex = RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
-    let stringDate = regexFormatString.test(val);
+export function validateDate(val, id, errorId, dateValidationScheme = dateValidationSchemes.OVER_18) {
+  var regexFormatString = RegExp(/^(([0-9])|([0-2][0-9])|([3][0-1]))\ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\ \d{4}$/);
+  var regex = RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
+  let stringDate = regexFormatString.test(val);
+  if (!stringDate) {
+    val = val.replace(/\s/g, '');
+  }
+  if (regex.test(val) == false && stringDate == false) {
+    $('#' + errorId).show();
+    $('#' + errorId).text("Please enter a valid date in the format DD/MM/YYYY");
+    return false;
+  } else {
+    $('#' + errorId).hide();
     if (!stringDate) {
-        val = val.replace(/\s/g, '');
-    }
-    if (regex.test(val) == false && stringDate == false ) {
-        $('#' + id).find("~ .error").show();
-        $('#' + id).find("~ .error").text("Please enter a valid date of birth in the following format DD/MM/YYYY");
-        return false;
-    } else {       
-        $('#' + id).find("~ .error").hide();
-        if (!stringDate) {
-            var dateParts = val.split("/");
-            var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-            var age = _calculateAge(dateObject);
-            if (age < 18) {
-                $('#' + id).find("~ .error").show();
-                $('#' + id).find("~ .error").text("You must be at least 18 years old to create an account");
-                return false;
-            } else {
-                $('#' + id).val(moment(dateObject).format('DD MMM YYYY'));
-                return true;
-            }
-        } else {
-            return true;
+      var dateParts = val.split("/");
+      var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+      if (dateValidationScheme == dateValidationSchemes.OVER_18) {
+        var age = _calculateAge(dateObject);
+        if (age < 18) {
+          $('#' + errorId).show();
+          $('#' + errorId).text("You must be at least 18 years old to create an account");
+          return false;
         }
-    }        
+      } else if (dateValidationScheme == dateValidationSchemes.FUTURE_DATES) {
+        if (dateObject < new Date()) {
+          $('#' + errorId).show();
+          $('#' + errorId).text("Please enter a date in the future");
+          return false;
+        }
+      }
+
+      $('#' + id).val(dateObject.toShortFormat());
+      return true;
+    } else {
+      return true;
+    }
+  }
 }
 
 function checkValue(str, max) {
@@ -70,4 +83,16 @@ function _calculateAge(birthday) { // birthday is a date
     var ageDifMs = Date.now() - birthday.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+Date.prototype.toShortFormat = function () {
+  let monthNames = ["Jan", "Feb", "Mar", "Apr",
+    "May", "Jun", "Jul", "Aug",
+    "Sep", "Oct", "Nov", "Dec"];
+
+  let day = ('0' + this.getDate()).slice(-2);
+  let monthName = monthNames[this.getMonth()];
+  let year = this.getFullYear();
+
+  return `${day} ${monthName} ${year}`;
 }

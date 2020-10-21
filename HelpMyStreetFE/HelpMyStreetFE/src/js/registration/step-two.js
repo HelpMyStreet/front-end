@@ -1,6 +1,6 @@
 ﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
-import { datepickerLoad, validateDob } from "../shared/date-picker";
+import { datepickerLoad, validateDate, dateValidationSchemes } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
@@ -15,7 +15,7 @@ export function initialiseStepTwo() {
     trackEvent("Registration flow", "Click Manual entry");
  });
 
-  datepickerLoad('datepicker');
+  datepickerLoad('datepicker', 'datepicker-error', dateValidationSchemes.OVER_18);
   $("#address_finder").on("click", async function (evt) {
     evt.preventDefault();
     buttonLoad($(this));
@@ -153,7 +153,7 @@ var runAdditionalValidation = async function(form) {
     let mobile = form.find("input[name='mobile_number']");
     let alt = form.find("input[name='alt_number']");         
 
-    var v1 = validateDob(dob.val(), dob.attr('id'));
+    var v1 = validateDate(dob.val(), dob.attr('id'), $(dob).find('~ .error').attr('id'), dateValidationSchemes.OVER_18);
     var v2 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07");
     var v3 = validatePhoneNumber(alt, "Please enter a valid alternative number");
     return (v1 && v2 && v3);

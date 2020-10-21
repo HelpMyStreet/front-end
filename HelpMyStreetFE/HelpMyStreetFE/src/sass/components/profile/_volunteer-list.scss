@@ -1,27 +1,206 @@
-﻿.volunteer-list {
-    dl {
-        dt {
-            font-weight: bold;
-            color: $black;
-            margin-top: 1.2rem;
+﻿.container {
+  .header {
+    display: none;
+  }
 
-            .volunteer-list__roles {
-                font-weight: normal;
-                margin-left: 0.25rem
-            }
-        }
+  .volunteer-list {
 
-        dd {
-            word-wrap: break-word;
-            margin-top: 0.15rem;
+    .name-wrapper {
+      margin-top: 1rem;
 
-            span {
-                margin-right: 0.25rem;
+      .name {
+        font-weight: bold;
+      }
 
-                @media (max-width: $sm-screen) {
-                    display: block;
-                }
-            }
-        }
+      .roles {
+        @extend .orange;
+        padding-left: 0.5rem;
+      }
     }
+
+    .generic-expander__controls {
+      font-size: 0.9rem;
+      padding-left: 0.25rem;
+      width: 11.5rem;
+
+      a {
+        font-size: inherit;
+      }
+
+      &:after {
+        content: " ";
+        width: 0.4rem;
+        height: 0.4rem;
+        border-right: 1px solid $blue;
+        border-bottom: 1px solid #333;
+        position: absolute;
+        top: 0.5rem;
+        right: 0.25rem;
+        transform: rotate(45deg);
+        transition: transform 0.3s, border-color 0.5s;
+      }
+
+      &:hover {
+        &:after {
+          border-right-color: $green;
+          transition: transform 0.3s, border-color 0.1s;
+        }
+      }
+
+      &.open {
+        &:after {
+          transform: rotate(-135deg);
+        }
+      }
+    }
+
+    &__table-header {
+      text-align: center;
+
+      &__credentials {
+        .credential {
+          overflow: hidden;
+        }
+      }
+    }
+
+
+    .credential {
+      padding-top: 0.5rem;
+
+      img, span.cross {
+        display: inline-block;
+        width: 1.8rem;
+        height: 1.8rem;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+      }
+
+      span.cross {
+        background-color: $gray-10;
+        border: 1px solid $gray-4;
+        color: $gray-4;
+        opacity: 30%;
+        border-radius: 50%;
+        text-align: center;
+        cursor: default;
+
+        span {
+          display: block;
+          font-size: 1.3rem;
+          margin: 0 auto;
+        }
+      }
+
+      a {
+        text-decoration: none;
+
+        span.cross {
+          cursor: pointer;
+        }
+
+        span.add {
+          text-decoration: underline;
+        }
+      }
+
+      span.added {
+        color: $green;
+        font-weight: bold;
+        padding-top: 0.6rem;
+      }
+    }
+
+    &__volunteer-detail {
+      grid-column-start: 1;
+      grid-column-end: -1;
+      padding-bottom: 1rem;
+
+      .row {
+        border-bottom: 1px solid $gray-8;
+        padding: 0.5rem 0 1rem 1rem;
+
+        * {
+          font-size: 0.9rem;
+          line-height: 1.4rem;
+        }
+
+        dt {
+          font-weight: bold;
+          padding-top: 0.25rem;
+        }
+      }
+    }
+
+    @media screen and (min-width: $med-screen) {
+      display: grid;
+      grid-auto-columns: auto;
+      grid-template-columns: 20rem auto auto repeat(var(--numberOfCredentials), auto);
+      column-gap: 1rem;
+
+      .header {
+        display: block;
+        font-weight: bold;
+        text-align: center;
+        padding-bottom: 1rem;
+
+        .what-is-this {
+          margin-top: 0.3rem;
+          display: block;
+          font-size: 0.9rem;
+          font-weight: normal;
+          text-decoration: underline;
+          line-height: initial;
+        }
+      }
+
+      .name-wrapper {
+        margin-top: 0;
+        grid-column-start: 1;
+      }
+
+      .location {
+        grid-column-start: 2;
+      }
+
+      .completed-requests {
+        grid-column-start: 3;
+        text-align: center;
+      }
+
+      .credential {
+        padding-top: 0;
+
+        img, span.cross {
+          display: block;
+          margin: 0 auto;
+          width: 3rem;
+          height: 3rem;
+
+          span {
+            font-size: 2rem;
+            margin: 20% auto;
+          }
+        }
+
+        span.add {
+          text-align: center;
+          display: block;
+          font-size: 0.9rem;
+        }
+
+        span.added {
+          text-align: center;
+          display: block;
+          padding-top: 0.6rem;
+        }
+      }
+
+      &__volunteer-detail {
+        .row {
+          margin-bottom: 1rem;
+        }
+      }
+    }
+  }
 }

@@ -103,7 +103,7 @@ async function loadRequests(form) {
     body: JSON.stringify(dataToSend),
     headers: { 'Content-Type': 'application/json' },
   };
-  var response = await hmsFetch('/api/requesthelp/get-filtered-jobs', fetchRequestData);
+  var response = await hmsFetch('/api/request-help/get-filtered-jobs', fetchRequestData);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     $(form).closest('.job-filter-panel').find('.job-filter-results-panel .job-list').html(await response.fetchPayload);
     return true;
