@@ -22,6 +22,9 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
 using HelpMyStreetFE.ViewComponents;
+using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Requests;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -37,6 +40,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
+        private readonly IGroupMemberService _groupMemberService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account";
@@ -50,7 +54,8 @@ namespace HelpMyStreetFE.Controllers
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
             IGroupService groupService,
-            IAuthService authService
+            IAuthService authService,
+            IGroupMemberService groupMemberService
             )
         {
             _logger = logger;
@@ -61,6 +66,7 @@ namespace HelpMyStreetFE.Controllers
             _requestService = requestService;
             _groupService = groupService;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
 
         [HttpGet]
@@ -108,57 +114,6 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Streets(CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (!_userService.GetRegistrationIsComplete(user))
-            {
-                return Redirect(REGISTRATION_URL);
-            }
-
-            var viewModel = await GetAccountViewModel(user, cancellationToken);
-            viewModel.Notifications.Clear();
-            viewModel.CurrentPage = MenuPage.MyStreets;
-            var streetsViewModel = new StreetsViewModel();
-
-            var friendlyPostcodes = await _addressService.GetFriendlyNames(viewModel.UserDetails.ChampionPostcodes);
-
-            foreach (var postcode in viewModel.UserDetails.ChampionPostcodes)
-            {
-                Street street = new Street();
-                street.Name = postcode;
-                if (friendlyPostcodes.Content != null)
-                {
-                    street.FriendlyName = friendlyPostcodes.Content.PostcodesResponse[HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode)].FriendlyName;
-                }
-                var helpers = await _userService.GetHelpersByPostcode(postcode);
-                var champs = await _userService.GetChampionsByPostcode(postcode);
-                helpers.Users.AddRange(champs.Users);
-                if (helpers.Users != null)
-                {
-                    foreach (var helper in helpers.Users.GroupBy(x => x.ID).Select(g => g.First()).ToList())// de duping
-                    {
-                        if (helper.ID == user.ID) continue;
-                        if (!helper.IsVerified.HasValue || !helper.IsVerified.Value) continue;
-                        bool isStreetChampion = (helper.StreetChampionRoleUnderstood.Value && helper.ChampionPostcodes.Contains(postcode));
-                        street.Helpers.Add(new Helper
-                        {
-                            Name = helper.UserPersonalDetails.DisplayName,
-                            PhoneNumber = helper.UserPersonalDetails.MobilePhone,
-                            AlternatePhoneNumber = helper.UserPersonalDetails.OtherPhone,
-                            Email = helper.UserPersonalDetails.EmailAddress,
-                            SupportedActivites = helper.SupportActivities,
-                            IsStreetChampion = isStreetChampion
-                        });
-                    }
-                    streetsViewModel.Streets.Add(street);
-                }
-            }
-            viewModel.PageModel = streetsViewModel;
-            return View("Index", viewModel);
-        }
 
         [HttpGet]
         public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
@@ -222,11 +177,11 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
+            if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
             {
                 return await GroupRequests(groupKey, cancellationToken);
             }
-            else if (await _groupService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
             {
                 return await GroupVolunteers(groupKey, cancellationToken);
             }
@@ -244,7 +199,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
+            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
@@ -266,7 +221,7 @@ namespace HelpMyStreetFE.Controllers
                 return 0;
             }
 
-            int count = await new AccountNavBadgeViewComponent(_requestService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
+            int count = await new AccountNavBadgeViewComponent(_requestService, _groupMemberService).GetCount(user, menuPage, groupKey, cancellationToken);
 
             return count;
         }
@@ -281,7 +236,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            if (!_groupService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
+            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
             {
                 return Redirect(PROFILE_URL);
             }
@@ -316,7 +271,6 @@ namespace HelpMyStreetFE.Controllers
                         " <div> Coming Soon: " +
                             "<ul style='margin-top:2px;'> " +
                                 "<li>You will soon be able to update the personal and volunteering details on your profile page. </li>" +
-                                "<li>Street Champions will be able to manage their streets, search for local volunteers, and handle requests for help.</li>" +
                             "</ul> " +
                         "</div>" +
                         "<p>Keep an eye on your email inbox for the latest updates. Thanks for joining HelpMyStreet!</p>",
@@ -330,13 +284,12 @@ namespace HelpMyStreetFE.Controllers
                     YotiOptions = _yotiOptions.Value,
                     EncodedUserID = Base64Utils.Base64Encode(user.ID),
                     DisplayName = userDetails.DisplayName,
-                    IsStreetChampion = userDetails.IsStreetChampion,
                     IsVerified = userDetails.IsVerified,
                 };
 
                 viewModel.UserDetails = userDetails;
 
-                viewModel.UserGroups = await _groupService.GetUserGroupRoles(user.ID, cancellationToken);
+                viewModel.UserGroups = await _groupMemberService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 
             return viewModel;

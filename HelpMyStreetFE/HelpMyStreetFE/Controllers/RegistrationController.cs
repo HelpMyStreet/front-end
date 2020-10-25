@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Helpers;
@@ -11,11 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using HelpMyStreetFE.Models.RequestHelp.Enum;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Contracts.GroupService.Request;
 using System.Threading;
+using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -28,13 +26,15 @@ namespace HelpMyStreetFE.Controllers
         private readonly IAddressService _addressService;
         private readonly IConfiguration _configuration;
         private readonly IGroupService _groupService;
+        private readonly IGroupMemberService _groupMemberService;
         public RegistrationController(
             ILogger<RegistrationController> logger,
             IUserService userService,
             IAuthService authService,
             IAddressService addressService,
             IConfiguration configuration,
-            IGroupService groupService)
+            IGroupService groupService,
+            IGroupMemberService groupMemberService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService;
@@ -42,6 +42,7 @@ namespace HelpMyStreetFE.Controllers
             _addressService = addressService;
             _configuration = configuration;
             _groupService = groupService;
+            _groupMemberService = groupMemberService;
         }
 
         [AllowAnonymous]
@@ -182,86 +183,15 @@ namespace HelpMyStreetFE.Controllers
                     form.VolunteerDistance,
                     cancellationToken);
 
-                await _groupService.AddUserToDefaultGroups(user.ID);
+                await _groupMemberService.AddUserToDefaultGroups(user.ID);
 
-                return Redirect("/registration/step-four");
+                return Redirect("/account");
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error executing step 3");
                 _logger.LogError(ex.ToString());
                 return Redirect("/registration/step-three?failure=error");
-            }
-        }
-
-        [HttpGet("[controller]/step-four")]
-        public async Task<ActionResult> StepFour(CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-
-            string correctPage = await GetCorrectPage(user);
-            if (!correctPage.StartsWith("/registration/step-four"))
-            {
-                // A different step needs to be completed at this point
-                return Redirect(correctPage);
-            }
-
-            var nearby = await _addressService.GetPostcodeDetailsNearUser(user);
-
-            var userPostcode = nearby.Where(p => p.Postcode == user.PostalCode).FirstOrDefault();
-            var nearbyToDisplay = nearby.Where(p => p.Postcode != user.PostalCode).OrderBy(p => p.ChampionCount).ThenBy(p => p.DistanceInMetres).Take(4).ToList();
-
-            // Insert user postcode at the top of the list...
-            nearbyToDisplay.Insert(0, userPostcode);
-
-            // ...but re-sort if there are already 2 champions there
-            if (userPostcode.ChampionCount >= 2)
-            {
-                nearbyToDisplay = nearbyToDisplay.OrderBy(p => p.ChampionCount).ThenBy(p => p.DistanceInMetres).ToList();
-            }
-
-            var championsNeeded = nearbyToDisplay.Aggregate(false, (acc, next) => acc || next.ChampionCount < 2);
-
-            return View(new StepFourRegistrationViewModel
-            {
-                ActiveStep = 4,
-                NearbyPostCodes = nearbyToDisplay,
-                UsersPostCode = userPostcode,
-                LocalAvailability = championsNeeded
-            });
-        }
-
-        [HttpPost("[controller]/step-four")]
-        public async Task<ActionResult> StepFourPost([FromForm] StepFourFormModel form, CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            string correctPage = await GetCorrectPage(user);
-            if (!correctPage.StartsWith("/registration/step-four"))
-            {
-                // A different step needs to be completed at this point
-                return Redirect(correctPage);
-            }
-
-            try
-            {
-                if (!form.ChampionRoleUnderstood)
-                {
-                    form.ChampionPostcodes = new System.Collections.Generic.List<string>();
-                }
-                _logger.LogInformation($"Step 4 submission for {user.ID}");
-                await _userService.CreateUserStepFourAsync(
-                    user.ID,
-                    form.ChampionRoleUnderstood,
-                    form.ChampionPostcodes,
-                    cancellationToken);
-
-                return Redirect("/account");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error executing step 4");
-                _logger.LogError(ex.ToString());
-                return Redirect("/registration/step-four?failure=error");
             }
         }
 
@@ -291,8 +221,6 @@ namespace HelpMyStreetFE.Controllers
                         return "/registration/step-two";
                     case 2:
                         return "/registration/step-three";
-                    case 3:
-                        return "/registration/step-four";
                     default:
                         return "/account"; //Registration journey is complete
                 }

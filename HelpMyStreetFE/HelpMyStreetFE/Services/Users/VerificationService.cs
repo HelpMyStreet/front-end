@@ -1,5 +1,4 @@
 ﻿using HelpMyStreetFE.Models.Validation;
-using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Users
 {
     public class VerificationService : BaseHttpService, IVerificationService
     {

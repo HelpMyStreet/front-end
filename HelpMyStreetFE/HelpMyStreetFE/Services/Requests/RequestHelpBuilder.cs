@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public class RequestHelpBuilder : IRequestHelpBuilder
     {

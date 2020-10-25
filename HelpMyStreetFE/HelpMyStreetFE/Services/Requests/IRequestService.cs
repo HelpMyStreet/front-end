@@ -9,7 +9,7 @@ using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestService
     {
@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Services
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source);
-        IEnumerable<JobHeader> FilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jobFilterRequest);
+        IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jobFilterRequest);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs);
     }
 }

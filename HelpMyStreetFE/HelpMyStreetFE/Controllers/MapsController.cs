@@ -1,11 +1,17 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+
+using System.Collections.Generic;
 using HelpMyStreet.Contracts.AddressService.Request;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreetFE.Models.Reponses;
+using HelpMyStreetFE.Models.Community;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services.Users;
+
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -17,12 +23,14 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGoogleService _googleService;
         private readonly IUserService _userService;
         private readonly IAddressService _addressService;
+        private readonly ICommunityRepository _communityRepository;
 
-        public MapsController(IGoogleService googleService, IUserService userService, IAddressService addressService)
+        public MapsController(IGoogleService googleService, IUserService userService, IAddressService addressService, ICommunityRepository communityRepository)
         {
             _googleService = googleService;
             _userService = userService;
             _addressService = addressService;
+            _communityRepository = communityRepository;
         }
 
         [HttpGet("js")]
@@ -44,6 +52,30 @@ namespace HelpMyStreetFE.Controllers
         {
             ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode> volunteerCoordinatesResponse = await _addressService.GetPostcodeCoordinate(postcode);
             return volunteerCoordinatesResponse;
+        }
+
+        [HttpGet("getCommunities")]
+        public async Task<ActionResult<GetCommunitiesResponse>> GetCommunities()
+        {
+            var communityData = await _communityRepository.GetCommunities();
+            var communityDetails = new List<CommunityDetail>();
+            foreach (CommunityModel community in communityData)
+            {
+                var communityDetail = new CommunityDetail()
+                {
+                    FriendlyName = community.FriendlyName,
+                    Latitude = community.Latitude,
+                    Longitude = community.Longitude,
+                    LinkURL = community.LinkURL,
+                    ReferenceName = community.ReferenceName,
+                    BannerLocation = community.BannerLocation,
+                    DisplayOnMap = community.DisplayOnMap,
+                    ZoomLevel = community.ZoomLevel
+                };
+                communityDetails.Add(communityDetail);
+            }
+            GetCommunitiesResponse gcr = new GetCommunitiesResponse() { CommunityDetails = communityDetails};
+            return gcr;
         }
 
     }

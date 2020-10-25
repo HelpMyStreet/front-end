@@ -4,7 +4,7 @@ using HelpMyStreet.Contracts.UserService.Response;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Users
 {
     public interface IUserService
     {
@@ -13,14 +13,9 @@ namespace HelpMyStreetFE.Services
         Task<User> GetUserByAuthId(string authId);
         Task<User> GetUserAsync(int id, CancellationToken cancellationToken);
         Task CreateUserStepTwoAsync(int id, string postCode, string firstName, string lastName, string addressLine1, string addressLine2, string addressLine3, string locality, string mobile, string otherPhone, System.DateTime dob, CancellationToken cancellationToken);
-        Task CreateUserStepThreeAsync(int id, System.Collections.Generic.List<HelpMyStreet.Utils.Enums.SupportActivities> activities, float supportRadius, CancellationToken cancellationToken);
-        Task CreateUserStepFourAsync(int id, bool roleUnderstood, System.Collections.Generic.List<string> postcodes, CancellationToken cancellationToken);
-        Task CreateUserStepFiveAsync(int id, bool verified, CancellationToken cancellationToken);
-        Task<int> GetStreetChampions();
-        Task<int> GetStreetsCovered();
+        Task CreateUserStepThreeAsync(int id, System.Collections.Generic.List<HelpMyStreet.Utils.Enums.SupportActivities> activities, float supportRadius, CancellationToken cancellationToken);        Task CreateUserStepFiveAsync(int id, bool verified, CancellationToken cancellationToken);
         Task<int> GetVolunteers();
         Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode);
-        Task<GetChampionsByPostcodeResponse> GetChampionsByPostcode(string postcode);
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
         Models.Account.UserDetails GetUserDetails(User user);
         bool GetRegistrationIsComplete(User user);

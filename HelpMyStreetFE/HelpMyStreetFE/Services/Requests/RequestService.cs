@@ -19,8 +19,10 @@ using System.Threading;
 using HelpMyStreetFE.Models.Account;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Users;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public class RequestService : IRequestService
     {
@@ -31,10 +33,11 @@ namespace HelpMyStreetFE.Services
         private readonly IUserService _userService;
         private readonly IMemDistCache<IEnumerable<JobHeader>> _memDistCache;
         private readonly IOptions<RequestSettings> _requestSettings;
+        private readonly IGroupMemberService _groupMemberService;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
@@ -43,6 +46,7 @@ namespace HelpMyStreetFE.Services
             _userService = userService;
             _memDistCache = memDistCache;
             _requestSettings = requestSettings;
+            _groupMemberService = groupMemberService;
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -63,11 +67,11 @@ namespace HelpMyStreetFE.Services
             {
                 HelpRequest = new HelpRequest
                 {
-                    AcceptedTerms = requestStage.AgreeToTerms,
-                    ConsentForContact = requestStage.AgreeToTerms,
+                    AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
+                    ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
                     OrganisationName = detailStage.Organisation ?? "",
                     RequestorType = detailStage.Type,
-                    ReadPrivacyNotice = requestStage.AgreeToPrivacy,
+                    ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
                     CreatedByUserId = userId,
                     Recipient = recipient,
                     Requestor = requestor,
@@ -215,9 +219,9 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
-        public IEnumerable<JobHeader> FilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
+        public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
         {
-            return jobs.Where(
+            var jobsToDisplay = jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
                     && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
                     && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
@@ -226,6 +230,18 @@ namespace HelpMyStreetFE.Services
                     && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
                     && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
                     && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.DateDue_Ascending => jobsToDisplay.OrderBy(j => j.DueDate),
+                OrderBy.DateDue_Descending => jobsToDisplay.OrderByDescending(j => j.DueDate),
+                OrderBy.DateRequested_Ascending => jobsToDisplay.OrderBy(j => j.DateRequested),
+                OrderBy.DateRequested_Descending => jobsToDisplay.OrderByDescending(j => j.DateRequested),
+                OrderBy.DateStatusLastChanged_Ascending => jobsToDisplay.OrderBy(j => j.DateStatusLastChanged),
+                OrderBy.DateStatusLastChanged_Descending => jobsToDisplay.OrderByDescending(j => j.DateStatusLastChanged),
+                OrderBy.Distance_Ascending => jobsToDisplay.OrderBy(j => j.DistanceInMiles),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)
@@ -244,7 +260,7 @@ namespace HelpMyStreetFE.Services
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
-                List<UserGroup> userGroups = await _groupService.GetUserGroupRoles(userId, cancellationToken);
+                List<UserGroup> userGroups = await _groupMemberService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
                     userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>
@@ -270,13 +286,13 @@ namespace HelpMyStreetFE.Services
             var jobsByFilterRequest = new GetJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,
-                DistanceInMiles = _requestSettings.Value.OpenRequestsRadius,
+                DistanceInMiles = Math.Max(_requestSettings.Value.OpenRequestsRadius, user.SupportRadiusMiles ?? 0),
                 ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
                 JobStatuses = new JobStatusRequest()
                 {
                     JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
                 },
-                Groups = new GroupRequest() { Groups = await _groupService.GetUserGroups(user.ID) }
+                Groups = new GroupRequest() { Groups = await _groupMemberService.GetUserGroups(user.ID) }
             };
 
             return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
