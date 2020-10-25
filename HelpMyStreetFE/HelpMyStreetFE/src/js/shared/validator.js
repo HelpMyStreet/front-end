@@ -72,26 +72,6 @@ export function  hasNumber(myString) {
     return /\d/.test(myString);
 }
 
-export function validatePrivacyAndTerms(privacyName, termsName) {
-    // requires checking of two or more inputs at the same time, so cant use the validateFormData.
-    $('.termsprivacy').hide();
-    let privacy = $("input[name='" + privacyName + "']").is(":checked");
-    let terms = $("input[name='" + termsName + "']").is(":checked");
-    var errorText = "";
-    privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
-    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
-    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";
-
-    $('.termsprivacy').show();
-    $('.termsprivacy').html(errorText);
-
-    if (errorText !== "") {
-        return false;
-    }
-    return true;
-}
-
-
 export function scrollToFirstError() {
     $('.error').each(function () {
         if ($(this).is(":visible")) {

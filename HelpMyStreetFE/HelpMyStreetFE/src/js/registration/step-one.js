@@ -1,6 +1,6 @@
 ﻿import clientFirebase from "../firebase";
 import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
+import { validateFormData } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
