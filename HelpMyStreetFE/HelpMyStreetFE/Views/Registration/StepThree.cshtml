@@ -48,18 +48,30 @@
             volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.WellbeingPackage);
             volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package", Selected = true });
             break;
+        case RegistrationFormVariant.AgeUKWirral:
+            volunteerOptions.Clear();
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.ColdWeatherArmy, Description = "Providing help in emergency situations during a cold snap" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Transport, Description = "Providing transport for essential appointments" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.DogWalking, Description = "Walking the dog" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "Calling someone in need of a friendly chat" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Anxious, Description = "Providing support over the phone to someone who may be anxious (relevant experience required e.g. mental health first-aider)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks, so please check with me." });
+            break;
     }
 
 
     var distanceOptions = new Dictionary<double, string>
-    {
-    { 0, "On my street only" },
-    { 0.5, "Within 1/2 mile" },
-    { 1, "Within 1 mile" },
-    { 3, "Within 3 miles" },
-    { 0.1, "Other - please tell us the distance in miles" }
-    };
-}
+        {
+        { 0, "On my street only" },
+        { 0.5, "Within 1/2 mile" },
+        { 1, "Within 1 mile" },
+        { 3, "Within 3 miles" },
+        { 0.1, "Other - please tell us the distance in miles" }
+        };
+    }
 
 
     <div class="container">
