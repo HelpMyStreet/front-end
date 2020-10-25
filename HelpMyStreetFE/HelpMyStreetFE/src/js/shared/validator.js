@@ -9,7 +9,7 @@ export function validateFormData(form, validation) {
       if (inp[0]) {
           const { name, value, type } = inp[0];
           acc[name] = (type === "checkbox" && type !== "radio") ? inp.is(":checked") : value;
-          acc[name] = (type === "radio" && !inp.is(":checked") && type !== "checkbox") ? undefined : value;
+          acc[name] = (type === "radio" && !inp.is(":checked")) ? undefined : acc[name];
       }
 
       return acc;
