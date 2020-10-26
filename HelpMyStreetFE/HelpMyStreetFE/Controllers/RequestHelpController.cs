@@ -203,7 +203,7 @@ namespace HelpMyStreetFE.Controllers
                 var userHasPermission = await _groupMemberService.GetUserHasRole(user.ID, referringGroupId, GroupRoles.RequestSubmitter, cancellationToken);
                 if (!userHasPermission)
                 {
-                    throw new UnauthorizedAccessException("User does not have permission to submit requests.");
+                    return RedirectToAction("403", "Error");
                 }
             }
 
