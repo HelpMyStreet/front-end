@@ -12,7 +12,7 @@
 }
 
 @{
-    ViewData["Title"] = "Helpers - Registration";
+    ViewData["Title"] = "Volunteers - Registration";
     Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 
     var volunteerOptions = new List<SupportActivityViewModel>();
@@ -80,7 +80,7 @@
 
         <div class="row justify-center mt72">
             <div class="sm8">
-                <h2>Helpers</h2>
+                <h2>Volunteers</h2>
                 @if (Context.Request.Query["failure"] == "error")
         {
                     <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
@@ -91,7 +91,7 @@
             <input name="source" type="hidden" value="@Model.RegistrationFormVariant" />
             <div class="row justify-center">
                 <div class="sm8">
-                    <p>HelpMyStreet will always try to match helpers to requests that are appropriate for them. Some requests are local in nature (e.g. picking up groceries),
+                    <p>HelpMyStreet will always try to match volunteers to requests that are appropriate for them. Some requests are local in nature (e.g. picking up groceries),
                     while others can be performed over a wider area (e.g. posting a fabric face covering, or supporting people over the phone).</p>
                     <h5>I can help people by:</h5>
                     <p>(Please tick as many as you like)</p>
