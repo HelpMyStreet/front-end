@@ -23,8 +23,9 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpRepository = requestHelpRepository;
         }
 
-        public async Task<RequestHelpViewModel> GetSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
+        public async Task<RequestHelpViewModel> GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
+            RequestHelpFormVariant requestHelpFormVariant = requestHelpJourney.RequestHelpFormVariant;
 
             var model =  new RequestHelpViewModel
             {
@@ -69,7 +70,7 @@ namespace HelpMyStreetFE.Services.Requests
                                 Text = "I'm looking for help for an organisation",
                                 IconDark = "request-organisation.svg",
                                 IconLight = "request-organisation-white.svg",
-                                Type = RequestorType.Organisation                                
+                                Type = RequestorType.Organisation
                             }
                         },
                         Timeframes =  new List<RequestHelpTimeViewModel>
@@ -83,7 +84,8 @@ namespace HelpMyStreetFE.Services.Requests
                     },
                     new RequestHelpDetailStageViewModel()
                     {
-                        FullRecipientAddressRequired = GetFullRecipientAddressRequired(requestHelpFormVariant)
+                        ShowRequestorFields = !requestHelpJourney.RequestorDefinedByGroup,
+                        FullRecipientAddressRequired = GetFullRecipientAddressRequired(requestHelpFormVariant),
                     },
                     new RequestHelpReviewStageViewModel(),
                 }

@@ -197,9 +197,9 @@ namespace HelpMyStreetFE.Services.Requests
             return outcome;
         }
 
-        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
+        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
-            return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
+            return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
         }
         public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {

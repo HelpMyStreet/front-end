@@ -139,6 +139,7 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.RequestStageQuestions = requestStage.Questions.Questions;
                         reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
+                        reviewStage.ShowRequestor = detailStage.ShowRequestorFields && (reviewStage.RequestedFor.Type != RequestorType.Myself);
                     }
                 }
                 if (requestHelp.Action == "finish")
@@ -213,7 +214,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect($"/login?ReturnUrl=request-help/{encodedReferringGroupId}/{source}");
             }
 
-            var model = await _requestService.GetRequestHelpSteps(requestHelpJourney.RequestHelpFormVariant, referringGroupId, source);
+            var model = await _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;
