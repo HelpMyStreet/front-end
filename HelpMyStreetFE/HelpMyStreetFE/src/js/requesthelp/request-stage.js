@@ -2,7 +2,7 @@
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
-import { datepickerLoad, validateDob } from "../shared/date-picker";
+import { dateValidationSchemes, datepickerLoad, validateDob } from "../shared/date-picker";
 
 export function intialiseRequestStage() {
     intialiseRequestTiles();
@@ -16,7 +16,7 @@ export function intialiseRequestStage() {
 
     const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
     updateOptionsForActivity(taskId);
-    datepickerLoad('datepicker', true);
+    datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES);
 }
 
 

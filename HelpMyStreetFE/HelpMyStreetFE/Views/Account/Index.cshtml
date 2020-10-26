@@ -28,10 +28,6 @@
 }
 
 <main class="account__wrapper container">
-    <div class="mb-md">
-        <partial name="_MiniUserProfile" for="@Model.UserDetails" />
-    </div>
-
     <div class="mb-md row">
         <div class="awards-component">@await Component.InvokeAsync("Awards", new {userID = Model.UserDetails.User.ID, cancellationToken = System.Threading.CancellationToken.None})</div>
     </div>
