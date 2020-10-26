@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreet.Utils.Extensions;
@@ -33,14 +33,14 @@
             {
                 <span class="job__info__urgency__dates">
                     <img src="~/img/icons/green-tick.svg" alt="Done" />
-                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobHeader.DateStatusLastChanged.FriendlyFutureDate()</span>
+                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobHeader.DateStatusLastChanged.FriendlyPastDate()</span>
                 </span>
             }
             else if (Model.JobHeader.JobStatus == JobStatuses.Cancelled)
             {
                 <span class="job__info__urgency__dates">
                     <img src="~/img/icons/gray-tick.svg" alt="Cancelled" />
-                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobHeader.DateStatusLastChanged.FriendlyFutureDate()</span>
+                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobHeader.DateStatusLastChanged.FriendlyPastDate()</span>
                 </span>
             }
             else
