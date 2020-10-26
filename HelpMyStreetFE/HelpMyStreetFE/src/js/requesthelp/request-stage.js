@@ -1,4 +1,4 @@
-﻿import { validateFormData, validatePrivacyAndTerms, scrollToFirstError } from "../shared/validator";
+﻿import { validateFormData, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
@@ -26,7 +26,7 @@ var validateForm = function () {
             "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",   
             "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",                    
             "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",        
-            "currentStep.AgreeToTerms": (v) =>  validatePrivacyAndTerms("currentStep.AgreeToPrivacy", "currentStep.AgreeToTerms") || "",                        
+            "currentStep.AgreeToPrivacyAndTerms.Id": (v) => v !== "" || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",                        
         });
 
         const validForm = validateQuestions() && valid;

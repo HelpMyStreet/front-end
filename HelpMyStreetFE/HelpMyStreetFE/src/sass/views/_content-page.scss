@@ -30,97 +30,118 @@
 
 .content-page {
 
-  &__outer {
-    display: block;
-
-    @media screen and (min-width: $med-screen) {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-
-      &--reverse {
-        > div:nth-child(1) {
-          grid-column: 2;
-          grid-row: 1;
+    &.content-page--terms {
+        ol {
+            counter-reset: item
         }
 
-        > div:nth-child(2) {
-          grid-column: 1;
-          grid-row: 1;
-        }
-      }
-    }
-  }
-
-  &__inner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 2rem;
-
-    &--align-left {
-      text-align: left;
-      justify-content: left;
-      align-items: flex-start;
-    }
-
-    &__feature-img {
-      width: 520px;
-
-      max-width: calc(100vw - 32px);
-
-      @media screen and (min-width: $med-screen) {
-        max-height: 380px;
-        max-width: 520px;
-      }
-    }
-  }
-
-  table {
-    margin-bottom: $med-margin;
-    border-spacing: 0px;
-
-    th {
-      background-color: $background-darker-1;
-    }
-
-    th {
-      padding: 0.5rem;
-    }
-
-    tr {
-      td {
-        padding: 0.5rem 0;
-
-        &:not(:nth-last-child(2)) {
-          padding-right: 0.5rem;
+        li {
+            display: block
         }
 
-        @media screen and (min-width: $sm-screen) {
-          padding: 0.5rem;
+        li:before {
+            content: counters(item, ".") " ";
+            counter-increment: item
         }
-      }
     }
 
-    th, td {
-      text-align: start;
-      border-bottom: 1px solid $gray-8;
-      margin: 0;
-    }
-  }
-
-  ul,
-  ol {
-    margin-bottom: $xs-margin;
-
-    li {
-      @extend p;
-      margin-bottom: $xxs-margin;
+    /* Applies to any p, ol or ul which is a child of a .body-text-16px, and additionally and children of those elements */
+    .body-text-16px {
+        p, p *, ol, ol *, ul, ul * {
+            font-size: 16px;
+        }
     }
 
-    &.compact-list {
-      li {
-        margin-bottom: 0;
-      }
+    &__outer {
+        display: block;
+
+        @media screen and (min-width: $med-screen) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            &--reverse {
+                > div:nth-child(1) {
+                    grid-column: 2;
+                    grid-row: 1;
+                }
+
+                > div:nth-child(2) {
+                    grid-column: 1;
+                    grid-row: 1;
+                }
+            }
+        }
     }
-  }
+
+    &__inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 2rem;
+
+        &--align-left {
+            text-align: left;
+            justify-content: left;
+            align-items: flex-start;
+        }
+
+        &__feature-img {
+            width: 520px;
+            max-width: calc(100vw - 32px);
+
+            @media screen and (min-width: $med-screen) {
+                max-height: 380px;
+                max-width: 520px;
+            }
+        }
+    }
+
+    table {
+        margin-bottom: $med-margin;
+        border-spacing: 0px;
+
+        th {
+            background-color: $background-darker-1;
+        }
+
+        th {
+            padding: 0.5rem;
+        }
+
+        tr {
+            td {
+                padding: 0.5rem 0;
+
+                &:not(:nth-last-child(2)) {
+                    padding-right: 0.5rem;
+                }
+
+                @media screen and (min-width: $sm-screen) {
+                    padding: 0.5rem;
+                }
+            }
+        }
+
+        th, td {
+            text-align: start;
+            border-bottom: 1px solid $gray-8;
+            margin: 0;
+        }
+    }
+
+    ul,
+    ol {
+        margin-bottom: $xs-margin;
+
+        li {
+            @extend p;
+            margin-bottom: $xxs-margin;
+        }
+
+        &.compact-list {
+            li {
+                margin-bottom: 0;
+            }
+        }
+    }
 }

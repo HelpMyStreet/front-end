@@ -1,4 +1,4 @@
-﻿using HelpMyStreetFE.Services;
+﻿using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

@@ -28,7 +28,7 @@
         </div>
 
     <div class="mb-md row">
-        <div class="awards-component"></div>
+        <div class="awards-component">@await Component.InvokeAsync("Awards", new {userID = Model.UserDetails.User.ID, cancellationToken = System.Threading.CancellationToken.None})</div>
     </div>
 
 
@@ -45,9 +45,6 @@
                         break;
                     case MenuPage.CompletedRequests:
                         <partial name="_CompletedRequests" for="@Model" />
-                        break;
-                    case MenuPage.MyStreets:
-                        <partial name="_MyStreets" for="@Model.PageModel" />
                         break;
                     case MenuPage.ComingSoon:
                         <partial name="_ComingSoon" for="@Model.UserDetails" />

@@ -1,29 +1,19 @@
-﻿using HelpMyStreet.Contracts.GroupService.Response;
-using HelpMyStreet.Utils.Enums;
-using HelpMyStreetFE.Models.Account;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Models.Account;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Groups
 {
-    public interface IGroupService
+    public interface IGroupMemberService
     {
-        Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);
-
-        Task<Group> GetGroupById(int groupId, CancellationToken cancellationToken);
-
-        Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
-
-        Task<RequestHelpFormVariant> GetRequestHelpFormVariant(int groupId, string source = "");
-
         Task AddUserToDefaultGroups(int userId);
 
         Task<List<int>> GetUserGroups(int userId);
-
         Task<List<UserGroup>> GetUserGroupRoles(int userId, CancellationToken cancellationToken);
-
         Task<List<UserGroup>> GetGroupMembers(int groupId, int userId, CancellationToken cancellationToken);
 
         Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken);

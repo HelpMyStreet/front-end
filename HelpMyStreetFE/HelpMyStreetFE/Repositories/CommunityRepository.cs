@@ -1,16 +1,24 @@
 ﻿using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Community;
-using HelpMyStreetFE.Services;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using System.Linq;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
         private readonly IGroupService _groupService;
+        private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
+        {
+            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
+            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg"} },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} }
+        };
 
         public CommunityRepository(IGroupService groupService)
         {
@@ -37,24 +45,39 @@ namespace HelpMyStreetFE.Repositories
                     return null;
             }
         }
+
+        public async Task<List<CommunityModel>> GetCommunities()
+        {
+            List<CommunityModel> returnCommunities = new List<CommunityModel>();
+            foreach (var item in Communities){
+                returnCommunities.Add(item.Value);
+            }
+            return returnCommunities;
+
+        }
+
+        public async Task<CommunityModel> GetCommunityDetailByKey(string key)
+        {
+            return Communities[key];
+        }
         
         private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-
+            CommunityModel communityModel = await GetCommunityDetailByKey("hlp");
 
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "hlp";
-            communityViewModel.Latitude = 51.507602;
-            communityViewModel.Longitude = -0.127816;
-            communityViewModel.ZoomLevel = 10;
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
+            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
-            communityViewModel.CommunityName = "Healthy London Partnership";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
 
-            communityViewModel.BannerImageLocation = "/img/community/hlp/hlp-banner.png";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "What are Community Connectors?";
             communityViewModel.DisableButtons = true;
@@ -158,20 +181,21 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetTankersley(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("tankersley");
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "tankersley";
-            communityViewModel.Latitude = 53.498113;
-            communityViewModel.Longitude = -1.488587;
-            communityViewModel.ZoomLevel = 14;
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
+            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "tankersley";
 
-            communityViewModel.CommunityName = "Tankersley & Pilley";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
 
-            communityViewModel.BannerImageLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
 
@@ -203,7 +227,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
             communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley &amp; Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -233,6 +257,12 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a></p>";
 
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             return communityViewModel;
         }
@@ -240,21 +270,22 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("ruddington");
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ruddington";
-            communityViewModel.Latitude = 52.8925;
-            communityViewModel.Longitude = -1.150;
-            communityViewModel.ZoomLevel = 14.6;
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
+            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.ShowHelpExampleCards = false;
 
-            communityViewModel.CommunityName = "Ruddington";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
 
-            communityViewModel.BannerImageLocation = "/img/community/ruddington/banner.jpg";
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
 
             communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
 
@@ -367,18 +398,18 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetAgeUKLSL(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("ageuklsl");
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ageUK";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
-            communityViewModel.ZoomLevel = 9;
+            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ageuklsl";
-
-            communityViewModel.CommunityName = "Age UK Lincoln (& SL)";
+            communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
 
             communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
@@ -393,7 +424,7 @@ namespace HelpMyStreetFE.Repositories
                         <i>veterans should not be forgotten</i>.
                     </p>
                     <p class='mt-sm mb-s'>
-                        If you can help us deliver wellbeing packs to veterans in your area please sign up below.
+                        If you can help us deliver wellbeing packs to veterans in your area please sign up below - and click to view open requests in your area.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
             communityViewModel.HeaderVolunteerButtonText = null;
@@ -466,6 +497,13 @@ namespace HelpMyStreetFE.Repositories
                 Example2 = "Collect a prescription for an older lady in Lincoln",
                 Example3 = "Post a letter for a gentleman in Spalding"
             };
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             return communityViewModel;
         }
@@ -683,7 +721,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpText_GroupMember = communityViewModel.ProvideHelpText_NotGroupMember;
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of For the Love of Scrubs.  Click below to view help requests.";
             communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
@@ -693,6 +731,12 @@ namespace HelpMyStreetFE.Repositories
                 Example3 = "10 donated face coverings for care home visitors"
             };
 
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>For the Love of Scrubs</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>For the Love of Scrubs</b>?</p>";
 
             return communityViewModel;
         }

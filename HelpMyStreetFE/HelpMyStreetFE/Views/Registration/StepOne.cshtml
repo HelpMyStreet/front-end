@@ -22,20 +22,8 @@
         <div class="row justify-center mt72">
             <div class="sm8">
                 <h1>Sign up to help</h1>
-                @if (Model.ReferringGroupID == -1)
-                {
-                    <p>
-                        Join HelpMyStreet today to start helping your neighbours.
-                    </p>
-                }
-                else
-                {
-                    <p>
-                        Join HelpMyStreet today to start helping your neighbours. By signing up here we'll also share your details with @Model.GroupName so they can contact you and keep you up to date with.
-                    </p>
-                }
                 <p>
-                    <span class="bold">Registering is quick and easy.</span> We’ll collect your details and verify your identity with our partner Yoti. Anyone who's over 18 and can confirm their identity with a valid passport or driving licence can register with HelpMyStreet.org. You'll need a smartphone running iOS or Android. Some organisations may also require additional verification before you’re able to volunteer.
+                    <span class="bold">Registering is quick and easy.</span> We’ll collect your details and verify your identity with our partner Yoti. Anyone who's over 18 and can confirm their identity with a valid passport or driving licence can register with HelpMyStreet.org. You'll need a smartphone running iOS or Android.
                 </p>
                 @if (Context.Request.Query["failure"] == "error")
                 {
@@ -62,40 +50,19 @@
                         <input name="confirm_password" id="confirm-password" type="Password" placeholder="Password" />
                         <span class="error"></span>
                     </div>
-                    <p>
-                        The information you provide may be shared with volunteer coordinators to help manage requests.
-                        You can read more in our <a href="/privacy-policy">Privacy Notice</a>
-                    </p>
+                    <div class="mt-md">
+                        <label>The information you provide may be shared with volunteer coordinators to help manage requests. You can read more in our <a href="/privacy-policy">Privacy Notice</a></label>
+                    </div>
                     <div class="input input--checkbox">
-                        <label for="terms-privacy-notice">
-                            <input name="terms_privacy_notice" id="terms-privacy-notice" type="checkbox" hidden />
+                        <label for="privacy-and-terms">
+                            <input name="privacy_and_terms" id="privacy-and-terms" type="checkbox" hidden />
                             <span class="input--checkbox__checkbox">
                                 <span class="mdi mdi-check"></span>
                             </span>
-                            I have read and agree to the HelpMyStreet <a href="/terms-conditions">Terms and Conditions</a> and <a href="/privacy-policy">Privacy Notice</a>
+                            I have read and agree to the HelpMyStreet <a href="/terms-conditions">Terms & Conditions</a> and <a href="/privacy-policy">Privacy Notice</a>
                             <span class="error"></span>
                         </label>
                     </div>
-                    @*<div class="input input--checkbox">
-                        <label for="privacy-notice">
-                            <input name="privacy_notice" id="privacy-notice" type="checkbox" hidden />
-                            <span class="input--checkbox__checkbox">
-                                <span class="mdi mdi-check"></span>
-                            </span>
-                            I acknowledge the Help My Street <a href="/privacy-policy">Privacy Notice</a>
-                        </label>
-                    </div>
-                    <div class="input input--checkbox">
-                        <label for="terms-conditions">
-                            <input name="terms_and_conditions" id="terms-conditions" type="checkbox" hidden />
-                            <span class="input--checkbox__checkbox">
-                                <span class="mdi mdi-check"></span>
-                            </span>
-                            I agree to the Help My Street <a href="/terms-conditions">Terms and Conditions</a>
-                            <span class="error"></span>
-                        </label>
-                    </div>*@
-                    <span class="termsprivacy error"></span>
                     <div class="controls">
                         <button class="btn cta large fill" id="submit_button" type="submit">
                             <span class="text">Continue <span class="large-screen-only">to next page</span> &gt;</span>

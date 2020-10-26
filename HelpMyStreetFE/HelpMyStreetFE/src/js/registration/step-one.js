@@ -1,6 +1,6 @@
 ﻿import clientFirebase from "../firebase";
 import { buttonLoad, buttonUnload } from "../shared/btn";
-import { validateFormData, validatePrivacyAndTerms } from "../shared/validator";
+import { validateFormData } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
@@ -19,9 +19,7 @@ export function initialiseStepOne() {
         "Please use a strong password",
       confirm_password: (v, d) =>
             d.password === v || "Please ensure passwords match",  
-        terms_and_conditions: (v, d) =>
-            validatePrivacyAndTerms("privacy_notice", "terms_and_conditions") || ""
-          
+      privacy_and_terms: (v) => v === true || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions."
     });      
     
     trackEvent("Registration flow", "Submit Step 1", valid ? "(Valid)" : "(Invalid)");

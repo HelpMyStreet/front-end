@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Requests;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -18,7 +18,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             if (jobFilterViewModel.FilterSet == null)
             {
-                jobFilterViewModel.FilterSet = _filterService.GetDefaultFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.User);
+                jobFilterViewModel.FilterSet = _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.User);
             }
 
             jobFilterViewModel.JobFilterRequest.UpdateFromFilterSet(jobFilterViewModel.FilterSet);

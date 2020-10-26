@@ -2,10 +2,10 @@
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Models.Account.Jobs;
 
-namespace HelpMyStreetFE.Services
+namespace HelpMyStreetFE.Services.Requests
 {
     public interface IFilterService
     {
-        public FilterSet GetDefaultFilterSet(JobSet jobSet, User user);
+        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, User user);
     }
 }

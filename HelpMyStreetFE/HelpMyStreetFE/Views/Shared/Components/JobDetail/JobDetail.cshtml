@@ -11,7 +11,7 @@
     var forFaceMask = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
 
-    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement());
+    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement() && !string.IsNullOrEmpty(q.Answer));
 }
 
 
@@ -94,6 +94,10 @@
                                 <dd>@volunteerDetails.EmailAddress</dd>
                                 <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
                                 <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                                <dt>Address</dt>
+                                <dd>
+                                    @Html.DisplayFor(x => volunteerDetails.Address, new { MaskAddress = false, Truncate = true })
+                                </dd>
                             </dl>
                         </div>
                     }
@@ -131,7 +135,7 @@
                         {
                             <dl>
                                 <dt>@q.FriendlyName()</dt>
-                                <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
                             </dl>
                         }
                     </div>
@@ -153,13 +157,26 @@ else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSumma
                     </dl>
                 }
 
-                @foreach (var q in Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement()))
+                @foreach (var q in questionsToDisplay)
                 {
                     <dl>
                         <dt>@q.FriendlyName()</dt>
-                        <dd> @(String.IsNullOrEmpty(q.Answer) ? "None entered" : q.Answer)</dd>
+                        <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
                     </dl>
                 }
+            </div>
+        </div>
+    </div>
+}
+else if (!Model.UserActingAsAdmin)
+{
+    <div class="job__expander">
+        <div class="row">
+            <div class="sm12">
+                <dl>
+                    <dt>Further Details</dt>
+                    <dd>None entered</dd>
+                </dl>
             </div>
         </div>
     </div>

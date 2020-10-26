@@ -7,6 +7,8 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,14 +19,14 @@ namespace HelpMyStreetFE.Controllers
     public class GroupsApiController : Controller
     {
         private readonly ILogger<GroupsApiController> _logger;
-        private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public GroupsApiController(ILogger<GroupsApiController> logger, IGroupService groupService, IAuthService authService)
+        public GroupsApiController(ILogger<GroupsApiController> logger, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _logger = logger;
-            _groupService = groupService;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
 
         [AuthorizeAttributeNoRedirect]
@@ -36,7 +38,7 @@ namespace HelpMyStreetFE.Controllers
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int groupId = Base64Utils.Base64DecodeToInt(g);
 
-                var result = await _groupService.PostAssignRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
+                var result = await _groupMemberService.PostAssignRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
 
                 return result switch
                 {
@@ -61,7 +63,7 @@ namespace HelpMyStreetFE.Controllers
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int groupId = Base64Utils.Base64DecodeToInt(g);
 
-                var result = await _groupService.PostRevokeRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
+                var result = await _groupMemberService.PostRevokeRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
 
                 return result switch
                 {
