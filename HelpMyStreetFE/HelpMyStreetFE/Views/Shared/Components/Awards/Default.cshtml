@@ -21,7 +21,10 @@
                 </div>
                 <div class="awards-user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
-                    <h5>@Model.CurrentAward.Award.AwardName</h5>
+                    <div class="award-description__wrapper">
+                        <h5>@Model.CurrentAward.Award.AwardName</h5>
+                        <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
+                    </div>
                     @if (Model.CurrentAward.CurrentAwardLevel > 0)
                     {
                         <span>
@@ -30,10 +33,6 @@
                         </span>
                     }
                 </div>
-            </div>
-            <div class="award-description__wrapper">
-                <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
-
             </div>
         </div>
     }
