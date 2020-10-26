@@ -156,9 +156,14 @@ namespace HelpMyStreetFE.Repositories
                 listArray.Add(result.Count + " " + friendlyName);
             }
 
-            var listString = listArray.Count() > 0 ? ", including " + String.Join(", ", listArray) : " ";
-            var lastComma = listString.LastIndexOf(",");
-            if (lastComma != -1) listString = listString.Remove(lastComma, 1).Insert(lastComma, " and");
+            var listString = "";
+            if (listArray.Count() > 0) {
+                var listOfActivities = String.Join(", ", listArray);
+                var lastComma = listOfActivities.LastIndexOf(",");
+                if (lastComma != -1) listOfActivities = listOfActivities.Remove(lastComma, 1).Insert(lastComma, " and");
+                listString = ", including " + listOfActivities;
+            }
+  
 
             var returnAward = new CurrentAwardModel();
 
