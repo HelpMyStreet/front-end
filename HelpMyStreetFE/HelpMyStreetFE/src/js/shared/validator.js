@@ -7,24 +7,29 @@ export function validateFormData(form, validation) {
     .reduce((acc, cur) => {
       const inp = $(cur).find("input");
       if (inp[0]) {
-          const { name, value, type } = inp[0];
-          acc[name] = (type === "checkbox" && type !== "radio") ? inp.is(":checked") : value;
-          acc[name] = (type === "radio" && !inp.is(":checked")) ? undefined : acc[name];
+        const { name, value, type } = inp[0];
+        acc[name] = (type === "checkbox" && type !== "radio") ? inp.is(":checked") : value;
+        acc[name] = (type === "radio" && !inp.is(":checked")) ? undefined : acc[name];
+      } else {
+        const ta = $(cur).find("textarea");
+        if (ta[0]) {
+          acc[ta[0].name] = ta.val();
+        }
       }
 
       return acc;
     }, {});
-    
+
   return Object.entries(obj).reduce((acc, cur) => {
     const [name, value] = cur;
 
-    const errDisplay = $(`input[name="${name}"] ~ .error`);
-      
+    const errDisplay = $(`input[name="${name}"] ~ .error, textarea[name="${name}"] ~ .error`);
+
     errDisplay && errDisplay.text("").hide();
 
-      const validator = validation[name];      
-      if (validator) {          
-        const valid = validator(value, obj);
+    const validator = validation[name];
+    if (validator) {
+      const valid = validator(value, obj);
       if (valid !== true) {
         acc = false;
         errDisplay.text(valid).show();
