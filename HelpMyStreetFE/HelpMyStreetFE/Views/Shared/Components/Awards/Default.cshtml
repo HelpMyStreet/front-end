@@ -4,18 +4,19 @@
 
 @if (Model.CurrentAward.Award != null)
 {
+<div class="profile-panel">
     @if (Model.CurrentAward.NextAwardLevel != 0)
     {
-    <div class="award">
-        
-        <div class="tooltiptext"><p>HelpMyStreet volunteers earn badges for helping their neighbours. Complete @(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") to reveal your next award!</p><button id="close-tooltip"></button></div>
-        
+        <div class="award">
+
+            <div class="tooltiptext"><p>HelpMyStreet volunteers earn badges for helping their neighbours. Complete @(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") to reveal your next award!</p><button id="close-tooltip"></button></div>
+
             <div class="user-badge">
                 <div class="user-icon">
                     <img src="@Model.CurrentAward.Award.ImageLocation" />
                     @if (Model.CurrentAward.CurrentAwardLevel > 0)
                     {
-                    <a id="what-is-this">What is this?</a>
+                        <a id="what-is-this">What is this?</a>
                     }
                 </div>
                 <div class="awards-user-detail">
@@ -30,11 +31,11 @@
                     }
                 </div>
             </div>
-            <div>
+            <div class="award-description__wrapper">
                 <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
 
             </div>
-    </div>
+        </div>
     }
     else
     {
@@ -55,11 +56,12 @@
                     </span>
                 </div>
             </div>
-            <div>
+            <div class="award-description__wrapper">
                 <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
 
             </div>
         </div>
     }
+</div>
 }
 
