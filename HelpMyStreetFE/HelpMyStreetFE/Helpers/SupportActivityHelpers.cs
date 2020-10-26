@@ -5,6 +5,28 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class SupportActivityHelpers
     {
+        public static string FriendlyName(this SupportActivities activity)
+        {
+            return activity switch
+            {
+                SupportActivities.Shopping => "Shopping",
+                SupportActivities.FaceMask => "Homemade Face Coverings",
+                SupportActivities.CheckingIn => "Check in",
+                SupportActivities.CollectingPrescriptions => "Prescriptions",
+                SupportActivities.Errands => "Errands",
+                SupportActivities.DogWalking => "Dog Walking",
+                SupportActivities.MealPreparation => "A Meal",
+                SupportActivities.PhoneCalls_Friendly => "Friendly chat",
+                SupportActivities.PhoneCalls_Anxious => "Supportive chat",
+                SupportActivities.HomeworkSupport => "Homework",
+                SupportActivities.WellbeingPackage => "Wellbeing Package",
+                SupportActivities.CommunityConnector => "Community Connector",
+                SupportActivities.MedicalAppointmentTransport => "Medical Appointment Transport",
+                SupportActivities.Other => "Other",
+                SupportActivities.ColdWeatherArmy => "Cold Weather Army",
+                _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
+            };
+        }
         public static string Sentences(this SupportActivities activity, bool pleural)
         {
             if (pleural)
@@ -66,6 +88,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "homework.svg",
                 SupportActivities.WellbeingPackage => "vitalsforveterans.png",
                 SupportActivities.CommunityConnector => "communityconnector.png",
+                SupportActivities.ColdWeatherArmy => "snowflake.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -86,6 +109,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "dark-blue",
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
+                SupportActivities.ColdWeatherArmy => "blue",
                 _ => ""
             };
         }
