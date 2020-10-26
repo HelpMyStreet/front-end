@@ -110,6 +110,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "dark-blue",
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
+                SupportActivities.ColdWeatherArmy => "blue",
                 _ => ""
             };
         }

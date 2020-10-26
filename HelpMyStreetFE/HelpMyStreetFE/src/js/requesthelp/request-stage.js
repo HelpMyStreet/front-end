@@ -2,6 +2,7 @@
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
+import { datepickerLoad, validateDob } from "../shared/date-picker";
 
 export function intialiseRequestStage() {
     intialiseRequestTiles();
@@ -15,6 +16,7 @@ export function intialiseRequestStage() {
 
     const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
     updateOptionsForActivity(taskId);
+    datepickerLoad('datepicker', true);
 }
 
 
@@ -74,12 +76,19 @@ var handleRequestFor = function (el) {
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
     let allowCustomEntry = el.attr("data-allowcustom");
+    let datePickerSelect = el.attr("data-ondate")
     if (allowCustomEntry == "True") {
         $("#CustomTime").show();
 
     } else {
         $("#CustomTime").hide();
     }
+    if (datePickerSelect == "True") {
+        $(".tiles__tile__content__dateselection").removeClass("dnone");
+    }
+    else {
+        $(".tiles__tile__content__dateselection").addClass("dnone");
+}
     el.addClass("selected");   
     $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
 

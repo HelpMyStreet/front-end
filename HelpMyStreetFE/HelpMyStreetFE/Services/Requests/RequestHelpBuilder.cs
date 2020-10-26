@@ -112,6 +112,8 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
 
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On Specific Date", OnDate = true });
+
             }
             return model;
         }
