@@ -17,7 +17,7 @@
     <div class="container">       
         <partial name="_Stepper" for="ActiveStep" />
         <div class="row justify-center mt72">
-            <div class="sm8">
+            <div class="sm8 pad-sm-md">
                 <h2>Your details</h2>
                 @if (Context.Request.Query["failure"] == "error")
                 {
@@ -28,40 +28,40 @@
         <form id="registration_form" method="post">
             <input name="source" type="hidden" value="@Model.RegistrationFormVariant" />
             <div class="row justify-center">
-                <div class="input sm4">
+                <div class="input sm4 pad-sm-md">
                     <label for="first-name">First name</label>
                     <input name="first_name" id="first-name" type="text" maxlength="50" placeholder="e.g. John" />
                     <span class="error"></span>
                 </div>
-                <div class="input sm4">
+                <div class="input sm4 pad-sm-md">
                     <label for="last-name">Last name</label>
                     <input name="last_name" id="last-name" type="text" maxlength="50" placeholder="e.g. Smith" />
                     <span class="error"></span>
                 </div>
-                <div class="input sm8">
+                <div class="input sm8 pad-sm-md">
                     <label for="datepicker">Date of birth</label>
                     <input name="dob" type="text" id="datepicker"  placeholder="e.g. 11/12/1994" autocomplete="off" />
-                    <span class="error"></span>
+                    <span id="datepicker-error" class="error"></span>
                 </div>
-                <div class="input sm5">
+                <div class="input sm5 pad-sm-md">
                     <label for="postcode-search">Postcode</label>
                     <input name="postcode_search" id="postcode-search" type="text" placeholder="e.g. NG1 1PS" />
                     <span class="error"></span>
                 </div>
-                <div class="input sm3">
+                <div class="input sm3 pad-sm-md">
                     <button class="btn large cta--blue fill" id="address_finder">
                         <span class="text">Find address</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
                     </button>
                     <a href="#" class="manual_entry input__link">Or enter your address manually</a>
                 </div>
-                <div class="input sm8 dnone" id="address_selector">
+                <div class="input sm8 pad-sm-md dnone" id="address_selector">
                     <label for="address-selector">Select address <a class="input__link float_right manual_entry edit-address">Edit address</a></label>
                     <select id="address-selector" name="address_selector">
                     </select>
                     <span class="error"></span>
                 </div>
-                <div class="expander sm8">
+                <div class="expander sm8 pad-sm-md">
                     <h5>Please enter your address</h5>
                     <div class="input">
                         <label for="add-line-1">Address line 1</label>
@@ -89,18 +89,18 @@
                         <span class="error"></span>
                     </div>
                 </div>
-                <div class="input sm8">
+                <div class="input sm8 pad-sm-md">
                     <label for="mobile-num">Mobile number</label>
                     <input id="mobile-num" name="mobile_number" type="number" placeholder="e.g. 07700112233" />
                     <span class="error"></span>
                 </div>
-                <div class="input sm8">
+                <div class="input sm8 pad-sm-md">
                     <label for="alt-num">Alternative phone number</label>
                     <input id="alt-num"name="alt_number" type="number" placeholder="e.g. 01159232312" />
                     <span class="error"></span>
                 </div>
 
-                <div class="sm8">
+                <div class="sm8 pad-sm-md">
                     <div class="controls">
                         <button class="btn large cta fill" id="submit_button" type="submit">
                             <span class="text">Continue <span class="large-screen-only">to next page</span> &gt;</span>                            

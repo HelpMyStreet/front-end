@@ -96,7 +96,7 @@
                                 <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
                                 <dt>Address</dt>
                                 <dd>
-                                    @Html.DisplayFor(x => volunteerDetails.Address, new { MaskAddress = false, Truncate = true })
+                                    @volunteerDetails.LocationSummary()
                                 </dd>
                             </dl>
                         </div>

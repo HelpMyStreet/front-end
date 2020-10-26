@@ -8,7 +8,6 @@ namespace HelpMyStreetFE.Enums.Account
     public enum MenuPage
     {
         UserDetails,
-        ComingSoon,
         OpenRequests,
         AcceptedRequests,
         CompletedRequests,

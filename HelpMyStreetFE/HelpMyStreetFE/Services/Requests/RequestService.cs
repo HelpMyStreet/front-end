@@ -90,7 +90,8 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         new Job
                         {
-                            DueDays = selectedTime.Days,
+                            DueDateType = selectedTime.OnDate ? DueDateType.On : DueDateType.Before,
+                            DueDays = selectedTime.OnDate ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
                             Details = "",
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,

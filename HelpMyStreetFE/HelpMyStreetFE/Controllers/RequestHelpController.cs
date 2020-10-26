@@ -148,13 +148,6 @@ namespace HelpMyStreetFE.Controllers
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-                    // if they've come through as DIY and there not logged in, throw an error telling them they cant do that
-                    if (requestHelp.RequestHelpFormVariant == RequestHelpFormVariant.DIY && user == null)
-                    {
-                        requestHelp.Errors.Add("To \"Submit & Accept\" a Request, you must be logged in, to submit a normal request, please click on the Request Help link above");
-                        throw new ValidationException("User tired to submit DIY Request without being logged in");
-                    }
-
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
                     if (response != null)
                     {
@@ -208,12 +201,6 @@ namespace HelpMyStreetFE.Controllers
                 }
             }
 
-            if (requestHelpJourney.RequestHelpFormVariant == RequestHelpFormVariant.DIY && (!User.Identity.IsAuthenticated))
-            {
-                string encodedReferringGroupId = Base64Utils.Base64Encode(referringGroupId);
-                return Redirect($"/login?ReturnUrl=request-help/{encodedReferringGroupId}/{source}");
-            }
-
             var model = await _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
@@ -230,36 +217,26 @@ namespace HelpMyStreetFE.Controllers
         {
             source = ValidateSource(source);
 
-            string message;
             string button;
 
-            if (fulfillable == Fulfillable.Accepted_DiyRequest)
+            string message = requestHelpFormVariant switch
             {
-                message = @"<p>Your request will now be available in the 'My Accepted Requests' area of your profile.</p>";
-                button = "<a href='/account/accepted-requests' class='btn cta large fill mt16 cta--orange'>Done</a>";
+                RequestHelpFormVariant.FtLOS => @"<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>
+                                                    <p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities. Without donations they aren’t able to continue their good work.</p>
+                                                    <p>If you are able to donate, you can do so on their Go Fund Me page <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\' target=\'_blank\'>here</a>.<p>",
+                RequestHelpFormVariant.Ruddington => @"<p>Your request has been received and we're looking for a volunteer who can help, as soon as we find someone we’ll let you know by email. Please be aware that we cannot guarantee help, but we’ll do our best to find a volunteer near you.</p>",
+                _ => @"<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>"
+            };
+
+            if (User.Identity.IsAuthenticated)
+            {
+                button = $"<a href='/account' class='btn cta large fill mt16 cta--orange'>Done</a>";
             }
             else
-            {
-                message = requestHelpFormVariant switch
-                {
-                    RequestHelpFormVariant.FtLOS => @"<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>
-                                                      <p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities. Without donations they aren’t able to continue their good work.</p>
-                                                      <p>If you are able to donate, you can do so on their Go Fund Me page <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\' target=\'_blank\'>here</a>.<p>",
-                    RequestHelpFormVariant.Ruddington => @"<p>Your request has been received and we're looking for a volunteer who can help, as soon as we find someone we’ll let you know by email. Please be aware that we cannot guarantee help, but we’ll do our best to find a volunteer near you.</p>",
-                    _ => @"<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>"
-                };
-
-                if (User.Identity.IsAuthenticated)
-                {
-                    button = $"<a href='/account' class='btn cta large fill mt16 cta--orange'>Done</a>";
-                }
-                else
-                {    
-                    message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
-                    message += "<p>Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
-                    button = $"<a href='/registration/step-one/{referringGroup}/help-request-success' class='btn cta large fill mt16 '>Sign up</a>";
-                }
-
+            {    
+                message += "<p><strong>Would you be happy to help a neighbour?</strong></p>";
+                message += "<p>Could you help a member of your local community if they needed something? There are lots of different ways you can help, from offering a friendly chat, to picking up groceries or prescriptions, or even sewing a face covering. Please take 5 minutes to sign-up now.</p>";
+                button = $"<a href='/registration/step-one/{referringGroup}/help-request-success' class='btn cta large fill mt16 '>Sign up</a>";
             }
 
             List<NotificationModel> notifications = new List<NotificationModel> {

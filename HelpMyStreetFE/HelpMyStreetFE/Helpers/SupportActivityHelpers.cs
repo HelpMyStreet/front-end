@@ -27,7 +27,6 @@ namespace HelpMyStreetFE.Helpers
                 _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
             };
         }
-
         public static string Sentences(this SupportActivities activity, bool pleural)
         {
             if (pleural)
@@ -110,6 +109,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "dark-blue",
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
+                SupportActivities.ColdWeatherArmy => "blue",
                 _ => ""
             };
         }
