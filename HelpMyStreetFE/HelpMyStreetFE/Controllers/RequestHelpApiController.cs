@@ -1,25 +1,23 @@
-﻿using HelpMyStreetFE.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE.Controllers {
 
 
-    [Route("api/requesthelp")]
+    [Route("api/request-help")]
     [ApiController]
     public class RequestHelpAPIController : Controller
     {
@@ -31,7 +29,7 @@ namespace HelpMyStreetFE.Controllers {
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
-            _authService = authService;
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
 
 
@@ -90,9 +88,18 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [HttpPost("get-filtered-jobs")]
-        public async Task<IActionResult> GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
+        public IActionResult GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {
             return ViewComponent("JobList", new { jobFilterRequest });
+        }
+
+        [AuthorizeAttributeNoRedirect]
+        [Route("get-status-change-popup")]
+        public IActionResult GetStatusChangePopup(string j, JobStatuses s)
+        {
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+
+            return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
         }
     }
 }

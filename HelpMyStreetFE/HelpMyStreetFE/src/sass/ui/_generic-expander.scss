@@ -1,0 +1,19 @@
+﻿.generic-expander {
+  &__content {
+    display: none;
+  }
+
+  &__controls {
+    &:not(.open) {
+      .close {
+        display: none;
+      }
+    }
+
+    &.open {
+      .open {
+        display: none;
+      }
+    }
+  }
+}

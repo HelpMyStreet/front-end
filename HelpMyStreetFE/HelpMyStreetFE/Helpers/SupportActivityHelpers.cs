@@ -27,7 +27,6 @@ namespace HelpMyStreetFE.Helpers
                 _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
             };
         }
-
         public static string Sentences(this SupportActivities activity, bool pleural)
         {
             if (pleural)
