@@ -64,6 +64,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             RegistrationFormVariant registrationFormVariant = await _groupService.GetRegistrationFormVariant(referringGroupId, source) ?? RegistrationFormVariant.Default;
+            var group = await _groupService.GetGroupById(referringGroupId, CancellationToken.None);
 
             return View(new RegistrationViewModel
             {
@@ -72,6 +73,7 @@ namespace HelpMyStreetFE.Controllers
                 RegistrationFormVariant = registrationFormVariant,
                 ReferringGroupID = referringGroupId,
                 Source = source,
+                GroupName= group.GroupName
             });
         }
 

@@ -48,6 +48,18 @@
             volunteerOptions.RemoveAll(a => a.SupportActivities == SupportActivities.WellbeingPackage);
             volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package", Selected = true });
             break;
+        case RegistrationFormVariant.AgeUKWirral:
+            volunteerOptions.Clear();
+            volunteerOptions.Insert(0, new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)"});
+            volunteerOptions.Insert(1, new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
+            volunteerOptions.Insert(2, new SupportActivityViewModel { SupportActivities = SupportActivities.ColdWeatherArmy, Description = "Providing help in emergency situations during a cold snap" });
+            volunteerOptions.Insert(3, new SupportActivityViewModel { SupportActivities = SupportActivities.Transport, Description = "Providing transport for essential appointments" });
+            volunteerOptions.Insert(4, new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
+            volunteerOptions.Insert(5, new SupportActivityViewModel { SupportActivities = SupportActivities.DogWalking, Description = "Walking the dog" });
+            volunteerOptions.Insert(6, new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "Calling someone in need of a friendly chat" });
+            volunteerOptions.Insert(7, new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Anxious, Description = "Providing support over the phone to someone who may be anxious (relevant experience required e.g. mental health first-aider)" });
+            volunteerOptions.Insert(8, new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks, so please check with me." });
+            break;
     }
 
 
@@ -59,7 +71,7 @@
     { 3, "Within 3 miles" },
     { 0.1, "Other - please tell us the distance in miles" }
     };
-}
+        }
 
 
     <div class="container">

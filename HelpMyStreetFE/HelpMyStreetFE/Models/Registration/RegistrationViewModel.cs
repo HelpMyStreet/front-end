@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Models.Registration
         public int ReferringGroupID { get; set; }
         public string Source { get; set; }
         public RegistrationFormVariant RegistrationFormVariant { get; set; }
+        public string GroupName { get; set; }
     }
 }
