@@ -1,131 +1,158 @@
 ﻿
-.user-badge {
-    display: flex;
+.awards-component {
+    width: 100%;
 
-    @media screen and (max-width: $sm-screen) {
-        align-self: center;
-    }
+    .profile-panel {
+        @extend .p-sm-md;
+
+        .award {
+            display: flex;
 
 
+            @media screen and (max-width: $sm-med-screen) {
+                flex-direction: column;
+            }
 
-    .user-icon {
-        width: 100px;
-        margin-right: 10px;
-        text-align: center;
+            .user-badge {
+                display: flex;
+                margin-right: 2rem;
 
-        a {
-            font-size: 14px;
+                @media screen and (max-width: $sm-med-screen) {
+                    align-self: center;
+                    margin-right: 0px;
+                }
+
+                .user-icon {
+                    width: 100px;
+                    margin-right: 1rem;
+                    text-align: center;
+
+                    @media screen and (max-width: $sm-med-screen) {
+                        margin-top: auto;
+                        margin-bottom: auto;
+                    }
+
+                    a {
+                        font-size: 14px;
+                    }
+
+                    img {
+                        width: 100px;
+                        display: block;
+                    }
+                }
+            }
+
+            .awards-user-detail {
+                display: inline-flex;
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+                padding-bottom: 0.25rem;
+            }
+
+            @keyframes boing {
+                0% {
+                    transform: scale(0.8);
+                }
+
+                80% {
+                    transform: scale(1.01);
+                }
+
+                100% {
+                    transform: scale(1.0);
+                }
+            }
+
+            .tooltiptext {
+                visibility: hidden;
+                background-color: black;
+                color: white;
+                text-align: center;
+                padding: 5px;
+                border-radius: 6px;
+                position: absolute;
+                top: 105%;
+                left: 5%;
+                z-index: 1;
+                font-size: 14px;
+                opacity: 1;
+                box-shadow: 0px 2px 8px 0px black;
+
+                &.visible {
+                    visibility: visible;
+                    animation-name: boing;
+                    animation-duration: 0.3s;
+                }
+
+                button {
+                    background-image: url("/img/icons/close.svg");
+                    background-color: white;
+                    height: 20px;
+                    width: 20px;
+                    border-color: black;
+                    border-radius: 10px;
+                    position: absolute;
+                    top: -10px;
+                    right: -10px;
+                    cursor: pointer;
+                }
+
+                p {
+                    margin: 10px;
+                    color: white;
+                }
+            }
+
+            .award-description__wrapper {
+                display: inline-grid;
+                padding-bottom: 0.25rem;
+                flex-direction: row;
+                align-items: flex-start;
+                grid-template-columns: auto auto;
+
+
+                @media screen and (max-width: $sm-med-screen) {
+                    display: inline-flex;
+                    width: 100%;
+                    padding-top: 0.25rem;
+                    flex-direction: column;
+                }
+
+                .award-description {
+                    font-size: 14px;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+
+                    @media screen and (max-width: $sm-med-screen) {
+                        font-size: 12px;
+                        text-align: left;
+                    }
+                }
+            }
+
+            h5 {
+                font-size: 1rem;
+                margin-right: 2rem;
+            }
+
+            span {
+                display: flex;
+                flex-direction: column;
+                margin-top: 5px;
+            }
+
+            progress {
+                max-width: 80%;
+                height: 14px;
+                margin-top: 0px;
+            }
+
+            label {
+                font-size: 12px;
+                line-height: 14px;
+            }
         }
-
-        img {
-            width: 100px;
-        }
     }
 }
-.awards-user-detail {
-    display: inline-flex;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-}
-
-@keyframes boing {
-    0% {transform:scale(0.8);}
-    80% {transform:scale(1.01);}
-    100% {transform:scale(1.0);}
-}
-
-
-.tooltiptext {
-    visibility: hidden;
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 5px;
-    border-radius: 6px;
-    position: absolute;
-    top: 105%;
-    left: 5%;
-    z-index: 1;
-    font-size: 14px;
-    opacity: 1;
-    box-shadow: 0px 2px 8px 0px black;
-
-
-    &.visible {
-        visibility: visible;
-        animation-name: boing;
-        animation-duration: 0.3s;
-    }
-
-    button {
-        background-image: url("/img/icons/close.svg");
-        background-color: white;
-        height: 20px;
-        width: 20px;
-        border-color: black;
-        border-radius: 10px;
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        cursor: pointer;
-    }
-
-    p {
-        margin: 10px;
-        color: white;
-    }
-}
-
-.award {
-
-    
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-
-    @media screen and (max-width: $sm-screen) {
-        flex-direction: column;
-    }
-
-
-
-    .award-description {
-        
-        font-size: 14px;
-        margin-top: 5px;
-        margin-bottom: 0px;
-
-        @media screen and (max-width: $sm-screen){
-            font-size: 12px;
-            text-align: center;
-        }
-    }
-
-    h3 {
-        @include title-sz-5
-    }
-
-    h5 {
-        font-size: 1rem;
-    }
-
-    span {
-        display: flex;
-        flex-direction: column;
-        margin-top: 5px;
-    }
-
-    progress {
-        max-width: 80%;
-        height: 14px;
-        margin-top: 0px;
-    }
-
-    label {
-        font-size: 12px;
-        line-height: 14px;
-    }
-}
-
