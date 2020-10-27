@@ -53,7 +53,13 @@ namespace HelpMyStreetFE.Services.Requests
         {
             _logger.LogInformation($"Logging Request");
             var recipient = _requestHelpBuilder.MapRecipient(detailStage);
-            var requestor = detailStage.Type == RequestorType.OnBehalf || detailStage.Type == RequestorType.Organisation ? _requestHelpBuilder.MapRequestor(detailStage) : recipient;
+
+            RequestPersonalDetails requestor = null;
+            if (detailStage.ShowRequestorFields)
+            {
+                requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);
+            }
+
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
 
@@ -84,7 +90,8 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         new Job
                         {
-                            DueDays = selectedTime.Days,
+                            DueDateType = selectedTime.OnDate ? DueDateType.On : DueDateType.Before,
+                            DueDays = selectedTime.OnDate ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
                             Details = "",
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
@@ -197,9 +204,9 @@ namespace HelpMyStreetFE.Services.Requests
             return outcome;
         }
 
-        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpFormVariant requestHelpFormVariant, int referringGroupID, string source)
+        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
-            return await _requestHelpBuilder.GetSteps(requestHelpFormVariant, referringGroupID, source);
+            return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
         }
         public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {

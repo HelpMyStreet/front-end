@@ -66,6 +66,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "homework.svg",
                 SupportActivities.WellbeingPackage => "vitalsforveterans.png",
                 SupportActivities.CommunityConnector => "communityconnector.png",
+                SupportActivities.ColdWeatherArmy => "snowflake.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -86,6 +87,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.HomeworkSupport => "dark-blue",
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
+                SupportActivities.ColdWeatherArmy => "blue",
                 _ => ""
             };
         }

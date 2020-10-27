@@ -8,6 +8,7 @@ using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Contracts.GroupService.Response;
+using HelpMyStreetFE.Models.RequestHelp;
 
 namespace HelpMyStreetFE.Services.Groups
 {
@@ -47,7 +48,7 @@ namespace HelpMyStreetFE.Services.Groups
             return groupServiceResponse?.RegistrationFormVariant;
         }
 
-        public async Task<RequestHelpFormVariant> GetRequestHelpFormVariant(int groupId, string source)
+        public async Task<RequestHelpJourney> GetRequestHelpFormVariant(int groupId, string source)
         {
             var groupServiceResponse = await _groupRepository.GetRequestHelpFormVariant(groupId, source);
 
@@ -56,7 +57,12 @@ namespace HelpMyStreetFE.Services.Groups
                 throw new Exception($"Could not find RequestHelpFormVariant for group {groupId} and source {source}");
             }
 
-            return groupServiceResponse.RequestHelpFormVariant;
+            return new RequestHelpJourney()
+            {
+                AccessRestrictedByRole = groupServiceResponse.AccessRestrictedByRole,
+                RequestHelpFormVariant = groupServiceResponse.RequestHelpFormVariant,
+                RequestorDefinedByGroup = groupServiceResponse.RequestorDefinedByGroup
+            };
         }
 
 

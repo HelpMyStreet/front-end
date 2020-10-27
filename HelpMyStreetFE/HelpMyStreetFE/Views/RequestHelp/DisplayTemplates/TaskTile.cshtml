@@ -5,7 +5,7 @@
 @model HelpMyStreetFE.Models.RequestHelp.Stages.Request.TasksViewModel
 
 @{
-    var activties = new List<RequestActivityViewModel>
+    var activities = new List<RequestActivityViewModel>
 {
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, Description = "Collection and delivery of an Age UK \"Vitals for Veterans\" wellbeing package", IconClass="limit-width"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)"},
@@ -20,9 +20,10 @@
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled", IconClass="double-line-alignment"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector,  Description= "I want to get in touch with a Community Connector", IconClass="limit-width"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.ColdWeatherArmy, Description = "Getting help in an emergency during a cold snap", IconClass="limit-width"}
         };
 
-    var activity = activties.Where(x => x.Activity == Model.SupportActivity).First();
+    var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
 
 
     var ForReview = ViewData["ForReview"] is bool ? (bool)ViewData["ForReview"] : false;

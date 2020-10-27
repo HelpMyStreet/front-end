@@ -11,12 +11,14 @@ using HelpMyStreetFE.Models.RequestHelp.Stages.Review;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,13 +32,15 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupService _groupService;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IAuthService _authService;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder, IAuthService authService)
+        private readonly IGroupMemberService _groupMemberService;
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder, IAuthService authService, IGroupMemberService groupMemberService)
         {
             _logger = logger;
             _requestService = requestService;
             _groupService = groupService;
             _requestHelpBuilder = requestHelpBuilder;
             _authService = authService;
+            _groupMemberService = groupMemberService;
         }
 
         [ValidateAntiForgeryToken]
@@ -135,6 +139,7 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.RequestStageQuestions = requestStage.Questions.Questions;
                         reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
+                        reviewStage.ShowRequestor = detailStage.ShowRequestorFields && (reviewStage.RequestedFor.Type != RequestorType.Myself);
                     }
                 }
                 if (requestHelp.Action == "finish")
@@ -184,15 +189,25 @@ namespace HelpMyStreetFE.Controllers
                 referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             }
 
-            RequestHelpFormVariant requestHelpFormVariant = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
+            var requestHelpJourney = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
 
-            var model = await _requestService.GetRequestHelpSteps(requestHelpFormVariant, referringGroupId, source);
+            if (requestHelpJourney.AccessRestrictedByRole)
+            {
+                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var userHasPermission = await _groupMemberService.GetUserHasRole(user.ID, referringGroupId, GroupRoles.RequestSubmitter, cancellationToken);
+                if (!userHasPermission)
+                {
+                    return RedirectToAction("403", "Error");
+                }
+            }
+
+            var model = await _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;
             if (selectedTask != null)
             {
-                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value);
+                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpJourney.RequestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value);
             }
 
             return View(model);

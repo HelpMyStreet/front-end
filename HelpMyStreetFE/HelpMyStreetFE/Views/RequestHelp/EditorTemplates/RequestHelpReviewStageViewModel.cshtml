@@ -97,7 +97,7 @@
     </div>
     <div class="row justify-center ">
 
-        @if (onBehalf || forOrg)
+        @if (Model.ShowRequestor)
         {
             <div class="sm4">
                 <div id="requestor" class="tiles__tile">
@@ -115,10 +115,10 @@
             </div>
         }
 
-        <div class="@(onBehalf || forOrg ? "sm4" : "sm8 pad-sm-md")">
+        <div class="@(Model.ShowRequestor ? "sm4" : "sm8 pad-sm-md")">
             <div id="recipient" class="tiles__tile">
                 <div class="tiles__tile__content--top">
-                    <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Their" : "Your") Details</div>
+                    <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Recipient" : "Your") Details</div>
                     <div class="tiles__tile__content__description tiles__tile__content--top__description">
                         @if (forOrg)
                         {
