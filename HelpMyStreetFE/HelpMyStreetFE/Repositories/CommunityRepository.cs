@@ -514,10 +514,10 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ageukwirral", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK";
-            communityViewModel.Latitude = 53.390518;
-            communityViewModel.Longitude = -3.028750;
-            communityViewModel.ZoomLevel = 10;
+            communityViewModel.HomeFolder = "ageUK/wirral";
+            communityViewModel.Latitude = 53.397320;
+            communityViewModel.Longitude = -3.042670;
+            communityViewModel.ZoomLevel = 11;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ageukwirral";
@@ -525,50 +525,51 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = "Age UK Wirral";
             communityViewModel.CommunityShortName = "Age UK Wirral";
 
-            communityViewModel.BannerImageLocation = "/img/community/ageUK/age-uk-wirral.png";
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner.png";
 
-            communityViewModel.Header = "Veterans need your help!";
+            communityViewModel.Header = "In the Wirral, help is always available!";
             communityViewModel.HeaderHTML = @"
                     <p class='mt-sm mb-xs'>
-                        We are now underway with our new “Vitals For Veterans” project.
+                        Age UK Wirral are proud to have an amazing range of services for older people in our local communities. Our services are supported by volunteers who are here to help with:
                     </p>
                     <p class='mt-sm mb-xs'>
-                        Over the coming months, we are aiming to deliver wellbeing packs to veterans across Wirral because
-                        <i>veterans should not be forgotten</i>.
+                        <ul class='tick-list mt-xs mb-sm compact-list'>
+                            <li>Shopping for essentials</li>
+                            <li>Collecting prescriptions</li>
+                            <li>Staying warm and healthy in the chilly winter</li>
+                            <li>Door-to-door transport for medical appointments</li>
+                        </ul>
                     </p>
-                    <p class='mt-sm mb-s'>
-                        If you can help us deliver wellbeing packs to veterans in your area please sign up below.
-                    </p>";
+                    <p class='mt-sm mb-xs'>
+                        To ask for help, please go to our website or call us on 0151 482 3456.
+                    </p>
+                    <p>
+                       <a href=""https://www.ageuk.org.uk/wirral/"" target=""_blank"" class=""btn cta btn--sign-up fill"">Go to our website</a>
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?
+                    <p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Wirral";
             communityViewModel.HeaderVolunteerButtonText = null;
-
-
-
             communityViewModel.CommunityVolunteersTextHtml =
                  @"<p>
-                    Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people,
-                    their families and carers for over 61 years. We have over 400 dedicated staff and volunteers helping us to deliver services and activities
-                    for older people in Lincoln and across the county.
+                    Age UK Wirral is an independent, local charity and we have been working in the local community to help 
+                    older people, their families and carers for over 70 years. We have 700 dedicated staff and volunteers helping 
+                    us to deliver services and activities for older people in the Wirral.
                 </p>
                 <p>
-                    Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across
-                    17 departments for people countywide.
+                     In March 2020 we launched our Covid-19 Emergency Response Services to support people with shopping, 
+                     prescription collections and wellbeing support. In six months we have carried out over 3,000 shopping trips, 
+                     collected over 500 prescriptions, lent 250 people tablets and data sim cards and made more than 35,000 wellbeing calls 
+                     to isolated people in the community.  These services will continue to support the community and are vital to keep people safe, well and connected.
                 </p>
                 <p>
-                    Our support is varied and extensive; 11,845 people attended activities with us in 2018/19,  helping to combat social isolation by offering
-                    opportunities for engagement through social activities, clubs and groups. Age UK Lincoln & South Lincolnshire exists to improve the lives of
-                    older people, through supporting them to love later life and helping them where possible to remain independent in their own homes. We
-                    continually work towards ending loneliness and isolation in older people, many of whom were isolated and living in a form of lockdown before
-                    the recent pandemic and sadly for whom there is no “new normal”. Their reality remains loneliness and isolation.
+                     The services on this page are a selection of those available, focussing on areas where we need ad hoc 
+                     volunteer assistance.
                 </p>
                 <p>
-                    Following a successful application to the Armed Forces Covenant Fund Age UK Lincoln & South Lincolnshire have been awarded some funding to
-                    deliver Vitals for Veterans because “Veterans should not be forgotten”. With the funding and additional support from local businesses offering
-                    generous donations of funds and items we are able to deliver free packs to veterans across Lincoln & South Lincolnshire between June and November.
-                </p>
-                <p>
-                    For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a>
-                    or call us on 03455 564 144.
+                    To find out more about our other services and the support we can provide, please go to our main website <a href=""www.ageukwirral.org.uk"">www.ageukwirral.org.uk</a>
+                    or call us on 0151 482 3456.
                 </p> 
                 ";
             communityViewModel.ShowRequestHelp = true;
@@ -577,32 +578,29 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Name = "Nicki Lee",
-                    Role = "Senior Volunteer Coordinator",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/NL_cropped.jpg"
+                    Name = "Karen Giner",
+                    Role = "Home & Communities Volunteer Coordinator",
+                    Location = "Wirral",
+                    ImageLocation = "/img/community/ageuk/wirral/KG.jpg"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Amanda Wilson",
-                    Role = "Engagement Coordinator",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/AW_cropped.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Melanie Meik",
-                    Role = "Fundraising & Marketing Manager",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/MM_cropped.jpg"
-                },
+                    Name = "Catherine Sindall",
+                    Role = "Administrator",
+                    Location = "Wirral",
+                    ImageLocation = "/img/community/ageuk/wirral/CS.jpg"
+                }
             };
 
+            /*
+             * 
+             */
 
             communityViewModel.UsefulLinksHtml =
-                @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans"">Vitals for Veterans page</a> - Find out more about our incredible project reaching veterans in need across Lincoln and South Lincolnshire</p>
-                <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
-                <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
+                @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about or extensive range of services, donations, charity shops and further details about our organisation.</p>
+                <p><a href=""https://www.facebook.com/ageukwirral/"">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
+                <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
+                <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {
