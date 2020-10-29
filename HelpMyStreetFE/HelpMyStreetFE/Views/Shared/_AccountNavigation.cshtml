@@ -46,7 +46,7 @@
         </li>
         @foreach (var userGroup in Model.UserGroups)
         {
-            @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+            @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin) || userGroup.UserRoles.Contains(GroupRoles.RequestSubmitter))
             {
                 <li class="account__nav__item submenu__container">
                     <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">

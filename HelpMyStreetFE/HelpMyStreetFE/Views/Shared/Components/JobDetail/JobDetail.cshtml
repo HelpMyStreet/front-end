@@ -144,7 +144,7 @@
         </div>
     }
 }
-else if (Model.UserIsVerified && (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0))
+else if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
 {
     <div class="job__expander">
         <div class="row">

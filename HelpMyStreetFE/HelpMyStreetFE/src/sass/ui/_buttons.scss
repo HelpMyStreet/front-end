@@ -148,6 +148,17 @@
     }
   }
 
+  &--gray-8-border {
+    @extend .border-gray-8;
+    @extend .gray-8;
+    @extend .bg-white;
+
+    &:hover {
+      @extend .gray-8;
+      @extend .border-black;
+    }
+  }
+
   &--dark-blue-border {
     @extend .border-dark-blue;
     @extend .dark-blue;
