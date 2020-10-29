@@ -45,6 +45,19 @@ else
 
                     @Html.Raw(@Model.HeaderHTML)
 
+
+
+                    @if (Model.ShowVisitWebsite)
+                    {
+                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm">
+                            @if (Model.HeaderVisitWebsiteButtonText != null && Model.HeaderVisitWebsiteButtonText.Length > 0)
+                            {
+                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVisitWebsiteButtonText</p>
+                            }
+                            <a href="@Model.WebsiteUrl" class="btn cta small btn--request-help fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                        </div>
+                    }
+
                     @if (Model.ShowRequestHelp)
                     {
                         <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
@@ -56,28 +69,28 @@ else
                         </div>
                     }
 
-                <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
-                    @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
-                    {
-                        <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
-                    }
-                    @if (!Model.IsLoggedIn)
-                    {
-                        <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
-                    }
-                    else
-                    {
-                        if (Model.AllowJoinOurGroup)
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
+                        @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
                         {
-                            <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
+                        }
+                        @if (!Model.IsLoggedIn)
+                        {
+                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                         }
                         else
                         {
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            if (Model.AllowJoinOurGroup)
+                            {
+                                <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                                <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            }
+                            else
+                            {
+                                <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            }
                         }
-                    }
-                </div>
+                    </div>
 
                     @if (Model.ShowRequestHelp)
                     {
@@ -166,6 +179,24 @@ else
     <div class="outer-container">
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
+
+                @if (Model.ShowVisitWebsite)
+                {
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
+
+                            <h2>@Model.VisitWebsiteHeading</h2>
+                            <p class="text-left mt-sm mb-md">
+                                @Model.VisitWebsiteText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
 
                 @if (Model.ShowRequestHelp)
                 {
@@ -304,6 +335,24 @@ else
     <div class="outer-container">
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
+
+                @if (Model.ShowVisitWebsite)
+                {
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
+
+                            <h2>@Model.VisitWebsiteHeading</h2>
+                            <p class="text-left mt-sm mb-md">
+                                @Model.VisitWebsiteText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
 
                 @if (Model.ShowRequestHelp)
                 {

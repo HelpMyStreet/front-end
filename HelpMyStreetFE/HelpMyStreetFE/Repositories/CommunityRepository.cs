@@ -539,16 +539,7 @@ namespace HelpMyStreetFE.Repositories
                             <li>Staying warm and healthy in the chilly winter</li>
                             <li>Door-to-door transport for medical appointments</li>
                         </ul>
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                        To ask for help, please go to our website or call us on 0151 482 3456.
-                    </p>
-                    <div class='row sm6 text-center justify-center mb-md'>
-                       <a href=""https://www.ageuk.org.uk/wirral/"" target=""_blank"" class=""btn cta small cta--dark-blue fill"">Go to our website</a>
-                    </div>
-                    <p class='mt-sm mb-xs'>
-                        Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?
-                    <p>";
+                    </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Wirral";
             communityViewModel.HeaderVolunteerButtonText = null;
             communityViewModel.CommunityVolunteersTextHtml =
@@ -573,6 +564,30 @@ namespace HelpMyStreetFE.Repositories
                 </p> 
                 ";
             communityViewModel.ShowRequestHelp = false;
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
+            communityViewModel.HeaderVolunteerButtonText = "Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>AgeUK Wirral</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>AgeUK Wirral</b>?</p>";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of AgeUK Wirral.  Click below to view help requests in your area.";
+
+            communityViewModel.ShowVisitWebsite = true;
+            communityViewModel.VisitWebsiteHeading = "How can we help?";
+            communityViewModel.VisitWebsiteText = "We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
+            communityViewModel.VisitWebsiteButtonText = "Go to our website";
+            communityViewModel.WebsiteUrl = "https://www.ageuk.org.uk/wirral/";
+            communityViewModel.HeaderVisitWebsiteButtonText = "To ask for help, please go to our website or call us on 0151 482 3456.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
