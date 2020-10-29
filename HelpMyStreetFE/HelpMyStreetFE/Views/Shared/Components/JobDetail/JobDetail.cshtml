@@ -21,7 +21,7 @@
             <div class="sm12">
                 <dl>
                     <dt>When is the help needed?</dt>
-                    @if (Model.JobDetail.JobSummary.DueDays < 1)
+                    @if (Model.JobDetail.JobSummary.DueDays < 0)
                     {
                         <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
                     }
