@@ -159,7 +159,7 @@
             <div class="job__expander__content">
                 <div class="row">
                     <div class="sm12">
-                        @foreach (var q in questionsToDisplay)
+                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
                         {
                             <dl>
                                 <dt>@q.FriendlyName()</dt>
