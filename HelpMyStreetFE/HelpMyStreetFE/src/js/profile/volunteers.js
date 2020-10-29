@@ -63,9 +63,7 @@ var initialiseWhatIsThisLinks = function () {
 };
 
 var intialiseCredentialPopupTiles = function () {
-  console.log('init');
   $('body').on('click', '.tiles__tile', function (el) {
-    console.log('click');
     $('.tiles__tile').removeClass('selected');
     let showDatePicker = $(this).data('show-date-picker');
     if (showDatePicker == 'True') {
