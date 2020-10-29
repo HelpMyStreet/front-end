@@ -65,6 +65,13 @@ namespace HelpMyStreetFE.Models.Community
         public string JoinGroupPopupText { get; set; }
         public string LeaveGroupPopupText { get; set; }
 
+        public bool ShowVisitWebsite { get; set; }
+        public string VisitWebsiteHeading { get; set; }
+        public string VisitWebsiteText { get; set; }
+        public string VisitWebsiteButtonText { get; set; }
+        public string WebsiteUrl { get; set; }
+        public string HeaderVisitWebsiteButtonText { get; set; }
+
         private static string GetDefaultHeaderHtml()
         {
             return @"

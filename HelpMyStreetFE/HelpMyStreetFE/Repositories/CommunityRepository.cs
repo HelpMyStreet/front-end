@@ -539,16 +539,7 @@ namespace HelpMyStreetFE.Repositories
                             <li>Staying warm and healthy in the chilly winter</li>
                             <li>Door-to-door transport for medical appointments</li>
                         </ul>
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                        To ask for help, please go to our website or call us on 0151 482 3456.
-                    </p>
-                    <p>
-                       <a href=""https://www.ageuk.org.uk/wirral/"" target=""_blank"" class=""btn cta btn--sign-up fill"">Go to our website</a>
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                        Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?
-                    <p>";
+                    </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Wirral";
             communityViewModel.HeaderVolunteerButtonText = null;
             communityViewModel.CommunityVolunteersTextHtml =
@@ -572,7 +563,31 @@ namespace HelpMyStreetFE.Repositories
                     or call us on 0151 482 3456.
                 </p> 
                 ";
-            communityViewModel.ShowRequestHelp = true;
+            communityViewModel.ShowRequestHelp = false;
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
+            communityViewModel.HeaderVolunteerButtonText = "Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>AgeUK Wirral</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>AgeUK Wirral</b>?</p>";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of AgeUK Wirral.  Click below to view help requests in your area.";
+
+            communityViewModel.ShowVisitWebsite = true;
+            communityViewModel.VisitWebsiteHeading = "How can we help?";
+            communityViewModel.VisitWebsiteText = "We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
+            communityViewModel.VisitWebsiteButtonText = "Go to our website";
+            communityViewModel.WebsiteUrl = "https://www.ageuk.org.uk/wirral/";
+            communityViewModel.HeaderVisitWebsiteButtonText = "To ask for help, please go to our website or call us on 0151 482 3456.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -592,22 +607,13 @@ namespace HelpMyStreetFE.Repositories
                 }
             };
 
-            /*
-             * 
-             */
-
             communityViewModel.UsefulLinksHtml =
                 @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about or extensive range of services, donations, charity shops and further details about our organisation.</p>
                 <p><a href=""https://www.facebook.com/ageukwirral/"">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
                 <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
                 <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
 
-            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
-            {
-                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
-                Example2 = "Collect a prescription for an older lady in Lincoln",
-                Example3 = "Post a letter for a gentleman in Spalding"
-            };
+            communityViewModel.ShowHelpExampleCards = false;
 
             return communityViewModel;
         }
