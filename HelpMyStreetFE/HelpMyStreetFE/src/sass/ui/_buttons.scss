@@ -128,6 +128,10 @@
     @extend .transparent;
   }
 
+  &--dark-blue {
+    @extend .bg-dark-blue;
+  }
+
   &--orange-border {
     @extend .border-orange;
     @extend .orange;

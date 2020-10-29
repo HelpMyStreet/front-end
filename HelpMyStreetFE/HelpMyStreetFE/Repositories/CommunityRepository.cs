@@ -543,9 +543,9 @@ namespace HelpMyStreetFE.Repositories
                     <p class='mt-sm mb-xs'>
                         To ask for help, please go to our website or call us on 0151 482 3456.
                     </p>
-                    <p>
-                       <a href=""https://www.ageuk.org.uk/wirral/"" target=""_blank"" class=""btn cta btn--sign-up fill"">Go to our website</a>
-                    </p>
+                    <div class='row sm6 text-center justify-center mb-md'>
+                       <a href=""https://www.ageuk.org.uk/wirral/"" target=""_blank"" class=""btn cta small cta--dark-blue fill"">Go to our website</a>
+                    </div>
                     <p class='mt-sm mb-xs'>
                         Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?
                     <p>";
@@ -572,7 +572,7 @@ namespace HelpMyStreetFE.Repositories
                     or call us on 0151 482 3456.
                 </p> 
                 ";
-            communityViewModel.ShowRequestHelp = true;
+            communityViewModel.ShowRequestHelp = false;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -591,10 +591,6 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/ageuk/wirral/CS.jpg"
                 }
             };
-
-            /*
-             * 
-             */
 
             communityViewModel.UsefulLinksHtml =
                 @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about or extensive range of services, donations, charity shops and further details about our organisation.</p>
