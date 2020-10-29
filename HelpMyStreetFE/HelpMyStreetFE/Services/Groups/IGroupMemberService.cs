@@ -29,5 +29,6 @@ namespace HelpMyStreetFE.Services.Groups
         Task<AnnotatedGroupActivityCredentialSets> GetAnnotatedGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken);
         Task<bool> GetUserHasCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken);
         Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest);
+        Task<bool> GetUserIsVerified(int userId, CancellationToken cancellationToken);
     }
 }

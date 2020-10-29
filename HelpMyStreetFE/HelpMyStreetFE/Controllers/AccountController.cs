@@ -89,7 +89,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            if (user.IsVerified.HasValue && user.IsVerified.Value)
+            if (await _groupMemberService.GetUserIsVerified(user.ID, cancellationToken))
             {
                 return Redirect(DEFAULT_VERIFIED_URL);
             }
@@ -279,17 +279,18 @@ namespace HelpMyStreetFE.Controllers
                 };
                 var userDetails = _userService.GetUserDetails(user);
                 viewModel.Notifications = notifications;
-                viewModel.VerificationViewModel = new Models.Yoti.VerificationViewModel
+                viewModel.VerificationViewModel = new VerificationViewModel
                 {
                     YotiOptions = _yotiOptions.Value,
                     EncodedUserID = Base64Utils.Base64Encode(user.ID),
                     DisplayName = userDetails.DisplayName,
-                    IsVerified = userDetails.IsVerified,
                 };
 
                 viewModel.UserDetails = userDetails;
 
                 viewModel.UserGroups = await _groupMemberService.GetUserGroupRoles(user.ID, cancellationToken);
+
+                viewModel.VerificationViewModel.IsVerified = await _groupMemberService.GetUserIsVerified(user.ID, cancellationToken);
             }
 
             return viewModel;
