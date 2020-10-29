@@ -613,12 +613,7 @@ namespace HelpMyStreetFE.Repositories
                 <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
                 <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
 
-            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
-            {
-                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
-                Example2 = "Collect a prescription for an older lady in Lincoln",
-                Example3 = "Post a letter for a gentleman in Spalding"
-            };
+            communityViewModel.ShowHelpExampleCards = false;
 
             return communityViewModel;
         }
