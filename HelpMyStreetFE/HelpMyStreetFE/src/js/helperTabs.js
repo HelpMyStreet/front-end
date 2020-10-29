@@ -1,8 +1,6 @@
 ﻿import $ from "jquery"
 
 $(function () {
-    console.log("loaded");
-
     $("#sign-up-helper").click(function (){
         switcheroo('sign-up-helper');
     })
