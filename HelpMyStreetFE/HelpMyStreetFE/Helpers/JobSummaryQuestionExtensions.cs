@@ -16,6 +16,8 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.FaceMask_SpecificRequirements => true,
                 (int)Questions.CommunicationNeeds => true,
                 (int)Questions.AnythingElseToTellUs => true,
+                (int)Questions.Shopping => true,
+                (int)Questions.Prescription => true,
                 _ => false
             };
         }
