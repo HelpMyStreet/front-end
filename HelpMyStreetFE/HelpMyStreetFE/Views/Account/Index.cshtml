@@ -1,6 +1,5 @@
 @model HelpMyStreetFE.Models.Account.AccountViewModel;
 @using HelpMyStreetFE.Enums.Account
-@using HelpMyStreetFE.Models.Awards
 
 @section Scripts {
     <script src="~/profile.js" asp-append-version="true"></script>
@@ -10,7 +9,7 @@
             scenarioId: '@Model.VerificationViewModel.YotiOptions.ScenarioId',
             clientSdkId: '@Model.VerificationViewModel.YotiOptions.ClientSdkId',
             userId: '@Model.VerificationViewModel.EncodedUserID',
-            isVerified: '@Model.UserDetails.IsVerified'
+            isVerified: '@Model.VerificationViewModel.IsVerified'
        };
     </script>    
 }

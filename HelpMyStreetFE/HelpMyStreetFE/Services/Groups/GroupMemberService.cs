@@ -22,6 +22,7 @@ namespace HelpMyStreetFE.Services.Groups
         private readonly IUserService _userService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
+        private const int YOTI_CREDENTIAL_ID = -1;
 
         public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
         {
@@ -162,5 +163,11 @@ namespace HelpMyStreetFE.Services.Groups
             return await _groupRepository.PutGroupMemberCredentials(putGroupMemberCredentialsRequest);
         }
 
+        public async Task<bool> GetUserIsVerified(int userId, CancellationToken cancellationToken)
+        {
+            var groupMember = await GetGroupMember((int)HelpMyStreet.Utils.Enums.Groups.Generic, userId, userId, cancellationToken);
+
+            return groupMember.ValidCredentials.Contains(YOTI_CREDENTIAL_ID);
+        }
     }
 }

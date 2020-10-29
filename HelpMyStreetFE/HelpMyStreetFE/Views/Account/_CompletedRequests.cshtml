@@ -16,16 +16,16 @@
         </header>
 
         <div class="profile">
-            @if (Model.UserDetails.IsVerified)
+            <div class="job-filter-panel">
+                @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+                   {
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+                       EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
+                   })
+            </div>
+            @if (NoJobsToDisplay)
             {
-                <div class="job-filter-panel">
-                    @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
-                       {
-                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20 },
-                           EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
-                       })
-                </div>
-                @if (NoJobsToDisplay)
+                @if (Model.VerificationViewModel.IsVerified)
                 {
                     <div class="profile__empty">
                         <p class="profile__empty__title">
@@ -39,20 +39,20 @@
                         </p>
                     </div>
                 }
-            }
-            else
-            {
-                <div class="profile__empty">
-                    <p class="profile__empty__title">
-                        Ready to start helping?
-                    </p>
-                    <p class="profile__empty__text">
-                        <a href="/account">Complete your ID verification</a> today and see what help is needed near you in the Open Requests tab.
-                    </p>
-                    <p class="profile__empty__text">
-                        Verifying your ID helps to keep you, and the people we help, safe. Find out more in our <a href="/questions">FAQs</a>.
-                    </p>
-                </div>
+                else
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__title">
+                            Ready to start helping?
+                        </p>
+                        <p class="profile__empty__text">
+                            <a href="/account">Complete your ID verification</a> today and see what help is needed near you in the Open Requests tab.
+                        </p>
+                        <p class="profile__empty__text">
+                            Verifying your ID helps to keep you, and the people we help, safe. Find out more in our <a href="/questions">FAQs</a>.
+                        </p>
+                    </div>
+                }
             }
         </div>
     </div>
