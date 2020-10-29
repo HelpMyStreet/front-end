@@ -16,8 +16,8 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.FaceMask_SpecificRequirements => true,
                 (int)Questions.CommunicationNeeds => true,
                 (int)Questions.AnythingElseToTellUs => true,
-                (int)Questions.Shopping => true,
-                (int)Questions.Prescription => true,
+                (int)Questions.Shopping_List => true,
+                (int)Questions.Prescription_PharmacyAddress => true,
                 _ => false
             };
         }
@@ -30,8 +30,8 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.SupportRequesting => "Request Description",
                 (int)Questions.CommunicationNeeds => "Communication Needs",
                 (int)Questions.AnythingElseToTellUs => "Further Details",
-                (int)Questions.Shopping => "Shopping List",
-                (int)Questions.Prescription => "Pharmacy Address",
+                (int)Questions.Shopping_List => "Shopping List",
+                (int)Questions.Prescription_PharmacyAddress => "Pharmacy Address",
                 _ => question.Name
             };
         }
@@ -40,8 +40,8 @@ namespace HelpMyStreetFE.Helpers
         {
             return question.Id switch
             {
-                (int)Questions.Shopping => 1,
-                (int)Questions.Prescription => 1,
+                (int)Questions.Shopping_List => 1,
+                (int)Questions.Prescription_PharmacyAddress => 1,
                 (int)Questions.FaceMask_Amount => 1,
                 (int)Questions.FaceMask_Recipient => 2,
                 (int)Questions.FaceMask_Cost => 3,
