@@ -1,38 +1,28 @@
-﻿@model HelpMyStreet.Utils.Models.Address
+﻿@using HelpMyStreet.Utils.Extensions;
+@model HelpMyStreet.Utils.Models.Address
 
 @{
     var MaskAddress = ViewData["MaskAddress"] != null & ViewData["MaskAddress"] is bool ? (bool)ViewData["MaskAddress"] : false;
-    var Truncate = ViewData["Truncate"] != null ? (bool)ViewData["Truncate"] : false;
 }
 
 
 @if (!MaskAddress)
 {
-    @if (!Truncate)
+    <span>@Model.AddressLine1, </span>
+    @if (!String.IsNullOrEmpty(Model.AddressLine2))
     {
-        <span>@Model.AddressLine1, </span>
-        @if (!String.IsNullOrEmpty(Model.AddressLine2))
-        {
-            <span>@Model.AddressLine2, </span>
-        }
-        @if (!String.IsNullOrEmpty(Model.AddressLine3))
-        {
-            <span>@Model.AddressLine3, </span>
-        }
+        <span>@Model.AddressLine2, </span>
+    }
+    @if (!String.IsNullOrEmpty(Model.AddressLine3))
+    {
+        <span>@Model.AddressLine3, </span>
     }
     @if (!String.IsNullOrEmpty(Model.Locality))
     {
-        <span>@Model.Locality, </span>
+        <span>@Model.Locality.ToTitleCase(), </span>
     }
 }
 @if (!String.IsNullOrEmpty(Model.Postcode))
 {
-    @if (!Truncate)
-    {
-        <span>@Model.Postcode</span>
-    }
-    else
-    {
-        <span>@(Model.Postcode.Split(" ").FirstOrDefault())</span>
-    }
+    <span>@Model.Postcode</span>
 }

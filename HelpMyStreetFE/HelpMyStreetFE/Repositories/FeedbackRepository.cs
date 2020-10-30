@@ -161,7 +161,7 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ageuklsl",
                     B2BFeedback = true,
-                 },
+                },
                 new Testimonial()
                 {
                     Tagline = "A wonderful village",
@@ -169,7 +169,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Leigh requested help for his parents in Ruddington",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
-                 },
+                },
                 new Testimonial()
                 {
                     Tagline = "A caring bunch",
@@ -177,7 +177,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Pam from Ruddington provided help",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
-                 },
+                },
                 new Testimonial()
                 {
                     Tagline = "Really keen to get involved",
@@ -185,7 +185,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Harvey from Ruddington provided help",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
-                 },
+                },
                 new Testimonial()
                 {
                     Tagline = "A poem of thanks!",
@@ -193,7 +193,40 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Pat and George wanted to say thanks",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
-                 },
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Keeping us alive",
+                    Message = "These services are keeping us alive - we very grateful for the kindness and support of Age UK Wirral.",
+                    Person = "Mr and Mrs M",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageukwirral",
+                },
+                new Testimonial()
+                {
+                    Tagline = "People who care",
+                    Message = "Being in touch with Age UK Wirral has made me realise that there are people who care. The volunteers who have done my shops and prescription collections have been lovely people - they are the unsung heroes.",
+                    Person = "Lesley Fulton",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageukwirral",
+                },
+                new Testimonial()
+                {
+                    Tagline = "An absolute pleasure",
+                    Message = "I've been volunteering since April, doing shopping and prescription collections. It's been an absolute pleasure supporting our community and receiving the phone calls from the staff every week  - it's just wonderful. Thank you very much and keep up the good work.",
+                    Person = "Natalie, volunteer",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageukwirral",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Making a difference",
+                    Message = "I'd like to think that someone would be there to help me if I had a health condition. I've got spare time and I'm just pleased to be putting it to good use. It's lovely to know I am making a difference.",
+                    Person = "Tricia, volunteer",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageukwirral",
+                },
             };
 
             return messageList;

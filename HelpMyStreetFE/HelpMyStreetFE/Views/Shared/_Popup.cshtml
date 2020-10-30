@@ -7,22 +7,24 @@
                 <path d="M30,30 L70,70 M30,70 L70,30" class="cross" stroke-linecap="round" />
             </svg>
         </button>
-        <div class="popup__content__header">Accept?</div>
-        <div class="popup__content__text">
-
-        </div>
-        <div class="popup__content__buttons">
-            <p class="error"></p>
-            <div class="popup__content__buttons__button">
-                <button id="popup-accept" class="btn cta  wide fill ">
-                    <span class="text">Accept</span>
-                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
-                </button>
+        <div class="popup__content__wrapper">
+            <div class="popup__content__header"></div>
+            <div class="popup__content__text">
+                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Hide = false, ShowDarkSpinner = true, Text = "Loading..." }' />
             </div>
-            <div class="popup__content__buttons__button dnone">
-                <button id="popup-reject" class="btn cta--dark-blue-border wide fill">
-                    <span class="text">Reject</span>
-                </button>
+            <div class="popup__content__buttons dnone">
+                <p class="error"></p>
+                <div class="popup__content__buttons__button">
+                    <button id="popup-accept" class="btn cta  wide fill ">
+                        <span class="text">Accept</span>
+                        <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
+                    </button>
+                </div>
+                <div class="popup__content__buttons__button dnone">
+                    <button id="popup-reject" class="btn cta--dark-blue-border wide fill">
+                        <span class="text">Reject</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

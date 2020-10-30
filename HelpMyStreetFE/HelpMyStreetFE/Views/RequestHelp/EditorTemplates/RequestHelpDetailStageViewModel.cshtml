@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 
 <input type="hidden" name="DetailStep" class="model" value='@Json.Serialize(Model)' />
+@Html.HiddenFor(m => m.Type)
 
 @switch (Model.Type)
 {
@@ -12,9 +13,12 @@
     case RequestorType.OnBehalf:
         <h2>Details for the person who needs the help</h2>
         @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", FullAddressRequired = Model.FullRecipientAddressRequired })
-        <hr class="input--separator" />
-        <h2>Your details</h2>
-        @Html.EditorFor(x => x.Requestor)
+        if (Model.ShowRequestorFields)
+        {
+            <hr class="input--separator" />
+            <h2>Your details</h2>
+            @Html.EditorFor(x => x.Requestor)
+        }
         break;
     case RequestorType.Organisation:
         <h2>Recipient Details</h2>
@@ -26,8 +30,11 @@
             </div>
         </div>
         @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", FullAddressRequired = Model.FullRecipientAddressRequired });
-        <h2>Your Details</h2>
-        @Html.EditorFor(x => x.Requestor);
+        if (Model.ShowRequestorFields)
+        {
+            <h2>Your Details</h2>
+            @Html.EditorFor(x => x.Requestor);
+        }
         break;
 }
 

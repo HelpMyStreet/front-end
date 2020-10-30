@@ -8,43 +8,43 @@
 }
     <div class="user-detail">
         <div class="row">
-            <div class="input sm6">
+            <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_Firstname">@prefix first name</label>
                 @Html.TextBoxFor(x => x.Firstname)
                 <span class="error"></span>
             </div>
-            <div class="input sm6">
+            <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_Lastname">@prefix last name</label>
                 @Html.TextBoxFor(x => x.Lastname)
                 <span class="error"></span>
             </div>
         </div>
         <div class="row">
-            <div class="input sm6">
+            <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_MobileNumber">@prefix mobile number</label>
                 @Html.TextBoxFor(x => x.MobileNumber, new { type = "number" })
                 <span class="error"></span>
             </div>
-            <div class="input sm6">
+            <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_AlternatePhoneNumber">@prefix  alternative phone number</label>
                 @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { type = "number" })
                 <span class="error"></span>
             </div>
         </div>
         <div class="row">
-            <div class="input sm6">
+            <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_Email">@prefix email address</label>
                 @Html.TextBoxFor(x => x.Email)
                 <span class="error"></span>
             </div>
             @if (fullAddressRequired)
             {
-                <div class="input sm3">
+                <div class="input sm3 pad-md">
                     <label for="postcode-search">@prefix postcode</label>
                     <input name="postcode_search" id="postcode-search" type="text" placeholder="e.g. NG1 1PS" value="@Model?.Postcode" />
                     <span class="error"></span>
                 </div>
-                <div class="input sm3 find-address">
+                <div class="input sm3 pad-md find-address">
                     <button id="address_finder" type="button" class="btn large cta--blue fill">
                         <span class="text">Find address</span>
                         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
@@ -54,7 +54,7 @@
             }
             else
             {
-                <div class="input sm6">
+                <div class="input sm6 pad-md">
                     <label id="currentStep_Requestor_Postcode">@prefix postcode</label>
                     @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input" })
                     <span class="error"></span>
@@ -74,32 +74,31 @@
             <div class="row">
                 <div class="@(Model?.Postcode != null ?  "dblock" : "")  expander sm12 pt-xs">
                     <div class="row">
-                        <div class="input sm6">
+                        <div class="input sm6 pad-md">
                             <label for="currentStep_Recipient_AddressLine1">@prefix address line 1</label>
                             @Html.TextBoxFor(x => x.AddressLine1)
                             <span class="error"></span>
                         </div>
-                        <div class="input sm6">
+                        <div class="input sm6 pad-md">
                             <label for="currentStep.Recipient.AddressLine2">@prefix address line 2</label>
                             @Html.TextBoxFor(x => x.AddressLine2)
                             <span class="error"></span>
                         </div>
-                        <div class="input sm6">
+                        <div class="input sm6 pad-md">
                             <label for="currentStep_Recipient_Town">@prefix town / city</label>
                             @Html.TextBoxFor(x => x.Town)
                             <span class="error"></span>
                         </div>
-                        <div class="input sm6">
+                        <div class="input sm6 pad-md">
                             <label for="currentStep_Recipient_County">@prefix county</label>
                             @Html.TextBoxFor(x => x.County)
                             <span class="error"></span>
                         </div>
-                        <div class="input sm6">
+                        <div class="input sm6 pad-md">
                             <label for="currentStep_Recipient_Postcode">@prefix postcode</label>
                             @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input" })
                             <span class="error"></span>
                         </div>
-
                     </div>
                 </div>
             </div>

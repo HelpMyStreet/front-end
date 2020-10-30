@@ -35,6 +35,8 @@ namespace HelpMyStreetFE.Repositories
                     return await GetRuddington(cancellationToken);
                 case "ageuklsl":
                     return await GetAgeUKLSL(cancellationToken);
+                case "ageukwirral":
+                    return await GetAgeUKWirral(cancellationToken);
                 case "hlp":
                     return await GetHLP(cancellationToken);
                 case "ftlos":
@@ -502,6 +504,114 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowLeaveOurGroup = true;
             communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
+
+            return communityViewModel;
+        }
+
+        private async Task<CommunityViewModel> GetAgeUKWirral(CancellationToken cancellationToken)
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+
+            int groupId = await _groupService.GetGroupIdByKey("ageukwirral", cancellationToken);
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            communityViewModel.HomeFolder = "ageUK/wirral";
+            communityViewModel.Latitude = 53.397320;
+            communityViewModel.Longitude = -3.042670;
+            communityViewModel.ZoomLevel = 11;
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "ageukwirral";
+
+            communityViewModel.CommunityName = "Age UK Wirral";
+            communityViewModel.CommunityShortName = "Age UK Wirral";
+
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner.png";
+
+            communityViewModel.Header = "In the Wirral, help is always available!";
+            communityViewModel.HeaderHTML = @"
+                    <p class='mt-sm mb-xs'>
+                        Age UK Wirral are proud to have an amazing range of services for older people in our local communities. Our services are supported by volunteers who are here to help with:
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        <ul class='tick-list mt-xs mb-sm compact-list'>
+                            <li>Shopping for essentials</li>
+                            <li>Collecting prescriptions</li>
+                            <li>Staying warm and healthy in the chilly winter</li>
+                            <li>Door-to-door transport for medical appointments</li>
+                        </ul>
+                    </p>";
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Wirral";
+            communityViewModel.HeaderVolunteerButtonText = null;
+            communityViewModel.CommunityVolunteersTextHtml =
+                 @"<p>
+                    Age UK Wirral is an independent, local charity and we have been working in the local community to help 
+                    older people, their families and carers for over 70 years. We have 700 dedicated staff and volunteers helping 
+                    us to deliver services and activities for older people in the Wirral.
+                </p>
+                <p>
+                     In March 2020 we launched our Covid-19 Emergency Response Services to support people with shopping, 
+                     prescription collections and wellbeing support. In six months we have carried out over 3,000 shopping trips, 
+                     collected over 500 prescriptions, lent 250 people tablets and data sim cards and made more than 35,000 wellbeing calls 
+                     to isolated people in the community.  These services will continue to support the community and are vital to keep people safe, well and connected.
+                </p>
+                <p>
+                     The services on this page are a selection of those available, focussing on areas where we need ad hoc 
+                     volunteer assistance.
+                </p>
+                <p>
+                    To find out more about our other services and the support we can provide, please go to our main website <a href=""www.ageukwirral.org.uk"">www.ageukwirral.org.uk</a>
+                    or call us on 0151 482 3456.
+                </p> 
+                ";
+            communityViewModel.ShowRequestHelp = false;
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
+            communityViewModel.HeaderVolunteerButtonText = "Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>AgeUK Wirral</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>AgeUK Wirral</b>?</p>";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of AgeUK Wirral.  Click below to view help requests in your area.";
+
+            communityViewModel.ShowVisitWebsite = true;
+            communityViewModel.VisitWebsiteHeading = "How can we help?";
+            communityViewModel.VisitWebsiteText = "We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
+            communityViewModel.VisitWebsiteButtonText = "Go to our website";
+            communityViewModel.WebsiteUrl = "https://www.ageuk.org.uk/wirral/";
+            communityViewModel.HeaderVisitWebsiteButtonText = "To ask for help, please go to our website or call us on 0151 482 3456.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Karen Giner",
+                    Role = "Home & Communities Volunteer Coordinator",
+                    ImageLocation = "/img/community/ageuk/wirral/KG.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Catherine Sindall",
+                    Role = "Administrator",
+                    ImageLocation = "/img/community/ageuk/wirral/CS.jpg"
+                }
+            };
+
+            communityViewModel.UsefulLinksHtml =
+                @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about our extensive range of services, donations, charity shops and further details about our organisation.</p>
+                <p><a href=""https://www.facebook.com/ageukwirral/"">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
+                <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
+                <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
+
+            communityViewModel.ShowHelpExampleCards = false;
 
             return communityViewModel;
         }

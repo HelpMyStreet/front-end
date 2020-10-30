@@ -26,21 +26,21 @@
     string iconClass = AgeUk ? "limit-width" : "";
 }
 
-<div class="job @className" id="@id" data-user-acting-as-admin="@Model.UserActingAsAdmin" data-job-status="@Model.JobHeader.JobStatus" data-referring-group-name="@Model.ReferringGroup">
+<div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus">
     <div class="job__info">
         <div class="job__info__urgency">
             @if (Model.JobHeader.JobStatus == JobStatuses.Done)
             {
                 <span class="job__info__urgency__dates">
                     <img src="~/img/icons/green-tick.svg" alt="Done" />
-                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobHeader.DateStatusLastChanged.FriendlyFutureDate()</span>
+                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobHeader.DateStatusLastChanged.FriendlyPastDate()</span>
                 </span>
             }
             else if (Model.JobHeader.JobStatus == JobStatuses.Cancelled)
             {
                 <span class="job__info__urgency__dates">
                     <img src="~/img/icons/gray-tick.svg" alt="Cancelled" />
-                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobHeader.DateStatusLastChanged.FriendlyFutureDate()</span>
+                    <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobHeader.DateStatusLastChanged.FriendlyPastDate()</span>
                 </span>
             }
             else
@@ -60,7 +60,7 @@
                 }
 
                 <span class="job__info__urgency__dates due-date" title="@Model.JobHeader.DueDate.ToString("dd/MM/yyyy")">
-                    Due @Model.JobHeader.DueDate.FriendlyFutureDate()
+                    @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
                 </span>
             }
             <span class="job__status job__status__new">
@@ -86,7 +86,7 @@
                 <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" class="@iconClass" />
             }
 
-            @Model.JobHeader.SupportActivity.FriendlyName()
+            @Model.JobHeader.SupportActivity.FriendlyNameShort()
 
             @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
             {
@@ -109,18 +109,9 @@
                     case JobStatuses.Open:
                         @if (!Model.UserActingAsAdmin)
                         {
-                            @if (Model.UserIsVerified)
-                            {
-                                <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
-                                    <span class="text">Accept</span>
-                                </button>
-                            }
-                            else
-                            {
-                                <button class="btn cta large accept-request-unverified bg-gray-8">
-                                    <span class="text">Accept</span>
-                                </button>
-                            }
+                            <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                                <span class="text">Accept</span>
+                            </button>
                         }
                         break;
                     case JobStatuses.InProgress:
@@ -161,7 +152,7 @@
                 </button>
             </div>
             <div class="job__info__footer">
-                @if (Model.UserIsVerified)
+                @if (Model.UserActingAsAdmin || Model.UserHasRequiredCredentials)
                 {
                     <a href="#" class="open">View more info <span></span></a>
                     <a href="#" class="close">View less info <span></span></a>

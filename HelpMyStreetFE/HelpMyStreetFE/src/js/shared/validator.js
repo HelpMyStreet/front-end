@@ -7,24 +7,29 @@ export function validateFormData(form, validation) {
     .reduce((acc, cur) => {
       const inp = $(cur).find("input");
       if (inp[0]) {
-          const { name, value, type } = inp[0];
-          acc[name] = (type === "checkbox" && type !== "radio") ? inp.is(":checked") : value;
-          acc[name] = (type === "radio" && !inp.is(":checked") && type !== "checkbox") ? undefined : value;
+        const { name, value, type } = inp[0];
+        acc[name] = (type === "checkbox" && type !== "radio") ? inp.is(":checked") : value;
+        acc[name] = (type === "radio" && !inp.is(":checked")) ? undefined : acc[name];
+      } else {
+        const ta = $(cur).find("textarea");
+        if (ta[0]) {
+          acc[ta[0].name] = ta.val();
+        }
       }
 
       return acc;
     }, {});
-    
+
   return Object.entries(obj).reduce((acc, cur) => {
     const [name, value] = cur;
 
-    const errDisplay = $(`input[name="${name}"] ~ .error`);
-      
+    const errDisplay = $(`input[name="${name}"] ~ .error, textarea[name="${name}"] ~ .error`);
+
     errDisplay && errDisplay.text("").hide();
 
-      const validator = validation[name];      
-      if (validator) {          
-        const valid = validator(value, obj);
+    const validator = validation[name];
+    if (validator) {
+      const valid = validator(value, obj);
       if (valid !== true) {
         acc = false;
         errDisplay.text(valid).show();
@@ -71,26 +76,6 @@ export function validatePhoneNumber(phoneNumberEl, errorMessage) {
 export function  hasNumber(myString) {
     return /\d/.test(myString);
 }
-
-export function validatePrivacyAndTerms(privacyName, termsName) {
-    // requires checking of two or more inputs at the same time, so cant use the validateFormData.
-    $('.termsprivacy').hide();
-    let privacy = $("input[name='" + privacyName + "']").is(":checked");
-    let terms = $("input[name='" + termsName + "']").is(":checked");
-    var errorText = "";
-    privacy == false && terms == false ? errorText = "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions." : "";
-    privacy == true && terms == false ? errorText = "Please tick to confirm that you agree to the Help My Street <a href='/terms-conditions'>Terms and Conditions</a>" : "";
-    privacy == false && terms == true ? errorText = "Please tick to confirm that you acknowledge the Help My Street <a href='/privacy-policy'>Privacy Notice</a>" : "";
-
-    $('.termsprivacy').show();
-    $('.termsprivacy').html(errorText);
-
-    if (errorText !== "") {
-        return false;
-    }
-    return true;
-}
-
 
 export function scrollToFirstError() {
     $('.error').each(function () {

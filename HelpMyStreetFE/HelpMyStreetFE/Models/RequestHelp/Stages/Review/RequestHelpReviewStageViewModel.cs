@@ -17,6 +17,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RequestHelpTimeViewModel TimeRequested { get; set; }
         public List<RequestHelpQuestion> RequestStageQuestions { get; set; }
         public List<RequestHelpQuestion> DetailsStageQuestions { get; set; }
+        public bool ShowRequestor { get; set; }
 
         public string TimeRequestedReviewString
         {

@@ -82,6 +82,7 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Friendly, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.HomeworkSupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.DogWalking, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.ColdWeatherArmy, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
 
                         // The following are not currently on any request help form

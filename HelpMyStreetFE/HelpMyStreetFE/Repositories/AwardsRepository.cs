@@ -9,18 +9,22 @@ using System.Linq;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
+using System.Threading;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class AwardsRepository : IAwardsRepository
     {
-        private IRequestService _requestService;
-        private IUserService _userService;
+        private readonly IRequestService _requestService;
+        private readonly IUserService _userService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public AwardsRepository(IRequestService requestService, IUserService userService)
+        public AwardsRepository(IRequestService requestService, IUserService userService, IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
             _userService = userService;
+            _groupMemberService = groupMemberService;
         }
 
         public Dictionary<string, Func<Dictionary<string, Object>, string, string>> DescriptionModifiers = new Dictionary<string, Func<Dictionary<string, Object>, string, string>>()
@@ -56,9 +60,9 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/awards/round-placeholder.svg",
                     SpecificPredicate = u => {
                         foreach (Object o in u) {
-                            if (o is User){
-                                User x = (User)o;
-                                return !x.IsVerified.GetValueOrDefault(false);
+                            if (o is bool){
+                                bool isVerified = (bool)o;
+                                return !isVerified;
                             }
                         }
                         return false; },
@@ -71,9 +75,9 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/awards/round-placeholder.svg",
                     SpecificPredicate = u => {
                         foreach (Object o in u) {
-                            if (o is User){
-                                User x = (User)o;
-                                return x.IsVerified.GetValueOrDefault(false);
+                            if (o is bool){
+                                bool isVerified = (bool)o;
+                                return isVerified;
                             }
                         }
                         return false; }
@@ -131,14 +135,14 @@ namespace HelpMyStreetFE.Repositories
             return awardsList;
         }
 
-        public async Task<CurrentAwardModel> GetAwardsByUserID(int userID, System.Threading.CancellationToken cancellationToken)
+        public async Task<CurrentAwardModel> GetAwardsByUserID(int userID, CancellationToken cancellationToken)
         {
-            var user = await _userService.GetUserAsync(userID, cancellationToken);
             var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
             var viewModel = new AwardsViewModel();
             var awards = await GetAwards();
+            bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
 
-            var predicates = new List<Object>() { user };
+            var predicates = new List<Object>() { userIsVerified };
 
             jobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
             var completedJobs = jobs.Count();

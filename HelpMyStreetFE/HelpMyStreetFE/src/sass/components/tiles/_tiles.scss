@@ -31,8 +31,6 @@
       height: 200px;
     }
 
-
-
     &:hover {
       border: 2px solid $light-orange;
       box-shadow: 0 0 10px $light-orange-opaque;
@@ -124,9 +122,15 @@
           max-width: 80px;
         }
 
+
         .limit-width-150 {
           max-width: 150px;
         }
+
+                .limit-width {
+                    max-width: 50px;
+                }
+
 
 
 
@@ -179,6 +183,16 @@
           text-align: left;
         }
       }
+    }
+}
+
+form {
+  .tiles__textbox {
+    margin-top: 10px;
+
+    input {
+      border: 2px solid $light-orange;
+      height: 3.6rem;
     }
   }
 }

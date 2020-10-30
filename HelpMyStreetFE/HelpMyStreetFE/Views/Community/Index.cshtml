@@ -45,6 +45,19 @@ else
 
                     @Html.Raw(@Model.HeaderHTML)
 
+
+
+                    @if (Model.ShowVisitWebsite)
+                    {
+                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm">
+                            @if (Model.HeaderVisitWebsiteButtonText != null && Model.HeaderVisitWebsiteButtonText.Length > 0)
+                            {
+                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVisitWebsiteButtonText</p>
+                            }
+                            <a href="@Model.WebsiteUrl" class="btn cta small btn--request-help fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                        </div>
+                    }
+
                     @if (Model.ShowRequestHelp)
                     {
                         <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
@@ -56,28 +69,28 @@ else
                         </div>
                     }
 
-                <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
-                    @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
-                    {
-                        <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
-                    }
-                    @if (!Model.IsLoggedIn)
-                    {
-                        <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
-                    }
-                    else
-                    {
-                        if (Model.AllowJoinOurGroup)
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
+                        @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
                         {
-                            <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
+                        }
+                        @if (!Model.IsLoggedIn)
+                        {
+                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                         }
                         else
                         {
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            if (Model.AllowJoinOurGroup)
+                            {
+                                <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                                <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            }
+                            else
+                            {
+                                <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                            }
                         }
-                    }
-                </div>
+                    </div>
 
                     @if (Model.ShowRequestHelp)
                     {
@@ -95,7 +108,7 @@ else
 
                 @if (Model.ShowMap)
                 {
-                    <div class="sm6 nopadding pl-md">
+                    <div class="sm6 pl-md">
                         <div class="text-right commmunity-map-container map static-map" id="map"></div>
                     </div>
                 }
@@ -167,13 +180,31 @@ else
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
 
+                @if (Model.ShowVisitWebsite)
+                {
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
+
+                            <h2>@Model.VisitWebsiteHeading</h2>
+                            <p class="mt-sm mb-md">
+                                @Model.VisitWebsiteText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
                 @if (Model.ShowRequestHelp)
                 {
                     <div class="flex sm6">
                         <div class="card flex m-sm">
 
                             <h2>@Model.RequestHelpHeading</h2>
-                            <p class="text-left mt-sm mb-md">
+                            <p class="mt-sm mb-md">
                                 @Model.RequestHelpText
                             </p>
 
@@ -190,10 +221,10 @@ else
                     <div class="flex sm6">
                         <div class="card flex m-sm">
                             <h2>@Model.ProvideHelpHeading</h2>
-                            <p class="text-left mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
                                 @Model.ProvideHelpText_NotGroupMember
                             </p>
-                            <p class="text-left mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
                                 @Model.ProvideHelpText_GroupMember
                             </p>
 
@@ -290,7 +321,7 @@ else
                     <iframe style="min-width: 100%; height: 350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
 
-                <div class="sm6">
+                <div class="sm6 pad-md">
                     <p class="">HelpMyStreet.org was launched to help the Helpers supporting their communities through the coronavirus pandemic.</p>
 
                     <p>Our goal is to make volunteering and finding volunteers simple, safe and effective for everyone.</p>
@@ -305,13 +336,31 @@ else
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
 
+                @if (Model.ShowVisitWebsite)
+                {
+                    <div class="flex sm6">
+                        <div class="card flex m-sm">
+
+                            <h2>@Model.VisitWebsiteHeading</h2>
+                            <p class="mt-sm mb-md">
+                                @Model.VisitWebsiteText
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
                 @if (Model.ShowRequestHelp)
                 {
                     <div class="flex sm6">
                         <div class="card flex m-sm">
 
                             <h2>@Model.RequestHelpHeading</h2>
-                            <p class="text-left mt-sm mb-md">
+                            <p class="mt-sm mb-md">
                                 @Model.RequestHelpText
                             </p>
 
@@ -328,10 +377,10 @@ else
                     <div class="flex sm6">
                         <div class="card flex m-sm">
                             <h2>@Model.ProvideHelpHeading</h2>
-                            <p class="text-left mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
                                 @Model.ProvideHelpText_NotGroupMember
                             </p>
-                            <p class="text-left mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
                                 @Model.ProvideHelpText_GroupMember
                             </p>
 

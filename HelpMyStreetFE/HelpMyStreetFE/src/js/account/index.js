@@ -80,8 +80,8 @@ async function updateAwards() {
     } else {
         //something terrible has gone wrong!
     }
-    $("#what-is-this").click(() => { console.log("wit clicked"); $(".tooltiptext").addClass("visible") });
-    $("#close-tooltip").click(() => { console.log("close clicked"); $(".tooltiptext").removeClass("visible") });
+    $("#what-is-this").click(() => { $(".tooltiptext").addClass("visible") });
+    $("#close-tooltip").click(() => { $(".tooltiptext").removeClass("visible") });
 }
 
 function subMenuToggle(container, slideDuration = 400) {
