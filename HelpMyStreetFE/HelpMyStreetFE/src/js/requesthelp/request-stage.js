@@ -1,48 +1,49 @@
-import { validateFormData, scrollToFirstError } from "../shared/validator";
+﻿import { validateFormData, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 import { dateValidationSchemes, datepickerLoad, validateDob } from "../shared/date-picker";
 
 export function intialiseRequestStage() {
-    intialiseRequestTiles();
-    validateForm();
+  intialiseRequestTiles();
+  validateForm();
 
-    $("#CustomTime").find("select").change(function () {
-        $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
-    });
+  $("#CustomTime").find("select").change(function () {
+    $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
+  });
 
-    trackEvent("Request form", "View 0.request", "", 0);
+  trackEvent("Request form", "View 0.request", "", 0);
 
-    const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
-    updateOptionsForActivity(taskId);
+  const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+  updateOptionsForActivity(taskId);
   if ($('#datepicker').length > 0) {
     datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES);
   }
+}
 
 
 
 var validateForm = function () {
-    $("form").on("submit", function (evt) {        
-        buttonLoad($("#btnNext"));
-        const valid = validateFormData($(this), {
-            "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",   
-            "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",                    
-            "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",        
-            "currentStep.AgreeToPrivacyAndTerms.Id": (v) => v !== "" || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",                        
-        });
-
-        const validForm = validateQuestions() && valid;
-
-        trackEvent("Request form", "Submit 0.request", validForm ? "(Valid)" : "(Invalid)", 0);
-
-        if (validForm == false) {
-            buttonUnload($("#btnNext"));;
-            scrollToFirstError();
-        }
-        
-        return validForm;
+  $("form").on("submit", function (evt) {
+    buttonLoad($("#btnNext"));
+    const valid = validateFormData($(this), {
+      "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",
+      "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",
+      "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",
+      "currentStep.AgreeToPrivacyAndTerms.Id": (v) => v !== "" || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",
     });
+
+    const validForm = validateQuestions() && valid;
+
+    trackEvent("Request form", "Submit 0.request", validForm ? "(Valid)" : "(Invalid)", 0);
+
+    if (validForm == false) {
+      buttonUnload($("#btnNext"));;
+      scrollToFirstError();
+    }
+
+    return validForm;
+  });
 }
 
 
@@ -63,38 +64,38 @@ var intialiseRequestTiles = function () {
   });
 }
 var handleRequestFor = function (el) {
-    $('*[data-type="request-for"]').removeClass("selected");
-    el.addClass("selected");      
-    $('input[name="currentStep.SelectedRequestor.Id"]').val(el.attr("data-Id"));
+  $('*[data-type="request-for"]').removeClass("selected");
+  el.addClass("selected");
+  $('input[name="currentStep.SelectedRequestor.Id"]').val(el.attr("data-Id"));
 
 
-    var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
-    if (taskId != "") {
-        let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
-        trackEvent("Request form", "Select request for", selectedValue, 0);
-    }
+  var taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+  if (taskId != "") {
+    let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+    trackEvent("Request form", "Select request for", selectedValue, 0);
+  }
 }
 var handleTimeFrame = function (el) {
-    $('*[data-type="timeframe"]').removeClass("selected");
-    let allowCustomEntry = el.attr("data-allowcustom");
-    let datePickerSelect = el.attr("data-ondate")
-    if (allowCustomEntry == "True") {
-        $("#CustomTime").show();
+  $('*[data-type="timeframe"]').removeClass("selected");
+  let allowCustomEntry = el.attr("data-allowcustom");
+  let datePickerSelect = el.attr("data-ondate");
+  if (allowCustomEntry == "True") {
+    $("#CustomTime").show();
 
-    } else {
-        $("#CustomTime").hide();
-    }
-    if (datePickerSelect == "True") {
-        $(".tiles__tile__content__dateselection").removeClass("dnone");
-    }
-    else {
-        $(".tiles__tile__content__dateselection").addClass("dnone");
-}
-    el.addClass("selected");   
-    $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
+  } else {
+    $("#CustomTime").hide();
+  }
+  if (datePickerSelect == "True") {
+    $(".tiles__tile__content__dateselection").removeClass("dnone");
+  }
+  else {
+    $(".tiles__tile__content__dateselection").addClass("dnone");
+  }
+  el.addClass("selected");
+  $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
 
-    let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
-    trackEvent("Request form", "Select timeframe", selectedValue, 0);
+  let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+  trackEvent("Request form", "Select timeframe", selectedValue, 0);
 }
 
 var handleActivity = function (el) {
@@ -120,37 +121,37 @@ var handleActivity = function (el) {
 }
 
 var updateOptionsForActivity = function (taskId) {
-    if (taskId == 12) { // facemask   
-        $('#requestorFor_3').show(); // onbehalf of organisation
-        if ($('#requestorFor_3').hasClass("selected")) {
-            $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
-        }
-        displayTodayHelpNeededOptions(false);
-    } else {
-        $('#requestorFor_3').hide();
-        var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-        // if they have previously selected On behalf of organisation,
-        //set selected RequestorID as empty since that option is only available to facemasks
-        if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
-            $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-        }
-        displayTodayHelpNeededOptions(true)
+  if (taskId == 12) { // facemask   
+    $('#requestorFor_3').show(); // onbehalf of organisation
+    if ($('#requestorFor_3').hasClass("selected")) {
+      $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
     }
+    displayTodayHelpNeededOptions(false);
+  } else {
+    $('#requestorFor_3').hide();
+    var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
+    // if they have previously selected On behalf of organisation,
+    //set selected RequestorID as empty since that option is only available to facemasks
+    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+      $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+    }
+    displayTodayHelpNeededOptions(true);
+  }
 
-    // preselect value if theres only one
-    if ($('.requestorFor:visible').length == 1) {
-        $('.requestorFor:visible').addClass("selected");
-        let selectedId = $('.requestorFor:visible').attr("data-id");
-        $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
-    }
+  // preselect value if theres only one
+  if ($('.requestorFor:visible').length == 1) {
+    $('.requestorFor:visible').addClass("selected");
+    let selectedId = $('.requestorFor:visible').attr("data-id");
+    $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
+  }
 }
 
 function displayTodayHelpNeededOptions(show) {
-    if (!show) {
-        $('#time_1').parent().hide();
-        $('#time_2').parent().hide();        
-    } else {
-        $('#time_1').parent().show();
-        $('#time_2').parent().show();        
-    }
+  if (!show) {
+    $('#time_1').parent().hide();
+    $('#time_2').parent().hide();
+  } else {
+    $('#time_1').parent().show();
+    $('#time_2').parent().show();
+  }
 }
