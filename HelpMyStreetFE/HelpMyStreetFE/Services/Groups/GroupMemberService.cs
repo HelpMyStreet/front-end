@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -19,17 +19,15 @@ namespace HelpMyStreetFE.Services.Groups
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
         private readonly IMemDistCache<UserInGroup> _memDistCache_userInGroup;
         private readonly IGroupService _groupService;
-        private readonly IUserService _userService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
         private const int YOTI_CREDENTIAL_ID = -1;
 
-        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
+        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
             _groupService = groupService;
-            _userService = userService;
             _memDistCache_userInGroup = memDistCache_userInGroup;
         }
 
