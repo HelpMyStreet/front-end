@@ -8,5 +8,6 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
     {
         public IEnumerable<GroupCredential> GroupCredentials { get; set; }
         public IEnumerable<VolunteerViewModel> Volunteers { get; set; }
+        public int UserId { get; set; }
     }
 }

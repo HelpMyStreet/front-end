@@ -595,20 +595,18 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Name = "Karen Giner",
                     Role = "Home & Communities Volunteer Coordinator",
-                    Location = "Wirral",
                     ImageLocation = "/img/community/ageuk/wirral/KG.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Catherine Sindall",
                     Role = "Administrator",
-                    Location = "Wirral",
                     ImageLocation = "/img/community/ageuk/wirral/CS.jpg"
                 }
             };
 
             communityViewModel.UsefulLinksHtml =
-                @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about or extensive range of services, donations, charity shops and further details about our organisation.</p>
+                @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about our extensive range of services, donations, charity shops and further details about our organisation.</p>
                 <p><a href=""https://www.facebook.com/ageukwirral/"">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
                 <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
                 <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
