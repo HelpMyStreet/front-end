@@ -60,7 +60,7 @@
                 }
 
                 <span class="job__info__urgency__dates due-date" title="@Model.JobHeader.DueDate.ToString("dd/MM/yyyy")">
-                    Due @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
+                    @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
                 </span>
             }
             <span class="job__status job__status__new">

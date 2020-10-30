@@ -5,12 +5,13 @@ import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 export function initaliseDetailStage() {
-    validateForm($('#currentStep_Requestor_Firstname').length > 0 ? true : false)
-    SetupAddressFinder();
-    
-    trackEvent("Request form", "View 1.details", "", 0);
+  validateForm($('#currentStep_Type').val() == 'Myself' ? true : false);
+  console.log($('#currentStep_Type').val());
+  SetupAddressFinder();
+
+  trackEvent("Request form", "View 1.details", "", 0);
 }
-var validateForm =  function (validateRequestor) {
+var validateForm = function (validateRecipientAsRequestor) {
     
     $("form").on("submit", function (evt) {        
         if ($(document.activeElement).attr("id") == "btnBack") {
@@ -24,13 +25,13 @@ var validateForm =  function (validateRequestor) {
             "currentStep.Recipient.Firstname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.Lastname": (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)",
             "currentStep.Recipient.MobileNumber": (v, d) => {                
-                if (!validateRequestor && (d["currentStep.Recipient.AlternatePhoneNumber"] == "" && v == "")) {                    
+              if (validateRecipientAsRequestor && (d["currentStep.Recipient.AlternatePhoneNumber"] == "" && v == "")) {                    
                     return "Please enter a mobile number or an alternative phone number"
                 }
                 return true;
             },
             "currentStep.Recipient.Email": (v) => {
-                if (!validateRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
+              if (validateRecipientAsRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
                     return "Please enter a valid email address";
                 }
                 return true;
