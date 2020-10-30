@@ -57,10 +57,11 @@ namespace HelpMyStreetFE.ViewComponents
                 };
             });
 
-            VolunteerListViewModel volunteerListViewModel = new VolunteerListViewModel
+            var volunteerListViewModel = new VolunteerListViewModel
             {
                 GroupCredentials = groupCredentials,
-                Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null)
+                Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null),
+                UserId = user.ID,
             };
 
 
