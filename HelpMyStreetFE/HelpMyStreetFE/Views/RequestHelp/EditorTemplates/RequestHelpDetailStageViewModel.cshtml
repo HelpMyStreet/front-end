@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 
 <input type="hidden" name="DetailStep" class="model" value='@Json.Serialize(Model)' />
+@Html.HiddenFor(m => m.Type)
 
 @switch (Model.Type)
 {
