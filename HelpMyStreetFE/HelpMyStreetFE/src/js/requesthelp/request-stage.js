@@ -1,4 +1,4 @@
-﻿import { validateFormData, scrollToFirstError } from "../shared/validator";
+import { validateFormData, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
@@ -16,8 +16,9 @@ export function intialiseRequestStage() {
 
     const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
     updateOptionsForActivity(taskId);
+  if ($('#datepicker').length > 0) {
     datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES);
-}
+  }
 
 
 
