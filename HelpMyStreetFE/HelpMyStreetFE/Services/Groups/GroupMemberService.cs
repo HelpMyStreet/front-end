@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,6 +9,7 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services.Groups
@@ -76,6 +77,9 @@ namespace HelpMyStreetFE.Services.Groups
 
             if (result == GroupPermissionOutcome.Success)
             {
+                // Cannot do this due to circular dependency
+                //_requestService.TriggerCacheRefresh(userId, cancellationToken);
+
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await GetUserRoles(userId);
@@ -91,6 +95,9 @@ namespace HelpMyStreetFE.Services.Groups
 
             if (result == GroupPermissionOutcome.Success)
             {
+                // Cannot do this due to circular dependency
+                //_requestService.TriggerCacheRefresh(userId, cancellationToken);
+
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await GetUserRoles(userId);
