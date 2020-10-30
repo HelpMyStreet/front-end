@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
+using HelpMyStreet.Contracts.GroupService.Request;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services.Groups
 {
@@ -14,15 +17,20 @@ namespace HelpMyStreetFE.Services.Groups
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
+        private readonly IMemDistCache<UserInGroup> _memDistCache_userInGroup;
         private readonly IGroupService _groupService;
+        private readonly IUserService _userService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
+        private const int YOTI_CREDENTIAL_ID = -1;
 
-        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService)
+        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
             _groupService = groupService;
+            _userService = userService;
+            _memDistCache_userInGroup = memDistCache_userInGroup;
         }
 
         public async Task AddUserToDefaultGroups(int userId)
@@ -43,27 +51,6 @@ namespace HelpMyStreetFE.Services.Groups
             {
                 return await GetUserRoles(userId);
             }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
-        }
-
-        public async Task<List<UserGroup>> GetGroupMembers(int groupId, int userId, CancellationToken cancellationToken)
-        {
-            var thisGroup = await _groupService.GetGroupById(groupId, cancellationToken);
-            var groupMemberRoles = await _groupRepository.GetGroupMemberRoles(groupId, userId);
-
-            List<UserGroup> response = new List<UserGroup>();
-            foreach (var userRoles in groupMemberRoles.GroupMemberRoles)
-            {
-                response.Add(new UserGroup()
-                {
-                    UserId = userRoles.Key,
-                    GroupId = groupId,
-                    GroupKey = thisGroup.GroupKey,
-                    GroupName = thisGroup.GroupName,
-                    UserRoles = userRoles.Value.Select(role => (GroupRoles)role)
-                });
-            }
-
-            return response;
         }
 
         public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken)
@@ -136,6 +123,51 @@ namespace HelpMyStreetFE.Services.Groups
             }
 
             return response;
+        }
+
+        public async Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId, CancellationToken cancellationToken)
+        {
+            var result = await _memDistCache_userInGroup.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId);
+            }, $"{CACHE_KEY_PREFIX}-group-member-{groupId}-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+
+            return result;
+        }
+
+        public async Task<List<UserInGroup>> GetAllGroupMembers(int groupId, int authorisingUserId)
+        {
+            return await _groupRepository.GetAllGroupMembers(groupId, authorisingUserId);
+        }
+
+        public async Task<AnnotatedGroupActivityCredentialSets> GetAnnotatedGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
+        {
+            var gacs = await _groupService.GetGroupActivityCredentials(groupId, supportActivitiy, cancellationToken);
+            var groupMember = await GetGroupMember(groupId, userId, authorisingUserId, cancellationToken);
+
+            if (gacs == null) { throw new Exception("Null response from GetGroupActivityCredentials"); }
+            if (groupMember == null) { throw new Exception("Null response from GetGroupMember"); }
+
+            return new AnnotatedGroupActivityCredentialSets(gacs, groupMember.ValidCredentials);
+        }
+
+        public async Task<bool> GetUserHasCredentials(int groupId, SupportActivities supportActivitiy, int userId, int authorisingUserId, CancellationToken cancellationToken)
+        {
+            var annotatedGacs = await GetAnnotatedGroupActivityCredentials(groupId, supportActivitiy, userId, authorisingUserId, cancellationToken);
+
+            return annotatedGacs.AreSatisfied;
+        }
+
+        public async Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest)
+        {
+            return await _groupRepository.PutGroupMemberCredentials(putGroupMemberCredentialsRequest);
+        }
+
+        public async Task<bool> GetUserIsVerified(int userId, CancellationToken cancellationToken)
+        {
+            var groupMember = await GetGroupMember((int)HelpMyStreet.Utils.Enums.Groups.Generic, userId, userId, cancellationToken);
+
+            return groupMember.ValidCredentials.Contains(YOTI_CREDENTIAL_ID);
         }
     }
 }

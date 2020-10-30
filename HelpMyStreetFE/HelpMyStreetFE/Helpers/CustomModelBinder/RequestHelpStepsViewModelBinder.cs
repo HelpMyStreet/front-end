@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace HelpMyStreetFE.Helpers.CustomModelBinder
 { 
@@ -127,6 +128,12 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     int selectedDays = -1;
                     int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
                     time.Days = selectedDays;
+                }
+                if (time.OnDate)
+                {
+                    DateTime selectedDate;
+                    DateTime.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), new CultureInfo("en-GB"), DateTimeStyles.None, out selectedDate);
+                    time.Date = selectedDate;
                 }
             }
 

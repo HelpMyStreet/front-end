@@ -46,7 +46,7 @@ export const login = async (email, password) => {
         },
         body: JSON.stringify({ token })
       });
-        console.log("Fetch Rsp:" + authResp.fetchResponse);
+        //console.log("Fetch Rsp:" + authResp.fetchResponse);
         switch (authResp.fetchResponse) {
             case fetchResponses.SERVER_ERROR:
                 throw ({ code: "auth/internal-server-error" });

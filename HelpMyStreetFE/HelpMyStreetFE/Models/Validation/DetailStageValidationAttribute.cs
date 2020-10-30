@@ -32,7 +32,10 @@ namespace HelpMyStreetFE.Models.Validation
                     case HelpMyStreet.Utils.Enums.RequestorType.Organisation:
                     case HelpMyStreet.Utils.Enums.RequestorType.OnBehalf:
                         ValidateRecipient(vm, errors, false);
-                        ValidateRequestor(vm, errors);
+                        if (((RequestHelpDetailStageViewModel)value).ShowRequestorFields)
+                        {
+                            ValidateRequestor(vm, errors);
+                        }
                         break;                                                                                            
                 }                    
             }

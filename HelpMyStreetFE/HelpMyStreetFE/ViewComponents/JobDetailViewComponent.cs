@@ -38,7 +38,6 @@ namespace HelpMyStreetFE.ViewComponents
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
                 JobDetail = jobDetails,
-                UserIsVerified = user.IsVerified ?? false,
                 UserActingAsAdmin = jobSet == JobSet.GroupRequests,
             };
 

@@ -78,15 +78,15 @@ namespace HelpMyStreetFE.Controllers
 
             if (Directory.Exists(carousel1Path))
             {
-                communityViewModel.CarouselImages1 = Directory.EnumerateFiles(carousel1Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("png"));
+                communityViewModel.CarouselImages1 = Directory.EnumerateFiles(carousel1Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("jpg") || x.Contains("png"));
             }
             if (Directory.Exists(carousel2Path))
             {
-                communityViewModel.CarouselImages2 = Directory.EnumerateFiles(carousel2Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("png"));
+                communityViewModel.CarouselImages2 = Directory.EnumerateFiles(carousel2Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("jpg") || x.Contains("png"));
             }
             if (Directory.Exists(carousel3Path))
             {
-                communityViewModel.CarouselImages3 = Directory.EnumerateFiles(carousel3Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("png"));
+                communityViewModel.CarouselImages3 = Directory.EnumerateFiles(carousel3Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("jpg") || x.Contains("png"));
             }
 
             return View(communityViewModel);

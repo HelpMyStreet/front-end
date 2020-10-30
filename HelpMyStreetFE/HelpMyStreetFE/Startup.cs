@@ -27,6 +27,7 @@ using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
+using HelpMyStreet.Contracts.GroupService.Response;
 
 namespace HelpMyStreetFE
 {
@@ -173,6 +174,8 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Group>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<List<GroupCredential>>>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<UserInGroup>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
 
             services.AddControllers();
             services.AddRazorPages()
@@ -332,6 +335,11 @@ namespace HelpMyStreetFE
                     name: "ageuklsl",
                     pattern: "ageuklsl",
                     defaults: new { controller = "Community", action = "Index", communityName = "ageuklsl" });
+
+                endpoints.MapControllerRoute(
+                    name: "ageukwirral",
+                    pattern: "ageukwirral",
+                    defaults: new { controller = "Community", action = "Index", communityName = "ageukwirral" });
 
                 endpoints.MapControllerRoute(
                    name: "face-coverings",

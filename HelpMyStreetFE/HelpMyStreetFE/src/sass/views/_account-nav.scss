@@ -62,6 +62,16 @@
       ul {
         display: none;
       }
+      @media screen and (max-width: $med-screen) {
+        >a {
+          span.count {
+            display: none;
+          }
+        }
+        ul {
+          display: block;
+        }
+      }
     }
   }
 }

@@ -4,6 +4,7 @@ $content-max-width: $content-min-width + 24px;
 $sm-screen: 500px;
 $sm-med-screen: 750px;
 $med-screen: 1000px;
+$lg-screen: 1200px;
 
 $xxs-margin: 5px;
 $xs-margin: 13px;
@@ -12,8 +13,4 @@ $med-margin: 24px;
 $lg-margin: 32px;
 
 // Breakpoints
-$screen-xl: 1200px;
-$screen-lg: 1024px;
-$screen-md: 768px;
-$screen-sm: 600px;
 $screen-xs: 375px;

@@ -1,6 +1,5 @@
 @model HelpMyStreetFE.Models.Account.AccountViewModel;
 @using HelpMyStreetFE.Enums.Account
-@using HelpMyStreetFE.Models.Awards
 
 @section Scripts {
     <script src="~/profile.js" asp-append-version="true"></script>
@@ -10,58 +9,53 @@
             scenarioId: '@Model.VerificationViewModel.YotiOptions.ScenarioId',
             clientSdkId: '@Model.VerificationViewModel.YotiOptions.ClientSdkId',
             userId: '@Model.VerificationViewModel.EncodedUserID',
-            isVerified: '@Model.UserDetails.IsVerified'
+            isVerified: '@Model.VerificationViewModel.IsVerified'
        };
     </script>    
 }
 
 @{
-    ViewBag.Title = "My Profile";
-
+    ViewBag.Title = Model.CurrentPage switch
+    {
+        MenuPage.AcceptedRequests => "My Accepted Requests",
+        MenuPage.CompletedRequests => "My Completed Requests",
+        MenuPage.OpenRequests => "Open Requests",
+        MenuPage.GroupRequests => $"{Model.CurrentGroup.GroupName} Requests",
+        MenuPage.GroupVolunteers => $"{Model.CurrentGroup.GroupName} Volunteers",
+        _ => "My Profile"
+    };
 }
 
 <main class="account__wrapper container">
-    <div class="account__notifications__wrapper">
-        <div class="account__notifications">
-            @*<partial name="_NotificationHandler" for="@Model.Notifications" />*@
-            </div>
-        </div>
-
-    <div class="mb-md row">
+    <div class="mb-md mt-md row">
         <div class="awards-component">@await Component.InvokeAsync("Awards", new {userID = Model.UserDetails.User.ID, cancellationToken = System.Threading.CancellationToken.None})</div>
     </div>
 
+    <div class="account__body">
+        <partial name="_AccountNavigation" />
 
-            <div class="account__body">
-                <partial name="_AccountNavigation" />
+        @switch (Model.CurrentPage)
+        {
+            case MenuPage.OpenRequests:
+                <partial name="_OpenRequests" for="@Model" />
+                break;
+            case MenuPage.AcceptedRequests:
+                <partial name="_AcceptedRequests" for="@Model" />
+                break;
+            case MenuPage.CompletedRequests:
+                <partial name="_CompletedRequests" for="@Model" />
+                break;
+            case MenuPage.GroupRequests:
+                <partial name="_GroupRequests" for="@Model" />
+                break;
+            case MenuPage.GroupVolunteers:
+                <partial name="_GroupVolunteers" for="@Model" />
+                break;
+            default:
+                <partial name="_Verification" for="VerificationViewModel" />
+                <partial name="_UserData" for="@Model.PageModel" />
+                break;
+        }
 
-                @switch (Model.CurrentPage)
-                {
-                    case MenuPage.OpenRequests:
-                        <partial name="_OpenRequests" for="@Model" />
-                        break;
-                    case MenuPage.AcceptedRequests:
-                        <partial name="_AcceptedRequests" for="@Model" />
-                        break;
-                    case MenuPage.CompletedRequests:
-                        <partial name="_CompletedRequests" for="@Model" />
-                        break;
-                    case MenuPage.ComingSoon:
-                        <partial name="_ComingSoon" for="@Model.UserDetails" />
-                        break;
-                    case MenuPage.GroupRequests:
-                        <partial name="_GroupRequests" for="@Model" />
-                        break;
-                    case MenuPage.GroupVolunteers:
-                        <partial name="_GroupVolunteers" for="@Model" />
-                        break;
-                    default:
-
-
-                        <partial name="_Verification" for="VerificationViewModel" />
-                        <partial name="_UserData" for="@Model.PageModel" />
-                        break;
-                }
-
-            </div>
+    </div>
 </main>
