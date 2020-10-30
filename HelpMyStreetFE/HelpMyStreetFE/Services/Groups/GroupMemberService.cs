@@ -165,7 +165,7 @@ namespace HelpMyStreetFE.Services.Groups
 
         public async Task<bool> GetUserIsVerified(int userId, CancellationToken cancellationToken)
         {
-            var groupMember = await GetGroupMember((int)HelpMyStreet.Utils.Enums.Groups.Generic, userId, userId, cancellationToken);
+            var groupMember = await _groupRepository.GetGroupMember((int)HelpMyStreet.Utils.Enums.Groups.Generic, userId, userId);
 
             return groupMember.ValidCredentials.Contains(YOTI_CREDENTIAL_ID);
         }
