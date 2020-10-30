@@ -595,14 +595,12 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Name = "Karen Giner",
                     Role = "Home & Communities Volunteer Coordinator",
-                    Location = "Wirral",
                     ImageLocation = "/img/community/ageuk/wirral/KG.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Catherine Sindall",
                     Role = "Administrator",
-                    Location = "Wirral",
                     ImageLocation = "/img/community/ageuk/wirral/CS.jpg"
                 }
             };
