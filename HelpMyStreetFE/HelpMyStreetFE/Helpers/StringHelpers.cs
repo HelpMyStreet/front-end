@@ -10,7 +10,7 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class StringHelpers
     {
-        private static readonly Regex LineBreakRegex = new Regex(@"(\n|\r)+");
+        private static readonly Regex LineBreakRegex = new Regex(@"(\n|\r){1,2}");
 
         public static string ToHtmlSafeStringWithLineBreaks(this string inputString)
         {
