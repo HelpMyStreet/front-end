@@ -543,6 +543,8 @@ namespace HelpMyStreetFE.Repositories
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Wirral";
             communityViewModel.HeaderVolunteerButtonText = null;
+            communityViewModel.HeaderButtonWidth = 12;
+
             communityViewModel.CommunityVolunteersTextHtml =
                  @"<p>
                     Age UK Wirral is an independent, local charity and we have been working in the local community to help 
@@ -569,7 +571,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.RequestHelpHeading = @"How can we help?";
 
             communityViewModel.RequestHelpText = @"We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
-            communityViewModel.HeaderVolunteerButtonText = "Age UK Wirral relies on volunteers to help us offer vital services in the local community.Would you like to lend a hand?";
+            communityViewModel.HeaderVolunteerButtonText = "Age UK Wirral relies on volunteers to help us offer vital services in the local community. Would you like to lend a hand?";
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
