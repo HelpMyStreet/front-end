@@ -113,13 +113,13 @@ export function showStatusUpdatePopup(btn) {
         switch (response.fetchResponse) {
           case fetchResponses.UNAUTHORISED:
           case fetchResponses.BAD_REQUEST:
-            popupSettings.messageOnFalse = "BASE MESSAGE + Another user may have updated the same request; please refresh your browser window.";
+            popupSettings.messageOnFalse = "Sorry, we couldn't update that request. Another user may have updated the same request; please refresh your browser window.";
             break;
           case fetchResponses.SERVER_ERROR:
           case fetchResponses.SERVER_NOT_FOUND:
           case fetchResponses.TIMEOUT:
           case fetchResponses.BAD_FETCH:
-            popupSettings.messageOnFalse = "BASE MESSAGE + Please try again using the button below.";
+            popupSettings.messageOnFalse = "Sorry, we couldn't update that request. Please try again using the button below.";
         }
         return false;
       }
