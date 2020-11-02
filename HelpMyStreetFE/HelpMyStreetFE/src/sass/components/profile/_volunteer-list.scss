@@ -64,6 +64,9 @@
       }
     }
 
+    a.what-is-this {
+      text-decoration: none;
+    }
 
     .credential {
       padding-top: 0.5rem;
@@ -93,8 +96,6 @@
       }
 
       a {
-        text-decoration: none;
-
         span.cross {
           cursor: pointer;
         }

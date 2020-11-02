@@ -42,6 +42,7 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
             var groupMembers = await _groupMemberService.GetAllGroupMembers(groupId, user.ID);
             var groupCompletedRequests = await _requestService.GetGroupRequestsAsync(groupId, true, cancellationToken);
             var groupCredentials = await _groupService.GetGroupCredentials(groupId);
@@ -59,6 +60,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             var volunteerListViewModel = new VolunteerListViewModel
             {
+                GroupName = group.GroupName,
                 GroupCredentials = groupCredentials,
                 Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null),
                 UserId = user.ID,

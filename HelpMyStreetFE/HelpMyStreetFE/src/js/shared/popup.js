@@ -37,7 +37,9 @@ export async function showPopup(settings) {
   if (settings.cssClass) {
     popup.find(".popup__content").addClass(settings.cssClass);
   }
-  popup.find(".popup__content__buttons").first().removeClass('dnone');
+  if (!settings.noButtons) {
+    popup.find(".popup__content__buttons").first().removeClass('dnone');
+  }
   if (settings.rejectBtnText) {
     popup.find('#popup-reject').parent().removeClass('dnone');
     popup.find("#popup-reject > .text").text(settings.rejectBtnText);
