@@ -21,10 +21,6 @@
       color: red;
     }
 
-    position: inherit;
-    top: 30%;
-    left: 53%;
-    transform: translate(-50%, -28%);
     min-width: 300px;
     width: 50%;
     background: white;
@@ -41,10 +37,6 @@
 
     &.warning {
       border-color: $orange
-    }
-
-    @media screen and (min-width: $sm-screen) {
-      transform: translate(-50%, -50%);
     }
 
     &__wrapper {

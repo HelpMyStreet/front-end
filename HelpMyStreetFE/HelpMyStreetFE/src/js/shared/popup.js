@@ -3,16 +3,18 @@ import { hmsFetch, fetchResponses } from "./hmsFetch"
 
 export async function showServerSidePopup(source, settings) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
-  popup.find(".popup__content").centerPopup();
 
   if (settings.noFade) {
     popup.show();
   } else {
     popup.fadeIn(200);
   }
+  popup.find(".popup__content").centerPopup();
+
   var response = await hmsFetch(source);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     popup.find(".popup__content").first().replaceWith(await response.fetchPayload);
+    popup.find(".popup__content").centerPopup();
   } else {
     popup.find(".popup__content__header").first().text("That didn't work.");
     popup.find(".popup__content__text").first().html("<p>Sorry, we couldn't load this popup.  Please try again.</p>");
