@@ -113,9 +113,9 @@ function bindCloseClick(popup) {
 }
 
 jQuery.fn.centerPopup = function () {
-  this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
+  this.css("top", Math.max(0, (($(window).height() - $(this).height()) / 2) +
     $(window).scrollTop()) + "px");
-  this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
+  this.css("left", Math.max(0, (($(window).width() - $(this).width()) / 2) +
     $(window).scrollLeft()) + "px");
   return this;
 }

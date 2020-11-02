@@ -21,8 +21,8 @@
       color: red;
     }
 
-    min-width: 300px;
-    width: 50%;
+    max-width: 90%;
+    width: 35rem;
     background: white;
     z-index: 4;
     border: 8px solid $green;
@@ -31,8 +31,7 @@
     padding: 20px;
 
     &.wide {
-      max-width: 90%;
-      width: 75rem;
+      width: 50rem;
     }
 
     &.warning {
