@@ -104,7 +104,7 @@ export function showStatusUpdatePopup(btn) {
       let response = await setJobStatus(job, targetState, targetUser);
 
       if (response.fetchResponse == fetchResponses.SUCCESS) {
-        $(job).find('.job__status__new').html(response.fetchPayload);
+        $(job).find('.job__status__new').html(await response.fetchPayload);
         $(job).find('.job__info__urgency__dates').toggle();
         $(job).find('button').toggle();
         $(job).find('.next-step').toggle();
