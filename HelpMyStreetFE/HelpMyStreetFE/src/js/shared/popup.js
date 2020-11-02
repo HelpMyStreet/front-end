@@ -29,7 +29,6 @@ export async function showServerSidePopup(source, settings) {
 
 export async function showPopup(settings) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
-  popup.find(".popup__content").centerPopup();
 
   popup.find(".popup__content__header").first().text(settings.header);
   popup.find(".popup__content__text").first().html(settings.htmlContent);
@@ -49,6 +48,7 @@ export async function showPopup(settings) {
   } else {
     popup.fadeIn(200);
   }
+  popup.find(".popup__content").centerPopup();
 
   bindAcceptClick(popup, settings);
   bindRejectClick(popup, settings);
@@ -113,6 +113,9 @@ function bindCloseClick(popup) {
 }
 
 jQuery.fn.centerPopup = function () {
+  console.log($(window).height());
+  console.log($(this).outerHeight());
+  console.log($(window).scrollTop());
   this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
     $(window).scrollTop()) + "px");
   return this;
