@@ -29,6 +29,7 @@
     text-align: center;
     @include shadow-md;
     padding: 20px;
+    margin: 0 auto;
 
     &.wide {
       width: 65rem;
