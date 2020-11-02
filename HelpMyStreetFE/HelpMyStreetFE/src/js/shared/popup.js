@@ -14,7 +14,6 @@ export async function showServerSidePopup(source, settings) {
   var response = await hmsFetch(source);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     popup.find(".popup__content").first().replaceWith(await response.fetchPayload);
-    popup.find(".popup__content").centerPopup();
   } else {
     popup.find(".popup__content__header").first().text("That didn't work.");
     popup.find(".popup__content__text").first().html("<p>Sorry, we couldn't load this popup.  Please try again.</p>");
@@ -113,9 +112,7 @@ function bindCloseClick(popup) {
 }
 
 jQuery.fn.centerPopup = function () {
-  this.css("top", Math.max(0, (($(window).height() - $(this).height()) / 2) +
+  this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
     $(window).scrollTop()) + "px");
-  this.css("left", Math.max(0, (($(window).width() - $(this).width()) / 2) +
-    $(window).scrollLeft()) + "px");
   return this;
 }
