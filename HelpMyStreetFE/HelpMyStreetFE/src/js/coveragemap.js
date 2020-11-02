@@ -329,7 +329,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
-                icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(70, 70) },
+                icon: { url: "/img/logos/markers/hms2a.png", scaledSize: new google.maps.Size(70, 80) },
                 zIndex: 1000,
                 animation: google.maps.Animation.BOUNCE
             });
