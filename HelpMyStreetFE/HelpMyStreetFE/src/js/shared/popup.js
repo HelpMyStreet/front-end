@@ -12,7 +12,7 @@ export async function showServerSidePopup(source, settings) {
   }
   var response = await hmsFetch(source);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
-    popup.find(".popup__content__wrapper").first().html(await response.fetchPayload);
+    popup.find(".popup__content").first().replaceWith(await response.fetchPayload);
   } else {
     popup.find(".popup__content__header").first().text("That didn't work.");
     popup.find(".popup__content__text").first().html("<p>Sorry, we couldn't load this popup.  Please try again.</p>");

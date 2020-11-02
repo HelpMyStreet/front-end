@@ -34,6 +34,11 @@
     @include shadow-md;
     padding: 20px;
 
+    &.wide {
+      max-width: 90%;
+      width: 75rem;
+    }
+
     &.warning {
       border-color: $orange
     }
