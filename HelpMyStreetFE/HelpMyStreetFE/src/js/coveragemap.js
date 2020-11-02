@@ -287,6 +287,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         if (isMapShowingLargeArea === true) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.lat, lng: coord.lng },
+                clickable: false,
                 title: null,
                 icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
             });
@@ -294,6 +295,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         } else {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.lat, lng: coord.lng },
+                clickable: false,
                 title: coord.pc,
                 icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(35, 35) }
             });
