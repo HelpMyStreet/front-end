@@ -24,6 +24,7 @@ namespace HelpMyStreetFE.Helpers
                     SupportActivities.WellbeingPackage => "wellbeing packages sent",
                     SupportActivities.CommunityConnector => "community connector tasks",
                     SupportActivities.MedicalAppointmentTransport => "medical appointments transported",
+                    SupportActivities.ColdWeatherArmy => "cold weather army tasks completed",
                     SupportActivities.Other => "other tasks",
                     _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
                 };
@@ -44,6 +45,7 @@ namespace HelpMyStreetFE.Helpers
                     SupportActivities.WellbeingPackage => "wellbeing package sent",
                     SupportActivities.CommunityConnector => "community connector task",
                     SupportActivities.MedicalAppointmentTransport => "medical appointment transported",
+                    SupportActivities.ColdWeatherArmy => "cold weather army task completed",
                     SupportActivities.Other => "other task",
                     _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
                 };
