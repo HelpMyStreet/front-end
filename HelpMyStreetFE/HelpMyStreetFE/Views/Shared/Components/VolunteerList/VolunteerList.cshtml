@@ -14,7 +14,12 @@
 <div class="volunteer-list generic-expander pt-sm">
 
     <div class="location header">Location</div>
-    <div class="completed-requests header">Completed Requests</div>
+    <div class="completed-requests header">
+        Completed Requests
+        <a href="#" class="what-is-this" data-header="Completed Requests" data-description="<p class='text-left'>This is the number of requests completed by the user for @Model.GroupName.</p>">
+            What is this?
+        </a>
+    </div>
     @foreach (var credential in Model.GroupCredentials.OrderBy(c => c.DisplayOrder))
     {
         <div class="pad-xs credential header">
@@ -53,6 +58,11 @@
         <div class="completed-requests">
             <span class="small-screen-only">Completed Requests: </span>
             @volunteer.CompletedRequests
+            <span class="small-screen-only">
+                <a href="#" class="what-is-this" data-header="Completed Requests" data-description="<p class='text-left'>This is the number of requests completed by the user for @Model.GroupName.</p>">
+                    (What is this?)
+                </a>
+            </span>
         </div>
         @foreach (var credential in volunteer.Credentials.OrderBy(c => c.GroupCredential.DisplayOrder))
         {

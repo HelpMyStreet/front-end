@@ -10,7 +10,6 @@ namespace HelpMyStreetFE.Repositories
         Task<int> CreateUser(string email, string authId, int referringGroupId, string source);
         Task<int> CreateUserStepThree(RegistrationStepThree data);
         Task<int> CreateUserStepTwo(RegistrationStepTwo data);
-        Task<int> CreateUserStepFive(RegistrationStepFive data);
         Task<int> GetVolunteerCountByPostcode(string postcode);
         Task<User> GetUser(int id);
         Task<User> GetUserByAuthId(string authId);

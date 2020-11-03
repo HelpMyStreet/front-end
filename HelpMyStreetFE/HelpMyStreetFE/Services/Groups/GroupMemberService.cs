@@ -9,6 +9,7 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services.Groups
@@ -19,17 +20,15 @@ namespace HelpMyStreetFE.Services.Groups
         private readonly IMemDistCache<List<UserGroup>> _memDistCache;
         private readonly IMemDistCache<UserInGroup> _memDistCache_userInGroup;
         private readonly IGroupService _groupService;
-        private readonly IUserService _userService;
 
         private const string CACHE_KEY_PREFIX = "group-member-service-";
         private const int YOTI_CREDENTIAL_ID = -1;
 
-        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IUserService userService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
+        public GroupMemberService(IGroupRepository groupRepository, IMemDistCache<List<UserGroup>> memDistCache, IGroupService groupService, IMemDistCache<UserInGroup> memDistCache_userInGroup)
         {
             _groupRepository = groupRepository;
             _memDistCache = memDistCache;
             _groupService = groupService;
-            _userService = userService;
             _memDistCache_userInGroup = memDistCache_userInGroup;
         }
 
@@ -78,6 +77,9 @@ namespace HelpMyStreetFE.Services.Groups
 
             if (result == GroupPermissionOutcome.Success)
             {
+                // Cannot do this due to circular dependency
+                //_requestService.TriggerCacheRefresh(userId, cancellationToken);
+
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await GetUserRoles(userId);
@@ -93,6 +95,9 @@ namespace HelpMyStreetFE.Services.Groups
 
             if (result == GroupPermissionOutcome.Success)
             {
+                // Cannot do this due to circular dependency
+                //_requestService.TriggerCacheRefresh(userId, cancellationToken);
+
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await GetUserRoles(userId);
