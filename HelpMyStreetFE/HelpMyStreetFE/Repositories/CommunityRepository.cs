@@ -600,12 +600,6 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Home & Communities Volunteer Coordinator",
                     ImageLocation = "/img/community/ageuk/wirral/KG.jpg"
                 },
-                new CommunityVolunteer()
-                {
-                    Name = "Catherine Sindall",
-                    Role = "Administrator",
-                    ImageLocation = "/img/community/ageuk/wirral/CS.jpg"
-                }
             };
 
             communityViewModel.UsefulLinksHtml =
