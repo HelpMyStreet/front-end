@@ -6,7 +6,9 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
 {
     public class VolunteerListViewModel
     {
+        public string GroupName { get; set; }
         public IEnumerable<GroupCredential> GroupCredentials { get; set; }
         public IEnumerable<VolunteerViewModel> Volunteers { get; set; }
+        public int UserId { get; set; }
     }
 }

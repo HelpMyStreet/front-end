@@ -3,16 +3,18 @@ import { hmsFetch, fetchResponses } from "./hmsFetch"
 
 export async function showServerSidePopup(source, settings) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
-  popup.find(".popup__content").centerPopup();
 
   if (settings.noFade) {
     popup.show();
   } else {
     popup.fadeIn(200);
   }
+  popup.find(".popup__content").centerPopup();
+
   var response = await hmsFetch(source);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
-    popup.find(".popup__content__wrapper").first().html(await response.fetchPayload);
+    popup.find(".popup__content").first().replaceWith(await response.fetchPayload);
+    popup.find(".popup__content").centerPopup();
   } else {
     popup.find(".popup__content__header").first().text("That didn't work.");
     popup.find(".popup__content__text").first().html("<p>Sorry, we couldn't load this popup.  Please try again.</p>");
@@ -27,7 +29,6 @@ export async function showServerSidePopup(source, settings) {
 
 export async function showPopup(settings) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
-  popup.find(".popup__content").centerPopup();
 
   popup.find(".popup__content__header").first().text(settings.header);
   popup.find(".popup__content__text").first().html(settings.htmlContent);
@@ -36,7 +37,9 @@ export async function showPopup(settings) {
   if (settings.cssClass) {
     popup.find(".popup__content").addClass(settings.cssClass);
   }
-  popup.find(".popup__content__buttons").first().removeClass('dnone');
+  if (!settings.noButtons) {
+    popup.find(".popup__content__buttons").first().removeClass('dnone');
+  }
   if (settings.rejectBtnText) {
     popup.find('#popup-reject').parent().removeClass('dnone');
     popup.find("#popup-reject > .text").text(settings.rejectBtnText);
@@ -47,6 +50,7 @@ export async function showPopup(settings) {
   } else {
     popup.fadeIn(200);
   }
+  popup.find(".popup__content").centerPopup();
 
   bindAcceptClick(popup, settings);
   bindRejectClick(popup, settings);
@@ -113,7 +117,5 @@ function bindCloseClick(popup) {
 jQuery.fn.centerPopup = function () {
   this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) +
     $(window).scrollTop()) + "px");
-  this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) +
-    $(window).scrollLeft()) + "px");
   return this;
 }

@@ -23,7 +23,14 @@
                     <dt>When is the help needed?</dt>
                     @if (Model.JobDetail.JobSummary.DueDays < 0)
                     {
-                        <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+                        if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
+                        {
+                            <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+                        }
+                        else
+                        {
+                            <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
+                        }
                     }
                     else if (Model.JobDetail.JobSummary.DueDateType == DueDateType.On)
                     {
@@ -31,7 +38,14 @@
                     }
                     else if (Model.JobDetail.JobSummary.DueDays == 0)
                     {
-                        <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
+                        if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
+                        {
+                            <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
+                        }
+                        else
+                        {
+                            <dd>This request is due <strong>today</strong>. Please get in touch with the help recipient urgently to arrange the support they need.</dd>
+                        }
                     }
                     else
                     {

@@ -52,7 +52,11 @@
                 <div class="tiles__tile__content ">
                     <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
                     <div class="tiles__tile__content__header">When is the help needed?</div>
-                    <div class="tiles__tile__content__description">@Model.TimeRequestedReviewString</div>
+                    <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
+                    @if (Model.TimeRequested.OnDate)
+                    {
+                        <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dd MMM yyyy")</div>
+                    }
                 </div>
             </div>
         </div>
