@@ -1,14 +1,19 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
 
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Completed?</div>
+        <div class="popup__content__text">
+            <p>Thank you so much for helping people in your community stay safe!</p>
+            <p>We’ll remove this request from your “My Accepted Requests” page.</p>
+            <p>The requester will be notified that the request has been marked as Complete.</p>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t complete this request at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
+        </div>
+    </div>
+</div>
 
-<div class="popup__content__header">Completed?</div>
-<div class="popup__content__text">
-    <p>Thank you so much for helping people in your community stay safe!</p>
-    <p>We’ll remove this request from your “My Accepted Requests” page.</p>
-    <p>The requester will be notified that the request has been marked as Complete.</p>
-</div>
-<div class="popup__content__buttons">
-    <p class="error dnone">Oops, we couldn’t complete this request at the moment.</p>
-    <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
-</div>
 
