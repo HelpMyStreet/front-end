@@ -149,6 +149,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Pam from Ruddington provided help",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
+                    B2BFeedback = true
                 },
                 new FeedbackMessage()
                 {
@@ -157,6 +158,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Harvey from Ruddington provided help",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ruddington",
+                    B2BFeedback = true
                 },
                 new FeedbackMessage()
                 {
