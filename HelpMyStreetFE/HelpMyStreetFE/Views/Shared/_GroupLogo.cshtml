@@ -1,0 +1,34 @@
+﻿@using HelpMyStreet.Utils.Enums;
+
+@model HelpMyStreetFE.Models.Community.GroupLogoViewModel
+
+@switch (Model.GroupId)
+{
+    case (int)Groups.Generic:
+        <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+        break;
+    case (int)Groups.AgeUKWirral:
+        <img src="~/img/community/ageUK/wirral/AgeUKWirral-logo.png" alt="AgeUK Wirral" />
+        break;
+    case (int)Groups.AgeUKLSL:
+        <img src="~/img/community/ageUK/AgeUKLSL_logo_300px.png" alt="AgeUK Lincoln & South Lincolnshire" />
+        break;
+    case (int)Groups.Ruddington:
+        <span class="composite-logo">
+            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+            <span>Ruddington</span>
+        </span>
+        break;
+    case (int)Groups.Tankersley:
+        <span class="composite-logo">
+            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+            <span>Tankersley</span>
+        </span>
+        break;
+    case (int)Groups.FTLOS:
+        <span class="composite-logo">
+            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+            <span>FTLOS</span>
+        </span>
+        break;
+}
