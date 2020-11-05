@@ -118,6 +118,10 @@
             &__icon {
                 margin-bottom: 5px;
 
+                >img {
+                  height: 40px;
+                }
+
                 .text-icon {
                     margin: 5px;
                     display: inline-block;
@@ -142,16 +146,6 @@
                     img {
                         vertical-align: middle;
                     }
-                }
-
-                .icon-size-sm {
-                    width: 50px;
-                    margin-top: 18px;
-                    vertical-align: bottom;
-                }
-
-                .double-line-alignment {
-                    margin-top: 22px;
                 }
             }
 

@@ -80,10 +80,9 @@ export function initialiseRequests(isVerified) {
     buttonLoad($(this));
     let response = await setJobStatus(job, targetState, targetUser);
     if (response.fetchResponse == fetchResponses.SUCCESS) {
-      $(job).find('.job__status__new').hide().html('');
-      $(job).find('.job__info__urgency__dates').toggle();
+      $(job).find('.job__status__new').html('');
+      $(job).find('.toggle-on-status-change').toggle();
       $(job).find('button').toggle();
-      $(job).find('.next-step').toggle();
     }
     buttonUnload($(this));
   });
@@ -104,10 +103,9 @@ export function showStatusUpdatePopup(btn) {
       let response = await setJobStatus(job, targetState, targetUser);
 
       if (response.fetchResponse == fetchResponses.SUCCESS) {
-        $(job).find('.job__status__new').show().html(await response.fetchPayload);
-        $(job).find('.job__info__urgency__dates').toggle();
+        $(job).find('.job__status__new').html(await response.fetchPayload);
+        $(job).find('.toggle-on-status-change').toggle();
         $(job).find('button').toggle();
-        $(job).find('.next-step').toggle();
         return true;
       } else {
         switch (response.fetchResponse) {
