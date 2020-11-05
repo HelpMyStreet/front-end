@@ -43,16 +43,28 @@
     &__col1 {
       display: flex;
       justify-content: space-between;
-      padding: 0.25rem;
+      flex-wrap: wrap;
+      padding-top: 0.25rem;
+      color: $dark-blue;
+      text-align: center;
 
       @media (min-width: $med-screen) {
         justify-content: space-around;
+        align-items: center;
       }
-
 
       &__referrer {
         display: flex;
         align-items: center;
+        margin-bottom: 0.5rem;
+        margin-left: 0.25rem;
+        order: 3;
+
+        @media (min-width: $med-screen) {
+          &.admin-view {
+            align-self: flex-start;
+          }
+        }
 
         img {
           display: block;
@@ -116,48 +128,62 @@
       }
 
       &__urgency {
-        margin-right: 0.5rem;
-        margin-bottom: 0.25rem;
+        margin-right: 0.75rem;
+        margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
+        order: 4;
 
         @media (min-width: $med-screen) {
           flex-direction: column;
           justify-content: center;
+
+          &.admin-view {
+            align-self: flex-start;
+          }
         }
 
         &__dates {
-          color: $dark-blue;
-          text-align: center;
+          display: flex;
+          align-items: center;
 
-          .job__status {
-            font-weight: bold;
-            color: $black;
-          }
-
-          span,
           img {
             padding: 0 5px;
-          }
-
-          > span {
-            margin: 0 10px;
-          }
-
-          img {
             height: 25px;
             margin: 5px;
-            display: block;
-
-            @media (min-width: $med-screen) {
-              margin: 5px auto;
-            }
+            display: inline-block;
           }
 
           @media (min-width: $med-screen) {
             max-width: 10rem;
+            flex-direction: column;
           }
         }
+      }
+
+      &__status {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 1rem;
+        background: $washed-blue;
+        order: 5;
+
+        @media (min-width: $sm-med-screen) {
+          margin: 1rem 3rem 0 3rem;
+        }
+
+        @media (min-width: $med-screen) {
+          margin: 0 0 1rem 0;
+          background: none;
+          order: 1;
+          padding-right: 0;
+        }
+      }
+
+      .job__status {
+        font-weight: bold;
+        color: $black;
       }
     }
 
@@ -166,10 +192,25 @@
 
     &__activity {
       background-color: $washed-blue;
-      padding: 0.5rem 0;
+      padding: 0.5rem 1rem;
       display: flex;
       align-items: center;
       flex-direction: column;
+
+      &.admin-view {
+        flex-direction: row;
+        justify-content: space-between;
+
+        @media (min-width: $sm-med-screen) {
+          margin: 0 3rem 1rem 3rem;
+        }
+
+        @media (min-width: $med-screen) {
+          flex-direction: column;
+          justify-content: center;
+          margin: 0;
+        }
+      }
 
       @media (min-width: $sm-med-screen) {
         flex-direction: row;
@@ -196,8 +237,8 @@
         img {
           display: inline-block;
           margin-right: 10px;
-          width: 1.8rem;
-          max-height: 11.8rem;
+          width: 1.9rem;
+          max-height: 1.9rem;
         }
       }
 
@@ -257,6 +298,7 @@
       display: flex;
       flex-grow: 0;
       margin-top: 10px;
+      min-width: 9rem;
 
       @media (min-width: $sm-med-screen) {
         margin-left: 0.5rem;
