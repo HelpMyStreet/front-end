@@ -329,6 +329,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                   </div>`
             });
             thisMarker = new google.maps.Marker({
+                type: "community",
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
                 icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(70, 70) },
@@ -387,7 +388,14 @@ function setMapOnAll(googleMap) {
 }
 
 function clearMarkers() {
-    setMapOnAll(null);
+  googleMapMarkers.forEach(function (value, key, mapCollection) {
+    if (value.type == "community") {
+      // Don't delete community markers?
+    }
+    else {
+      value.setMap(null);
+    }
+  });
 }
 
 function showMarkers() {
