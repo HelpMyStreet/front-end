@@ -232,5 +232,24 @@ namespace HelpMyStreetFE.Repositories
             }
             return false;
         }
+
+        public async Task<Instructions> GetGroupSupportActivityInstructions(int groupId, SupportActivities supportActivity)
+        {
+            GetGroupSupportActivityInstructionsRequest request = new GetGroupSupportActivityInstructionsRequest()
+            {
+                GroupId = groupId,
+                SupportActivityType = new SupportActivityType() { SupportActivity = supportActivity }
+            };
+            string json = JsonConvert.SerializeObject(request);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetGroupSupportActivityInstructions", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupSupportActivityInstructionsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.Instructions;
+            }
+            throw new Exception("Bad response from GetGroupSupportActivityInstructions");
+        }
     }
 }

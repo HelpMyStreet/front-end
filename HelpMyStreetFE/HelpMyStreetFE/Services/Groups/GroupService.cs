@@ -108,5 +108,10 @@ namespace HelpMyStreetFE.Services.Groups
 
             return credential;
         }
+
+        public async Task<Instructions> GetGroupSupportActivityInstructions(int groupId, SupportActivities supportActivity)
+        {
+            return await _groupRepository.GetGroupSupportActivityInstructions(groupId, supportActivity);
+        }
     }
 }
