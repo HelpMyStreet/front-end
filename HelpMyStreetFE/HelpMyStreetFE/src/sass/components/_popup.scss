@@ -21,25 +21,22 @@
       color: red;
     }
 
-    position: inherit;
-    top: 30%;
-    left: 53%;
-    transform: translate(-50%, -28%);
-    min-width: 300px;
-    width: 50%;
+    max-width: 90%;
+    width: 35rem;
     background: white;
     z-index: 4;
     border: 8px solid $green;
     text-align: center;
     @include shadow-md;
     padding: 20px;
+    margin: 0 auto;
+
+    &.wide {
+      width: 65rem;
+    }
 
     &.warning {
       border-color: $orange
-    }
-
-    @media screen and (min-width: $sm-screen) {
-      transform: translate(-50%, -50%);
     }
 
     &__wrapper {

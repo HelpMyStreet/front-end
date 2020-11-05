@@ -3,7 +3,7 @@
 @{
     var todaysDate = DateTime.Now;
     todaysDate = todaysDate.ToLocalTime();
-    var stringDate = $"{todaysDate.Day}/{todaysDate.Month}/{todaysDate.Year}";
+    var stringDate = todaysDate.ToString("dd/MM/yyyy");
 }
 
 <div class="sm4">

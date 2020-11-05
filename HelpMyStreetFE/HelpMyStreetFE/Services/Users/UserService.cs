@@ -119,24 +119,6 @@ namespace HelpMyStreetFE.Services.Users
             });
         }
 
-        public async Task CreateUserStepFiveAsync(
-         int id,
-         bool verified,
-         CancellationToken cancellationToken)
-        {
-            await _userRepository.CreateUserStepFive(new RegistrationStepFive
-            {
-                UserID = id,
-                IsVerified = verified
-            });
-
-            if (verified)
-            {
-                RefreshUserCache(id, cancellationToken);
-            }
-        }
-
-
         public async Task<int> GetVolunteers()
         {
             return await _userRepository.GetDistinctVolunteerUserCount();

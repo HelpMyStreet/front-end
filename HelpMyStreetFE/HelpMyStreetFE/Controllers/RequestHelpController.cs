@@ -168,7 +168,7 @@ namespace HelpMyStreetFE.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "an error occured in request help form action");
-                requestHelp.Errors.Add("Oops! an error occured sumbitting your request, please try again later.");
+                requestHelp.Errors.Add("Oops! An error occured submitting your request; please try again later.");
             }
 
 
