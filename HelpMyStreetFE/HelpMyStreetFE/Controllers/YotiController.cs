@@ -59,11 +59,6 @@ namespace HelpMyStreetFE.Controllers
                 var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId.Value }, cancellationToken);
                 if (response.Status == ValidationStatus.Success || response.Status == ValidationStatus.Unauthorized)
                 {
-                    if (response.Status == ValidationStatus.Success)
-                    {
-                        await _userService.CreateUserStepFiveAsync(validUserId.Value, true, cancellationToken);
-                    }
-
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                     if (user == null)
                     {

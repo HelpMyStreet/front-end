@@ -2,7 +2,7 @@
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
-import { dateValidationSchemes, datepickerLoad, validateDob } from "../shared/date-picker";
+import { dateValidationSchemes, datepickerLoad, validateDate } from "../shared/date-picker";
 
 export function intialiseRequestStage() {
   intialiseRequestTiles();
@@ -30,10 +30,10 @@ var validateForm = function () {
       "currentStep.SelectedTask.Id": (v) => v !== "" || "Please select at least one task type",
       "currentStep.SelectedRequestor.Id": (v) => v !== "" || "Please select from one of the available options",
       "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",
-      "currentStep.AgreeToPrivacyAndTerms.Id": (v) => v !== "" || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",
+      "currentStep.AgreeToPrivacyAndTerms": (v) => v === true || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",
     });
 
-    const validForm = validateQuestions() && valid;
+    const validForm = validateQuestions() && validateDateIfNecessary() && valid;
 
     trackEvent("Request form", "Submit 0.request", validForm ? "(Valid)" : "(Invalid)", 0);
 
@@ -153,5 +153,13 @@ function displayTodayHelpNeededOptions(show) {
   } else {
     $('#time_1').parent().show();
     $('#time_2').parent().show();
+  }
+}
+
+function validateDateIfNecessary() {
+  if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
+    return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES);
+  } else {
+    return true;
   }
 }
