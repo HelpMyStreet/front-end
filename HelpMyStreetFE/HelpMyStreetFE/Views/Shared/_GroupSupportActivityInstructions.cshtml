@@ -2,10 +2,7 @@
 
 @model HelpMyStreet.Utils.Models.Instructions
 
-@if (!string.IsNullOrEmpty(Model.Intro))
-{
-    <p>@Model.Intro</p>
-}
+@Markdown.ParseHtmlString(Model.Intro)
 
 @if (Model.Steps.Count > 0)
 {
@@ -21,7 +18,4 @@
     </ol>
 }
 
-@if (!string.IsNullOrEmpty(Model.Close))
-{
-    <p>@Model.Close</p>
-}
+@Markdown.ParseHtmlString(Model.Close)
