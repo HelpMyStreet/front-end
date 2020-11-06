@@ -50,7 +50,7 @@
     }
 
     &__text {
-      p, ol, ul, li, li * {
+      p, p *, ol, ol *, ul, ul * {
         @include copy-sz-md;
       }
 
