@@ -1,5 +1,6 @@
-﻿@model HelpMyStreet.Utils.Models.Instructions
+﻿@using Westwind.AspNetCore.Markdown
 
+@model HelpMyStreet.Utils.Models.Instructions
 
 @if (!string.IsNullOrEmpty(Model.Intro))
 {
@@ -13,7 +14,7 @@
         {
             <li>
                 <div class="step-heading">@step.Heading</div>
-                <div class="step-detail">@step.Detail</div>
+                @Markdown.ParseHtmlString(step.Detail)
             </li>
         }
 

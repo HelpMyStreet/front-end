@@ -126,14 +126,14 @@
         color: $black;
         margin-bottom: 1.5rem;
 
-        .step-detail {
-          color: $p-color;
+        p {
           font-weight: normal;
+          margin-top: 0;
           margin-bottom: 1rem;
         }
       }
-
-      p:last-child, ul:last-child, ol:last-child {
+      
+      >p:last-child, >ul:last-child, >ol:last-child {
         margin-bottom: 0;
       }
 
