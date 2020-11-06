@@ -1,20 +1,21 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
 
-<div class="popup__content">
+<div class="popup__content wide">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
-        <div class="popup__content__header">Accept this Request for Help?</div>
+        <div class="popup__content__header">Accept this request for help?</div>
         <div class="popup__content__text">
-            <p>It will appear on your “My Accepted Requests” page and you’ll be able to view more information about it.</p>
-            <p>Please use the information in the request to fulfil it as soon as possible (this may involve contacting the recipient) – the ball’s in your court, someone may be depending on you.</p>
-            <p>The requester will be notified that their request has been accepted, but won’t be given your contact details.</p>
+            <p>If you click to accept this request it will appear on your “My Accepted Requests” page and you’ll be able to view more information to help you complete it.</p>
 
             @if (!string.IsNullOrEmpty(Model.ReferringGroup))
             {
                 <p>This request was made via <strong>@Model.ReferringGroup</strong>. When you accept this request by clicking “Continue” below, your details will become visible to their administrator(s), who may use these details only in relation to this request.</p>
             }
 
-            <p>Thank you for helping people in your community to stay safe.</p>
+            <div class="volunteer-instructions">
+                <h5>Volunteer Instructions</h5>
+                <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
+            </div>
         </div>
         <div class="popup__content__buttons">
             <p class="error dnone">Oops, we couldn’t accept this request at the moment.</p>

@@ -39,6 +39,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobDetail = jobDetails,
                 UserActingAsAdmin = jobSet == JobSet.GroupRequests,
+                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
             };
 
             return View("JobDetail", jobDetailViewModel);
