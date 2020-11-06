@@ -10,6 +10,5 @@ namespace HelpMyStreetFE.Models.RequestHelp
     {
         public SupportActivities Activity { get; set; }
         public string Description { get; set; }
-        public string IconClass { get; set; }
     }
 }

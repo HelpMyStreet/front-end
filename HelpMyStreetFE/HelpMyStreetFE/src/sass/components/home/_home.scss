@@ -12,14 +12,7 @@
 }
 
 
-.face-coverings-panel {
-    .ftlos-partnership {
-        max-width: 330px;
-        margin-left: 10px;
-        margin-bottom: 20px;
-
-        @media screen and (min-width: $med-screen) {
-            margin-bottom: 0;
-        }
-    }
+.card .age-uk-wirral-logo {
+  display: block;
+  margin: 2rem auto;
 }

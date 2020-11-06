@@ -92,6 +92,8 @@ $breakpointLg: 1550px;
                     &__user-details {
                         padding: 10px 5px;
                         cursor: pointer;
+                        min-width: 9.5rem;
+                        margin-left: 1.5rem;
 
                         .mobile {
                             display: none;
