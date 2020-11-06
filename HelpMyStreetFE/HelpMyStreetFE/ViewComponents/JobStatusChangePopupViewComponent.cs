@@ -71,7 +71,12 @@ namespace HelpMyStreetFE.ViewComponents
 
         private async Task<JobStatusChangePopupViewModel> BuildVm(JobSummary job, JobStatuses targetStatus, CancellationToken cancellationToken)
         {
-            JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel() { JobSummary = job, TargetStatus = targetStatus };
+            JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel()
+            {
+                JobSummary = job,
+                TargetStatus = targetStatus,
+                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(job.ReferringGroupID, job.SupportActivity, cancellationToken),
+            };
 
             if (job.ReferringGroupID != (int)Groups.Generic)
             {

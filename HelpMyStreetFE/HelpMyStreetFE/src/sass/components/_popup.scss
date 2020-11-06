@@ -50,8 +50,11 @@
     }
 
     &__text {
-      p {
+      p, ol, ul, li, li * {
         @include copy-sz-md;
+      }
+
+      p {
         margin-bottom: 2rem;
       }
 
@@ -104,6 +107,43 @@
             background: $light-orange-opaque;
           }
         }
+      }
+    }
+
+    .volunteer-instructions {
+      border: 1px solid $black;
+      background-color: $green-transparent;
+      text-align: left;
+      margin: 0.5rem 0.5rem 2rem 0.5rem;
+      padding: 1rem;
+
+      h5 {
+        margin-bottom: 1.5rem;
+      }
+
+      ol {
+        font-weight: bold;
+        color: $black;
+        margin-bottom: 1.5rem;
+
+        .step-detail {
+          color: $p-color;
+          font-weight: normal;
+          margin-bottom: 1rem;
+        }
+      }
+
+      p:last-child, ul:last-child, ol:last-child {
+        margin-bottom: 0;
+      }
+
+      @media screen and (min-width: $sm-med-screen) {
+        margin: 1rem 1rem 2rem 1rem;
+      }
+
+      @media screen and (min-width: $med-screen) {
+        margin: 2rem;
+        padding: 2rem;
       }
     }
   }

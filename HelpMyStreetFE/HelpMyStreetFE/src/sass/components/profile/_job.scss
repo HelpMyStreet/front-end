@@ -427,6 +427,30 @@
     &__content {
       display: none;
       margin: 0 0.5rem 0.5rem 0.5rem;
+
+      p, li, li * {
+        font-size: 18px;
+        line-height: 27px;
+      }
+
+      ol {
+        font-weight: bold;
+        color: $black;
+
+        .step-detail {
+          color: $p-color;
+          font-weight: normal;
+          margin-bottom: 1rem;
+        }
+      }
+
+      p:first-child, ul:first-child, ol:first-child {
+        margin-top: 0;
+      }
+
+      p:last-child, ul:last-child, ol:last-child {
+        margin-bottom: 0;
+      }
     }
 
     dl {

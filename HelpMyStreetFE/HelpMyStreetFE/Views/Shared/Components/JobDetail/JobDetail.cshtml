@@ -185,6 +185,20 @@
             </div>
         </div>
     }
+
+    @if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress)
+    {
+        <div class="job__expander">
+            <h4>Volunteer Instructions<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    <div class="sm12">
+                        <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }
 else if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
 {

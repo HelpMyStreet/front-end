@@ -1,0 +1,26 @@
+﻿@model HelpMyStreet.Utils.Models.Instructions
+
+
+@if (!string.IsNullOrEmpty(Model.Intro))
+{
+    <p>@Model.Intro</p>
+}
+
+@if (Model.Steps.Count > 0)
+{
+    <ol>
+        @foreach (var step in Model.Steps)
+        {
+            <li>
+                <div class="step-heading">@step.Heading</div>
+                <div class="step-detail">@step.Detail</div>
+            </li>
+        }
+
+    </ol>
+}
+
+@if (!string.IsNullOrEmpty(Model.Close))
+{
+    <p>@Model.Close</p>
+}
