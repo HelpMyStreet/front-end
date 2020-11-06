@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using HelpMyStreetFE.Repositories;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,24 +75,24 @@ namespace HelpMyStreetFE.Services.Groups
 
         }
 
-        public async Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, CancellationToken cancellationToken)
+        public async Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivity, CancellationToken cancellationToken)
         {
             var result = await _memDistCache_listListGroupCred.GetCachedDataAsync(async (cancellationToken) =>
             {
-                var credentialSetsWithIds = await _groupRepository.GetGroupActivityCredentials(groupId, supportActivitiy);
+                var credentialSetsWithIds = await _groupRepository.GetGroupActivityCredentials(groupId, supportActivity);
                 var groupCredentials = await _groupRepository.GetGroupCredentials(groupId);
                 return credentialSetsWithIds.Select(cs => cs.Select(credentialId => groupCredentials.First(gc => gc.CredentialID == credentialId)).ToList()).ToList();
-            }, $"{CACHE_KEY_PREFIX}-group-activity-credentials-group-{groupId}-activity-{supportActivitiy}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-group-activity-credentials-group-{groupId}-activity-{supportActivity}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
 
             if (result == null)
             {
-                throw new Exception($"Exception in GetGroupActivityCredentials for group {groupId} and activity {supportActivitiy}");
+                throw new Exception($"Exception in GetGroupActivityCredentials for group {groupId} and activity {supportActivity}");
             }
 
             return result;
         }
 
-        public async Task<List<GroupCredential>> GetGroupCredentials (int groupId)
+        public async Task<List<GroupCredential>> GetGroupCredentials(int groupId)
         {
             return await _groupRepository.GetGroupCredentials(groupId);
         }
