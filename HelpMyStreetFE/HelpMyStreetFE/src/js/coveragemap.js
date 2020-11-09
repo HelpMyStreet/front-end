@@ -339,7 +339,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                   </div>`
             });
             thisMarker = new google.maps.Marker({
-                zoomLevel: coord.zoomLevel,
+                zoomLevel: zoomLevel,
                 type: "community",
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
@@ -411,7 +411,7 @@ function setMapOnAll(googleMap) {
 function clearMarkers() {
   googleMapMarkers.forEach(function (value, key, mapCollection) {
     if (value.type == "community") {
-      if (googleMap.getZoom() <= value.zoomLevel){
+      if (googleMap.getZoom() < value.zoomLevel){
           value.setMap(null);
           googleMapMarkers.delete(key);
       }
