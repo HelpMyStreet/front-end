@@ -1,7 +1,15 @@
+@{
+    string signUpURL = "";
+    if (ViewData["LoginViewModel"] != null)
+    {
+        LoginViewModel vm = (LoginViewModel)ViewData["LoginViewModel"];
+		signUpURL = vm.SignUpURL;
+    }
+}
 <nav id="site-nav" class="site-nav collapsed">
 	<ul class="site-nav__items p-0 m-0">
 		<li class="site-nav__item">
-			<a href="/request-help" class="site-nav__link orange">Request Help</a>
+			<a href="@(signUpURL != "" ? signUpURL : "/registration/step-one")" class="site-nav__link orange">Request Help</a>
 		</li>
 		<li class="site-nav__item">
 			<a href="/case-studies" class="site-nav__link">Case Studies</a>
