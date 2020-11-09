@@ -269,32 +269,45 @@ async function startAnimation(){
         }
         });
 
+    var minDate = new Date(coords[0].date).getTime();
+    var maxDate = new Date(coords[coords.length - 1].date).getTime();
+    var diffDate = (maxDate.getTime() - minDate.getTime()) / (1000*60*60*24);
+    var daysPassed = 0;
+
     deleteMarkers();
     removedMarkerForPostcodeLookup();
-    coords.forEach((coord, index) => {
-        let thisMarker;
-    
-            thisMarker = new google.maps.Marker({
-                position: { lat: coord.lat, lng: coord.lng },
-                title: coord.pc,
-                opacity: 0.75,
-                icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
-            });
+    var dateText = document.getElementById('date-display');
 
-        animateMarkers.push(thisMarker)
+    while(minDate.getTime() < maxDate.getTime()){
+        var coordsOnDate = coords.filter((coord) => {
+            var coordDate = new Date(coord.date);
+            return coordDate.getFullYear() == minDate.getFullYear() && coordDate.getDate() == minDate.getDate() && coordDate.getMonth() == minDate.getMonth();
+        })
+        
         var thisTimer = setTimeout(() => {
+        coordsOnDate.forEach((coord, index) => {
+            let thisMarker;
+        
+                thisMarker = new google.maps.Marker({
+                    position: { lat: coord.lat, lng: coord.lng },
+                    title: coord.pc,
+                    opacity: 0.75,
+                    icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
+                });
+    
+            animateMarkers.push(thisMarker)
             thisMarker.setMap(googleMap);
-            var dateText = document.getElementById('date-display');
-            var dateInfo = new Date(coord.date)
-            dateText.innerHTML = dateInfo.toLocaleString('en-GB', {timeZone: 'UTC'});
-            if (index == coords.length - 1){
-                
-
+            
             }
-        }, index * (10000 / coords.length))
+        );
+        dateText.innerHTML = minDate.toLocaleString('en-GB', {timeZone: 'UTC'});
+        },daysPassed * (10000/diffDate));
         animateTimers.push(thisTimer);
-        }
-    );
+        daysPassed = daysPassed + 1 ;
+        minDate.setDate(minDate.getDate() + 1);
+    }
+
+    
     
 
 }
