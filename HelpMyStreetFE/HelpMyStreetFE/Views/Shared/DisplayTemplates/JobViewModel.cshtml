@@ -105,7 +105,14 @@
                 }
             </span>
         </div>
-        <div class="job__info__col3 flex-end">
+        <div class="job__info__col3 flex-end  @(Model.UserActingAsAdmin ? "admin-view" : "")"">
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            {
+                <span class="job__info__col3__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
             <div class="job__info__actions">
                 @switch (Model.JobHeader.JobStatus)
                 {
