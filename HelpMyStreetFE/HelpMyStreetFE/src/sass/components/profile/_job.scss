@@ -33,8 +33,13 @@
     display: grid;
     grid-template-columns: 1fr;
 
+    @media (min-width: $sm-med-screen) {
+      padding: 0.5rem;
+    }
+
     @media (min-width: $med-screen) {
-      grid-template-columns: 1.8fr 1.4fr 1.3fr;
+      padding: 0;
+      grid-template-columns: 1fr 1fr 1fr;
     }
 
     .column {
@@ -49,16 +54,24 @@
       text-align: center;
 
       @media (min-width: $med-screen) {
-        justify-content: space-around;
         align-items: center;
+        justify-content: space-around;
       }
 
       &__referrer {
         display: flex;
         align-items: center;
-        margin-bottom: 0.5rem;
-        margin-left: 0.25rem;
-        order: 3;
+        margin: 0 0.25rem 0.5rem 0.25rem;
+        order: 1;
+
+        &.admin-view {
+          order: 3;
+
+          @media (min-width: $med-screen) {
+            display: none;
+          }
+        }
+
 
         img {
           display: block;
@@ -93,45 +106,58 @@
       }
 
       &__criticality {
-        margin-right: 1.5rem;
+        display: flex;
+        align-items: center;
+        margin: 0 0.5rem 0.5rem 0.5rem;
+        order: 2;
+
+        @media (min-width: $sm-med-screen) {
+          margin: 0 0.75rem 0.5rem 0.75rem;
+        }
 
         @media (min-width: $med-screen) {
-          margin-right: 0;
-          margin-bottom: 0.25rem;
-        }
-
-        .critical {
-          font-weight: bold;
-          color: $light-orange;
-        }
-
-        .critical-icon {
-          margin: 5px;
-          display: inline-block;
-          text-align: center;
-          height: 25px;
-          width: 25px;
-          background-color: $orange;
-          border-radius: 25px;
-          color: white;
-
-          @media (min-width: $med-screen) {
-            display: block;
-            margin: 0 auto 0.25rem auto;
-          }
+          display: none;
         }
       }
 
       &__urgency {
-        margin-right: 0.75rem;
-        margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+        background: $washed-blue;
+        width: 100%;
+        padding: 0.5rem 0.5rem 0 1rem;
         order: 4;
+
+        > * {
+          margin: 0.25rem 0.5rem 0.25rem 0;
+        }
+
+        &.admin-view {
+          justify-content: space-between;
+        }
+
+        @media (min-width: $sm-med-screen) {
+          margin: 1rem 2.5rem 0 2.5rem;
+          justify-content: center;
+
+          &.admin-view {
+            justify-content: space-between;
+          }
+        }
 
         @media (min-width: $med-screen) {
           flex-direction: column;
           justify-content: center;
+          margin: 0;
+          padding-top: 0;
+          background: none;
+          align-self: flex-start;
+
+          > * {
+            margin: 0.25rem 0 0.75rem 0;
+          }
         }
 
         &__dates {
@@ -139,36 +165,32 @@
           align-items: center;
 
           img {
-            padding: 0 5px;
+            padding: 0 0.75rem 0 0;
             height: 25px;
-            margin: 5px;
             display: inline-block;
-          }
-
-          @media (min-width: $med-screen) {
-            max-width: 10rem;
-            flex-direction: column;
           }
         }
       }
 
       &__status {
-        width: 100%;
         display: flex;
-        justify-content: space-between;
-        padding: 0.5rem 1rem;
-        background: $washed-blue;
-        order: 5;
+        padding: 0.5rem;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        order: 1;
 
-        @media (min-width: $sm-med-screen) {
-          margin: 1rem 3rem 0 3rem;
+        img.status-icon {
+          margin-right: 0.5rem;
         }
 
         @media (min-width: $med-screen) {
           margin: 0 0 1rem 0;
           background: none;
-          order: 1;
-          padding-right: 0;
+          margin-bottom: 0;
+
+          img.status-icon {
+            margin-right: 1rem;
+          }
         }
       }
 
@@ -194,29 +216,36 @@
 
     &__activity {
       background-color: $washed-blue;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.5rem 0.5rem 1rem;
       display: flex;
       align-items: center;
       flex-direction: column;
+      margin-bottom: 0.25rem;
+      flex-wrap: wrap;
 
       &.admin-view {
         flex-direction: row;
         justify-content: space-between;
 
         @media (min-width: $sm-med-screen) {
-          margin: 0 3rem 1rem 3rem;
         }
 
         @media (min-width: $med-screen) {
           flex-direction: column;
           justify-content: center;
           margin: 0;
+
+          .job__info__activity__criticality {
+            display: block;
+            margin-bottom: 0.25rem;
+          }
         }
       }
 
       @media (min-width: $sm-med-screen) {
         flex-direction: row;
         justify-content: space-evenly;
+        margin: 0 2.5rem 0.5rem 2.5rem;
       }
 
       @media (min-width: $med-screen) {
@@ -224,16 +253,21 @@
         background: none;
       }
 
+      &__criticality {
+        display: none;
+      }
+
       &__title {
         font-weight: bold;
         display: flex;
-        justify-content: center;
         align-items: center;
-        margin: 5px;
-        white-space: nowrap;
+        margin: 0.25rem 0.5rem 0.25rem 0rem;
+        flex-grow: 1;
 
         @media (min-width: $med-screen) {
-          white-space: initial;
+          justify-content: center;
+          margin-right: 0;
+          flex-grow: 0;
         }
 
         @media (min-width: $lg-screen) {
@@ -249,9 +283,14 @@
 
       &__location {
         text-align: center;
+        margin: 0.25rem 0.5rem 0.25rem 0;
 
         .distance {
           white-space: nowrap;
+        }
+
+        @media (min-width: $med-screen) {
+          margin-right: 0;
         }
       }
     }
@@ -267,8 +306,23 @@
         justify-content: space-between;
       }
 
+      &__criticality {
+        display: none;
+      }
+
       @media (min-width: $med-screen) {
         flex-direction: column;
+
+        &__criticality {
+          display: block;
+          margin-bottom: 0.25rem;
+        }
+
+        &.admin-view {
+          .job__info__col3__criticality {
+            display: none;
+          }
+        }
       }
     }
 
@@ -356,6 +410,34 @@
     }
   }
 
+  .critical {
+    font-weight: bold;
+    color: $light-orange;
+  }
+
+  .critical-icon {
+    margin: 5px 5px 5px 0;
+    display: inline-block;
+    text-align: center;
+    height: 25px;
+    width: 25px;
+    background-color: $orange;
+    border-radius: 25px;
+    color: white;
+
+    @media (min-width: $med-screen) {
+      margin-right: 0.5rem;
+      width: 30px;
+      height: 30px;
+      font-size: 1.3rem;
+      padding-top: 1px;
+    }
+  }
+
+  img.status-icon {
+    width: 3rem;
+  }
+
 
   &__detail {
     display: none;
@@ -427,6 +509,32 @@
     &__content {
       display: none;
       margin: 0 0.5rem 0.5rem 0.5rem;
+
+      p, li, li * {
+        font-size: 18px;
+        line-height: 27px;
+      }
+
+      .volunteer-instructions {
+        ol {
+          font-weight: bold;
+          color: $black;
+
+          p {
+            margin-top: 0;
+            font-weight: normal;
+            margin-bottom: 1rem;
+          }
+        }
+
+        > p:first-child, > ul:first-child, > ol:first-child {
+          margin-top: 0;
+        }
+
+        > p:last-child, > ul:last-child, > ol:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
 
     dl {

@@ -53,7 +53,10 @@
                 break;
             default:
                 <partial name="_Verification" for="VerificationViewModel" />
-                <partial name="_UserData" for="@Model.PageModel" />
+                @if (Model.VerificationViewModel.StartAtStep == 0)
+                {
+                    <partial name="_UserData" for="@Model.PageModel" />
+                }
                 break;
         }
 
