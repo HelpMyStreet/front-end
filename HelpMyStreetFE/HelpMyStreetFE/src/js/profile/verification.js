@@ -10,6 +10,12 @@ export function initialiseVerification(isVerified) {
     if ($("#verification-panel").is(":visible")) {
         var maxStep = 3;
 
+        let startYoti = getParameterByName("startYoti");
+
+        if (startYoti == 1) {
+            _setUI(1, maxStep);
+        }
+
         $('#reload-yoti').click(function () {
             $(".yoti__auth__button").hide(); 
             // reload yoti button but wait a second before we do incase we need to wait for the websockets to finish whatever they are doing 
