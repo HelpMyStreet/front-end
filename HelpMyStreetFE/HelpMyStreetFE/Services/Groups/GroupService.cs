@@ -117,10 +117,17 @@ namespace HelpMyStreetFE.Services.Groups
 
         public async Task<Instructions> GetGroupSupportActivityInstructions(int groupId, SupportActivities supportActivity, CancellationToken cancellationToken)
         {
-            return await _memDistCache_instructions.GetCachedDataAsync(async (cancellationToken) =>
+            var instructions = await _memDistCache_instructions.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _groupRepository.GetGroupSupportActivityInstructions(groupId, supportActivity);
             }, $"{CACHE_KEY_PREFIX}-group-support-activity-instructions-group-{groupId}-activity-{supportActivity}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+
+            if (instructions == null)
+            {
+                throw new Exception($"Unable to find instructions for group {groupId} and activity {supportActivity}");
+            }
+
+            return instructions;
         }
     }
 }
