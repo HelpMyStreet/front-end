@@ -194,11 +194,7 @@ namespace HelpMyStreetFE.Controllers
             if (requestHelpJourney.AccessRestrictedByRole)
             {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-                if (user == null)
-                {
-                    return RedirectToAction("403", "Error");
-                }
-                var userHasPermission = await _groupMemberService.GetUserHasRole(user.ID, referringGroupId, GroupRoles.RequestSubmitter, cancellationToken);
+                var userHasPermission = user != null && await _groupMemberService.GetUserHasRole(user.ID, referringGroupId, GroupRoles.RequestSubmitter, cancellationToken);
                 if (!userHasPermission)
                 {
                     return RedirectToAction("403", "Error");
