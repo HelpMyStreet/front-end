@@ -118,11 +118,9 @@
             &__icon {
                 margin-bottom: 5px;
 
-                .limit-width {
-                    max-width: 50px;
+                >img {
+                  height: 40px;
                 }
-
-
 
                 .text-icon {
                     margin: 5px;
@@ -148,16 +146,6 @@
                     img {
                         vertical-align: middle;
                     }
-                }
-
-                .icon-size-sm {
-                    width: 50px;
-                    margin-top: 18px;
-                    vertical-align: bottom;
-                }
-
-                .double-line-alignment {
-                    margin-top: 22px;
                 }
             }
 

@@ -7,20 +7,20 @@
 @{
     var activities = new List<RequestActivityViewModel>
 {
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, Description = "Collection and delivery of an Age UK \"Vitals for Veterans\" wellbeing package", IconClass="limit-width"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.WellbeingPackage, Description = "Collection and delivery of an Age UK \"Vitals for Veterans\" wellbeing package"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ,Description = "Finding someone to provide washable fabric face coverings", IconClass = "icon-size-sm"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.FaceMask ,Description = "Finding someone to provide washable fabric face coverings"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CheckingIn,  Description = "Checking that someone is OK"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy", },
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.DogWalking, Description = "Walking a calm dog",},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealPreparation, Description = "Getting a hot / pre-prepared meal", },
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious, Description = "Some extra support over the phone",  IconClass="double-line-alignment" },
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled", IconClass="double-line-alignment"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.PhoneCalls_Anxious, Description = "Some extra support over the phone"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.HomeworkSupport, Description = "Remote support for children being home-schooled"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Other,  Description= "Please tell us more below"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector,  Description= "I want to get in touch with a Community Connector", IconClass="limit-width"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.ColdWeatherArmy, Description = "Getting help in an emergency during a cold snap", IconClass="limit-width"}
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.CommunityConnector,  Description= "I want to get in touch with a Community Connector"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.ColdWeatherArmy, Description = "Getting help in an emergency during a cold snap"}
         };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
@@ -37,7 +37,7 @@
         <div class="tiles__tile__content ">
             @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
             {
-                <div class="tiles__tile__content__icon"><img class="@activity.IconClass" src="~/img/icons/@activity.Activity.Icon()" /> </div>
+                <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Activity.Icon()" /> </div>
             }
             else
             {
