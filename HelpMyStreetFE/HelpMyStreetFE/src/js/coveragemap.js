@@ -8,6 +8,8 @@ const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 let initialLat = 55.0;
 let initialLng = -10.0;
 
+let idleListener;
+
 let script = document.createElement('script');
 script.src = '/api/Maps/js';
 script.defer = false;
@@ -185,16 +187,7 @@ window.initGoogleMap = async function () {
         geolocationState.setHover(false);
     });
 
-    googleMap.addListener('idle', function () {
-        let bounds = googleMap.getBounds();
-        let ne = bounds.getNorthEast();
-        let sw = bounds.getSouthWest();
-        let swLat = sw.lat();
-        let swLng = sw.lng();
-        let neLat = ne.lat();
-        let neLng = ne.lng();
-        updateMap(swLat, swLng, neLat, neLng);
-    });
+    idleListener = googleMap.addListener('idle', googleMapHandler);
 
     googleMap.addListener('dragstart', function () {
         geolocationState.setActive(false);
@@ -228,6 +221,17 @@ window.initGoogleMap = async function () {
         }
     })
 };
+
+function googleMapHandler(){
+    let bounds = googleMap.getBounds();
+    let ne = bounds.getNorthEast();
+    let sw = bounds.getSouthWest();
+    let swLat = sw.lat();
+    let swLng = sw.lng();
+    let neLat = ne.lat();
+    let neLng = ne.lng();
+    updateMap(swLat, swLng, neLat, neLng);
+}
 
 function removedMarkerForPostcodeLookup() {
     if (postcodeMarker) {
@@ -273,13 +277,13 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     let communityMarkerCoords = await getCommunities();
 
     if (zoomLevel <= largeAreaZoomNumber) {
-        deleteMarkers();
+        clearMarkers();
         removedMarkerForPostcodeLookup();
     }
 
     // delete min distance markers when zooming in
     if (zoomLevel === (largeAreaZoomNumber + 1) && (previousZoomLevel === largeAreaZoomNumber)) {
-        deleteMarkers();
+        clearMarkers();
         removedMarkerForPostcodeLookup();
     }
 
@@ -335,6 +339,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                   </div>`
             });
             thisMarker = new google.maps.Marker({
+                zoomLevel: coord.zoomLevel,
                 type: "community",
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
@@ -344,8 +349,11 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             });
             infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
             thisMarker.addListener("click", () => {
+                google.maps.event.removeListener(idleListener);
                 thisInfoWindow.open(googleMap, thisMarker);
                 thisMarker.setAnimation(null);
+                setTimeout(() => {idleListener = googleMap.addListener('idle', googleMapHandler)}, 500);
+                
             });
             setTimeout(() => thisMarker.setAnimation(null), 2000);
             addMarker(thisMarker);
@@ -379,7 +387,6 @@ function addMarker(marker) {
     let key = getMarkerKey(marker);
     let alreadyExists = googleMapMarkers.has(key)
     if (!alreadyExists) {
-        console.log(marker.title);
         googleMapMarkers.set(key, marker);
     }
 }
@@ -395,7 +402,6 @@ function getMarkerKey(marker) {
 function setMapOnAll(googleMap) {
     googleMapMarkers.forEach(function (value, key, mapCollection) {
         var onMap = value.getMap() != undefined;
-        console.log("onMap: ", onMap);
         if (!onMap){
         value.setMap(googleMap);
         }
@@ -405,7 +411,10 @@ function setMapOnAll(googleMap) {
 function clearMarkers() {
   googleMapMarkers.forEach(function (value, key, mapCollection) {
     if (value.type == "community") {
-      //value.setMap(null);
+      if (googleMap.getZoom() <= value.zoomLevel){
+          value.setMap(null);
+          googleMapMarkers.delete(key);
+      }
     }
     else {
       value.setMap(null);
@@ -418,9 +427,6 @@ function showMarkers() {
     setMapOnAll(googleMap);
 }
 
-function deleteMarkers() {
-    clearMarkers();
-}
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
     let endpoint = '/api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
