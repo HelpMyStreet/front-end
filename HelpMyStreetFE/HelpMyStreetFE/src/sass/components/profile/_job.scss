@@ -221,6 +221,7 @@
       align-items: center;
       flex-direction: column;
       margin-bottom: 0.25rem;
+      flex-wrap: wrap;
 
       &.admin-view {
         flex-direction: row;
@@ -259,14 +260,14 @@
       &__title {
         font-weight: bold;
         display: flex;
-        justify-content: center;
         align-items: center;
-        margin: 0.25rem 0.5rem 0.25rem 0;
-        white-space: nowrap;
+        margin: 0.25rem 0.5rem 0.25rem 0rem;
+        flex-grow: 1;
 
         @media (min-width: $med-screen) {
-          white-space: initial;
+          justify-content: center;
           margin-right: 0;
+          flex-grow: 0;
         }
 
         @media (min-width: $lg-screen) {
