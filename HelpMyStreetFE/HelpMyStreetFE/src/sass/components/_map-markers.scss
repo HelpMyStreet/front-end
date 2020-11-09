@@ -1,4 +1,18 @@
-﻿
+﻿.animate-button {
+    background-color: lawngreen;
+    border: none;
+    width: 100px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+
+    &.animating {
+        background-color: red;
+
+    }
+    &.reset {
+        background-color: orange;
+    }
+}
 
 .community-marker {
   a, a:hover {

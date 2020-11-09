@@ -5,6 +5,10 @@ const closeUpZoomNumber = 16; // zoom level when postcode is entered
 let initialUKZoomNumber = 5.3; // zoom level of the UK when geo location is not enabled
 const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 
+
+let animateTimers = [];
+let animateMarkers = [];
+
 let initialLat = 55.0;
 let initialLng = -10.0;
 
@@ -167,6 +171,10 @@ window.initGoogleMap = async function () {
     var geolocateButton = document.getElementById('your-location');
     googleMap.controls[google.maps.ControlPosition.TOP_RIGHT].push(geolocateButton);
 
+    var animateButton = document.getElementById('animate-button-container');
+    googleMap.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(animateButton);
+    animateButton.addEventListener('click', handleAnimateClick);
+
     geolocateButton.addEventListener('click', function () {
         if (navigator.geolocation) {
             geolocationState.geoLocationInProgress();
@@ -235,6 +243,62 @@ function removedMarkerForPostcodeLookup() {
     }
 }
 
+async function startAnimation(){
+    let bounds = googleMap.getBounds();
+    let ne = bounds.getNorthEast();
+    let sw = bounds.getSouthWest();
+    let swLat = sw.lat();
+    let swLng = sw.lng();
+    let neLat = ne.lat();
+    let neLng = ne.lng();
+
+    let dateDisplay = document.getElementById('date-display-container');
+    googleMap.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(dateDisplay);
+
+    let coords = await getVolunteers(swLat, swLng, neLat, neLng, 0);
+    coords.sort((a,b)=>{
+        var aDate = new Date(a.date);
+        var bDate = new Date(b.date);
+        if (aDate.getTime() < bDate.getTime()){
+            return -1;
+        }
+        else if (aDate.getTime() > bDate.getTime()){
+            return 1;
+        } else {
+            return 0;
+        }
+        });
+
+    deleteMarkers();
+    removedMarkerForPostcodeLookup();
+    coords.forEach((coord, index) => {
+        let thisMarker;
+    
+            thisMarker = new google.maps.Marker({
+                position: { lat: coord.lat, lng: coord.lng },
+                title: coord.pc,
+                opacity: 0.75,
+                icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
+            });
+
+        animateMarkers.push(thisMarker)
+        var thisTimer = setTimeout(() => {
+            thisMarker.setMap(googleMap);
+            var dateText = document.getElementById('date-display');
+            var dateInfo = new Date(coord.date)
+            dateText.innerHTML = dateInfo.toLocaleString('en-GB', {timeZone: 'UTC'});
+            if (index == coords.length - 1){
+                
+
+            }
+        }, index * (10000 / coords.length))
+        animateTimers.push(thisTimer);
+        }
+    );
+    
+
+}
+
 function geoLocationSuccess(position) {
     setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
     geolocationState.geolocationComplete(true);
@@ -256,7 +320,6 @@ function setMapCentre(latitude, longitude, zoomLevel) {
 }
 
 async function updateMap(swLat, swLng, neLat, neLng) {
-
     let zoomLevel = googleMap.getZoom();
 
     let northSouthDistanceInMeters = getDistanceInMeters(swLat, swLng, neLat, swLng);
@@ -282,7 +345,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         removedMarkerForPostcodeLookup();
     }
 
-    coords.map(coord => {
+    coords.forEach((coord, index) => {
         let thisMarker;
         if (isMapShowingLargeArea === true) {
             thisMarker = new google.maps.Marker({
@@ -298,12 +361,13 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                 icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(35, 35) }
             });
         }
+
         addMarker(thisMarker);
     });
-
+    
     var infoWindows = [];
 
-    communityMarkerCoords.map(coord => {
+    communityMarkerCoords.forEach(coord => {
         if ((zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) && coord.displayOnMap) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
             let thisMarker;
             let thisInfoWindow;
@@ -347,6 +411,42 @@ async function updateMap(swLat, swLng, neLat, neLng) {
 
     previousZoomLevel = zoomLevel;
     
+}
+
+function stopAnimation(){
+    animateTimers.forEach(timer => {
+        clearTimeout(timer);
+    })
+}
+
+function resetAnimation(){
+    googleMap.controls[google.maps.ControlPosition.BOTTOM_LEFT] = [];
+    animateMarkers.forEach(marker => {
+        marker.setMap(null);
+    });
+    animateMarkers = [];
+}
+
+function handleAnimateClick(e){
+    var element = e.srcElement;
+    switch (element.innerHTML){
+    case "Animate":
+    startAnimation();
+    element.innerHTML = "Stop";
+    element.classList.add("animating");
+    break;
+    case "Stop":
+    stopAnimation();
+    element.innerHTML = "Reset";
+    element.classList.remove("animating");
+    element.classList.add("reset");
+    break;
+    case "Reset":
+    resetAnimation();
+    element.innerHTML = "Animate";
+    element.classList.remove('reset');
+    break;
+    }
 }
 
 function getDistanceInMeters(lat1, lon1, lat2, lon2) {

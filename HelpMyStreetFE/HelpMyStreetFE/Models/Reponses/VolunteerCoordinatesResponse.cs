@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using System;
 
 namespace HelpMyStreetFE.Models.Reponses
 {
@@ -26,5 +27,9 @@ namespace HelpMyStreetFE.Models.Reponses
         [DataMember(Name = "lng")]
         [JsonPropertyName("lng")]
         public double Longitude { get; set; }
+
+        [DataMember(Name = "date")]
+        [JsonPropertyName("date")]
+        public DateTime? CreatedDate { get; set; }
     }
 }
