@@ -10,6 +10,7 @@ namespace HelpMyStreetFE.Models.Yoti
 
         public YotiOptions YotiOptions { get; set; }
         public string EncodedUserID { get; set; }
+        public int StartAtStep { get; set; }
 
         public string DisplayName { get; set; }
 
