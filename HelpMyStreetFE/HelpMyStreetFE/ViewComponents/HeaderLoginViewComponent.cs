@@ -25,14 +25,11 @@ namespace HelpMyStreetFE.ViewComponents
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
             var routeValues = Request.RouteValues;
-            if (ViewData["LoginViewModel"] != null)
+            if (ViewData["GroupId"] != null)
             {
-                return View(ViewData["LoginViewModel"]);
+                model.SignUpURL = $"{model.SignUpURL}/{ViewData["GroupId"]}";
             }
-            else
-            {
-                return View(model);
-            }
+            return View(model);
         }
    
     }
