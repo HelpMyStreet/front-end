@@ -269,39 +269,42 @@ async function startAnimation(){
         }
         });
 
-    var minDate = new Date(coords[0].date).getTime();
-    var maxDate = new Date(coords[coords.length - 1].date).getTime();
+    let minDate = new Date(coords[0].date);
+    var maxDate = new Date(coords[coords.length - 1].date);
     var diffDate = (maxDate.getTime() - minDate.getTime()) / (1000*60*60*24);
     var daysPassed = 0;
 
     deleteMarkers();
     removedMarkerForPostcodeLookup();
-    var dateText = document.getElementById('date-display');
-
+    
+    console.log(diffDate);
     while(minDate.getTime() < maxDate.getTime()){
-        var coordsOnDate = coords.filter((coord) => {
+        let coordsOnDate = coords.filter((coord) => {
             var coordDate = new Date(coord.date);
             return coordDate.getFullYear() == minDate.getFullYear() && coordDate.getDate() == minDate.getDate() && coordDate.getMonth() == minDate.getMonth();
-        })
-        
-        var thisTimer = setTimeout(() => {
+        });
+        let thisDate = new Date(minDate);
+        let dateText = document.getElementById('date-display');
+        var thisTimer = setTimeout(function () {
         coordsOnDate.forEach((coord, index) => {
             let thisMarker;
-        
-                thisMarker = new google.maps.Marker({
-                    position: { lat: coord.lat, lng: coord.lng },
-                    title: coord.pc,
-                    opacity: 0.75,
-                    icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
-                });
+            
+            thisMarker = new google.maps.Marker({
+                position: { lat: coord.lat, lng: coord.lng },
+                title: coord.pc,
+                opacity: 0.75,
+                icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
+            });
     
             animateMarkers.push(thisMarker)
             thisMarker.setMap(googleMap);
+            var coordDate = new Date(coord.date);
             
-            }
-        );
-        dateText.innerHTML = minDate.toLocaleString('en-GB', {timeZone: 'UTC'});
-        },daysPassed * (10000/diffDate));
+            });
+            dateText.innerHTML = thisDate.toLocaleString('en-GB', {timeZone: 'UTC'});
+        
+        }, diffDate > 150 ? daysPassed * Math.floor(100000/diffDate) : daysPassed * Math.floor(10000/diffDate));
+
         animateTimers.push(thisTimer);
         daysPassed = daysPassed + 1 ;
         minDate.setDate(minDate.getDate() + 1);
@@ -445,16 +448,11 @@ function handleAnimateClick(e){
     switch (element.innerHTML){
     case "Animate":
     startAnimation();
-    element.innerHTML = "Stop";
-    element.classList.add("animating");
-    break;
-    case "Stop":
-    stopAnimation();
     element.innerHTML = "Reset";
-    element.classList.remove("animating");
     element.classList.add("reset");
     break;
     case "Reset":
+    stopAnimation();
     resetAnimation();
     element.innerHTML = "Animate";
     element.classList.remove('reset');
