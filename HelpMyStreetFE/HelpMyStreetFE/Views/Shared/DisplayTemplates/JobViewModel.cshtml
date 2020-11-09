@@ -29,52 +29,43 @@
 <div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus">
     <div class="job__info">
         <div class="job__info__col1">
-            <div class="job__info__col1__referrer toggle-on-status-change">
-                <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.JobHeader.ReferringGroupID }" />
-            </div>
-            <span class="job__info__col1__urgency toggle-on-status-change">
-                @if (Model.JobHeader.JobStatus == JobStatuses.Done)
-                {
-                    <span class="job__info__col1__urgency__dates">
-                        <img src="~/img/icons/green-tick.svg" alt="Done" />
-                        <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Completed @Model.JobHeader.DateStatusLastChanged.FriendlyPastDate()</span>
-                    </span>
-                }
-                else if (Model.JobHeader.JobStatus == JobStatuses.Cancelled)
-                {
-                    <span class="job__info__col1__urgency__dates">
-                        <img src="~/img/icons/gray-tick.svg" alt="Cancelled" />
-                        <span class="due-date" title="@Model.JobHeader.DateStatusLastChanged.ToString("dd/MM/yyyy")">Cancelled @Model.JobHeader.DateStatusLastChanged.FriendlyPastDate()</span>
-                    </span>
-                }
-                else
-                {
-                    @if (Model.JobHeader.IsHealthCritical)
-                    {
-                        <span class="job__info__col1__criticality">
-                            <span class="critical-icon">!</span>
-                            <span class="critical">Critical</span>
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="job__info__col1__urgency__dates">
-                            <img src="~/img/icons/calendar.svg" />
-                        </span>
-                    }
-
-                    <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
-                        @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
-                    </span>
-                }
-            </span>
-            @if (Model.UserActingAsAdmin && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            @if (Model.UserActingAsAdmin)
             {
                 <span class="job__info__col1__status toggle-on-status-change">
+                    <img class="status-icon" src="~/img/icons/status/@Model.JobHeader.JobStatus.Icon()" alt="@Model.JobHeader.JobStatus.FriendlyName()" />
                     <span class="job__status">@Model.JobHeader.JobStatus.FriendlyName()</span>
-                    <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                 </span>
             }
+
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            {
+                <span class="job__info__col1__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+            <div class="job__info__col1__referrer @(Model.UserActingAsAdmin ? "admin-view" : "")">
+                <div class="toggle-on-status-change">
+                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.JobHeader.ReferringGroupID }" />
+                </div>
+            </div>
+
+            @if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
+            {
+                <span class="job__info__col1__urgency @(Model.UserActingAsAdmin ? "admin-view" : "") toggle-on-status-change">
+                    @if (Model.UserActingAsAdmin)
+                    {
+                        <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
+                    }
+                    <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
+                        <img src="~/img/icons/calendar.svg" />
+                        @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
+                    </span>
+
+                </span>
+            }
+
+
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
             @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
@@ -85,20 +76,28 @@
             }
         </div>
         <div class="job__info__activity @(Model.UserActingAsAdmin ? "admin-view" : "")">
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            {
+                <span class="job__info__activity__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
             <span class="job__info__activity__title @Model.JobHeader.SupportActivity.Class()">
                 @if (Model.JobHeader.SupportActivity != SupportActivities.Other)
                 {
                     <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" />
                 }
-
-                @Model.JobHeader.SupportActivity.FriendlyNameShort()
-
-                @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
-                {
-                    @($"({Model.JobHeader.Reference})")
-                }
-
+                <span>
+                    @Model.JobHeader.SupportActivity.FriendlyNameShort()
+                </span>
             </span>
+            @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
+            {
+                <span class="job__info__activity__title @Model.JobHeader.SupportActivity.Class()">
+                    @($"({Model.JobHeader.Reference})")
+                </span>
+            }
             <span class="job__info__activity__location">
                 @Model.JobHeader.PostCode
                 @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
@@ -107,7 +106,14 @@
                 }
             </span>
         </div>
-        <div class="job__info__col3 flex-end">
+        <div class="job__info__col3 flex-end  @(Model.UserActingAsAdmin ? "admin-view" : "")"">
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            {
+                <span class="job__info__col3__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
             <div class="job__info__actions">
                 @switch (Model.JobHeader.JobStatus)
                 {

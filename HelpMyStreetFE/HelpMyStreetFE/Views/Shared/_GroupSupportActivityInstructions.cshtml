@@ -1,0 +1,21 @@
+﻿@using Westwind.AspNetCore.Markdown
+
+@model HelpMyStreet.Utils.Models.Instructions
+
+@Markdown.ParseHtmlString(Model.Intro)
+
+@if (Model.Steps.Count > 0)
+{
+    <ol>
+        @foreach (var step in Model.Steps)
+        {
+            <li>
+                <div class="step-heading">@step.Heading</div>
+                @Markdown.ParseHtmlString(step.Detail)
+            </li>
+        }
+
+    </ol>
+}
+
+@Markdown.ParseHtmlString(Model.Close)
