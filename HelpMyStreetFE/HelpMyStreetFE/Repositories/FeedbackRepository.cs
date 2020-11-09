@@ -16,7 +16,7 @@ namespace HelpMyStreetFE.Repositories
     {
         public FeedbackRepository(
             IConfiguration configuration,
-            ILogger<BaseHttpRepository> logger,
+            ILogger<FeedbackRepository> logger,
             HttpClient client) : base(client, configuration, logger, "Services:Feedback")
         {
         }

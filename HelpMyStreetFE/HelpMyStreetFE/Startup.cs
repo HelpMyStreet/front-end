@@ -149,8 +149,17 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddHttpClient<IFeedbackRepository, FeedbackRepository>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
-            services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
