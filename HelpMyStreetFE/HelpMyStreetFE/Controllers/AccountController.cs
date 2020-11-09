@@ -81,7 +81,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(string next, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -95,11 +95,11 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                return await Profile(cancellationToken);
+                return await Profile(next, cancellationToken);
             }
         }
 
-        public async Task<IActionResult> Profile(CancellationToken cancellationToken)
+        public async Task<IActionResult> Profile(string next, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -107,7 +107,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(REGISTRATION_URL);
             }
 
-            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            var viewModel = await GetAccountViewModel(user, cancellationToken, next == "verify");
             viewModel.CurrentPage = MenuPage.UserDetails;
             var userDetails = _userService.GetUserDetails(user);
             viewModel.PageModel = userDetails;
@@ -263,7 +263,7 @@ namespace HelpMyStreetFE.Controllers
             return Ok();
         }
 
-        private async Task<AccountViewModel> GetAccountViewModel(User user, CancellationToken cancellationToken)
+        private async Task<AccountViewModel> GetAccountViewModel(User user, CancellationToken cancellationToken, bool verifyNow = false)
         {
             var viewModel = new AccountViewModel();
 
@@ -292,6 +292,7 @@ namespace HelpMyStreetFE.Controllers
                     YotiOptions = _yotiOptions.Value,
                     EncodedUserID = Base64Utils.Base64Encode(user.ID),
                     DisplayName = userDetails.DisplayName,
+                    StartAtStep = verifyNow ? 1 : 0,
                 };
 
                 viewModel.UserDetails = userDetails;

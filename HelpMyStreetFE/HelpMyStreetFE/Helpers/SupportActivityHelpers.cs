@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.PhoneCalls_Friendly => "friendlychat.svg",
                 SupportActivities.PhoneCalls_Anxious => "supportivechat.svg",
                 SupportActivities.HomeworkSupport => "homework.svg",
-                SupportActivities.WellbeingPackage => "vitalsforveterans.png",
+                SupportActivities.WellbeingPackage => "package.svg",
                 SupportActivities.CommunityConnector => "communityconnector.png",
                 SupportActivities.ColdWeatherArmy => "snowflake.svg",
                 _ => "question-mark.svg"
