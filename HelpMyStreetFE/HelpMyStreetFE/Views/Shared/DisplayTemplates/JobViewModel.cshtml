@@ -52,7 +52,7 @@
 
             @if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
             {
-                <span class="job__info__col1__urgency @(Model.UserActingAsAdmin ? "admin-view" : "")" toggle-on-status-change">
+                <span class="job__info__col1__urgency @(Model.UserActingAsAdmin ? "admin-view" : "") toggle-on-status-change">
                     @if (Model.UserActingAsAdmin)
                     {
                         <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
@@ -88,15 +88,16 @@
                 {
                     <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" />
                 }
-
-                @Model.JobHeader.SupportActivity.FriendlyNameShort()
-
-                @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
-                {
-                    @($"({Model.JobHeader.Reference})")
-                }
-
+                <span>
+                    @Model.JobHeader.SupportActivity.FriendlyNameShort()
+                </span>
             </span>
+            @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
+            {
+                <span class="job__info__activity__title @Model.JobHeader.SupportActivity.Class()">
+                    @($"({Model.JobHeader.Reference})")
+                </span>
+            }
             <span class="job__info__activity__location">
                 @Model.JobHeader.PostCode
                 @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
