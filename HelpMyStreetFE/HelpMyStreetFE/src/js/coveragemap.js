@@ -17,6 +17,7 @@ document.head.appendChild(script);
 
 let googleMap;
 let googleMapMarkers = new Map();
+let communityMapMarkers = new Map();
 let postcodeMarker = null;
 
 let previousZoomLevel = -1;
@@ -306,7 +307,12 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     var infoWindows = [];
 
     communityMarkerCoords.map(coord => {
-        if ((zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) && coord.displayOnMap) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
+        if ((zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) 
+            && coord.displayOnMap
+            && (swLng <= coord.longitude && coord.longitude <= neLng) 
+            && (swLat <= coord.latitude && coord.latitude <= neLat)
+            ) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
+            
             let thisMarker;
             let thisInfoWindow;
             thisInfoWindow = new google.maps.InfoWindow({
@@ -371,29 +377,39 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2) {
 
 function addMarker(marker) {
     let key = getMarkerKey(marker);
-
-    if (!googleMapMarkers.has(key)) {
+    let alreadyExists = googleMapMarkers.has(key)
+    if (!alreadyExists) {
+        console.log(marker.title);
         googleMapMarkers.set(key, marker);
     }
 }
 
 function getMarkerKey(marker) {
-    return marker.getPosition().lat() + '_' + marker.getPosition().lng();
+    if (marker.type == "community"){
+        return `community_${marker.title}`;
+    } else {
+        return marker.getPosition().lat() + '_' + marker.getPosition().lng();
+    }
 }
 
 function setMapOnAll(googleMap) {
     googleMapMarkers.forEach(function (value, key, mapCollection) {
+        var onMap = value.getMap() != undefined;
+        console.log("onMap: ", onMap);
+        if (!onMap){
         value.setMap(googleMap);
+        }
     });
 }
 
 function clearMarkers() {
   googleMapMarkers.forEach(function (value, key, mapCollection) {
     if (value.type == "community") {
-      // Don't delete community markers?
+      //value.setMap(null);
     }
     else {
       value.setMap(null);
+      googleMapMarkers.delete(key);
     }
   });
 }
@@ -404,7 +420,6 @@ function showMarkers() {
 
 function deleteMarkers() {
     clearMarkers();
-    googleMapMarkers.clear();
 }
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
