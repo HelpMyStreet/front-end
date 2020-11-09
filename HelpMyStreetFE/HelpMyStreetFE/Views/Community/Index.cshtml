@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+    if (Model.EncodedGroupId != null) { ViewData["LoginViewModel"] = new LoginViewModel() { SignUpURL = "/registration/step-one/" + Model.EncodedGroupId }; }
 }
 
 @section Scripts {
