@@ -131,7 +131,7 @@
         order: 4;
 
         > * {
-          margin: 0.25rem 0.5rem 0.25rem 0;
+          margin: 0.25rem 0;
         }
 
         &.admin-view {
@@ -163,12 +163,6 @@
         &__dates {
           display: flex;
           align-items: center;
-
-          img {
-            padding: 0 0.75rem 0 0;
-            height: 25px;
-            display: inline-block;
-          }
         }
       }
 

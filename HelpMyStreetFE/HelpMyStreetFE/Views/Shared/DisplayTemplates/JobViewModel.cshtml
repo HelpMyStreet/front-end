@@ -58,7 +58,6 @@
                         <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                     }
                     <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
-                        <img src="~/img/icons/calendar.svg" />
                         @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
                     </span>
 
