@@ -27,7 +27,7 @@
 }
 
 <div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus">
-    <div class="job__info">
+    <div class="job__info @(Model.UserActingAsAdmin ? "admin-view" : "")">
         <div class="job__info__col1">
             @if (Model.UserActingAsAdmin)
             {
@@ -44,21 +44,20 @@
                     <span class="critical">Critical</span>
                 </span>
             }
-            <div class="job__info__col1__referrer @(Model.UserActingAsAdmin ? "admin-view" : "")">
-                <div class="toggle-on-status-change">
+            <div class="toggle-on-status-change">
+                <div class="job__info__col1__referrer">
                     <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.JobHeader.ReferringGroupID }" />
                 </div>
             </div>
 
             @if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
             {
-                <span class="job__info__col1__urgency @(Model.UserActingAsAdmin ? "admin-view" : "") toggle-on-status-change">
+                <span class="job__info__col1__urgency toggle-on-status-change">
                     @if (Model.UserActingAsAdmin)
                     {
                         <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                     }
                     <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
-                        <img src="~/img/icons/calendar.svg" />
                         @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
                     </span>
 
@@ -75,7 +74,7 @@
                 </span>
             }
         </div>
-        <div class="job__info__activity @(Model.UserActingAsAdmin ? "admin-view" : "")">
+        <div class="job__info__activity">
             @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
             {
                 <span class="job__info__activity__criticality">
@@ -106,7 +105,7 @@
                 }
             </span>
         </div>
-        <div class="job__info__col3 flex-end  @(Model.UserActingAsAdmin ? "admin-view" : "")"">
+        <div class="job__info__col3 flex-end">
             @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
             {
                 <span class="job__info__col3__criticality">
