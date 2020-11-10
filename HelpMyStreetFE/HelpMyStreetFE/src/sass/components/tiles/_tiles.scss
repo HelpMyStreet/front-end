@@ -1,11 +1,6 @@
 ﻿.tiles {
   margin: 20px 0;
 
-  &.reduce-width {
-    max-width: 600px;
-    margin: 20px auto;
-  }
-
   &__label {
     &--large {
       font-size: 1.6rem;
