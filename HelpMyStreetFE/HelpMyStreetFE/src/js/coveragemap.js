@@ -8,6 +8,8 @@ const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 let initialLat = 55.0;
 let initialLng = -10.0;
 
+let idleListener;
+
 let script = document.createElement('script');
 script.src = '/api/Maps/js';
 script.defer = false;
@@ -17,6 +19,7 @@ document.head.appendChild(script);
 
 let googleMap;
 let googleMapMarkers = new Map();
+let communityMapMarkers = new Map();
 let postcodeMarker = null;
 
 let previousZoomLevel = -1;
@@ -184,16 +187,7 @@ window.initGoogleMap = async function () {
         geolocationState.setHover(false);
     });
 
-    googleMap.addListener('idle', function () {
-        let bounds = googleMap.getBounds();
-        let ne = bounds.getNorthEast();
-        let sw = bounds.getSouthWest();
-        let swLat = sw.lat();
-        let swLng = sw.lng();
-        let neLat = ne.lat();
-        let neLng = ne.lng();
-        updateMap(swLat, swLng, neLat, neLng);
-    });
+    idleListener = googleMap.addListener('idle', googleMapHandler);
 
     googleMap.addListener('dragstart', function () {
         geolocationState.setActive(false);
@@ -227,6 +221,17 @@ window.initGoogleMap = async function () {
         }
     })
 };
+
+function googleMapHandler(){
+    let bounds = googleMap.getBounds();
+    let ne = bounds.getNorthEast();
+    let sw = bounds.getSouthWest();
+    let swLat = sw.lat();
+    let swLng = sw.lng();
+    let neLat = ne.lat();
+    let neLng = ne.lng();
+    updateMap(swLat, swLng, neLat, neLng);
+}
 
 function removedMarkerForPostcodeLookup() {
     if (postcodeMarker) {
@@ -272,13 +277,13 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     let communityMarkerCoords = await getCommunities();
 
     if (zoomLevel <= largeAreaZoomNumber) {
-        deleteMarkers();
+        clearMarkers();
         removedMarkerForPostcodeLookup();
     }
 
     // delete min distance markers when zooming in
     if (zoomLevel === (largeAreaZoomNumber + 1) && (previousZoomLevel === largeAreaZoomNumber)) {
-        deleteMarkers();
+        clearMarkers();
         removedMarkerForPostcodeLookup();
     }
 
@@ -287,6 +292,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         if (isMapShowingLargeArea === true) {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.lat, lng: coord.lng },
+                clickable: false,
                 title: null,
                 icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(30, 30) }
             });
@@ -294,6 +300,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
         } else {
             thisMarker = new google.maps.Marker({
                 position: { lat: coord.lat, lng: coord.lng },
+                clickable: false,
                 title: coord.pc,
                 icon: { url: "/img/logos/markers/hms5.png", scaledSize: new google.maps.Size(35, 35) }
             });
@@ -304,7 +311,12 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     var infoWindows = [];
 
     communityMarkerCoords.map(coord => {
-        if ((zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) && coord.displayOnMap) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
+        if ((zoomLevel >= (coord.zoomLevel) || zoomLevel > 10) 
+            && coord.displayOnMap
+            && (swLng <= coord.longitude && coord.longitude <= neLng) 
+            && (swLat <= coord.latitude && coord.latitude <= neLat)
+            ) { //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
+            
             let thisMarker;
             let thisInfoWindow;
             thisInfoWindow = new google.maps.InfoWindow({
@@ -327,6 +339,8 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                   </div>`
             });
             thisMarker = new google.maps.Marker({
+                zoomLevel: zoomLevel,
+                type: "community",
                 position: { lat: coord.latitude, lng: coord.longitude },
                 title: coord.friendlyName,
                 icon: { url: "/img/logos/markers/hms2.png", scaledSize: new google.maps.Size(70, 70) },
@@ -335,8 +349,11 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             });
             infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
             thisMarker.addListener("click", () => {
+                google.maps.event.removeListener(idleListener);
                 thisInfoWindow.open(googleMap, thisMarker);
                 thisMarker.setAnimation(null);
+                setTimeout(() => {idleListener = googleMap.addListener('idle', googleMapHandler)}, 500);
+                
             });
             setTimeout(() => thisMarker.setAnimation(null), 2000);
             addMarker(thisMarker);
@@ -368,39 +385,48 @@ function getDistanceInMeters(lat1, lon1, lat2, lon2) {
 
 function addMarker(marker) {
     let key = getMarkerKey(marker);
-
-    if (!googleMapMarkers.has(key)) {
-
-        marker.addListener('click', function () {
-            setMapCentre(marker.getPosition().lat(), marker.getPosition().lng(), googleMap.getZoom() + 1);
-        });
-
+    let alreadyExists = googleMapMarkers.has(key)
+    if (!alreadyExists) {
         googleMapMarkers.set(key, marker);
     }
 }
 
 function getMarkerKey(marker) {
-    return marker.getPosition().lat() + '_' + marker.getPosition().lng();
+    if (marker.type == "community"){
+        return `community_${marker.title}`;
+    } else {
+        return marker.getPosition().lat() + '_' + marker.getPosition().lng();
+    }
 }
 
 function setMapOnAll(googleMap) {
     googleMapMarkers.forEach(function (value, key, mapCollection) {
+        var onMap = value.getMap() != undefined;
+        if (!onMap){
         value.setMap(googleMap);
+        }
     });
 }
 
 function clearMarkers() {
-    setMapOnAll(null);
+  googleMapMarkers.forEach(function (value, key, mapCollection) {
+    if (value.type == "community") {
+      if (googleMap.getZoom() < value.zoomLevel){
+          value.setMap(null);
+          googleMapMarkers.delete(key);
+      }
+    }
+    else {
+      value.setMap(null);
+      googleMapMarkers.delete(key);
+    }
+  });
 }
 
 function showMarkers() {
     setMapOnAll(googleMap);
 }
 
-function deleteMarkers() {
-    clearMarkers();
-    googleMapMarkers.clear();
-}
 
 async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMetres) {
     let endpoint = '/api/Maps/volunteerCoordinates?SWLatitude=' + swLat + '&SWLongitude=' + swLng + '&NELatitude=' + neLat + '&NELongitude=' + neLng + '&VolunteerType=3&IsVerifiedType=3&MinDistanceBetweenInMetres=' + minDistanceBetweenInMetres;
