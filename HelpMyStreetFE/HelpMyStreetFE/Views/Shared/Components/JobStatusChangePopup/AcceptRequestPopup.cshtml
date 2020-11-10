@@ -1,4 +1,6 @@
-﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
+﻿@using HelpMyStreet.Utils.Extensions;
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
 
 <div class="popup__content wide">
     <partial name="_PopupCloseButton" />
@@ -7,10 +9,7 @@
         <div class="popup__content__text">
             <p>If you click to accept this request it will appear on your “My Accepted Requests” page and you’ll be able to view more information to help you complete it.</p>
 
-            @if (!string.IsNullOrEmpty(Model.ReferringGroup))
-            {
-                <p>This request was made via <strong>@Model.ReferringGroup</strong>. When you accept this request by clicking “Continue” below, your details will become visible to their administrator(s), who may use these details only in relation to this request.</p>
-            }
+            <p>This request for <strong>@Model.JobSummary.SupportActivity.FriendlyNameShort()</strong> is managed by <strong>@Model.ReferringGroup</strong>. When you accept this request your details will become visible to their administrator(s), who may use these details to contact you about this request.</p>
 
             <div class="volunteer-instructions">
                 <h5>Volunteer Instructions</h5>
