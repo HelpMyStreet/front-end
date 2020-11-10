@@ -27,7 +27,7 @@
 }
 
 <div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus">
-    <div class="job__info">
+    <div class="job__info @(Model.UserActingAsAdmin ? "admin-view" : "")">
         <div class="job__info__col1">
             @if (Model.UserActingAsAdmin)
             {

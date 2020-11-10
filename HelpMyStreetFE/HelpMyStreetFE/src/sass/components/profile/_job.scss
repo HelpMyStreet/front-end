@@ -38,8 +38,12 @@
     }
 
     @media (min-width: $med-screen) {
-      padding: 0;
-      grid-template-columns: 1fr 1fr 1fr;
+      padding: 0 0.5rem;
+      grid-template-columns: 1.1fr 2fr 14rem;
+
+      &.admin-view {
+        grid-template-columns: 1.2fr 2fr 14rem;
+      }
     }
 
     .column {
@@ -61,7 +65,7 @@
       &__referrer {
         display: flex;
         align-items: center;
-        margin: 0 0.25rem 0.5rem 0.25rem;
+        margin: 0 0.25rem 0.25rem 0.25rem;
         order: 1;
 
         &.admin-view {
@@ -72,6 +76,9 @@
           }
         }
 
+        @media (min-width: $med-screen) {
+          margin-bottom: 0;
+        }
 
         img {
           display: block;
@@ -81,6 +88,7 @@
           @media (min-width: $med-screen) {
             max-width: 10rem;
             max-height: 4rem;
+            margin-bottom: 0;
           }
         }
 
@@ -123,8 +131,9 @@
         justify-content: center;
         background: $washed-blue;
         width: 100%;
-        padding: 0.5rem 0.5rem 0 1rem;
+        padding: 0.5rem 0.5rem 0 0.75rem;
         order: 4;
+        text-align: left;
 
         > * {
           margin: 0.25rem 0;
@@ -153,7 +162,7 @@
           align-items: flex-start;
 
           > * {
-            margin: 0.25rem 0 0.75rem 0;
+            margin: 0.25rem 0 0.25rem 0;
           }
         }
 
@@ -199,6 +208,7 @@
       .job__status {
         font-weight: bold;
         color: $black;
+        text-align: left;
       }
     }
 
