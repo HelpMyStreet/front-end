@@ -78,7 +78,11 @@ namespace HelpMyStreetFE.ViewComponents
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(job.ReferringGroupID, job.SupportActivity, cancellationToken),
             };
 
-            if (job.ReferringGroupID != (int)Groups.Generic)
+            if (job.ReferringGroupID == (int)Groups.Generic)
+            {
+                vm.ReferringGroup = "HelpMyStreet.org";
+            }
+            else
             {
                 var group = await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken);
                 vm.ReferringGroup = group.GroupName;
