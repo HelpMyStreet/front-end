@@ -152,9 +152,12 @@ namespace HelpMyStreetFE.Services.Requests
             if (requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.WellbeingPackage });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Shopping });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Errands });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Other });
             }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+            else if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = true });
             }
