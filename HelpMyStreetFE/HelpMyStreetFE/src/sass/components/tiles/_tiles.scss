@@ -13,6 +13,10 @@
     }
   }
 
+  .sm4 {
+    @extend .pad-sm-md;
+  }
+
   &__tile {
     text-align: center;
     background: white;
