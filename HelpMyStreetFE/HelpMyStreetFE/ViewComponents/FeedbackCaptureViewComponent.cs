@@ -89,7 +89,7 @@ namespace HelpMyStreetFE.ViewComponents
                 viewModel.ShowGroupMessage = false;
             }
 
-            return View("FeedbackCapture", viewModel);
+            return View(parameters.RenderAsPopup ? "FeedbackCapturePopup" : "FeedbackCapture", viewModel);
         }
     }
 }

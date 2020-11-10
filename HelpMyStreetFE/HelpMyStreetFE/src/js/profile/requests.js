@@ -161,8 +161,7 @@ async function loadJobDetails(job, forceRefresh) {
 
 async function showFeedbackPopup(job) {
   const jobId = $(job).attr("id");
-  let popupSettings = {
-    htmlContent_source: '/api/feedback/post-task-feedback?j=' + jobId + '&r='
-  };
-  showPopup(popupSettings);
+  const role = $(job).data("role");
+  let popupSource = `/api/feedback/post-task-feedback?j=${jobId}&r=${role}`
+  showServerSidePopup(popupSource, {});
 }

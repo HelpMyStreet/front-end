@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            return ViewComponent("FeedbackCapture", new { parameters = new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole } });
+            return ViewComponent("FeedbackCapture", new { parameters = new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole, RenderAsPopup = true } });
         }
     }
 }

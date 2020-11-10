@@ -196,6 +196,7 @@ namespace HelpMyStreetFE
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/RequestStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/DetailStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/ReviewStage/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/Shared/Components/FeedbackCapture/{0}.cshtml");
             });
 
 
