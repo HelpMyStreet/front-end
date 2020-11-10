@@ -13,6 +13,7 @@ namespace HelpMyStreetFE.Models.Feedback
             FeedbackAlreadyRecorded,
             IncorrectJobStatus,
             ServerError,
+            RequestArchived,
         }
 
         public Messages Message { get; set; }

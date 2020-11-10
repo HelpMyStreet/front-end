@@ -65,6 +65,11 @@ namespace HelpMyStreetFE.ViewComponents
                 return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded });
             }
 
+            if (jobDetails.JobSummary.Archive == true)
+            {
+                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.RequestArchived });
+            }
+
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel();
 
             viewModel.RoleSubmittingFeedback = parameters.RequestRole;
