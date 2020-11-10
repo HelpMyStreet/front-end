@@ -301,7 +301,7 @@ async function startAnimation(){
             var coordDate = new Date(coord.date);
             
             });
-            dateText.innerHTML = thisDate.toLocaleString('en-GB', {timeZone: 'UTC'});
+            dateText.innerHTML = thisDate.toLocaleDateString('en-GB', {timeZone: 'UTC'});
         
         }, diffDate > 150 ? daysPassed * Math.floor(100000/diffDate) : daysPassed * Math.floor(10000/diffDate));
 

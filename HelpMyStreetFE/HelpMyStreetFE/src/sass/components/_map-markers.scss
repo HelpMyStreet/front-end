@@ -1,9 +1,10 @@
 ﻿.animate-button {
-    background-color: lawngreen;
+    background-color: seagreen;
     border: none;
     width: 100px;
     border-radius: 5px;
     margin-bottom: 10px;
+    color: white;
 
     &.animating {
         background-color: red;
