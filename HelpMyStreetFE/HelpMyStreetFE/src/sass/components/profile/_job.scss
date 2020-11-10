@@ -55,7 +55,7 @@
 
       @media (min-width: $med-screen) {
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-start;
       }
 
       &__referrer {
@@ -154,6 +154,7 @@
           padding-top: 0;
           background: none;
           align-self: flex-start;
+          align-items: flex-start;
 
           > * {
             margin: 0.25rem 0 0.75rem 0;
@@ -390,7 +391,7 @@
   &--hot {
     .job__info {
       .due-date {
-        color: $orange;
+        color: $light-orange;
         font-weight: 600;
       }
     }
@@ -399,7 +400,7 @@
   &--warm {
     .job__info {
       .due-date {
-        color: $orange;
+        color: $light-orange;
       }
     }
   }
