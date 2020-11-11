@@ -111,11 +111,12 @@
     }
 
     .volunteer-instructions {
-      border: 1px solid $black;
+      border: 1px solid $gray-8;
       background-color: $green-transparent;
       text-align: left;
       margin: 0.5rem 0.5rem 2rem 0.5rem;
       padding: 1rem;
+      border-radius: 0.5rem;
 
       h5 {
         margin-bottom: 1.5rem;

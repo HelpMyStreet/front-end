@@ -38,11 +38,8 @@
     }
 
     @media (min-width: $med-screen) {
-      padding: 0;
-      grid-template-columns: 1fr 1fr 1fr;
-    }
-
-    .column {
+      padding: 0 0.5rem;
+      grid-template-columns: 1.1fr 2fr 14rem;
     }
 
     &__col1 {
@@ -55,23 +52,18 @@
 
       @media (min-width: $med-screen) {
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-start;
       }
 
       &__referrer {
         display: flex;
         align-items: center;
-        margin: 0 0.25rem 0.5rem 0.25rem;
+        margin: 0 0.25rem 0.25rem 0.25rem;
         order: 1;
 
-        &.admin-view {
-          order: 3;
-
-          @media (min-width: $med-screen) {
-            display: none;
-          }
+        @media (min-width: $med-screen) {
+          margin-bottom: 0;
         }
-
 
         img {
           display: block;
@@ -79,18 +71,15 @@
           margin: 0.25rem;
 
           @media (min-width: $med-screen) {
-            max-width: 7rem;
+            max-width: 10rem;
             max-height: 4rem;
+            margin-bottom: 0;
           }
         }
 
         .composite-logo {
           display: flex;
           align-items: center;
-
-          @media (min-width: $med-screen) {
-            flex-direction: column;
-          }
 
           img {
             max-width: 2.5rem;
@@ -127,24 +116,17 @@
         justify-content: center;
         background: $washed-blue;
         width: 100%;
-        padding: 0.5rem 0.5rem 0 1rem;
+        padding: 0.5rem 0.5rem 0 0.75rem;
         order: 4;
+        text-align: left;
 
         > * {
-          margin: 0.25rem 0.5rem 0.25rem 0;
-        }
-
-        &.admin-view {
-          justify-content: space-between;
+          margin: 0.25rem 0.5rem;
         }
 
         @media (min-width: $sm-med-screen) {
           margin: 1rem 2.5rem 0 2.5rem;
           justify-content: center;
-
-          &.admin-view {
-            justify-content: space-between;
-          }
         }
 
         @media (min-width: $med-screen) {
@@ -154,21 +136,16 @@
           padding-top: 0;
           background: none;
           align-self: flex-start;
+          align-items: flex-start;
 
           > * {
-            margin: 0.25rem 0 0.75rem 0;
+            margin: 0.25rem 0 0.25rem 0;
           }
         }
 
         &__dates {
           display: flex;
           align-items: center;
-
-          img {
-            padding: 0 0.75rem 0 0;
-            height: 25px;
-            display: inline-block;
-          }
         }
       }
 
@@ -208,6 +185,11 @@
       .job__status {
         font-weight: bold;
         color: $black;
+        text-align: left;
+      }
+
+      &__new-status.job__status {
+        text-align: center;
       }
     }
 
@@ -222,25 +204,6 @@
       flex-direction: column;
       margin-bottom: 0.25rem;
       flex-wrap: wrap;
-
-      &.admin-view {
-        flex-direction: row;
-        justify-content: space-between;
-
-        @media (min-width: $sm-med-screen) {
-        }
-
-        @media (min-width: $med-screen) {
-          flex-direction: column;
-          justify-content: center;
-          margin: 0;
-
-          .job__info__activity__criticality {
-            display: block;
-            margin-bottom: 0.25rem;
-          }
-        }
-      }
 
       @media (min-width: $sm-med-screen) {
         flex-direction: row;
@@ -317,12 +280,6 @@
           display: block;
           margin-bottom: 0.25rem;
         }
-
-        &.admin-view {
-          .job__info__col3__criticality {
-            display: none;
-          }
-        }
       }
     }
 
@@ -391,12 +348,45 @@
         }
       }
     }
+
+    &.admin-view {
+      @media (min-width: $med-screen) {
+        grid-template-columns: 1.2fr 2fr 14rem;
+      }
+
+      .job__info__col1__referrer {
+        order: 3;
+
+        @media (min-width: $med-screen) {
+          display: none;
+        }
+      }
+
+      .job__info__activity {
+        flex-direction: row;
+
+        @media (min-width: $med-screen) {
+          flex-direction: column;
+          justify-content: center;
+          margin: 0;
+
+          .job__info__activity__criticality {
+            display: block;
+            margin-bottom: 0.25rem;
+          }
+        }
+      }
+
+      .job__info__col3__criticality {
+        display: none;
+      }
+    }
   }
 
   &--hot {
     .job__info {
       .due-date {
-        color: $orange;
+        color: $light-orange;
         font-weight: 600;
       }
     }
@@ -405,7 +395,7 @@
   &--warm {
     .job__info {
       .due-date {
-        color: $orange;
+        color: $light-orange;
       }
     }
   }
