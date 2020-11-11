@@ -8,11 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.Models.Feedback
 {
-    public class FeedbackCaptureEditModel
+    public class FeedbackCaptureEditModel : CapturedFeedback
     {
-        [Required]
-        public RequestRoles RoleSubmittingFeedback { get; set; }
-
         public bool ShowRecipientMessage { get; set; }
         public bool ShowRequestorMessage { get; set; }
         public bool ShowVolunteerMessage { get; set; }
@@ -23,14 +20,5 @@ namespace HelpMyStreetFE.Models.Feedback
         public string RequestorName { get; set; }
         public string VolunteerName { get; set; }
         public string GroupName { get; set; }
-
-        [Required]
-        [Range(1, 2)]
-        public int FeedbackRating { get; set; }
-        public string RecipientMessage { get; set; }
-        public string RequestorMessage { get; set; }
-        public string VolunteerMessage { get; set; }
-        public string GroupMessage { get; set; }
-        public string HMSMessage { get; set; }
     }
 }

@@ -13,9 +13,7 @@ export function initialiseFeedbackCaptureForm() {
 
     buttonLoad($("#btnSubmit"));
 
-    const valid = validateFormData($(this), {
-      "FeedbackRating": (v) => (!isNaN(v) && v > 0) || "Please select an option"
-    });
+    const valid = validateFeedbackForm($(this));
 
     if (valid == false) {
       buttonUnload($("#btnSubmit"));;
@@ -26,3 +24,8 @@ export function initialiseFeedbackCaptureForm() {
   });
 }
 
+export function validateFeedbackForm(form) {
+  return validateFormData(form, {
+    "FeedbackRating": (v) => (!isNaN(v) && v > 0) || "Please select an option"
+  });
+}

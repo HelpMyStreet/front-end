@@ -11,7 +11,7 @@
 
 <div class="row">
     <div class="sm12 input tile-selector">
-        @Html.HiddenFor(m => m.FeedbackRating)
+        @Html.EditorFor(m => m.FeedbackRating, new { htmlAttributes = new { @class ="dnone"} })
         <label for="rating">How was your experience with HelpMyStreet?</label>
         <div class="tiles reduce-width">
             <div class="row">
@@ -95,15 +95,4 @@
         </div>
     </div>
 }
-
-<div class="row">
-    <div class="sm12 input">
-        <button type="submit" id="btnSubmit" class="btn cta fill">
-            <span class="text">Submit</span>
-            <div class="loader">
-                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' />
-            </div>
-        </button>
-    </div>
-</div>
 

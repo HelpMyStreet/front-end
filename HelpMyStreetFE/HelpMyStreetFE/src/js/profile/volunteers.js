@@ -41,7 +41,7 @@ var initialiseAddCredentialLinks = function () {
           $(el).replaceWith('<span class="added">Added</span>');
           return true;
         }
-        return 'Oops, we couldn’t add that credential at the moment.';
+        return "Oops, we couldn't add that credential at the moment.";
       }
     };
 

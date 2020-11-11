@@ -12,6 +12,17 @@
 
     <h2 class="text-center mt-xl">Tell us how it went?</h2>
 
-    <partial name="_FeedbackCaptureForm" model="Model" />
+    <partial name="_FeedbackCaptureFormFields" model="Model" />
+
+    <div class="row">
+        <div class="sm12 input">
+            <button type="submit" id="btnSubmit" class="btn cta fill">
+                <span class="text">Submit</span>
+                <div class="loader">
+                    <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' />
+                </div>
+            </button>
+        </div>
+    </div>
 
 </form>

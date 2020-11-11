@@ -58,7 +58,8 @@ namespace HelpMyStreetFE.Controllers {
                     case UpdateJobStatusOutcome.Success:
                         if (role == RequestRoles.Volunteer && s == JobStatuses.Done)
                         {
-                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/post-task-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
                         }
                         return s.FriendlyName();
                     case UpdateJobStatusOutcome.BadRequest:

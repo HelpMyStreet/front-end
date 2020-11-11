@@ -172,6 +172,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
+            services.AddSingleton<IFeedbackService, FeedbackService>();
 
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
