@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.17.1" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.478" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.487" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.478" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.487" />
 	<PackageReference Include="Markdig" Version="0.22.0" />  
