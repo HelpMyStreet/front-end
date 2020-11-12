@@ -1,5 +1,5 @@
 ﻿import { showServerSidePopup, showPopup } from '../shared/popup';
-import { hmsFetch, fetchResponses } from '../shared/hmsFetch';
+import { hmsSubmit, fetchResponses } from '../shared/hmsFetch';
 import { datepickerLoad, validateDate, dateValidationSchemes } from '../shared/date-picker';
 import { validateFormData } from '../shared/validator'
 
@@ -25,18 +25,7 @@ var initialiseAddCredentialLinks = function () {
           return 'Please check your entries above and try again.';
         }
 
-        const formData = $(popup).find('form').serializeArray();
-        let dataToSend = {};
-        formData.forEach((d) => {
-          dataToSend[d.name] = d.value;
-        });
-
-        var fetchRequestData = {
-          method: 'POST',
-          body: JSON.stringify(dataToSend),
-          headers: { 'Content-Type': 'application/json' },
-        };
-        var response = await hmsFetch(`/api/volunteers/put-volunteer-credential?u=${user}&g=${group}&c=${credential}`, fetchRequestData);
+        var response = await hmsSubmit(`/api/volunteers/put-volunteer-credential?u=${user}&g=${group}&c=${credential}`, $(popup).find('form'));
         if (response.fetchResponse == fetchResponses.SUCCESS) {
           $(el).replaceWith('<span class="added">Added</span>');
           return true;

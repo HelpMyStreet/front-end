@@ -1,12 +1,23 @@
 export function stringifyForm(form) {
   const formData = $(form).serializeArray();
-  let dataToSend = {};
+  let formDataAsObject = {};
   formData.forEach((d) => {
-    if ($(form).find(`input[name="${d.name}"]`).attr('type') == 'number') {
-      dataToSend[d.name] = parseFloat(d.value);
+    const inputType = $(form).find(`input[name="${d.name}"]`).attr('type');
+    let value = d.value;
+    if ((inputType == 'radio' || inputType == 'checkbox' || inputType == 'number') && parseFloat(value) != NaN) {
+      value = parseFloat(value);
+    }
+
+    if (d.name.indexOf('[]') > 0) {
+      const name = d.name.replace('[]', '');
+      if (!formDataAsObject[name]) {
+        formDataAsObject[name] = [value];
+      } else {
+        formDataAsObject[name].push(value);
+      }
     } else {
-      dataToSend[d.name] = d.value;
+      formDataAsObject[d.name] = value;
     }
   });
-  return JSON.stringify(dataToSend);
+  return JSON.stringify(formDataAsObject);
 }
