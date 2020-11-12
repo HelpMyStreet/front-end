@@ -5,7 +5,7 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class JobSummaryQuestionExtensions
     {
-        public static bool ShowOnTaskManagement(this Question question)
+        public static bool ShowOnTaskManagement(this Question question, bool showSensitiveData)
         {
             return question.Id switch
             {
@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.AnythingElseToTellUs => true,
                 (int)Questions.Shopping_List => true,
                 (int)Questions.Prescription_PharmacyAddress => true,
+                (int)Questions.SensitiveInformation => showSensitiveData ? true : false,
                 _ => false
             };
         }
