@@ -234,14 +234,14 @@ namespace HelpMyStreetFE.Repositories
             return messageList;
         }
 
-        public async Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, int feedbackRating)
+        public async Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, FeedbackRating feedbackRating)
         {
             PostRecordFeedbackRequest request = new PostRecordFeedbackRequest()
             {
                 JobId = jobId,
                 RequestRoleType = new RequestRoleType() { RequestRole = requestRoles },
                 UserId = userId,
-                FeedbackRatingType = new FeedbackRatingType() { FeedbackRating = (FeedbackRating) feedbackRating}
+                FeedbackRatingType = new FeedbackRatingType() { FeedbackRating = feedbackRating}
             };
             string json = JsonConvert.SerializeObject(request);
             StringContent data = new StringContent(json, Encoding.UTF8, "application/json");

@@ -70,18 +70,20 @@ namespace HelpMyStreetFE.ViewComponents
                 return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.RequestArchived });
             }
 
-            FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel();
+            FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel
+            {
+                RoleSubmittingFeedback = parameters.RequestRole,
+                FeedbackRating = parameters.FeedbackRating,
 
-            viewModel.RoleSubmittingFeedback = parameters.RequestRole;
+                VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName,
+                RecipientName = jobDetails.Recipient.FirstName,
+                RequestorName = jobDetails.Requestor.FirstName,
 
-            viewModel.VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName;
-            viewModel.RecipientName = jobDetails.Recipient.FirstName;
-            viewModel.RequestorName = jobDetails.Requestor.FirstName;
-
-            viewModel.ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null;
-            viewModel.ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient;
-            viewModel.ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && jobDetails.JobSummary.RequestorType != RequestorType.Myself;
-            viewModel.ShowHMSMessage = true;
+                ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null,
+                ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient,
+                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && jobDetails.JobSummary.RequestorType != RequestorType.Myself,
+                ShowHMSMessage = true
+            };
 
             if (jobDetails.JobSummary.ReferringGroupID != -1)
             {

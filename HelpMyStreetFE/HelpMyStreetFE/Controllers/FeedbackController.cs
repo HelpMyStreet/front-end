@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public IActionResult PostTaskFeedbackCapture(string j, string r)
+        public IActionResult PostTaskFeedbackCapture(string j, string r, string f)
         {
             if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
             {
@@ -40,8 +40,9 @@ namespace HelpMyStreetFE.Controllers
 
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
+            FeedbackRating feedbackRating = (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
 
-            return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole });
+            return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole, FeedbackRating = feedbackRating });
         }
 
         [HttpPost]

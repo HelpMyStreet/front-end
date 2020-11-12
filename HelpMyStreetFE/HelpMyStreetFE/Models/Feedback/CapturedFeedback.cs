@@ -13,8 +13,7 @@ namespace HelpMyStreetFE.Models.Feedback
         public RequestRoles RoleSubmittingFeedback { get; set; }
 
         [Required]
-        [Range(1, 2)]
-        public int FeedbackRating { get; set; }
+        public FeedbackRating FeedbackRating { get; set; }
         public string RecipientMessage { get; set; }
         public string RequestorMessage { get; set; }
         public string VolunteerMessage { get; set; }

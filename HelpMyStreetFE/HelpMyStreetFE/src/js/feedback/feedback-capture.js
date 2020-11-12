@@ -55,6 +55,6 @@ export async function showFeedbackPopup(jobId, role) {
 
 function validateFeedbackForm(form) {
   return validateFormData(form, {
-    "FeedbackRating": (v) => (!isNaN(v) && v > 0) || "Please select an option"
+    "FeedbackRating": (v) => (v != "") || "Please select an option"
   });
 }

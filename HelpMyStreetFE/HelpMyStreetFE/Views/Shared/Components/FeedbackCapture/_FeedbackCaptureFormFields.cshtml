@@ -16,7 +16,7 @@
         <div class="tiles reduce-width">
             <div class="row">
                 <div class="sm6">
-                    <div class="tiles__tile tile-selector__tile" data-type="rating" data-value="1">
+                    <div class="tiles__tile tile-selector__tile @(Model.FeedbackRating == FeedbackRating.HappyFace ? "selected": "")" data-type="rating" data-value="@FeedbackRating.HappyFace">
                         <div class="tiles__tile__content">
                             <div class="tiles__tile__content__icon">
                                 <img src="~/img/icons/happy-face.svg" alt="Happy face" class="limit-width-150" />
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="sm6">
-                    <div class="tiles__tile tile-selector__tile" data-type="rating" data-value="2">
+                    <div class="tiles__tile tile-selector__tile @(Model.FeedbackRating == FeedbackRating.SadFace ? "selected": "")" data-type="rating" data-value="@FeedbackRating.SadFace">
                         <div class="tiles__tile__content">
                             <div class="tiles__tile__content__icon">
                                 <img src="~/img/icons/sad-face.svg" alt="Sad face" class="limit-width-150" />

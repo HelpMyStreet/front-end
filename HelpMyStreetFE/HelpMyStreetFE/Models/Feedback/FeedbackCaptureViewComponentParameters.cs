@@ -10,6 +10,7 @@ namespace HelpMyStreetFE.Models.Feedback
     {
         public int JobId { get; set; }
         public RequestRoles RequestRole { get; set; }
+        public FeedbackRating FeedbackRating { get; set; }
         public bool RenderAsPopup { get; set; }
     }
 }
