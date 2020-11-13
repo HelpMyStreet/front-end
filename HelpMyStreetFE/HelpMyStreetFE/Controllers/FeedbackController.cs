@@ -49,6 +49,11 @@ namespace HelpMyStreetFE.Controllers
             FeedbackRating feedbackRating = (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
             var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
 
+            if (job.JobStatus == JobStatuses.Open || job.JobStatus == JobStatuses.InProgress)
+            {
+                return ShowMessage(FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus, job.ReferringGroupID);
+            }
+
             if (await _feedbackService.GetFeedbackExists(jobId, requestRole))
             {
                 return ShowMessage(FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded, job.ReferringGroupID);
@@ -94,8 +99,14 @@ namespace HelpMyStreetFE.Controllers
                     Subtitle = "Your feedback has been received",
                     Message = $"<p>We'll use your feedback to make HelpMyStreet {(feedbackRating == FeedbackRating.HappyFace ? "even better" : "as good as it can be")}</p>"
                 },
+                FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus => new NotificationModel
+                {
+                    Type = NotificationType.Failure_Permanent,
+                    Title = "Sorry, that didn't work",
+                    Subtitle = "We couldn't record your feedback",
+                    Message = "<p>The request is not currently marked as complete in our system.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
+                },
                 FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded or
-                FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus or
                 FeedbackCaptureMessageViewModel.Messages.RequestArchived => new NotificationModel
                 {
                     Type = NotificationType.Failure_Permanent,
