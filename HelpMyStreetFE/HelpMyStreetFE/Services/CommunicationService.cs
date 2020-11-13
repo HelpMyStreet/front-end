@@ -1,8 +1,6 @@
 ﻿using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.CommunicationService.Response;
 using HelpMyStreet.Contracts.Shared;
-using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Configuration;
@@ -28,12 +26,16 @@ namespace HelpMyStreetFE.Services
 
         public async Task<string> GetLinkDestination(string token)
         {
-            var response = await GetAsync<ResponseWrapper<GetLinkDestinationResponse, CommunicationServiceErrorCode>>($"/api/GetLinkDestination?token={token}");
-
-            if (response.HasContent && response.IsSuccessful)
+            try
             {
-                return response.Content.Url;
+                var response = await GetAsync<ResponseWrapper<GetLinkDestinationResponse, CommunicationServiceErrorCode>>($"/api/GetLinkDestination?token={token}");
+
+                if (response.HasContent && response.IsSuccessful)
+                {
+                    return response.Content.Url;
+                }
             }
+            catch { }
             return null;
         }
 
