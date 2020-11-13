@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
@@ -33,7 +34,7 @@ namespace HelpMyStreetFE.Controllers
         {
             if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
             {
-                return StatusCode(401);
+                return StatusCode((int)HttpStatusCode.Unauthorized);
             }
 
             int jobId = Base64Utils.Base64DecodeToInt(j);
@@ -44,18 +45,18 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("put-feedback")]
         [AuthorizeAttributeNoRedirect]
-        public async Task<bool> PutFeedback(string j, string r, [FromBody] CapturedFeedback model, CancellationToken cancellationToken)
+        public async Task<IActionResult> PutFeedback(string j, string r, [FromBody] CapturedFeedback model, CancellationToken cancellationToken)
         {
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
             if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
             {
-                return false;
+                return StatusCode((int)HttpStatusCode.Unauthorized);
             }
             if (!ModelState.IsValid)
             {
-                throw new Exception($"Invalid model state in PutFeedback for job {jobId}");
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
 
             model.JobId = jobId;
@@ -64,7 +65,14 @@ namespace HelpMyStreetFE.Controllers
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
-            return result == Enums.Result.Success;
+            if (result == Result.Success)
+            {
+                return StatusCode((int)HttpStatusCode.OK);
+            }
+            else
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
         }
     }
 }
