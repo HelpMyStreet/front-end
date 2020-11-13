@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Enums;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Services;
@@ -63,7 +64,7 @@ namespace HelpMyStreetFE.Controllers
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
-            return result == FeedbackCaptureMessageViewModel.Messages.Success;
+            return result == Enums.Result.Success;
         }
     }
 }

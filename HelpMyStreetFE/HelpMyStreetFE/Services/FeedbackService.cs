@@ -6,6 +6,7 @@ using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Enums;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Repositories;
 
@@ -29,7 +30,7 @@ namespace HelpMyStreetFE.Services
             return await _feedbackRepository.GetFeedbackExists(jobId, requestRole);
         }
 
-        public async Task<FeedbackCaptureMessageViewModel.Messages> PostRecordFeedback(User user, CapturedFeedback feedback)
+        public async Task<Result> PostRecordFeedback(User user, CapturedFeedback feedback)
         {
             var job = await _requestHelpRepository.GetJobDetailsAsync(feedback.JobId, -1);
 
@@ -40,7 +41,7 @@ namespace HelpMyStreetFE.Services
 
             if (job.JobSummary.JobStatus == JobStatuses.Open || job.JobSummary.JobStatus == JobStatuses.InProgress)
             {
-                return FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus;
+                return Result.Failure_IncorrectJobStatus;
             }
 
 
@@ -51,11 +52,11 @@ namespace HelpMyStreetFE.Services
             {
                 if (await _feedbackRepository.GetFeedbackExists(feedback.JobId, feedback.RoleSubmittingFeedback))
                 {
-                    return FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded;
+                    return Result.Failure_FeedbackAlreadyRecorded;
                 }
                 else
                 {
-                    return FeedbackCaptureMessageViewModel.Messages.ServerError;
+                    return Result.Failure_ServerError;
                 }
             }
 
@@ -99,7 +100,7 @@ namespace HelpMyStreetFE.Services
                 success &= await _communicationService.SendInterUserMessage(from, to, feedback.HMSMessage, feedback.JobId);
             }
 
-            return success ? FeedbackCaptureMessageViewModel.Messages.Success : FeedbackCaptureMessageViewModel.Messages.ServerError;
+            return success ? Result.Success : Result.Failure_ServerError;
         }
 
         private MessageParticipant GetFromBlock(User user, RequestRoles requestRole, GetJobDetailsResponse job)

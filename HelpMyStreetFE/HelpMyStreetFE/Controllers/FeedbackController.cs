@@ -4,21 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Contracts.CommunicationService.Request;
-using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Extensions;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Enums;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Models.RequestHelp;
-using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.Controllers
@@ -51,12 +46,12 @@ namespace HelpMyStreetFE.Controllers
 
             if (job.JobStatus == JobStatuses.Open || job.JobStatus == JobStatuses.InProgress)
             {
-                return ShowMessage(FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus, job.ReferringGroupID);
+                return ShowMessage(Enums.Result.Failure_IncorrectJobStatus, job.ReferringGroupID);
             }
 
             if (await _feedbackService.GetFeedbackExists(jobId, requestRole))
             {
-                return ShowMessage(FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded, job.ReferringGroupID);
+                return ShowMessage(Enums.Result.Failure_FeedbackAlreadyRecorded, job.ReferringGroupID);
             }
 
             return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole, FeedbackRating = feedbackRating });
@@ -88,40 +83,40 @@ namespace HelpMyStreetFE.Controllers
             return ShowMessage(result, job.ReferringGroupID, model.FeedbackRating);
         }
 
-        public IActionResult ShowMessage(FeedbackCaptureMessageViewModel.Messages message, int referringGroupId, FeedbackRating? feedbackRating = null)
+        public IActionResult ShowMessage(Enums.Result result, int referringGroupId, FeedbackRating? feedbackRating = null)
         {
-            var notification = message switch
+            var notification = result switch
             {
-                FeedbackCaptureMessageViewModel.Messages.Success => new NotificationModel
+                Enums.Result.Success => new NotificationModel
                 {
                     Type = NotificationType.Success,
                     Title = "Thank you",
                     Subtitle = "Your feedback has been received",
                     Message = $"<p>We'll use your feedback to make HelpMyStreet {(feedbackRating == FeedbackRating.HappyFace ? "even better" : "as good as it can be")}</p>"
                 },
-                FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus => new NotificationModel
+                Enums.Result.Failure_IncorrectJobStatus => new NotificationModel
                 {
                     Type = NotificationType.Failure_Permanent,
                     Title = "Sorry, that didn't work",
                     Subtitle = "We couldn't record your feedback",
                     Message = "<p>The request is not currently marked as complete in our system.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
                 },
-                FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded or
-                FeedbackCaptureMessageViewModel.Messages.RequestArchived => new NotificationModel
+                Enums.Result.Failure_FeedbackAlreadyRecorded or
+                Enums.Result.Failure_RequestArchived => new NotificationModel
                 {
                     Type = NotificationType.Failure_Permanent,
                     Title = "Sorry, that didn't work",
                     Subtitle = "We couldn't record your feedback",
                     Message = "<p>We may already have feedback relating to that request.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
                 },
-                FeedbackCaptureMessageViewModel.Messages.ServerError => new NotificationModel
+                Enums.Result.Failure_ServerError => new NotificationModel
                 {
                     Type = NotificationType.Failure_Temporary,
                     Title = "Sorry, that didn't work",
                     Subtitle = "We couldn't record your feedback at this time",
                     Message = "<p>This is usually a temporary problem; please press your browser's back button to try again.</p><p>Alternatively, you can email us at <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
                 },
-                _ => throw new ArgumentException($"Unexpected FeedbackCaptureMessageViewModel.Messages value: {message}", nameof(message))
+                _ => throw new ArgumentException($"Unexpected Result value: {result}", nameof(result))
             };
 
             var vm = new SuccessViewModel()
