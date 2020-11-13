@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 
@@ -13,6 +14,7 @@ namespace HelpMyStreetFE.Models.Feedback
         public RequestRoles RoleSubmittingFeedback { get; set; }
 
         [Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public FeedbackRating FeedbackRating { get; set; }
         public string RecipientMessage { get; set; }
         public string RequestorMessage { get; set; }
