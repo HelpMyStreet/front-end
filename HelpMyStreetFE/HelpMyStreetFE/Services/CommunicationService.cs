@@ -27,15 +27,9 @@ namespace HelpMyStreetFE.Services
 
         public async Task<string> GetLinkDestination(string token)
         {
-            int jobId = 0;
-            RequestRoles requestRoleType = RequestRoles.Recipient;
-            if (token == "a")
-            {
-                jobId = 575;
-                requestRoleType = RequestRoles.Recipient;
-            }
-
-            return $"/Feedback/PostTaskFeedbackCapture?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)requestRoleType)}";
+            // Call communication service
+            // Return link destination on happy path, or null otherwise
+            return null;
         }
 
         public async Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient)
