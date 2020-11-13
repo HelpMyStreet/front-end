@@ -18,7 +18,7 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.AnythingElseToTellUs => true,
                 (int)Questions.Shopping_List => true,
                 (int)Questions.Prescription_PharmacyAddress => true,
-                (int)Questions.SensitiveInformation => showSensitiveData ? true : false,
+                (int)Questions.SensitiveInformation => showSensitiveData,
                 _ => false
             };
         }

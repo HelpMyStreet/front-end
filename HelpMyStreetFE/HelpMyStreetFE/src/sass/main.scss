@@ -123,6 +123,10 @@ span {
   font-size: inherit;
 }
 
+img {
+  max-width: 100%;
+}
+
 ul.tick-list {
   list-style: none;
   padding-left: 0.5em;
@@ -265,10 +269,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
   @media screen and (max-width: $med-screen) {
     padding: $med-margin 16px;
-  }
-
-  img {
-    max-width: 100%;
   }
 
   &__buttons {

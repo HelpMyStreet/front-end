@@ -31,6 +31,7 @@ export async function showPopup(settings) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
 
   popup.find(".popup__content__header").first().text(settings.header);
+
   popup.find(".popup__content__text").first().html(settings.htmlContent);
 
   popup.find("#popup-accept > .text").text(settings.actionBtnText);

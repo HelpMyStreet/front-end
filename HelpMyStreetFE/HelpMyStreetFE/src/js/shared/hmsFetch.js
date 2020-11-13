@@ -4,6 +4,7 @@
 // Returns Promise that will resolve to a fetchResponse, and associated data.
 
 import "isomorphic-fetch"
+import { stringifyForm } from "./form-helper";
 
 const defaultOptions = {
     timeOutLength: 5000,
@@ -96,6 +97,15 @@ async function hmsFetch(url, data, options) {
     return tryFetch(url, data, _options, -1)
 };
 
+async function hmsSubmit(url, form, options) {
+  var fetchRequestData = {
+    method: 'POST',
+    body: stringifyForm(form),
+    headers: { 'Content-Type': 'application/json' },
+  };
+  return await hmsFetch(url, fetchRequestData, options);
+};
+
 function extractResponse(response) {
     const contentType = response.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
@@ -107,4 +117,4 @@ function extractResponse(response) {
     
 
 
-export { hmsFetch, fetchResponses };
+export { hmsFetch, fetchResponses, hmsSubmit };

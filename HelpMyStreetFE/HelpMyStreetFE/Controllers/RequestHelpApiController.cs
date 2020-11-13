@@ -42,10 +42,12 @@ namespace HelpMyStreetFE.Controllers {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int jobId = Base64Utils.Base64DecodeToInt(j);
 
+                RequestRoles role = u == "self" ? RequestRoles.Volunteer : RequestRoles.GroupAdmin;
+
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
-                {
-                    targetUserId = u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u);
+                { 
+                    targetUserId = role == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u);
                 }
 
                 UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
@@ -54,6 +56,11 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
+                        if (role == RequestRoles.Volunteer && s == JobStatuses.Done)
+                        {
+                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                        }
                         return s.FriendlyName();
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);

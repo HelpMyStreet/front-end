@@ -1,0 +1,99 @@
+﻿@using HelpMyStreetFE.Models.Feedback
+@using HelpMyStreet.Utils.Enums;
+
+
+@model FeedbackCaptureEditModel
+
+
+
+
+@Html.AntiForgeryToken()
+
+<div class="row">
+    <div class="sm12 input tile-selector">
+        @Html.EditorFor(m => m.FeedbackRating, new { htmlAttributes = new { @class ="dnone"} })
+        <label for="rating">How was your experience with HelpMyStreet?</label>
+        <div class="tiles reduce-width">
+            <div class="row">
+                <div class="sm6">
+                    <div class="tiles__tile tile-selector__tile @(Model.FeedbackRating == FeedbackRating.HappyFace ? "selected": "")" data-type="rating" data-value="@FeedbackRating.HappyFace">
+                        <div class="tiles__tile__content">
+                            <div class="tiles__tile__content__icon">
+                                <img src="~/img/icons/happy-face.svg" alt="Happy face" class="limit-width-150" />
+                            </div>
+                            <div class="tiles__tile__content__description">
+                                Great
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sm6">
+                    <div class="tiles__tile tile-selector__tile @(Model.FeedbackRating == FeedbackRating.SadFace ? "selected": "")" data-type="rating" data-value="@FeedbackRating.SadFace">
+                        <div class="tiles__tile__content">
+                            <div class="tiles__tile__content__icon">
+                                <img src="~/img/icons/sad-face.svg" alt="Sad face" class="limit-width-150" />
+                            </div>
+                            <div class="tiles__tile__content__description">
+                                Not so great
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="error"></span>
+    </div>
+</div>
+
+@if (Model.ShowVolunteerMessage)
+{
+    <div class="row">
+        <div class="sm12 input">
+            @Html.LabelFor(m => m.VolunteerMessage, $"Would you like to pass a message on to {Model.VolunteerName}, {(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your volunteer?" : "who completed this task?")}")
+            @Html.TextAreaFor(m => m.VolunteerMessage, new { @placeholder = "Leave your message for " + (Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") + " volunteer here." })
+        </div>
+    </div>
+}
+
+@if (Model.ShowRecipientMessage)
+{
+    <div class="row">
+        <div class="sm12 input">
+            @Html.LabelFor(m => m.RecipientMessage, $"Would you like to pass a message on to {Model.RecipientName}?")
+            @Html.TextAreaFor(m => m.RecipientMessage, new { @placeholder = "Leave your message for the person you helped here." })
+        </div>
+    </div>
+}
+
+@if (Model.ShowRequestorMessage)
+{
+    <div class="row">
+        <div class="sm12 input">
+            @Html.LabelFor(m => m.RequestorMessage, Model.RoleSubmittingFeedback == RequestRoles.Recipient ?
+                    $"{Model.RequestorName} submitted this help on your behalf.  Would you like to pass on a message so they know how it went?" :
+                    $"This help was requested by {Model.RequestorName} for {Model.RecipientName}.  Would you like to pass a message on to {Model.RequestorName}?")
+            @Html.TextAreaFor(m => m.RequestorMessage, new { @placeholder = "Leave your message for the person who requested help here." })
+        </div>
+    </div>
+}
+
+@if (Model.ShowGroupMessage)
+{
+    <div class="row">
+        <div class="sm12 input">
+            <label for="@nameof(Model.GroupMessage)">This request was managed by <b>@Model.GroupName</b>. Got some feedback for them?</label>
+            @Html.TextAreaFor(m => m.GroupMessage, new { @placeholder = $"Leave your comments and compliments for their team here.", @class = "shrink grow-on-focus" })
+        </div>
+    </div>
+}
+
+@if (Model.ShowHMSMessage)
+{
+    <div class="row">
+        <div class="sm12 input">
+            <label for="@nameof(Model.HMSMessage)">Got some feedback about HelpMyStreet?</label>
+            @Html.TextAreaFor(m => m.HMSMessage, new { @placeholder = "Leave your comments and compliments for the team here.", @class = "shrink grow-on-focus" })
+        </div>
+    </div>
+}
+

@@ -56,6 +56,8 @@ $breakpointSm: 900px;
 
     input {
       @include input-default;
+      width: 240px;
+      height: auto;
       font-size: 0.7em;
 
       @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {

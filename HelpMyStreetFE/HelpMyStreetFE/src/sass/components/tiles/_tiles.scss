@@ -1,169 +1,194 @@
 ﻿.tiles {
-    margin: 20px 0;
+  margin: 20px 0;
 
-    &__label {
-        &--large {
-            font-size: 1.6rem;
-            font-weight: 600;
-        }
+  &.reduce-width {
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  &__label {
+    &--large {
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+  }
+
+  .sm4, .sm6 {
+    @extend .pad-sm-md;
+  }
+
+  &__tile {
+    text-align: center;
+    background: white;
+    padding: 10px;
+    width: 100%;
+    margin: 10px 0px;
+    @include shadow-md;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 2px solid $white;
+    display: table;
+
+
+    &--large {
+      min-height: 200px;
+      height: 200px;
     }
 
-    .sm4 {
-        @extend .pad-sm-md;
+    &:hover {
+      border: 2px solid $light-orange;
+      box-shadow: 0 0 10px $light-orange-opaque;
     }
 
-    &__tile {
-        text-align: center;
-        background: white;
-        padding: 10px;
-        width: 100%;
-        margin: 10px 0px;
-        @include shadow-md;
-        border-radius: 3px;
-        cursor: pointer;
-        border: 2px solid $white;
-        display: table;
 
-        &--large {
-            min-height: 200px;
-            height: 200px;
-        }
+    .on-selected {
+      display: none;
+    }
 
+    .no-selected {
+      display: inline-block;
+    }
 
+    &.selected {
+      border: 2px solid $light-orange;
+      background: $light-orange-opaque;
+      color: $dark-blue;
 
-        &:hover {
-            border: 2px solid $light-orange;
-            box-shadow: 0 0 10px $light-orange-opaque;
-        }
-
+      .cirlce {
+        background: $orange;
 
         .on-selected {
-            display: none;
+          display: inline-block;
         }
 
         .no-selected {
-            display: inline-block;
+          display: none;
+        }
+      }
+    }
+
+
+
+
+
+
+    &__content {
+      display: table-cell;
+      vertical-align: middle;
+
+
+      &--top {
+        display: block;
+        margin-top: 0.5rem;
+        margin-left: 0.5rem;
+        text-align: left;
+
+        &__description,
+        &__header {
+          margin-bottom: 0.3rem;
         }
 
-        &.selected {
-            border: 2px solid $light-orange;
-            background: $light-orange-opaque;
-            color: $dark-blue;
+        &__header {
+          font-size: 1.2rem;
+          font-weight: 600;
 
-            .cirlce {
-                background: $orange;
 
-                .on-selected {
-                    display: inline-block;
-                }
+          span.header-text {
+            font-size: 1rem;
+            font-weight: normal;
+          }
+        }
 
-                .no-selected {
-                    display: none;
-                }
-            }
+        &__description {
+          padding-bottom: 10px;
+
+          div {
+            line-height: 1.8rem;
+          }
+        }
+      }
+
+      &__header {
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+
+        &.left {
+          text-align: left;
+          font-size: 1.1rem;
+        }
+      }
+
+      &__icon {
+        margin-bottom: 5px;
+
+        .limit-width {
+          max-width: 80px;
         }
 
 
-
-
-
-
-        &__content {
-            display: table-cell;
-            vertical-align: middle;
-
-
-            &--top {
-                display: block;
-                margin-top: 0.5rem;
-                margin-left: 0.5rem;
-                text-align: left;
-
-                &__description,
-                &__header {
-                    margin-bottom: 0.3rem;
-                }
-
-                &__header {
-                    font-size: 1.2rem;
-                    font-weight: 600;
-
-
-                    span.header-text {
-                        font-size: 1rem;
-                        font-weight: normal;
-                    }
-                }
-
-                &__description {
-                    padding-bottom: 10px;
-
-                    div {
-                        line-height: 1.8rem;
-                    }
-                }
-            }
-
-            &__header {
-                font-weight: 600;
-                font-size: 1.2rem;
-                margin-bottom: 2px;
-
-                &.left {
-                    text-align: left;
-                    font-size: 1.1rem;
-                }
-            }
-
-            &__icon {
-                margin-bottom: 5px;
+        .limit-width-150 {
+          max-width: 150px;
+        }
 
                 >img {
                   height: 40px;
                 }
 
-                .text-icon {
-                    margin: 5px;
-                    display: inline-block;
-                    text-align: center;
-                    height: 25px;
-                    width: 25px;
-                    border-radius: 25px;
-                    font-size: 2.2rem;
-                    font-weight: 600;
-                }
 
-
-                .cirlce {
-                    background: $background-main;
-                    border-radius: 50%;
-                    width: 66px;
-                    margin: auto;
-                    padding: 16px 5px;
-                    height: 60px;
-                    display: inline-block;
-
-                    img {
-                        vertical-align: middle;
-                    }
-                }
-            }
-
-
-
-
-            &__description {
-                color: $black;
-                width: 95%;
-                margin: auto;
-
-                &.left {
-                    text-align: left;
-                }
-            }
+        .text-icon {
+          margin: 5px;
+          display: inline-block;
+          text-align: center;
+          height: 25px;
+          width: 25px;
+          border-radius: 25px;
+          font-size: 2.2rem;
+          font-weight: 600;
         }
-    }
 
+
+
+        .cirlce {
+          background: $background-main;
+          border-radius: 50%;
+          width: 66px;
+          margin: auto;
+          padding: 16px 5px;
+          height: 60px;
+          display: inline-block;
+
+          img {
+            vertical-align: middle;
+          }
+        }
+
+        .icon-size-sm {
+          width: 50px;
+          margin-top: 18px;
+          vertical-align: bottom;
+        }
+
+
+        .double-line-alignment {
+          margin-top: 22px;
+        }
+      }
+
+
+
+
+      &__description {
+        color: $black;
+        width: 95%;
+        margin: auto;
+
+        &.left {
+          text-align: left;
+        }
+      }
+    }
+  }
 }
 
 form {

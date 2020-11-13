@@ -77,7 +77,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobListViewModel.Jobs = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
             {
                 JobHeader = a,                
-                UserActingAsAdmin = jobFilterRequest.JobSet == JobSet.GroupRequests,
+                UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken)
             })));
 

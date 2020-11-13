@@ -23,10 +23,10 @@
             <button class="btn cta--blue btn__filter-toggle btn__toggle-show fill" data-target-item="filters-jobs">Sort and Filter Requests</button>
         </header>
 
-        <input type="hidden" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
-        <input type="hidden" name="GroupId" value="@Model.JobFilterRequest.GroupId" />
-        <input type="hidden" name="ResultsToShowIncrement" value="@Model.JobFilterRequest.ResultsToShowIncrement" />
-        <input type="hidden" name="ResultsToShow" value="@Model.JobFilterRequest.ResultsToShow" />
+        <input type="number" class="dnone" name="JobSet" value="@((int)Model.JobFilterRequest.JobSet)" />
+        <input type="number" class="dnone" name="GroupId" value="@Model.JobFilterRequest.GroupId" />
+        <input type="number" class="dnone" name="ResultsToShowIncrement" value="@Model.JobFilterRequest.ResultsToShowIncrement" />
+        <input type="number" class="dnone" name="ResultsToShow" value="@Model.JobFilterRequest.ResultsToShow" />
 
         <div class="filter__list-wrapper" id="filters-jobs">
             <button class="btn--close btn__filter-toggle btn__toggle-show" data-target-item="filters-jobs">

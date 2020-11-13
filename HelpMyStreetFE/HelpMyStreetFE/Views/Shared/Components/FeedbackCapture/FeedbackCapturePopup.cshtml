@@ -1,0 +1,21 @@
+﻿@using HelpMyStreetFE.Models.Feedback
+@using HelpMyStreet.Utils.Enums;
+
+@model FeedbackCaptureEditModel
+
+<div class="popup__content wide">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Tell us how it went?</div>
+        <div class="popup__content__text">
+            <form>
+                <partial name="_FeedbackCaptureFormFields" model="Model" />
+            </form>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t submit your feedback at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Submit" }' />
+        </div>
+    </div>
+</div>
+

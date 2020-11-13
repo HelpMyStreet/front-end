@@ -1,19 +1,8 @@
-import {
-    getParameterByName,
-    updateQueryStringParam,
-    removeQueryStringParam
-} from "../shared/querystring-helper";
-import {
-    buttonLoad,
-    buttonUnload
-} from "../shared/btn";
-import {
-    showServerSidePopup
-} from "../shared/popup";
-import {
-    hmsFetch,
-    fetchResponses
-} from "../shared/hmsFetch";
+import { getParameterByName, updateQueryStringParam, removeQueryStringParam } from "../shared/querystring-helper";
+import { buttonLoad, buttonUnload } from "../shared/btn";
+import { showServerSidePopup } from "../shared/popup";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
+import { showFeedbackPopup } from "../feedback/feedback-capture";
 
 export function initialiseRequests(isVerified) {
   const job = getParameterByName("j");
@@ -94,7 +83,9 @@ export function showStatusUpdatePopup(btn) {
   const job = btn.closest(".job");
   const targetState = $(btn).data("target-state");
   const targetUser = $(btn).data("target-user") ?? "self";
+
   let jobId = job.attr("id");
+  const role = $(job).data("role");
 
   let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
 
@@ -106,6 +97,9 @@ export function showStatusUpdatePopup(btn) {
         $(job).find('.job__status__new').html(await response.fetchPayload);
         $(job).find('.toggle-on-status-change').toggle();
         $(job).find('button').toggle();
+        if (targetState === "Done") {
+          showFeedbackPopup(jobId, role);
+        }
         return true;
       } else {
         switch (response.fetchResponse) {
@@ -154,3 +148,4 @@ async function loadJobDetails(job, forceRefresh) {
     return false;
   }
 }
+
