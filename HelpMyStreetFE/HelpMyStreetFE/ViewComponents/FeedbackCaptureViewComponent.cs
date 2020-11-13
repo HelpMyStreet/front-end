@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services;
@@ -30,45 +32,13 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(FeedbackCaptureViewComponentParameters parameters, FeedbackCaptureMessageViewModel message, CancellationToken cancellationToken)
-        {
-            if (message != null)
-            {
-                return View("FeedbackCaptureMessage", message);
-            }
-            else
-            {
-                return await InvokeAsync(parameters, cancellationToken);
-            }
-        }
-
-        private async Task<IViewComponentResult> InvokeAsync(FeedbackCaptureViewComponentParameters parameters, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(FeedbackCaptureViewComponentParameters parameters, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-
             int authorisingUserId = parameters.RequestRole == RequestRoles.Volunteer || parameters.RequestRole == RequestRoles.GroupAdmin ? user.ID : -1;
-
             var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, authorisingUserId, cancellationToken);
 
-            if (jobDetails == null || jobDetails.JobSummary == null)
-            {
-                throw new Exception($"Attempt to load feedback form for job {parameters.JobId} which could not be found (authorising user id {authorisingUserId})");
-            }
-
-            if (jobDetails.JobSummary.JobStatus == JobStatuses.Open || jobDetails.JobSummary.JobStatus == JobStatuses.InProgress)
-            {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus });
-            }
-
-            if (await _feedbackRepository.GetFeedbackExists(parameters.JobId, parameters.RequestRole))
-            {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded });
-            }
-
-            if (jobDetails.JobSummary.Archive == true)
-            {
-                return View("FeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = FeedbackCaptureMessageViewModel.Messages.RequestArchived });
-            }
+            await EnsureFeedbackCanBeGiven(jobDetails.JobSummary, parameters.RequestRole);
 
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel
             {
@@ -97,6 +67,24 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
             return View(parameters.RenderAsPopup ? "FeedbackCapturePopup" : "FeedbackCapture", viewModel);
+        }
+
+        private async Task EnsureFeedbackCanBeGiven(JobSummary jobSummary, RequestRoles requestRole)
+        {
+            if (jobSummary.JobStatus == JobStatuses.Open || jobSummary.JobStatus == JobStatuses.InProgress)
+            {
+                throw new Exception($"Attempt to load feedback form for job {jobSummary.JobID}, but it is {jobSummary.JobStatus}");
+            }
+
+            if (await _feedbackRepository.GetFeedbackExists(jobSummary.JobID, requestRole))
+            {
+                throw new Exception($"Attempt to load feedback form for job {jobSummary.JobID}, but feedback already exists for role {requestRole}");
+            }
+
+            if (jobSummary.Archive == true)
+            {
+                throw new Exception($"Attempt to load feedback form for achived job {jobSummary.JobID}");
+            }
         }
     }
 }

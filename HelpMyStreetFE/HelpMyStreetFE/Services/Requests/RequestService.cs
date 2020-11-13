@@ -182,7 +182,7 @@ namespace HelpMyStreetFE.Services.Requests
                     CurrentVolunteer = currentVolunteer,
                 };
             }
-            return null;
+            throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
         }
 
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
