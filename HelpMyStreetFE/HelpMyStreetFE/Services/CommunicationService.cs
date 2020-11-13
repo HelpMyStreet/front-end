@@ -4,6 +4,7 @@ using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -14,27 +15,31 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services
 {
-    public class CommunicationService : BaseHttpService, ICommunicationService
+    public class CommunicationService : BaseHttpRepository, ICommunicationService
     {
         private readonly ILogger<CommunicationService> _logger;
         public CommunicationService(
             ILogger<CommunicationService> logger,
             IConfiguration configuration,
-            HttpClient client) : base(client, configuration, "Services:Communication")
+            HttpClient client) : base(client, configuration, logger, "Services:Communication")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<string> GetLinkDestination(string token)
         {
-            // Call communication service
-            // Return link destination on happy path, or null otherwise
+            var response = await GetAsync<ResponseWrapper<GetLinkDestinationResponse, CommunicationServiceErrorCode>>($"/api/GetLinkDestination?token={token}");
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Url;
+            }
             return null;
         }
 
         public async Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient)
         {
-            SendEmailRequest sendEmailRequest = new SendEmailRequest()
+            var sendEmailRequest = new SendEmailRequest
             {
                 BodyHTML = htmlContent,
                 BodyText = textContent,
@@ -60,7 +65,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task<bool> SendInterUserMessage(MessageParticipant from, MessageParticipant to, string message, int? jobId)
         {
-            var interUserMessageRequest = new InterUserMessageRequest()
+            var interUserMessageRequest = new InterUserMessageRequest
             {
                 From = from,
                 To = to,
