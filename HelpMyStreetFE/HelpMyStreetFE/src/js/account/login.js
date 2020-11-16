@@ -61,7 +61,7 @@ export const login = async (email, password) => {
         }
       
         var returnUrl = getParameterByName("ReturnUrl");        
-        if (returnUrl) {
+        if (returnUrl && returnUrl.startsWith("/")) {
             window.location.href = returnUrl;
         } else {
             window.location.href = "/account";
