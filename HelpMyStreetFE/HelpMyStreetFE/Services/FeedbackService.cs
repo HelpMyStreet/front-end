@@ -6,6 +6,7 @@ using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Enums;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreetFE.Repositories;
 
@@ -24,7 +25,12 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
         }
 
-        public async Task<FeedbackCaptureMessageViewModel.Messages> PostRecordFeedback(User user, CapturedFeedback feedback)
+        public async Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole)
+        {
+            return await _feedbackRepository.GetFeedbackExists(jobId, requestRole);
+        }
+
+        public async Task<Result> PostRecordFeedback(User user, CapturedFeedback feedback)
         {
             var job = await _requestHelpRepository.GetJobDetailsAsync(feedback.JobId, -1);
 
@@ -35,22 +41,22 @@ namespace HelpMyStreetFE.Services
 
             if (job.JobSummary.JobStatus == JobStatuses.Open || job.JobSummary.JobStatus == JobStatuses.InProgress)
             {
-                return FeedbackCaptureMessageViewModel.Messages.IncorrectJobStatus;
+                return Result.Failure_IncorrectJobStatus;
             }
 
 
 
-            bool postRecordFeedbackSuccess = await _feedbackRepository.PostRecordFeedback(feedback.JobId, feedback.RoleSubmittingFeedback, user?.ID, feedback.FeedbackRating);
+            bool success = await _feedbackRepository.PostRecordFeedback(feedback.JobId, feedback.RoleSubmittingFeedback, user?.ID, feedback.FeedbackRating);
 
-            if (!postRecordFeedbackSuccess)
+            if (!success)
             {
                 if (await _feedbackRepository.GetFeedbackExists(feedback.JobId, feedback.RoleSubmittingFeedback))
                 {
-                    return FeedbackCaptureMessageViewModel.Messages.FeedbackAlreadyRecorded;
+                    return Result.Failure_FeedbackAlreadyRecorded;
                 }
                 else
                 {
-                    return FeedbackCaptureMessageViewModel.Messages.ServerError;
+                    return Result.Failure_ServerError;
                 }
             }
 
@@ -59,25 +65,25 @@ namespace HelpMyStreetFE.Services
             if (!string.IsNullOrEmpty(feedback.RecipientMessage))
             {
                 var to = GetToBlock(job, RequestRoles.Recipient);
-                await _communicationService.SendInterUserMessage(from, to, feedback.RecipientMessage, feedback.JobId);
+                success &= await _communicationService.SendInterUserMessage(from, to, feedback.RecipientMessage, feedback.JobId);
             }
 
             if (!string.IsNullOrEmpty(feedback.RequestorMessage))
             {
                 var to = GetToBlock(job, RequestRoles.Requestor);
-                await _communicationService.SendInterUserMessage(from, to, feedback.RequestorMessage, feedback.JobId);
+                success &= await _communicationService.SendInterUserMessage(from, to, feedback.RequestorMessage, feedback.JobId);
             }
 
             if (!string.IsNullOrEmpty(feedback.VolunteerMessage))
             {
                 var to = GetToBlock(job, RequestRoles.Volunteer);
-                await _communicationService.SendInterUserMessage(from, to, feedback.VolunteerMessage, feedback.JobId);
+                success &= await _communicationService.SendInterUserMessage(from, to, feedback.VolunteerMessage, feedback.JobId);
             }
 
             if (!string.IsNullOrEmpty(feedback.GroupMessage))
             {
                 var to = GetToBlock(job, RequestRoles.GroupAdmin);
-                await _communicationService.SendInterUserMessage(from, to, feedback.GroupMessage, feedback.JobId);
+                success &= await _communicationService.SendInterUserMessage(from, to, feedback.GroupMessage, feedback.JobId);
             }
 
             if (!string.IsNullOrEmpty(feedback.HMSMessage))
@@ -91,10 +97,10 @@ namespace HelpMyStreetFE.Services
                     },
                     RequestRoleType = new RequestRoleType() { RequestRole = RequestRoles.GroupAdmin }
                 };
-                await _communicationService.SendInterUserMessage(from, to, feedback.HMSMessage, feedback.JobId);
+                success &= await _communicationService.SendInterUserMessage(from, to, feedback.HMSMessage, feedback.JobId);
             }
 
-            return FeedbackCaptureMessageViewModel.Messages.Success;
+            return success ? Result.Success : Result.Failure_ServerError;
         }
 
         private MessageParticipant GetFromBlock(User user, RequestRoles requestRole, GetJobDetailsResponse job)

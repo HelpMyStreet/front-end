@@ -6,13 +6,6 @@ import { showPopup, hidePopup } from "../shared/popup";
 $(document).ready(function () {
     initialiseSliders();
 
-    $('.read-more-text').readmore({
-        moreLink: '<a href="#">Read more</a>',
-        lessLink: '<a href="#">Read less</a>',
-        collapsedHeight: 200
-    });
-
-
     if ($('.select-all').length > 0) {
         $('.btn--sign-up').addClass("disabled");
     }

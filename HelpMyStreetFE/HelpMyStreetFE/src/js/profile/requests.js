@@ -80,45 +80,46 @@ export function initialiseRequests(isVerified) {
 
 
 export function showStatusUpdatePopup(btn) {
-  const job = btn.closest(".job");
-  const targetState = $(btn).data("target-state");
-  const targetUser = $(btn).data("target-user") ?? "self";
+    const job = btn.closest(".job");
+    const targetState = $(btn).data("target-state");
+    const targetUser = $(btn).data("target-user") ?? "self";
 
-  let jobId = job.attr("id");
-  const role = $(job).data("role");
+    let jobId = job.attr("id");
+    const role = $(job).data("role");
 
-  let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
+    let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
 
-  let popupSettings = {
-    acceptCallbackAsync: async () => {
-      let response = await setJobStatus(job, targetState, targetUser);
+    let popupSettings = {
+        acceptCallbackAsync: async () => {
+            let response = await setJobStatus(job, targetState, targetUser);
 
-      if (response.fetchResponse == fetchResponses.SUCCESS) {
-        $(job).find('.job__status__new').html(await response.fetchPayload);
-        $(job).find('.toggle-on-status-change').toggle();
-        $(job).find('button').toggle();
-        if (targetState === "Done") {
-          showFeedbackPopup(jobId, role);
+            if (response.fetchResponse == fetchResponses.SUCCESS) {
+                const payload = await response.fetchPayload;
+                $(job).find('.job__status__new').html(payload.newStatus);
+                $(job).find('.toggle-on-status-change').toggle();
+                $(job).find('button').toggle();
+                if (payload.requestFeedback === true) {
+                    showFeedbackPopup(jobId, role);
+                }
+                return true;
+            } else {
+                switch (response.fetchResponse) {
+                    case fetchResponses.UNAUTHORISED:
+                    case fetchResponses.BAD_REQUEST:
+                        popupSettings.messageOnFalse = "Sorry, we couldn't update that request. Another user may have updated the same request; please refresh your browser window.";
+                        break;
+                    case fetchResponses.SERVER_ERROR:
+                    case fetchResponses.SERVER_NOT_FOUND:
+                    case fetchResponses.TIMEOUT:
+                    case fetchResponses.BAD_FETCH:
+                        popupSettings.messageOnFalse = "Sorry, we couldn't update that request. Please try again using the button below.";
+                }
+                return false;
+            }
         }
-        return true;
-      } else {
-        switch (response.fetchResponse) {
-          case fetchResponses.UNAUTHORISED:
-          case fetchResponses.BAD_REQUEST:
-            popupSettings.messageOnFalse = "Sorry, we couldn't update that request. Another user may have updated the same request; please refresh your browser window.";
-            break;
-          case fetchResponses.SERVER_ERROR:
-          case fetchResponses.SERVER_NOT_FOUND:
-          case fetchResponses.TIMEOUT:
-          case fetchResponses.BAD_FETCH:
-            popupSettings.messageOnFalse = "Sorry, we couldn't update that request. Please try again using the button below.";
-        }
-        return false;
-      }
-    }
-  };
+    };
 
-  showServerSidePopup(popupSource, popupSettings);
+    showServerSidePopup(popupSource, popupSettings);
 }
 
 

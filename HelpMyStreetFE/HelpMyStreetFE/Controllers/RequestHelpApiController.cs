@@ -13,6 +13,7 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -24,18 +25,20 @@ namespace HelpMyStreetFE.Controllers {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
+        private readonly IFeedbackService _feedbackService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IFeedbackService feedbackService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _feedbackService = feedbackService ?? throw new ArgumentNullException(nameof(feedbackService));
         }
 
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
+        public async Task<ActionResult<SetJobStatusResult>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
             try
             {
@@ -56,12 +59,14 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
-                        if (role == RequestRoles.Volunteer && s == JobStatuses.Done)
+                        bool requestFeedback = false;
+                        if (s == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role))
                         {
+                            requestFeedback = true;
                             _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
                             _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
                         }
-                        return s.FriendlyName();
+                        return new SetJobStatusResult { NewStatus = s.FriendlyName(), RequestFeedback = requestFeedback };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
                     case UpdateJobStatusOutcome.Unauthorized:

@@ -4,17 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Contracts.CommunicationService.Request;
-using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Extensions;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreetFE.Enums;
+using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Feedback;
-using HelpMyStreetFE.Repositories;
+using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelpMyStreetFE.Controllers
@@ -23,15 +22,17 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IFeedbackService _feedbackService;
+        private readonly IRequestService _requestService;
 
-        public FeedbackController(IAuthService authService, IFeedbackService feedbackService)
+        public FeedbackController(IAuthService authService, IFeedbackService feedbackService, IRequestService requestService)
         {
             _authService = authService;
             _feedbackService = feedbackService;
+            _requestService = requestService;
         }
 
         [HttpGet]
-        public IActionResult PostTaskFeedbackCapture(string j, string r, string f)
+        public async Task<IActionResult> PostTaskFeedbackCapture(string j, string r, string f, CancellationToken cancellationToken)
         {
             if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
             {
@@ -41,6 +42,17 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
             FeedbackRating feedbackRating = (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
+            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+
+            if (job.JobStatus == JobStatuses.Open || job.JobStatus == JobStatuses.InProgress)
+            {
+                return ShowMessage(Enums.Result.Failure_IncorrectJobStatus, job.ReferringGroupID);
+            }
+
+            if (await _feedbackService.GetFeedbackExists(jobId, requestRole))
+            {
+                return ShowMessage(Enums.Result.Failure_FeedbackAlreadyRecorded, job.ReferringGroupID);
+            }
 
             return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole, FeedbackRating = feedbackRating });
         }
@@ -65,10 +77,62 @@ namespace HelpMyStreetFE.Controllers
             model.RoleSubmittingFeedback = requestRole;
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
-            return View("PostTaskFeedbackCaptureMessage", new FeedbackCaptureMessageViewModel() { Message = result });
+            return ShowMessage(result, job.ReferringGroupID, model.FeedbackRating);
         }
 
+        public IActionResult ShowMessage(Result result, int referringGroupId, FeedbackRating? feedbackRating = null)
+        {
+            var notification = result switch
+            {
+                Result.Success => new NotificationModel
+                {
+                    Type = NotificationType.Success,
+                    Title = "Thank you",
+                    Subtitle = "Your feedback has been received",
+                    Message = $"<p>We'll use your feedback to make HelpMyStreet {(feedbackRating == FeedbackRating.HappyFace ? "even better" : "as good as it can be")}</p>"
+                },
+                Result.Failure_IncorrectJobStatus => new NotificationModel
+                {
+                    Type = NotificationType.Failure_Permanent,
+                    Title = "Sorry, that didn't work",
+                    Subtitle = "We couldn't record your feedback",
+                    Message = "<p>The request is not currently marked as complete in our system.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
+                },
+                Result.Failure_FeedbackAlreadyRecorded => new NotificationModel
+                {
+                    Type = NotificationType.Failure_Permanent,
+                    Title = "Sorry, that didn't work",
+                    Subtitle = "We couldn't record your feedback",
+                    Message = "<p>We may already have feedback relating to that request.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
+                },
+                Result.Failure_RequestArchived => new NotificationModel
+                {
+                    Type = NotificationType.Failure_Permanent,
+                    Title = "Sorry, that didn't work",
+                    Subtitle = "We couldn't record your feedback",
+                    Message = "<p>That request may have been too long ago.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
+                },
+                Result.Failure_ServerError => new NotificationModel
+                {
+                    Type = NotificationType.Failure_Temporary,
+                    Title = "Sorry, that didn't work",
+                    Subtitle = "We couldn't record your feedback at this time",
+                    Message = "<p>This is usually a temporary problem; please press your browser's back button to try again.</p><p>Alternatively, you can email us at <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
+                },
+                _ => throw new ArgumentException($"Unexpected Result value: {result}", nameof(result))
+            };
+
+            var vm = new SuccessViewModel()
+            {
+                //TODO: Don't assume all groups have open request forms
+                RequestLink = $"/request-help/{Base64Utils.Base64Encode(referringGroupId)}",
+                Notifications = new List<NotificationModel> { notification },
+            };
+
+            return View("PostTaskFeedbackCaptureMessage", vm);
+        }
     }
 }
