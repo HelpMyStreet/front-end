@@ -45,12 +45,10 @@ namespace HelpMyStreetFE.Controllers {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int jobId = Base64Utils.Base64DecodeToInt(j);
 
-                RequestRoles role = u == "self" ? RequestRoles.Volunteer : RequestRoles.GroupAdmin;
-
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
                 { 
-                    targetUserId = role == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u);
+                    targetUserId = (u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u));
                 }
 
                 UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
@@ -60,11 +58,16 @@ namespace HelpMyStreetFE.Controllers {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
                         bool requestFeedback = false;
-                        if (s == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role, user.ID))
+                        if (s == JobStatuses.Done)
                         {
-                            requestFeedback = true;
-                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
-                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                            RequestRoles role = (job.VolunteerUserID == user.ID ? RequestRoles.Volunteer : RequestRoles.GroupAdmin);
+                            if (!await _feedbackService.GetFeedbackExists(jobId, role, user.ID))
+                            {
+                                requestFeedback = true;
+                                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                            }
                         }
                         return new SetJobStatusResult { NewStatus = s.FriendlyName(), RequestFeedback = requestFeedback };
                     case UpdateJobStatusOutcome.BadRequest:
