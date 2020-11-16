@@ -43,15 +43,16 @@ namespace HelpMyStreetFE.Controllers
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
             FeedbackRating feedbackRating = (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
             var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (job.JobStatus == JobStatuses.Open || job.JobStatus == JobStatuses.InProgress)
             {
-                return ShowMessage(Enums.Result.Failure_IncorrectJobStatus, job.ReferringGroupID);
+                return ShowMessage(Result.Failure_IncorrectJobStatus, job.ReferringGroupID);
             }
 
-            if (await _feedbackService.GetFeedbackExists(jobId, requestRole))
+            if (await _feedbackService.GetFeedbackExists(jobId, requestRole, user?.ID))
             {
-                return ShowMessage(Enums.Result.Failure_FeedbackAlreadyRecorded, job.ReferringGroupID);
+                return ShowMessage(Result.Failure_FeedbackAlreadyRecorded, job.ReferringGroupID);
             }
 
             return View(new FeedbackCaptureViewComponentParameters() { JobId = jobId, RequestRole = requestRole, FeedbackRating = feedbackRating });

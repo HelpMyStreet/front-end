@@ -21,12 +21,13 @@ namespace HelpMyStreetFE.Repositories
         {
         }
 
-        public async Task<bool> GetFeedbackExists(int JobId, RequestRoles requestRole)
+        public async Task<bool> GetFeedbackExists(int JobId, RequestRoles requestRole, int? userId)
         {
             GetFeedbackExistsRequest request = new GetFeedbackExistsRequest()
             {
                 JobId = JobId,
-                RequestRoleType = new RequestRoleType() { RequestRole = requestRole }
+                RequestRoleType = new RequestRoleType() { RequestRole = requestRole },
+                UserId = userId
             };
             string json = JsonConvert.SerializeObject(request);
             StringContent data = new StringContent(json, Encoding.UTF8, "application/json");

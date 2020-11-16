@@ -38,7 +38,7 @@ namespace HelpMyStreetFE.ViewComponents
             int authorisingUserId = parameters.RequestRole == RequestRoles.Volunteer || parameters.RequestRole == RequestRoles.GroupAdmin ? user.ID : -1;
             var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, authorisingUserId, cancellationToken);
 
-            await EnsureFeedbackCanBeGiven(jobDetails.JobSummary, parameters.RequestRole);
+            await EnsureFeedbackCanBeGiven(jobDetails.JobSummary, parameters.RequestRole, user?.ID);
 
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel
             {
@@ -69,16 +69,16 @@ namespace HelpMyStreetFE.ViewComponents
             return View(parameters.RenderAsPopup ? "FeedbackCapturePopup" : "FeedbackCapture", viewModel);
         }
 
-        private async Task EnsureFeedbackCanBeGiven(JobSummary jobSummary, RequestRoles requestRole)
+        private async Task EnsureFeedbackCanBeGiven(JobSummary jobSummary, RequestRoles requestRole, int? userId)
         {
             if (jobSummary.JobStatus == JobStatuses.Open || jobSummary.JobStatus == JobStatuses.InProgress)
             {
                 throw new Exception($"Attempt to load feedback form for job {jobSummary.JobID}, but it is {jobSummary.JobStatus}");
             }
 
-            if (await _feedbackRepository.GetFeedbackExists(jobSummary.JobID, requestRole))
+            if (await _feedbackRepository.GetFeedbackExists(jobSummary.JobID, requestRole, userId))
             {
-                throw new Exception($"Attempt to load feedback form for job {jobSummary.JobID}, but feedback already exists for role {requestRole}");
+                throw new Exception($"Attempt to load feedback form for job {jobSummary.JobID}, but feedback already exists for role {requestRole} / user {userId}");
             }
 
             if (jobSummary.Archive == true)

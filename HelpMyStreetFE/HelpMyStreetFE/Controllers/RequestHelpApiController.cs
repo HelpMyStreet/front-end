@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Controllers {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
                         bool requestFeedback = false;
-                        if (s == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role))
+                        if (s == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role, user.ID))
                         {
                             requestFeedback = true;
                             _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");

@@ -25,9 +25,9 @@ namespace HelpMyStreetFE.Services
             _requestHelpRepository = requestHelpRepository;
         }
 
-        public async Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole)
+        public async Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole, int? userId)
         {
-            return await _feedbackRepository.GetFeedbackExists(jobId, requestRole);
+            return await _feedbackRepository.GetFeedbackExists(jobId, requestRole, userId);
         }
 
         public async Task<Result> PostRecordFeedback(User user, CapturedFeedback feedback)
@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Services
 
             if (!success)
             {
-                if (await _feedbackRepository.GetFeedbackExists(feedback.JobId, feedback.RoleSubmittingFeedback))
+                if (await _feedbackRepository.GetFeedbackExists(feedback.JobId, feedback.RoleSubmittingFeedback, user?.ID))
                 {
                     return Result.Failure_FeedbackAlreadyRecorded;
                 }
