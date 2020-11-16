@@ -36,6 +36,7 @@ $breakpointLg: 1550px;
     &.logged-out {
         @media screen and (min-width: $breakpointSm) {
             grid-template-areas: "logo nav";
+            grid-template-columns: auto auto;
         }
 
         @media screen and (max-width: $breakpointSm) {
