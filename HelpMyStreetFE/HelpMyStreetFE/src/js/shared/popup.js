@@ -65,24 +65,28 @@ export function hidePopup(popup, duration = 100) {
 }
 
 function bindAcceptClick(popup, settings) {
-  popup.find('#popup-accept').unbind().bind("click", async function (evt) {
-    buttonLoad($(this));
-    popup.find('.popup__content__buttons .error').hide();
-    popup.find('.popup-close').off('click');
-    var result = await settings.acceptCallbackAsync();
-    buttonUnload($(this));
-    if (result == true) {
-      hidePopup(popup);
-    } else {
-      bindCloseClick(popup);
-      if (typeof result == 'string') {
-        popup.find('.popup__content__buttons .error').text(result);
-      } else if (settings.messageOnFalse) {
-        popup.find('.popup__content__buttons .error').text(settings.messageOnFalse);
-      }
-      popup.find('.popup__content__buttons .error').show();
-    }
-  });
+    popup.find('#popup-accept').unbind().bind("click", async function (evt) {
+        if (settings.acceptCallbackAsync) {
+            buttonLoad($(this));
+            popup.find('.popup__content__buttons .error').hide();
+            popup.find('.popup-close').off('click');
+            var result = await settings.acceptCallbackAsync();
+            buttonUnload($(this));
+            if (result == true) {
+                hidePopup(popup);
+            } else {
+                bindCloseClick(popup);
+                if (typeof result == 'string') {
+                    popup.find('.popup__content__buttons .error').text(result);
+                } else if (settings.messageOnFalse) {
+                    popup.find('.popup__content__buttons .error').text(settings.messageOnFalse);
+                }
+                popup.find('.popup__content__buttons .error').show();
+            }
+        } else {
+            hidePopup(popup);
+        }
+    });
 }
 
 function bindRejectClick(popup, settings) {
