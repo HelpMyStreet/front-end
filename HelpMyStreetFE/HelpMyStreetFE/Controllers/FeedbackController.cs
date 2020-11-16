@@ -83,33 +83,39 @@ namespace HelpMyStreetFE.Controllers
             return ShowMessage(result, job.ReferringGroupID, model.FeedbackRating);
         }
 
-        public IActionResult ShowMessage(Enums.Result result, int referringGroupId, FeedbackRating? feedbackRating = null)
+        public IActionResult ShowMessage(Result result, int referringGroupId, FeedbackRating? feedbackRating = null)
         {
             var notification = result switch
             {
-                Enums.Result.Success => new NotificationModel
+                Result.Success => new NotificationModel
                 {
                     Type = NotificationType.Success,
                     Title = "Thank you",
                     Subtitle = "Your feedback has been received",
                     Message = $"<p>We'll use your feedback to make HelpMyStreet {(feedbackRating == FeedbackRating.HappyFace ? "even better" : "as good as it can be")}</p>"
                 },
-                Enums.Result.Failure_IncorrectJobStatus => new NotificationModel
+                Result.Failure_IncorrectJobStatus => new NotificationModel
                 {
                     Type = NotificationType.Failure_Permanent,
                     Title = "Sorry, that didn't work",
                     Subtitle = "We couldn't record your feedback",
                     Message = "<p>The request is not currently marked as complete in our system.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
                 },
-                Enums.Result.Failure_FeedbackAlreadyRecorded or
-                Enums.Result.Failure_RequestArchived => new NotificationModel
+                Result.Failure_FeedbackAlreadyRecorded => new NotificationModel
                 {
                     Type = NotificationType.Failure_Permanent,
                     Title = "Sorry, that didn't work",
                     Subtitle = "We couldn't record your feedback",
                     Message = "<p>We may already have feedback relating to that request.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
                 },
-                Enums.Result.Failure_ServerError => new NotificationModel
+                Result.Failure_RequestArchived => new NotificationModel
+                {
+                    Type = NotificationType.Failure_Permanent,
+                    Title = "Sorry, that didn't work",
+                    Subtitle = "We couldn't record your feedback",
+                    Message = "<p>That request may have been too long ago.</p><p>If you'd like to get in touch, please email <a href='mailto:feedback@helpmystreet.org'>feedback@helpmystreet.org</a>.</p>"
+                },
+                Result.Failure_ServerError => new NotificationModel
                 {
                     Type = NotificationType.Failure_Temporary,
                     Title = "Sorry, that didn't work",
