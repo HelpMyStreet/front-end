@@ -1,7 +1,7 @@
 import { buttonLoad, buttonUnload } from "./btn";
-import { hmsFetch, fetchResponses } from "./hmsFetch"
+import { hmsFetch, hmsSubmit, fetchResponses } from "./hmsFetch"
 
-export async function showServerSidePopup(source, settings) {
+export async function showServerSidePopup(source, settings, form) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
 
   if (settings.noFade) {
@@ -11,7 +11,7 @@ export async function showServerSidePopup(source, settings) {
   }
   popup.find(".popup__content").centerPopup();
 
-  var response = await hmsFetch(source);
+  var response = form ? await hmsSubmit(source, form) : await hmsFetch(source);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     popup.find(".popup__content").first().replaceWith(await response.fetchPayload);
     popup.find(".popup__content").centerPopup();

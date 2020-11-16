@@ -75,11 +75,11 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
-        [HttpGet("get-feedback-thanks-popup")]
+        [Route("get-feedback-thanks-popup")]
         [AuthorizeAttributeNoRedirect]
-        public IActionResult FeedbackThanksPopup()
+        public IActionResult FeedbackThanksPopup([FromBody] CapturedFeedback capturedFeedback)
         {
-            return ViewComponent("FeedbackCaptureThanks");
+            return ViewComponent("FeedbackCaptureThanks", capturedFeedback);
         }
     }
 }
