@@ -93,7 +93,7 @@ namespace HelpMyStreetFE.Controllers
                     Type = NotificationType.Success,
                     Title = "Thank you",
                     Subtitle = "Your comments have been submitted",
-                    Message = $"<p>We’ll use your feedback to make HelpMyStreet {(capturedFeedback.FeedbackRating == FeedbackRating.HappyFace ? "even better" : "as good as it can be")}</p>{(capturedFeedback.IncludesMessage ? "<p>We’ll pass your messages on to the people involved with this request.</p>" : "")}"
+                    Message = $"<p>We’ll use your feedback to make HelpMyStreet {(capturedFeedback.FeedbackRating == FeedbackRating.HappyFace ? "even better" : "as good as it can be")}.</p>{(capturedFeedback.IncludesMessage ? "<p>We’ll pass your messages on to the people involved with this request.</p>" : "")}"
                 },
                 Result.Failure_IncorrectJobStatus => new NotificationModel
                 {
