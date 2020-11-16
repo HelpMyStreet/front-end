@@ -57,19 +57,11 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
-                        bool requestFeedback = false;
-                        if (s == JobStatuses.Done)
+                        return new SetJobStatusResult
                         {
-                            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
-                            RequestRoles role = (job.VolunteerUserID == user.ID ? RequestRoles.Volunteer : RequestRoles.GroupAdmin);
-                            if (!await _feedbackService.GetFeedbackExists(jobId, role, user.ID))
-                            {
-                                requestFeedback = true;
-                                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
-                                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
-                            }
-                        }
-                        return new SetJobStatusResult { NewStatus = s.FriendlyName(), RequestFeedback = requestFeedback };
+                            NewStatus = s.FriendlyName(),
+                            RequestFeedback = await FeedbackDue(jobId, user.ID, cancellationToken)
+                        };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
                     case UpdateJobStatusOutcome.Unauthorized:
@@ -115,6 +107,19 @@ namespace HelpMyStreetFE.Controllers {
             int jobId = Base64Utils.Base64DecodeToInt(j);
 
             return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
+        }
+
+        private async Task<bool> FeedbackDue(int jobId, int userId, CancellationToken cancellationToken)
+        {
+            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            RequestRoles role = (job.VolunteerUserID == userId ? RequestRoles.Volunteer : RequestRoles.GroupAdmin);
+            if (job.JobStatus == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role, userId))
+            {
+                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                return true;
+            }
+            return false;
         }
     }
 }
