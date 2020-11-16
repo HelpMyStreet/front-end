@@ -60,29 +60,14 @@ form {
     }
 
     .input {
-        width: 100%;
-        margin: 64px 0 0;
-
-        label {
-            font-weight: bold;
-            font-size: 18px;
-            line-height: 27px;
-        }
 
         &__hint {
             font-weight: normal;
             color: $p-color;
         }
 
-        input,
         select {
-            width: 100%;
             height: 64px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 128px;
         }
 
         &--separator {

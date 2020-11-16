@@ -6,7 +6,6 @@
 }
 
 @section Scripts {
-    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
     <script src="/community.js" asp-append-version="true"></script>
 }
 
@@ -166,7 +165,7 @@ else
         <div class="container">
             <div class="row">
                 <div class="sm12">
-                    <div class=" @(Model.CommunityVolunteersTextReadMore ? "read-more-text" : "") " >
+                    <div>
                         @Html.Raw(@Model.CommunityVolunteersTextHtml)
                     </div>
                     <div class="mb-md"></div>
@@ -302,7 +301,7 @@ else
     }
 
     <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Feedback", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
     </div>
 
 

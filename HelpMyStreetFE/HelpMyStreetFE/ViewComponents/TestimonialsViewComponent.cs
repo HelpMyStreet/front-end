@@ -15,19 +15,19 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 namespace HelpMyStreetFE.ViewComponents
 {
-    public class FeedbackViewComponent : ViewComponent
+    public class TestimonialsViewComponent : ViewComponent
     {
         private IFeedbackRepository _feedbackRepository;
 
-        public FeedbackViewComponent(IFeedbackRepository feedbackRepository)
+        public TestimonialsViewComponent(IFeedbackRepository feedbackRepository)
         {
             _feedbackRepository = feedbackRepository;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow, string groupKey, bool? b2bFeedback)
         {
-            var viewModel = new FeedbackViewModel();
-            var messages = await _feedbackRepository.GetFeedback();
+            var viewModel = new TestimonialsViewModel();
+            var messages = await _feedbackRepository.GetTestimonials();
             if (feedbackMessageType == FeedbackMessageType.Other)
             {
                 var faceMasks = messages.FindAll(e => e.Type == FeedbackMessageType.FaceCovering);
@@ -55,7 +55,7 @@ namespace HelpMyStreetFE.ViewComponents
                 messages = messages.OrderBy(x => Guid.NewGuid()).Take(numberToShow.Value).ToList();
             }
 
-            viewModel.FeedbackMessages = messages.OrderBy(x => Guid.NewGuid()).ToList();
+            viewModel.Testimonials = messages.OrderBy(x => Guid.NewGuid()).ToList();
             return View(viewModel);
         }
     }

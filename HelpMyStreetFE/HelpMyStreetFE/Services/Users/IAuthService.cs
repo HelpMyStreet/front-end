@@ -12,5 +12,8 @@ namespace HelpMyStreetFE.Services.Users
         Task LoginWithUserId(int userId, HttpContext httpContext, CancellationToken cancellationToken);
         Task<string> VerifyIdTokenAsync(string token);
         Task<User> GetCurrentUser(HttpContext httpContext, CancellationToken cancellationToken);
+        void PutSessionAuthorisedUrl(HttpContext httpContext, string authorisedURL);
+        bool GetUrlIsSessionAuthorised(HttpContext httpContext, string url);
+        bool GetUrlIsSessionAuthorised(HttpContext httpContext);
     }
 }

@@ -13,6 +13,7 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -24,28 +25,32 @@ namespace HelpMyStreetFE.Controllers {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
+        private readonly IFeedbackService _feedbackService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IFeedbackService feedbackService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _feedbackService = feedbackService ?? throw new ArgumentNullException(nameof(feedbackService));
         }
 
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
+        public async Task<ActionResult<SetJobStatusResult>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int jobId = Base64Utils.Base64DecodeToInt(j);
 
+                RequestRoles role = u == "self" ? RequestRoles.Volunteer : RequestRoles.GroupAdmin;
+
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
-                {
-                    targetUserId = u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u);
+                { 
+                    targetUserId = role == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u);
                 }
 
                 UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
@@ -54,7 +59,14 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
-                        return s.FriendlyName();
+                        bool requestFeedback = false;
+                        if (s == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role))
+                        {
+                            requestFeedback = true;
+                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
+                        }
+                        return new SetJobStatusResult { NewStatus = s.FriendlyName(), RequestFeedback = requestFeedback };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
                     case UpdateJobStatusOutcome.Unauthorized:

@@ -149,8 +149,17 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddHttpClient<IFeedbackRepository, FeedbackRepository>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
-            services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
@@ -163,6 +172,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
+            services.AddSingleton<IFeedbackService, FeedbackService>();
 
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
@@ -187,6 +197,8 @@ namespace HelpMyStreetFE
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/RequestStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/DetailStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/ReviewStage/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/Shared/Components/FeedbackCapture/{0}.cshtml"); 
+                opt.ViewLocationFormats.Add("/Views/Shared/Components/Notifications/{0}.cshtml");
             });
 
 

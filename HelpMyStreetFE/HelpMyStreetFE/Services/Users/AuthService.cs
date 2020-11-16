@@ -2,12 +2,14 @@
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,6 +22,8 @@ namespace HelpMyStreetFE.Services.Users
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ILogger<AuthService> _logger;
+
+        private static readonly string AUTHORISED_URLS_SESSION_KEY = "authorised-urls";
 
         public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger)
         {
@@ -122,6 +126,32 @@ namespace HelpMyStreetFE.Services.Users
         {
             httpContext.Session.Clear();
             await httpContext.SignOutAsync();            
+        }
+
+        public void PutSessionAuthorisedUrl(HttpContext httpContext, string authorisedURL)
+        {
+            var authorisedURLs = httpContext.Session.GetObjectFromJson<List<string>>(AUTHORISED_URLS_SESSION_KEY);
+
+            if (authorisedURLs == null)
+            {
+                authorisedURLs = new List<string>();
+            }
+
+            authorisedURLs.Add(authorisedURL);
+
+            httpContext.Session.SetObjectAsJson(AUTHORISED_URLS_SESSION_KEY, authorisedURLs);
+        }
+
+        public bool GetUrlIsSessionAuthorised(HttpContext httpContext)
+        {
+            return GetUrlIsSessionAuthorised(httpContext, httpContext.Request.Path + httpContext.Request.QueryString);
+        }
+
+        public bool GetUrlIsSessionAuthorised(HttpContext httpContext, string url)
+        {
+            var authorisedURLs = httpContext.Session.GetObjectFromJson<List<string>>(AUTHORISED_URLS_SESSION_KEY);
+
+            return authorisedURLs != null && authorisedURLs.Contains(url);
         }
     }
 }
