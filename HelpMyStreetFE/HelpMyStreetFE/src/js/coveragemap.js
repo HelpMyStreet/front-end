@@ -69,88 +69,93 @@ let geolocationState = {
     }
 };
 
+let maxZoomLevel = 13;
+
+let noPoi = [
+    {
+        featureType: "poi.attraction",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.business",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.government",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.medical",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.park",
+        elementType: "labels.icon",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.place_of_worship",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.school",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "poi.sports_complex",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    },
+    {
+        featureType: "transit",
+        stylers: [
+            {
+                visibility: "off"
+            }
+        ]
+    }
+];
+
 window.initGoogleMap = async function () {
 
     // re-center map for narrow screens/mobile
     if (window.innerWidth <= 1000) {
         initialLng = -4.5;
+        maxZoomLevel = 11;
     }
 
-    let noPoi = [
-        {
-            featureType: "poi.attraction",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.business",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.government",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.medical",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.park",
-            elementType: "labels.icon",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.place_of_worship",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.school",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "poi.sports_complex",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        },
-        {
-            featureType: "transit",
-            stylers: [
-                {
-                    visibility: "off"
-                }
-            ]
-        }
-    ];
+    
 
     googleMap = new google.maps.Map(document.getElementById('map'), {
         center: { lat: initialLat, lng: initialLng },
@@ -161,7 +166,7 @@ window.initGoogleMap = async function () {
         mapTypeId: 'roadmap'
     });
 
-    googleMap.setOptions({ styles: noPoi });
+    googleMap.setOptions({ styles: noPoi});
 
 
     var autocompleteInput = document.getElementById('pac-input');
@@ -213,8 +218,7 @@ window.initGoogleMap = async function () {
                     autocompleteInput.value = place.name;
                     autocompleteInput.blur();
                     showGeometry(place.geometry);
-                })
-
+                });
             });
         } else {
             showGeometry(place.geometry);
@@ -246,6 +250,7 @@ function geoLocationSuccess(position) {
 }
 
 function showGeometry(geometry) {
+    googleMap.setOptions({ styles: noPoi, maxZoom: maxZoomLevel });
     if (geometry.viewport) {
         googleMap.fitBounds(geometry.viewport);
     } else {
@@ -253,6 +258,7 @@ function showGeometry(geometry) {
         googleMap.setZoom(closeUpZoomNumber);
     }
     geolocationState.setActive(false);
+    googleMap.setOptions({ styles: noPoi, maxZoom: 20 });
 }
 
 function setMapCentre(latitude, longitude, zoomLevel) {
