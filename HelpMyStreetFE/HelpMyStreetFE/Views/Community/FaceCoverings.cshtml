@@ -5,19 +5,6 @@
     var isLoggedIn = User.Identity.IsAuthenticated;
 }
 
-@section Scripts {
-    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
-    <script>
-        $(document).ready(function () {            
-            $('.read-more-text').readmore({
-        moreLink: '<a href="#">Read more</a>',
-        lessLink: '<a href="#">Read less</a>',
-        collapsedHeight: 200
-        })
-    });
-    </script>
-}
-
 <div class="container">
     <div class="community-banner">
         <img src="~/img/community/face-mask/face-mask-banner.jpeg" />
@@ -111,7 +98,7 @@
 
             <div class="row">
                 <div class="sm12">
-                    <div class="read-more-text">
+                    <div>
                         <p>
                             Wearing a face covering can help protect everyone and reduce the spread of coronavirus, so face coverings are compulsory in some public spaces such as shops and public transport. We’re all urged to use home-made fabric face coverings so we can save medical masks for the medics!
                         </p>
