@@ -59,5 +59,8 @@
     <Folder Include="wwwroot\img\awards\" />
     <Folder Include="src\sass\components\awards\" />
     <Folder Include="wwwroot\img\case-studies\" />
+    <Folder Include="wwwroot\img\community\ageUK\notts\" />
+    <Folder Include="wwwroot\img\community\ageUK\notts\balderton\" />
+    <Folder Include="wwwroot\img\community\ageUK\notts\balderton\carousel1\" />
   </ItemGroup>
 </Project>
