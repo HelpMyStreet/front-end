@@ -1,7 +1,8 @@
 ﻿// HMS Bespoke Fetch Function
-// Takes fetch url, post/get data object (), options
+// Takes fetch url, post/get data object (), options, timeout callback function
 // Options object allows setting timeout length, number of retries for errors and timeout
 // Returns Promise that will resolve to a fetchResponse, and associated data.
+// If first attempt times out, calls provided callback function (to, for example, initiate end user message).
 
 import "isomorphic-fetch"
 import { stringifyForm } from "./form-helper";
@@ -34,17 +35,21 @@ function sendNewRelicError(url, response, error) {
     
 };
 
-async function tryFetch(url, data, options, completedAttempts) {
+async function tryFetch(url, data, options, completedAttempts, callback) {
     completedAttempts++;
     let didTimeOut = false;
     let fetchResult = await new Promise(resolve => {
         const timeOut = setTimeout(function () {
             didTimeOut = true;
             if (options.timeOutRetry > completedAttempts) {
-                resolve(tryFetch(url, data, options, completedAttempts));
+                if (callback && completedAttempts = 1) {
+                    callback()
+                }
+                resolve(tryFetch(url, data, options, completedAttempts, callback));
             } else {
                 sendNewRelicError(url, fetchResponses.TIMEOUT);
-                resolve({fetchResponse: fetchResponses.TIMEOUT});
+                resolve({ fetchResponse: fetchResponses.TIMEOUT });
+
             }
         }, options.timeOutLength);
 
@@ -66,7 +71,7 @@ async function tryFetch(url, data, options, completedAttempts) {
                         break;
                     case 500:
                         if (options.errorRetry > completedAttempts) {
-                            resolve(tryFetch(url, data, options, completedAttempts));
+                            resolve(tryFetch(url, data, options, completedAttempts, callback));
                         } else {
                             var fetchError = fetchResponses.SERVER_ERROR;
                         }
@@ -89,21 +94,21 @@ async function tryFetch(url, data, options, completedAttempts) {
     return fetchResult;
 }
 
-async function hmsFetch(url, data, options) {
+async function hmsFetch(url, data, options, callback) {
 
     var _options = defaultOptions;
     if (options) { Object.assign(_options, options) };
 
-    return tryFetch(url, data, _options, -1)
+    return tryFetch(url, data, _options, -1, callback)
 };
 
-async function hmsSubmit(url, form, options) {
+async function hmsSubmit(url, form, options, callback) {
   var fetchRequestData = {
     method: 'POST',
     body: stringifyForm(form),
     headers: { 'Content-Type': 'application/json' },
   };
-  return await hmsFetch(url, fetchRequestData, options);
+  return await hmsFetch(url, fetchRequestData, options, callback);
 };
 
 function extractResponse(response) {
