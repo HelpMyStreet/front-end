@@ -335,6 +335,11 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
 
                 endpoints.MapControllerRoute(
+                    name: "Balderton",
+                    pattern: "balderton",
+                    defaults: new { controller = "Community", action = "Index", communityName = "balderton" });
+
+                endpoints.MapControllerRoute(
                     name: "Ruddington",
                     pattern: "ruddington",
                     defaults: new { controller = "Community", action = "Index", communityName = "ruddington" });

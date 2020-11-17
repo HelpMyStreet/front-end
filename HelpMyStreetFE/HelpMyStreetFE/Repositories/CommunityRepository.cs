@@ -19,6 +19,7 @@ namespace HelpMyStreetFE.Repositories
             {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg"} },
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
+            {"ageuknottsbalderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "ageuknottsbalderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner.jpg"} },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -42,6 +43,8 @@ namespace HelpMyStreetFE.Repositories
                     return await GetHLP(cancellationToken);
                 case "ftlos":
                     return await GetFtLOS(cancellationToken);
+                case "balderton":
+                    return await GetBalderton(cancellationToken);
                 default:
                     return null;
             }
@@ -61,7 +64,98 @@ namespace HelpMyStreetFE.Repositories
         {
             return Communities[key];
         }
-        
+
+        private async Task<CommunityViewModel> GetBalderton(CancellationToken cancellationToken)
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("ageuknottsbalderton");
+
+            int groupId = await _groupService.GetGroupIdByKey("ageuknottsbalderton", cancellationToken);
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            communityViewModel.HomeFolder = "ageUK/notts/balderton";
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
+            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.groupKey = "ageuknottsbalderton";
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+
+            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
+
+            communityViewModel.Header = "In Balderton, help is always available!";
+
+
+            communityViewModel.HeaderHTML = @"
+                    <p class='mt-sm mb-xs'>
+                        In our community there’s always somebody here to help.
+                        If you need support from your neighbours, Balderton Community Support are here and can help with:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Shopping for essentials</li>
+                        <li>Collecting prescriptions</li>
+                        <li>A friendly chat</li>
+                        <li>Anything else, just ask!</li>
+                    </ul>
+                    ";
+
+            communityViewModel.HeaderHelpButtonText = "";
+            communityViewModel.HeaderVolunteerButtonText = "";
+
+            communityViewModel.ProvideHelpButtonText_LoggedIn = "View Requests";
+            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sign Up to Volunteer";
+
+            communityViewModel.RequestHelpButtonText = "Request Help";
+
+
+
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Balderton Community Support";
+
+            communityViewModel.CommunityVolunteersTextHtml =
+ @"<p>The Balderton community has come together to support our neighbours. We can help with all sorts of everyday tasks, from helping with your shopping to mowing your lawn.</p>
+<p>If you'd like some help from a local volunteer, just ask by clicking on one of the ‘Request Help' buttons on this page, or if you'd prefer you can give us a call on 07487 241596</p>
+<p>To join us, sign up as a community volunteer above. You can help as much or as little as you are able, and we greatly appreciate any time and support you can give.￼</p>
+<p>Email us at <a href = ""mailto: baldertoncs@helpmystreet.org"">baldertoncs@helpmystreet.org</a></p> 
+";
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Balderton Community Support.  Click below to view help requests in your area.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Nick Fairfax",
+                    Role = "Local Organiser",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.newark-sherwooddc.gov.uk/baldertonpc/"">Balderton Parish Council Website</a> - Get the latest news and updates from the Parish Council</p>
+            <p><a href=""https://www.facebook.com/BaldertonCommunity/"">Balderton Community Hub Facebook</a> - A page supporting the community of Balderton, sharing useful information, events, and positive comments.</p>
+";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Balderton Community Helpers</b>?</p>";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Balderton Community Helpers</b>?</p>";
+
+            return communityViewModel;
+        }
+
+
+
         private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
