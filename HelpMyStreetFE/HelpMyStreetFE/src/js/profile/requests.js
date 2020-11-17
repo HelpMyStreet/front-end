@@ -14,6 +14,7 @@ import {
     hmsFetch,
     fetchResponses
 } from "../shared/hmsFetch";
+import { updateAwards } from "../shared/awards";
 
 export function initialiseRequests(isVerified) {
   const job = getParameterByName("j");
@@ -79,7 +80,8 @@ export function initialiseRequests(isVerified) {
 
     buttonLoad($(this));
     let response = await setJobStatus(job, targetState, targetUser);
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
+      if (response.fetchResponse == fetchResponses.SUCCESS) {
+          updateAwards();
       $(job).find('.job__status__new').html('');
       $(job).find('.toggle-on-status-change').toggle();
       $(job).find('button').toggle();
@@ -105,7 +107,9 @@ export function showStatusUpdatePopup(btn) {
       if (response.fetchResponse == fetchResponses.SUCCESS) {
         $(job).find('.job__status__new').html(await response.fetchPayload);
         $(job).find('.toggle-on-status-change').toggle();
-        $(job).find('button').toggle();
+          $(job).find('button').toggle();
+
+        updateAwards();
         return true;
       } else {
         switch (response.fetchResponse) {
