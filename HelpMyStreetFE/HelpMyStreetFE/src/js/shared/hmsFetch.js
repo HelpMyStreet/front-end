@@ -43,7 +43,7 @@ async function tryFetch(url, data, options, completedAttempts) {
         const timeOut = setTimeout(function () {
             didTimeOut = true;
             if (options.timeOutRetry > completedAttempts) {
-                if (options.callback && completedAttempts = 1) {
+                if (options.callback && completedAttempts == 1) {
                     options.callback()
                 }
                 resolve(tryFetch(url, data, options, completedAttempts));
