@@ -10,7 +10,8 @@ import { stringifyForm } from "./form-helper";
 const defaultOptions = {
     timeOutLength: 8000,
     errorRetry: 3,
-    timeOutRetry: 4
+    timeOutRetry: 4,
+    callback: null
 };
 
 const fetchResponses = {
@@ -35,17 +36,17 @@ function sendNewRelicError(url, response, error) {
     
 };
 
-async function tryFetch(url, data, options, completedAttempts, callback) {
+async function tryFetch(url, data, options, completedAttempts) {
     completedAttempts++;
     let didTimeOut = false;
     let fetchResult = await new Promise(resolve => {
         const timeOut = setTimeout(function () {
             didTimeOut = true;
             if (options.timeOutRetry > completedAttempts) {
-                if (callback && completedAttempts = 1) {
-                    callback()
+                if (options.callback && completedAttempts = 1) {
+                    options.callback()
                 }
-                resolve(tryFetch(url, data, options, completedAttempts, callback));
+                resolve(tryFetch(url, data, options, completedAttempts));
             } else {
                 sendNewRelicError(url, fetchResponses.TIMEOUT);
                 resolve({ fetchResponse: fetchResponses.TIMEOUT });
@@ -94,21 +95,21 @@ async function tryFetch(url, data, options, completedAttempts, callback) {
     return fetchResult;
 }
 
-async function hmsFetch(url, data, options, callback) {
+async function hmsFetch(url, data, options) {
 
     var _options = defaultOptions;
     if (options) { Object.assign(_options, options) };
 
-    return tryFetch(url, data, _options, -1, callback)
+    return tryFetch(url, data, _options, -1)
 };
 
-async function hmsSubmit(url, form, options, callback) {
+async function hmsSubmit(url, form, options) {
   var fetchRequestData = {
     method: 'POST',
     body: stringifyForm(form),
     headers: { 'Content-Type': 'application/json' },
   };
-  return await hmsFetch(url, fetchRequestData, options, callback);
+  return await hmsFetch(url, fetchRequestData, options);
 };
 
 function extractResponse(response) {
