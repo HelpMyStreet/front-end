@@ -7,12 +7,16 @@
   <ItemGroup>
     <Compile Remove="Models\Requests\**" />
     <Compile Remove="src\sass\components\NewFolder1\**" />
+    <Compile Remove="Views\Shared\Components\Feedback\**" />
     <Content Remove="Models\Requests\**" />
     <Content Remove="src\sass\components\NewFolder1\**" />
+    <Content Remove="Views\Shared\Components\Feedback\**" />
     <EmbeddedResource Remove="Models\Requests\**" />
     <EmbeddedResource Remove="src\sass\components\NewFolder1\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\Feedback\**" />
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
+    <None Remove="Views\Shared\Components\Feedback\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +54,6 @@
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel2\" />
     <Folder Include="Views\Shared\Components\Testimonials\" />
-    <Folder Include="Views\Shared\Components\Feedback\" />
     <Folder Include="Models\Awards\" />
     <Folder Include="Views\Shared\Components\Awards\" />
     <Folder Include="wwwroot\img\awards\" />

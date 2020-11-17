@@ -9,7 +9,7 @@ namespace HelpMyStreetFE.Repositories
     public interface IFeedbackRepository
     {
         Task<List<Testimonial>> GetTestimonials();
-        Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole);
+        Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole, int? userId);
         Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, FeedbackRating feedbackRating);
     }
 }

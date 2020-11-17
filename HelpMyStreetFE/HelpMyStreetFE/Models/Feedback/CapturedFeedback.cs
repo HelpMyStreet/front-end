@@ -21,5 +21,17 @@ namespace HelpMyStreetFE.Models.Feedback
         public string VolunteerMessage { get; set; }
         public string GroupMessage { get; set; }
         public string HMSMessage { get; set; }
+
+        public bool IncludesMessage
+        {
+            get
+            {
+                return !(string.IsNullOrEmpty(RecipientMessage)
+                      && string.IsNullOrEmpty(RequestorMessage)
+                      && string.IsNullOrEmpty(VolunteerMessage)
+                      && string.IsNullOrEmpty(GroupMessage)
+                      && string.IsNullOrEmpty(HMSMessage));
+            }
+        }
     }
 }

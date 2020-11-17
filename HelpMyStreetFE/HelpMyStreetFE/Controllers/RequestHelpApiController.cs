@@ -45,12 +45,10 @@ namespace HelpMyStreetFE.Controllers {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int jobId = Base64Utils.Base64DecodeToInt(j);
 
-                RequestRoles role = u == "self" ? RequestRoles.Volunteer : RequestRoles.GroupAdmin;
-
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
                 { 
-                    targetUserId = role == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u);
+                    targetUserId = (u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u));
                 }
 
                 UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
@@ -59,14 +57,11 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
-                        bool requestFeedback = false;
-                        if (s == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role))
+                        return new SetJobStatusResult
                         {
-                            requestFeedback = true;
-                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={j}&r={Base64Utils.Base64Encode((int)role)}");
-                            _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={j}&r={Base64Utils.Base64Encode((int)role)}");
-                        }
-                        return new SetJobStatusResult { NewStatus = s.FriendlyName(), RequestFeedback = requestFeedback };
+                            NewStatus = s.FriendlyName(),
+                            RequestFeedback = await FeedbackDue(jobId, user.ID, cancellationToken)
+                        };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
                     case UpdateJobStatusOutcome.Unauthorized:
@@ -112,6 +107,19 @@ namespace HelpMyStreetFE.Controllers {
             int jobId = Base64Utils.Base64DecodeToInt(j);
 
             return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
+        }
+
+        private async Task<bool> FeedbackDue(int jobId, int userId, CancellationToken cancellationToken)
+        {
+            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            RequestRoles role = (job.VolunteerUserID == userId ? RequestRoles.Volunteer : RequestRoles.GroupAdmin);
+            if (job.JobStatus == JobStatuses.Done && !await _feedbackService.GetFeedbackExists(jobId, role, userId))
+            {
+                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.Controllers
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
-            if (result == Result.Success)
+            if (result == Result.Success || result == Result.Failure_FeedbackAlreadyRecorded)
             {
                 return StatusCode((int)HttpStatusCode.OK);
             }
@@ -73,6 +73,13 @@ namespace HelpMyStreetFE.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError);
             }
+        }
+
+        [Route("get-feedback-thanks-popup")]
+        [AuthorizeAttributeNoRedirect]
+        public IActionResult FeedbackThanksPopup([FromBody] CapturedFeedback capturedFeedback)
+        {
+            return ViewComponent("FeedbackCaptureThanks", capturedFeedback);
         }
     }
 }
