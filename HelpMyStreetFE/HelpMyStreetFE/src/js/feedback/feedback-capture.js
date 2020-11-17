@@ -26,7 +26,7 @@ export function initialiseFeedbackCaptureForm() {
   });
 }
 
-export async function showFeedbackPopup(jobId, role) {
+export async function showFeedbackPopup(jobId, role, successCallback) {
     const popupSource = `/api/feedback/get-post-task-feedback-popup?j=${jobId}&r=${role}`;
 
     let popup;
@@ -41,6 +41,9 @@ export async function showFeedbackPopup(jobId, role) {
             var response = await hmsSubmit(`/api/feedback/put-feedback?j=${jobId}&r=${role}`, form);
             if (response.fetchResponse == fetchResponses.SUCCESS) {
                 showServerSidePopup(`/api/feedback/get-feedback-thanks-popup`, {}, form);
+                if (successCallback) {
+                    successCallback();
+                }
                 return true;
             }
             return "Oops, we couldn't submit your feedback at the moment.";

@@ -1,4 +1,5 @@
 import { hmsSubmit, fetchResponses } from "../shared/hmsFetch";
+import { loadFeedbackComponents } from "../profile/requests";
 
 const toggleButtons = document.querySelectorAll(".btn__toggle-show");
 
@@ -83,7 +84,8 @@ $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
 async function loadRequests(form) {
   var response = await hmsSubmit('/api/request-help/get-filtered-jobs', form);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
-    $(form).closest('.job-filter-panel').find('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+      $(form).closest('.job-filter-panel').find('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+      loadFeedbackComponents();
     return true;
   }
   return false;
