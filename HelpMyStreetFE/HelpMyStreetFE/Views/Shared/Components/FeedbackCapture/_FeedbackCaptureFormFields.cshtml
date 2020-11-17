@@ -50,7 +50,7 @@
     <div class="row">
         <div class="sm12 input">
             <label for="@nameof(Model.VolunteerMessage)">Would you like to pass a message on to <strong>@Model.VolunteerName</strong>, @(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your volunteer?" : "who completed this task?")</label>
-            @Html.TextAreaFor(m => m.VolunteerMessage, new { @placeholder = "Leave your message for " + (Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") + " volunteer here." })
+            @Html.TextAreaFor(m => m.VolunteerMessage, new { @placeholder = "Leave a message for " + (Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") + " volunteer..." })
         </div>
     </div>
 }
