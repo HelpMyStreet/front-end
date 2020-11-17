@@ -2,6 +2,8 @@
 import { initialiseRequests } from "./requests";
 import { initialiseGenericExpanders } from "../ui/generic-expander";
 import { initialiseVolunteerList } from "./volunteers";
+import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
+import { updateAwards } from "../shared/awards";
 
 $(document).ready(function () {
   const isVerified = (initObj && initObj.isVerified == "True");
@@ -9,5 +11,5 @@ $(document).ready(function () {
   initialiseRequests(isVerified);
   initialiseGenericExpanders();
   initialiseVolunteerList();
+  updateAwards();
 });
-

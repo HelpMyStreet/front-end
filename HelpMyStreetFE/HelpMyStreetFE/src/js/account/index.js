@@ -9,6 +9,7 @@ $(document).ready(function () {
     initialiseAccountNavExpanders();
     initialiseNavBadges();
 
+
 });
 
 function initialiseAccountNavExpanders() {
@@ -24,10 +25,7 @@ function initialiseAccountNavExpanders() {
     });
 }
 
-function initialiseAwardsView() {
-    updateAwards();
-    const awardsInterval = setInterval(async function () { updateAwards() }, 15000);
-}
+
 
 function initialiseNavBadges() {
     $('.account__nav .account__nav__badge').each(function () {
@@ -62,26 +60,7 @@ async function refreshBadge(badge) {
     
 }
 
-async function updateAwards() {
-    var response = await hmsFetch('/account/LoadAwardsComponent');
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-        var html = await response.fetchPayload;
-        $(".awards-component").html(html);
 
-    } else if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
-        if (window.location.pathname.startsWith('/account/')) {
-            // Session expired on logged-in page; redirect to login
-            window.location.replace('/account/Login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
-        } else {
-            // Session expired on public page; don't redirect, but also don't bother trying to get any more badge refreshes
-            clearInterval(awardsInterval);
-        }
-    } else {
-        //something terrible has gone wrong!
-    }
-    $("#what-is-this").click(() => { $(".tooltiptext").addClass("visible") });
-    $("#close-tooltip").click(() => { $(".tooltiptext").removeClass("visible") });
-}
 
 function subMenuToggle(container, slideDuration = 400) {
     const ul = $(container).children('ul');
