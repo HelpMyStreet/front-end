@@ -8,7 +8,6 @@ export default { login, notification };
 $(document).ready(function () {
     initialiseAccountNavExpanders();
     initialiseNavBadges();
-    initialiseAwardsView();
 
 });
 

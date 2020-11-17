@@ -2,13 +2,15 @@ import firebase from "../firebase";
 import { showLoadingSpinner, hideLoadingSpinner } from "../states/loading";
 import { getParameterByName } from "../shared/querystring-helper";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
-const handleErrorResponse = response => {    
+const handleErrorResponse = (response, email) => {    
     if (response) {    
     switch (response.code) {
         case "auth/wrong-password":
+            window.location.href = `/account/login?email=${email}`
             return { success: false, message: "Incorrect username or password provided, please try again" };
             break;
         case "auth/user-not-found":
+            window.location.href = `/account/login?email=${email}`
             return { success: false, message: "Incorrect username or password provided, please try again" };
             break;
       default:
@@ -30,13 +32,13 @@ const validate = (email, password) => {
 
 export const login = async (email, password) => {
   showLoadingSpinner('.header-login__form');
-  
-  const validationResponse = validate(email, password);
+    const validationResponse = validate(email, password);
   if (validationResponse.success) {
     try {
       const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
         
-        const token = await credentials.user.getIdToken();
+      const token = await credentials.user.getIdToken();
+
 
       const authResp = await hmsFetch('/api/auth', {
         method: 'post',
@@ -46,13 +48,15 @@ export const login = async (email, password) => {
         },
         body: JSON.stringify({ token })
       });
+        console.log(authResp);
         //console.log("Fetch Rsp:" + authResp.fetchResponse);
         switch (authResp.fetchResponse) {
             case fetchResponses.SERVER_ERROR:
                 throw ({ code: "auth/internal-server-error" });
                 break;
             case fetchResponses.UNAUTHORISED:
-                throw ({ code: "auth/server-not-authorised" });
+                window.location.href = "/account/login?email=" + email;
+                return { success: false };
                 break;
             case fetchResponses.TIMEOUT:
                 throw ({ code: "auth/server-timeout" });
@@ -64,12 +68,13 @@ export const login = async (email, password) => {
         if (returnUrl && returnUrl.startsWith("/")) {
             window.location.href = returnUrl;
         } else {
-            window.location.href = "/account";
+            window.location.href = "/account/open-requests";
         }
         return { success: true };
     } catch (e) {              
-      hideLoadingSpinner('.header-login__form');
-      return handleErrorResponse(e);
+        hideLoadingSpinner('.header-login__form');
+        
+      return handleErrorResponse(e, email);
     }
   } else {
     hideLoadingSpinner('.header-login__form');  

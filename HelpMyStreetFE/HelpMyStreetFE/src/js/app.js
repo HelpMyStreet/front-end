@@ -29,15 +29,17 @@ $(function () {
         const email = $("#email").val();
         const password = $("#password").val();
         const response = await account.login.login(email, password);        
-        if (!response.success) {
-        $("#login-fail-message").text(response.message);
-        $(this).disabled = false;
-      }
+       
     } finally {
         buttonUnload($(this));
         $(this).disabled = false;
         }
     });
+
+    $("#sign-up").click(async () => {
+        const email = $("#email").val(); 
+        window.location.href=`/registration/step-one?email=${email}`
+    })
 
     $(".yt-video-placeholder").click(function(){
         var height = $(this).height();

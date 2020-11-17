@@ -15,7 +15,7 @@
                 <form id="login-form" onsubmit="return false;">
                     <div class="input">
                         <label for="email">Email</label>
-                        <input name="email" type="text" id="email" placeholder="Email" />
+                        <input name="email" type="text" id="email" value = "@(Model.Email ?? "")" placeholder="Email" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
@@ -23,7 +23,7 @@
                         <input name="password" id="password" type="password" placeholder="Password" />
                         <span class="error"></span>
                     </div>
-                    <span id="login-fail-message" class="login__fail-message-main"></span>
+                    <span id="login-fail-message" class="login__fail-message-main">@Model.LoginError</span>
                     <div><a class="login__link" href="/forgotten-password"> Forgotten Password?</a></div>
                     <div class="controls">
                         <button class="btn cta large fill login-submit-handler" id="login-submit" type="submit">
@@ -41,6 +41,9 @@
                     <p>
                         HelpMyStreet is working with communities to get help and support to people who need to shelter safely at home. Many of these people live far from friends and family and don’t have a local support network. HelpMyStreet gets the right help to the right people so that no one is left out.
                     </p>
+                </div>
+                <div class="sm6 mr-sm text-center">
+                    <button id="sign-up" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up Now</button>
                 </div>
             </div>
         </div>

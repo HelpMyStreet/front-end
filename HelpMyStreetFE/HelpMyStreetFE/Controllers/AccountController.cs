@@ -71,10 +71,14 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string email)
         {
+            var errorMessage = "Incorrect/unregistered username or password";
+
             LoginViewModel model = new LoginViewModel
             {
+                Email = email,
+                LoginError = errorMessage,
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
             return View(model);

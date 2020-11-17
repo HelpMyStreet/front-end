@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> StepOne(string referringGroup = "", string source = "")
+        public async Task<ActionResult> StepOne(string referringGroup = "", string source = "", string email = "")
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -74,7 +74,8 @@ namespace HelpMyStreetFE.Controllers
                 RegistrationFormVariant = registrationFormVariant,
                 ReferringGroupID = referringGroupId,
                 Source = source,
-                GroupName= group.GroupName
+                GroupName= group.GroupName,
+                Email = email
             });
         }
 
