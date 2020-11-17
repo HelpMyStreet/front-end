@@ -1,8 +1,7 @@
 ﻿// HMS Bespoke Fetch Function
-// Takes fetch url, post/get data object (), options, timeout callback function
-// Options object allows setting timeout length, number of retries for errors and timeout
+// Takes fetch url, post/get data object (), options
+// Options object allows setting timeout length, number of retries for errors and timeout, timeout callback function to call on first timeout
 // Returns Promise that will resolve to a fetchResponse, and associated data.
-// If first attempt times out, calls provided callback function (to, for example, initiate end user message).
 
 import "isomorphic-fetch"
 import { stringifyForm } from "./form-helper";
