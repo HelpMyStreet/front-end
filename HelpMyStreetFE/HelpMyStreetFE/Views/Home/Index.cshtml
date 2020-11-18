@@ -161,7 +161,7 @@ else
             </div>
         </div>
         <div class="row justify-center text-center">
-            @if (Model.isLoggedIn)
+            @if (!Model.isLoggedIn)
             {
                 <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
             }

@@ -19,7 +19,7 @@
                     <div class="tiles__tile tile-selector__tile @(Model.FeedbackRating == FeedbackRating.HappyFace ? "selected": "")" data-type="rating" data-value="@FeedbackRating.HappyFace">
                         <div class="tiles__tile__content">
                             <div class="tiles__tile__content__icon">
-                                <img src="~/img/icons/face-great.svg" alt="Happy face" class="height-150 pt-sm" />
+                                <img src="~/img/icons/face-great.svg" alt="Happy face" class="xxl pt-sm" />
                             </div>
                             <div class="tiles__tile__content__description">
                                 Great
@@ -31,7 +31,7 @@
                     <div class="tiles__tile tile-selector__tile @(Model.FeedbackRating == FeedbackRating.SadFace ? "selected": "")" data-type="rating" data-value="@FeedbackRating.SadFace">
                         <div class="tiles__tile__content">
                             <div class="tiles__tile__content__icon">
-                                <img src="~/img/icons/face-not-so-great.svg" alt="Sad face" class="height-150 pt-sm" />
+                                <img src="~/img/icons/face-not-so-great.svg" alt="Sad face" class="xxl pt-sm" />
                             </div>
                             <div class="tiles__tile__content__description">
                                 Not so great
@@ -50,7 +50,7 @@
     <div class="row">
         <div class="sm12 input">
             <label for="@nameof(Model.VolunteerMessage)">Would you like to pass a message on to <strong>@Model.VolunteerName</strong>, @(Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your volunteer?" : "who completed this task?")</label>
-            @Html.TextAreaFor(m => m.VolunteerMessage, new { @placeholder = "Leave your message for " + (Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") + " volunteer here." })
+            @Html.TextAreaFor(m => m.VolunteerMessage, new { @placeholder = "Leave a message for " + (Model.RoleSubmittingFeedback == RequestRoles.Recipient ? "your" : "the") + " volunteer..." })
         </div>
     </div>
 }
@@ -60,7 +60,7 @@
     <div class="row">
         <div class="sm12 input">
             <label for="@nameof(Model.RecipientMessage)">Would you like to pass a message on to <strong>@Model.RecipientName</strong>?</label>
-            @Html.TextAreaFor(m => m.RecipientMessage, new { @placeholder = "Leave your message for the person you helped here." })
+            @Html.TextAreaFor(m => m.RecipientMessage, new { @placeholder = "Leave a message for the person you helped..." })
         </div>
     </div>
 }
@@ -77,7 +77,7 @@
             {
                 <label for="@nameof(Model.RequestorMessage)">This help was requested by <strong>@Model.RequestorName</strong> for <strong>@Model.RecipientName</strong>.  Would you like to pass a message on to <strong>@Model.RequestorName</strong>?</label>
             }
-            @Html.TextAreaFor(m => m.RequestorMessage, new { @placeholder = "Leave your message for the person who requested help here." })
+            @Html.TextAreaFor(m => m.RequestorMessage, new { @placeholder = "Leave a message for the person who requested the help..." })
         </div>
     </div>
 }
@@ -97,7 +97,7 @@
     <div class="row">
         <div class="sm12 input">
             <label for="@nameof(Model.HMSMessage)">Got some feedback about HelpMyStreet?</label>
-            @Html.TextAreaFor(m => m.HMSMessage, new { @placeholder = "Leave your comments and compliments for the team here.", @class = "shrink grow-on-focus" })
+            @Html.TextAreaFor(m => m.HMSMessage, new { @placeholder = "Leave your comments and compliments here.", @class = "shrink grow-on-focus" })
         </div>
     </div>
 }

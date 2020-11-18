@@ -46,20 +46,26 @@ namespace HelpMyStreetFE.ViewComponents
                 FeedbackRating = parameters.FeedbackRating,
 
                 VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName,
-                RecipientName = jobDetails.Recipient.FirstName,
+                RecipientName = string.IsNullOrEmpty(jobDetails.JobSummary.RecipientOrganisation) ? jobDetails.Recipient.FirstName : jobDetails.JobSummary.RecipientOrganisation,
                 RequestorName = jobDetails.Requestor.FirstName,
-
+                
                 ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null,
-                ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient,
-                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && jobDetails.JobSummary.RequestorType != RequestorType.Myself,
+                ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient && !string.IsNullOrEmpty(jobDetails.Recipient.EmailAddress),
+                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && !string.IsNullOrEmpty(jobDetails.Requestor.EmailAddress) && jobDetails.JobSummary.RequestorType != RequestorType.Myself,
                 ShowHMSMessage = true
             };
-
-            if (jobDetails.JobSummary.ReferringGroupID != -1)
+            
+            if (jobDetails.JobSummary.ReferringGroupID != (int)Groups.Generic)
             {
                 var groupDetails = await _groupService.GetGroupById(jobDetails.JobSummary.ReferringGroupID, cancellationToken);
                 viewModel.GroupName = groupDetails.GroupName;
                 viewModel.ShowGroupMessage = (parameters.RequestRole != RequestRoles.GroupAdmin);
+
+                // TODO: Replace with RequestorDefinedByGroup
+                if (jobDetails.JobSummary.ReferringGroupID == (int)Groups.AgeUKWirral)
+                {
+                    viewModel.ShowRequestorMessage = false;
+                }
             }
             else
             {
