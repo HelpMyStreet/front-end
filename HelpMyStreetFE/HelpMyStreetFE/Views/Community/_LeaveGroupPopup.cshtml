@@ -1,0 +1,16 @@
+﻿@model HelpMyStreetFE.Models.Community.CommunityModel
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Leave Group</div>
+        <div>
+            <p>Would you like to leave <b>@Model.FriendlyName</b>?</p>
+        </div>
+        <div class="popup__content__buttons mt-md">
+            <p class="error dnone"></p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Yes, leave group" }' />
+            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = "Cancel" }' />
+        </div>
+    </div>
+</div>
