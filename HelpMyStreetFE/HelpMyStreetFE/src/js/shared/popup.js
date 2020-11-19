@@ -1,7 +1,7 @@
 import { buttonLoad, buttonUnload } from "./btn";
 import { hmsFetch, fetchResponses } from "./hmsFetch"
 
-export async function showServerSidePopup(source, settings) {
+export async function showServerSidePopup(source, settings = {}) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
 
   if (settings.noFade) {
