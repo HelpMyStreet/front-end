@@ -1,6 +1,6 @@
 import { initialiseSliders } from "../shared/image-slider.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
-import { showPopup, hidePopup, showServerSidePopup } from "../shared/popup";
+import { hidePopup, showServerSidePopup } from "../shared/popup";
 
 
 $(document).ready(function () {
