@@ -53,16 +53,10 @@ namespace HelpMyStreetFE.Models.Community
         public FeedbackMessageType showFeedbackType { get; set; } = FeedbackMessageType.Other;
         public string groupKey { get; set; }
         public bool ShowRequestHelpPopup { get; set; }
-        public string RequestHelpPopupText { get; set; }
-        public string RequestHelpPopupRejectButtonText { get; set; }
-        public string RequestHelpPopup2Text { get; set; }
-        public string RequestHelpPopup2Destination { get; set; }
 
         public bool AllowJoinOurGroup { get; set; }
         public bool AllowLeaveOurGroup { get; set; }
         public string JoinOurGroupButtonText { get; set; }
-        public string JoinGroupPopupText { get; set; }
-        public string LeaveGroupPopupText { get; set; }
 
         public bool ShowVisitWebsite { get; set; }
         public string VisitWebsiteHeading { get; set; }

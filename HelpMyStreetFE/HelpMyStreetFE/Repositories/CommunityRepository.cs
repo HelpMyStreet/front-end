@@ -260,10 +260,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             return communityViewModel;
         }
@@ -380,18 +378,11 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.ShowRequestHelpPopup = true;
-            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Ruddington</b>?</p>";
-            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
-            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Ruddington Community Response Team</b> offer help in <b>Ruddington</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
-                                                            <p>Request help from someone near you by clicking below.</p>";
-            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Ruddington Community Response Team</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Ruddington Community Response Team</b>?</p>";
 
             return communityViewModel;
         }
@@ -501,10 +492,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             return communityViewModel;
         }
@@ -575,10 +564,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>AgeUK Wirral</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>AgeUK Wirral</b>?</p>";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
@@ -732,10 +719,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>For the Love of Scrubs</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>For the Love of Scrubs</b>?</p>";
 
             return communityViewModel;
         }

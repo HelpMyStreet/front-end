@@ -284,7 +284,6 @@ $(document).ready(function () {
     if ($("#ShowRequestHelpPopup").val() == "True") {
         $('.btn--request-help').on('click', async function (event) {
             event.preventDefault();
-
             let popup = await showServerSidePopup('/api/community/get-request-help-community-popup?g=' + groupId, {
                 acceptCallbackAsync: () => {
                     window.location.href = $(this).attr('href');
@@ -304,44 +303,36 @@ $(document).ready(function () {
         });
     }
 
-  $('.btn--join-group').on('click', function (event) {
-    event.preventDefault();
-    showPopup({
-      header: "Join Group",
-      htmlContent: $("#JoinGroupPopupText").val(),
-      actionBtnText: "Join now",
-      acceptCallbackAsync: async () => {
-        const content = await hmsFetch("/api/groups/join-group?g=" + $(this).data("target-group"));
-        if (content.fetchResponse == fetchResponses.SUCCESS) {
-          $('.show-to-members').removeClass('dnone');
-          $('.show-to-non-members').addClass('dnone');
-          return true;
-        } else {
-          return false;
-        }
-      }
+    $('.btn--join-group').on('click', function (event) {
+        event.preventDefault();
+        showServerSidePopup('/api/community/get-join-group-popup?g=' + groupId, {
+            acceptCallbackAsync: async () => {
+                const content = await hmsFetch("/api/groups/join-group?g=" + groupId);
+                if (content.fetchResponse == fetchResponses.SUCCESS) {
+                    $('.show-to-members').removeClass('dnone');
+                    $('.show-to-non-members').addClass('dnone');
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     });
-  });
 
-  $('.btn--leave-group').on('click', function (event) {
-    event.preventDefault();
-    showPopup({
-      header: "Leave Group",
-      htmlContent: $("#LeaveGroupPopupText").val(),
-      actionBtnText: "Yes, leave group",
-      rejectBtnText: "Cancel",
-      cssClass: "warning",
-      acceptCallbackAsync: async () => {
-        const content = await hmsFetch("/api/groups/leave-group?g=" + $(this).data("target-group"));
-        if (content.fetchResponse == fetchResponses.SUCCESS) {
-          $('.show-to-members').addClass('dnone');
-          $('.show-to-non-members').removeClass('dnone');
-          return true;
-        } else {
-          return false;
-        }
-      }
+    $('.btn--leave-group').on('click', function (event) {
+        event.preventDefault();
+        showServerSidePopup('/api/community/get-leave-group-popup?g=' + groupId, {
+            acceptCallbackAsync: async () => {
+                const content = await hmsFetch("/api/groups/leave-group?g=" + groupId);
+                if (content.fetchResponse == fetchResponses.SUCCESS) {
+                    $('.show-to-members').addClass('dnone');
+                    $('.show-to-non-members').removeClass('dnone');
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     });
-  });
 
 });
