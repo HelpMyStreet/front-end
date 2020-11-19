@@ -75,7 +75,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HomeFolder = "ageUK/notts/balderton";
             communityViewModel.Latitude = communityModel.Latitude;
             communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.ZoomLevel = 13.5;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
             communityViewModel.groupKey = "ageuknottsbalderton";
