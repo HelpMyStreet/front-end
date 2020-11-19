@@ -77,7 +77,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
             communityViewModel.groupKey = "ageuknottsbalderton";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
@@ -108,14 +108,19 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.RequestHelpButtonText = "Request Help";
 
-
+            communityViewModel.ShowRequestHelpPopup = true;
+            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Balderton</b>?</p>";
+            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
+            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Balderton Community Response Team</b> offer help in <b>Balderton</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
+                                                            <p>Request help from someone near you by clicking below.</p>";
+            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome from Balderton Community Support";
 
             communityViewModel.CommunityVolunteersTextHtml =
  @"<p>The Balderton community has come together to support our neighbours. We can help with all sorts of everyday tasks, from helping with your shopping to mowing your lawn.</p>
 <p>If you'd like some help from a local volunteer, just ask by clicking on one of the ‘Request Help' buttons on this page, or if you'd prefer you can give us a call on 07487 241596</p>
-<p>To join us, sign up as a community volunteer above. You can help as much or as little as you are able, and we greatly appreciate any time and support you can give.￼</p>
+<p>To join us, sign up as a community volunteer above. You can help as much or as little as you are able, and we greatly appreciate any time and support you can give.</p>
 <p>Email us at <a href = ""mailto: baldertoncs@helpmystreet.org"">baldertoncs@helpmystreet.org</a></p> 
 ";
 
@@ -150,7 +155,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowLeaveOurGroup = true;
             communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Balderton Community Helpers</b>?</p>";
-
+            communityViewModel.ShowHelpExampleCards = false;
             return communityViewModel;
         }
 

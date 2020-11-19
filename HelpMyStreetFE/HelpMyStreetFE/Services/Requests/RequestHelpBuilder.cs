@@ -122,6 +122,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.FtLOS => "How can For the Love of Scrubs help?",
                 RequestHelpFormVariant.HLP_CommunityConnector => "Get in touch with a Community Connector",
                 RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
+                RequestHelpFormVariant.AgeUKNottsBalderton => "Request help from Balderton Community Support",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -187,6 +188,16 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.ColdWeatherArmy },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNottsBalderton)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
