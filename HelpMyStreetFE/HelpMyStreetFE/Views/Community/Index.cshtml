@@ -12,438 +12,420 @@
     <script src="/community.js" asp-append-version="true"></script>
 }
 
-@if (Model.TestBanner)
+@if (!string.IsNullOrEmpty(Model.BannerImageLocation))
 {
-    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
     <div class="container">
-        <header class="content-page__header">
-            <div class="row">
-                <h2 class="sm12 mb-md">This is a HelpMyStreet test environment, and is only accessible to HelpMyStreet staff.</h2>
-                <ul>
-                    <li>If you have got here by clicking on a link in an email from Mental Health First Aid England in relation to signing up as a Community Connector, then please sign up at <a href="http://helpmystreet.org/healthylondonpartnership">http://helpmystreet.org/healthylondonpartnership</a></li>
-                    <li>If you have arrived here for any other reason, you can find our homepage <a href="http://helpmystreet.org">here</a></li>
-                </ul>
-            </div>
-        </header>
+        <div class="community-banner">
+            <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
+        </div>
     </div>
 }
-else
-{
-    @if (!string.IsNullOrEmpty(Model.BannerImageLocation))
-    {
-        <div class="container">
-            <div class="community-banner">
-                <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
-            </div>
-        </div>
-    }
-    <div class="outer-container">
-        <div class="container">
-            <div class="row flex hero mb-lg">
-                <div class="row sm6 align-center content-page">
-                    <header class="mw1000">
-                        <h2 class="mb0 mt-md">@Model.Header</h2>
-                    </header>
+<div class="outer-container">
+    <div class="container">
+        <div class="row flex hero mb-lg">
+            <div class="row sm6 align-center content-page">
+                <header class="mw1000">
+                    <h2 class="mb0 mt-md">@Model.Header</h2>
+                </header>
 
-                    @Html.Raw(@Model.HeaderHTML)
+                @Html.Raw(@Model.HeaderHTML)
 
 
 
-                    @if (Model.ShowVisitWebsite)
-                    {
-                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm">
-                            @if (Model.HeaderVisitWebsiteButtonText != null && Model.HeaderVisitWebsiteButtonText.Length > 0)
-                            {
-                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVisitWebsiteButtonText</p>
-                            }
-                            <a href="@Model.WebsiteUrl" class="btn cta small btn--request-help fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
-                        </div>
-                    }
-
-                    @if (Model.ShowRequestHelp)
-                    {
-                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
-                            @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
-                            {
-                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
-                            }
-                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
-                        </div>
-                    }
-
-                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
-                        @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
+                @if (Model.ShowVisitWebsite)
+                {
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm">
+                        @if (Model.HeaderVisitWebsiteButtonText != null && Model.HeaderVisitWebsiteButtonText.Length > 0)
                         {
-                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVisitWebsiteButtonText</p>
                         }
-                        @if (!Model.IsLoggedIn)
+                        <a href="@Model.WebsiteUrl" class="btn cta small btn--request-help fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                    </div>
+                }
+
+                @if (Model.ShowRequestHelp)
+                {
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-sm small-screen-only">
+                        @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
                         {
-                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
+                        }
+                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                    </div>
+                }
+
+                <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md">
+                    @if (Model.HeaderVolunteerButtonText != null && Model.HeaderVolunteerButtonText.Length > 0)
+                    {
+                        <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderVolunteerButtonText</p>
+                    }
+                    @if (!Model.IsLoggedIn)
+                    {
+                        <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                    }
+                    else
+                    {
+                        if (Model.AllowJoinOurGroup)
+                        {
+                            <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                         }
                         else
                         {
-                            if (Model.AllowJoinOurGroup)
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                        }
+                    }
+                </div>
+
+                @if (Model.ShowRequestHelp)
+                {
+                    <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md large-screen-only">
+                        @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                        {
+                            <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
+                        }
+                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                    </div>
+                }
+
+                @Html.Raw(@Model.HeaderPostButtonsHTML)
+            </div>
+
+            @if (Model.ShowMap)
+            {
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map"></div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@if (Model.CarouselImages1 != null && Model.CarouselImages1.Count() > 0)
+{
+    <div class="outer-container mb-lg">
+        <div class="slider">
+            <div class="slides">
+                @foreach (string carouselImage in Model.CarouselImages1)
+                {
+                    <div>
+                        <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div class="outer-container outer-container--darker">
+    <div class="container">
+        <div class="row flex justify-center">
+            <h2 class="mb15 mt-lg text-center">@Model.CommunityVolunteersHeader</h2>
+        </div>
+    </div>
+</div>
+
+@if (Model.CommunityVolunteers != null)
+{
+    <div class="outer-container outer-container--darker">
+        <div class="slider">
+            <div class="slides">
+                @foreach (var volunteer in Model.CommunityVolunteers)
+                {
+                    <div class="volunteer">
+                        <img class="slide" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+                        <p class="bold mt-sm mb-xs">@volunteer.Name</p>
+                        @if (volunteer.Role != null)
+                        {<p class="mt-xs mb-xs ">@volunteer.Role</p>}
+                        @if (volunteer.Location != null)
+                        {<p class="mt-xs mb-xs">@volunteer.Location</p>}
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div class="outer-container outer-container--darker">
+    <div class="container">
+        <div class="row">
+            <div class="sm12">
+                <div class=" @(Model.CommunityVolunteersTextReadMore ? "read-more-text" : "") " >
+                    @Html.Raw(@Model.CommunityVolunteersTextHtml)
+                </div>
+                <div class="mb-md"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="outer-container">
+    <div class="container inner-container--no-side-padding">
+        <div class="row hero flex text-center justify-center">
+
+            @if (Model.ShowVisitWebsite)
+            {
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>@Model.VisitWebsiteHeading</h2>
+                        <p class="mt-sm mb-md">
+                            @Model.VisitWebsiteText
+                        </p>
+
+                        <div class="" style="text-align: center">
+                            <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            @if (Model.ShowRequestHelp)
+            {
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>@Model.RequestHelpHeading</h2>
+                        <p class="mt-sm mb-md">
+                            @Model.RequestHelpText
+                        </p>
+
+                        <div class="" style="text-align: center">
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
+            {
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>@Model.ProvideHelpHeading</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            @Model.ProvideHelpText_NotGroupMember
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            @Model.ProvideHelpText_GroupMember
+                        </p>
+
+                        <div class="card__buttons">
+                            @if (!Model.IsLoggedIn)
                             {
-                                <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                                <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                             }
                             else
                             {
-                                <a href="/account/open-requests" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                @if (Model.AllowJoinOurGroup)
+                                {
+                                    <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                                    <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                }
+                                else
+                                {
+                                    <a href="/account/open-requests" class="btn cta btn--view-requests @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
+                                }
+
+                                @if (Model.AllowLeaveOurGroup)
+                                {
+                                    <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
+                                }
                             }
-                        }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<div class="outer-container outer-container--darker">
+    <div class="container ">
+        <div class="row justify-center">
+            <h2 class="text-center mt-lg">Useful Links</h2>
+        </div>
+        <div class="row flex justify-center">
+            <div class="sm12 community-useful-links mb-lg">
+                @Html.Raw(@Model.UsefulLinksHtml)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (Model.CarouselImages2 != null && Model.CarouselImages2.Count() > 0)
+{
+    <div class="outer-container outer-container--darker mb-md">
+        <div class="slider">
+            <div class="slides">
+                @foreach (string carouselImage in Model.CarouselImages2)
+                {
+                    <div>
+                        <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
                     </div>
 
-                    @if (Model.ShowRequestHelp)
-                    {
-                        <div class="row @("sm" + Model.HeaderButtonWidth) text-center justify-center mb-md large-screen-only">
-                            @if (Model.HeaderHelpButtonText != null && Model.HeaderHelpButtonText.Length > 0)
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+@if (Model.ShowHelpExampleCards)
+{
+    <div class="outer-container mt-md">
+        <div class="inner-container container">
+            <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
+        </div>
+    </div>
+}
+
+<div class="container mt-md mb-lg">
+    @await Component.InvokeAsync("Feedback", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
+</div>
+
+
+
+<div class="outer-container outer-container--darker">
+    <div class="container">
+        <div class="row">
+            <div class="sm12">
+                <h2 class="text-center mt-lg">About HelpMyStreet.org</h2>
+            </div>
+        </div>
+
+
+        <div class="row mt-lg">
+            <div class="sm6 flex mb-md home-video-container justify-center align-center text-right" id="video">
+                <iframe style="min-width: 100%; height: 350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="sm6 pad-md">
+                <p class="">HelpMyStreet.org was launched to help the Helpers supporting their communities through the coronavirus pandemic.</p>
+
+                <p>Our goal is to make volunteering and finding volunteers simple, safe and effective for everyone.</p>
+
+                <p> We are a non-profit community interest company with a team of doctors, health practitioners, tech and data people, community volunteers and marketers. The founding team work for Factor 50, a healthcare analytics and digital company that works with the NHS, particularly in mental health.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="outer-container">
+    <div class="container inner-container--no-side-padding">
+        <div class="row hero flex text-center justify-center">
+
+            @if (Model.ShowVisitWebsite)
+            {
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>@Model.VisitWebsiteHeading</h2>
+                        <p class="mt-sm mb-md">
+                            @Model.VisitWebsiteText
+                        </p>
+
+                        <div class="" style="text-align: center">
+                            <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            @if (Model.ShowRequestHelp)
+            {
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>@Model.RequestHelpHeading</h2>
+                        <p class="mt-sm mb-md">
+                            @Model.RequestHelpText
+                        </p>
+
+                        <div class="" style="text-align: center">
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
+            {
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>@Model.ProvideHelpHeading</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            @Model.ProvideHelpText_NotGroupMember
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            @Model.ProvideHelpText_GroupMember
+                        </p>
+
+                        <div class="card__buttons">
+                            @if (!Model.IsLoggedIn)
                             {
-                                <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
+                                <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                             }
-                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
-                        </div>
-                    }
-
-                    @Html.Raw(@Model.HeaderPostButtonsHTML)
-                </div>
-
-                @if (Model.ShowMap)
-                {
-                    <div class="sm6 pl-md">
-                        <div class="text-right commmunity-map-container map static-map" id="map"></div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-
-
-    @if (Model.CarouselImages1 != null && Model.CarouselImages1.Count() > 0)
-    {
-        <div class="outer-container mb-lg">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (string carouselImage in Model.CarouselImages1)
-                    {
-                        <div>
-                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    }
-
-    <div class="outer-container outer-container--darker">
-        <div class="container">
-            <div class="row flex justify-center">
-                <h2 class="mb15 mt-lg text-center">@Model.CommunityVolunteersHeader</h2>
-            </div>
-        </div>
-    </div>
-
-    @if (Model.CommunityVolunteers != null)
-    {
-        <div class="outer-container outer-container--darker">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (var volunteer in Model.CommunityVolunteers)
-                    {
-                        <div class="volunteer">
-                            <img class="slide" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
-                            <p class="bold mt-sm mb-xs">@volunteer.Name</p>
-                            @if (volunteer.Role != null)
-                            {<p class="mt-xs mb-xs ">@volunteer.Role</p>}
-                            @if (volunteer.Location != null)
-                            {<p class="mt-xs mb-xs">@volunteer.Location</p>}
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    }
-
-    <div class="outer-container outer-container--darker">
-        <div class="container">
-            <div class="row">
-                <div class="sm12">
-                    <div class=" @(Model.CommunityVolunteersTextReadMore ? "read-more-text" : "") " >
-                        @Html.Raw(@Model.CommunityVolunteersTextHtml)
-                    </div>
-                    <div class="mb-md"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="outer-container">
-        <div class="container inner-container--no-side-padding">
-            <div class="row hero flex text-center justify-center">
-
-                @if (Model.ShowVisitWebsite)
-                {
-                    <div class="flex sm6">
-                        <div class="card flex m-sm">
-
-                            <h2>@Model.VisitWebsiteHeading</h2>
-                            <p class="mt-sm mb-md">
-                                @Model.VisitWebsiteText
-                            </p>
-
-                            <div class="" style="text-align: center">
-                                <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
-                            </div>
-
-                        </div>
-                    </div>
-                }
-
-                @if (Model.ShowRequestHelp)
-                {
-                    <div class="flex sm6">
-                        <div class="card flex m-sm">
-
-                            <h2>@Model.RequestHelpHeading</h2>
-                            <p class="mt-sm mb-md">
-                                @Model.RequestHelpText
-                            </p>
-
-                            <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
-                            </div>
-
-                        </div>
-                    </div>
-                }
-
-                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
-                {
-                    <div class="flex sm6">
-                        <div class="card flex m-sm">
-                            <h2>@Model.ProvideHelpHeading</h2>
-                            <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
-                                @Model.ProvideHelpText_NotGroupMember
-                            </p>
-                            <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
-                                @Model.ProvideHelpText_GroupMember
-                            </p>
-
-                            <div class="card__buttons">
-                                @if (!Model.IsLoggedIn)
+                            else
+                            {
+                                @if (Model.AllowJoinOurGroup)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
+                                    <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                                 }
                                 else
                                 {
-                                    @if (Model.AllowJoinOurGroup)
-                                    {
-                                        <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                                        <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="/account/open-requests" class="btn cta btn--view-requests @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
-                                    }
-
-                                    @if (Model.AllowLeaveOurGroup)
-                                    {
-                                        <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
-                                    }
+                                    <a href="/account/open-requests" class="btn cta btn--view-requests @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
                                 }
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
 
-
-
-    <div class="outer-container outer-container--darker">
-        <div class="container ">
-            <div class="row justify-center">
-                <h2 class="text-center mt-lg">Useful Links</h2>
-            </div>
-            <div class="row flex justify-center">
-                <div class="sm12 community-useful-links mb-lg">
-                    @Html.Raw(@Model.UsefulLinksHtml)
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    @if (Model.CarouselImages2 != null && Model.CarouselImages2.Count() > 0)
-    {
-        <div class="outer-container outer-container--darker mb-md">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (string carouselImage in Model.CarouselImages2)
-                    {
-                        <div>
-                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                        </div>
-
-                    }
-                </div>
-            </div>
-        </div>
-    }
-
-
-    @if (Model.ShowHelpExampleCards)
-    {
-        <div class="outer-container mt-md">
-            <div class="inner-container container">
-                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
-            </div>
-        </div>
-    }
-
-    <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Feedback", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
-    </div>
-
-
-
-    <div class="outer-container outer-container--darker">
-        <div class="container">
-            <div class="row">
-                <div class="sm12">
-                    <h2 class="text-center mt-lg">About HelpMyStreet.org</h2>
-                </div>
-            </div>
-
-
-            <div class="row mt-lg">
-                <div class="sm6 flex mb-md home-video-container justify-center align-center text-right" id="video">
-                    <iframe style="min-width: 100%; height: 350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-
-                <div class="sm6 pad-md">
-                    <p class="">HelpMyStreet.org was launched to help the Helpers supporting their communities through the coronavirus pandemic.</p>
-
-                    <p>Our goal is to make volunteering and finding volunteers simple, safe and effective for everyone.</p>
-
-                    <p> We are a non-profit community interest company with a team of doctors, health practitioners, tech and data people, community volunteers and marketers. The founding team work for Factor 50, a healthcare analytics and digital company that works with the NHS, particularly in mental health.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="outer-container">
-        <div class="container inner-container--no-side-padding">
-            <div class="row hero flex text-center justify-center">
-
-                @if (Model.ShowVisitWebsite)
-                {
-                    <div class="flex sm6">
-                        <div class="card flex m-sm">
-
-                            <h2>@Model.VisitWebsiteHeading</h2>
-                            <p class="mt-sm mb-md">
-                                @Model.VisitWebsiteText
-                            </p>
-
-                            <div class="" style="text-align: center">
-                                <a href="@Model.WebsiteUrl" class="btn cta fill cta--dark-blue">@Model.VisitWebsiteButtonText</a>
-                            </div>
-
-                        </div>
-                    </div>
-                }
-
-                @if (Model.ShowRequestHelp)
-                {
-                    <div class="flex sm6">
-                        <div class="card flex m-sm">
-
-                            <h2>@Model.RequestHelpHeading</h2>
-                            <p class="mt-sm mb-md">
-                                @Model.RequestHelpText
-                            </p>
-
-                            <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
-                            </div>
-
-                        </div>
-                    </div>
-                }
-
-                @if (!string.IsNullOrEmpty(Model.ProvideHelpHeading) && !string.IsNullOrEmpty(Model.ProvideHelpText_NotGroupMember))
-                {
-                    <div class="flex sm6">
-                        <div class="card flex m-sm">
-                            <h2>@Model.ProvideHelpHeading</h2>
-                            <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
-                                @Model.ProvideHelpText_NotGroupMember
-                            </p>
-                            <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
-                                @Model.ProvideHelpText_GroupMember
-                            </p>
-
-                            <div class="card__buttons">
-                                @if (!Model.IsLoggedIn)
+                                @if (Model.AllowLeaveOurGroup)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
                                 }
-                                else
-                                {
-                                    @if (Model.AllowJoinOurGroup)
-                                    {
-                                        <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                                        <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="/account/open-requests" class="btn cta btn--view-requests @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedIn</a>
-                                    }
-
-                                    @if (Model.AllowLeaveOurGroup)
-                                    {
-                                        <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
-                                    }
-                                }
-                            </div>
+                            }
                         </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@Html.Hidden(nameof(Model.Longitude))
+@Html.Hidden(nameof(Model.Latitude))
+@Html.Hidden(nameof(Model.ZoomLevel))
+
+@Html.Hidden(nameof(Model.ShowRequestHelpPopup))
+@Html.Hidden(nameof(Model.RequestHelpPopupText))
+@Html.Hidden(nameof(Model.RequestHelpPopupRejectButtonText))
+@Html.Hidden(nameof(Model.RequestHelpPopup2Text))
+@Html.Hidden(nameof(Model.RequestHelpPopup2Destination))
+
+@Html.Hidden(nameof(Model.JoinGroupPopupText))
+@Html.Hidden(nameof(Model.LeaveGroupPopupText))
+
+
+@if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
+{
+    <div class="outer-container outer-container--darker mb-lg">
+        <div class="slider">
+            <div class="slides">
+                @foreach (string carouselImage in Model.CarouselImages3)
+                {
+                    <div>
+                        <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
                     </div>
                 }
             </div>
         </div>
     </div>
-
-    @Html.Hidden(nameof(Model.Longitude))
-    @Html.Hidden(nameof(Model.Latitude))
-    @Html.Hidden(nameof(Model.ZoomLevel))
-
-    @Html.Hidden(nameof(Model.ShowRequestHelpPopup))
-    @Html.Hidden(nameof(Model.RequestHelpPopupText))
-    @Html.Hidden(nameof(Model.RequestHelpPopupRejectButtonText))
-    @Html.Hidden(nameof(Model.RequestHelpPopup2Text))
-    @Html.Hidden(nameof(Model.RequestHelpPopup2Destination))
-
-    @Html.Hidden(nameof(Model.JoinGroupPopupText))
-    @Html.Hidden(nameof(Model.LeaveGroupPopupText))
-
-
-    @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
-    {
-        <div class="outer-container outer-container--darker mb-lg">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (string carouselImage in Model.CarouselImages3)
-                    {
-                        <div>
-                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    }
 }
 
