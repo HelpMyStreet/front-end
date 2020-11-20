@@ -1,4 +1,4 @@
-﻿import { showServerSidePopup, showPopup } from '../shared/popup';
+﻿import { showServerSidePopup } from '../shared/popup';
 import { hmsSubmit, fetchResponses } from '../shared/hmsFetch';
 import { datepickerLoad, validateDate, dateValidationSchemes } from '../shared/date-picker';
 import { validateFormData } from '../shared/validator'
@@ -40,26 +40,19 @@ var initialiseAddCredentialLinks = function () {
 };
 
 var initialiseWhatIsThisLinks = function () {
-  $('.volunteer-list').on('click', '.what-is-this', async function (e) {
-    e.preventDefault();
-    const description = $(this).data('description');
+    $('.volunteer-list').on('click', '.what-is-this', async function (e) {
+        e.preventDefault();
 
-    if (description != undefined) {
-      const header = $(this).data('header');
-      const popupSettings = {
-        header: header,
-        htmlContent: description,
-        noButtons: true
-      };
-      showPopup(popupSettings);
-    } else {
-      const group = $(this).data('target-group');
-      const credential = $(this).data('credential');
-      const url = `/api/volunteers/get-what-is-this-credential-popup?g=${group}&c=${credential}`;
+        const group = $(this).data('target-group');
+        const credential = $(this).data('credential');
+        const item = $(this).data('item');
 
-      await showServerSidePopup(url, {});
-    }
-  });
+        if (credential != undefined) {
+            await showServerSidePopup(`/api/volunteers/get-what-is-this-credential-popup?g=${group}&c=${credential}`);
+        } else {
+            await showServerSidePopup(`/api/volunteers/get-what-is-this-credential-popup?g=${group}&i=${item}`);
+        }
+    });
 };
 
 var intialiseCredentialPopupTiles = function () {

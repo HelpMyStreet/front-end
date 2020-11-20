@@ -16,7 +16,7 @@ namespace HelpMyStreetFE.Repositories
         {
             {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
             {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg"} },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
         };
@@ -260,10 +260,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             return communityViewModel;
         }
@@ -379,18 +377,11 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.ShowRequestHelpPopup = true;
-            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Ruddington</b>?</p>";
-            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
-            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Ruddington Community Response Team</b> offer help in <b>Ruddington</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
-                                                            <p>Request help from someone near you by clicking below.</p>";
-            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Ruddington Community Response Team</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Ruddington Community Response Team</b>?</p>";
 
             return communityViewModel;
         }
@@ -500,10 +491,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             return communityViewModel;
         }
@@ -574,10 +563,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>AgeUK Wirral</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>AgeUK Wirral</b>?</p>";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
@@ -731,10 +718,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>For the Love of Scrubs</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>For the Love of Scrubs</b>?</p>";
 
             return communityViewModel;
         }

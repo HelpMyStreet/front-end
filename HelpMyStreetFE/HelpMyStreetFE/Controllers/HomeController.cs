@@ -29,17 +29,9 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("Get home");
 
-            bool testBanner = false;
-            string strTestBanner = _configuration["TestBanner"];
-            if (!string.IsNullOrEmpty(strTestBanner))
-            {
-                testBanner = Convert.ToBoolean(_configuration["TestBanner"]);
-            }
-
             var model = new HomeViewModel
             {
                 isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated),
-                TestBanner = testBanner
             };
 
             return View(model);

@@ -1,0 +1,16 @@
+﻿@model HelpMyStreetFE.Models.Community.CommunityModel
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Request Help</div>
+        <div>
+            <p>The <b>@Model.FriendlyName</b> offer help in <b>@Model.GeographicName</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
+            <p>Request help from someone near you by clicking below.</p>
+        </div>
+        <div class="popup__content__buttons mt-md">
+            <p class="error dnone"></p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Request help near me" }' />
+        </div>
+    </div>
+</div>
