@@ -109,11 +109,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.RequestHelpButtonText = "Request Help";
 
             communityViewModel.ShowRequestHelpPopup = true;
-            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Balderton</b>?</p>";
-            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
-            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Balderton Community Response Team</b> offer help in <b>Balderton</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
-                                                            <p>Request help from someone near you by clicking below.</p>";
-            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome from Balderton Community Support";
 
@@ -151,10 +146,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Balderton Community Helpers</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Balderton Community Helpers</b>?</p>";
             communityViewModel.ShowHelpExampleCards = false;
             return communityViewModel;
         }
