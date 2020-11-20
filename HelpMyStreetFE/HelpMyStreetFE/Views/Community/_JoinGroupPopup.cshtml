@@ -1,0 +1,15 @@
+﻿@model HelpMyStreetFE.Models.Community.CommunityModel
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Join Group</div>
+        <div>
+            <p>Would you like to join <b>@Model.FriendlyName</b>?</p>
+        </div>
+        <div class="popup__content__buttons mt-md">
+            <p class="error dnone"></p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Join now" }' />
+        </div>
+    </div>
+</div>

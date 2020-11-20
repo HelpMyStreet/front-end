@@ -5,6 +5,7 @@ namespace HelpMyStreetFE.Models.Community
     {
         public string ReferenceName { get; set; }
         public string FriendlyName { get; set; }
+        public string GeographicName { get; set; }
         public string LinkURL { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

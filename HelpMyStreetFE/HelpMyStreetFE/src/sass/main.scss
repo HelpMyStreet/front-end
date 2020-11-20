@@ -56,7 +56,7 @@ body {
   margin: 0;
 }
 
-p, p * {
+p {
   @include copy-sz-md;
   color: $p-color;
 
@@ -119,7 +119,7 @@ h6 + p {
   margin-top: 0;
 }
 
-span {
+span, b, strong {
   font-size: inherit;
 }
 

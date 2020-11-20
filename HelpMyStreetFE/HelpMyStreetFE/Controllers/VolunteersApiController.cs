@@ -28,12 +28,13 @@ namespace HelpMyStreetFE.Controllers
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-what-is-this-credential-popup")]
-        public IActionResult GetAssignCredentialPopup(string g, string c)
+        public IActionResult GetWhatIsThisCredentialPopup(string g, string c, string i)
         {
             int groupId = Base64Utils.Base64DecodeToInt(g);
-            int credentialId = Base64Utils.Base64DecodeToInt(c);
+            int? credentialId = c != null ? Base64Utils.Base64DecodeToInt(c) : (int?)null;
+            string item = i;
 
-            return ViewComponent("WhatIsThisCredentialPopup", new { groupId, credentialId });
+            return ViewComponent("WhatIsThisCredentialPopup", new { groupId, credentialId, item });
         }
 
         [AuthorizeAttributeNoRedirect]
