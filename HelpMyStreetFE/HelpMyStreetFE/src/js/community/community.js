@@ -274,9 +274,9 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
 
 $(document).ready(function () {
   if ($("#ShowRequestHelpPopup").val() == "True") {
-    $('.btn--request-help').on('click', function (event) {
+    $('.btn--request-help').on('click', async function (event) {
       event.preventDefault();
-      var popup = showPopup({
+      var popup = await showPopup({
         header: "Request Help",
         htmlContent: $("#RequestHelpPopupText").val(),
         actionBtnText: "Yes",
