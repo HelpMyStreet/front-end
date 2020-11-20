@@ -142,12 +142,20 @@
                         </button>
                         break;
                     case JobStatuses.Done:
+                        <div class="feedback-container">
+                            <button class="btn cta--gray-8-border">
+                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
+                            </button>
+                        </div>
                         if (admin && !(Model.JobHeader.Archive ?? false))
                         {
                             <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
+                        break;
+                    case JobStatuses.Cancelled:
+                        <div class="feedback-container"></div>
                         break;
                 }
                 @if (admin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
