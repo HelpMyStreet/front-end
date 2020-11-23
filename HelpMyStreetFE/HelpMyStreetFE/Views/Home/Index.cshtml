@@ -62,7 +62,7 @@
             <div class="row sm12 text-center justify-center mb-lg">
                 @if (!Model.isLoggedIn)
                 {
-                    <a href="/registration/step-one" class="btn cta btn--sign-up fill">Sign Up Now</a>
+                    <a href="/account/login/" class="btn cta btn--sign-up fill">Sign Up Or Log In</a>
 
                 }
                 else
@@ -116,7 +116,7 @@
         </div>
 
     <div class="how-to-use row mt72 justify-center card">
-        <partial name="_HowToUse" model="null" />
+        <partial name="_HowToUse" model=@Model.isLoggedIn />
     </div>
 
     <div class="row mt-lg justify-center">
@@ -127,16 +127,6 @@
     <div class="row justify-center text-center mt72">
         <div class="sm12">
             <h2>We’re working with communities&hellip;</h2>
-        </div>
-        <div class="row justify-center text-center">
-            @if (!Model.isLoggedIn)
-            {
-                <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
-            }
-            else
-            {
-                <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
-            }
         </div>
         <div class="sm8 list mb-lg">
             <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
@@ -151,11 +141,11 @@
     <div class="row justify-center text-center">
         @if (Model.isLoggedIn)
         {
-            <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
+            <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
         }
         else
         {
-            <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
+            <a href="/account/login" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Or Log In</a>
         }
     </div>
 </div>
