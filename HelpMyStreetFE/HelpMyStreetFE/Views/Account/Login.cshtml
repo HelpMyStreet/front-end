@@ -1,12 +1,11 @@
 ﻿@model LoginViewModel
 @{
     ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) }
 </script>
-<partial name="_SiteHeaderOnlyLogo" />
 <div class="container login">
     <div class="row  justify-center ">
         <div class="sm6">
@@ -15,7 +14,7 @@
                 <form id="login-form" onsubmit="return false;">
                     <div class="input">
                         <label for="email">Email</label>
-                        <input name="email" type="text" id="email" value = "@(Model.Email ?? "")" placeholder="Email" />
+                        <input name="email" type="text" id="email" value = "@Model.Email" placeholder="Email" />
                         <span class="error"></span>
                     </div>
                     <div class="input">
