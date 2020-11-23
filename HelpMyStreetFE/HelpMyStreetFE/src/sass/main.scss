@@ -42,6 +42,8 @@
 @import "./components/slick-carousel/slick-theme";
 @import "./components/_map-markers";
 @import "./components/awards/awards";
+@import "./components/community/group-logo";
+
 * {
   font-family: "Montserrat", sans-serif;
   font-size: 18px;
@@ -56,7 +58,7 @@ body {
   margin: 0;
 }
 
-p, p * {
+p {
   @include copy-sz-md;
   color: $p-color;
 
@@ -119,7 +121,7 @@ h6 + p {
   margin-top: 0;
 }
 
-span {
+span, b, strong {
   font-size: inherit;
 }
 

@@ -7,7 +7,7 @@ namespace HelpMyStreetFE.Models
 {
     public class HMSLogoViewModel
     {
-        public bool RenderLink { get; set; } = true;
+        public bool LinkEntireLogo { get; set; } = true;
 
         public bool ShowSecondaryText { get; set; } = false;
 
