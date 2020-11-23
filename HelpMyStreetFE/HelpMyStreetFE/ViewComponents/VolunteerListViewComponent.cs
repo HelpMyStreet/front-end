@@ -36,12 +36,14 @@ namespace HelpMyStreetFE.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(int groupId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            var userIsReadOnlyAdmin = await _groupMemberService.GetUserHasRole(user.ID, groupId, HelpMyStreet.Utils.Enums.GroupRoles.UserAdmin_ReadOnly, cancellationToken);
+            
 
             if (user == null)
             {
                 throw new UnauthorizedAccessException("No user in session");
             }
+
+            var userIsReadOnlyAdmin = await _groupMemberService.GetUserHasRole(user.ID, groupId, HelpMyStreet.Utils.Enums.GroupRoles.UserAdmin_ReadOnly, cancellationToken);
 
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
             var groupMembers = await _groupMemberService.GetAllGroupMembers(groupId, user.ID);
