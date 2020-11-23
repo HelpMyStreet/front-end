@@ -47,8 +47,10 @@ namespace HelpMyStreetFE.Controllers
 
         private Dictionary<string, string> Errors = new Dictionary<string, string>()
         {
-            { "login", "Invalid username or password" },
-            {"server", "Uh-oh, something has gone wrong at our end. Please retry" }
+            { "login", "Unregistered e-mail address or password" },
+            {"server", "Uh-oh, something has gone wrong at our end. Please retry" },
+            {"email", "Please enter a valid e-mail address" },
+            {"password", "Please enter a valid password" }
         };
 
         public AccountController(
@@ -83,7 +85,8 @@ namespace HelpMyStreetFE.Controllers
             LoginViewModel model = new LoginViewModel
             {
                 Email = email,
-                LoginError = errorMessage,
+                EmailError = er == "email" ? errorMessage : "",
+                LoginError = er != "email" ? errorMessage : "",
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
             return View(model);

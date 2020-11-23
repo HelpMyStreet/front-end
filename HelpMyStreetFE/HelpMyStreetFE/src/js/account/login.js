@@ -5,12 +5,11 @@ import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 const validate = (email, password) => {
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (!email) return { success: false, type: "validation", message: "Please provide an email address" };
-  if (!password) return { success: false, type: "validation", message: "Please provide a password" };
-  if (typeof email != "string") return { success: false, type: "validation", message: "Please provide a valid email address" };
-  if (typeof password != "string") return { success: false, type: "validation", message: "Please provide a valid email address" };
-  if (!emailRegex.test(email.toLowerCase())) return { success: false, type: "validation", message: "Please provide a valid email address" };
-  //TODO: Add check for password e.g. length, special characters etc
+  if (!email) return { success: false, input: "email"};
+  if (!password) return { success: false, input: "password"};
+  if (typeof email != "string") return { success: false, input: "email" };
+  if (typeof password != "string") return { success: false, input: "email"};
+  if (!emailRegex.test(email.toLowerCase())) return { success: false, input: "email"};
   return { success: true, message: "" };
 };
 
@@ -42,22 +41,18 @@ export const login = async (email, password) => {
           window.location.href = "/account/";
       }
 
-      return { success: true };
-
     } catch (e) {              
       hideLoadingSpinner('.header-login__form');
       if (e.code == "server"){
         window.location.href = `/account/login?email=${email}&er=server`
-        return { success: false, message: "Uh-oh, there has been an error at our end" };
       }
       else {
         window.location.href = `/account/login?email=${email}&er=login`
-        return { success: false, message: "Incorrect username or password provided, please try again" };
       }
     }
   } else {
     hideLoadingSpinner('.header-login__form');
-    return validationResponse;
+    window.location.href=`/account/login?email=${email}&er=${validationResponse.input}`;
   }
 };
 

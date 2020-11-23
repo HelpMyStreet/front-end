@@ -27,10 +27,7 @@ $(function () {
         $(this).disabled = true;
         const email = $("#email").val();
         const password = $("#password").val();
-        const response = await account.login.login(email, password);        
-        if (response.type == "validation" && !response.sucess){
-            $(".error").innerHTML(response.message);
-        }
+        account.login.login(email, password);
     } finally {
         buttonUnload($(this));
         
