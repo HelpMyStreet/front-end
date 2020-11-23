@@ -8,7 +8,7 @@
     }
 }
     <div class="page-header__logo">
-        @if (Model.RenderLink)
+        @if (Model.LinkEntireLogo)
         {
             <a href="/">
                 <div>
@@ -29,7 +29,9 @@
         else
         {
             <div>
-                <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
+                <a href="/">
+                    <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
+                </a>
                 <div class="logo-text">
                     <div class="primary-logo-text">
                         <span class="large-screen-only">@Model.PrimaryText.Replace(' ', '\u00A0')</span>

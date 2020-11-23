@@ -2,42 +2,41 @@
 
 @model HelpMyStreetFE.Models.Community.GroupLogoViewModel
 
-@switch (Model.GroupId)
-{
-    case (int)Groups.Generic:
-        <span class="composite-logo">
-            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
-            <span>HelpMyStreet.org</span>
-        </span>
-        break;
-    case (int)Groups.AgeUKWirral:
-        <img src="~/img/community/ageUK/wirral/AgeUKWirral-logo.png" alt="AgeUK Wirral" />
-        break;
-    case (int)Groups.AgeUKLSL:
-        <img src="~/img/community/ageUK/AgeUKLSL_logo_300px.png" alt="AgeUK Lincoln & South Lincolnshire" />
-        break;
-    case (int)Groups.Ruddington:
-        <span class="composite-logo">
-            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
-            <span>Ruddington</span>
-        </span>
-        break;
-    case (int)Groups.Tankersley:
-        <span class="composite-logo">
-            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
-            <span>Tankersley</span>
-        </span>
-        break;
-    case (int)Groups.FTLOS:
-        <img src="~/img/community/fortheloveofscrubs/FTLOS.png" alt="For the Love of Scrubs" />
-        break;
-    case (int)Groups.HLP:
-        <img src="~/img/community/hlp/MHFA-England-logo.png" alt="MHFA England" />
-        break;
-    case (int)Groups.AgeUKNottsBalderton:
-        <span class="composite-logo">
-            <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
-            <span>Balderton</span>
-        </span>
-        break;
-}
+<div class="group-logo">
+    @switch (Model.GroupId)
+    {
+        case (int)Groups.Generic:
+            <span class="composite-logo">
+                <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+                <span>HelpMyStreet.org</span>
+            </span>
+            break;
+        case (int)Groups.AgeUKWirral:
+            <img src="~/img/community/ageUK/wirral/AgeUKWirral-logo.png" alt="AgeUK Wirral" />
+            break;
+        case (int)Groups.AgeUKLSL:
+            <img src="~/img/community/ageUK/AgeUKLSL_logo_300px.png" alt="AgeUK Lincoln & South Lincolnshire" />
+            break;
+        case (int)Groups.Ruddington:
+            <span class="composite-logo">
+                <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+                <span>Ruddington</span>
+            </span>
+            break;
+        case (int)Groups.Tankersley:
+            <span class="composite-logo">
+                <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+                <span>Tankersley</span>
+            </span>
+            break;
+        case (int)Groups.FTLOS:
+            <img src="~/img/community/fortheloveofscrubs/FTLOS.png" alt="For the Love of Scrubs" />
+            break;
+        case (int)Groups.AgeUKNottsBalderton:
+            <span class="composite-logo">
+                <img src="~/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="HelpMyStreet" />
+                <span>Balderton</span>
+            </span>
+            break;
+    }
+</div>
