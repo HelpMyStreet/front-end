@@ -7,9 +7,9 @@ import "isomorphic-fetch"
 import { stringifyForm } from "./form-helper";
 
 const defaultOptions = {
-    timeOutLength: 5000,
+    timeOutLength: 8000,
     errorRetry: 3,
-    timeOutRetry: 1
+    timeOutRetry: 4
 };
 
 const fetchResponses = {

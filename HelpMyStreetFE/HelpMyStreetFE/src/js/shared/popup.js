@@ -1,7 +1,7 @@
 import { buttonLoad, buttonUnload } from "./btn";
 import { hmsFetch, hmsSubmit, fetchResponses } from "./hmsFetch"
 
-export async function showServerSidePopup(source, settings, form) {
+export async function showServerSidePopup(source, settings = {}, form = null) {
   var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
 
   if (settings.noFade) {
@@ -19,39 +19,6 @@ export async function showServerSidePopup(source, settings, form) {
     popup.find(".popup__content__header").first().text("That didn't work.");
     popup.find(".popup__content__text").first().html("<p>Sorry, we couldn't load this popup.  Please try again.</p>");
   }
-
-  bindAcceptClick(popup, settings);
-  bindRejectClick(popup, settings);
-  bindCloseClick(popup);
-
-  return popup;
-}
-
-export async function showPopup(settings) {
-  var popup = $('#popup-template').clone().attr("id", "").prependTo('body');
-
-  popup.find(".popup__content__header").first().text(settings.header);
-
-  popup.find(".popup__content__text").first().html(settings.htmlContent);
-
-  popup.find("#popup-accept > .text").text(settings.actionBtnText);
-  if (settings.cssClass) {
-    popup.find(".popup__content").addClass(settings.cssClass);
-  }
-  if (!settings.noButtons) {
-    popup.find(".popup__content__buttons").first().removeClass('dnone');
-  }
-  if (settings.rejectBtnText) {
-    popup.find('#popup-reject').parent().removeClass('dnone');
-    popup.find("#popup-reject > .text").text(settings.rejectBtnText);
-  }
-
-  if (settings.noFade) {
-    popup.show();
-  } else {
-    popup.fadeIn(200);
-  }
-  popup.find(".popup__content").centerPopup();
 
   bindAcceptClick(popup, settings);
   bindRejectClick(popup, settings);

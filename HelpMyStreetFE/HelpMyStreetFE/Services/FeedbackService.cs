@@ -125,7 +125,7 @@ namespace HelpMyStreetFE.Services
                 {
                     DisplayName = requestRole switch
                     {
-                        RequestRoles.Recipient => job.Recipient.FirstName,
+                        RequestRoles.Recipient => string.IsNullOrEmpty(job.JobSummary.RecipientOrganisation) ? job.Recipient.FirstName : job.JobSummary.RecipientOrganisation,
                         RequestRoles.Requestor => job.Requestor.FirstName,
                         _ => throw new ArgumentException(message: $"Unexpected RequestRoles value: {requestRole}", paramName: nameof(requestRole))
                     }
@@ -140,20 +140,32 @@ namespace HelpMyStreetFE.Services
         private MessageParticipant GetToBlock(GetJobDetailsResponse job, RequestRoles requestRole)
         {
             MessageParticipant to = new MessageParticipant() { RequestRoleType = new RequestRoleType() { RequestRole = requestRole } };
-
+            
             switch (requestRole)
             {
                 case RequestRoles.Recipient:
-                    to.EmailDetails = new EmailDetails() { DisplayName = job.Recipient.FirstName, EmailAddress = job.Recipient.EmailAddress };
+                    to.EmailDetails = new EmailDetails()
+                    {
+                        DisplayName = string.IsNullOrEmpty(job.JobSummary.RecipientOrganisation) ? job.Recipient.FirstName : job.JobSummary.RecipientOrganisation,
+                        EmailAddress = job.Recipient.EmailAddress
+                    };
                     break;
                 case RequestRoles.Requestor:
-                    to.EmailDetails = new EmailDetails() { DisplayName = job.Requestor.FirstName, EmailAddress = job.Requestor.EmailAddress };
+                    to.EmailDetails = new EmailDetails()
+                    {
+                        DisplayName = job.Requestor.FirstName,
+                        EmailAddress = job.Requestor.EmailAddress
+                    };
                     break;
                 case RequestRoles.Volunteer:
                     to.UserId = job.JobSummary.VolunteerUserID;
                     break;
                 case RequestRoles.GroupAdmin:
-                    to.GroupRoleType = new GroupRoleType() { GroupId = job.JobSummary.ReferringGroupID, GroupRoles = GroupRoles.Owner };
+                    to.GroupRoleType = new GroupRoleType()
+                    {
+                        GroupId = job.JobSummary.ReferringGroupID,
+                        GroupRoles = GroupRoles.Owner
+                    };
                     break;
             }
 
