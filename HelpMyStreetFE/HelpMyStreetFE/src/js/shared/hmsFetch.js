@@ -10,7 +10,7 @@ const defaultOptions = {
     timeOutLength: 8000,
     errorRetry: 3,
     timeOutRetry: 4,
-    callback: null
+    timeOutCallback: null
 };
 
 const fetchResponses = {
@@ -42,8 +42,8 @@ async function tryFetch(url, data, options, completedAttempts) {
         const timeOut = setTimeout(function () {
             didTimeOut = true;
             if (options.timeOutRetry > completedAttempts) {
-                if (options.callback && completedAttempts == 1) {
-                    options.callback()
+                if (options.timeOutCallback && completedAttempts == 1) {
+                    options.timeOutCallback()
                 }
                 resolve(tryFetch(url, data, options, completedAttempts));
             } else {
@@ -71,7 +71,7 @@ async function tryFetch(url, data, options, completedAttempts) {
                         break;
                     case 500:
                         if (options.errorRetry > completedAttempts) {
-                            resolve(tryFetch(url, data, options, completedAttempts, callback));
+                            resolve(tryFetch(url, data, options, completedAttempts));
                         } else {
                             var fetchError = fetchResponses.SERVER_ERROR;
                         }
