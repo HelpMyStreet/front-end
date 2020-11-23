@@ -9,7 +9,8 @@ namespace HelpMyStreetFE.Models
 {
     public class SiteHeaderViewModel
     {        
-        public bool isLoggedIn { get; set; }        
+        public bool isLoggedIn { get; set; }
+        public bool loginPage { get; set; }
         public AccountViewModel AccountVM { get; set; }
     }
 }
