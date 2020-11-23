@@ -28,9 +28,12 @@ $(function () {
         const email = $("#email").val();
         const password = $("#password").val();
         const response = await account.login.login(email, password);        
-       
+        if (response.type == "validation" && !response.sucess){
+            $(".error").innerHTML(response.message);
+        }
     } finally {
         buttonUnload($(this));
+        
         $(this).disabled = false;
         }
     });

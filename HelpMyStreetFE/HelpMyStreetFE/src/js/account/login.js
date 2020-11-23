@@ -5,11 +5,11 @@ import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 const validate = (email, password) => {
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  if (!email) return { success: false, message: "Please provide an email address" };
-  if (!password) return { success: false, message: "Please provide a password" };
-  if (typeof email != "string") return { success: false, message: "Please provide a valid email address" };
-  if (typeof password != "string") return { success: false, message: "Please provide a valid email address" };
-  if (!emailRegex.test(email.toLowerCase())) return { success: false, message: "Please provide a valid email address" };
+  if (!email) return { success: false, type: "validation", message: "Please provide an email address" };
+  if (!password) return { success: false, type: "validation", message: "Please provide a password" };
+  if (typeof email != "string") return { success: false, type: "validation", message: "Please provide a valid email address" };
+  if (typeof password != "string") return { success: false, type: "validation", message: "Please provide a valid email address" };
+  if (!emailRegex.test(email.toLowerCase())) return { success: false, type: "validation", message: "Please provide a valid email address" };
   //TODO: Add check for password e.g. length, special characters etc
   return { success: true, message: "" };
 };
@@ -56,7 +56,7 @@ export const login = async (email, password) => {
       }
     }
   } else {
-    hideLoadingSpinner('.header-login__form');  
+    hideLoadingSpinner('.header-login__form');
     return validationResponse;
   }
 };
