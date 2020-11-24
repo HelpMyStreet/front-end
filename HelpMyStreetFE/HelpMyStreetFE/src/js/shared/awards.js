@@ -1,4 +1,4 @@
-﻿const defaultDivContainer = "awards-component";
+const defaultDivContainer = "awards-component";
 const defaultComponentEndpoint = "/account/LoadAwardsComponent";
 
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
@@ -7,7 +7,7 @@ export async function updateAwards(componentEndpoint, divContainer) {
     componentEndpoint = componentEndpoint ?? defaultComponentEndpoint;
     divContainer = divContainer ?? defaultDivContainer;
 
-    setInterval(async () => {
+    setTimeout(async () => {
 
     var response = await hmsFetch(componentEndpoint);
     if (response.fetchResponse == fetchResponses.SUCCESS) {
