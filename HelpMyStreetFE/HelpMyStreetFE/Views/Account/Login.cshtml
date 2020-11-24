@@ -24,9 +24,9 @@
                     </div>
                     <span id="login-fail-message" class="login__fail-message-main">@Model.LoginError</span>
                     <div><a class="login__link" href="/forgotten-password"> Forgotten Password?</a></div>
-                    <div class="controls">
-                        <button class="btn cta large fill login-submit-handler" id="login-submit" type="submit">
-                            <span class="text">Submit</span>
+                    <div class="mt-lg text-center">
+                        <button class="btn cta large login-submit-handler" id="login-submit" type="submit">
+                            <span class="text">Log In</span>
                             <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in..."}' /></div>
                         </button>
                     </div>
@@ -43,7 +43,7 @@
                     <p>You can choose to help a little, or to help a lot! We’re grateful for every contribution.</p>
                 </div>
                 <div class="sm6 mr-sm text-center">
-                    <button id="sign-up" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up Now</button>
+                    <button id="sign-up" class="btn cta large fill mb-sm mt-sm btn--sign-up fill">Sign Up Now</button>
                 </div>
                 <br />
                 <hr />
