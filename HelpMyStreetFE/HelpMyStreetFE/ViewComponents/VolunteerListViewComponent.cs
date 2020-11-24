@@ -43,8 +43,6 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var userIsReadOnlyAdmin = await _groupMemberService.GetUserHasRole(user.ID, groupId, HelpMyStreet.Utils.Enums.GroupRoles.UserAdmin_ReadOnly, cancellationToken);
-
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
             var groupMembers = await _groupMemberService.GetAllGroupMembers(groupId, user.ID);
             var groupCompletedRequests = await _requestService.GetGroupRequestsAsync(groupId, true, cancellationToken);
@@ -67,7 +65,7 @@ namespace HelpMyStreetFE.ViewComponents
                 GroupCredentials = groupCredentials,
                 Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null),
                 UserId = user.ID,
-                UserIsReadOnlyAdmin = userIsReadOnlyAdmin
+                UserHasEditRights = await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, cancellationToken),
             };
 
 

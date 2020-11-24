@@ -74,7 +74,7 @@
                 else
                 {
                     if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin 
-                            && volunteer.User.ID != Model.UserId && !Model.UserIsReadOnlyAdmin)
+                            && volunteer.User.ID != Model.UserId && Model.UserHasEditRights)
                     {
                         <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential"
                            data-target-user="@Base64Utils.Base64Encode(volunteer.User.ID)"
