@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -78,8 +78,14 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string email, string er)
+        public async Task<IActionResult> Login(string email, string er, CancellationToken cancellationToken)
         {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (user != null)
+            {
+                return Redirect(PROFILE_URL);
+            }
+
             var errorMessage = String.IsNullOrEmpty(er) ? "" : Errors[er];
 
             LoginViewModel model = new LoginViewModel
