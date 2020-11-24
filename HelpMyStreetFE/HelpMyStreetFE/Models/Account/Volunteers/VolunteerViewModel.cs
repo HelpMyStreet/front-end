@@ -20,25 +20,12 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
 
                 List<string> roles = new List<string>();
 
-                if (Roles.Contains(GroupRoles.Owner))
+                if (Roles.Contains(GroupRoles.TaskAdmin) && Roles.Contains(GroupRoles.UserAdmin))
                 {
-                    roles.Add(GroupRoles.Owner.FriendlyName());
+                    roles.Add("Admin");
 
-                    rolesToExclude.Add(GroupRoles.Owner);
                     rolesToExclude.Add(GroupRoles.TaskAdmin);
                     rolesToExclude.Add(GroupRoles.UserAdmin);
-                    rolesToExclude.Add(GroupRoles.UserAdmin_ReadOnly);
-                    rolesToExclude.Add(GroupRoles.RequestSubmitter);
-                }
-                else
-                {
-                    if (Roles.Contains(GroupRoles.TaskAdmin) && Roles.Contains(GroupRoles.UserAdmin))
-                    {
-                        roles.Add("Admin");
-
-                        rolesToExclude.Add(GroupRoles.TaskAdmin);
-                        rolesToExclude.Add(GroupRoles.UserAdmin);
-                    }
                 }
 
                 roles.AddRange(Roles.Where(r => !rolesToExclude.Contains(r)).Select(r => r.FriendlyName()));
