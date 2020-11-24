@@ -198,7 +198,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 return await GroupRequests(groupKey, cancellationToken);
             }
-            else if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole_Any(user.ID, groupKey, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, cancellationToken))
             {
                 return await GroupVolunteers(groupKey, cancellationToken);
             }
@@ -261,7 +261,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
+            if (!_groupMemberService.GetUserHasRole_Any(viewModel.UserGroups, groupKey, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }))
             {
                 return Redirect(PROFILE_URL);
             }
