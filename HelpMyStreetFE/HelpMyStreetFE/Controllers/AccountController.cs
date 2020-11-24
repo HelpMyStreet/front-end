@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -198,7 +198,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 return await GroupRequests(groupKey, cancellationToken);
             }
-            else if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.UserAdmin, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole_Any(user.ID, groupKey, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, cancellationToken))
             {
                 return await GroupVolunteers(groupKey, cancellationToken);
             }
