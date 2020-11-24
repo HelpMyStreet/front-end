@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.Repositories
                     return await GetHLP(cancellationToken);
                 case "ftlos":
                     return await GetFtLOS(cancellationToken);
-                case "balderton":
+                case "ageuknottsbalderton":
                     return await GetBalderton(cancellationToken);
                 default:
                     return null;

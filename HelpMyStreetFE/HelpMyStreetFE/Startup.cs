@@ -338,7 +338,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "Balderton",
                     pattern: "balderton",
-                    defaults: new { controller = "Community", action = "Index", communityName = "balderton" });
+                    defaults: new { controller = "Community", action = "Index", communityName = "ageuknottsbalderton" });
 
                 endpoints.MapControllerRoute(
                     name: "Ruddington",
