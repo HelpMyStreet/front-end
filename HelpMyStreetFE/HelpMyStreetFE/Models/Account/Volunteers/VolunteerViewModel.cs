@@ -27,6 +27,7 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
                     rolesToExclude.Add(GroupRoles.Owner);
                     rolesToExclude.Add(GroupRoles.TaskAdmin);
                     rolesToExclude.Add(GroupRoles.UserAdmin);
+                    rolesToExclude.Add(GroupRoles.UserAdmin_ReadOnly);
                     rolesToExclude.Add(GroupRoles.RequestSubmitter);
                 }
                 else
