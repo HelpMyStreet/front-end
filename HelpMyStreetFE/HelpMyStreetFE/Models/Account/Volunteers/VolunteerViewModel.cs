@@ -28,6 +28,11 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
                     rolesToExclude.Add(GroupRoles.UserAdmin);
                 }
 
+                if (Roles.Contains(GroupRoles.UserAdmin))
+                {
+                    rolesToExclude.Add(GroupRoles.UserAdmin_ReadOnly);
+                }
+
                 roles.AddRange(Roles.Where(r => !rolesToExclude.Contains(r)).Select(r => r.FriendlyName()));
 
                 return string.Join(", ", roles);
