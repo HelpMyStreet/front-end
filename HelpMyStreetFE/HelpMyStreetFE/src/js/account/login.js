@@ -16,6 +16,7 @@ const validate = (email, password) => {
 export const login = async (email, password) => {
   showLoadingSpinner('.header-login__form');
     const validationResponse = validate(email, password);
+    var returnUrl = getParameterByName("ReturnUrl");
   if (validationResponse.success) {
     try {
       const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
@@ -34,7 +35,6 @@ export const login = async (email, password) => {
         throw ({code : "server"})
       }
     
-      var returnUrl = getParameterByName("ReturnUrl");        
       if (returnUrl && returnUrl.startsWith("/")) {
           window.location.href = returnUrl;
       } else {
@@ -44,15 +44,15 @@ export const login = async (email, password) => {
     } catch (e) {              
       hideLoadingSpinner('.header-login__form');
       if (e.code == "server"){
-        window.location.href = `/account/login?email=${email}&er=server`
+                window.location.href = `/account/login?email=${email}&er=server&ReturnUrl=${encodeURIComponent(returnUrl)}`;
       }
       else {
-        window.location.href = `/account/login?email=${email}&er=login`
+                window.location.href = `/account/login?email=${email}&er=login&ReturnUrl=${encodeURIComponent(returnUrl)}`;
       }
     }
   } else {
     hideLoadingSpinner('.header-login__form');
-    window.location.href=`/account/login?email=${email}&er=${validationResponse.input}`;
+        window.location.href = `/account/login?email=${email}&er=${validationResponse.input}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
   }
 };
 
