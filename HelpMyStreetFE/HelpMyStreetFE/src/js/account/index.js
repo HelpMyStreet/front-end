@@ -1,6 +1,7 @@
 import login from "./login";
 import notification from "./notification";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
+import { getInactivityState, INACTIVITY_STATES } from "../shared/inactivity-monitor";
 
 export default { login, notification };
 
@@ -33,13 +34,17 @@ function initialiseNavBadges() {
     $('.account__nav .account__nav__badge').each(function () {
         const badge = $(this);
         refreshBadge(badge);
-        const interval = setInterval(async function () {
-            refreshBadge(badge, interval);
+        setInterval(async function () {
+            refreshBadge(badge);
         }, 5000);
     });
 }
 
-async function refreshBadge(badge, interval) {
+async function refreshBadge(badge) {
+  if (await getInactivityState() == INACTIVITY_STATES.INACTIVE) {
+    return;
+  }
+
   var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'));
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     var newCount = await response.fetchPayload;
@@ -53,16 +58,6 @@ async function refreshBadge(badge, interval) {
     } else {
       $(badge).removeClass('updated');
     }
-  } else if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
-    if (window.location.pathname.startsWith('/account/')) {
-      // Session expired on logged-in page; redirect to login
-      window.location.replace('/account/Login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
-    } else {
-      // Session expired on public page; don't redirect, but also don't bother trying to get any more badge refreshes
-      clearInterval(interval);
-    }
-  } else {
-    // No badges today
   }
     
     

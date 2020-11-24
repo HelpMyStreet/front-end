@@ -8,6 +8,8 @@
 
 @{
     var id = Base64Utils.Base64Encode(Model.JobHeader.JobID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+    var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
     var className = "";
     if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
@@ -26,10 +28,10 @@
     var AgeUk = Model.JobHeader.SupportActivity == SupportActivities.WellbeingPackage;
 }
 
-<div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus">
-    <div class="job__info @(Model.UserActingAsAdmin ? "admin-view" : "")">
+<div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus" data-role="@role">
+    <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
-            @if (Model.UserActingAsAdmin)
+            @if (admin)
             {
                 <span class="job__info__col1__status toggle-on-status-change">
                     <img class="status-icon" src="~/img/icons/status/@Model.JobHeader.JobStatus.Icon()" alt="@Model.JobHeader.JobStatus.FriendlyName()" />
@@ -53,7 +55,7 @@
             @if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
             {
                 <span class="job__info__col1__urgency toggle-on-status-change">
-                    @if (Model.UserActingAsAdmin)
+                    @if (admin)
                     {
                         <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                     }
@@ -67,7 +69,7 @@
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
-            @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
+            @if (!admin && Model.JobHeader.JobStatus == JobStatuses.Open)
             {
                 <span class="job__info__col1__next-step dnone toggle-on-status-change">
                     <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobHeader.JobID)">Go to My Accepted Requests</a>
@@ -99,7 +101,7 @@
             }
             <span class="job__info__activity__location">
                 @Model.JobHeader.PostCode
-                @if (!Model.UserActingAsAdmin && Model.JobHeader.JobStatus == JobStatuses.Open)
+                @if (!admin && Model.JobHeader.JobStatus == JobStatuses.Open)
                 {
                     <span class="distance">(@Math.Round(Model.JobHeader.DistanceInMiles, 1) miles away)</span>
                 }
@@ -117,7 +119,7 @@
                 @switch (Model.JobHeader.JobStatus)
                 {
                     case JobStatuses.Open:
-                        @if (!Model.UserActingAsAdmin)
+                        @if (!admin)
                         {
                             <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
                                 <span class="text">Accept</span>
@@ -129,7 +131,7 @@
                             <span class="text">Mark as Done</span>
                         </button>
                         <button class="btn cta--dark-blue-border large trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                            @if (Model.UserActingAsAdmin)
+                            @if (admin)
                             {
                                 <span class="text">Mark as Open</span>
                             }
@@ -140,15 +142,23 @@
                         </button>
                         break;
                     case JobStatuses.Done:
-                        if (Model.UserActingAsAdmin && !(Model.JobHeader.Archive ?? false))
+                        <div class="feedback-container">
+                            <button class="btn cta--gray-8-border">
+                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
+                            </button>
+                        </div>
+                        if (admin && !(Model.JobHeader.Archive ?? false))
                         {
                             <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
                         break;
+                    case JobStatuses.Cancelled:
+                        <div class="feedback-container"></div>
+                        break;
                 }
-                @if (Model.UserActingAsAdmin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
+                @if (admin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
                 {
                     <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>

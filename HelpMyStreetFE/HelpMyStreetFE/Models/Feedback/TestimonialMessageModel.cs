@@ -8,7 +8,7 @@ namespace HelpMyStreetFE.Models.Feedback
         Group,
         Other
     }
-    public class FeedbackMessage
+    public class Testimonial
     {
         public string Tagline { get; set; }
         public string Message { get; set; }

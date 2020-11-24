@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             var volunteerListViewModel = new VolunteerListViewModel
             {
-                GroupName = group.GroupName,
+                GroupId = group.GroupId,
                 GroupCredentials = groupCredentials,
                 Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null),
                 UserId = user.ID,

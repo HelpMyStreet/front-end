@@ -48,7 +48,7 @@ var validateForm = function () {
 
 
 var intialiseRequestTiles = function () {
-  $('.tiles__tile').click(function () {
+  $('.request-help .tiles__tile').click(function () {
     let type = $(this).attr("data-type");
     switch (type) {
       case "activities":

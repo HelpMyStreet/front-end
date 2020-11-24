@@ -1,0 +1,17 @@
+﻿
+@model HelpMyStreetFE.Models.Community.CommunityModel
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Request Help</div>
+        <div>
+            <p>Just to confirm, is the help needed in <b>@Model.GeographicName</b>?</p>
+        </div>
+        <div class="popup__content__buttons mt-md">
+            <p class="error dnone"></p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Yes" }' />
+            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = "No, somewhere else" }' />
+        </div>
+    </div>
+</div>

@@ -58,7 +58,7 @@ body {
   margin: 0;
 }
 
-p, p strong, p span {
+p {
   @include copy-sz-md;
   color: $p-color;
 
@@ -121,8 +121,12 @@ h6 + p {
   margin-top: 0;
 }
 
-span {
+span, b, strong {
   font-size: inherit;
+}
+
+img {
+  max-width: 100%;
 }
 
 ul.tick-list {
@@ -267,10 +271,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
   @media screen and (max-width: $med-screen) {
     padding: $med-margin 16px;
-  }
-
-  img {
-    max-width: 100%;
   }
 
   &__buttons {

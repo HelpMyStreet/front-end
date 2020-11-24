@@ -10,158 +10,126 @@
     
 }
 
-@if (Model.TestBanner)
+
+@if (!Model.isLoggedIn)
 {
-    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
-    <div class="container">
-        <header class="content-page__header">
-            <div class="row">
-                <h2 class="sm12 mb-md">This is a HelpMyStreet test environment, and is only accessible to HelpMyStreet staff.</h2>
-                <ul>
-                    <li>If you have got here by clicking on a link in an email from Mental Health First Aid England in relation to signing up as a Community Connector, then please sign up at <a href="http://helpmystreet.org/healthylondonpartnership">http://helpmystreet.org/healthylondonpartnership</a></li>
-                    <li>If you have arrived here for any other reason, you can find our homepage <a href="http://helpmystreet.org">here</a></li>
-                </ul>
+    <div class="sticky-nav" id="sticky-nav">
+        <div class="row sm12 justify-center">
+            <div class="flex row">
+                <div class="sm6 mr-sm">
+                    <a href="/registration/step-one" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up Now</a>
+                    <span>  </span>
+
+                </div>
+                <div class="sm6">
+                    <span>  </span>
+                    <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
+                </div>
             </div>
-        </header>
+        </div>
     </div>
 }
-else
-{
+<div class="container">
+    <header class="content-page__header">
+        <div class="row">
+            <h2 class="sm12 mb-md pad-md">Helping local people look after each other</h2>
+        </div>
+    </header>
 
-    @if (!Model.isLoggedIn)
-    {
-        <div class="sticky-nav" id="sticky-nav">
-            <div class="row sm12 justify-center">
-                <div class="flex row">
-                    <div class="sm6 mr-sm">
-                        <a href="/registration/step-one" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up Now</a>
-                        <span>  </span>
+    <div class="row hero flex sm12 mb-sm content-page">
 
-                    </div>
-                    <div class="sm6">
-                        <span>  </span>
-                        <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
-                    </div>
-                </div>
+        <div class="row sm5 align-center pad-md">
+            <p class="row sm12 mt-sm mb-xs">
+                HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
+            </p>
+            <div class="row sm12">
+                <ul class="tick-list mt-xs mb-sm compact-list">
+                    <li>Shopping for essentials</li>
+                    <li>Cooking a hot meal</li>
+                    <li>Home-sewn face coverings</li>
+                    <li>Help with home-schooling</li>
+                    <li>A friendly chat</li>
+                </ul>
+            </div>
+            <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
+
+            <div class="row sm12 text-center justify-center mb-sm">
+                <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
+            </div>
+
+            <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
+
+            <div class="row sm12 text-center justify-center mb-lg">
+                @if (!Model.isLoggedIn)
+                {
+                    <a href="/registration/step-one" class="btn cta btn--sign-up fill">Sign Up Now</a>
+
+                }
+                else
+                {
+                    <a href="/account" class="btn cta btn--sign-up fill">Provide Help</a>
+
+                }
             </div>
         </div>
-    }
-    <div class="container">
-        <header class="content-page__header">
-            <div class="row">
-                <h2 class="sm12 mb-md pad-md">Helping local people look after each other</h2>
-            </div>
-        </header>
+        <div class="flex sm7 home-video-container justify-center align-center text-right mb-lg pad-sm" id="video">
+            <iframe style="min-width:100%; height:380px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
 
-        <div class="row hero flex sm12 mb-sm content-page">
+    <div class="row card p-md mb-md mt-xl">
+        <div class="sm3 pad-sm">
+            <img class="age-uk-wirral-logo" alt="AgeUK Wirral logo" src="~/img/community/ageUK/wirral/AgeUKWirral-logo.png" />
+        </div>
+        <div class="sm9 text-center flex flex-column pad-sm">
+            <h2 class="mb-xs flex-grow">Help and support from Age UK Wirral</h2>
+            <p class="mt-xs flex-grow">
+                HelpMyStreet has partnered with Age UK Wirral to support their amazing range of services for older people in their local communities. Find out how to become a volunteer or ask for help by clicking ‘More Info’ below.
+            </p>
+            <a href="/ageukwirral" class="btn cta fill cta--orange mlmr-auto">More Info</a>
+        </div>
+    </div>
 
-            <div class="row sm5 align-center pad-md">
-                <p class="row sm12 mt-sm mb-xs">
-                    HelpMyStreet connects neighbours in need with people who can help - safely and securely.<br>
-                </p>
-                <div class="row sm12">
-                    <ul class="tick-list mt-xs mb-sm compact-list">
-                        <li>Shopping for essentials</li>
-                        <li>Cooking a hot meal</li>
-                        <li>Home-sewn face coverings</li>
-                        <li>Help with home-schooling</li>
-                        <li>A friendly chat</li>
-                    </ul>
-                </div>
-                <p class="row sm12 mt-sm mb-sm">It's OK to ask for a little help</p>
-
-                <div class="row sm12 text-center justify-center mb-sm">
-                    <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
-                </div>
-
-                <p class="row sm12 mt-sm mb-sm">Help your neighbours in need</p>
-
-                <div class="row sm12 text-center justify-center mb-lg">
-                    @if (!Model.isLoggedIn)
-                    {
-                        <a href="/registration/step-one" class="btn cta btn--sign-up fill">Sign Up Now</a>
-
-                    }
-                    else
-                    {
-                        <a href="/account" class="btn cta btn--sign-up fill">Provide Help</a>
-
-                    }
-                </div>
-            </div>
-            <div class="flex sm7 home-video-container justify-center align-center text-right mb-lg pad-sm" id="video">
-                <iframe style="min-width:100%; height:380px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="row card street-check" id="street-map">
+        <h2 class="mb-sm">Is help available in your area?</h2>
+        <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
+        <div id="your-location">
+            <button title="Your location">
+                <div id="your-location-image"></div>
+            </button>
+        </div>
+        <div class="row sm12 map homepage-map" id="map">
+        </div>
+        <div class="row sm12 text-center justify-center">
+            <p><strong>From Cardiff to Cambridge, Dover to Dundee, HelpMyStreet gets help to people in need.</strong></p>
+            <div>
+                <a class="home-link" href="/request-help"><h4 class="orange mb-xs text-center">How can we help?</h4></a>
+                <p class="mt-sm">We’ve got shoppers, sewers and hot meal makers; walkers, talkers and homework helpers. All ready and waiting to help you!</p>
+                <a class="home-link" href="/registration/step-one"><h4 class="green text-center">Join our volunteers</h4></a>
+                <p class="mt-sm">Help people stay safe - on your street and across your community. Just let us know when, where and how you can help.</p>
             </div>
         </div>
-
-        <div class="row card p-md mb-md mt-xl">
-            <div class="sm3 pad-sm">
-                <img class="age-uk-wirral-logo" alt="AgeUK Wirral logo" src="~/img/community/ageUK/wirral/AgeUKWirral-logo.png" />
-            </div>
-            <div class="sm9 text-center flex flex-column pad-sm">
-                <h2 class="mb-xs flex-grow">Help and support from Age UK Wirral</h2>
-                <p class="mt-xs flex-grow">
-                    HelpMyStreet has partnered with Age UK Wirral to support their amazing range of services for older people in their local communities. Find out how to become a volunteer or ask for help by clicking ‘More Info’ below.
-                </p>
-                <a href="/ageukwirral" class="btn cta fill cta--orange mlmr-auto">More Info</a>
-            </div>
-        </div>
-
-        <div class="row card street-check" id="street-map">
-            <h2 class="mb-sm">Is help available in your area?</h2>
-            <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
-            <div id="your-location">
-                <button title="Your location">
-                    <div id="your-location-image"></div>
-                </button>
-            </div>
-            <div class="row sm12 map homepage-map" id="map">
-            </div>
-            <div class="row sm12 text-center justify-center">
-                <p><strong>From Cardiff to Cambridge, Dover to Dundee, HelpMyStreet gets help to people in need.</strong></p>
-                <div>
-                    <a class="home-link" href="/request-help"><h4 class="orange mb-xs text-center">How can we help?</h4></a>
-                    <p class="mt-sm">We’ve got shoppers, sewers and hot meal makers; walkers, talkers and homework helpers. All ready and waiting to help you!</p>
-                    <a class="home-link" href="/registration/step-one"><h4 class="green text-center">Join our volunteers</h4></a>
-                    <p class="mt-sm">Help people stay safe - on your street and across your community. Just let us know when, where and how you can help.</p>
-                </div>
-            </div>
-        </div>
+    </div>
 
         <div class="mt-lg">
-            @await Component.InvokeAsync("Feedback", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
+            @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
         </div>
 
-        <div class="how-to-use row mt72 justify-center card">
-            <partial name="_HowToUse" model="null" />
-        </div>
+    <div class="how-to-use row mt72 justify-center card">
+        <partial name="_HowToUse" model="null" />
+    </div>
 
-        <div class="row mt-lg justify-center">
-            <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
-            <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
-        </div>
+    <div class="row mt-lg justify-center">
+        <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
+        <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
+    </div>
 
-        <div class="row justify-center text-center mt72">
-            <div class="sm12">
-                <h2>We’re working with communities&hellip;</h2>
-            </div>
-            <div class="sm8">
-                <p>
-                    Thank you to all the community organisers and volunteers around the UK who are caring for people in their communities and enabling them to safely shelter at home. Our aim is to support them and enable everyone to receive help from a trusted local volunteer:
-                </p>
-            </div>
-            <div class="sm8 list mb-lg">
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
-                <span>
-                    <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
-                </span>
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
-                <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
-            </div>
+    <div class="row justify-center text-center mt72">
+        <div class="sm12">
+            <h2>We’re working with communities&hellip;</h2>
         </div>
         <div class="row justify-center text-center">
-            @if (Model.isLoggedIn)
+            @if (!Model.isLoggedIn)
             {
                 <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
             }
@@ -170,5 +138,24 @@ else
                 <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
             }
         </div>
+        <div class="sm8 list mb-lg">
+            <span><span class="mdi mdi-check blue"></span> <span class="bold">Safety</span> - enabling every volunteer to be ID verified</span>
+            <span>
+                <span class="mdi mdi-check blue"></span> <span class="bold">Privacy</span> - protecting everyone’s data and only sharing it with the people who absolutely need it
+            </span>
+            <span><span class="mdi mdi-check blue"></span> <span class="bold">Coverage</span> - supporting every street in the UK</span>
+            <span><span class="mdi mdi-check blue"></span> <span class="bold">Neighbours Near and Far</span> - enabling help for friends and family who live at the other end of the country</span>
+            <span><span class="mdi mdi-check blue"></span> <span class="bold">Reducing administrative burden</span> - taking care of processes and paperwork</span>
+        </div>
     </div>
-}
+    <div class="row justify-center text-center">
+        @if (Model.isLoggedIn)
+        {
+            <a href="/registration/step-one" class="btn cta large fill mt16 btn--sign-up fill">Sign Up Now</a>
+        }
+        else
+        {
+            <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">Provide Help</a>
+        }
+    </div>
+</div>

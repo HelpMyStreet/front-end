@@ -1,6 +1,11 @@
 ﻿.tiles {
     margin: 20px 0;
 
+    &.reduce-width {
+        max-width: 600px;
+        margin: 20px auto;
+    }
+
     &__label {
         &--large {
             font-size: 1.6rem;
@@ -8,7 +13,7 @@
         }
     }
 
-    .sm4 {
+    .sm4, .sm6 {
         @extend .pad-sm-md;
     }
 
@@ -24,12 +29,11 @@
         border: 2px solid $white;
         display: table;
 
+
         &--large {
             min-height: 200px;
             height: 200px;
         }
-
-
 
         &:hover {
             border: 2px solid $light-orange;
@@ -118,9 +122,21 @@
             &__icon {
                 margin-bottom: 5px;
 
-                >img {
-                  height: 40px;
+                .limit-width {
+                    max-width: 80px;
                 }
+
+
+
+                > img {
+                    height: 40px;
+
+                    &.xxl {
+                        height: 7em;
+                    }
+                }
+
+
 
                 .text-icon {
                     margin: 5px;
@@ -132,6 +148,7 @@
                     font-size: 2.2rem;
                     font-weight: 600;
                 }
+
 
 
                 .cirlce {
@@ -146,6 +163,17 @@
                     img {
                         vertical-align: middle;
                     }
+                }
+
+                .icon-size-sm {
+                    width: 50px;
+                    margin-top: 18px;
+                    vertical-align: bottom;
+                }
+
+
+                .double-line-alignment {
+                    margin-top: 22px;
                 }
             }
 
@@ -163,7 +191,6 @@
             }
         }
     }
-
 }
 
 form {
