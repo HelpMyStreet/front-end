@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -261,7 +261,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.UserAdmin))
+            if (!_groupMemberService.GetUserHasRole_Any(viewModel.UserGroups, groupKey, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }))
             {
                 return Redirect(PROFILE_URL);
             }
