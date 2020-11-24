@@ -14,46 +14,46 @@ const validate = (email, password) => {
 };
 
 export const login = async (email, password) => {
-  showLoadingSpinner('.header-login__form');
+    showLoadingSpinner('.header-login__form');
     const validationResponse = validate(email, password);
     var returnUrl = getParameterByName("ReturnUrl");
-  if (validationResponse.success) {
-    try {
-      const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
-      const token = await credentials.user.getIdToken();
+    if (validationResponse.success) {
+        try {
+            const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
+            const token = await credentials.user.getIdToken();
 
-      const authResp = await hmsFetch('/api/auth', {
-        method: 'post',
-        headers: {
-          authorization: `Bearer ${token}`,
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({ token })
-      });
+            const authResp = await hmsFetch('/api/auth', {
+                method: 'post',
+                headers: {
+                    authorization: `Bearer ${token}`,
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({ token })
+            });
 
-      if (authResp.fetchResponse != fetchResponses.SUCCESS){
-        throw ({code : "server"})
-      }
-    
-      if (returnUrl && returnUrl.startsWith("/")) {
-          window.location.href = returnUrl;
-      } else {
-          window.location.href = "/account/";
-      }
+            if (authResp.fetchResponse != fetchResponses.SUCCESS) {
+                throw ({ code: "server" });
+            }
 
-    } catch (e) {              
-      hideLoadingSpinner('.header-login__form');
-      if (e.code == "server"){
+            if (returnUrl && returnUrl.startsWith("/")) {
+                window.location.href = returnUrl;
+            } else {
+                window.location.href = "/account/";
+            }
+
+        } catch (e) {
+            hideLoadingSpinner('.header-login__form');
+            if (e.code == "server") {
                 window.location.href = `/account/login?email=${email}&er=server&ReturnUrl=${encodeURIComponent(returnUrl)}`;
-      }
-      else {
+            }
+            else {
                 window.location.href = `/account/login?email=${email}&er=login&ReturnUrl=${encodeURIComponent(returnUrl)}`;
-      }
-    }
-  } else {
-    hideLoadingSpinner('.header-login__form');
+            }
+        }
+    } else {
+        hideLoadingSpinner('.header-login__form');
         window.location.href = `/account/login?email=${email}&er=${validationResponse.input}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
-  }
+    }
 };
 
 export default { login };
