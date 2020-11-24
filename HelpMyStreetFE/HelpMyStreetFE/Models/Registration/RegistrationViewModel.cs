@@ -11,5 +11,6 @@ namespace HelpMyStreetFE.Models.Registration
         public string Source { get; set; }
         public RegistrationFormVariant RegistrationFormVariant { get; set; }
         public string GroupName { get; set; }
+        public string Email { get; set; }
     }
 }

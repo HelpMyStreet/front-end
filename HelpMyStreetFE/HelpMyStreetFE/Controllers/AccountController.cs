@@ -43,8 +43,15 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupMemberService _groupMemberService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
-        private static readonly string PROFILE_URL = "/account";
-        private static readonly string DEFAULT_VERIFIED_URL = "/account/open-requests";
+        private static readonly string PROFILE_URL = "/account/open-requests";
+
+        private Dictionary<string, string> Errors = new Dictionary<string, string>()
+        {
+            { "login", "Sorry, we couldn't find an account with that email address and password.  Please check and try again" },
+            {"server", "Uh-oh, something has gone wrong at our end. Please try again" },
+            {"email", "Please enter a valid email address" },
+            {"password", "Please enter a valid password" }
+        };
 
         public AccountController(
             ILogger<AccountController> logger,
@@ -71,10 +78,21 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string email, string er, CancellationToken cancellationToken)
         {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (user != null)
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            var errorMessage = String.IsNullOrEmpty(er) ? "" : Errors[er];
+
             LoginViewModel model = new LoginViewModel
             {
+                Email = email,
+                EmailError = er == "email" ? errorMessage : "",
+                LoginError = er != "email" ? errorMessage : "",
                 FirebaseConfiguration = _configuration["Firebase:Configuration"]
             };
             return View(model);
@@ -88,14 +106,13 @@ namespace HelpMyStreetFE.Controllers
             {
                 return Redirect(REGISTRATION_URL);
             }
-
-            if (await _groupMemberService.GetUserIsVerified(user.ID, cancellationToken))
+            else if (next == "verify")
             {
-                return Redirect(DEFAULT_VERIFIED_URL);
+                return await Profile(next, cancellationToken);
             }
             else
             {
-                return await Profile(next, cancellationToken);
+                return Redirect(PROFILE_URL);
             }
         }
 

@@ -3,6 +3,7 @@ import { buttonLoad, buttonUnload } from "../shared/btn";
 import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
+import { updateAwards } from "../shared/awards";
 
 export function initialiseRequests(isVerified) {
     const job = getParameterByName("j");
@@ -76,6 +77,7 @@ export function initialiseRequests(isVerified) {
         buttonLoad($(this));
         let response = await setJobStatus(job, targetState, targetUser);
         if (response.fetchResponse == fetchResponses.SUCCESS) {
+            updateAwards();
             $(job).find('.job__status__new').html('');
             $(job).find('.toggle-on-status-change').toggle();
             $(job).find('button').toggle();
@@ -101,15 +103,15 @@ export function showStatusUpdatePopup(btn) {
     let popupSettings = {
         acceptCallbackAsync: async () => {
             let response = await setJobStatus(job, targetState, targetUser);
-
             if (response.fetchResponse == fetchResponses.SUCCESS) {
                 const payload = await response.fetchPayload;
                 $(job).find('.job__status__new').html(payload.newStatus);
-                $(job).find('.toggle-on-status-change').toggle();
                 $(job).find('button').toggle();
+                $(job).find('.toggle-on-status-change').toggle();
                 if (payload.requestFeedback === true) {
                     showFeedbackPopup(jobId, role);
                 }
+        updateAwards();
                 return true;
             } else {
                 switch (response.fetchResponse) {
