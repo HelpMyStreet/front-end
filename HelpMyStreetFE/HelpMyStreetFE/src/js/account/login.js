@@ -14,7 +14,6 @@ const validate = (email, password) => {
 };
 
 export const login = async (email, password) => {
-    showLoadingSpinner('.header-login__form');
     const validationResponse = validate(email, password);
     var returnUrl = getParameterByName("ReturnUrl");
     if (validationResponse.success) {
@@ -42,7 +41,6 @@ export const login = async (email, password) => {
             }
 
         } catch (e) {
-            hideLoadingSpinner('.header-login__form');
             if (e.code == "server") {
                 window.location.href = `/account/login?email=${email}&er=server&ReturnUrl=${encodeURIComponent(returnUrl)}`;
             }
@@ -51,7 +49,6 @@ export const login = async (email, password) => {
             }
         }
     } else {
-        hideLoadingSpinner('.header-login__form');
         window.location.href = `/account/login?email=${email}&er=${validationResponse.input}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
     }
 };

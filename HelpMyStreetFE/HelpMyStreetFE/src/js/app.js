@@ -29,8 +29,6 @@ $(function () {
             const password = $("#password").val();
             account.login.login(email, password);
         } finally {
-            buttonUnload($(this));
-
             $(this).disabled = false;
         }
     });
