@@ -106,6 +106,10 @@ namespace HelpMyStreetFE.Controllers
             {
                 return Redirect(REGISTRATION_URL);
             }
+            else if (next == "verify")
+            {
+                return await Profile(next, cancellationToken);
+            }
             else
             {
                 return Redirect(PROFILE_URL);
