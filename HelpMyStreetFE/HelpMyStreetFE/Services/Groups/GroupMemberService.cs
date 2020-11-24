@@ -55,20 +55,40 @@ namespace HelpMyStreetFE.Services.Groups
         public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken)
         {
             var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
 
-            return userGroupRoles?.Where(g => g.GroupId == groupId).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+            return GetUserHasRole(userGroupRoles, group.GroupKey, role);
+        }
+
+        public async Task<bool> GetUserHasRole_Any(int userId, int groupId, IEnumerable<GroupRoles> rolesRequested, CancellationToken cancellationToken)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
+
+            return GetUserHasRole_Any(userGroupRoles, group.GroupKey, rolesRequested);
         }
 
         public async Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken)
         {
             var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
 
-            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+            return GetUserHasRole(userGroupRoles, groupKey, role);
+        }
+        public async Task<bool> GetUserHasRole_Any(int userId, string groupKey, IEnumerable<GroupRoles> rolesRequested, CancellationToken cancellationToken)
+        {
+            var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
+
+            return GetUserHasRole_Any(userGroupRoles, groupKey, rolesRequested);
         }
 
         public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
         {
             return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
+        }
+
+        public bool GetUserHasRole_Any(List<UserGroup> userGroupRoles, string groupKey, IEnumerable<GroupRoles> rolesRequested)
+        {
+            return rolesRequested.Any(role => GetUserHasRole(userGroupRoles, groupKey, role));
         }
 
         public async Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)
