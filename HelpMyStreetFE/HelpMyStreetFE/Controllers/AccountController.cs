@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,9 +47,9 @@ namespace HelpMyStreetFE.Controllers
 
         private Dictionary<string, string> Errors = new Dictionary<string, string>()
         {
-            { "login", "Unregistered e-mail address or password" },
-            {"server", "Uh-oh, something has gone wrong at our end. Please retry" },
-            {"email", "Please enter a valid e-mail address" },
+            { "login", "Sorry, we couldn't find an account with that email address and password.  Please check and try again" },
+            {"server", "Uh-oh, something has gone wrong at our end. Please try again" },
+            {"email", "Please enter a valid email address" },
             {"password", "Please enter a valid password" }
         };
 
