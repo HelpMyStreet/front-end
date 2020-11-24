@@ -39,7 +39,8 @@ namespace HelpMyStreetFE.ViewComponents
             if (viewModel.isLoggedIn)
             {
                 viewModel.AccountVM = await GetAccountViewModel(user, cancellationToken);
-            }                                 
+            }
+            viewModel.loginPage = HttpContext.Request.Path.Value.ToLower().Contains("login");
             return View(viewModel);
         }
 
