@@ -19,7 +19,7 @@ namespace HelpMyStreetFE.Repositories
             {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
-            {"ageuknottsbalderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "ageuknottsbalderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.Repositories
                     return await GetHLP(cancellationToken);
                 case "ftlos":
                     return await GetFtLOS(cancellationToken);
-                case "ageuknottsbalderton":
+                case "balderton":
                     return await GetBalderton(cancellationToken);
                 default:
                     return null;
@@ -68,9 +68,9 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetBalderton(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("ageuknottsbalderton");
+            CommunityModel communityModel = await GetCommunityDetailByKey("balderton");
 
-            int groupId = await _groupService.GetGroupIdByKey("ageuknottsbalderton", cancellationToken);
+            int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ageUK/notts/balderton";
             communityViewModel.Latitude = communityModel.Latitude;
@@ -78,7 +78,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ZoomLevel = 13.5;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
-            communityViewModel.groupKey = "ageuknottsbalderton";
+            communityViewModel.groupKey = "balderton";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
