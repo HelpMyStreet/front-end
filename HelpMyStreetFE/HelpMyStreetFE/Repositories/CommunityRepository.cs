@@ -104,7 +104,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HeaderVolunteerButtonText = "";
 
             communityViewModel.ProvideHelpButtonText_LoggedIn = "View Requests";
-            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sign Up to Volunteer";
 
             communityViewModel.RequestHelpButtonText = "Request Help";
 
@@ -799,7 +798,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
             communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of For the Love of Scrubs.  Click below to view help requests.";
-            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {
