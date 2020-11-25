@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Models.Community
         public string RequestHelpHeading { get; set; }
         public string RequestHelpText { get; set; }
         public string RequestHelpButtonText { get; set; } = "Request Help";
-        public string ProvideHelpButtonText_LoggedOut { get; set; } = "Sign Up Now";
+        public string ProvideHelpButtonText_LoggedOut { get; set; } = "Sign Up or Log In";
         public string ProvideHelpButtonText_LoggedIn { get; set; } = "View Open Requests";
 
         public string ProvideHelpHeading { get; set; }

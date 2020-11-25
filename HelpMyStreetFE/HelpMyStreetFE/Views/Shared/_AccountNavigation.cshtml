@@ -47,7 +47,8 @@
         </li>
         @foreach (var userGroup in Model.UserGroups)
         {
-            @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin) || userGroup.UserRoles.Contains(GroupRoles.RequestSubmitter))
+            var adminRoles = new List<GroupRoles> { GroupRoles.TaskAdmin, GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly, GroupRoles.RequestSubmitter };
+            @if (userGroup.UserRoles.Any(userRole => adminRoles.Contains(userRole)))
             {
                 <li class="account__nav__item submenu__container">
                     <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">
@@ -79,7 +80,7 @@
                                 </a>
                             </li>
                         }
-                        @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin))
+                        @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin_ReadOnly))
                         {
                             <li class="account__nav__item">
                                 <a href=@($"/account/g/{userGroup.GroupKey}/volunteers") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupVolunteers ? "selected" : string.Empty)">Volunteers</a>

@@ -18,7 +18,7 @@
                 Register with us
             </h4>
             <p>
-                Sign up using the green button below.
+                Sign up or log in using the green button below.
             </p>
         </div>
         </div>
@@ -68,7 +68,14 @@
         </div>
         <p>Find out more by checking out our <a href="/questions">FAQs</a></p>
         <div class="text-center">
-            <a href="/account" class="btn cta large fill mt16 btn--sign-up">Provide Help</a>
+            @if (Model != null && Model)
+            {
+                <a href="/account" class="btn cta large fill mt16 btn--sign-up">View Open Requests</a>
+            }
+            else
+            {
+                <a href="/account/login" class="btn cta large fill mt16 btn--sign-up">Sign Up or Log In</a>
+            }
         </div>
     </div>
     <div id="request-help-helper-content" class="sm6 tabcontent inactive flex flex-column">

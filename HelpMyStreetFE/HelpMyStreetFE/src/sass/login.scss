@@ -47,6 +47,7 @@
 
     &__side {
         margin-left: 30px;
+        padding-top: 24px;
 
         @media screen and (max-width: $screen-md-min) {
             text-align: center;
