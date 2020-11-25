@@ -25,9 +25,9 @@
                     <span id="login-fail-message" class="login__fail-message-main">@Model.LoginError</span>
                     <div><a class="login__link" href="/forgotten-password"> Forgotten Password?</a></div>
                     <div class="mt-lg text-center">
-                        <button class="btn cta large login-submit-handler" id="login-submit" type="submit">
+                        <button class="btn cta large fill cta--dark-blue-border login-submit-handler" id="login-submit" type="submit">
                             <span class="text">Log In</span>
-                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in..."}' /></div>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in...", ShowDarkSpinner = true }' /></div>
                         </button>
                     </div>
                 </form>
