@@ -96,14 +96,18 @@
                 </li>
             }
         }
-        @if (Model.UserGroups.Where(g => g.GroupId != (int)Groups.Generic).Count() > 0)
+
+        @{
+            var myGroups = Model.UserGroups.Where(g => g.GroupId != (int)Groups.Generic && g.UserRoles.Contains(GroupRoles.Member));
+        }
+        @if (myGroups.Count() > 0)
         {
             <li class="account__nav__item my-groups">
                 <span class="my-groups__header">
                     My Group Pages
                 </span>
                 <ul>
-                    @foreach (var userGroup in Model.UserGroups.Where(g => g.GroupId != (int)Groups.Generic).OrderByDescending(g => g.UserRoles.Count()))
+                    @foreach (var userGroup in myGroups.OrderByDescending(g => g.UserRoles.Count()))
                     {
                         <li class="account__nav__item group-link">
                             <a href="/community/@userGroup.GroupKey">
