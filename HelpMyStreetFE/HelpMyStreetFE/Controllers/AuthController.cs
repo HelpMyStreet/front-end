@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -26,18 +27,18 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)        
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
             try
             {
                 await _authService.LoginWithTokenAsync(loginRequest.token, HttpContext);
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("an error occured in login", ex);
-                return StatusCode(500);
-            }            
+                return StatusCode((int)HttpStatusCode.Unauthorized);
+            }
         }
 
         [Authorize]
