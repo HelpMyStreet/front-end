@@ -21,22 +21,21 @@ $(function () {
 
     intialiseCookieConsent();
     intialiseForgottonForm(firebase, account);
-
     $("#login-submit").click(async () => {
         buttonLoad($(this));
         try {
             $(this).disabled = true;
             const email = $("#email").val();
             const password = $("#password").val();
-            const response = await account.login.login(email, password);
-            if (!response.success) {
-                $("#login-fail-message").text(response.message);
-                $(this).disabled = false;
-                buttonUnload($(this));
-            }
+            account.login.login(email, password);
         } finally {
             $(this).disabled = false;
         }
+    });
+
+    $("#sign-up").click(async () => {
+        const email = $("#email").val();
+        window.location.href = `/registration/step-one?email=${email}`;
     });
 
     $(".yt-video-placeholder").click(function () {
