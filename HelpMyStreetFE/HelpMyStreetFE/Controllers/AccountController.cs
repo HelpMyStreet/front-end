@@ -78,7 +78,7 @@ namespace HelpMyStreetFE.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string email, string er, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login(string email, string er, string referringGroup, string source, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (user != null)
@@ -93,7 +93,8 @@ namespace HelpMyStreetFE.Controllers
                 Email = email,
                 EmailError = er == "email" ? errorMessage : "",
                 LoginError = er != "email" ? errorMessage : "",
-                FirebaseConfiguration = _configuration["Firebase:Configuration"]
+                FirebaseConfiguration = _configuration["Firebase:Configuration"],
+                SignUpURL = BuildSignUpUrl(referringGroup, source),
             };
             return View(model);
         }
@@ -320,6 +321,22 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return viewModel;
+        }
+
+        private string BuildSignUpUrl(string referringGroup, string source)
+        {
+            if (string.IsNullOrEmpty(referringGroup))
+            {
+                return "/registration";
+            }
+            else if (string.IsNullOrEmpty(source))
+            {
+                return $"/registration/{referringGroup}";
+            }
+            else
+            {
+                return $"/registration/{referringGroup}/{source}";
+            }
         }
     }
 }

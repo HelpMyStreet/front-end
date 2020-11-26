@@ -78,7 +78,12 @@ namespace HelpMyStreetFE.Services.Groups
             {
                 return (await _groupRepository.GetGroup(groupId)).Group;
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+        }
 
+        public async Task<Group> GetGroupByKey(string groupKey, CancellationToken cancellationToken)
+        {
+            int groupId = await GetGroupIdByKey(groupKey, cancellationToken);
+            return await GetGroupById(groupId, cancellationToken);
         }
 
         public async Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivity, CancellationToken cancellationToken)

@@ -48,18 +48,6 @@
     border-radius: 32px;
   }
 
-  &.fixed-width {
-    width: 220px;
-
-    &-med {
-      width: 170px;
-    }
-
-    &-sm {
-      width: 120px;
-    }
-  }
-
   &:hover {
     cursor: pointer;
     border-color: $black;

@@ -1,9 +1,9 @@
 import { hmsFetch, fetchResponses } from "./shared/hmsFetch.js";
 
 const largeAreaZoomNumber = 10;  // zoom level when min distance between volunteers is populated in call to User Service
-const closeUpZoomNumber = 16; // zoom level when postcode is entered
+const maxUserZoom = 16; // closest zoom for a user pressing the +
+let maxGeometryZoom = 13; // closest zoom when searching for a place
 let initialUKZoomNumber = 5.3; // zoom level of the UK when geo location is not enabled
-const geolocationZoomNumber = 14; // zoom level when geo location is enabled
 
 let initialLat = 55.0;
 let initialLng = -10.0;
@@ -19,7 +19,6 @@ document.head.appendChild(script);
 
 let googleMap;
 let googleMapMarkers = new Map();
-let communityMapMarkers = new Map();
 let postcodeMarker = null;
 
 let previousZoomLevel = -1;
@@ -68,8 +67,6 @@ let geolocationState = {
         $('#your-location-image').css('background-position', offset + 'px 0px');
     }
 };
-
-let maxZoomLevel = 13;
 
 let noPoi = [
     {
@@ -152,7 +149,7 @@ window.initGoogleMap = async function () {
     // re-center map for narrow screens/mobile
     if (window.innerWidth <= 1000) {
         initialLng = -4.5;
-        maxZoomLevel = 11;
+        maxGeometryZoom = 11;
     }
 
     
@@ -166,7 +163,7 @@ window.initGoogleMap = async function () {
         mapTypeId: 'roadmap'
     });
 
-    googleMap.setOptions({ styles: noPoi});
+    googleMap.setOptions({ styles: noPoi, maxZoom: maxUserZoom });
 
 
     var autocompleteInput = document.getElementById('pac-input');
@@ -235,6 +232,7 @@ function googleMapHandler(){
     let neLat = ne.lat();
     let neLng = ne.lng();
     updateMap(swLat, swLng, neLat, neLng);
+    googleMap.setOptions({ maxZoom: maxUserZoom });
 }
 
 function removedMarkerForPostcodeLookup() {
@@ -245,20 +243,19 @@ function removedMarkerForPostcodeLookup() {
 }
 
 function geoLocationSuccess(position) {
-    setMapCentre(position.coords.latitude, position.coords.longitude, geolocationZoomNumber);
+    setMapCentre(position.coords.latitude, position.coords.longitude, maxGeometryZoom);
     geolocationState.geolocationComplete(true);
 }
 
 function showGeometry(geometry) {
-    googleMap.setOptions({ styles: noPoi, maxZoom: maxZoomLevel });
+    googleMap.setOptions({ maxZoom: maxGeometryZoom });
     if (geometry.viewport) {
         googleMap.fitBounds(geometry.viewport);
     } else {
         googleMap.setCenter(geometry.location);
-        googleMap.setZoom(closeUpZoomNumber);
+        googleMap.setZoom(maxGeometryZoom);
     }
     geolocationState.setActive(false);
-    googleMap.setOptions({ styles: noPoi, maxZoom: 20 });
 }
 
 function setMapCentre(latitude, longitude, zoomLevel) {

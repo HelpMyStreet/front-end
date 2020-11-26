@@ -27,7 +27,10 @@ namespace HelpMyStreetFE.Repositories
             {
                 return response.Content.User;
             }
-            return null;
+            else
+            {
+                throw new Exception("Unsuccessful response from GetUserByFirebaseUID");
+            }
         }
 
         public async Task<User> GetUser(int id)

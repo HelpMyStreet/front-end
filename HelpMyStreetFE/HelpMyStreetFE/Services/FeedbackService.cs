@@ -88,14 +88,14 @@ namespace HelpMyStreetFE.Services
 
             if (!string.IsNullOrEmpty(feedback.HMSMessage))
             {
-                var to = new MessageParticipant()
+                var to = new MessageParticipant
                 {
-                    GroupRoleType = new GroupRoleType()
+                    GroupRoleType = new GroupRoleType
                     {
                         GroupId = (int)HelpMyStreet.Utils.Enums.Groups.Generic,
                         GroupRoles = GroupRoles.Owner
                     },
-                    RequestRoleType = new RequestRoleType() { RequestRole = RequestRoles.GroupAdmin }
+                    RequestRoleType = new RequestRoleType { RequestRole = RequestRoles.GroupAdmin }
                 };
                 success &= await _communicationService.SendInterUserMessage(from, to, feedback.HMSMessage, feedback.JobId);
             }
@@ -105,53 +105,60 @@ namespace HelpMyStreetFE.Services
 
         private MessageParticipant GetFromBlock(User user, RequestRoles requestRole, GetJobDetailsResponse job)
         {
-            MessageParticipant from = new MessageParticipant();
+            MessageParticipant from = new MessageParticipant
+            {
+                RequestRoleType = new RequestRoleType { RequestRole = requestRole }
+            };
 
-            if (requestRole == RequestRoles.GroupAdmin)
+            switch (requestRole)
             {
-                from.GroupRoleType = new GroupRoleType()
-                {
-                    GroupId = job.JobSummary.ReferringGroupID,
-                    GroupRoles = GroupRoles.Owner
-                };
-            }
-            else if (user != null)
-            {
-                from.UserId = user.ID;
-            }
-            else
-            {
-                from.EmailDetails = new EmailDetails()
-                {
-                    DisplayName = requestRole switch
+                case RequestRoles.GroupAdmin:
+                    from.GroupRoleType = new GroupRoleType
                     {
-                        RequestRoles.Recipient => string.IsNullOrEmpty(job.JobSummary.RecipientOrganisation) ? job.Recipient.FirstName : job.JobSummary.RecipientOrganisation,
-                        RequestRoles.Requestor => job.Requestor.FirstName,
-                        _ => throw new ArgumentException(message: $"Unexpected RequestRoles value: {requestRole}", paramName: nameof(requestRole))
-                    }
-                };
+                        GroupId = job.JobSummary.ReferringGroupID,
+                        GroupRoles = GroupRoles.Owner
+                    };
+                    break;
+                case RequestRoles.Volunteer:
+                    from.UserId = user.ID;
+                    break;
+                case RequestRoles.Recipient:
+                    from.EmailDetails = new EmailDetails
+                    {
+                        DisplayName = string.IsNullOrEmpty(job.JobSummary.RecipientOrganisation) ? job.Recipient.FirstName : job.JobSummary.RecipientOrganisation
+                    };
+                    break;
+                case RequestRoles.Requestor:
+                    from.EmailDetails = new EmailDetails
+                    {
+                        DisplayName = job.Requestor.FirstName
+                    };
+                    break;
+                default:
+                    throw new ArgumentException(message: $"Unexpected RequestRoles value: {requestRole}", paramName: nameof(requestRole));
             }
-
-            from.RequestRoleType = new RequestRoleType() { RequestRole = requestRole };
 
             return from;
         }
 
         private MessageParticipant GetToBlock(GetJobDetailsResponse job, RequestRoles requestRole)
         {
-            MessageParticipant to = new MessageParticipant() { RequestRoleType = new RequestRoleType() { RequestRole = requestRole } };
+            MessageParticipant to = new MessageParticipant
+            {
+                RequestRoleType = new RequestRoleType { RequestRole = requestRole }
+            };
             
             switch (requestRole)
             {
                 case RequestRoles.Recipient:
-                    to.EmailDetails = new EmailDetails()
+                    to.EmailDetails = new EmailDetails
                     {
                         DisplayName = string.IsNullOrEmpty(job.JobSummary.RecipientOrganisation) ? job.Recipient.FirstName : job.JobSummary.RecipientOrganisation,
                         EmailAddress = job.Recipient.EmailAddress
                     };
                     break;
                 case RequestRoles.Requestor:
-                    to.EmailDetails = new EmailDetails()
+                    to.EmailDetails = new EmailDetails
                     {
                         DisplayName = job.Requestor.FirstName,
                         EmailAddress = job.Requestor.EmailAddress
@@ -167,6 +174,8 @@ namespace HelpMyStreetFE.Services
                         GroupRoles = GroupRoles.Owner
                     };
                     break;
+                default:
+                    throw new ArgumentException(message: $"Unexpected RequestRoles value: {requestRole}", paramName: nameof(requestRole));
             }
 
             return to;

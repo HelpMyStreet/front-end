@@ -19,7 +19,8 @@ namespace HelpMyStreetFE.Repositories
             {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
-            {"ageuknottsbalderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "ageuknottsbalderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -43,7 +44,7 @@ namespace HelpMyStreetFE.Repositories
                     return await GetHLP(cancellationToken);
                 case "ftlos":
                     return await GetFtLOS(cancellationToken);
-                case "ageuknottsbalderton":
+                case "balderton":
                     return await GetBalderton(cancellationToken);
                 default:
                     return null;
@@ -68,9 +69,9 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetBalderton(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("ageuknottsbalderton");
+            CommunityModel communityModel = await GetCommunityDetailByKey("balderton");
 
-            int groupId = await _groupService.GetGroupIdByKey("ageuknottsbalderton", cancellationToken);
+            int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.HomeFolder = "ageUK/notts/balderton";
             communityViewModel.Latitude = communityModel.Latitude;
@@ -78,7 +79,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ZoomLevel = 13.5;
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
-            communityViewModel.groupKey = "ageuknottsbalderton";
+            communityViewModel.groupKey = "balderton";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
@@ -104,7 +105,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HeaderVolunteerButtonText = "";
 
             communityViewModel.ProvideHelpButtonText_LoggedIn = "View Requests";
-            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sign Up to Volunteer";
 
             communityViewModel.RequestHelpButtonText = "Request Help";
 
@@ -320,7 +320,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
             communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley &amp; Pilley Community Helpers.  Click below to view help requests in your area.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley & Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -697,6 +697,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.showFeedback = true;
             communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
+            communityViewModel.groupKey = "ftlos";
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
@@ -799,7 +800,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
             communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of For the Love of Scrubs.  Click below to view help requests.";
-            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {
