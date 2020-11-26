@@ -302,10 +302,20 @@ namespace HelpMyStreetFE
                     name: "request-help/success",
                     pattern: "request-help/success",
                     defaults: new { controller = "RequestHelp", action = "Success" });
+
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
                     defaults: new { controller = "Account", action = "Login" });
+                endpoints.MapControllerRoute(
+                   name: "login/group",
+                   pattern: "login/{referringGroup}",
+                   defaults: new { controller = "Account", action = "Login" });
+                endpoints.MapControllerRoute(
+                   name: "login/group/source",
+                   pattern: "login/{referringGroup}/{source}",
+                   defaults: new { controller = "Account", action = "Login" });
+
                 endpoints.MapControllerRoute(
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
@@ -390,15 +400,26 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Account", action = "CompletedRequests" });
 
                 endpoints.MapControllerRoute(
+                   name: "registration",
+                   pattern: "registration",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+                endpoints.MapControllerRoute(
+                   name: "registration/group",
+                   pattern: "registration/{referringGroup}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+                endpoints.MapControllerRoute(
+                   name: "registration/group/source",
+                   pattern: "registration/{referringGroup}/{source}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
                    name: "registration/step-one",
                    pattern: "registration/step-one",
                    defaults: new { controller = "Registration", action = "StepOne" });
-
                 endpoints.MapControllerRoute(
                    name: "registration/step-one/group",
                    pattern: "registration/step-one/{referringGroup}",
                    defaults: new { controller = "Registration", action = "StepOne" });
-
                 endpoints.MapControllerRoute(
                    name: "registration/step-one/group/source",
                    pattern: "registration/step-one/{referringGroup}/{source}",

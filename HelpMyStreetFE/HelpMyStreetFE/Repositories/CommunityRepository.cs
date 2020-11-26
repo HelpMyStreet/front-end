@@ -696,6 +696,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.showFeedback = true;
             communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
+            communityViewModel.groupKey = "ftlos";
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);

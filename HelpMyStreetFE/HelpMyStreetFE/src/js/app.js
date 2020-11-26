@@ -33,9 +33,14 @@ $(function () {
         }
     });
 
-    $("#sign-up").click(async () => {
+    $("#sign-up").click(function(event) {
+        event.preventDefault();
         const email = $("#email").val();
-        window.location.href = `/registration/step-one?email=${email}`;
+        let destination = $(this).attr('href');
+        if (email) {
+            destination = `${destination}?email=${email}`;
+        }
+        window.location.href = destination;
     });
 
     $(".yt-video-placeholder").click(function () {
