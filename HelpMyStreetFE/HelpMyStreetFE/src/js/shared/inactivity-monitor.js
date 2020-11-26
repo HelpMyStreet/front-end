@@ -30,7 +30,7 @@ async function initialiseInactivityMonitor() {
     if (inactive && window.location.pathname.startsWith('/account/')) {
       var response = await hmsFetch('/account/GetLoggedInStatus');
       if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
-        window.location.replace('/account/Login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
+        window.location.replace('/login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
       }
     }
     inactive = false;
