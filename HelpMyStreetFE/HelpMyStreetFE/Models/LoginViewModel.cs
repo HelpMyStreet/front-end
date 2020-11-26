@@ -9,7 +9,7 @@ namespace HelpMyStreetFE.Models
     public class LoginViewModel
     {        
         public string FirebaseConfiguration { get; set; }
-        public string SignUpURL { get; set; } = "/registration/step-one";
+        public string SignUpURL { get; set; }
         public string Email { get; set; }
         public string LoginError { get; set; }
         public string EmailError { get; set; }
