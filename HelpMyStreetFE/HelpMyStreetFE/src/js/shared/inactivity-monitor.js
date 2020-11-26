@@ -10,39 +10,44 @@ const INACTIVITY_STATES = {
 };
 
 let inactive;
+let resetting;
 
 async function initialiseInactivityMonitor() {
-  var timer;
+    var timer;
 
-  window.onload = resetTimer;
-  document.onmousemove = resetTimer;
-  document.onkeydown = resetTimer;
-  document.onmousedown = resetTimer;
-  document.addEventListener('scroll', resetTimer, true);
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeydown = resetTimer;
+    document.onmousedown = resetTimer;
+    document.addEventListener('scroll', resetTimer, true);
 
-  await resetTimer();
+    await resetTimer();
 
-  function setInactiveFlag() {
-    inactive = true;
-  }
-
-  async function resetTimer() {
-    if (inactive && window.location.pathname.startsWith('/account/')) {
-      var response = await hmsFetch('/account/GetLoggedInStatus');
-      if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
-        window.location.replace('/login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
-      }
+    function setInactiveFlag() {
+        inactive = true;
     }
-    inactive = false;
-    clearTimeout(timer);
-    timer = setTimeout(setInactiveFlag, IDLE_TIMEOUT);
-  }
+
+    async function resetTimer() {
+        if (!resetting) {
+            resetting = true;
+            if (inactive && window.location.pathname.startsWith('/account/')) {
+                var response = await hmsFetch('/account/GetLoggedInStatus');
+                if (response.fetchResponse == fetchResponses.UNAUTHORISED) {
+                    window.location.replace('/login?ReturnUrl=' + encodeURIComponent((window.location.pathname + window.location.search)));
+                }
+            }
+            resetting = false;
+        }
+        inactive = false;
+        clearTimeout(timer);
+        timer = setTimeout(setInactiveFlag, IDLE_TIMEOUT);
+    }
 }
 
 function getInactivityState() {
-  if (inactive == null) {
-    initialiseInactivityMonitor();
-  }
+    if (inactive == null) {
+        initialiseInactivityMonitor();
+    }
 
-  return inactive ? INACTIVITY_STATES.INACTIVE : INACTIVITY_STATES.ACTIVE;
+    return inactive ? INACTIVITY_STATES.INACTIVE : INACTIVITY_STATES.ACTIVE;
 }

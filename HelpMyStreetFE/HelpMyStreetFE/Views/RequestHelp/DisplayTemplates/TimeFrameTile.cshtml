@@ -3,7 +3,7 @@
 @{
     var todaysDate = DateTime.Now;
     todaysDate = todaysDate.ToLocalTime();
-    var stringDate = todaysDate.ToString("dd/MM/yyyy");
+    var stringDate = todaysDate.AddDays(7).ToString("dd/MM/yyyy");
 }
 
 <div class="sm4">
@@ -20,12 +20,3 @@
             </div>
         </div>
 </div>
-            
-     
-
-
-
-
-
-
-
