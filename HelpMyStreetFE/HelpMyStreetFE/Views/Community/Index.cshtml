@@ -2,33 +2,16 @@
 
 @{
     ViewData["Title"] = Model.CommunityName;
-    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { RenderLink = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
     if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;  }
-    if (Model.EncodedGroupId != null) { ViewData["SignUpGroupId"] = Model.EncodedGroupId; }
 }
 
 @section Scripts {
-    <script src="/lib/readmore/readmore.min.js" asp-append-version="true"></script>
     <script src="/community.js" asp-append-version="true"></script>
 }
 
-@if (Model.TestBanner)
-{
-    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
-    <div class="container">
-        <header class="content-page__header">
-            <div class="row">
-                <h2 class="sm12 mb-md">This is a HelpMyStreet test environment, and is only accessible to HelpMyStreet staff.</h2>
-                <ul>
-                    <li>If you have got here by clicking on a link in an email from Mental Health First Aid England in relation to signing up as a Community Connector, then please sign up at <a href="http://helpmystreet.org/healthylondonpartnership">http://helpmystreet.org/healthylondonpartnership</a></li>
-                    <li>If you have arrived here for any other reason, you can find our homepage <a href="http://helpmystreet.org">here</a></li>
-                </ul>
-            </div>
-        </header>
-    </div>
-}
-else
-{
+<div class="community" data-group-id="@Model.EncodedGroupId">
+
     @if (!string.IsNullOrEmpty(Model.BannerImageLocation))
     {
         <div class="container">
@@ -78,7 +61,7 @@ else
                         }
                         @if (!Model.IsLoggedIn)
                         {
-                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                            <a href="/login/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                         }
                         else
                         {
@@ -168,7 +151,7 @@ else
         <div class="container">
             <div class="row">
                 <div class="sm12">
-                    <div class=" @(Model.CommunityVolunteersTextReadMore ? "read-more-text" : "") " >
+                    <div>
                         @Html.Raw(@Model.CommunityVolunteersTextHtml)
                     </div>
                     <div class="mb-md"></div>
@@ -233,7 +216,7 @@ else
                             <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="/login/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
@@ -304,7 +287,7 @@ else
     }
 
     <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Feedback", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
     </div>
 
 
@@ -389,7 +372,7 @@ else
                             <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="/login/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
@@ -421,14 +404,6 @@ else
     @Html.Hidden(nameof(Model.ZoomLevel))
 
     @Html.Hidden(nameof(Model.ShowRequestHelpPopup))
-    @Html.Hidden(nameof(Model.RequestHelpPopupText))
-    @Html.Hidden(nameof(Model.RequestHelpPopupRejectButtonText))
-    @Html.Hidden(nameof(Model.RequestHelpPopup2Text))
-    @Html.Hidden(nameof(Model.RequestHelpPopup2Destination))
-
-    @Html.Hidden(nameof(Model.JoinGroupPopupText))
-    @Html.Hidden(nameof(Model.LeaveGroupPopupText))
-
 
     @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
     {
@@ -445,5 +420,5 @@ else
             </div>
         </div>
     }
-}
 
+</div>

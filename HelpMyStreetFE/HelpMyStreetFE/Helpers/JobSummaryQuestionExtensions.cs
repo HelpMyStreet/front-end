@@ -5,7 +5,7 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class JobSummaryQuestionExtensions
     {
-        public static bool ShowOnTaskManagement(this Question question)
+        public static bool ShowOnTaskManagement(this Question question, bool showSensitiveData)
         {
             return question.Id switch
             {
@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.AnythingElseToTellUs => true,
                 (int)Questions.Shopping_List => true,
                 (int)Questions.Prescription_PharmacyAddress => true,
+                (int)Questions.SensitiveInformation => showSensitiveData,
                 _ => false
             };
         }
@@ -29,9 +30,10 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.FaceMask_SpecificRequirements => "Request Description",
                 (int)Questions.SupportRequesting => "Request Description",
                 (int)Questions.CommunicationNeeds => "Communication Needs",
-                (int)Questions.AnythingElseToTellUs => "Further Details",
+                (int)Questions.AnythingElseToTellUs => "Request Details",
                 (int)Questions.Shopping_List => "Shopping List",
                 (int)Questions.Prescription_PharmacyAddress => "Pharmacy Address",
+                (int)Questions.SensitiveInformation => "Further Details",
                 _ => question.Name
             };
         }
@@ -49,6 +51,7 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.SupportRequesting => 10,
                 (int)Questions.CommunicationNeeds => 98,
                 (int)Questions.AnythingElseToTellUs => 99,
+                (int)Questions.SensitiveInformation => 100,
                 _ => 0
             };
         }

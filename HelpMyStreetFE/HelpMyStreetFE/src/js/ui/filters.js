@@ -1,5 +1,5 @@
-import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
-import { buttonUnload, buttonLoad } from '../shared/btn';
+import { hmsSubmit, fetchResponses } from "../shared/hmsFetch";
+import { loadFeedbackComponents } from "../profile/requests";
 
 const toggleButtons = document.querySelectorAll(".btn__toggle-show");
 
@@ -82,30 +82,10 @@ $('.job-filter-panel').on('click', '.show-all-jobs', function (e) {
 });
 
 async function loadRequests(form) {
-  const formData = $(form).serializeArray();
-  let dataToSend = {};
-
-  formData.forEach((d) => {
-    if (d.name.indexOf('[]') > 0) {
-      const name = d.name.replace('[]', '');
-      if (!dataToSend[name]) {
-        dataToSend[name] = [parseInt(d.value)];
-      } else {
-        dataToSend[name].push(parseInt(d.value));
-      }
-    } else {
-      dataToSend[d.name] = parseInt(d.value);
-    }
-  });
-
-  var fetchRequestData = {
-    method: 'POST',
-    body: JSON.stringify(dataToSend),
-    headers: { 'Content-Type': 'application/json' },
-  };
-  var response = await hmsFetch('/api/request-help/get-filtered-jobs', fetchRequestData);
+  var response = await hmsSubmit('/api/request-help/get-filtered-jobs', form);
   if (response.fetchResponse == fetchResponses.SUCCESS) {
-    $(form).closest('.job-filter-panel').find('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+      $(form).closest('.job-filter-panel').find('.job-filter-results-panel .job-list').html(await response.fetchPayload);
+      loadFeedbackComponents();
     return true;
   }
   return false;

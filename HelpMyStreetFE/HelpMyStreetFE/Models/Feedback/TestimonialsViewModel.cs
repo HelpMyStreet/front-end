@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using HelpMyStreetFE.Models.Feedback;
 namespace HelpMyStreetFE.Models.Feedback
 {
-    public class FeedbackViewModel
+    public class TestimonialsViewModel
     {
-        public List<FeedbackMessage> FeedbackMessages { get; set; }
+        public List<Testimonial> Testimonials { get; set; }
     }
 }

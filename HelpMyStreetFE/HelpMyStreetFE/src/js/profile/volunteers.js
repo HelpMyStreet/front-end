@@ -1,5 +1,5 @@
-﻿import { showServerSidePopup, showPopup } from '../shared/popup';
-import { hmsFetch, fetchResponses } from '../shared/hmsFetch';
+﻿import { showServerSidePopup } from '../shared/popup';
+import { hmsSubmit, fetchResponses } from '../shared/hmsFetch';
 import { datepickerLoad, validateDate, dateValidationSchemes } from '../shared/date-picker';
 import { validateFormData } from '../shared/validator'
 
@@ -25,23 +25,12 @@ var initialiseAddCredentialLinks = function () {
           return 'Please check your entries above and try again.';
         }
 
-        const formData = $(popup).find('form').serializeArray();
-        let dataToSend = {};
-        formData.forEach((d) => {
-          dataToSend[d.name] = d.value;
-        });
-
-        var fetchRequestData = {
-          method: 'POST',
-          body: JSON.stringify(dataToSend),
-          headers: { 'Content-Type': 'application/json' },
-        };
-        var response = await hmsFetch(`/api/volunteers/put-volunteer-credential?u=${user}&g=${group}&c=${credential}`, fetchRequestData);
+        var response = await hmsSubmit(`/api/volunteers/put-volunteer-credential?u=${user}&g=${group}&c=${credential}`, $(popup).find('form'));
         if (response.fetchResponse == fetchResponses.SUCCESS) {
           $(el).replaceWith('<span class="added">Added</span>');
           return true;
         }
-        return 'Oops, we couldn’t add that credential at the moment.';
+        return "Oops, we couldn't add that credential at the moment.";
       }
     };
 
@@ -51,26 +40,19 @@ var initialiseAddCredentialLinks = function () {
 };
 
 var initialiseWhatIsThisLinks = function () {
-  $('.volunteer-list').on('click', '.what-is-this', async function (e) {
-    e.preventDefault();
-    const description = $(this).data('description');
+    $('.volunteer-list').on('click', '.what-is-this', async function (e) {
+        e.preventDefault();
 
-    if (description != undefined) {
-      const header = $(this).data('header');
-      const popupSettings = {
-        header: header,
-        htmlContent: description,
-        noButtons: true
-      };
-      showPopup(popupSettings);
-    } else {
-      const group = $(this).data('target-group');
-      const credential = $(this).data('credential');
-      const url = `/api/volunteers/get-what-is-this-credential-popup?g=${group}&c=${credential}`;
+        const group = $(this).data('target-group');
+        const credential = $(this).data('credential');
+        const item = $(this).data('item');
 
-      await showServerSidePopup(url, {});
-    }
-  });
+        if (credential != undefined) {
+            await showServerSidePopup(`/api/volunteers/get-what-is-this-credential-popup?g=${group}&c=${credential}`);
+        } else {
+            await showServerSidePopup(`/api/volunteers/get-what-is-this-credential-popup?g=${group}&i=${item}`);
+        }
+    });
 };
 
 var intialiseCredentialPopupTiles = function () {

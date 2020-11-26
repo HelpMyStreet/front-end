@@ -16,9 +16,11 @@ namespace HelpMyStreetFE.Repositories
         {
             {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
             {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg"} },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -42,6 +44,8 @@ namespace HelpMyStreetFE.Repositories
                     return await GetHLP(cancellationToken);
                 case "ftlos":
                     return await GetFtLOS(cancellationToken);
+                case "balderton":
+                    return await GetBalderton(cancellationToken);
                 default:
                     return null;
             }
@@ -61,7 +65,95 @@ namespace HelpMyStreetFE.Repositories
         {
             return Communities[key];
         }
-        
+
+        private async Task<CommunityViewModel> GetBalderton(CancellationToken cancellationToken)
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityModel communityModel = await GetCommunityDetailByKey("balderton");
+
+            int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            communityViewModel.HomeFolder = "ageUK/notts/balderton";
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
+            communityViewModel.ZoomLevel = 13.5;
+
+            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
+            communityViewModel.groupKey = "balderton";
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/notts/balderton/banner-wide.jpg";
+
+            communityViewModel.Header = "In Balderton, help is always available!";
+
+
+            communityViewModel.HeaderHTML = @"
+                    <p class='mt-sm mb-xs'>
+                        In our community there’s always somebody here to help.
+                        If you need support from your neighbours, Balderton Community Support are here and can help with:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Shopping for essentials</li>
+                        <li>Collecting prescriptions</li>
+                        <li>A friendly chat</li>
+                        <li>Anything else, just ask!</li>
+                    </ul>
+                    ";
+
+            communityViewModel.HeaderHelpButtonText = "";
+            communityViewModel.HeaderVolunteerButtonText = "";
+
+            communityViewModel.ProvideHelpButtonText_LoggedIn = "View Requests";
+
+            communityViewModel.RequestHelpButtonText = "Request Help";
+
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            communityViewModel.CommunityVolunteersHeader = "Welcome from Balderton Community Support";
+
+            communityViewModel.CommunityVolunteersTextHtml =
+ @"<p>The Balderton community has come together to support our neighbours. We can help with all sorts of everyday tasks, from helping with your shopping to mowing your lawn.</p>
+<p>If you'd like some help from a local volunteer, just ask by clicking on one of the ‘Request Help' buttons on this page, or if you'd prefer you can give us a call on 07487 241596</p>
+<p>To join us, sign up as a community volunteer above. You can help as much or as little as you are able, and we greatly appreciate any time and support you can give.</p>
+<p>Email us at <a href = ""mailto: baldertoncs@helpmystreet.org"">baldertoncs@helpmystreet.org</a></p> 
+";
+
+            communityViewModel.RequestHelpHeading = @"How can we help?";
+
+            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Balderton Community Support.  Click below to view help requests in your area.";
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Nick Fairfax",
+                    Role = "Local Organiser",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
+                },
+            };
+
+
+            communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.newark-sherwooddc.gov.uk/baldertonpc/"">Balderton Parish Council Website</a> - Get the latest news and updates from the Parish Council</p>
+            <p><a href=""https://www.facebook.com/BaldertonCommunity/"">Balderton Community Hub Facebook</a> - A page supporting the community of Balderton, sharing useful information, events, and positive comments.</p>
+";
+
+            communityViewModel.AllowJoinOurGroup = true;
+            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
+
+            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.ShowHelpExampleCards = false;
+            return communityViewModel;
+        }
+
+
+
         private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
@@ -228,7 +320,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
             communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley &amp; Pilley Community Helpers.  Click below to view help requests in your area.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley & Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -260,10 +352,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>Tankersley &amp; Pilley Community Helpers</b>?</p>";
 
             return communityViewModel;
         }
@@ -309,7 +399,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.HeaderHelpButtonText = "";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
-            communityViewModel.CommunityVolunteersTextReadMore = false;
             communityViewModel.CommunityVolunteersTextHtml =
                  @"<p>Supported by the Parish Council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
                     <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the Parish Council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
@@ -380,18 +469,11 @@ namespace HelpMyStreetFE.Repositories
 
 
             communityViewModel.ShowRequestHelpPopup = true;
-            communityViewModel.RequestHelpPopupText = "<p>Just to confirm, is the help needed in <b>Ruddington</b>?</p>";
-            communityViewModel.RequestHelpPopupRejectButtonText = "No, somewhere else";
-            communityViewModel.RequestHelpPopup2Text = @"<p>The <b>Ruddington Community Response Team</b> offer help in <b>Ruddington</b>. But don’t worry, HelpMyStreet has volunteers all over the UK.</p>
-                                                            <p>Request help from someone near you by clicking below.</p>";
-            communityViewModel.RequestHelpPopup2Destination = $"/request-help/{Base64Utils.Base64Encode((int)Groups.Generic)}/{communityViewModel.EncodedGroupId}";
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Ruddington Community Response Team</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Ruddington Community Response Team</b>?</p>";
 
             return communityViewModel;
         }
@@ -501,10 +583,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave the <b>Age UK Lincoln and South Lincolnshire</b> team?</p>";
 
             return communityViewModel;
         }
@@ -575,10 +655,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>AgeUK Wirral</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>AgeUK Wirral</b>?</p>";
 
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
@@ -619,6 +697,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.showFeedback = true;
             communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
+            communityViewModel.groupKey = "ftlos";
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
@@ -721,7 +800,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
             communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
             communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of For the Love of Scrubs.  Click below to view help requests.";
-            communityViewModel.ProvideHelpButtonText_LoggedOut = "Sew with FTLOS";
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
             {
@@ -732,10 +810,8 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-            communityViewModel.JoinGroupPopupText = "<p>Would you like to join <b>For the Love of Scrubs</b>?</p>";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.LeaveGroupPopupText = "<p>Are you sure you want to leave <b>For the Love of Scrubs</b>?</p>";
 
             return communityViewModel;
         }

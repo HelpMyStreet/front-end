@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Volunteers;
 using HelpMyStreetFE.Models;
+using HelpMyStreet.Contracts.GroupService.Response;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -26,7 +27,7 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService ?? throw new ArgumentNullException(nameof(groupService));
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int groupId, int credentialId, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(int groupId, int? credentialId, string item, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
@@ -35,14 +36,31 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            if (!await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, cancellationToken))
+            if (!await _groupMemberService.GetUserHasRole_Any(user.ID, groupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, cancellationToken))
             {
                 throw new UnauthorizedAccessException("User does not have required role.");
             }
 
-            var credential = await _groupService.GetGroupCredential(groupId, credentialId);
+            GroupCredential credential = credentialId.HasValue
+                ? await _groupService.GetGroupCredential(groupId, credentialId.Value)
+                : await GetItemDescription(groupId, item, cancellationToken);
 
             return View("WhatIsThisCredentialPopup", credential);
+        }
+
+        private async Task<GroupCredential> GetItemDescription(int groupId, string item, CancellationToken cancellationToken)
+        {
+            if (item == "completed-requests")
+            {
+                var group = await _groupService.GetGroupById(groupId, cancellationToken);
+
+                return new GroupCredential
+                {
+                    Name = "Completed Requests",
+                    WhatIsThis = $"This is the number of requests completed by the user for **{group.GroupName}**."
+                };
+            }
+            throw new ArgumentException($"Unexpected item {item}", item);
         }
     }
 }

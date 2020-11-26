@@ -1,7 +1,7 @@
 @model SiteHeaderViewModel;
 
     <header>
-        @if (!Model.isLoggedIn)
+        @if (!Model.isLoggedIn && !Model.loginPage)
         {
             <div class="outer-container outer-container--darker">
                 <div class="container-fluid page-header-login align-center">

@@ -1,5 +1,5 @@
 
-export function buttonLoad(btn) {        
+export function buttonLoad(btn) { 
     btn.width(btn.width());
     btn.height(btn.height());
     //btn.attr('disabled', "true");

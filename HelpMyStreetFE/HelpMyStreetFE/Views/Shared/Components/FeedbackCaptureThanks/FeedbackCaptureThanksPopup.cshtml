@@ -1,0 +1,21 @@
+﻿@using HelpMyStreetFE.Models.Feedback
+
+@model CapturedFeedback
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Thank you</div>
+        <div class="popup__content__text">
+            <p>Your comments have been submitted.</p>
+            @if (Model.IncludesMessage)
+            {
+                <p>We'll pass on your messages to the people involved with this request.</p>
+            }
+        </div>
+        <div class="popup__content__buttons">
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Done" }' />
+        </div>
+    </div>
+</div>
+

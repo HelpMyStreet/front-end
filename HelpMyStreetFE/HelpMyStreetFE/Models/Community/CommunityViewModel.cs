@@ -6,7 +6,6 @@ namespace HelpMyStreetFE.Models.Community
 {
     public class CommunityViewModel
     {
-        public bool TestBanner { get; set; }
         public bool IsLoggedIn { get; set; }
         public bool IsGroupMember { get; set; }
         public string EncodedGroupId { get; set; }
@@ -27,7 +26,6 @@ namespace HelpMyStreetFE.Models.Community
         public string HeaderHTML { get; set; } = GetDefaultHeaderHtml();
         public string CommunityVolunteersHeader { get; set; }
         public string CommunityVolunteersTextHtml { get; set; }
-        public bool CommunityVolunteersTextReadMore { get; set; } = true;
 
         public bool ShowRequestHelp { get; set; } = true;
         public bool ShowHelpExampleCards {get;set;} = true;
@@ -37,7 +35,7 @@ namespace HelpMyStreetFE.Models.Community
         public string RequestHelpHeading { get; set; }
         public string RequestHelpText { get; set; }
         public string RequestHelpButtonText { get; set; } = "Request Help";
-        public string ProvideHelpButtonText_LoggedOut { get; set; } = "Sign Up Now";
+        public string ProvideHelpButtonText_LoggedOut { get; set; } = "Sign Up or Log In";
         public string ProvideHelpButtonText_LoggedIn { get; set; } = "View Open Requests";
 
         public string ProvideHelpHeading { get; set; }
@@ -54,16 +52,10 @@ namespace HelpMyStreetFE.Models.Community
         public FeedbackMessageType showFeedbackType { get; set; } = FeedbackMessageType.Other;
         public string groupKey { get; set; }
         public bool ShowRequestHelpPopup { get; set; }
-        public string RequestHelpPopupText { get; set; }
-        public string RequestHelpPopupRejectButtonText { get; set; }
-        public string RequestHelpPopup2Text { get; set; }
-        public string RequestHelpPopup2Destination { get; set; }
 
         public bool AllowJoinOurGroup { get; set; }
         public bool AllowLeaveOurGroup { get; set; }
         public string JoinOurGroupButtonText { get; set; }
-        public string JoinGroupPopupText { get; set; }
-        public string LeaveGroupPopupText { get; set; }
 
         public bool ShowVisitWebsite { get; set; }
         public string VisitWebsiteHeading { get; set; }

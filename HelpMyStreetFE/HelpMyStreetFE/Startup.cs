@@ -149,8 +149,17 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddHttpClient<IFeedbackRepository, FeedbackRepository>(client =>
+            {
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+                client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            });
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
-            services.AddSingleton<IFeedbackRepository, FeedbackRepository>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
@@ -163,6 +172,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
+            services.AddSingleton<IFeedbackService, FeedbackService>();
 
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
@@ -184,9 +194,13 @@ namespace HelpMyStreetFE
             .AddRazorOptions(opt =>
             {
                 opt.ViewLocationFormats.Add("/Views/Account/Verification/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/Community/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/RequestStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/DetailStage/{0}.cshtml");
                 opt.ViewLocationFormats.Add("/Views/RequestHelp/ReviewStage/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/Shared/Components/FeedbackCapture/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/Shared/Components/Notifications/{0}.cshtml");
+                opt.ViewLocationFormats.Add("/Views/Shared/DisplayTemplates/{0}.cshtml");
             });
 
 
@@ -288,10 +302,20 @@ namespace HelpMyStreetFE
                     name: "request-help/success",
                     pattern: "request-help/success",
                     defaults: new { controller = "RequestHelp", action = "Success" });
+
                 endpoints.MapControllerRoute(
                     name: "login",
                     pattern: "login",
                     defaults: new { controller = "Account", action = "Login" });
+                endpoints.MapControllerRoute(
+                   name: "login/group",
+                   pattern: "login/{referringGroup}",
+                   defaults: new { controller = "Account", action = "Login" });
+                endpoints.MapControllerRoute(
+                   name: "login/group/source",
+                   pattern: "login/{referringGroup}/{source}",
+                   defaults: new { controller = "Account", action = "Login" });
+
                 endpoints.MapControllerRoute(
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
@@ -320,6 +344,11 @@ namespace HelpMyStreetFE
                     name: "Tankersley",
                     pattern: "tankersley",
                     defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
+
+                endpoints.MapControllerRoute(
+                    name: "Balderton",
+                    pattern: "balderton",
+                    defaults: new { controller = "Community", action = "Index", communityName = "balderton" });
 
                 endpoints.MapControllerRoute(
                     name: "Ruddington",
@@ -371,15 +400,26 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Account", action = "CompletedRequests" });
 
                 endpoints.MapControllerRoute(
+                   name: "registration",
+                   pattern: "registration",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+                endpoints.MapControllerRoute(
+                   name: "registration/group",
+                   pattern: "registration/{referringGroup}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+                endpoints.MapControllerRoute(
+                   name: "registration/group/source",
+                   pattern: "registration/{referringGroup}/{source}",
+                   defaults: new { controller = "Registration", action = "StepOne" });
+
+                endpoints.MapControllerRoute(
                    name: "registration/step-one",
                    pattern: "registration/step-one",
                    defaults: new { controller = "Registration", action = "StepOne" });
-
                 endpoints.MapControllerRoute(
                    name: "registration/step-one/group",
                    pattern: "registration/step-one/{referringGroup}",
                    defaults: new { controller = "Registration", action = "StepOne" });
-
                 endpoints.MapControllerRoute(
                    name: "registration/step-one/group/source",
                    pattern: "registration/step-one/{referringGroup}/{source}",

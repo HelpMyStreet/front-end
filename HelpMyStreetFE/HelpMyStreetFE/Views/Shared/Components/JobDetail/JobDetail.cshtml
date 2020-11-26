@@ -11,7 +11,8 @@
     var forFaceMask = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
 
-    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement() && !string.IsNullOrEmpty(q.Answer));
+    var showSensitiveData = Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin;
+    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
 }
 
 @if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open || Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress)

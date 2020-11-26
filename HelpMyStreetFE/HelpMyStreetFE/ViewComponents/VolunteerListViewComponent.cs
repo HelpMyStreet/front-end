@@ -36,6 +36,7 @@ namespace HelpMyStreetFE.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(int groupId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            
 
             if (user == null)
             {
@@ -60,10 +61,11 @@ namespace HelpMyStreetFE.ViewComponents
 
             var volunteerListViewModel = new VolunteerListViewModel
             {
-                GroupName = group.GroupName,
+                GroupId = group.GroupId,
                 GroupCredentials = groupCredentials,
                 Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null),
                 UserId = user.ID,
+                UserHasEditRights = await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, cancellationToken),
             };
 
 

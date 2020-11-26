@@ -1,0 +1,26 @@
+﻿@using HelpMyStreetFE.Models.RequestHelp;
+@using HelpMyStreetFE.Enums.Account;
+
+@model SuccessViewModel
+
+@{ 
+    ViewData["Title"] = Model.Notifications.First().Type == NotificationType.Success ? "Thank you" : "Oops";
+}
+
+<div class="container">
+    <div class="row mt-md">
+        <div class="sm12 text-center">
+            <h2>Your Feedback</h2>
+        </div>
+    </div>
+    <div class="row justify-center mt72">
+        <div class="sm10">
+            <partial name="_NotificationHandler" for="@Model.Notifications" />
+        </div>
+    </div>
+    <div class="row mt-md">
+        <div class="sm12 text-center">
+            <a href="@Model.RequestLink">New request for help</a>
+        </div>
+    </div>
+</div>

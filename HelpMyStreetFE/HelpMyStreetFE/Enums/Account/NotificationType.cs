@@ -7,6 +7,8 @@ namespace HelpMyStreetFE.Enums.Account
 {
     public enum NotificationType
     {
-        Success
+        Success,
+        Failure_Temporary,
+        Failure_Permanent,
     }
 }

@@ -27,6 +27,14 @@ namespace HelpMyStreetFE.Controllers
             return View("404");
         }
 
+        [Route("Error/410")]
+        [Route("link-expired")]
+        public IActionResult Error410()
+        {
+
+            return View("410");
+        }
+
         [Route("Error/{code:int}")]
         public IActionResult Error(int code)
         {           

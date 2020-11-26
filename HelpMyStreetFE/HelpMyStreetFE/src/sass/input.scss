@@ -7,57 +7,67 @@ input[type="date"]::-webkit-inner-spin-button {
 }
 
 .input {
+  @extend .mt-lg;
+
+  label {
+    display: block;
+    font-weight: bold;
+    @extend .mb-xs;
+
+    strong {
+        color: $dark-blue;
+    }
+  }
+
+
+  &--radio {
     label {
-        position: absolute;
-        top: -27px;
-        left: 0;
-        width : 100%;
+
+      .error {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        left: -42px;
+        position: relative;
+        bottom: -10px;
+      }
     }
+  }
 
+  input {
+    @include input-default;
+  }
 
-    &--radio {
-        label {
+  textarea {
+    @include textarea-default;
 
-            .error {
-                display: block;
-                font-size: 1rem;
-                font-weight: normal;
-                left: -42px;
-                position: relative;
-                bottom: -10px;
-            }
-         }
-        }
-
-        input {
-            @include input-default;
-        }
-
-        textarea {
-            @include textarea-default;
-        }
-
-        a.input__link {
-            display: block;
-            line-height: 22px;
-            color: var(--p-color);
-            position: absolute;
-            bottom: -22px;
-
-            &.float_right {
-                float: right;
-                position: initial;
-                font-weight: normal;
-                text-decoration: underline;
-                cursor: pointer;
-            }
-        }
-
-        select {
-            width: 100%;
-            height: 64px;
-        }
+    &.shrink {
+      height: 38px;
     }
+  }
+
+  a.input__link {
+    display: block;
+    line-height: 22px;
+    color: var(--p-color);
+    position: absolute;
+    bottom: -22px;
+
+    &.float_right {
+      float: right;
+      position: initial;
+      font-weight: normal;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+
+  select {
+    width: 100%;
+    height: 64px;
+    padding-left: 0.25rem;
+  }
+}
     //hack to make safari use the set font-size
     select {
         background: $white;

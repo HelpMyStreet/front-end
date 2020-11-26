@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
@@ -6,6 +7,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public JobHeader JobHeader { get; set; }
         public bool UserHasRequiredCredentials { get; set; }
-        public bool UserActingAsAdmin { get; set; }
+        public RequestRoles UserRole { get; set; }
     }
 }

@@ -20,6 +20,15 @@
             grid-template-columns: 170px 1fr;
             padding: 0px;
         }
+
+        &.failure {
+            @extend .border-orange;
+            background: $washed-orange;
+
+            .notification__icon__wrapper {
+                background: $light-orange-opaque;
+            }
+        }
     }
 
     &__icon {
@@ -53,11 +62,11 @@
     }
 
     &__button {
-      width: 100%;
+        width: 100%;
 
-      @media screen and (min-width: $sm-screen) {
-        width: 80%;
-      }
+        @media screen and (min-width: $sm-screen) {
+            width: 80%;
+        }
     }
 
     &__title {

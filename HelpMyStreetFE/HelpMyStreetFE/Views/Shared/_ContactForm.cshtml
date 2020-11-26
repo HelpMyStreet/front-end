@@ -13,12 +13,12 @@
         }
         @Html.AntiForgeryToken()
         <div class="row">
-            <div class="input">
+            <div class="input sm6">
                 <label asp-for="Name">Your name *</label>
                 <input name="Name" type="text" placeholder="e.g. John" asp-for="Name" required />
                 <span class="error" asp-validation-for="Name"></span>
             </div>
-            <div class="input">
+            <div class="input sm6">
                 <label asp-for="Email">Your email address *</label>
                 <input name="Email" type="email" placeholder="Email address" asp-for="Email" required />
                 <span class="error" asp-validation-for="Email"></span>
@@ -26,12 +26,12 @@
         </div>
 
         <div class="row">
-            <div class="input">
+            <div class="input sm6">
                 <label asp-for="MobileNumber">Your mobile number</label>
                 <input name="MobileNumber" type="tel" placeholder="Phone number" asp-for="MobileNumber" />
                 <span class="error" asp-validation-for="MobileNumber"></span>
             </div>
-            <div class="input">
+            <div class="input sm6">
                 <label asp-for="OtherNumber">Other telephone number</label>
                 <input name="OtherNumber" type="tel" placeholder="" asp-for="OtherNumber" />
                 <span class="error" asp-validation-for="OtherNumber"></span>
@@ -39,12 +39,12 @@
         </div>
 
         <div class="row">
-            <div class="input">
+            <div class="input sm6">
                 <label asp-for="Organisation">Organisation</label>
                 <input name="Organisation" type="text" placeholder="Organisation name" asp-for="Organisation" />
                 <span class="error" asp-validation-for="Organisation"></span>
             </div>
-            <div class="input">
+            <div class="input sm6">
                 <label asp-forRoleRole">Role</label>
                 <input name="Role" type="text" placeholder="Your role" asp-for="Role" />
                 <span class="error" asp-validation-for="Role"></span>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="row">
-            <div class="input">
+            <div class="input sm12">
                 <label asp-for="Message">How can we help? *</label>
                 <textarea name="Message" rows="3" type="text" placeholder="How can we help?" asp-for="Message" required></textarea>
                 <span class="error" asp-validation-for="Message"></span>

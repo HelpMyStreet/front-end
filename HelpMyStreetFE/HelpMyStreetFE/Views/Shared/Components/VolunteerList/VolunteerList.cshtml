@@ -16,7 +16,7 @@
     <div class="location header">Location</div>
     <div class="completed-requests header">
         Completed Requests
-        <a href="#" class="what-is-this" data-header="Completed Requests" data-description="<p class='text-left'>This is the number of requests completed by the user for @Model.GroupName.</p>">
+        <a href="#" class="what-is-this" data-item="completed-requests" data-target-group="@Base64Utils.Base64Encode(Model.GroupId)">
             What is this?
         </a>
     </div>
@@ -59,7 +59,7 @@
             <span class="small-screen-only">Completed Requests: </span>
             @volunteer.CompletedRequests
             <span class="small-screen-only">
-                <a href="#" class="what-is-this" data-header="Completed Requests" data-description="<p class='text-left'>This is the number of requests completed by the user for @Model.GroupName.</p>">
+                <a href="#" class="what-is-this" data-item="completed-requests" data-target-group="@Base64Utils.Base64Encode(Model.GroupId)">
                     (What is this?)
                 </a>
             </span>
@@ -74,7 +74,7 @@
                 else
                 {
                     if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin 
-                            && volunteer.User.ID != Model.UserId)
+                            && volunteer.User.ID != Model.UserId && Model.UserHasEditRights)
                     {
                         <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential"
                            data-target-user="@Base64Utils.Base64Encode(volunteer.User.ID)"

@@ -13,6 +13,8 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services;
+using System.Net;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -24,28 +26,31 @@ namespace HelpMyStreetFE.Controllers {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
+        private readonly IFeedbackService _feedbackService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService)
+        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IFeedbackService feedbackService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _feedbackService = feedbackService ?? throw new ArgumentNullException(nameof(feedbackService));
         }
 
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<string>> SetJobStatus(string j, JobStatuses s, string u, CancellationToken cancellationToken)
+        public async Task<ActionResult<SetJobStatusResult>> SetJobStatus(string j, JobStatuses s, string r, string u, CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                 int jobId = Base64Utils.Base64DecodeToInt(j);
+                RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
                 int? targetUserId = null;
                 if (s == JobStatuses.InProgress)
-                {
-                    targetUserId = u == "self" ? user.ID : Base64Utils.Base64DecodeToInt(u);
+                { 
+                    targetUserId = (requestRole == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u));
                 }
 
                 UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
@@ -54,7 +59,11 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     case UpdateJobStatusOutcome.AlreadyInThisStatus:
                     case UpdateJobStatusOutcome.Success:
-                        return s.FriendlyName();
+                        return new SetJobStatusResult
+                        {
+                            NewStatus = s.FriendlyName(),
+                            RequestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue
+                        };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
                     case UpdateJobStatusOutcome.Unauthorized:
@@ -101,5 +110,74 @@ namespace HelpMyStreetFE.Controllers {
 
             return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
         }
+
+        [AuthorizeAttributeNoRedirect]
+        [HttpGet("get-feedback-component")]
+        public async Task<IActionResult> GetFeedbackComponent(string j, string r, CancellationToken cancellationToken)
+        {
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+            RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
+
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken);
+
+            if (feedbackStatus.FeedbackDue)
+            {
+                return PartialView("_FeedbackDue");
+            }
+            else if (feedbackStatus.FeedbackSubmitted)
+            {
+                return PartialView("_FeedbackSubmitted");
+            }
+            return StatusCode((int)HttpStatusCode.OK);
+        }
+
+        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)
+        {
+            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+
+            if (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)
+            {
+                bool feedbackSubmitted = await _feedbackService.GetFeedbackExists(jobId, role, userId);
+
+                if (feedbackSubmitted)
+                {
+                    return new JobFeedbackStatus
+                    {
+                        FeedbackSubmitted = true,
+                        FeedbackDue = false,
+                    };
+                }
+                else if (!(job.Archive ?? false))
+                {
+                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    
+                    return new JobFeedbackStatus
+                    {
+                        FeedbackSubmitted = false,
+                        FeedbackDue = true,
+                    };
+                }
+            }
+
+            return new JobFeedbackStatus
+            {
+                FeedbackSubmitted = false,
+                FeedbackDue = false,
+            };
+        }
+    }
+
+    class JobFeedbackStatus
+    {
+        public bool FeedbackDue { get; set; }
+        public bool FeedbackSubmitted { get; set; }
     }
 }

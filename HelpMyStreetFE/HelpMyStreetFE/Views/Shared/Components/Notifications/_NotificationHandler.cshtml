@@ -1,0 +1,21 @@
+﻿@model List<HelpMyStreetFE.Models.NotificationModel>;
+@using HelpMyStreetFE.Enums.Account;
+
+
+@{
+    foreach (var Notification in Model)
+    {
+        switch (Notification.Type)
+        {
+            case NotificationType.Success:
+                <partial name="_Success" for="@Notification" />
+                break;
+            case NotificationType.Failure_Temporary:
+                <partial name="_Failure_Temporary" for="@Notification" />
+                break;
+            case NotificationType.Failure_Permanent:
+                <partial name="_Failure_Permanent" for="@Notification" />
+                break;
+        }
+    }
+}

@@ -15,12 +15,13 @@ module.exports = {
     registration: "./js/registration.js",
     auth: "./js/authenticate.js",
     requesthelp: "./js/requesthelp/requesthelp.js",
+    feedback: "./js/feedback/feedback.js",
     profile: "./js/profile/profile.js",
     coveragemap: "./js/coveragemap.js",
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js",
-    feedback: "./js/feedbackSliders.js",
-    helpertabs: "./js/helperTabs.js"
+    testimonials: "./js/testimonialSliders.js",
+    helpertabs: "./js/helperTabs.js",
   },
   output: {
     path: path.resolve(__dirname, "wwwroot"),

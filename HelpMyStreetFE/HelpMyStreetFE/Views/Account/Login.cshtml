@@ -1,12 +1,11 @@
 ﻿@model LoginViewModel
 @{
-    ViewData["Title"] = "Login";
-    Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
+    ViewData["Title"] = "Sign Up or Log In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) }
 </script>
-<partial name="_SiteHeaderOnlyLogo" />
 <div class="container login">
     <div class="row  justify-center ">
         <div class="sm6">
@@ -15,20 +14,20 @@
                 <form id="login-form" onsubmit="return false;">
                     <div class="input">
                         <label for="email">Email</label>
-                        <input name="email" type="text" id="email" placeholder="Email" />
-                        <span class="error"></span>
+                        <input name="email" type="text" id="email" value = "@Model.Email" placeholder="Email" />
+                        <span class="login__fail-message-main">@Model.EmailError</span>
                     </div>
                     <div class="input">
                         <label for="password">Password</label>
                         <input name="password" id="password" type="password" placeholder="Password" />
                         <span class="error"></span>
                     </div>
-                    <span id="login-fail-message" class="login__fail-message-main"></span>
+                    <span id="login-fail-message" class="login__fail-message-main">@Model.LoginError</span>
                     <div><a class="login__link" href="/forgotten-password"> Forgotten Password?</a></div>
-                    <div class="controls">
-                        <button class="btn cta large fill login-submit-handler" id="login-submit" type="submit">
-                            <span class="text">Submit</span>
-                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in..."}' /></div>
+                    <div class="mt-lg text-center">
+                        <button class="btn cta large fill cta--dark-blue-border login-submit-handler" id="login-submit" type="submit">
+                            <span class="text">Log In</span>
+                            <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Logging in...", ShowDarkSpinner = true }' /></div>
                         </button>
                     </div>
                 </form>
@@ -36,12 +35,19 @@
         </div>
         <div class="sm6">
             <div class="login__side">
-                <div class="login__header">Helping people shelter safely at home...</div>
+                <div class="login__header text-center">Volunteer with us!</div>
                 <div class="login__side__text">
                     <p>
-                        HelpMyStreet is working with communities to get help and support to people who need to shelter safely at home. Many of these people live far from friends and family and don’t have a local support network. HelpMyStreet gets the right help to the right people so that no one is left out.
+                        Join us to help your neighbours. Just let us know when, where and how you can help.
                     </p>
+                    <p>You can choose to help a little, or to help a lot! We’re grateful for every contribution.</p>
                 </div>
+                <div class="sm6 mr-sm text-center">
+                    <a href="@Model.SignUpURL" id="sign-up" class="btn cta large fill mb-sm mt-sm btn--sign-up fill">Sign Up Now</a>
+                </div>
+                <br />
+                <hr />
+                <p>Interested in joining us as a community group, charity or organisation with your own landing page? <strong><a href="/contact-us">Tell us how we can help.</a></strong></p>
             </div>
         </div>
     </div>
