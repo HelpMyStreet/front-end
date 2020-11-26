@@ -48,8 +48,8 @@ namespace HelpMyStreetFE.Services.Groups
         {
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetUserRoles(userId);
-            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+                return await GetUserRoles(userId, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.WaitForFreshData, cancellationToken);
         }
 
         public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken)
@@ -102,7 +102,7 @@ namespace HelpMyStreetFE.Services.Groups
 
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetUserRoles(userId);
+                    return await GetUserRoles(userId, cancellationToken);
                 }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
             }
 
@@ -120,29 +120,29 @@ namespace HelpMyStreetFE.Services.Groups
 
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetUserRoles(userId);
+                    return await GetUserRoles(userId, cancellationToken);
                 }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", cancellationToken);
             }
 
             return result;
         }
 
-        private async Task<List<UserGroup>> GetUserRoles(int userId)
+        private async Task<List<UserGroup>> GetUserRoles(int userId, CancellationToken cancellationToken)
         {
             List<UserGroup> response = new List<UserGroup>();
             var userRoles = await _groupRepository.GetUserRoles(userId);
 
             foreach (var groupRoles in userRoles.UserGroupRoles)
             {
-                var group = await _groupRepository.GetGroup(groupRoles.Key);
+                var group = await _groupService.GetGroupById(groupRoles.Key, cancellationToken);
                 var roles = groupRoles.Value.Select(role => (GroupRoles)role);
 
                 response.Add(new UserGroup()
                 {
                     UserId = userId,
-                    GroupId = group.Group.GroupId,
-                    GroupKey = group.Group.GroupKey,
-                    GroupName = group.Group.GroupName,
+                    GroupId = group.GroupId,
+                    GroupKey = group.GroupKey,
+                    GroupName = group.GroupName,
                     UserRoles = roles
                 });
             }

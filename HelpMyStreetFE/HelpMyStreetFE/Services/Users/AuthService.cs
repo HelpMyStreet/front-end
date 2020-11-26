@@ -70,15 +70,11 @@ namespace HelpMyStreetFE.Services.Users
         {
             var uid = await VerifyIdTokenAsync(token);
 
-            User user;
+            User user = await _userService.GetUserByAuthId(uid);
 
-            try
+            if (user == null)
             {
-                user = await _userService.GetUserByAuthId(uid);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"User {uid} not found in User Service", ex);
+                throw new Exception($"User {uid} not found in User Service");
             }
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);

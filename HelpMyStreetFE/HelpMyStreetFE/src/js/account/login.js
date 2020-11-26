@@ -42,14 +42,14 @@ export const login = async (email, password) => {
 
         } catch (e) {
             if (e.code == "server") {
-                window.location.href = `/account/login?email=${email}&er=server&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+                window.location.href = `/login?email=${email}&er=server&ReturnUrl=${encodeURIComponent(returnUrl)}`;
             }
             else {
-                window.location.href = `/account/login?email=${email}&er=login&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+                window.location.href = `/login?email=${email}&er=login&ReturnUrl=${encodeURIComponent(returnUrl)}`;
             }
         }
     } else {
-        window.location.href = `/account/login?email=${email}&er=${validationResponse.input}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+        window.location.href = `/login?email=${email}&er=${validationResponse.input}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
     }
 };
 

@@ -30,10 +30,10 @@ namespace HelpMyStreetFE.Helpers
                 (int)Questions.FaceMask_SpecificRequirements => "Request Description",
                 (int)Questions.SupportRequesting => "Request Description",
                 (int)Questions.CommunicationNeeds => "Communication Needs",
-                (int)Questions.AnythingElseToTellUs => "Further Details",
+                (int)Questions.AnythingElseToTellUs => "Request Details",
                 (int)Questions.Shopping_List => "Shopping List",
                 (int)Questions.Prescription_PharmacyAddress => "Pharmacy Address",
-                (int)Questions.SensitiveInformation => "Further Details (Restricted Access)",
+                (int)Questions.SensitiveInformation => "Further Details",
                 _ => question.Name
             };
         }
