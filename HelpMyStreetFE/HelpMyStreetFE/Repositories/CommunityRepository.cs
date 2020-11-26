@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Utils.Utils;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 using System.Threading;
@@ -319,7 +319,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ProvideHelpHeading = "Volunteer with us!";
 
             communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley &amp; Pilley Community Helpers.  Click below to view help requests in your area.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley & Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
