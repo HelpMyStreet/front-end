@@ -62,7 +62,7 @@
                         }
                         @if (!Model.IsLoggedIn)
                         {
-                            <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                            <a href="/login/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                         }
                         else
                         {
@@ -217,7 +217,7 @@
                             <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="/login/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
@@ -373,7 +373,7 @@
                             <div class="card__buttons">
                                 @if (!Model.IsLoggedIn)
                                 {
-                                    <a href="/registration/step-one/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
+                                    <a href="/login/@Model.EncodedGroupId" class="btn cta btn--sign-up fill @(Model.DisableButtons ? "disabled" : "")">@Model.ProvideHelpButtonText_LoggedOut</a>
                                 }
                                 else
                                 {
