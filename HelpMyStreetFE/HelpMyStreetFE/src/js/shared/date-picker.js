@@ -19,8 +19,8 @@ export function datepickerLoad(id, errorId, dateValidationScheme = dateValidatio
         var values = input.split('/').map(function (v) {
             return v.replace(/\D/g, '')
         });
-        if (values[0]) values[0] = checkValue(values[0], 31);
-        if (values[1]) values[1] = checkValue(values[1], 12);
+        if (values[0]) values[0] = checkValue(values[0], 31, values.length > 1);
+        if (values[1]) values[1] = checkValue(values[1], 12, values.length > 2);
         var output = values.map(function (v, i) {
             return v.length == 2 && i < 2 ? v + ' / ' : v;
         });
@@ -69,11 +69,11 @@ export function validateDate(val, id, errorId, dateValidationScheme = dateValida
   }
 }
 
-function checkValue(str, max) {
+function checkValue(str, max, fullNumber) {
     if (str.charAt(0) !== '0' || str == '00') {
         var num = parseInt(str);
         if (isNaN(num) || num <= 0 || num > max) num = 1;
-        str = num > parseInt(max.toString().charAt(0))
+        str = (num > parseInt(max.toString().charAt(0)) || fullNumber)
             && num.toString().length == 1 ? '0' + num : num.toString();
     };
     return str;
