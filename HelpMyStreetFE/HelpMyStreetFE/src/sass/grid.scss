@@ -31,7 +31,7 @@
   }
 
   .container {
-    max-width: 1224px + 24px;
+    width: calc(min(1248px, 100vw - 64px));
     margin: auto;
   }
 
