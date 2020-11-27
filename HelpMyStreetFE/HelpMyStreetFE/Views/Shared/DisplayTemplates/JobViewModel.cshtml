@@ -123,16 +123,16 @@
                     case JobStatuses.Open:
                         @if (!admin)
                         {
-                            <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                            <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
                                 <span class="text">Accept</span>
                             </button>
                         }
                         break;
                     case JobStatuses.InProgress:
-                        <button class="btn cta large trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
                             <span class="text">Mark as Done</span>
                         </button>
-                        <button class="btn cta--dark-blue-border large trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
                             @if (admin)
                             {
                                 <span class="text">Mark as Open</span>
@@ -151,7 +151,7 @@
                         </div>
                         if (admin && !(Model.JobHeader.Archive ?? false))
                         {
-                            <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
+                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
@@ -162,11 +162,11 @@
                 }
                 @if (admin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
                 {
-                    <button class="btn cta--orange-border large trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>
                     </button>
                 }
-                <button class="btn cta--green-border large undo-request dnone" data-target-state="@Model.JobHeader.JobStatus" data-target-user="@(Model.JobHeader.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.Value) : "")">
+                <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.JobHeader.JobStatus" data-target-user="@(Model.JobHeader.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.Value) : "")">
                     <span class="text">Undo</span>
                     <div class="loader dnone">
                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
