@@ -13,516 +13,516 @@
 }
 
 .job {
-  @include shadow-xs;
-  width: 100%;
-  min-height: 50px;
-  border: 1px solid $gray-8;
-  border-radius: 5px;
-  margin: 10px 0;
-  padding: 5px;
-  overflow: hidden;
-
-  @media (min-width: $med-screen) {
-    padding: 10px 5px;
-  }
-
-  &.highlight {
-    animation: highlight 2s;
-  }
-
-  &__info {
-    min-height: 100px;
-    display: grid;
-    grid-template-columns: 1fr;
-
-    @media (min-width: $sm-med-screen) {
-      padding: 0.5rem;
-    }
+    @include shadow-xs;
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid $gray-8;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 5px;
+    overflow: hidden;
 
     @media (min-width: $med-screen) {
-      padding: 0 0.5rem;
-      grid-template-columns: 1.1fr 2fr 14rem;
+        padding: 10px 5px;
     }
 
-    &__col1 {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      padding-top: 0.25rem;
-      color: $dark-blue;
-      text-align: center;
+    &.highlight {
+        animation: highlight 2s;
+    }
 
-      @media (min-width: $med-screen) {
-        align-items: center;
-        justify-content: flex-start;
-      }
-
-      &__referrer {
-        display: flex;
-        align-items: center;
-        margin: 0 0.25rem 0.25rem 0.25rem;
-        order: 1;
-
-        @media (min-width: $med-screen) {
-          margin-bottom: 0;
-        }
-      }
-
-      &__criticality {
-        display: flex;
-        align-items: center;
-        margin: 0 0.5rem 0.5rem 0.5rem;
-        order: 2;
+    &__info {
+        min-height: 100px;
+        display: grid;
+        grid-template-columns: 1fr;
 
         @media (min-width: $sm-med-screen) {
-          margin: 0 0.75rem 0.5rem 0.75rem;
+            padding: 0.5rem;
         }
 
         @media (min-width: $med-screen) {
-          display: none;
-        }
-      }
-
-      &__urgency {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: center;
-        background: $washed-blue;
-        width: 100%;
-        padding: 0.5rem 0.5rem 0 0.75rem;
-        order: 4;
-        text-align: left;
-
-        > * {
-          margin: 0.25rem 0.5rem;
+            padding: 0 0.5rem;
+            grid-template-columns: 1.1fr 2fr 14rem;
         }
 
-        @media (min-width: $sm-med-screen) {
-          margin: 1rem 2.5rem 0 2.5rem;
-          justify-content: center;
+        &__col1 {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding-top: 0.25rem;
+            color: $dark-blue;
+            text-align: center;
+
+            @media (min-width: $med-screen) {
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            &__referrer {
+                display: flex;
+                align-items: center;
+                margin: 0 0.25rem 0.25rem 0.25rem;
+                order: 1;
+
+                @media (min-width: $med-screen) {
+                    margin-bottom: 0;
+                }
+            }
+
+            &__criticality {
+                display: flex;
+                align-items: center;
+                margin: 0 0.5rem 0.5rem 0.5rem;
+                order: 2;
+
+                @media (min-width: $sm-med-screen) {
+                    margin: 0 0.75rem 0.5rem 0.75rem;
+                }
+
+                @media (min-width: $med-screen) {
+                    display: none;
+                }
+            }
+
+            &__urgency {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                justify-content: center;
+                background: $washed-blue;
+                width: 100%;
+                padding: 0.5rem 0.5rem 0 0.75rem;
+                order: 4;
+                text-align: left;
+
+                > * {
+                    margin: 0.25rem 0.5rem;
+                }
+
+                @media (min-width: $sm-med-screen) {
+                    margin: 1rem 2.5rem 0 2.5rem;
+                    justify-content: center;
+                }
+
+                @media (min-width: $med-screen) {
+                    flex-direction: column;
+                    justify-content: center;
+                    margin: 0;
+                    padding-top: 0;
+                    background: none;
+                    align-self: flex-start;
+                    align-items: flex-start;
+
+                    > * {
+                        margin: 0.25rem 0 0.25rem 0;
+                    }
+                }
+
+                &__dates {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            &__status {
+                display: flex;
+                padding: 0.5rem;
+                align-items: center;
+                margin-bottom: 0.5rem;
+                order: 1;
+
+                img.status-icon {
+                    margin-right: 0.5rem;
+                }
+
+                @media (min-width: $med-screen) {
+                    margin: 0 0 1rem 0;
+                    background: none;
+                    margin-bottom: 0;
+
+                    img.status-icon {
+                        margin-right: 1rem;
+                    }
+                }
+            }
+
+            &__new-status {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            &__next-step {
+                width: 100%;
+                margin-bottom: 0.75rem;
+                align-self: flex-start;
+            }
+
+            .job__status {
+                font-weight: bold;
+                color: $black;
+                text-align: left;
+            }
+
+            &__new-status.job__status {
+                text-align: center;
+            }
         }
 
-        @media (min-width: $med-screen) {
-          flex-direction: column;
-          justify-content: center;
-          margin: 0;
-          padding-top: 0;
-          background: none;
-          align-self: flex-start;
-          align-items: flex-start;
-
-          > * {
-            margin: 0.25rem 0 0.25rem 0;
-          }
-        }
-
-        &__dates {
-          display: flex;
-          align-items: center;
-        }
-      }
-
-      &__status {
-        display: flex;
-        padding: 0.5rem;
-        align-items: center;
-        margin-bottom: 0.5rem;
-        order: 1;
-
-        img.status-icon {
-          margin-right: 0.5rem;
-        }
-
-        @media (min-width: $med-screen) {
-          margin: 0 0 1rem 0;
-          background: none;
-          margin-bottom: 0;
-
-          img.status-icon {
-            margin-right: 1rem;
-          }
-        }
-      }
-
-      &__new-status {
-        width: 100%;
-        margin-bottom: 0.5rem;
-      }
-
-      &__next-step {
-        width: 100%;
-        margin-bottom: 0.75rem;
-        align-self: flex-start;
-      }
-
-      .job__status {
-        font-weight: bold;
-        color: $black;
-        text-align: left;
-      }
-
-      &__new-status.job__status {
-        text-align: center;
-      }
-    }
 
 
 
-
-    &__activity {
-      background-color: $washed-blue;
-      padding: 0.5rem 0.5rem 0.5rem 1rem;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      margin-bottom: 0.25rem;
-      flex-wrap: wrap;
-
-      @media (min-width: $sm-med-screen) {
-        flex-direction: row;
-        justify-content: space-evenly;
-        margin: 0 2.5rem 0.5rem 2.5rem;
-      }
-
-      @media (min-width: $med-screen) {
-        flex-direction: column;
-        background: none;
-      }
-
-      &__criticality {
-        display: none;
-      }
-
-      &__title {
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        margin: 0.25rem 0.5rem 0.25rem 0rem;
-        flex-grow: 1;
-
-        @media (min-width: $med-screen) {
-          justify-content: center;
-          margin-right: 0;
-          flex-grow: 0;
-        }
-
-        @media (min-width: $lg-screen) {
-          white-space: nowrap;
-        }
-
-        img {
-          display: inline-block;
-          margin-right: 0.5rem;
-          max-height: 1.9rem;
-        }
-      }
-
-      &__location {
-        text-align: center;
-        margin: 0.25rem 0.5rem 0.25rem 0;
-
-        .distance {
-          white-space: nowrap;
-        }
-
-        @media (min-width: $med-screen) {
-          margin-right: 0;
-        }
-      }
-    }
-
-    &__col3 {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0.5rem;
-
-      @media (min-width: $sm-med-screen) {
-        flex-direction: row-reverse;
-        justify-content: space-between;
-      }
-
-      &__criticality {
-        display: none;
-      }
-
-      @media (min-width: $med-screen) {
-        flex-direction: column;
-
-        &__criticality {
-          display: block;
-          margin-bottom: 0.25rem;
-        }
-      }
-    }
-
-    &__actions {
-      .btn {
-        width: 100%;
-        padding: 5px 0;
-        margin: 0.25rem 0.5rem;
-      }
-
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-
-      @media (min-width: $sm-screen) {
-        flex-direction: row;
-        width: auto;
-
-        .btn {
-          width: 12rem;
-        }
-      }
-
-      @media (min-width: $med-screen) {
-        flex-direction: column;
-        flex-grow: 1;
-      }
-    }
-
-    &__footer {
-      display: flex;
-      flex-grow: 0;
-      margin-top: 10px;
-      min-width: 9rem;
-
-      @media (min-width: $sm-med-screen) {
-        margin-left: 0.5rem;
-      }
-
-      @media (min-width: $med-screen) {
-        margin: 0;
-      }
-
-      a {
-        span {
-          display: inline-block;
-          margin-left: 3px;
-        }
-
-        &.open {
-          span {
-            @include arrow( 8px, 3px, $dark-blue, down, $white);
-            height: 10px;
-          }
-        }
-
-        &.close {
-          display: none;
-
-          span {
-            @include arrow( 8px, 3px, $dark-blue, up, $white);
-            height: 10px;
-            margin: 0 0 3px 12px;
-          }
-        }
-      }
-    }
-
-    &.admin-view {
-      @media (min-width: $med-screen) {
-        grid-template-columns: 1.2fr 2fr 14rem;
-      }
-
-      .job__info__col1__referrer {
-        order: 3;
-
-        @media (min-width: $med-screen) {
-          display: none;
-        }
-      }
-
-      .job__info__activity {
-        flex-direction: row;
-
-        @media (min-width: $med-screen) {
-          flex-direction: column;
-          justify-content: center;
-          margin: 0;
-
-          .job__info__activity__criticality {
-            display: block;
+        &__activity {
+            background-color: $washed-blue;
+            padding: 0.5rem 0.5rem 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
             margin-bottom: 0.25rem;
-          }
-        }
-      }
+            flex-wrap: wrap;
 
-      .job__info__col3__criticality {
-        display: none;
-      }
-    }
-  }
+            @media (min-width: $sm-med-screen) {
+                flex-direction: row;
+                justify-content: space-evenly;
+                margin: 0 2.5rem 0.5rem 2.5rem;
+            }
 
-  &--hot {
-    .job__info {
-      .due-date {
-        color: $light-orange;
-        font-weight: 600;
-      }
-    }
-  }
+            @media (min-width: $med-screen) {
+                flex-direction: column;
+                background: none;
+            }
 
-  &--warm {
-    .job__info {
-      .due-date {
-        color: $light-orange;
-      }
-    }
-  }
+            &__criticality {
+                display: none;
+            }
 
-  .critical {
-    font-weight: bold;
-    color: $light-orange;
-  }
+            &__title {
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                margin: 0.25rem 0.5rem 0.25rem 0rem;
+                flex-grow: 1;
 
-  .critical-icon {
-    margin: 5px 5px 5px 0;
-    display: inline-block;
-    text-align: center;
-    height: 25px;
-    width: 25px;
-    background-color: $orange;
-    border-radius: 25px;
-    color: white;
+                @media (min-width: $med-screen) {
+                    justify-content: center;
+                    margin-right: 0;
+                    flex-grow: 0;
+                }
 
-    @media (min-width: $med-screen) {
-      margin-right: 0.5rem;
-      width: 30px;
-      height: 30px;
-      font-size: 1.3rem;
-      padding-top: 1px;
-    }
-  }
+                @media (min-width: $lg-screen) {
+                    white-space: nowrap;
+                }
 
-  img.status-icon {
-    width: 3rem;
-  }
+                img {
+                    display: inline-block;
+                    margin-right: 0.5rem;
+                    max-height: 1.9rem;
+                }
+            }
 
+            &__location {
+                text-align: center;
+                margin: 0.25rem 0.5rem 0.25rem 0;
 
-  &__detail {
-    display: none;
+                .distance {
+                    white-space: nowrap;
+                }
 
-    h4 {
-      color: $dark-blue;
-      font-size: 1.2rem;
-    }
-
-    p {
-      line-height: 1.25;
-    }
-
-    .loading-spinner {
-      margin: 15px auto 0 auto;
-      width: 32px;
-    }
-  }
-
-  &__expander {
-    padding-bottom: 0.5rem;
-
-    > .row {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-    }
-
-    &.add-line:after,
-    &:before {
-      content: " ";
-      position: relative;
-      margin: 10px auto;
-      display: block;
-      border: none;
-      border-top: 1px solid $gray-8;
-      width: 100%;
-    }
-
-    h4, h5 {
-      color: $dark-blue;
-      font-size: 1.3rem;
-      padding: 20px 0px 5px 0px;
-    }
-
-    h4 {
-      position: relative;
-      padding: 10px 30px 10px 0.5rem;
-      margin: 0;
-
-      span {
-
-        @include arrow( 8px, 3px, $dark-blue, down, $white);
-        float: right;
-        margin-top: 10px;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-
-      &.open {
-        span {
-          @include arrow( 8px, 3px, $dark-blue, up, $white);
-          float: right;
-        }
-      }
-    }
-
-    &__content {
-      display: none;
-      margin: 0 0.5rem 0.5rem 0.5rem;
-
-      p, li, li * {
-        font-size: 18px;
-        line-height: 27px;
-      }
-
-      .volunteer-instructions {
-        ol {
-          font-weight: bold;
-          color: $black;
-
-          p {
-            margin-top: 0;
-            font-weight: normal;
-            margin-bottom: 1rem;
-          }
+                @media (min-width: $med-screen) {
+                    margin-right: 0;
+                }
+            }
         }
 
-        > p:first-child, > ul:first-child, > ol:first-child {
-          margin-top: 0;
+        &__col3 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0.5rem;
+
+            @media (min-width: $sm-med-screen) {
+                flex-direction: row-reverse;
+                justify-content: space-between;
+            }
+
+            &__criticality {
+                display: none;
+            }
+
+            @media (min-width: $med-screen) {
+                flex-direction: column;
+
+                &__criticality {
+                    display: block;
+                    margin-bottom: 0.25rem;
+                }
+            }
         }
 
-        > p:last-child, > ul:last-child, > ol:last-child {
-          margin-bottom: 0;
+        &__actions {
+            .btn {
+                width: 100%;
+                padding: 5px 0;
+                margin: 0.25rem 0.5rem;
+            }
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+
+            @media (min-width: $sm-screen) {
+                flex-direction: row;
+                width: auto;
+
+                .btn {
+                    width: 12rem;
+                }
+            }
+
+            @media (min-width: $med-screen) {
+                flex-direction: column;
+                flex-grow: 1;
+            }
         }
-      }
+
+        &__footer {
+            display: flex;
+            flex-grow: 0;
+            margin-top: 10px;
+            min-width: 9rem;
+
+            @media (min-width: $sm-med-screen) {
+                margin-left: 0.5rem;
+            }
+
+            @media (min-width: $med-screen) {
+                margin: 0;
+            }
+
+            a {
+                span {
+                    display: inline-block;
+                    margin-left: 3px;
+                }
+
+                &.open {
+                    span {
+                        @include arrow( 8px, 3px, $dark-blue, down, $white);
+                        height: 10px;
+                    }
+                }
+
+                &.close {
+                    display: none;
+
+                    span {
+                        @include arrow( 8px, 3px, $dark-blue, up, $white);
+                        height: 10px;
+                        margin: 0 0 3px 12px;
+                    }
+                }
+            }
+        }
+
+        &.admin-view {
+            @media (min-width: $med-screen) {
+                grid-template-columns: 1.2fr 2fr 14rem;
+            }
+
+            .job__info__col1__referrer {
+                order: 3;
+
+                @media (min-width: $med-screen) {
+                    display: none;
+                }
+            }
+
+            .job__info__activity {
+                flex-direction: row;
+
+                @media (min-width: $med-screen) {
+                    flex-direction: column;
+                    justify-content: center;
+                    margin: 0;
+
+                    .job__info__activity__criticality {
+                        display: block;
+                        margin-bottom: 0.25rem;
+                    }
+                }
+            }
+
+            .job__info__col3__criticality {
+                display: none;
+            }
+        }
     }
 
-    dl {
-      dt {
+    &--urgent {
+        .job__info {
+            .due-date {
+                color: $light-orange;
+                font-weight: 600;
+            }
+        }
+    }
+
+    &--due-soon {
+        .job__info {
+            .due-date {
+                font-weight: 600;
+            }
+        }
+    }
+
+    .critical {
         font-weight: bold;
-        color: $black;
-        padding-top: 0.25rem;
-      }
-
-      dd {
-        word-wrap: break-word;
-      }
+        color: $light-orange;
     }
-  }
 
-  &.open {
-    a {
-      &.open {
+    .critical-icon {
+        margin: 5px 5px 5px 0;
+        display: inline-block;
+        text-align: center;
+        height: 25px;
+        width: 25px;
+        background-color: $orange;
+        border-radius: 25px;
+        color: white;
+
+        @media (min-width: $med-screen) {
+            margin-right: 0.5rem;
+            width: 30px;
+            height: 30px;
+            font-size: 1.3rem;
+            padding-top: 1px;
+        }
+    }
+
+    img.status-icon {
+        width: 3rem;
+    }
+
+
+    &__detail {
         display: none;
-      }
 
-      &.close {
-        display: inline;
-      }
+        h4 {
+            color: $dark-blue;
+            font-size: 1.2rem;
+        }
+
+        p {
+            line-height: 1.25;
+        }
+
+        .loading-spinner {
+            margin: 15px auto 0 auto;
+            width: 32px;
+        }
     }
-  }
+
+    &__expander {
+        padding-bottom: 0.5rem;
+
+        > .row {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        &.add-line:after,
+        &:before {
+            content: " ";
+            position: relative;
+            margin: 10px auto;
+            display: block;
+            border: none;
+            border-top: 1px solid $gray-8;
+            width: 100%;
+        }
+
+        h4, h5 {
+            color: $dark-blue;
+            font-size: 1.3rem;
+            padding: 20px 0px 5px 0px;
+        }
+
+        h4 {
+            position: relative;
+            padding: 10px 30px 10px 0.5rem;
+            margin: 0;
+
+            span {
+
+                @include arrow( 8px, 3px, $dark-blue, down, $white);
+                float: right;
+                margin-top: 10px;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            &.open {
+                span {
+                    @include arrow( 8px, 3px, $dark-blue, up, $white);
+                    float: right;
+                }
+            }
+        }
+
+        &__content {
+            display: none;
+            margin: 0 0.5rem 0.5rem 0.5rem;
+
+            p, li, li * {
+                font-size: 18px;
+                line-height: 27px;
+            }
+
+            .volunteer-instructions {
+                ol {
+                    font-weight: bold;
+                    color: $black;
+
+                    p {
+                        margin-top: 0;
+                        font-weight: normal;
+                        margin-bottom: 1rem;
+                    }
+                }
+
+                > p:first-child, > ul:first-child, > ol:first-child {
+                    margin-top: 0;
+                }
+
+                > p:last-child, > ul:last-child, > ol:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        dl {
+            dt {
+                font-weight: bold;
+                color: $black;
+                padding-top: 0.25rem;
+            }
+
+            dd {
+                word-wrap: break-word;
+            }
+        }
+    }
+
+    &.open {
+        a {
+            &.open {
+                display: none;
+            }
+
+            &.close {
+                display: inline;
+            }
+        }
+    }
 }

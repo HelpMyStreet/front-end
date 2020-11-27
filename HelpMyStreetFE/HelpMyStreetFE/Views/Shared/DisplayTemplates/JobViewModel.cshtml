@@ -12,16 +12,20 @@
     var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
     var className = "";
+    var dueDate = "";
+
     if (Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
     {
-        if (Model.JobHeader.DueDate.Date <= DateTime.Today)
+        dueDate = Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType);
+
+        if (dueDate.Contains("urgent"))
         {
-            className = "job--hot";
+            className = "job--urgent";
         }
 
-        if (Model.JobHeader.DueDate.Date == DateTime.Today.AddDays(1))
+        if (dueDate.Contains("soon"))
         {
-            className = "job--warm";
+            className = "job--due-soon";
         }
     }
 
@@ -60,7 +64,7 @@
                         <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
                     }
                     <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
-                        @Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType)
+                        @dueDate
                     </span>
 
                 </span>
