@@ -5,16 +5,21 @@
   line-height: 1.222;
   font-weight: bold;
   letter-spacing: 0.5px;
-  padding: 13px 40px;
+  padding: 0 2.5rem;
+  height: 3.1rem;
   text-decoration: none;
   text-align: center;
   white-space: nowrap;
   transition: border-color 0.5s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   .text, .loading-spinner__label {
     font-size: 1rem;
     line-height: 1.222;
     font-weight: bold;
+    margin: auto;
   }
 
   &.border-blue {
@@ -100,7 +105,6 @@
 .cta {
   @extend .white;
   @extend .bg-green;
-  display: inline-block;
 
   &:hover {
     @extend .white;
