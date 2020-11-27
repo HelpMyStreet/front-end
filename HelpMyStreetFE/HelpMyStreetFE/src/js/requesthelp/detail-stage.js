@@ -1,15 +1,16 @@
-import { buttonLoad, buttonUnload } from "../shared/btn";
+﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validatePostCode, hasNumber, validateFormData, validateEmail, validatePhoneNumber, scrollToFirstError } from "../shared/validator";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+import { filterInput, inputTypes } from "../shared/input-filter";
 
 export function initaliseDetailStage() {
-  validateForm($('#currentStep_Type').val() == 'Myself' ? true : false);
-  console.log($('#currentStep_Type').val());
-  SetupAddressFinder();
+    validateForm($('#currentStep_Type').val() == 'Myself' ? true : false);
+    SetupAddressFinder();
+    filterInput($('input[inputmode="numeric"]'), inputTypes.NUMERIC);
 
-  trackEvent("Request form", "View 1.details", "", 0);
+    trackEvent("Request form", "View 1.details", "", 0);
 }
 var validateForm = function (validateRecipientAsRequestor) {
     

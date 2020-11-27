@@ -1,12 +1,14 @@
-import { buttonLoad, buttonUnload } from "../shared/btn";
+﻿import { buttonLoad, buttonUnload } from "../shared/btn";
 import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } from "../shared/validator";
 import { datepickerLoad, validateDate, dateValidationSchemes } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+import { filterInput, inputTypes } from "../shared/input-filter";
 
 export function initialiseStepTwo() {
 
   trackEvent("Registration flow", "View Step 2");
+  filterInput($('input[inputmode="numeric"]'), inputTypes.NUMERIC);
 
   $(".manual_entry").on("click", function (evt) {
     evt.preventDefault();
