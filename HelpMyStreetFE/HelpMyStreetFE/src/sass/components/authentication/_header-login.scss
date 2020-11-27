@@ -110,14 +110,7 @@ $breakpointSm: 900px;
   }
 
   .btn {
-    @include copy-sz-md;
-    padding: 0.25rem 1rem;
-    img {
-      height: 28px;
-    }
-    @media screen and (min-width: $breakpointSm) {
-      min-width: 180px;
-    }
+    min-width: 180px;
   }
 
   @media screen and (min-width: $breakpointSm) {
