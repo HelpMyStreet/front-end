@@ -224,6 +224,11 @@ namespace HelpMyStreetFE.Controllers
             var address = $"{baseAddress}/account/GetJobHTML?JobID={jobID}&UserID={user.ID}";
             var response = await client.GetAsync(address);
 
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return BadRequest();
+            }
+
             var html = await response.Content.ReadAsStringAsync();
 
             html = $"<h4>You requested details of the following HelpMyStreet Job: </h4><br />{html}";
