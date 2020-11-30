@@ -1,6 +1,7 @@
 ﻿@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
 
@@ -13,6 +14,7 @@
 
     var showSensitiveData = Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin;
     var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(Model.JobDetail.JobSummary.JobID);
 }
 
 @if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open || Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress)
@@ -196,6 +198,20 @@
                     <div class="sm12 volunteer-instructions">
                         <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
                     </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (questionsToDisplay.Count() > 0)
+    {
+        <div class="job__expander offline-details-container">
+            <div class="row">
+                <div class="sm12 offline-details">
+                    <dl>
+                        <dt>Do you need to take these details offline?</dt>
+                        <dd>For data protection reasons, you'll only be able to view non-personal information. <span class="link-icons"><a href="/account/emailJobDetails?id=@encodedJobID"><img src="/img/icons/email.svg" />Email </a><a href="/account/printJobDetails?id=@encodedJobID" target="_blank"><img src="/img/icons/printer.svg" /> Print </a></span></dd>
+
+                    </dl>
                 </div>
             </div>
         </div>

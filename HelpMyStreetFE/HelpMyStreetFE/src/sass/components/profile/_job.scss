@@ -470,6 +470,37 @@
             }
         }
 
+        &.offline-details-container {
+            @media screen and (max-width: $med-screen) {
+                display: none;
+            }
+        }
+
+        .offline-details {
+            display: flex;
+
+            dd {
+                display: flex;
+            }
+
+            .link-icons {
+                display: flex;
+                flex-basis: 35%;
+                justify-content: center;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 20px;
+                }
+
+                img {
+                    padding: 5px;
+                    width: 50px;
+                }
+            }
+        }
+
         &__content {
             display: none;
             margin: 0 0.5rem 0.5rem 0.5rem;

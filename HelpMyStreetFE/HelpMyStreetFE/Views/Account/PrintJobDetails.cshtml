@@ -1,0 +1,96 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
+
+@{
+    Layout = "_LayoutPrint";
+    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement(false) && !string.IsNullOrEmpty(q.Answer));
+    var shoppingList = questionsToDisplay.Where(x => x.Id == (int)Questions.Shopping_List).FirstOrDefault();
+    questionsToDisplay = questionsToDisplay.Where(x => x.Id != (int)Questions.Shopping_List);
+}
+
+<script>window.print();</script>
+
+@if (!String.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+{
+    <h4>Group Name: @Model.JobDetail.JobSummary.RecipientOrganisation </h4>
+}
+<h4>Activity: @Model.JobDetail.JobSummary.SupportActivity.FriendlyNameShort()</h4>
+
+<h4>Request Details:</h4>
+<dl>
+    <dt><u>When Is The Help Needed?</u></dt>
+
+    @if (Model.JobDetail.JobSummary.DueDays < 0)
+    {
+        if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
+        {
+            <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+        }
+        else
+        {
+            <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
+        }
+    }
+    else if (Model.JobDetail.JobSummary.DueDateType == DueDateType.On)
+    {
+        <dd>This request should be completed on <strong>@(Model.JobDetail.JobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong>; the person who requested the help would prefer it on this date.</dd>
+    }
+    else if (Model.JobDetail.JobSummary.DueDays == 0)
+    {
+        if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
+        {
+            <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
+        }
+        else
+        {
+            <dd>This request is due <strong>today</strong>. Please get in touch with the help recipient urgently to arrange the support they need.</dd>
+        }
+    }
+    else
+    {
+        <dd>You can complete this request <strong>any time on or before @(Model.JobDetail.JobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong></dd>
+    }
+    <br />
+    @if (shoppingList != null)
+    {
+
+        <dt><u>Shopping List</u></dt>
+
+        <dd>@Html.Raw(shoppingList.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+        <br />
+    }
+    @if (questionsToDisplay != null)
+    {
+        <dt><u>Further Details</u></dt>
+
+        @foreach (var q in questionsToDisplay)
+        {
+            <dd>@q.FriendlyName(): @Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+        }
+        <br />
+    }
+</dl>
+<h4>Volunteer Instructions:</h4>
+
+    @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.Intro)
+
+    @if (Model.GroupSupportActivityInstructions.Steps?.Count > 0)
+    {
+        <ol>
+            @foreach (var step in Model.GroupSupportActivityInstructions.Steps)
+            {
+                <li>
+                    <div class="step-heading">@step.Heading</div>
+                    @Markdown.ParseHtmlString(step.Detail)
+                </li>
+            }
+
+        </ol>
+    }
+
+    @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.Close)
+

@@ -187,6 +187,36 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> PrintJobDetails(string id, CancellationToken cancellationToken)
+        {
+            var jobID = Base64Utils.Base64DecodeToInt(id);
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (user == null)
+            {
+                return Redirect("/account/login?returnURL=/account/printJobDetails?id=" + id);
+            }
+
+            JobDetail jobDetails = await _requestService.GetJobDetailsAsync(jobID, user.ID, cancellationToken);
+            
+
+            if (jobDetails == null)
+            {
+                throw new Exception($"Failed to retrieve job details for JobId {jobID}");
+            }
+
+            
+
+            JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
+            {
+                JobDetail = jobDetails,
+                UserActingAsAdmin = false,
+                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
+            };
+
+            return View(jobDetailViewModel);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
