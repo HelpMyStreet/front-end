@@ -21,16 +21,12 @@ $(function () {
 
     intialiseCookieConsent();
     intialiseForgottonForm(firebase, account);
-    $("#login-submit").click(async () => {
-        buttonLoad($(this));
-        try {
-            $(this).disabled = true;
-            const email = $("#email").val();
-            const password = $("#password").val();
-            account.login.login(email, password);
-        } finally {
-            $(this).disabled = false;
-        }
+    $(".login-form").submit(function (event) {
+        event.preventDefault();
+        buttonLoad($(this).find("button"));
+        const email = $("#email").val();
+        const password = $("#password").val();
+        account.login.login(email, password);
     });
 
     $("#sign-up").click(function(event) {

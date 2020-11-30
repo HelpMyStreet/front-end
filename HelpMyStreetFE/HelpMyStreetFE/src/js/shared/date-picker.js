@@ -13,14 +13,14 @@ export function datepickerLoad(id, errorId, dateValidationScheme = dateValidatio
 
      // event listner to add slashes whilst entering input
     datepicker.addEventListener('input', function (e) {        
-        this.type = 'text';
         var input = this.value;
         if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
         var values = input.split('/').map(function (v) {
             return v.replace(/\D/g, '')
         });
-        if (values[0]) values[0] = checkValue(values[0], 31);
-        if (values[1]) values[1] = checkValue(values[1], 12);
+        if (values[0]) values[0] = checkValue(values[0], 31, values.length > 1);
+        if (values[1]) values[1] = checkValue(values[1], 12, values.length > 2);
+        if (values[2]) values[2] = checkYear(values[2]);
         var output = values.map(function (v, i) {
             return v.length == 2 && i < 2 ? v + ' / ' : v;
         });
@@ -69,15 +69,30 @@ export function validateDate(val, id, errorId, dateValidationScheme = dateValida
   }
 }
 
-function checkValue(str, max) {
+function checkValue(str, max, fullNumber) {
     if (str.charAt(0) !== '0' || str == '00') {
         var num = parseInt(str);
         if (isNaN(num) || num <= 0 || num > max) num = 1;
-        str = num > parseInt(max.toString().charAt(0))
+        str = (num > parseInt(max.toString().charAt(0)) || fullNumber)
             && num.toString().length == 1 ? '0' + num : num.toString();
     };
     return str;
 };
+
+function checkYear(str) {
+    const thisYear = (new Date()).getFullYear();
+    const num = parseInt(str);
+    if (str.length === 2 && num != 19 && num != 20) {
+        if (isNaN(num) || num < 0) return str;
+        // Assume 20 years in the future, or 80 in the past
+        if (num < thisYear - 2000 + 20) {
+            str = (2000 + num).toString();
+        } else {
+            str = (1900 + num).toString();
+        }
+    }
+    return str;
+}
 
 function _calculateAge(birthday) { // birthday is a date    
     var ageDifMs = Date.now() - birthday.getTime();

@@ -16,12 +16,12 @@
     <div class="row">
         <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_MobileNumber">Your mobile number</label>
-            @Html.TextBoxFor(x => x.MobileNumber, new { type = "number"})
+            @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
             <span class="error"></span>
         </div>
         <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_AlternatePhoneNumber">Your alternative phone number</label>
-            @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { type = "number"})
+            @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
             <span class="error"></span>
         </div>
     </div>
