@@ -5,31 +5,7 @@ import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
 
-export function initialiseRequests(isVerified) {
-    const job = getParameterByName("j");
-
-    if (job) {
-        var jobEl = $(`#${job}`);
-        if (jobEl.length) {
-            $("html, body").animate(
-                {
-                    scrollTop: jobEl.offset().top,
-                },
-                {
-                    duration: 1000,
-                    complete: () => {
-                        if (isVerified) {
-                            $(`#${job} .job__detail`).slideDown();
-                            $(`#${job}`).addClass("open highlight");
-                            loadJobDetails(jobEl);
-                        } else {
-                            $(`#${job}`).addClass("highlight");
-                        }
-                    },
-                }
-            );
-        }
-    }
+export function initialiseRequests() {
 
     $('.job-list').on('mouseover', '.job', function () {
         loadJobDetails($(this));
@@ -84,6 +60,8 @@ export function initialiseRequests(isVerified) {
         }
         buttonUnload($(this));
     });
+
+    $('.job-list .job.highlight').find('.open').click();
 
     loadFeedbackComponents();
 }
