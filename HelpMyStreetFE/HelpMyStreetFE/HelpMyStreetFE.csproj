@@ -62,5 +62,6 @@
     <Folder Include="wwwroot\img\community\ageUK\notts\" />
     <Folder Include="wwwroot\img\community\ageUK\notts\balderton\" />
     <Folder Include="wwwroot\img\community\ageUK\notts\balderton\carousel1\" />
+    <Folder Include="Views\Shared\Components\JobDetailOutput\" />
   </ItemGroup>
 </Project>

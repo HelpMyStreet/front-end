@@ -25,6 +25,7 @@ using HelpMyStreetFE.ViewComponents;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
+using System.Net.Http;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -41,6 +42,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly ICommunicationService _communicationService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
@@ -57,6 +59,7 @@ namespace HelpMyStreetFE.Controllers
             ILogger<AccountController> logger,
             IUserService userService,
             IAddressService addressService,
+            ICommunicationService communicationService,
             IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
@@ -74,6 +77,7 @@ namespace HelpMyStreetFE.Controllers
             _groupService = groupService;
             _authService = authService;
             _groupMemberService = groupMemberService;
+            _communicationService = communicationService;
         }
 
         [HttpGet]
@@ -196,25 +200,57 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect("/account/login?returnURL=/account/printJobDetails?id=" + id);
             }
 
-            JobDetail jobDetails = await _requestService.GetJobDetailsAsync(jobID, user.ID, cancellationToken);
-            
-
-            if (jobDetails == null)
+            var jovm = new JobDetailOutputViewModel()
             {
-                throw new Exception($"Failed to retrieve job details for JobId {jobID}");
-            }
-
-            
-
-            JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
-            {
-                JobDetail = jobDetails,
-                UserActingAsAdmin = false,
-                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
+                JobID = jobID,
+                UserID = user.ID
             };
 
-            return View(jobDetailViewModel);
+            return View(jovm);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EmailJobDetails(string id, CancellationToken cancellationToken)
+        {
+            var jobID = Base64Utils.Base64DecodeToInt(id);
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var client = new HttpClient();
+            var baseAddress = $"{ HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}";
+            var address = $"{baseAddress}/account/GetJobHTML?JobID={jobID}&UserID={user.ID}";
+            var response = await client.GetAsync(address);
+
+            var html = await response.Content.ReadAsStringAsync();
+
+            html = $"<h4>You requested details of the following HelpMyStreet Job: </h4><br />{html}";
+
+            var commsResponse = await _communicationService.SendEmail("Job Details", "", html, new RecipientModel()
+            {
+                Email = user.UserPersonalDetails.EmailAddress,
+                Name = user.UserPersonalDetails.DisplayName
+            });
+
+            if (commsResponse)
+            {
+                return Ok();
+            } else
+            {
+                return BadRequest();
+            }
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetJobHTML(int JobID, int UserID, CancellationToken cancellationToken)
+        {
+            return ViewComponent("JobDetailOutput", new { JobID = JobID, UserID = UserID });
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
