@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +29,7 @@ using HelpMyStreetFE.Services.Requests;
 namespace HelpMyStreetFE.Controllers
 {
     [Authorize]
-
+    [Route("account")]
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
@@ -76,6 +76,7 @@ namespace HelpMyStreetFE.Controllers
             _groupMemberService = groupMemberService;
         }
 
+        [Route("login")]
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string er, string referringGroup, string source, CancellationToken cancellationToken)
@@ -99,6 +100,7 @@ namespace HelpMyStreetFE.Controllers
             return View(model);
         }
 
+        [Route("")]
         [HttpGet]
         public async Task<IActionResult> Index(string next, CancellationToken cancellationToken)
         {
@@ -133,6 +135,8 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
+        [Route("open-requests")]
+        [Route("open-requests/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
         {
@@ -149,6 +153,8 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
+        [Route("accepted-requests")]
+        [Route("accepted-requests/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
         {
@@ -164,6 +170,8 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [Route("completed-requests")]
+        [Route("completed-requests/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> CompletedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
@@ -184,6 +192,7 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [Route("LoadAwardsComponent")]
         [HttpGet]
         public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
         {
@@ -191,6 +200,7 @@ namespace HelpMyStreetFE.Controllers
             return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
         }
 
+        [Route("g/{groupKey}")]
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
@@ -212,6 +222,8 @@ namespace HelpMyStreetFE.Controllers
             return Redirect(PROFILE_URL);
         }
 
+        [Route("g/{groupKey}/requests")]
+        [Route("g/{groupKey}/requests/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
         {
@@ -241,6 +253,7 @@ namespace HelpMyStreetFE.Controllers
             return true;
         }
 
+        [Route("NavigationBadge")]
         [HttpGet]
         [AllowAnonymous]
         [AuthorizeAttributeNoRedirect]
@@ -257,6 +270,7 @@ namespace HelpMyStreetFE.Controllers
             return count;
         }
 
+        [Route("g/{groupKey}/volunteers")]
         [HttpGet]
         public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
