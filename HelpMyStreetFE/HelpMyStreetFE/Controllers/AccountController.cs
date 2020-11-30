@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -165,7 +165,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CompletedRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> CompletedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -175,6 +175,11 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.CompletedRequests;
+
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
 
             return View("Index", viewModel);
         }

@@ -241,13 +241,20 @@ namespace HelpMyStreetFE.Services.Requests
 
             return jfr.OrderBy switch
             {
-                OrderBy.DateDue_Ascending => jobsToDisplay.OrderBy(j => j.DueDate),
-                OrderBy.DateDue_Descending => jobsToDisplay.OrderByDescending(j => j.DueDate),
-                OrderBy.DateRequested_Ascending => jobsToDisplay.OrderBy(j => j.DateRequested),
-                OrderBy.DateRequested_Descending => jobsToDisplay.OrderByDescending(j => j.DateRequested),
-                OrderBy.DateStatusLastChanged_Ascending => jobsToDisplay.OrderBy(j => j.DateStatusLastChanged),
-                OrderBy.DateStatusLastChanged_Descending => jobsToDisplay.OrderByDescending(j => j.DateStatusLastChanged),
-                OrderBy.Distance_Ascending => jobsToDisplay.OrderBy(j => j.DistanceInMiles),
+                OrderBy.DateDue_Ascending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DueDate),
+                OrderBy.DateDue_Descending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DueDate),
+                OrderBy.DateRequested_Ascending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DateRequested),
+                OrderBy.DateRequested_Descending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateRequested),
+                OrderBy.DateStatusLastChanged_Ascending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DateStatusLastChanged),
+                OrderBy.DateStatusLastChanged_Descending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateStatusLastChanged),
+                OrderBy.Distance_Ascending => 
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DistanceInMiles),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }

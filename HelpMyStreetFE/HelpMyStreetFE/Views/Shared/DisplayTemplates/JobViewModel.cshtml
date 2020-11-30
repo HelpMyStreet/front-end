@@ -20,13 +20,18 @@
 
         if (dueDate.Contains("urgent"))
         {
-            className = "job--urgent";
+            className += " job--urgent";
         }
 
         if (dueDate.Contains("soon"))
         {
-            className = "job--due-soon";
+            className += " job--due-soon";
         }
+    }
+
+    if (Model.HighlightJob)
+    {
+        className += " highlight";
     }
 }
 

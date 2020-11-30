@@ -78,7 +78,8 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobHeader = a,                
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken)
+                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
+                HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
             })));
 
             if (listLengthCallback != null)

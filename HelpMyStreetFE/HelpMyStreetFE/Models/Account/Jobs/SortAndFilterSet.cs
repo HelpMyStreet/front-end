@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public IEnumerable<FilterField<int>> MaxDistanceInMiles { get; set; }
         public IEnumerable<FilterField<int>> DueInNextXDays { get; set; }
         public IEnumerable<OrderByField> OrderBy { get; set; }
+        public int? HighlightJobId { get; set; }
     }
 }

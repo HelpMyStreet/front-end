@@ -19,7 +19,7 @@
             <div class="job-filter-panel">
                 @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
                    {
-                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
                        EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
                    })
             </div>
