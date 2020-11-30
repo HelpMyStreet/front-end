@@ -231,7 +231,7 @@ namespace HelpMyStreetFE.Controllers
 
             var html = await response.Content.ReadAsStringAsync();
 
-            html = $"<h4>You requested details of the following HelpMyStreet Job: </h4><br />{html}";
+            html = $"<h4>You requested details of the following HelpMyStreet Job: </h4>{html}";
 
             var commsResponse = await _communicationService.SendEmail("Job Details", "", html, new RecipientModel()
             {
