@@ -12,6 +12,62 @@
   }
 }
 
+@keyframes boing {
+    0% {
+        transform: scale(0.8);
+    }
+
+    80% {
+        transform: scale(1.01);
+    }
+
+    100% {
+        transform: scale(1.0);
+    }
+}
+
+.email-notification {
+
+
+    &-failure {
+        border-radius: 3px;
+        opacity: 0.9;
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        visibility: hidden;
+        background-color: #B53737;
+
+        &.visible {
+            visibility: visible;
+            animation-name: boing;
+            animation-duration: 0.6s;
+            z-index: 5000;
+        }
+    }
+
+    &-success {
+        border-radius: 3px;
+        opacity: 0.9;
+        position: fixed;
+        right: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        bottom: 10px;
+        visibility: hidden;
+        background-color: #149414;
+
+        &.visible {
+            z-index: 5000;
+            visibility: visible;
+            animation-name: boing;
+            animation-duration: 0.6s;
+        }
+    }
+}
+
 .job {
     @include shadow-xs;
     width: 100%;

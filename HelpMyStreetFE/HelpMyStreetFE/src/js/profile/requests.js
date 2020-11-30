@@ -85,9 +85,20 @@ export function initialiseRequests(isVerified) {
         buttonUnload($(this));
     });
 
+    $('.job-list').on('click', '.email-details', async function (evt) {
+        const job = $(this).closest('.job');
+        let jobId = job.attr("id");
+        let response = await hmsFetch(`/account/emailJobDetails?id=${jobId}`);
+        var outcome = '#email-notification-failure';
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            outcome = '#email-notification-success';
+        }
+        $(outcome).addClass("visible");
+        setTimeout(() => $(outcome).removeClass("visible"), 3000);
+    });
+
     loadFeedbackComponents();
 }
-
 
 
 export function showStatusUpdatePopup(btn) {
