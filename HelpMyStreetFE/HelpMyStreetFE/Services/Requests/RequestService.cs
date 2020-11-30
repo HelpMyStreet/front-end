@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -249,6 +250,39 @@ namespace HelpMyStreetFE.Services.Requests
                 OrderBy.Distance_Ascending => jobsToDisplay.OrderBy(j => j.DistanceInMiles),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
+        }
+
+        public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
+        {
+            var job = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+
+            if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
+            {
+                return new JobLocation
+                {
+                    JobSet = job.JobStatus switch
+                    {
+                        JobStatuses.InProgress => JobSet.UserAcceptedRequests,
+                        JobStatuses.Done => JobSet.UserCompletedRequests,
+                        JobStatuses.Cancelled => JobSet.UserCompletedRequests,
+                        _ => throw new ArgumentException($"Unexpected JobStatuses value: {job.JobStatus}", nameof(job.JobStatus)),
+                    }
+                };
+            }
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, cancellationToken))
+            {
+                return new JobLocation
+                {
+                    JobSet = JobSet.GroupRequests,
+                    GroupKey = (await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken)).GroupKey,
+                };
+            }
+            else if (job.JobStatus == JobStatuses.Open)
+            {
+                return new JobLocation { JobSet = JobSet.UserOpenRequests_MatchingCriteria };
+            }
+
+            return null;
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)

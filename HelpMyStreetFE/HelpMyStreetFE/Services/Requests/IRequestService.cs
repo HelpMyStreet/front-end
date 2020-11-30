@@ -24,5 +24,6 @@ namespace HelpMyStreetFE.Services.Requests
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source);
         IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jobFilterRequest);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs);
+        Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken);
     }
 }
