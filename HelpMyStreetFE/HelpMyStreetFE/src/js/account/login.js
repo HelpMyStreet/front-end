@@ -15,7 +15,8 @@ const validate = (email, password) => {
 
 export const login = async (email, password) => {
     const validationResponse = validate(email, password);
-    var returnUrl = getParameterByName("ReturnUrl");
+    const returnUrl = getParameterByName("ReturnUrl");
+    let error;
     if (validationResponse.success) {
         try {
             const credentials = await firebase.auth.signInWithEmailAndPassword(email, password);
@@ -42,14 +43,21 @@ export const login = async (email, password) => {
 
         } catch (e) {
             if (e.code == "server") {
-                window.location.href = `/login?email=${email}&er=server&ReturnUrl=${encodeURIComponent(returnUrl)}`;
-            }
-            else {
-                window.location.href = `/login?email=${email}&er=login&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+                error = 'server';
+            } else {
+                error = 'login';
             }
         }
     } else {
-        window.location.href = `/login?email=${email}&er=${validationResponse.input}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+        error = validationResponse.input;
+    }
+
+    if (error) {
+        if (window.location.pathname.startsWith('/login')) {
+            window.location.href = `${window.location.pathname}?email=${email}&er=${error}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+        } else {
+            window.location.href = `/login?email=${email}&er=${error}&ReturnUrl=${encodeURIComponent(returnUrl)}`;
+        }
     }
 };
 

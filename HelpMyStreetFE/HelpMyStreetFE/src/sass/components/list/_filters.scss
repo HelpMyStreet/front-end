@@ -97,6 +97,7 @@ body {
       width: 100%;
       height: calc(3.5rem - 4px);
       padding-right: 1rem;
+      flex-direction: column;
 
       &:after {
         content: " ";

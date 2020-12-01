@@ -3,10 +3,12 @@ import { validateFormData, validatePostCode, validatePhoneNumber, hasNumber } fr
 import { datepickerLoad, validateDate, dateValidationSchemes } from "../shared/date-picker";
 import { trackEvent } from "../shared/tracking-helper";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+import { filterInput, inputTypes } from "../shared/input-filter";
 
 export function initialiseStepTwo() {
 
   trackEvent("Registration flow", "View Step 2");
+  filterInput($('input[inputmode="numeric"]'), inputTypes.NUMERIC);
 
   $(".manual_entry").on("click", function (evt) {
     evt.preventDefault();
@@ -154,7 +156,7 @@ var runAdditionalValidation = async function(form) {
     let alt = form.find("input[name='alt_number']");         
 
     var v1 = validateDate(dob.val(), dob.attr('id'), $(dob).find('~ .error').attr('id'), dateValidationSchemes.OVER_18);
-    var v2 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07");
+    var v2 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07", true);
     var v3 = validatePhoneNumber(alt, "Please enter a valid alternative number");
     return (v1 && v2 && v3);
 }

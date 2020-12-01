@@ -62,10 +62,10 @@ export function validateEmail(email) {
     return valid;
 }
 
-export function validatePhoneNumber(phoneNumberEl, errorMessage) {
+export function validatePhoneNumber(phoneNumberEl, errorMessage, mobileNumber = false) {
     var phoneNumber = phoneNumberEl.val();
     if (phoneNumber == "") return true;
-    var valid = ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0");
+    var valid = ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0" && (!mobileNumber || phoneNumber[1] === "7"));
     if (valid == false) {
         phoneNumberEl.find("~ .error").show();
         phoneNumberEl.find("~ .error").text(errorMessage);
