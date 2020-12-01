@@ -1,4 +1,3 @@
-import { getParameterByName, updateQueryStringParam, removeQueryStringParam } from "../shared/querystring-helper";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
@@ -14,7 +13,6 @@ export function initialiseRequests() {
     $('.job-list').on('click', '.job a.open', function (e) {
         e.preventDefault();
         const job = $(this).closest('.job');
-        updateQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
         loadJobDetails(job);
@@ -23,7 +21,6 @@ export function initialiseRequests() {
     $('.job-list').on('click', '.job a.close', function (e) {
         e.preventDefault();
         const job = $(this).closest('.job');
-        removeQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
     });
