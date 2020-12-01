@@ -394,16 +394,17 @@ namespace HelpMyStreetFE.Repositories
                     </ul>
                     ";
 
+            communityViewModel.HeaderButtonWidth = 12;
 
-            communityViewModel.HeaderVolunteerButtonText = "";
-            communityViewModel.HeaderHelpButtonText = "";
+            communityViewModel.HeaderVolunteerButtonText = "We rely on volunteers to help us help our neighbours. If you would like to help, click the green button below.";
+            communityViewModel.HeaderHelpButtonText = "To ask for help, click below or give the Parish Council a call on 0115 914 6660";
 
             communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
             communityViewModel.CommunityVolunteersTextHtml =
                  @"<p>Supported by the Parish Council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
                     <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the Parish Council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
                     <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
-                    <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers.</p> 
+                    <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers, and to <a href='http://ruddington.info'>RUDDINGTON.info</a> for all their support in promoting and reporting on volunteer activities in the village.</p> 
                     <p>* RVCP is a collaboration of local business owners, Ruddington Parish Councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
                     ";
 
@@ -431,6 +432,13 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Proudly supported by RVCP*",
                     Location = "",
                     ImageLocation = "/img/community/ruddington/RVCP.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "RUDDINGTON.info",
+                    Role = "Promoting volunteer activities across the village",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/ruddington-info-logo.png"
                 },
                 new CommunityVolunteer()
                 {
@@ -465,7 +473,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.UsefulLinksHtml = @"<p><a href='https://ruddingtonparishcouncil.gov.uk'>Ruddington Parish Council</a></p>
                                                    <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
-                                                   <p><a href='http://ruddington.info'>Ruddington.info</a></p>";
+                                                   <p><a href='http://ruddington.info'>RUDDINGTON.info</a></p>";
 
 
             communityViewModel.ShowRequestHelpPopup = true;
