@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -100,7 +100,6 @@ namespace HelpMyStreetFE.Controllers
             return View(model);
         }
 
-        [Route("")]
         [HttpGet]
         public async Task<IActionResult> Index(string next, CancellationToken cancellationToken)
         {
@@ -192,7 +191,7 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
-        [Route("LoadAwardsComponent")]
+        [Route("get-awards-component")]
         [HttpGet]
         public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
         {
@@ -245,6 +244,7 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [Route("get-logged-in-status")]
         [HttpGet]
         [AllowAnonymous]
         [AuthorizeAttributeNoRedirect]
@@ -253,7 +253,7 @@ namespace HelpMyStreetFE.Controllers
             return true;
         }
 
-        [Route("NavigationBadge")]
+        [Route("get-navigation-badge")]
         [HttpGet]
         [AllowAnonymous]
         [AuthorizeAttributeNoRedirect]

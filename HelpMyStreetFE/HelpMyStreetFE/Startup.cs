@@ -321,19 +321,6 @@ namespace HelpMyStreetFE
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
 
-                endpoints.MapControllerRoute(
-                    name: "account/g/group",
-                    pattern: "account/g/{groupKey}",
-                    defaults: new { controller = "Account", action = "Group" });
-                endpoints.MapControllerRoute(
-                    name: "account/g/group/requests",
-                    pattern: "account/g/{groupKey}/requests",
-                    defaults: new { controller = "Account", action = "GroupRequests" });
-                endpoints.MapControllerRoute(
-                    name: "account/g/group/volunteers",
-                    pattern: "account/g/{groupKey}/volunteers",
-                    defaults: new { controller = "Account", action = "GroupVolunteers" });
-
                 // Community placeholders
                 endpoints.MapControllerRoute(
                     name: "Kimberley",
