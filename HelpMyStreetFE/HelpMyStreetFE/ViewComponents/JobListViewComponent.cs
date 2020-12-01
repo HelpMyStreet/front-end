@@ -19,12 +19,14 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly IFilterService _filterService;
 
-        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService)
+        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService, IFilterService filterService)
         {
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
+            _filterService = filterService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action<int> listLengthCallback, CancellationToken cancellationToken)
@@ -64,7 +66,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.UnfilteredJobs = jobs.Count();
 
-            jobs = _requestService.SortAndFilterJobs(jobs, jobFilterRequest);
+            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredJobs = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
