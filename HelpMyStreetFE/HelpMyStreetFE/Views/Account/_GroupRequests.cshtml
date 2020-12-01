@@ -12,9 +12,12 @@
     </header>
 
     <div class="job-filter-panel">
-        @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+        @await Component.InvokeAsync("JobFilterPanel", new
            {
-               JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupRequests, GroupId = Model.CurrentGroup.GroupId, ResultsToShow = 50, ResultsToShowIncrement = 50, HighlightJobId = Model.HighlightJobId },
+               jobFilterViewModel = new JobFilterViewModel()
+               {
+                   JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupRequests, GroupId = Model.CurrentGroup.GroupId, ResultsToShow = 50, ResultsToShowIncrement = 50, HighlightJobId = Model.HighlightJobId },
+               }
            })
     </div>
 
