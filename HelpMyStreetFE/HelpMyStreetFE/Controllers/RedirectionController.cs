@@ -61,11 +61,11 @@ namespace HelpMyStreetFE.Controllers
 
             string destination = jobLocation?.JobSet switch
             {
-                JobSet.UserOpenRequests_MatchingCriteria => $"/account/open-requests/{encodedJobId}",
-                JobSet.UserOpenRequests_NotMatchingCriteria => $"/account/open-requests/{encodedJobId}",
-                JobSet.UserAcceptedRequests => $"/account/accepted-requests/{encodedJobId}",
-                JobSet.UserCompletedRequests => $"/account/completed-requests/{encodedJobId}",
-                JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/{encodedJobId}",
+                JobSet.UserOpenRequests_MatchingCriteria => $"/account/open-requests/j/{encodedJobId}",
+                JobSet.UserOpenRequests_NotMatchingCriteria => $"/account/open-requests/j/{encodedJobId}",
+                JobSet.UserAcceptedRequests => $"/account/accepted-requests/j/{encodedJobId}",
+                JobSet.UserCompletedRequests => $"/account/completed-requests/j/{encodedJobId}",
+                JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/j/{encodedJobId}",
                 _ => LINK_EXPIRED_URL,
             };
 

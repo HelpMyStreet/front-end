@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.Controllers
 
 
         [Route("open-requests")]
-        [Route("open-requests/{encodedJobId}")]
+        [Route("open-requests/j/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> OpenRequests(string encodedJobId, CancellationToken cancellationToken)
         {
@@ -118,7 +118,7 @@ namespace HelpMyStreetFE.Controllers
 
 
         [Route("accepted-requests")]
-        [Route("accepted-requests/{encodedJobId}")]
+        [Route("accepted-requests/j/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> AcceptedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
@@ -140,7 +140,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [Route("completed-requests")]
-        [Route("completed-requests/{encodedJobId}")]
+        [Route("completed-requests/j/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> CompletedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
@@ -192,7 +192,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [Route("g/{groupKey}/requests")]
-        [Route("g/{groupKey}/requests/{encodedJobId}")]
+        [Route("g/{groupKey}/requests/j/{encodedJobId}")]
         [HttpGet]
         public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, CancellationToken cancellationToken)
         {
