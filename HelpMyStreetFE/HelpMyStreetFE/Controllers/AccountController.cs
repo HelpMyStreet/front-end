@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,70 +34,29 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
-        private readonly IAddressService _addressService;
-        private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IRequestService _requestService;
-        private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
 
-        private Dictionary<string, string> Errors = new Dictionary<string, string>()
-        {
-            { "login", "Sorry, we couldn't find an account with that email address and password.  Please check and try again" },
-            {"server", "Uh-oh, something has gone wrong at our end. Please try again" },
-            {"email", "Please enter a valid email address" },
-            {"password", "Please enter a valid password" }
-        };
-
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
-            IAddressService addressService,
-            IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
-            IGroupService groupService,
             IAuthService authService,
             IGroupMemberService groupMemberService
             )
         {
             _logger = logger;
             _userService = userService;
-            _addressService = addressService;
-            _configuration = configuration;
             _yotiOptions = yotiOptions;
             _requestService = requestService;
-            _groupService = groupService;
             _authService = authService;
             _groupMemberService = groupMemberService;
-        }
-
-        [Route("login")]
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login(string email, string er, string referringGroup, string source, CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (user != null)
-            {
-                return Redirect(PROFILE_URL);
-            }
-
-            var errorMessage = String.IsNullOrEmpty(er) ? "" : Errors[er];
-
-            LoginViewModel model = new LoginViewModel
-            {
-                Email = email,
-                EmailError = er == "email" ? errorMessage : "",
-                LoginError = er != "email" ? errorMessage : "",
-                FirebaseConfiguration = _configuration["Firebase:Configuration"],
-                SignUpURL = BuildSignUpUrl(referringGroup, source),
-            };
-            return View(model);
         }
 
         [HttpGet]
@@ -340,22 +299,6 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return viewModel;
-        }
-
-        private string BuildSignUpUrl(string referringGroup, string source)
-        {
-            if (string.IsNullOrEmpty(referringGroup))
-            {
-                return "/registration";
-            }
-            else if (string.IsNullOrEmpty(source))
-            {
-                return $"/registration/{referringGroup}";
-            }
-            else
-            {
-                return $"/registration/{referringGroup}/{source}";
-            }
         }
     }
 }

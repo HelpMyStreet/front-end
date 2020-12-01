@@ -304,19 +304,6 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "RequestHelp", action = "Success" });
 
                 endpoints.MapControllerRoute(
-                    name: "login",
-                    pattern: "login",
-                    defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                   name: "login/group",
-                   pattern: "login/{referringGroup}",
-                   defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                   name: "login/group/source",
-                   pattern: "login/{referringGroup}/{source}",
-                   defaults: new { controller = "Account", action = "Login" });
-
-                endpoints.MapControllerRoute(
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
