@@ -61,7 +61,20 @@ export function initialiseRequests() {
         buttonUnload($(this));
     });
 
-    $('.job-list .job.highlight').find('.open').click();
+    const highlightedJob = $('.job-list .job.highlight');
+    if (highlightedJob) {
+        $(document.scrollingElement || document.documentElement).animate(
+            {
+                scrollTop: highlightedJob.offset().top - 20
+            },
+            {
+                duration: 1000,
+                complete: () => {
+                    highlightedJob.find('.open').click();
+                }
+            }
+        );
+    }
 
     loadFeedbackComponents();
 }
