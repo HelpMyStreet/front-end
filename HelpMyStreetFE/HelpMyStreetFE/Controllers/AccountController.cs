@@ -96,7 +96,7 @@ namespace HelpMyStreetFE.Controllers
         [Route("open-requests")]
         [Route("open-requests/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenRequests(string encodedJobId, CancellationToken cancellationToken)
         {
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -107,6 +107,12 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenRequests;
+
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+
             return View("Index", viewModel);
         }
 
@@ -114,7 +120,7 @@ namespace HelpMyStreetFE.Controllers
         [Route("accepted-requests")]
         [Route("accepted-requests/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> AcceptedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -124,6 +130,11 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
+
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
 
             return View("Index", viewModel);
         }
@@ -170,7 +181,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
             {
-                return await GroupRequests(groupKey, cancellationToken);
+                return await GroupRequests(groupKey, null, cancellationToken);
             }
             else if (await _groupMemberService.GetUserHasRole_Any(user.ID, groupKey, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, cancellationToken))
             {
@@ -183,7 +194,7 @@ namespace HelpMyStreetFE.Controllers
         [Route("g/{groupKey}/requests")]
         [Route("g/{groupKey}/requests/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -199,6 +210,11 @@ namespace HelpMyStreetFE.Controllers
 
             viewModel.CurrentPage = MenuPage.GroupRequests;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
 
             return View("Index", viewModel);
         }

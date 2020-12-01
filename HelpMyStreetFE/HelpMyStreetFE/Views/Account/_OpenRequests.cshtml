@@ -11,14 +11,14 @@
     var criteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
     {
         PanelId = "criteria-requests",
-        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
         EmptyJobSetCallback = new Action(() => NoCriteriaJobsToDisplay = true),
     });
 
     var nonCriteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
     {
         PanelId = "non-criteria-requests",
-        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20 },
+        JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
         User = @Model.UserDetails.User,
         EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
     });
