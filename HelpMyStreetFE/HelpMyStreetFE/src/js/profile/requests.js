@@ -62,7 +62,7 @@ export function initialiseRequests() {
     });
 
     const highlightedJob = $('.job-list .job.highlight');
-    if (highlightedJob) {
+    if (highlightedJob.length) {
         $(document.scrollingElement || document.documentElement).animate(
             {
                 scrollTop: highlightedJob.offset().top - 20
