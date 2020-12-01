@@ -6,10 +6,10 @@
     <div id="header-login__toggle" class="header-login__collapsed-nav">
         <button id="header-login__btn--toggle" class="btn header-login__btn--toggle cta--blue transparent mr-sm">Log In</button>
     </div>
-    <div id="header-login-form" class="header-login__form">
+    <form id="header-login-form" class="header-login__form login-form">
         <header class="header-login__form-header mt-sm">
             <h3 class="header-login__title">Log In</h3>
-            <button class="header-login__btn--toggle btn--close">
+            <button class="header-login__btn--toggle btn--close" type="button">
                 <svg xmlns="" viewBox="0 0 100 100" class="icon--close" width="32" height="32">
                     <circle cx="50" cy="50" r="50" class="bg" />
                     <path d="M30,30 L70,70 M30,70 L70,30" class="cross" stroke-linecap="round" />
@@ -28,12 +28,10 @@
         </div>
 
         <div class="header-login__btn pt-sm pb-sm">
-            <button class="btn btn--login cta--blue transparent mr-sm login-submit-handler" id="login-submit">
+            <button class="btn btn--login cta--blue transparent mr-sm login-submit-handler" id="login-submit" type="submit">
                 <span class="text">Log In</span>
                 <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Log In", ShowDarkSpinner= true}' /></div>
             </button>
         </div>
-        
-        
-    </div>
+    </form>
 </article>

@@ -4,7 +4,7 @@
 
 @Markdown.ParseHtmlString(Model.Intro)
 
-@if (Model.Steps.Count > 0)
+@if (Model.Steps?.Count > 0)
 {
     <ol>
         @foreach (var step in Model.Steps)

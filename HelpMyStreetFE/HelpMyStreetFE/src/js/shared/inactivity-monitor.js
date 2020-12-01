@@ -2,7 +2,7 @@
 
 import { hmsFetch, fetchResponses } from "./hmsFetch";
 
-const IDLE_TIMEOUT = 1000 * 60 * 5; // 5 minutes
+const IDLE_TIMEOUT = 1000 * 60 * 1; // 1 minute
 
 const INACTIVITY_STATES = {
   ACTIVE: "Activity detecteed in last 5 minutes",

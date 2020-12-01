@@ -87,8 +87,7 @@ namespace HelpMyStreetFE.Controllers
 
         public async Task<IActionResult> FaceCoverings(CancellationToken cancellationToken)
         {
-            var genericGetGroupByKeyResponse = await _groupService.GetGroupIdByKey("Generic", cancellationToken);
-            var encodedGenericGroupId = Base64Utils.Base64Encode(genericGetGroupByKeyResponse);
+            var encodedGenericGroupId = Base64Utils.Base64Encode((int)Groups.Generic);
 
             FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
             {

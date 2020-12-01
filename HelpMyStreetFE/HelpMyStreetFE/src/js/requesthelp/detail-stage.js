@@ -3,13 +3,14 @@ import { validatePostCode, hasNumber, validateFormData, validateEmail, validateP
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
+import { filterInput, inputTypes } from "../shared/input-filter";
 
 export function initaliseDetailStage() {
-  validateForm($('#currentStep_Type').val() == 'Myself' ? true : false);
-  console.log($('#currentStep_Type').val());
-  SetupAddressFinder();
+    validateForm($('#currentStep_Type').val() == 'Myself' ? true : false);
+    SetupAddressFinder();
+    filterInput($('input[inputmode="numeric"]'), inputTypes.NUMERIC);
 
-  trackEvent("Request form", "View 1.details", "", 0);
+    trackEvent("Request form", "View 1.details", "", 0);
 }
 var validateForm = function (validateRecipientAsRequestor) {
     
@@ -97,14 +98,14 @@ var  runAdditionalValidation = async function (form) {
 
     let mobile = form.find("input[name='currentStep.Recipient.MobileNumber']");
     let alt = form.find("input[name='currentStep.Recipient.AlternatePhoneNumber']");
-    var v1 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07");
+    var v1 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07", true);
     var v2 = validatePhoneNumber(alt, "Please enter a valid alternative number");
 
     var mobileRequestor = form.find("input[name='currentStep.Requestor.MobileNumber']");
     var altRequestor = form.find("input[name='currentStep.Requestor.AlternatePhoneNumber']");
 
     if (mobileRequestor.length > 0) {
-        var v3 = validatePhoneNumber(mobileRequestor, "Please enter a valid mobile number starting with 07");
+        var v3 = validatePhoneNumber(mobileRequestor, "Please enter a valid mobile number starting with 07", true);
         var v4 = validatePhoneNumber(altRequestor, "Please enter a valid alternative number");
         return (v1 && v2 && v3 && v4);
     }
