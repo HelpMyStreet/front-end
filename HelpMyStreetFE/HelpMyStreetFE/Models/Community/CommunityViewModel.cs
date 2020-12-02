@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.Models.Community
         public string CommunityVolunteersTextHtml { get; set; }
 
         public bool ShowRequestHelp { get; set; } = true;
-        public bool ShowHelpExampleCards {get;set;} = true;
+        public bool ShowHelpExampleCards {get;set;} = false;
         public HelpExampleCardsViewModel HelpExampleCards { get; set; } = new HelpExampleCardsViewModel();
 
         public bool DisableButtons { get; set; }
