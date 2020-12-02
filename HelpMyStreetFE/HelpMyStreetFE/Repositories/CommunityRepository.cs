@@ -17,7 +17,7 @@ namespace HelpMyStreetFE.Repositories
             {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
             {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
             {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
             {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
@@ -493,7 +493,7 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK";
+            communityViewModel.HomeFolder = "ageUK/lsl/";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
@@ -503,23 +503,20 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
 
-            communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
+            communityViewModel.BannerImageLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png";
 
-            communityViewModel.Header = "Veterans need your help!";
+            communityViewModel.Header = "Older people in Lincoln & South Lincolnshire NEED YOUR HELP!";
             communityViewModel.HeaderHTML = @"
                     <p class='mt-sm mb-xs'>
-                        We are now underway with our new “Vitals For Veterans” project.
+                        The Winter months are incredibly challenging for many older people in our communities. Loneliness and isolation, cold days and long dark nights all have a significant impact on older people, people who may be living in your street!
                     </p>
                     <p class='mt-sm mb-xs'>
-                        Over the coming months, we are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire because
-                        <i>veterans should not be forgotten</i>.
-                    </p>
-                    <p class='mt-sm mb-s'>
-                        If you can help us deliver wellbeing packs to veterans in your area please sign up below - and click to view open requests in your area.
+                        Please sign up to help us to support older people, you can help as little or as much as you like. We are always creating new projects and developing new services to support older people in Lincoln & South Lincolnshire, and we need the support of local volunteers to help us make a difference.
                     </p>";
             communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
-            communityViewModel.HeaderVolunteerButtonText = null;
+            communityViewModel.HeaderVolunteerButtonText = "We need the support of local volunteers to help us make a difference.";
 
+            communityViewModel.HeaderButtonWidth = 12;
 
 
             communityViewModel.CommunityVolunteersTextHtml =
@@ -530,7 +527,8 @@ namespace HelpMyStreetFE.Repositories
                 </p>
                 <p>
                     Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across
-                    17 departments for people countywide.
+                    17 departments for people countywide including personal care, befriending, free information and advice, help in the home, a meal delivery
+                    service and much more.
                 </p>
                 <p>
                     Our support is varied and extensive; 11,845 people attended activities with us in 2018/19,  helping to combat social isolation by offering
@@ -540,9 +538,12 @@ namespace HelpMyStreetFE.Repositories
                     the recent pandemic and sadly for whom there is no “new normal”. Their reality remains loneliness and isolation.
                 </p>
                 <p>
-                    Following a successful application to the Armed Forces Covenant Fund Age UK Lincoln & South Lincolnshire have been awarded some funding to
-                    deliver Vitals for Veterans because “Veterans should not be forgotten”. With the funding and additional support from local businesses offering
-                    generous donations of funds and items we are able to deliver free packs to veterans across Lincoln & South Lincolnshire between June and November.
+                    Throughout the year we have many projects running that help older people and we are always looking for new volunteers to help support with
+                    tasks such as prescription or shopping collections, helping with wellbeing calls and more. Even the smallest task can make a real difference
+                    to someone in your community.
+                </p>
+                <p>
+                    You can find out more about the impact we make <a href='https://ageuklslannualreview.org.uk'>here</a>.
                 </p>
                 <p>
                     For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a>
@@ -551,6 +552,13 @@ namespace HelpMyStreetFE.Repositories
                 ";
             communityViewModel.ShowRequestHelp = false;
 
+            communityViewModel.ShowVisitWebsite = true;
+            communityViewModel.VisitWebsiteHeading = "How can we help?";
+            communityViewModel.VisitWebsiteText = "We support older people in and around Lincoln. To find out more about our other services and the support we can provide, please go to our website or call us on 03455 564 144.";
+            communityViewModel.VisitWebsiteButtonText = "Go to our website";
+            communityViewModel.WebsiteUrl = "https://www.ageuk.org.uk/lincolnsouthlincolnshire";
+            communityViewModel.HeaderVisitWebsiteButtonText = "To ask for help, please go to our website or call us on 03455 564 144.";
+
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -558,41 +566,33 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Nicki Lee",
                     Role = "Senior Volunteer Coordinator",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/NL_cropped.jpg"
+                    ImageLocation = "/img/community/ageuk/lsl/NL_cropped.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Amanda Wilson",
                     Role = "Engagement Coordinator",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/AW_cropped.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Melanie Meik",
-                    Role = "Fundraising & Marketing Manager",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/MM_cropped.jpg"
+                    ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
                 },
             };
 
 
             communityViewModel.UsefulLinksHtml = 
-                @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans"">Vitals for Veterans page</a> - Find out more about our incredible project reaching veterans in need across Lincoln and South Lincolnshire</p>
-                <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
+                @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
                 <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
 
-            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
-            {
-                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
-                Example2 = "Collect a prescription for an older lady in Lincoln",
-                Example3 = "Post a letter for a gentleman in Spalding"
-            };
+            communityViewModel.ShowHelpExampleCards = false;
 
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
             communityViewModel.AllowLeaveOurGroup = true;
+
+            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
+
+            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
+            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of AgeUK Wirral.  Click below to view help requests in your area.";
 
             return communityViewModel;
         }
