@@ -183,12 +183,6 @@ namespace HelpMyStreetFE.Controllers
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
             source = ValidateSource(source);
 
-            // Fix to allow existing routing
-            if (referringGroup == "v4v")
-            {
-                referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
-            }
-
             var requestHelpJourney = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
 
             if (requestHelpJourney.AccessRestrictedByRole)
