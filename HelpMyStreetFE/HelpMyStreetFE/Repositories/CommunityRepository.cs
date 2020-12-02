@@ -148,7 +148,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
             communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.ShowHelpExampleCards = false;
             return communityViewModel;
         }
 
@@ -213,7 +212,6 @@ namespace HelpMyStreetFE.Repositories
                             
             communityViewModel.ShowRequestHelp = false;
             communityViewModel.HeaderVolunteerButtonText = null;
-            communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.CommunityVolunteersHeader = "Welcome from Healthy London Partnership";
 
 
@@ -347,6 +345,7 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
+            communityViewModel.ShowHelpExampleCards = true;
 
             communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a></p>";
 
@@ -371,8 +370,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Latitude = communityModel.Latitude;
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
-
-            communityViewModel.ShowHelpExampleCards = false;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
@@ -582,8 +579,6 @@ namespace HelpMyStreetFE.Repositories
                 @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
                 <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
 
-            communityViewModel.ShowHelpExampleCards = false;
-
             communityViewModel.AllowJoinOurGroup = true;
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
@@ -694,8 +689,6 @@ namespace HelpMyStreetFE.Repositories
                 <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
                 <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
 
-            communityViewModel.ShowHelpExampleCards = false;
-
             return communityViewModel;
         }
 
@@ -703,7 +696,6 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
             communityViewModel.showFeedback = true;
-            communityViewModel.ShowHelpExampleCards = false;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
             communityViewModel.groupKey = "ftlos";
 
