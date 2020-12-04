@@ -89,7 +89,7 @@
                         @if (userGroup.UserRoles.Contains(GroupRoles.RequestSubmitter))
                         {
                             <li class="account__nav__item">
-                                <a href=@($"/request-help/{Base64Utils.Base64Encode(userGroup.GroupId)}") class="">Submit Request</a>
+                                <a href=@($"/request-help/{Base64Utils.Base64Encode(userGroup.GroupId)}/a") class="">Submit Request</a>
                             </li>
                         }
                     </ul>

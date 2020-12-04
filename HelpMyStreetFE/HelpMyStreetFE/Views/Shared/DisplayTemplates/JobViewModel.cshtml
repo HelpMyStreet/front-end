@@ -65,11 +65,16 @@
                     @if (admin)
                     {
                         <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
+                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.JobHeader.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.JobHeader.DueDate.ToString("dd/MM/yyyy"))">
+                            Due @Model.JobHeader.DueDate.FriendlyFutureDate()
+                        </span>
                     }
-                    <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
-                        @dueDate
-                    </span>
-
+                    else
+                    {
+                        <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
+                            @dueDate
+                        </span>
+                    }
                 </span>
             }
 
