@@ -304,35 +304,9 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "RequestHelp", action = "Success" });
 
                 endpoints.MapControllerRoute(
-                    name: "login",
-                    pattern: "login",
-                    defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                   name: "login/group",
-                   pattern: "login/{referringGroup}",
-                   defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                   name: "login/group/source",
-                   pattern: "login/{referringGroup}/{source}",
-                   defaults: new { controller = "Account", action = "Login" });
-
-                endpoints.MapControllerRoute(
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
-
-                endpoints.MapControllerRoute(
-                    name: "account/g/group",
-                    pattern: "account/g/{groupKey}",
-                    defaults: new { controller = "Account", action = "Group" });
-                endpoints.MapControllerRoute(
-                    name: "account/g/group/requests",
-                    pattern: "account/g/{groupKey}/requests",
-                    defaults: new { controller = "Account", action = "GroupRequests" });
-                endpoints.MapControllerRoute(
-                    name: "account/g/group/volunteers",
-                    pattern: "account/g/{groupKey}/volunteers",
-                    defaults: new { controller = "Account", action = "GroupVolunteers" });
 
                 // Community placeholders
                 endpoints.MapControllerRoute(
@@ -385,19 +359,6 @@ namespace HelpMyStreetFE
                     name: "fortheloveofscrubs",
                     pattern: "for-the-love-of-scrubs",
                     defaults: new { controller = "Community", action = "Index", communityName = "ftlos" });
-
-                endpoints.MapControllerRoute(
-                    name: "OpenRequests",
-                    pattern: "account/open-requests",
-                    defaults: new { controller = "Account", action = "OpenRequests" });
-                endpoints.MapControllerRoute(
-                   name: "AcceptedRequests",
-                   pattern: "account/accepted-requests",
-                   defaults: new { controller = "Account", action = "AcceptedRequests" });
-                endpoints.MapControllerRoute(
-                   name: "CompletedRequests",
-                   pattern: "account/completed-requests",
-                   defaults: new { controller = "Account", action = "CompletedRequests" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",

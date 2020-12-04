@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Enums.Account;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -226,29 +227,37 @@ namespace HelpMyStreetFE.Services.Requests
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
-        public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
+        public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var jobsToDisplay = jobs.Where(
-                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
-                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
-                    && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    && (jfr.DueInNextXDays == null || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.DueAfter == null || j.DueDate.Date >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
-                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+            var job = await _requestHelpRepository.GetJobSummaryAsync(jobId);
 
-            return jfr.OrderBy switch
+            if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
             {
-                OrderBy.DateDue_Ascending => jobsToDisplay.OrderBy(j => j.DueDate),
-                OrderBy.DateDue_Descending => jobsToDisplay.OrderByDescending(j => j.DueDate),
-                OrderBy.DateRequested_Ascending => jobsToDisplay.OrderBy(j => j.DateRequested),
-                OrderBy.DateRequested_Descending => jobsToDisplay.OrderByDescending(j => j.DateRequested),
-                OrderBy.DateStatusLastChanged_Ascending => jobsToDisplay.OrderBy(j => j.DateStatusLastChanged),
-                OrderBy.DateStatusLastChanged_Descending => jobsToDisplay.OrderByDescending(j => j.DateStatusLastChanged),
-                OrderBy.Distance_Ascending => jobsToDisplay.OrderBy(j => j.DistanceInMiles),
-                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
-            };
+                return new JobLocation
+                {
+                    JobSet = job.JobStatus switch
+                    {
+                        JobStatuses.InProgress => JobSet.UserAcceptedRequests,
+                        JobStatuses.Done => JobSet.UserCompletedRequests,
+                        JobStatuses.Cancelled => JobSet.UserCompletedRequests,
+                        _ => throw new ArgumentException($"Unexpected JobStatuses value: {job.JobStatus}", nameof(job.JobStatus)),
+                    }
+                };
+            }
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, cancellationToken))
+            {
+                return new JobLocation
+                {
+                    JobSet = JobSet.GroupRequests,
+                    GroupKey = (await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken)).GroupKey,
+                };
+            }
+            else if (job.JobStatus == JobStatuses.Open)
+            {
+                return new JobLocation { JobSet = JobSet.UserOpenRequests_MatchingCriteria };
+            }
+
+            return null;
         }
 
         private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)

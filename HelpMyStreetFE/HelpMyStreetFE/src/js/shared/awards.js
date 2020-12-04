@@ -1,5 +1,5 @@
 ﻿const defaultDivContainer = "awards-component";
-const defaultComponentEndpoint = "/account/LoadAwardsComponent";
+const defaultComponentEndpoint = "/account/get-awards-component";
 
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 
