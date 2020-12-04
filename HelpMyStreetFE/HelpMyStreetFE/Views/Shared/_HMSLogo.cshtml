@@ -10,19 +10,21 @@
     <div class="page-header__logo">
         @if (Model.LinkEntireLogo)
         {
-            <a href="/">
+            <a title ="Ho Ho Ho! Merry Christmas from HelpMyStreet.org" href="/">
                 <div>
-                    <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
-                    <div class="logo-text">
-                        <div class="primary-logo-text">
-                            <span class="large-screen-only">@Model.PrimaryText.Replace(' ', '\u00A0')</span>
-                            <span class="small-screen-only">@Model.PrimaryMobileText.Replace(' ', '\u00A0')</span>
+
+                        <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent_Christmas.svg" alt="Help My Street Logo" />
+                        <div class="logo-text">
+                            <div class="primary-logo-text">
+                                <span class="large-screen-only">@Model.PrimaryText.Replace(' ', '\u00A0')</span>
+                                <span class="small-screen-only">@Model.PrimaryMobileText.Replace(' ', '\u00A0')</span>
+                            </div>
+                            @if (Model.ShowSecondaryText)
+                            {
+                                <div class="secondary-logo-text">@Model.SecondaryText.Replace(' ', '\u00A0')</div>
+                            }
                         </div>
-                        @if (Model.ShowSecondaryText)
-                        {
-                            <div class="secondary-logo-text">@Model.SecondaryText.Replace(' ','\u00A0')</div>
-                        }
-                    </div>
+                    
                 </div>
             </a>
         }
@@ -30,7 +32,7 @@
         {
             <div>
                 <a href="/">
-                    <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent.svg" alt="Help My Street Logo" />
+                    <img class="logo" src="/img/logos/HelpMyStreet_BrandMarque_Transparent_Christmas.svg" alt="Help My Street Logo" />
                 </a>
                 <div class="logo-text">
                     <div class="primary-logo-text">

@@ -352,9 +352,10 @@ $breakpointLg: 1550px;
 
             &.logo-text {
                 position: absolute;
-                top: 0;
+                top: 0.5rem;
                 left: 60px;
 
+                color: #d80404;
                 .primary-logo-text {
                     top: 5px;
                     font-size: 27px;
