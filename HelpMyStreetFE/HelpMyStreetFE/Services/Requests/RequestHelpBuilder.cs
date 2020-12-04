@@ -103,14 +103,13 @@ namespace HelpMyStreetFE.Services.Requests
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
             }
 
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral)
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral || requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
 
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
-
             }
             return model;
         }
