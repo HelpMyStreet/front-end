@@ -45,6 +45,7 @@ namespace HelpMyStreetFE.ViewComponents
                 (JobStatuses.InProgress, JobStatuses.Done, _, true) => View("MarkAsCompletePopup", vm),
                 (JobStatuses.InProgress, JobStatuses.Open, _, true) => View("CantDoPopup", vm),
 
+                (JobStatuses.New,        JobStatuses.Open, true, _    ) => View("Admin_ReleaseRequestPopup", vm),
                 (JobStatuses.Done, JobStatuses.InProgress, true, _    ) => View("Admin_MarkAsInProgressPopup", vm),
                 (JobStatuses.InProgress, JobStatuses.Done, true, false) => View("Admin_MarkAsCompletePopup", vm),
                 (JobStatuses.InProgress, JobStatuses.Open, true, false) => View("Admin_MarkAsOpenPopup", vm),
