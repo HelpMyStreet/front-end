@@ -39,6 +39,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 JobStatuses = new List<FilterField<JobStatuses>>
                     {
+                        new FilterField<JobStatuses>() { Value = JobStatuses.New },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Open },
                         new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Done },
@@ -61,6 +62,7 @@ namespace HelpMyStreetFE.Services.Requests
             }
             else
             {
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
             }
