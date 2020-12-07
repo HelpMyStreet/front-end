@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.ViewComponents
             IEnumerable<JobHeader> jobs = menuPage switch
             {
                 MenuPage.GroupRequests
-                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress),
+                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.New || j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress),
                 MenuPage.AcceptedRequests
                     => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.InProgress),
                 MenuPage.CompletedRequests
