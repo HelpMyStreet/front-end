@@ -180,6 +180,11 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("request-help");
 
+            if (referringGroup == "v4v")
+            {
+                return Redirect("/account");
+            }
+
             int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
             source = ValidateSource(source);
 
