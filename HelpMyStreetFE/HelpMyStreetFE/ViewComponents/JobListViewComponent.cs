@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.ViewComponents
             _filterService = filterService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
             JobListViewModel jobListViewModel = new JobListViewModel();
 
@@ -84,9 +84,14 @@ namespace HelpMyStreetFE.ViewComponents
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
             })));
 
-            if (hideFilterPanelCallback != null && jobListViewModel.UnfilteredJobs == jobListViewModel.FilteredJobs && jobListViewModel.UnfilteredJobs <= 5)
+            if (jobListViewModel.UnfilteredJobs == jobListViewModel.FilteredJobs && jobListViewModel.UnfilteredJobs <= 5)
             {
-                hideFilterPanelCallback.Invoke();
+                hideFilterPanelCallback?.Invoke();
+
+                if (jobListViewModel.UnfilteredJobs == 0)
+                {
+                    noJobsCallback?.Invoke();
+                }
             }
 
             return View("JobList", jobListViewModel);

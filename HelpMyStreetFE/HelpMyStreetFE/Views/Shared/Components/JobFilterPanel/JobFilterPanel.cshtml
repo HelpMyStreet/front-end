@@ -12,6 +12,10 @@
         {
             showFilterPanel = false;
         }),
+        NoJobsCallback = new Action(() =>
+        {
+            Model.EmptyJobSetCallback?.Invoke();
+        }),
     });
 }
 
