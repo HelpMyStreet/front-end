@@ -211,7 +211,7 @@ namespace HelpMyStreetFE.Services.Requests
                 OrderBy.RequiringAdminAttention =>
                     jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.RequiringAdminAttentionScore()).ThenBy(j => j.DueDate),
                 OrderBy.DateDue_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.JobStatus == JobStatuses.New).ThenBy(j => j.DueDate),
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DueDate),
                 OrderBy.DateDue_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DueDate),
                 OrderBy.DateRequested_Ascending =>
