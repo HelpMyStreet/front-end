@@ -14,7 +14,7 @@
     var className = "";
     var dueDate = "";
 
-    if (Model.JobHeader.JobStatus == JobStatuses.New || Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
+    if (Model.JobHeader.JobStatus.Incomplete())
     {
         dueDate = Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType);
 
@@ -46,7 +46,7 @@
                 </span>
             }
 
-            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.New || Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus.Incomplete()))
             {
                 <span class="job__info__col1__criticality">
                     <span class="critical-icon">!</span>
@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            @if (Model.JobHeader.JobStatus == JobStatuses.New || Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress)
+            @if (Model.JobHeader.JobStatus.Incomplete())
             {
                 <span class="job__info__col1__urgency toggle-on-status-change">
                     @if (admin)
@@ -89,7 +89,7 @@
             }
         </div>
         <div class="job__info__activity">
-            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.New || Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus.Incomplete()))
             {
                 <span class="job__info__activity__criticality">
                     <span class="critical-icon">!</span>
@@ -120,7 +120,7 @@
             </span>
         </div>
         <div class="job__info__col3 flex-end">
-            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus == JobStatuses.New || Model.JobHeader.JobStatus == JobStatuses.Open || Model.JobHeader.JobStatus == JobStatuses.InProgress))
+            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus.Incomplete()))
             {
                 <span class="job__info__col3__criticality">
                     <span class="critical-icon">!</span>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Enums;
 using HelpMyStreetFE.Enums.Account;
@@ -45,7 +46,7 @@ namespace HelpMyStreetFE.Controllers
             var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            if (job.JobStatus == JobStatuses.Open || job.JobStatus == JobStatuses.InProgress)
+            if (job.JobStatus.Incomplete())
             {
                 return ShowMessage(Result.Failure_IncorrectJobStatus, job.ReferringGroupID);
             }

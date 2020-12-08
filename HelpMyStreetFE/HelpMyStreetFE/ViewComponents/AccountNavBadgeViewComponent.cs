@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Models.Account;
@@ -50,7 +51,7 @@ namespace HelpMyStreetFE.ViewComponents
             IEnumerable<JobHeader> jobs = menuPage switch
             {
                 MenuPage.GroupRequests
-                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.New || j.JobStatus == JobStatuses.Open || j.JobStatus == JobStatuses.InProgress),
+                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete()),
                 MenuPage.AcceptedRequests
                     => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.InProgress),
                 MenuPage.CompletedRequests
