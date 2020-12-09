@@ -375,7 +375,7 @@ namespace HelpMyStreetFE.Repositories
 
         private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Ruddington" };
             CommunityModel communityModel = await GetCommunityDetailByKey("ruddington");
 
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
@@ -387,47 +387,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
-
-            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
-
-            communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
-
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        	In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
-                            We’re the Ruddington Community Response Team, here to help with:
-                    </p>
-                    <ul class='tick-list mt-xs mb-sm compact-list'>
-                        <li>Shopping for essentials</li>
-                        <li>Collecting prescriptions</li>
-                        <li>A friendly chat</li>
-                        <li>Local errands</li>
-                        <li>Anything else, just ask!</li>
-                    </ul>
-                    ";
-
-            communityViewModel.HeaderButtonWidth = 12;
-
-            communityViewModel.HeaderVolunteerButtonText = "We rely on volunteers to help us help our neighbours. If you would like to help, click the green button below.";
-            communityViewModel.HeaderHelpButtonText = "To ask for help, click below or give the Parish Council a call on 0115 914 6660";
-
-            communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
-            communityViewModel.CommunityVolunteersTextHtml =
-                 @"<p>Supported by the Parish Council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
-                    <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the Parish Council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
-                    <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
-                    <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers, and to <a href='http://ruddington.info'>RUDDINGTON.info</a> for all their support in promoting and reporting on volunteer activities in the village.</p> 
-                    <p>* RVCP is a collaboration of local business owners, Ruddington Parish Councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
-                    ";
-
-            communityViewModel.RequestHelpHeading = @"How can we help?";
-
-            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-
-            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of the Ruddington Community Response Team. Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -481,19 +440,6 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/ruddington/Andrew.jpg"
                 },
             };
-
-
-            communityViewModel.UsefulLinksHtml = @"<p><a href='https://ruddingtonparishcouncil.gov.uk'>Ruddington Parish Council</a></p>
-                                                   <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
-                                                   <p><a href='http://ruddington.info'>RUDDINGTON.info</a></p>";
-
-
-            communityViewModel.ShowRequestHelpPopup = true;
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
 
             var carouselPath = "/img/community/ruddington/carousel3";
             communityViewModel.CarouselImages3 = new List<string>

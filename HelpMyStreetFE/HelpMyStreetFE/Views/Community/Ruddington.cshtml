@@ -1,0 +1,153 @@
+@using HelpMyStreetFE.Models.Feedback;
+@using HelpMyStreetFE.Models.Community;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+    if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId; }
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+
+    <div class="container">
+        <div class="community-banner">
+            <img src="/img/community/ruddington/banner.jpg" alt="Ruddington Community Response Team" />
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000">
+                        <h2 class="mb0 mt-md">Welcome to the Ruddington Community Response Team HelpMyStreet page</h2>
+                    </header>
+
+                    <p class='mt-sm mb-xs'>
+                        In our community there&rsquo;s always somebody here to help, there&rsquo;s no need for anyone to struggle alone.
+                        We&rsquo;re the Ruddington Community Response Team, here to help with:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm compact-list'>
+                        <li>Shopping for essentials</li>
+                        <li>Collecting prescriptions</li>
+                        <li>A friendly chat</li>
+                        <li>Local errands</li>
+                        <li>Anything else, just ask!</li>
+                    </ul>
+
+                    <div class="row sm12 text-center justify-center mb-sm">
+                        <p class="mt-sm mb-sm pl-md pr-md">We rely on volunteers to help us help our neighbours. If you would like to help, click the green button below.</p>
+                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange show-request-help-popup">@Model.RequestHelpButtonText</a>
+                    </div>
+
+                    <div class="row sm12 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">To ask for help, click below or give the Parish Council a call on 0115 914 6660</p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Latitude" data-longitude="@Model.Longitude" data-zoom="@Model.ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row flex justify-center">
+                <h2 class="mb15 mt-lg text-center">Welcome to the Ruddington Community Response Team HelpMyStreet page</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_CommunityVolunteersSlider" model="Model" />
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row">
+                <div class="sm12">
+                    <div>
+                        <p>Supported by the Parish Council and the Ruddington Village Centre Partnership (RVCP), we&rsquo;re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
+                        <p>If you&rsquo;d like some local volunteer help just ask by clicking on one of the &lsquo;Request Help&rsquo; buttons on this page or text &lsquo;Help&rsquo; for free to 60002. You can also give the Parish Council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
+                        <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p>
+                        <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers, and to <a href='http://ruddington.info'>RUDDINGTON.info</a> for all their support in promoting and reporting on volunteer activities in the village.</p>
+                        <p>* RVCP is a collaboration of local business owners, Ruddington Parish Councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                <div class="flex sm6">
+                    <partial name="_HowCanWeHelpCard" model="Model" />
+                </div>
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Useful Links</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div class="sm12 community-useful-links mb-lg">
+                    <p><a href='https://ruddingtonparishcouncil.gov.uk'>Ruddington Parish Council</a></p>
+                    <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
+                    <p><a href='http://ruddington.info'>RUDDINGTON.info</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.groupKey })
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                <div class="flex sm6">
+                    <partial name="_HowCanWeHelpCard" model="Model" />
+                </div>
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker mb-lg">
+        <partial name="_PhotoSlider" model="Model.CarouselImages3" />
+    </div>
+
+</div>
