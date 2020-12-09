@@ -50,7 +50,7 @@
                             {
                                 <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange @(Model.ShowRequestHelpPopup ? "show-request-help-popup" : "") @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
@@ -84,7 +84,7 @@
                             {
                                 <p class="mt-sm mb-sm pl-md pr-md">@Model.HeaderHelpButtonText</p>
                             }
-                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange  @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                            <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange @(Model.ShowRequestHelpPopup ? "show-request-help-popup" : "") @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                         </div>
                     }
 
@@ -194,7 +194,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.ShowRequestHelpPopup ? "show-request-help-popup" : "") @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -350,7 +350,7 @@
                             </p>
 
                             <div class="" style="text-align: center">
-                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
+                                <a href="/request-help/@Model.EncodedGroupId" class="btn cta btn--request-help fill cta--orange @(Model.ShowRequestHelpPopup ? "show-request-help-popup" : "") @(Model.DisableButtons ? "disabled" : "")">@Model.RequestHelpButtonText</a>
                             </div>
 
                         </div>
@@ -398,8 +398,6 @@
             </div>
         </div>
     </div>
-
-    @Html.Hidden(nameof(Model.ShowRequestHelpPopup))
 
     @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
     {
