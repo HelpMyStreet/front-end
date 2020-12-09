@@ -331,7 +331,7 @@ namespace HelpMyStreetFE.Repositories
 
         private async Task<CommunityViewModel> GetTankersley(CancellationToken cancellationToken)
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Tankersley" };
             CommunityModel communityModel = await GetCommunityDetailByKey("tankersley");
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
@@ -340,44 +340,10 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "tankersley";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
-            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
-
-            communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
-
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Tankersley & Pilley Community Helpers";
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
-                        We’re the Tankersley &amp; Pilley Community Helpers, here to help with:
-                    </p>
-                    <ul class='tick-list mt-xs mb-sm compact-list'>
-                        <li>Shopping for essentials</li>
-                        <li>A friendly chat</li>
-                        <li>Help at home</li>
-                        <li>Cooking a hot meal</li>
-                    </ul>
-                    ";
-
-
-
-            communityViewModel.CommunityVolunteersTextHtml =
- @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog.</p>
-<p>To join us or to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
-";
-
-            communityViewModel.RequestHelpHeading = @"How can we help?";
-
-            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-
-            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley & Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -403,15 +369,6 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/tankersley/Helen.jpg"
                 },
             };
-
-            communityViewModel.ShowHelpExampleCards = true;
-
-            communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a></p>";
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
 
             return communityViewModel;
         }

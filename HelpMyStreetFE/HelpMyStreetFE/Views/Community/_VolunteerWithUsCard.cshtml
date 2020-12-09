@@ -10,6 +10,7 @@
     <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
         Thanks for being part of @Model.CommunityName.  Click below to view help requests in your area.
     </p>
-
-    <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+    <div class="card__buttons">
+        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+    </div>
 </div>
