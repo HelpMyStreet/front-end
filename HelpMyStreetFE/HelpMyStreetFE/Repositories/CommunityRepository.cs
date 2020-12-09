@@ -780,7 +780,6 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetFtLOS(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel();
-            communityViewModel.showFeedback = true;
             communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
             communityViewModel.groupKey = "ftlos";
 
