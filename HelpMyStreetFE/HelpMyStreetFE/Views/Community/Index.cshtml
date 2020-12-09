@@ -244,15 +244,6 @@
     }
 
 
-    @if (Model.ShowHelpExampleCards)
-    {
-        <div class="outer-container mt-md">
-            <div class="inner-container container">
-                <partial name="_HelpExampleCards" model="@Model.HelpExampleCards" />
-            </div>
-        </div>
-    }
-
     <div class="container mt-md mb-lg">
         @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
     </div>
