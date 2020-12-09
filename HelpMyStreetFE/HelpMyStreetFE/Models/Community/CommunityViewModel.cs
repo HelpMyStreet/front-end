@@ -44,7 +44,6 @@ namespace HelpMyStreetFE.Models.Community
         public string ProvideHelpText_GroupMember { get; set; }
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
         public string UsefulLinksHtml { get; set; }
-        public string HomeFolder { get; set; }
         public IEnumerable<string> CarouselImages1 { get; set; }
         public IEnumerable<string> CarouselImages2 { get; set; }
         public IEnumerable<string> CarouselImages3 { get; set; }

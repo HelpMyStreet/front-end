@@ -76,7 +76,6 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK/notts/balderton";
             communityViewModel.Latitude = communityModel.Latitude;
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = 13.5;
@@ -151,6 +150,20 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
             communityViewModel.AllowLeaveOurGroup = true;
+
+            var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
+            communityViewModel.CarouselImages1 = new List<string>
+            {
+                $"{carouselPath}/carousel-1.jpg",
+                $"{carouselPath}/carousel-2.jpg",
+                $"{carouselPath}/carousel-3.jpg",
+                $"{carouselPath}/carousel-4.jpg",
+                $"{carouselPath}/carousel-5.jpg",
+                $"{carouselPath}/carousel-6.jpg",
+                $"{carouselPath}/carousel-7.jpg",
+                $"{carouselPath}/carousel-8.jpg",
+            };
+
             return communityViewModel;
         }
 
@@ -189,6 +202,13 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
+            var carouselPath = "/img/community/ageUK/notts/north-muskham/carousel";
+            communityViewModel.CarouselImages2 = new List<string>
+            {
+                $"{carouselPath}/view-over-trent.JPG",
+                $"{carouselPath}/view-towards-sugar-factory.JPG",
+            };
+
             return communityViewModel;
         }
 
@@ -202,7 +222,6 @@ namespace HelpMyStreetFE.Repositories
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "hlp";
             communityViewModel.Latitude = communityModel.Latitude;
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
@@ -317,7 +336,6 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "tankersley";
             communityViewModel.Latitude = communityModel.Latitude;
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
@@ -407,7 +425,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ruddington";
             communityViewModel.Latitude = communityModel.Latitude;
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
@@ -521,6 +538,16 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.AllowLeaveOurGroup = true;
 
+            var carouselPath = "/img/community/ruddington/carousel3";
+            communityViewModel.CarouselImages3 = new List<string>
+            {
+                $"{carouselPath}/img1.jpeg",
+                $"{carouselPath}/img2.jpeg",
+                $"{carouselPath}/img3.jpeg",
+                $"{carouselPath}/img4.jpeg",
+                $"{carouselPath}/img5.jpeg",
+            };
+
             return communityViewModel;
         }
 
@@ -531,7 +558,6 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK/lsl/";
             communityViewModel.Latitude = 52.95;
             communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
@@ -629,6 +655,15 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
             communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of AgeUK Wirral.  Click below to view help requests in your area.";
+            
+            var carouselPath = "/img/community/ageUK/lsl/carousel1";
+            communityViewModel.CarouselImages1 = new List<string>
+            {
+                $"{carouselPath}/img1.jpg",
+                $"{carouselPath}/img2.jpg",
+                $"{carouselPath}/img3.jpg",
+                $"{carouselPath}/img4.jpg",
+            };
 
             return communityViewModel;
         }
@@ -639,7 +674,6 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ageukwirral", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK/wirral";
             communityViewModel.Latitude = 53.37;
             communityViewModel.Longitude = -3.05;
             communityViewModel.ZoomLevel = 11.15;
@@ -729,6 +763,16 @@ namespace HelpMyStreetFE.Repositories
                 <p><a href=""https://www.facebook.com/ageukwirral/"">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
                 <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
                 <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
+           
+            var carouselPath = "/img/community/ageUK/wirral/carousel1";
+            communityViewModel.CarouselImages1 = new List<string>
+            {
+                $"{carouselPath}/hands-round-mug.jpg",
+                $"{carouselPath}/man-knocking-on-door-325x218.jpg",
+                $"{carouselPath}/photo-1483385573908-0a2108937c4a.jpg",
+                $"{carouselPath}/photo-1516862523118-a3724eb136d7.jpg",
+                $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
+            };
 
             return communityViewModel;
         }
@@ -742,7 +786,6 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
             communityViewModel.BannerImageLocation = "/img/community/fortheloveofscrubs/LOSBannerWide.png";
@@ -853,6 +896,32 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
             communityViewModel.AllowLeaveOurGroup = true;
+
+            var carouselPath = "/img/community/fortheloveofscrubs";
+            communityViewModel.CarouselImages1 = new List<string>
+            {
+                $"{carouselPath}/carousel1/1.jpeg",
+                $"{carouselPath}/carousel1/2.jpeg",
+                $"{carouselPath}/carousel1/3.jpeg",
+                $"{carouselPath}/carousel1/4.jpeg",
+                $"{carouselPath}/carousel1/5.jpeg",
+            };
+            communityViewModel.CarouselImages2 = new List<string>
+            {
+                $"{carouselPath}/carousel2/1.jpeg",
+                $"{carouselPath}/carousel2/2.jpeg",
+                $"{carouselPath}/carousel2/3.jpeg",
+                $"{carouselPath}/carousel2/4.jpeg",
+                $"{carouselPath}/carousel2/5.jpeg",
+            };
+            communityViewModel.CarouselImages3 = new List<string>
+            {
+                $"{carouselPath}/carousel3/A.png",
+                $"{carouselPath}/carousel3/B.png",
+                $"{carouselPath}/carousel3/C.png",
+                $"{carouselPath}/carousel3/D.png",
+                $"{carouselPath}/carousel3/E.png",
+            };
 
             return communityViewModel;
         }

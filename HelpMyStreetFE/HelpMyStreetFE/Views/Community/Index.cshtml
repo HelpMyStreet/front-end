@@ -105,16 +105,7 @@
     @if (Model.CarouselImages1 != null && Model.CarouselImages1.Count() > 0)
     {
         <div class="outer-container mb-lg">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (string carouselImage in Model.CarouselImages1)
-                    {
-                        <div>
-                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                        </div>
-                    }
-                </div>
-            </div>
+            <partial name="_PhotoSlider" model="Model.CarouselImages1" />
         </div>
     }
 
@@ -248,17 +239,7 @@
     @if (Model.CarouselImages2 != null && Model.CarouselImages2.Count() > 0)
     {
         <div class="outer-container outer-container--darker mb-md">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (string carouselImage in Model.CarouselImages2)
-                    {
-                        <div>
-                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                        </div>
-
-                    }
-                </div>
-            </div>
+            <partial name="_PhotoSlider" model="Model.CarouselImages2" />
         </div>
     }
 
@@ -388,16 +369,7 @@
     @if (Model.CarouselImages3 != null && Model.CarouselImages3.Count() > 0)
     {
         <div class="outer-container outer-container--darker mb-lg">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (string carouselImage in Model.CarouselImages3)
-                    {
-                        <div>
-                            <img class="slide" src="@carouselImage.Substring(carouselImage.IndexOf("img") - 1)" />
-                        </div>
-                    }
-                </div>
-            </div>
+            <partial name="_PhotoSlider" model="Model.CarouselImages3" />
         </div>
     }
 
