@@ -262,11 +262,6 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Pages", action = "CaseStudies" });
 
                 endpoints.MapControllerRoute(
-                    name: "community",
-                    pattern: "community/{communityName}",
-                    defaults: new { controller = "Community", action = "Index" });
-
-                endpoints.MapControllerRoute(
                     name: "privacy",
                     pattern: "privacy-policy",
                     defaults: new { controller = "Pages", action = "PrivacyPolicy" });
@@ -308,11 +303,11 @@ namespace HelpMyStreetFE
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
 
-                // Community placeholders
+                // Community pages
                 endpoints.MapControllerRoute(
-                    name: "Kimberley",
-                    pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index", });
+                    name: "community",
+                    pattern: "community/{communityName}",
+                    defaults: new { controller = "Community", action = "Index" });
 
                 endpoints.MapControllerRoute(
                     name: "Tankersley",
@@ -344,6 +339,11 @@ namespace HelpMyStreetFE
                     name: "ageukwirral",
                     pattern: "ageukwirral",
                     defaults: new { controller = "Community", action = "Index", communityName = "ageukwirral" });
+
+                endpoints.MapControllerRoute(
+                    name: "north-muskham",
+                    pattern: "north-muskham",
+                    defaults: new { controller = "Community", action = "Index", communityName = "north-muskham" });
 
                 endpoints.MapControllerRoute(
                    name: "face-coverings",

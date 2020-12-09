@@ -81,9 +81,8 @@ namespace HelpMyStreetFE.Controllers
                 communityViewModel.CarouselImages3 = Directory.EnumerateFiles(carousel3Path).OrderBy(x => x).Where(x => x.Contains("jpeg") || x.Contains("jpg") || x.Contains("png"));
             }
 
-            return View(communityViewModel);
+            return View(communityViewModel.View, communityViewModel);
         }
-
 
         public async Task<IActionResult> FaceCoverings(CancellationToken cancellationToken)
         {

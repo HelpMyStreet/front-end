@@ -20,6 +20,7 @@ namespace HelpMyStreetFE.Repositories
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
             {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Latitude = 53.120254, Longitude = -0.811079, ReferenceName = "north-muskham", LinkURL = "/north-muskham", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "", GeographicName="North Muskham" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
@@ -46,6 +47,8 @@ namespace HelpMyStreetFE.Repositories
                     return await GetFtLOS(cancellationToken);
                 case "balderton":
                     return await GetBalderton(cancellationToken);
+                case "north-muskham":
+                    return await GetNorthMuskham(cancellationToken);
                 default:
                     return null;
             }
@@ -148,6 +151,39 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
             communityViewModel.AllowLeaveOurGroup = true;
+            return communityViewModel;
+        }
+
+
+        private async Task<CommunityViewModel> GetNorthMuskham(CancellationToken cancellationToken)
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                groupKey = "north-muskham",
+                View = "NorthMuskham",
+            };
+
+            CommunityModel communityModel = await GetCommunityDetailByKey(communityViewModel.groupKey);
+
+            int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
+            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            communityViewModel.Latitude = communityModel.Latitude;
+            communityViewModel.Longitude = communityModel.Longitude;
+            communityViewModel.ZoomLevel = 14;
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Nick Fairfax",
+                    Role = "Local Organiser",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
+                },
+            };
+
             return communityViewModel;
         }
 

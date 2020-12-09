@@ -6,6 +6,7 @@ namespace HelpMyStreetFE.Models.Community
 {
     public class CommunityViewModel
     {
+        public string View { get; set; } = "Index";
         public bool IsLoggedIn { get; set; }
         public bool IsGroupMember { get; set; }
         public string EncodedGroupId { get; set; }
