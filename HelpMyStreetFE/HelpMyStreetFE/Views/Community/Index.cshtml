@@ -93,9 +93,9 @@
 
                 @if (Model.ShowMap)
                 {
-                <div class="sm6 pl-md">
-                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Latitude" data-longitude="@Model.Longitude" data-zoom="@Model.ZoomLevel"></div>
-                </div>
+                    <div class="sm6 pl-md">
+                        <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Latitude" data-longitude="@Model.Longitude" data-zoom="@Model.ZoomLevel"></div>
+                    </div>
                 }
             </div>
         </div>
@@ -251,28 +251,7 @@
 
 
     <div class="outer-container outer-container--darker">
-        <div class="container">
-            <div class="row">
-                <div class="sm12">
-                    <h2 class="text-center mt-lg">About HelpMyStreet.org</h2>
-                </div>
-            </div>
-
-
-            <div class="row mt-lg">
-                <div class="sm6 flex mb-md home-video-container justify-center align-center text-right" id="video">
-                    <iframe style="min-width: 100%; height: 350px" src="https://www.youtube-nocookie.com/embed/BD--FjbDKp8?rel=0&cc_load_policy=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-
-                <div class="sm6 pad-md">
-                    <p class="">HelpMyStreet.org was launched to help the Helpers supporting their communities through the coronavirus pandemic.</p>
-
-                    <p>Our goal is to make volunteering and finding volunteers simple, safe and effective for everyone.</p>
-
-                    <p> We are a non-profit community interest company with a team of doctors, health practitioners, tech and data people, community volunteers and marketers. The founding team work for Factor 50, a healthcare analytics and digital company that works with the NHS, particularly in mental health.</p>
-                </div>
-            </div>
-        </div>
+        <partial name="_AboutHelpMyStreet" />
     </div>
 
     <div class="outer-container">
