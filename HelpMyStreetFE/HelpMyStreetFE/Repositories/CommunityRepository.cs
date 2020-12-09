@@ -179,8 +179,13 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Name = "Nick Fairfax",
                     Role = "Local Organiser",
-                    Location = "",
                     ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Rita Berkin",
+                    Role = "Local Volunteer",
+                    ImageLocation = "/img/community/ageUK/notts/north-muskham/rita-berkin.jpg"
                 },
             };
 
