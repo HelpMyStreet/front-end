@@ -216,7 +216,7 @@ namespace HelpMyStreetFE.Repositories
 
         private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "HLP" };
             CommunityModel communityModel = await GetCommunityDetailByKey("hlp");
 
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
@@ -229,57 +229,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
 
-            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
-
-            communityViewModel.Header = "What are Community Connectors?";
-            communityViewModel.DisableButtons = true;
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        Mental Health First Aid England is working with the new NHS Connect service to recruit volunteer 
-                        Community Connectors as part of the nation-wide response to Covid-19. NHS Connect is a new digital
-                        service that helps connect vulnerable people with the support they need.<br>
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                      We are looking for volunteers who combine an understanding of mental health problems with previous training 
-                        and experience in one or more of these practical and ethical frameworks: coaching, motivational interviewing,
-                        counselling or an accredited form of therapy.
-                    </p>
-                    <p class='mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer.</p>
-                   <div class='input'>
-                        <p class='mb-xs mt-sm'>Please confirm that:</p>
-                       <form>
-                            <div class='input input--checkbox'>
-                                <label class='small'>
-                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
-                                    <span class='input--checkbox__checkbox'>
-                                        <span class='mdi mdi-check'></span>
-                                    </span>
-                                    You pledge to commit 3-4 hours or your time per week (although no two weeks are alike) 
-                                </label>
-                            </div>
-                            <div class='input input--checkbox'>
-                                <label class='small'>
-                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
-                                    <span class='input--checkbox__checkbox'>
-                                        <span class='mdi mdi-check'></span>
-                                    </span>
-                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; motivational interviewing; counselling, or an accredited form of therapy)
-                                </label>
-                            </div>
-                       </form>
-                    </div>";                        
-                        
-                            
-            communityViewModel.ShowRequestHelp = false;
-            communityViewModel.HeaderVolunteerButtonText = null;
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Healthy London Partnership";
-
-
-
-            communityViewModel.CommunityVolunteersTextHtml =
-            @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners’ health and wellbeing so everyone can live healthier lives.</p>
-            <p>Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
-            London, Public Health England and London Councils.</p>";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -319,12 +268,6 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/icons/anonymous-user.png"
                 },
             };
-
-
-            communityViewModel.UsefulLinksHtml =
-                @"<p><a href=""https://www.healthylondon.org/"">Healthy London Partnership</a> - for more information on the work we do.</p>
-                  <p><a href=""https://mhfaengland.org/"">MHFA England</a> - to learn more about mental health training</p>";
-
 
             return communityViewModel;
         }
