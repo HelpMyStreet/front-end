@@ -44,9 +44,11 @@ let previousZoomLevel = -1;
 
 window.initGoogleMap = async function () {
 
-    let initialLat = parseFloat($("#Latitude").val());
-    let initialLng = parseFloat($("#Longitude").val());
-    let zoomLevel = parseFloat($("#ZoomLevel").val());
+    let mapEl = document.getElementById('map');
+
+    let initialLat = parseFloat($(mapEl).data('latitude'));
+    let initialLng = parseFloat($(mapEl).data('longitude'));
+    let zoomLevel = parseFloat($(mapEl).data('zoom'));
 
     let noPoi = [
         {
@@ -124,7 +126,7 @@ window.initGoogleMap = async function () {
         }
     ];
 
-    googleMap = new google.maps.Map(document.getElementById('map'), {
+    googleMap = new google.maps.Map(mapEl, {
         center: { lat: initialLat, lng: initialLng },
         mapTypeControl: false,
         streetViewControl: false,

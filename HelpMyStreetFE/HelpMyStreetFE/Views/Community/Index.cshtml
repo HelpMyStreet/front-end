@@ -93,9 +93,9 @@
 
                 @if (Model.ShowMap)
                 {
-                    <div class="sm6 pl-md">
-                        <div class="text-right commmunity-map-container map static-map" id="map"></div>
-                    </div>
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Latitude" data-longitude="@Model.Longitude" data-zoom="@Model.ZoomLevel"></div>
+                </div>
                 }
             </div>
         </div>
@@ -398,10 +398,6 @@
             </div>
         </div>
     </div>
-
-    @Html.Hidden(nameof(Model.Longitude))
-    @Html.Hidden(nameof(Model.Latitude))
-    @Html.Hidden(nameof(Model.ZoomLevel))
 
     @Html.Hidden(nameof(Model.ShowRequestHelpPopup))
 
