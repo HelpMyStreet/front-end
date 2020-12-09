@@ -70,26 +70,9 @@
         </div>
     </div>
 
-    @if (Model.CommunityVolunteers != null)
-    {
-        <div class="outer-container outer-container--darker">
-            <div class="slider">
-                <div class="slides">
-                    @foreach (var volunteer in Model.CommunityVolunteers)
-                    {
-                        <div class="volunteer">
-                            <img class="slide" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
-                            <p class="bold mt-sm mb-xs">@volunteer.Name</p>
-                            @if (volunteer.Role != null)
-                            {<p class="mt-xs mb-xs ">@volunteer.Role</p>}
-                            @if (volunteer.Location != null)
-                            {<p class="mt-xs mb-xs">@volunteer.Location</p>}
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    }
+    <div class="outer-container outer-container--darker">
+        <partial name="_CommunityVolunteersSlider" model="Model" />
+    </div>
 
     <div class="outer-container outer-container--darker">
         <div class="container">
