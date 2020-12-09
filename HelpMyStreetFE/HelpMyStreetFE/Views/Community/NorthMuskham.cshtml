@@ -42,16 +42,12 @@
                     </ul>
 
 
-                    <div class="row sm6" text-center justify-center mb-sm small-screen-only">
+                    <div class="row sm6 text-center justify-center mb-sm">
                         <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange show-request-help-popup">Request Help</a>
                     </div>
 
                     <div class="row sm6 text-center justify-center mb-md">
                         <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
-                    </div>
-
-                    <div class="row sm6 text-center justify-center mb-md large-screen-only">
-                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange show-request-help-popup">Request Help</a>
                     </div>
                 </div>
 

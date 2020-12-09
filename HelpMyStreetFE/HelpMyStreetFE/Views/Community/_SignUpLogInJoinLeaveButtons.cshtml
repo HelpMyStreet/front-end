@@ -1,16 +1,19 @@
 ﻿@model HelpMyStreetFE.Models.Community.SignUpLogInJoinLeaveViewModel
 
-@if (!Model.CommunityViewModel.IsLoggedIn)
-{
-    <a href="/login/@Model.CommunityViewModel.EncodedGroupId" class="btn cta btn--sign-up fill ">Sign Up or Log In</a>
-}
-else
-{
-    <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.CommunityViewModel.IsGroupMember ? "dnone" : "")" data-target-group="@Model.CommunityViewModel.EncodedGroupId">Join Our Group</a>
-    <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.CommunityViewModel.IsGroupMember ? "" : "dnone") ">View Open Requests</a>
+<div class="text-center">
 
-    @if (Model.ShowLeaveButton)
+    @if (!Model.CommunityViewModel.IsLoggedIn)
     {
-        <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.CommunityViewModel.IsGroupMember ? "" : "dnone")" data-target-group="@Model.CommunityViewModel.EncodedGroupId">Leave Group</a>
+        <a href="/login/@Model.CommunityViewModel.EncodedGroupId" class="btn cta small btn--sign-up fill ">Sign Up or Log In</a>
     }
-}
+    else
+    {
+        <a href="#" class="btn cta small fill btn--join-group show-to-non-members @(Model.CommunityViewModel.IsGroupMember ? "dnone" : "")" data-target-group="@Model.CommunityViewModel.EncodedGroupId">Join Our Group</a>
+        <a href="/account/open-requests" class="btn cta small fill btn--view-requests show-to-members @(Model.CommunityViewModel.IsGroupMember ? "" : "dnone") ">View Open Requests</a>
+
+        @if (Model.ShowLeaveButton)
+        {
+            <a href="#" class="btn small fill cta--orange-border btn--leave-group show-to-members @(Model.CommunityViewModel.IsGroupMember ? "" : "dnone")" data-target-group="@Model.CommunityViewModel.EncodedGroupId">Leave Group</a>
+        }
+    }
+</div>
