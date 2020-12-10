@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
-    if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId; }
+    ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
 }
 
 @section Scripts {
@@ -43,7 +43,7 @@
 
                     <div class="row sm12 text-center justify-center mb-sm">
                         <p class="mt-sm mb-sm pl-md pr-md">We rely on volunteers to help us help our neighbours. If you would like to help, click the green button below.</p>
-                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange show-request-help-popup">@Model.RequestHelpButtonText</a>
+                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange show-request-help-popup">Request Help</a>
                     </div>
 
                     <div class="row sm12 text-center justify-center mb-md">
@@ -147,7 +147,7 @@
     </div>
 
     <div class="outer-container outer-container--darker mb-lg">
-        <partial name="_PhotoSlider" model="Model.CarouselImages3" />
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
     </div>
 
 </div>

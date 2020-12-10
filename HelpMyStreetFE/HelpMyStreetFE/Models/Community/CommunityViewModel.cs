@@ -21,9 +21,7 @@ namespace HelpMyStreetFE.Models.Community
 
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
 
-        public IEnumerable<string> CarouselImages1 { get; set; }
-        public IEnumerable<string> CarouselImages2 { get; set; }
-        public IEnumerable<string> CarouselImages3 { get; set; }
+        public List<List<string>> CarouselImages { get; set; }
 
         public string groupKey { get; set; }
         public bool ShowRequestHelpPopup { get; set; }

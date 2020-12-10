@@ -1,11 +1,12 @@
 @using HelpMyStreetFE.Models.Feedback;
+@using HelpMyStreetFE.Models.Community;
 
-@model HelpMyStreetFE.Models.Community.CommunityViewModel;
+@model CommunityViewModel;
 
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
-    if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;  }
+    ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
 }
 
 @section Scripts {
@@ -58,15 +59,7 @@
                     </div>
 
                     <div class="row sm4 text-center justify-center mb-md">
-                        @if (!Model.IsLoggedIn)
-                        {
-                            <a href="/login/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill ">@Model.ProvideHelpButtonText_LoggedOut</a>
-                        }
-                        else
-                        {
-                            <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill show-to-members @(Model.IsGroupMember ? "" : "dnone") ">@Model.ProvideHelpButtonText_LoggedIn</a>
-                        }
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
                     </div>
 
                     <div class="row sm4 text-center justify-center mb-md large-screen-only">
@@ -81,7 +74,7 @@
 
 
     <div class="outer-container mb-lg">
-        <partial name="_PhotoSlider" model="Model.CarouselImages1" />
+        <partial name="_PhotoSlider" model="Model.CarouselImages[0]" />
     </div>
 
     <div class="outer-container outer-container--darker">
@@ -167,16 +160,7 @@
                         </p>
 
                         <div class="card__buttons">
-                            @if (!Model.IsLoggedIn)
-                            {
-                                <a href="/login/@Model.EncodedGroupId" class="btn cta btn--sign-up fill ">@Model.ProvideHelpButtonText_LoggedOut</a>
-                            }
-                            else
-                            {
-                                <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                                <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") ">@Model.ProvideHelpButtonText_LoggedIn</a>
-                                <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
-                            }
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
                         </div>
                     </div>
                 </div>
@@ -211,7 +195,7 @@
 
 
     <div class="outer-container outer-container--darker mb-md">
-        <partial name="_PhotoSlider" model="Model.CarouselImages2" />
+        <partial name="_PhotoSlider" model="Model.CarouselImages[1]" />
     </div>
 
 
@@ -254,16 +238,7 @@
                         </p>
 
                         <div class="card__buttons">
-                            @if (!Model.IsLoggedIn)
-                            {
-                                <a href="/login/@Model.EncodedGroupId" class="btn cta btn--sign-up fill ">@Model.ProvideHelpButtonText_LoggedOut</a>
-                            }
-                            else
-                            {
-                                <a href="#" class="btn cta btn--join-group show-to-non-members @(Model.IsGroupMember ? "dnone" : "")" data-target-group="@Model.EncodedGroupId">@Model.JoinOurGroupButtonText</a>
-                                <a href="/account/open-requests" class="btn cta btn--view-requests show-to-members @(Model.IsGroupMember ? "" : "dnone") ">@Model.ProvideHelpButtonText_LoggedIn</a>
-                                <a href="#" class="btn cta--orange-border btn--leave-group show-to-members @(Model.IsGroupMember ? "" : "dnone")" data-target-group="@Model.EncodedGroupId">Leave Group</a>
-                            }
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
                         </div>
                     </div>
                 </div>
@@ -272,7 +247,7 @@
     </div>
 
     <div class="outer-container outer-container--darker mb-lg">
-        <partial name="_PhotoSlider" model="Model.CarouselImages3" />
+        <partial name="_PhotoSlider" model="Model.CarouselImages[2]" />
     </div>
 
 </div>

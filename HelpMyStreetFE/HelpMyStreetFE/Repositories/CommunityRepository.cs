@@ -96,16 +96,19 @@ namespace HelpMyStreetFE.Repositories
             };
 
             var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
-            communityViewModel.CarouselImages1 = new List<string>
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                $"{carouselPath}/carousel-1.jpg",
-                $"{carouselPath}/carousel-2.jpg",
-                $"{carouselPath}/carousel-3.jpg",
-                $"{carouselPath}/carousel-4.jpg",
-                $"{carouselPath}/carousel-5.jpg",
-                $"{carouselPath}/carousel-6.jpg",
-                $"{carouselPath}/carousel-7.jpg",
-                $"{carouselPath}/carousel-8.jpg",
+                new List<string>
+                {
+                    $"{carouselPath}/carousel-1.jpg",
+                    $"{carouselPath}/carousel-2.jpg",
+                    $"{carouselPath}/carousel-3.jpg",
+                    $"{carouselPath}/carousel-4.jpg",
+                    $"{carouselPath}/carousel-5.jpg",
+                    $"{carouselPath}/carousel-6.jpg",
+                    $"{carouselPath}/carousel-7.jpg",
+                    $"{carouselPath}/carousel-8.jpg",
+                }
             };
 
             return communityViewModel;
@@ -147,10 +150,13 @@ namespace HelpMyStreetFE.Repositories
             };
 
             var carouselPath = "/img/community/ageUK/notts/north-muskham/carousel";
-            communityViewModel.CarouselImages2 = new List<string>
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                $"{carouselPath}/view-over-trent.JPG",
-                $"{carouselPath}/view-towards-sugar-factory.JPG",
+                new List<string>
+                {
+                    $"{carouselPath}/view-over-trent.JPG",
+                    $"{carouselPath}/view-towards-sugar-factory.JPG",
+                }
             };
 
             return communityViewModel;
@@ -328,13 +334,16 @@ namespace HelpMyStreetFE.Repositories
             };
 
             var carouselPath = "/img/community/ruddington/carousel3";
-            communityViewModel.CarouselImages3 = new List<string>
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                $"{carouselPath}/img1.jpeg",
-                $"{carouselPath}/img2.jpeg",
-                $"{carouselPath}/img3.jpeg",
-                $"{carouselPath}/img4.jpeg",
-                $"{carouselPath}/img5.jpeg",
+                new List<string>
+                {
+                    $"{carouselPath}/img1.jpeg",
+                    $"{carouselPath}/img2.jpeg",
+                    $"{carouselPath}/img3.jpeg",
+                    $"{carouselPath}/img4.jpeg",
+                    $"{carouselPath}/img5.jpeg",
+                }
             };
 
             return communityViewModel;
@@ -377,12 +386,15 @@ namespace HelpMyStreetFE.Repositories
 
             
             var carouselPath = "/img/community/ageUK/lsl/carousel1";
-            communityViewModel.CarouselImages1 = new List<string>
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                $"{carouselPath}/img1.jpg",
-                $"{carouselPath}/img2.jpg",
-                $"{carouselPath}/img3.jpg",
-                $"{carouselPath}/img4.jpg",
+                new List<string>
+                {
+                    $"{carouselPath}/img1.jpg",
+                    $"{carouselPath}/img2.jpg",
+                    $"{carouselPath}/img3.jpg",
+                    $"{carouselPath}/img4.jpg",
+                }
             };
 
             return communityViewModel;
@@ -415,13 +427,16 @@ namespace HelpMyStreetFE.Repositories
             };
 
             var carouselPath = "/img/community/ageUK/wirral/carousel1";
-            communityViewModel.CarouselImages1 = new List<string>
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                $"{carouselPath}/hands-round-mug.jpg",
-                $"{carouselPath}/man-knocking-on-door-325x218.jpg",
-                $"{carouselPath}/photo-1483385573908-0a2108937c4a.jpg",
-                $"{carouselPath}/photo-1516862523118-a3724eb136d7.jpg",
-                $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
+                new List<string>
+                {
+                    $"{carouselPath}/hands-round-mug.jpg",
+                    $"{carouselPath}/man-knocking-on-door-325x218.jpg",
+                    $"{carouselPath}/photo-1483385573908-0a2108937c4a.jpg",
+                    $"{carouselPath}/photo-1516862523118-a3724eb136d7.jpg",
+                    $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
+                },
             };
 
             return communityViewModel;
@@ -437,29 +452,32 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
             var carouselPath = "/img/community/fortheloveofscrubs";
-            communityViewModel.CarouselImages1 = new List<string>
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                $"{carouselPath}/carousel1/1.jpeg",
-                $"{carouselPath}/carousel1/2.jpeg",
-                $"{carouselPath}/carousel1/3.jpeg",
-                $"{carouselPath}/carousel1/4.jpeg",
-                $"{carouselPath}/carousel1/5.jpeg",
-            };
-            communityViewModel.CarouselImages2 = new List<string>
-            {
-                $"{carouselPath}/carousel2/1.jpeg",
-                $"{carouselPath}/carousel2/2.jpeg",
-                $"{carouselPath}/carousel2/3.jpeg",
-                $"{carouselPath}/carousel2/4.jpeg",
-                $"{carouselPath}/carousel2/5.jpeg",
-            };
-            communityViewModel.CarouselImages3 = new List<string>
-            {
-                $"{carouselPath}/carousel3/A.png",
-                $"{carouselPath}/carousel3/B.png",
-                $"{carouselPath}/carousel3/C.png",
-                $"{carouselPath}/carousel3/D.png",
-                $"{carouselPath}/carousel3/E.png",
+                new List<string>
+                {
+                    $"{carouselPath}/carousel1/1.jpeg",
+                    $"{carouselPath}/carousel1/2.jpeg",
+                    $"{carouselPath}/carousel1/3.jpeg",
+                    $"{carouselPath}/carousel1/4.jpeg",
+                    $"{carouselPath}/carousel1/5.jpeg",
+                },
+                new List<string>
+                {
+                    $"{carouselPath}/carousel2/1.jpeg",
+                    $"{carouselPath}/carousel2/2.jpeg",
+                    $"{carouselPath}/carousel2/3.jpeg",
+                    $"{carouselPath}/carousel2/4.jpeg",
+                    $"{carouselPath}/carousel2/5.jpeg",
+                },
+                new List<string>
+                {
+                    $"{carouselPath}/carousel3/A.png",
+                    $"{carouselPath}/carousel3/B.png",
+                    $"{carouselPath}/carousel3/C.png",
+                    $"{carouselPath}/carousel3/D.png",
+                    $"{carouselPath}/carousel3/E.png",
+                }
             };
 
             return communityViewModel;

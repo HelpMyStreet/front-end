@@ -6,7 +6,6 @@
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
-    if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;  }
 }
 
 @section Scripts {
@@ -42,7 +41,7 @@
                     </p>
 
                     <div class="row sm12 text-center justify-center mb-sm">
-                        <p class="mt-sm mb-sm pl-md pr-md">To ask for help, please go to our website or call us on 0151 482 3456.</p>
+                        <p class="mt-sm mb-sm pl-md pr-md">To ask for help, please go to our website or call us on 0151&nbsp;482&nbsp;3456.</p>
                         <a href="https://www.ageuk.org.uk/wirral/" class="btn cta small btn--request-help fill cta--dark-blue">Go to our website</a>
                     </div>
 
@@ -63,7 +62,7 @@
 
 
     <div class="outer-container mb-lg">
-        <partial name="_PhotoSlider" model="Model.CarouselImages1" />
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
     </div>
 
     <div class="outer-container outer-container--darker">
@@ -100,7 +99,7 @@
                         </p>
                         <p>
                             To find out more about our other services and the support we can provide, please go to our main website <a href="https://www.ageuk.org.uk/wirral/">www.ageuk.org.uk/wirral</a>
-                            or call us on 0151 482 3456.
+                            or call us on 0151&nbsp;482&nbsp;3456.
                         </p>
                     </div>
                     <div class="mb-md"></div>
@@ -119,7 +118,7 @@
 
                         <h2>How can we help?</h2>
                         <p class="mt-sm mb-md">
-                            We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.
+                            We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151&nbsp;482&nbsp;3456.
                         </p>
 
                         <div class="" style="text-align: center">
@@ -174,7 +173,7 @@
 
                         <h2>How can we help?</h2>
                         <p class="mt-sm mb-md">
-                            We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.
+                            We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151&nbsp;482&nbsp;3456.
                         </p>
 
                         <div class="" style="text-align: center">

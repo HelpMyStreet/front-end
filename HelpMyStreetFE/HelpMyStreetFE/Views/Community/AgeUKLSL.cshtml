@@ -6,7 +6,6 @@
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
-    if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;  }
 }
 
 @section Scripts {
@@ -56,7 +55,7 @@
 
 
     <div class="outer-container mb-lg">
-        <partial name="_PhotoSlider" model="Model.CarouselImages1" />
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
     </div>
 
     <div class="outer-container outer-container--darker">
