@@ -31,27 +31,25 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
         {
-            switch (groupKey)
+            int groupId = await _groupService.GetGroupIdByKey(groupKey, cancellationToken);
+
+            CommunityViewModel vm = ((Groups)groupId) switch
             {
-                case "tankersley":
-                    return await GetTankersley(cancellationToken);
-                case "ruddington":
-                    return await GetRuddington(cancellationToken);
-                case "ageuklsl":
-                    return await GetAgeUKLSL(cancellationToken);
-                case "ageukwirral":
-                    return await GetAgeUKWirral(cancellationToken);
-                case "hlp":
-                    return await GetHLP(cancellationToken);
-                case "ftlos":
-                    return await GetFtLOS(cancellationToken);
-                case "balderton":
-                    return await GetBalderton(cancellationToken);
-                case "north-muskham":
-                    return await GetNorthMuskham(cancellationToken);
-                default:
-                    return null;
-            }
+                Groups.Tankersley => GetTankersley(),
+                Groups.Ruddington => GetRuddington(),
+                Groups.AgeUKLSL => GetAgeUKLSL(),
+                Groups.AgeUKWirral => GetAgeUKWirral(),
+                Groups.HLP => GetHLP(),
+                Groups.FTLOS => GetFtLOS(),
+                Groups.AgeUKNottsBalderton => GetBalderton(),
+                Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
+                _ => null,
+            };
+
+            vm.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            vm.groupKey = groupKey;
+
+            return vm;
         }
 
         public async Task<List<CommunityModel>> GetCommunities()
@@ -64,23 +62,19 @@ namespace HelpMyStreetFE.Repositories
 
         }
 
-        public async Task<CommunityModel> GetCommunityDetailByKey(string key)
+        public CommunityModel GetCommunityDetailByKey(string key)
         {
             return Communities[key];
         }
 
-        private async Task<CommunityViewModel> GetBalderton(CancellationToken cancellationToken)
+        private CommunityViewModel GetBalderton()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "Balderton" };
-            CommunityModel communityModel = await GetCommunityDetailByKey("balderton");
+            CommunityModel communityModel = GetCommunityDetailByKey("balderton");
 
-            int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 13.5;
-
-            communityViewModel.groupKey = "balderton";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
@@ -116,18 +110,15 @@ namespace HelpMyStreetFE.Repositories
         }
 
 
-        private async Task<CommunityViewModel> GetNorthMuskham(CancellationToken cancellationToken)
+        private CommunityViewModel GetNorthMuskham()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel
             {
-                groupKey = "north-muskham",
                 View = "NorthMuskham",
             };
 
-            CommunityModel communityModel = await GetCommunityDetailByKey(communityViewModel.groupKey);
+            CommunityModel communityModel = GetCommunityDetailByKey("north-muskham");
 
-            int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 14;
@@ -166,14 +157,11 @@ namespace HelpMyStreetFE.Repositories
 
 
 
-        private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
+        private CommunityViewModel GetHLP()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "HLP" };
-            CommunityModel communityModel = await GetCommunityDetailByKey("hlp");
+            CommunityModel communityModel = GetCommunityDetailByKey("hlp");
 
-            int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
-
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
@@ -224,18 +212,15 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetTankersley(CancellationToken cancellationToken)
+        private CommunityViewModel GetTankersley()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "Tankersley" };
-            CommunityModel communityModel = await GetCommunityDetailByKey("tankersley");
+            CommunityModel communityModel = GetCommunityDetailByKey("tankersley");
 
-            int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
 
-            communityViewModel.groupKey = "tankersley";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
@@ -270,14 +255,11 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
+        private CommunityViewModel GetRuddington()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "Ruddington" };
-            CommunityModel communityModel = await GetCommunityDetailByKey("ruddington");
+            CommunityModel communityModel = GetCommunityDetailByKey("ruddington");
 
-            communityViewModel.groupKey = "ruddington";
-            int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
@@ -354,18 +336,15 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetAgeUKLSL(CancellationToken cancellationToken)
+        private CommunityViewModel GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeUKLSL" };
-            CommunityModel communityModel = await GetCommunityDetailByKey("ageuklsl");
+            CommunityModel communityModel = GetCommunityDetailByKey("ageuklsl");
 
-            int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = 52.95;
             communityViewModel.Map_CentreLongitude = -0.2;
             communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
 
-            communityViewModel.groupKey = "ageuklsl";
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
 
@@ -405,17 +384,13 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetAgeUKWirral(CancellationToken cancellationToken)
+        private CommunityViewModel GetAgeUKWirral()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeUKWirral" };
 
-            int groupId = await _groupService.GetGroupIdByKey("ageukwirral", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.Map_CentreLatitude = 53.37;
             communityViewModel.Map_CentreLongitude = -3.05;
             communityViewModel.Map_ZoomLevel = 11.15;
-
-            communityViewModel.groupKey = "ageukwirral";
 
             communityViewModel.CommunityName = "Age UK Wirral";
             communityViewModel.CommunityShortName = "Age UK Wirral";
@@ -447,13 +422,10 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetFtLOS(CancellationToken cancellationToken)
+        private CommunityViewModel GetFtLOS()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "ForTheLoveOfScrubs" };
-            communityViewModel.groupKey = "ftlos";
 
-            int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
             var carouselPath = "/img/community/fortheloveofscrubs";
