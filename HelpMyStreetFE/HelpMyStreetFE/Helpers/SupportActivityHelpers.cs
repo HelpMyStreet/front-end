@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Helpers
@@ -90,7 +90,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
                 SupportActivities.ColdWeatherArmy => "blue",
-                _ => ""
+                _ => "dark-blue",
             };
         }
     }
