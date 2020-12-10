@@ -15,10 +15,6 @@ namespace HelpMyStreetFE.Models.Reponses
     [DataContract(Name = "communityDetail")]
     public class CommunityDetail
     {
-        [DataMember(Name = "refName")]
-        [JsonPropertyName("refName")]
-        public string ReferenceName { get; set; }
-
         [DataMember(Name = "friendlyName")]
         [JsonPropertyName("friendlyName")]
         public string FriendlyName { get; set; }

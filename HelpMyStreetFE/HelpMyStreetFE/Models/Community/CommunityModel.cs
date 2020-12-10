@@ -3,7 +3,6 @@ namespace HelpMyStreetFE.Models.Community
 {
     public class CommunityModel
     {
-        public string ReferenceName { get; set; }
         public string FriendlyName { get; set; }
         public string GeographicName { get; set; }
         public string LinkURL { get; set; }

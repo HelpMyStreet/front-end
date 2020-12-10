@@ -67,7 +67,6 @@ namespace HelpMyStreetFE.Controllers
                     Latitude = community.Pin_Latitude,
                     Longitude = community.Pin_Longitude,
                     LinkURL = community.LinkURL,
-                    ReferenceName = community.ReferenceName,
                     BannerLocation = community.BannerLocation,
                     DisplayOnMap = community.DisplayOnMap,
                     ZoomLevel = community.Pin_VisibilityZoomLevel
