@@ -367,8 +367,7 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
                 },
             };
-
-            
+         
             var carouselPath = "/img/community/ageUK/lsl/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
             {
