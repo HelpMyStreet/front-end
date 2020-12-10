@@ -1,11 +1,12 @@
 @using HelpMyStreetFE.Models.Community; 
+@using HelpMyStreetFE.Models.Feedbackl
 
-@model HelpMyStreetFE.Models.Community.CommunityViewModel;
+@model CommunityViewModel;
 
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
-    if (Model.EncodedGroupId != null && Model.ShowRequestHelp) { ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;  }
+    ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
 }
 
 @section Scripts {
@@ -14,14 +15,11 @@
 
 <div class="community" data-group-id="@Model.EncodedGroupId">
 
-    @if (!string.IsNullOrEmpty(Model.BannerImageLocation))
-    {
-        <div class="container">
-            <div class="community-banner">
-                <img src="@Model.BannerImageLocation" alt="@Model.CommunityName" />
-            </div>
+    <div class="container">
+        <div class="community-banner">
+            <img src="" alt="@Model.CommunityName" />
         </div>
-    }
+    </div>
     <div class="outer-container">
         <div class="container">
             <div class="row flex hero mb-lg">
@@ -75,7 +73,9 @@
             <div class="row">
                 <div class="sm12">
                     <div>
-                        @Html.Raw(@Model.CommunityVolunteersTextHtml)
+
+
+
                     </div>
                     <div class="mb-md"></div>
                 </div>
@@ -109,7 +109,9 @@
             </div>
             <div class="row flex justify-center">
                 <div class="sm12 community-useful-links mb-lg">
-                    @Html.Raw(@Model.UsefulLinksHtml)
+
+
+
                 </div>
             </div>
         </div>
@@ -122,7 +124,7 @@
 
 
     <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = Model.showFeedbackType, groupKey = Model.groupKey })
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.groupKey })
     </div>
 
 

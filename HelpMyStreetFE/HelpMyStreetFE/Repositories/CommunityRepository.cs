@@ -80,7 +80,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = communityModel.Longitude;
             communityViewModel.ZoomLevel = 13.5;
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
             communityViewModel.groupKey = "balderton";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
@@ -266,7 +265,6 @@ namespace HelpMyStreetFE.Repositories
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "Ruddington" };
             CommunityModel communityModel = await GetCommunityDetailByKey("ruddington");
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
@@ -353,7 +351,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Longitude = -0.2;
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
             communityViewModel.groupKey = "ageuklsl";
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
@@ -433,7 +430,6 @@ namespace HelpMyStreetFE.Repositories
         private async Task<CommunityViewModel> GetFtLOS(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = new CommunityViewModel { View = "ForTheLoveOfScrubs" };
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
             communityViewModel.groupKey = "ftlos";
 
             int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
