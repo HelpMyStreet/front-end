@@ -14,13 +14,13 @@ namespace HelpMyStreetFE.Repositories
         private readonly IGroupService _groupService;
         private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
         {
-            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Pin_Latitude = 51.507602, Pin_Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", Pin_VisibilityZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
-            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", Pin_VisibilityZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", Pin_VisibilityZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
-            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
-            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
-            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, ReferenceName = "north-muskham", LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "", GeographicName="North Muskham" } },
+            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Pin_Latitude = 51.507602, Pin_Longitude = -0.127816, LinkURL = "/healthylondonpartnership", Pin_VisibilityZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
+            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, LinkURL = "/tankersley", Pin_VisibilityZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, LinkURL = "/ruddington", Pin_VisibilityZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
+            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "", GeographicName="North Muskham" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
@@ -29,9 +29,9 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string communityName, CancellationToken cancellationToken)
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
         {
-            switch (communityName.Trim().ToLower())
+            switch (groupKey)
             {
                 case "tankersley":
                     return await GetTankersley(cancellationToken);
