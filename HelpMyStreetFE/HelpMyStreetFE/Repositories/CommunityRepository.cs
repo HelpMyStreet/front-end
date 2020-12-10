@@ -1,4 +1,4 @@
-using HelpMyStreet.Utils.Utils;
+﻿using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 using System.Threading;
@@ -264,6 +264,8 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/tankersley/Helen.jpg"
                 },
             };
+
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
 
             return communityViewModel;
         }

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
 using HelpMyStreetFE.Models.Feedback;
 
@@ -18,7 +18,7 @@ namespace HelpMyStreetFE.Models.Community
         public string CommunityName { get; set; }
         public string CommunityShortName { get; set; }
 
-        public HelpExampleCardsViewModel HelpExampleCards { get; set; } = new HelpExampleCardsViewModel();
+        public HelpExampleCardsViewModel HelpExampleCards { get; set; }
 
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
 
