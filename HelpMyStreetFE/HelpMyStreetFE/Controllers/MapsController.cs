@@ -64,13 +64,13 @@ namespace HelpMyStreetFE.Controllers
                 var communityDetail = new CommunityDetail()
                 {
                     FriendlyName = community.FriendlyName,
-                    Latitude = community.Latitude,
-                    Longitude = community.Longitude,
+                    Latitude = community.Pin_Latitude,
+                    Longitude = community.Pin_Longitude,
                     LinkURL = community.LinkURL,
                     ReferenceName = community.ReferenceName,
                     BannerLocation = community.BannerLocation,
                     DisplayOnMap = community.DisplayOnMap,
-                    ZoomLevel = community.ZoomLevel
+                    ZoomLevel = community.PinVisibility_ZoomLevel
                 };
                 communityDetails.Add(communityDetail);
             }

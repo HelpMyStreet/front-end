@@ -14,13 +14,13 @@ namespace HelpMyStreetFE.Repositories
         private readonly IGroupService _groupService;
         private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
         {
-            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
-            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
-            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
-            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
-            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Latitude = 53.120254, Longitude = -0.811079, ReferenceName = "north-muskham", LinkURL = "/north-muskham", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "", GeographicName="North Muskham" } },
+            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Pin_Latitude = 51.507602, Pin_Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", PinVisibility_ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
+            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", PinVisibility_ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", PinVisibility_ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", PinVisibility_ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
+            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", PinVisibility_ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", PinVisibility_ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, ReferenceName = "north-muskham", LinkURL = "/north-muskham", PinVisibility_ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "", GeographicName="North Muskham" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
@@ -76,8 +76,8 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
-            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.MapCentre_Latitude = communityModel.Pin_Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 13.5;
 
             communityViewModel.groupKey = "balderton";
@@ -128,8 +128,8 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
-            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.MapCentre_Latitude = communityModel.Pin_Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 14;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
@@ -174,9 +174,9 @@ namespace HelpMyStreetFE.Repositories
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
-            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
-            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = communityModel.Pin_Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.PinVisibility_ZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
@@ -231,9 +231,9 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
-            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
-            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = communityModel.Pin_Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.PinVisibility_ZoomLevel;
 
             communityViewModel.groupKey = "tankersley";
 
@@ -278,9 +278,9 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
-            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
-            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = communityModel.Pin_Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.PinVisibility_ZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
@@ -363,7 +363,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
             communityViewModel.MapCentre_Latitude = 52.95;
             communityViewModel.MapCentre_Longitude = -0.2;
-            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.Map_ZoomLevel = communityModel.PinVisibility_ZoomLevel;
 
             communityViewModel.groupKey = "ageuklsl";
             communityViewModel.CommunityName = communityModel.FriendlyName;
