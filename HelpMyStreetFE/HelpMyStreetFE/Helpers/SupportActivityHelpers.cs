@@ -1,52 +1,53 @@
-using System;
+﻿using System;
 using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Helpers
 {
     public static class SupportActivityHelpers
     {
-        public static string Sentences(this SupportActivities activity, bool pleural)
+        public static string Sentences(this SupportActivities activity, int count)
         {
-            if (pleural)
+            if (count == 1)
             {
                 return activity switch
                 {
-                    SupportActivities.Shopping => "shopping trips",
-                    SupportActivities.FaceMask => "requests for face coverings",
-                    SupportActivities.CheckingIn => "people checked on",
-                    SupportActivities.CollectingPrescriptions => "prescriptions collected",
-                    SupportActivities.Errands => "errands run",
-                    SupportActivities.DogWalking => "dogs walked",
-                    SupportActivities.MealPreparation => "meals prepared",
-                    SupportActivities.PhoneCalls_Friendly => "friendly chats",
-                    SupportActivities.PhoneCalls_Anxious => "supportive chats",
-                    SupportActivities.HomeworkSupport => "homework assignments",
-                    SupportActivities.WellbeingPackage => "wellbeing packages sent",
-                    SupportActivities.CommunityConnector => "community connector tasks",
-                    SupportActivities.MedicalAppointmentTransport => "medical appointments transported",
-                    SupportActivities.ColdWeatherArmy => "cold weather army tasks completed",
-                    SupportActivities.Other => "other tasks",
+                    SupportActivities.Shopping => "1 shopping trip",
+                    SupportActivities.FaceMask => "1 request for face coverings",
+                    SupportActivities.CheckingIn => "1 person checked on",
+                    SupportActivities.CollectingPrescriptions => "1 prescription collected",
+                    SupportActivities.Errands => "1 errand run",
+                    SupportActivities.DogWalking => "1 dog walked",
+                    SupportActivities.MealPreparation => "1 meal prepared",
+                    SupportActivities.PhoneCalls_Friendly => "1 friendly chat",
+                    SupportActivities.PhoneCalls_Anxious => "1 supportive chat",
+                    SupportActivities.HomeworkSupport => "1 homework assignment",
+                    SupportActivities.WellbeingPackage => "1 wellbeing package delivered",
+                    SupportActivities.CommunityConnector => "1 community connector task",
+                    SupportActivities.MedicalAppointmentTransport => "1 person transported to a medical appointment",
+                    SupportActivities.ColdWeatherArmy => "1 cold weather army task completed",
+                    SupportActivities.Other => "1 other task completed",
                     _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
                 };
-            } else
+            }
+            else
             {
                 return activity switch
                 {
-                    SupportActivities.Shopping => "shopping trip",
-                    SupportActivities.FaceMask => "request for face coverings",
-                    SupportActivities.CheckingIn => "person checked on",
-                    SupportActivities.CollectingPrescriptions => "prescription collected",
-                    SupportActivities.Errands => "errand run",
-                    SupportActivities.DogWalking => "dog walked",
-                    SupportActivities.MealPreparation => "meal prepared",
-                    SupportActivities.PhoneCalls_Friendly => "friendly chat",
-                    SupportActivities.PhoneCalls_Anxious => "supportive chat",
-                    SupportActivities.HomeworkSupport => "homework assignment",
-                    SupportActivities.WellbeingPackage => "wellbeing package sent",
-                    SupportActivities.CommunityConnector => "community connector task",
-                    SupportActivities.MedicalAppointmentTransport => "medical appointment transported",
-                    SupportActivities.ColdWeatherArmy => "cold weather army task completed",
-                    SupportActivities.Other => "other task",
+                    SupportActivities.Shopping => $"{count} shopping trips",
+                    SupportActivities.FaceMask => $"{count} requests for face coverings",
+                    SupportActivities.CheckingIn => $"{count} people checked on",
+                    SupportActivities.CollectingPrescriptions => $"{count} prescriptions collected",
+                    SupportActivities.Errands => $"{count} errands run",
+                    SupportActivities.DogWalking => $"{count} dogs walked",
+                    SupportActivities.MealPreparation => $"{count} meals prepared",
+                    SupportActivities.PhoneCalls_Friendly => $"{count} friendly chats",
+                    SupportActivities.PhoneCalls_Anxious => $"{count} supportive chats",
+                    SupportActivities.HomeworkSupport => $"{count} homework assignments",
+                    SupportActivities.WellbeingPackage => $"{count} wellbeing packages delivered",
+                    SupportActivities.CommunityConnector => $"{count} community connector tasks",
+                    SupportActivities.MedicalAppointmentTransport => $"{count} people transported to medical appointments",
+                    SupportActivities.ColdWeatherArmy => $"{count} cold weather army tasks completed",
+                    SupportActivities.Other => $"{count} other tasks completed",
                     _ => throw new ArgumentException(message: $"Unexpected SupportActivity: {activity}", paramName: nameof(activity))
                 };
             }
