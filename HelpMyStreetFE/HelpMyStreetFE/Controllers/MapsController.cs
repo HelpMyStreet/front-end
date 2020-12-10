@@ -70,7 +70,7 @@ namespace HelpMyStreetFE.Controllers
                     ReferenceName = community.ReferenceName,
                     BannerLocation = community.BannerLocation,
                     DisplayOnMap = community.DisplayOnMap,
-                    ZoomLevel = community.PinVisibility_ZoomLevel
+                    ZoomLevel = community.Pin_VisibilityZoomLevel
                 };
                 communityDetails.Add(communityDetail);
             }

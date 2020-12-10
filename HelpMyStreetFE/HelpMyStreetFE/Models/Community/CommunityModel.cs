@@ -11,6 +11,6 @@ namespace HelpMyStreetFE.Models.Community
         public double Pin_Longitude { get; set; }
         public bool DisplayOnMap { get; set; } = true;
         public string BannerLocation { get; set; }
-        public double PinVisibility_ZoomLevel { get; set; }
+        public double Pin_VisibilityZoomLevel { get; set; }
     }
 }

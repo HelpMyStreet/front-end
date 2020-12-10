@@ -11,8 +11,8 @@ namespace HelpMyStreetFE.Models.Community
 
         public string View { get; set; }
         public string EncodedGroupId { get; set; }
-        public double MapCentre_Latitude { get; set; }
-        public double MapCentre_Longitude { get; set; }
+        public double Map_CentreLatitude { get; set; }
+        public double Map_CentreLongitude { get; set; }
         public double Map_ZoomLevel { get; set; }
 
         public string CommunityName { get; set; }
