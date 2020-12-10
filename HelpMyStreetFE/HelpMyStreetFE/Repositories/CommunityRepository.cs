@@ -83,6 +83,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.groupKey = "balderton";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -132,6 +133,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ZoomLevel = 14;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -279,6 +281,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {

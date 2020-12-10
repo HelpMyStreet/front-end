@@ -8,7 +8,7 @@
     </p>
 
     <div class="text-center">
-        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange @(Model.ShowRequestHelpPopup ? "show-request-help-popup" : "")">Request Help</a>
+        <partial name="_RequestHelpButton" model="Model" />
     </div>
 
 </div>

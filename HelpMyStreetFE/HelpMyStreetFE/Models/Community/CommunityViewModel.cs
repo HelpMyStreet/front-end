@@ -9,11 +9,12 @@ namespace HelpMyStreetFE.Models.Community
         public bool IsLoggedIn { get; set; }
         public bool IsGroupMember { get; set; }
 
-        public string View { get; set; } = "Index";
+        public string View { get; set; }
         public string EncodedGroupId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double ZoomLevel { get; set; }
+
         public string CommunityName { get; set; }
         public string CommunityShortName { get; set; }
 
@@ -25,6 +26,5 @@ namespace HelpMyStreetFE.Models.Community
 
         public string groupKey { get; set; }
         public bool ShowRequestHelpPopup { get; set; }
-
     }
 }

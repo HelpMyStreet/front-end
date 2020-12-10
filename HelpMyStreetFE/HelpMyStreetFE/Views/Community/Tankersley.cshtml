@@ -41,12 +41,12 @@
                     </ul>
 
                     <div class="row sm6 text-center justify-center mb-sm">
-                        <p class="mt-sm mb-sm pl-md pr-md">Help your neighbours in need</p>
-                        <a href="/request-help/@Model.EncodedGroupId" class="btn cta small btn--request-help fill cta--orange">Request Help</a>
+                        <p class="mt-sm mb-sm pl-md pr-md">It&rsquo;s OK to ask for a little help</p>
+                        <partial name="_RequestHelpButton" model="Model" />
                     </div>
 
                     <div class="row sm6 text-center justify-center mb-sm">
-                        <p class="mt-sm mb-sm pl-md pr-md">It&rsquo;s OK to ask for a little help</p>
+                        <p class="mt-sm mb-sm pl-md pr-md">Help your neighbours in need</p>
                         <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
                     </div>
                 </div>
