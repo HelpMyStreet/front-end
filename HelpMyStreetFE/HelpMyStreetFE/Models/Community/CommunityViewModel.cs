@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
 using HelpMyStreetFE.Models.Feedback;
 
@@ -11,9 +11,9 @@ namespace HelpMyStreetFE.Models.Community
 
         public string View { get; set; }
         public string EncodedGroupId { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public double ZoomLevel { get; set; }
+        public double MapCentre_Latitude { get; set; }
+        public double MapCentre_Longitude { get; set; }
+        public double Map_ZoomLevel { get; set; }
 
         public string CommunityName { get; set; }
         public string CommunityShortName { get; set; }

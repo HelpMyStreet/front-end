@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Utils.Utils;
+using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Community;
 using System.Collections.Generic;
 using System.Threading;
@@ -76,9 +76,9 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = 13.5;
+            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.Map_ZoomLevel = 13.5;
 
             communityViewModel.groupKey = "balderton";
 
@@ -128,9 +128,9 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = 14;
+            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.Map_ZoomLevel = 14;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
@@ -174,9 +174,9 @@ namespace HelpMyStreetFE.Repositories
             int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
 
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
@@ -231,9 +231,9 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.groupKey = "tankersley";
 
@@ -276,9 +276,9 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.groupKey = "ruddington";
             int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = communityModel.Latitude;
+            communityViewModel.MapCentre_Longitude = communityModel.Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
@@ -359,9 +359,9 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = 52.95;
-            communityViewModel.Longitude = -0.2;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.MapCentre_Latitude = 52.95;
+            communityViewModel.MapCentre_Longitude = -0.2;
+            communityViewModel.Map_ZoomLevel = communityModel.ZoomLevel;
 
             communityViewModel.groupKey = "ageuklsl";
             communityViewModel.CommunityName = communityModel.FriendlyName;
@@ -409,9 +409,9 @@ namespace HelpMyStreetFE.Repositories
 
             int groupId = await _groupService.GetGroupIdByKey("ageukwirral", cancellationToken);
             communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.Latitude = 53.37;
-            communityViewModel.Longitude = -3.05;
-            communityViewModel.ZoomLevel = 11.15;
+            communityViewModel.MapCentre_Latitude = 53.37;
+            communityViewModel.MapCentre_Longitude = -3.05;
+            communityViewModel.Map_ZoomLevel = 11.15;
 
             communityViewModel.groupKey = "ageukwirral";
 
