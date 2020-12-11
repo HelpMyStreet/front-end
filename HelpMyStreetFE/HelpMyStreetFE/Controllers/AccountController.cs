@@ -26,6 +26,8 @@ using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using System.Net.Http;
+using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.CommunicationService.Request;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -213,31 +215,17 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> EmailJobDetails(string id, CancellationToken cancellationToken)
         {
             var jobID = Base64Utils.Base64DecodeToInt(id);
+            
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (user == null)
             {
                 return Unauthorized();
             }
 
-            var client = new HttpClient();
-            var baseAddress = $"{ HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.PathBase}";
-            var address = $"{baseAddress}/account/GetJobHTML?JobID={jobID}&UserID={user.ID}";
-            var response = await client.GetAsync(address);
+            var job = await _requestService.GetJobDetailsAsync(jobID, user.ID, cancellationToken);
 
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                return BadRequest();
-            }
 
-            var html = await response.Content.ReadAsStringAsync();
-
-            html = $"<h4>You requested details of the following HelpMyStreet Job: </h4>{html}";
-
-            var commsResponse = await _communicationService.SendEmail("Job Details", "", html, new RecipientModel()
-            {
-                Email = user.UserPersonalDetails.EmailAddress,
-                Name = user.UserPersonalDetails.DisplayName
-            });
+            var commsResponse = await _communicationService.RequestCommunication(job.JobSummary.ReferringGroupID, user.ID, jobID, new CommunicationJob() { CommunicationJobType = CommunicationJobTypes.TaskDetail });
 
             if (commsResponse)
             {
