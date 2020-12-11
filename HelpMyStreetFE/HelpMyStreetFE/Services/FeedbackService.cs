@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums;
 using HelpMyStreetFE.Models.Feedback;
@@ -39,7 +40,7 @@ namespace HelpMyStreetFE.Services
                 throw new Exception($"Attempt to submit feedback for job {feedback.JobId} which could not be found");
             }
 
-            if (job.JobSummary.JobStatus == JobStatuses.Open || job.JobSummary.JobStatus == JobStatuses.InProgress)
+            if (job.JobSummary.JobStatus.Incomplete())
             {
                 return Result.Failure_IncorrectJobStatus;
             }

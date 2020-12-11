@@ -71,6 +71,7 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
+        [Route("profile")]
         public async Task<IActionResult> Profile(string next, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);

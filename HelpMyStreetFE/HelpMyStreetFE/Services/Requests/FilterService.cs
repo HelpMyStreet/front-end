@@ -4,6 +4,7 @@ using System.Linq;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.Extensions.Options;
@@ -39,6 +40,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 JobStatuses = new List<FilterField<JobStatuses>>
                     {
+                        new FilterField<JobStatuses>() { Value = JobStatuses.New },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Open },
                         new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Done },
@@ -46,6 +48,7 @@ namespace HelpMyStreetFE.Services.Requests
                     },
                 OrderBy = new List<OrderByField>
                     {
+                        new OrderByField() { Value = OrderBy.RequiringAdminAttention, Label = "Requiring attention" },
                         new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest" },
                         new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Help needed least soon" },
                         new OrderByField() { Value = OrderBy.DateRequested_Descending, Label = "Requested last" },
@@ -61,6 +64,7 @@ namespace HelpMyStreetFE.Services.Requests
             }
             else
             {
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
             }
@@ -71,7 +75,7 @@ namespace HelpMyStreetFE.Services.Requests
             }
             else
             {
-                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.DateDue_Ascending).First().IsSelected = true;
+                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.RequiringAdminAttention).First().IsSelected = true;
             }
 
             return filterSet;
@@ -204,6 +208,8 @@ namespace HelpMyStreetFE.Services.Requests
 
             return jfr.OrderBy switch
             {
+                OrderBy.RequiringAdminAttention =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.RequiringAdminAttentionScore()).ThenBy(j => j.DueDate),
                 OrderBy.DateDue_Ascending =>
                     jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DueDate),
                 OrderBy.DateDue_Descending =>

@@ -66,6 +66,23 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToNewAsync(int jobId, int createdByUserId)
+        {
+            var request = new PutUpdateJobStatusToNewRequest()
+            {
+                JobID = jobId,
+                CreatedByUserID = createdByUserId
+            };
+
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToNewResponse>>($"/api/PutUpdateJobStatusToNew", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            return null;
+        }
+
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId)
         {
             var request = new PutUpdateJobStatusToDoneRequest()

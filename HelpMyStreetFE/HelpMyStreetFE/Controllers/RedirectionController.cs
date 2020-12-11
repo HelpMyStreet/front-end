@@ -58,6 +58,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var jobLocation = await _requestService.LocateJob(jobId, user.ID, cancellationToken);
+            encodedJobId = Base64Utils.Base64Encode(jobId);
 
             string destination = jobLocation?.JobSet switch
             {
