@@ -43,14 +43,14 @@ namespace HelpMyStreetFE.Controllers
             _groupMemberService = groupMemberService;
         }
 
-        public async Task<IActionResult> Index(string communityName, CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(string groupKey, CancellationToken cancellationToken)
         {
-            if (String.IsNullOrWhiteSpace(communityName))
+            if (String.IsNullOrWhiteSpace(groupKey))
             {
                 return RedirectToAction(nameof(ErrorsController.Error404), "Errors");
             }
 
-            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(communityName, cancellationToken);
+            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(groupKey, cancellationToken);
 
             if (communityViewModel == null)
             {
