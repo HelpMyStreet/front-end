@@ -126,22 +126,6 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
 
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
-            {
-                new CommunityVolunteer()
-                {
-                    Name = "Nick Fairfax",
-                    Role = "Local Organiser",
-                    ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Rita Berkin",
-                    Role = "Local Volunteer",
-                    ImageLocation = "/img/community/ageUK/notts/north-muskham/rita-berkin.jpg"
-                },
-            };
-
             var carouselPath = "/img/community/ageUK/notts/north-muskham/carousel";
             communityViewModel.CarouselImages = new List<List<string>>
             {
