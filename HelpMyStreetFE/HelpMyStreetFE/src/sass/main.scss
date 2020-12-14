@@ -377,3 +377,17 @@ dd {
 .no-wrap {
   white-space: nowrap;
 }
+
+.job-detail-div {
+    visibility: hidden;
+
+    &.visible {
+        visibility: visible;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -50px;
+        z-index: 10000;
+    }
+}

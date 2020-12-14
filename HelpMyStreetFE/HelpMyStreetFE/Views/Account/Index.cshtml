@@ -10,8 +10,66 @@
             clientSdkId: '@Model.VerificationViewModel.YotiOptions.ClientSdkId',
             userId: '@Model.VerificationViewModel.EncodedUserID',
             isVerified: '@Model.VerificationViewModel.IsVerified'
-       };
-    </script>    
+        };
+
+    </script>
+    <script src="~/calendar.js" asp-append-version="true"></script>
+    <script>const events = [
+            {
+                title: 'All Day Event',
+                start: '2018-01-01',
+            },
+            {
+                title: 'Long Event',
+                start: '2018-01-07',
+                end: '2018-01-10'
+            },
+            {
+                groupId: 999,
+                title: 'Repeating Event',
+                start: '2018-01-09T16:00:00'
+            },
+            {
+                groupId: 999,
+                title: 'Repeating Event',
+                start: '2018-01-16T16:00:00'
+            },
+            {
+                title: 'Conference',
+                start: '2018-01-11',
+                end: '2018-01-13'
+            },
+            {
+                title: 'Meeting',
+                start: '2018-01-12T10:30:00',
+                end: '2018-01-12T12:30:00'
+            },
+            {
+                title: 'Lunch',
+                start: '2018-01-12T12:00:00'
+            },
+            {
+                title: 'Meeting',
+                start: '2018-01-12T14:30:00'
+            },
+            {
+                title: 'Happy Hour',
+                start: '2018-01-12T17:30:00'
+            },
+            {
+                title: 'Dinner',
+                start: '2018-01-12T20:00:00'
+            },
+            {
+                title: 'Birthday Party',
+                start: '2018-01-13T07:00:00'
+            },
+            {
+                title: 'Click for Google',
+                url: 'http://google.com/',
+                start: '2018-01-28'
+            }
+        ]</script>
 }
 
 @{
@@ -25,10 +83,10 @@
         _ => "My Profile"
     };
 }
-
+<link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.7.1/fullcalendar.min.css'>
 <main class="account__wrapper container">
     <div class="mb-md mt-md row">
-        <div class="awards-component">@await Component.InvokeAsync("Awards", new {userID = Model.UserDetails.User.ID, cancellationToken = System.Threading.CancellationToken.None})</div>
+        <div class="awards-component">@await Component.InvokeAsync("Awards", new { userID = Model.UserDetails.User.ID, cancellationToken = System.Threading.CancellationToken.None })</div>
     </div>
 
     <div class="account__body">
@@ -50,6 +108,9 @@
                 break;
             case MenuPage.GroupVolunteers:
                 <partial name="_GroupVolunteers" for="@Model" />
+                break;
+            case MenuPage.Calendar:
+                <partial name="_Calendar" />
                 break;
             default:
                 <partial name="_Verification" for="VerificationViewModel" />

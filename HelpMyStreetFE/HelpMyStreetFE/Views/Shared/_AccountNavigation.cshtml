@@ -43,6 +43,12 @@
         </li>
 
         <li class="account__nav__item">
+            <a href="/account/calendar" class="@(Model.CurrentPage == MenuPage.Calendar ? "selected" : string.Empty)">
+                Calendar
+        </li>
+
+
+        <li class="account__nav__item">
             <a href="/account/profile" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>
         </li>
         @foreach (var userGroup in Model.UserGroups)

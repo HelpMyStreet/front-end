@@ -22,6 +22,7 @@ module.exports = {
     community: "./js/community/community.js",
     testimonials: "./js/testimonialSliders.js",
     helpertabs: "./js/helperTabs.js",
+    calendar: "./js/account/calendar.js"
   },
   output: {
     path: path.resolve(__dirname, "wwwroot"),
@@ -38,7 +39,9 @@ module.exports = {
           // Compiles Sass to CSS
           "sass-loader",
         ],
-      },
+      },{
+      test: /\.css$/i,
+      use: ["css-loader"]},
       {
         test: /\.js$/, //using regex to tell babel exactly what files to transcompile
         exclude: /node_modules/, // files to be ignored

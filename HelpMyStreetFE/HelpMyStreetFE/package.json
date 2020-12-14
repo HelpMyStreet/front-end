@@ -29,6 +29,11 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.5",
+    "@fullcalendar/core": "^5.4.0",
+    "@fullcalendar/daygrid": "^5.4.0",
+    "@fullcalendar/interaction": "^5.4.0",
+    "@fullcalendar/list": "^5.4.0",
+    "@fullcalendar/timegrid": "^5.4.0",
     "core-js": "^3.8.0",
     "firebase": "^7.24.0",
     "isomorphic-fetch": "^2.2.1",

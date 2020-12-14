@@ -96,6 +96,22 @@ namespace HelpMyStreetFE.Controllers {
         }
 
         [AuthorizeAttributeNoRedirect]
+        [HttpGet("get-job-item")]
+        public async Task<IActionResult> GetJobItem(string j, CancellationToken cancellationToken)
+        {
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            return ViewComponent("JobItem", new { jobId, user});
+        }
+
+        [AuthorizeAttributeNoRedirect]
         [HttpPost("get-filtered-jobs")]
         public IActionResult GetFilteredJobs([FromBody]JobFilterRequest jobFilterRequest)
         {

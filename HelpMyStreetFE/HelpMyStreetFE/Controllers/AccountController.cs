@@ -19,6 +19,7 @@ using HelpMyStreetFE.ViewComponents;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
+using Newtonsoft.Json;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -154,6 +155,37 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return View("Index", viewModel);
+        }
+
+        [Route("calendar")]
+        [HttpGet]
+        public async Task<IActionResult> Calendar(string encodedJobId, CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            viewModel.CurrentPage = MenuPage.Calendar;
+
+            return View("Index", viewModel);
+        }
+
+        [Route("calendar-data")]
+        [HttpGet]
+        public async Task<IActionResult> CalendarData(CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var openJobs = await _requestService.GetOpenJobsAsync(user, true, cancellationToken);
+
+            return new OkObjectResult(openJobs);
         }
 
         [Route("get-awards-component")]
