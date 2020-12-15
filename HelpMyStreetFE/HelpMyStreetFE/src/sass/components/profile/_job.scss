@@ -27,44 +27,28 @@
 }
 
 .email-notification {
+    border-radius: 3px;
+    opacity: 0.9;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    visibility: hidden;
 
-
-    &-failure {
-        border-radius: 3px;
-        opacity: 0.9;
-        position: fixed;
-        right: 10px;
-        bottom: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-        visibility: hidden;
-        background-color: #B53737;
-
-        &.visible {
-            visibility: visible;
-            animation-name: boing;
-            animation-duration: 0.6s;
-            z-index: 5000;
-        }
+    &.visible {
+        visibility: visible;
+        animation-name: boing;
+        animation-duration: 0.6s;
+        z-index: 5000;
     }
 
-    &-success {
-        border-radius: 3px;
-        opacity: 0.9;
-        position: fixed;
-        right: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-        bottom: 10px;
-        visibility: hidden;
-        background-color: #149414;
+    &.failed {
+        background-color: $web2point0-red;
+    }
 
-        &.visible {
-            z-index: 5000;
-            visibility: visible;
-            animation-name: boing;
-            animation-duration: 0.6s;
-        }
+    &.successful {
+        background-color: $web2point0-green;
     }
 }
 
@@ -541,13 +525,13 @@
 
             .link-icons {
                 display: flex;
-                flex-basis: 35%;
                 justify-content: center;
 
                 a {
                     display: flex;
                     align-items: center;
-                    margin-right: 20px;
+                    margin-right: 10px;
+                    width: 110px;
                 }
 
                 img {

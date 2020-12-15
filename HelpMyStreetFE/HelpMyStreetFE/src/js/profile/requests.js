@@ -88,13 +88,15 @@ export function initialiseRequests(isVerified) {
     $('.job-list').on('click', '.email-details', async function (evt) {
         const job = $(this).closest('.job');
         let jobId = job.attr("id");
-        let response = await hmsFetch(`/account/emailJobDetails?id=${jobId}`);
-        var outcome = '#email-notification-failure';
+        let response = await hmsFetch(`/account/emailJobDetails?j=${jobId}`, null, { timeOutRetry: 0});
+        var outcome = 'successful';
         if (response.fetchResponse == fetchResponses.SUCCESS) {
-            outcome = '#email-notification-success';
+            outcome = 'failed';
         }
-        $(outcome).addClass("visible");
-        setTimeout(() => $(outcome).removeClass("visible"), 3000);
+        $('#email-notification').addClass(outcome);
+        $('#email-notification').addClass("visible");
+        $('#email-notification').html(`<p>Email sending ${outcome}<p>`);
+        setTimeout(() => { $('#email-notification').removeClass("visible"); $('#email-notification').removeClass(outcome); }, 3000);
     });
 
     loadFeedbackComponents();

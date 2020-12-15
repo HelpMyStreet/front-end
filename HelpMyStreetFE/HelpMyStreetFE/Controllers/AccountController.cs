@@ -193,28 +193,22 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PrintJobDetails(string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> PrintJobDetails(string j, CancellationToken cancellationToken)
         {
-            var jobID = Base64Utils.Base64DecodeToInt(id);
+            var jobID = Base64Utils.Base64DecodeToInt(j);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (user == null)
             {
-                return Redirect("/account/login?returnURL=/account/printJobDetails?id=" + id);
+                return Redirect("/account/login?returnURL=/account/printJobDetails?id=" + j);
             }
 
-            var jovm = new JobDetailOutputViewModel()
-            {
-                JobID = jobID,
-                UserID = user.ID
-            };
-
-            return View(jovm);
+            return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
         }
 
         [HttpGet]
-        public async Task<IActionResult> EmailJobDetails(string id, CancellationToken cancellationToken)
+        public async Task<IActionResult> EmailJobDetails(string j, CancellationToken cancellationToken)
         {
-            var jobID = Base64Utils.Base64DecodeToInt(id);
+            var jobID = Base64Utils.Base64DecodeToInt(j);
             
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (user == null)
@@ -222,28 +216,17 @@ namespace HelpMyStreetFE.Controllers
                 return Unauthorized();
             }
 
-            var job = await _requestService.GetJobDetailsAsync(jobID, user.ID, cancellationToken);
-
-
-            var commsResponse = await _communicationService.RequestCommunication(job.JobSummary.ReferringGroupID, user.ID, jobID, new CommunicationJob() { CommunicationJobType = CommunicationJobTypes.TaskDetail });
+            var commsResponse = await _communicationService.RequestCommunication(null, user.ID, jobID, new CommunicationJob() { CommunicationJobType = CommunicationJobTypes.TaskDetail });
 
             if (commsResponse)
             {
                 return Ok();
             } else
             {
-                return BadRequest();
+                return new StatusCodeResult(500);
             }
 
         }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetJobHTML(int JobID, int UserID, CancellationToken cancellationToken)
-        {
-            return ViewComponent("JobDetailOutput", new { JobID = JobID, UserID = UserID });
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
