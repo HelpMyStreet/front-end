@@ -5,7 +5,7 @@
 
 @{
     ViewData["Title"] = Model.CommunityName;
-    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = "North Muskham", PrimaryMobileText = "North Muskham", ShowSecondaryText = true };
     ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
 }
 
@@ -15,9 +15,16 @@
 
 <div class="community" data-group-id="@Model.EncodedGroupId">
 
-    <div class="container">
-        <div class="community-banner">
-            <img src="" alt="@Model.CommunityName" />
+    <div class="outer-container pt-md pb-md mb-lg outer-container--darker north-muskham-banner">
+        <div class="container row">
+            <div class="sm4 text-center">
+                <img src="/img/community/ageUK/notts/north-muskham/north-muskham-sign.png" alt="@Model.CommunityName" class="north-muskham-sign" />
+            </div>
+            <div class="row sm8 right-column">
+                <h2>North Muskham Community Support</h2>
+                <h2 class="proud">Proudly supporting our community with local volunteers</h2>
+                <p class="partnership">In partnership with North Muskham Parish Council</p>
+            </div>
         </div>
     </div>
     <div class="outer-container">
@@ -59,16 +66,9 @@
 
     <div class="outer-container outer-container--darker">
         <div class="container">
-            <div class="row flex justify-center">
-                <h2 class="mb15 mt-lg text-center">Welcome from North Muskham Community Support</h2>
-            </div>
-        </div>
-    </div>
-
-    <div class="outer-container outer-container--darker">
-        <div class="container">
             <div class="row">
                 <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Welcome from North Muskham Community Support</h2>
                     <div>
                         <p>
                             North Muskham Community Support is supported by North Muskham Parish Council. We&rsquo;re a community support
