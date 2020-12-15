@@ -262,11 +262,6 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Pages", action = "CaseStudies" });
 
                 endpoints.MapControllerRoute(
-                    name: "community",
-                    pattern: "community/{communityName}",
-                    defaults: new { controller = "Community", action = "Index" });
-
-                endpoints.MapControllerRoute(
                     name: "privacy",
                     pattern: "privacy-policy",
                     defaults: new { controller = "Pages", action = "PrivacyPolicy" });
@@ -308,42 +303,47 @@ namespace HelpMyStreetFE
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
 
-                // Community placeholders
+                // Community pages
                 endpoints.MapControllerRoute(
-                    name: "Kimberley",
-                    pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index", });
+                    name: "community",
+                    pattern: "community/{groupKey}",
+                    defaults: new { controller = "Community", action = "Index" });
 
                 endpoints.MapControllerRoute(
                     name: "Tankersley",
                     pattern: "tankersley",
-                    defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "tankersley" });
 
                 endpoints.MapControllerRoute(
                     name: "Balderton",
                     pattern: "balderton",
-                    defaults: new { controller = "Community", action = "Index", communityName = "balderton" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "balderton" });
 
                 endpoints.MapControllerRoute(
                     name: "Ruddington",
                     pattern: "ruddington",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ruddington" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ruddington" });
 
 
                 endpoints.MapControllerRoute(
                     name: "healthylondonpartnership",
                     pattern: "healthylondonpartnership",
-                    defaults: new { controller = "Community", action = "Index", communityName = "hlp" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "hlp" });
 
                 endpoints.MapControllerRoute(
                     name: "ageuklsl",
                     pattern: "ageuklsl",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ageuklsl" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuklsl" });
 
                 endpoints.MapControllerRoute(
                     name: "ageukwirral",
                     pattern: "ageukwirral",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ageukwirral" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ageukwirral" });
+
+                endpoints.MapControllerRoute(
+                    name: "north-muskham",
+                    pattern: "north-muskham",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "north-muskham" });
 
                 endpoints.MapControllerRoute(
                    name: "face-coverings",
@@ -358,7 +358,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "fortheloveofscrubs",
                     pattern: "for-the-love-of-scrubs",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ftlos" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ftlos" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",

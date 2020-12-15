@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.Controllers
         {
             int groupId = Base64Utils.Base64DecodeToInt(g);
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
-            var community = await _communityRepository.GetCommunityDetailByKey(group.GroupKey);
+            var community = _communityRepository.GetCommunityDetailByKey(group.GroupKey);
 
             return PartialView("_RequestHelpCommunityPopup", community);
         }
@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Controllers
         {
             int groupId = Base64Utils.Base64DecodeToInt(g);
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
-            var community = await _communityRepository.GetCommunityDetailByKey(group.GroupKey);
+            var community = _communityRepository.GetCommunityDetailByKey(group.GroupKey);
 
             return PartialView("_RequestHelpElsewherePopup", community);
         }
@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Controllers
         {
             int groupId = Base64Utils.Base64DecodeToInt(g);
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
-            var community = await _communityRepository.GetCommunityDetailByKey(group.GroupKey);
+            var community = _communityRepository.GetCommunityDetailByKey(group.GroupKey);
 
             return PartialView("_JoinGroupPopup", community);
         }
@@ -61,7 +61,7 @@ namespace HelpMyStreetFE.Controllers
         {
             int groupId = Base64Utils.Base64DecodeToInt(g);
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
-            var community = await _communityRepository.GetCommunityDetailByKey(group.GroupKey);
+            var community = _communityRepository.GetCommunityDetailByKey(group.GroupKey);
 
             return PartialView("_LeaveGroupPopup", community);
         }
