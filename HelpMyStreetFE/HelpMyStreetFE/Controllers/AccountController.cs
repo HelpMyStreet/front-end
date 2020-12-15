@@ -20,6 +20,7 @@ using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using Newtonsoft.Json;
+using HelpMyStreet.Utils.Extensions;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -184,8 +185,10 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var openJobs = await _requestService.GetOpenJobsAsync(user, true, cancellationToken);
-
-            return new OkObjectResult(openJobs);
+            var otherJobs = await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken);
+            var allJobs = openJobs.Concat(otherJobs)
+;
+            return new OkObjectResult(allJobs.Select(x => new { id = x.JobID, jobStatus = x.JobStatus, color = (x.JobStatus == JobStatuses.Open) ? "red" : "blue", title = x.SupportActivity.FriendlyNameShort(), start = x.DateRequested  } ));
         }
 
         [Route("get-awards-component")]

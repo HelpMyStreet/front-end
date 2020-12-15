@@ -141,11 +141,10 @@
                     case JobStatuses.Open:
                         @if (!admin)
                         {
-                            <a href="/api/request-help/set-job-status?j=@Base64Utils.Base64Encode(Model.JobHeader.JobID)&s=2">
                             <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
                                 <span class="text">Accept</span>
                             </button>
-                                </a>
+
                         }
                         break;
                     case JobStatuses.InProgress:

@@ -4,13 +4,17 @@
 
 }
 
-
 <article class="user-profile profile-panel p-md">
     <header class="profile-panel__header">
         <h3 class="profile-panel__title">My Details</h3>
     </header>
     <article class="profile">
+        <div>
+            <label for="filter-events">Filter options: </label>
+            <button id="filter-events" class="btn mb-sm">View All</button>
+        </div>
         <div id="calendar"></div>
-        <div class="job-detail-div" id="job-detail-div"></div>
+        <div class="job-detail-div" id="job-detail-div"><div id="inner-job-details">
+              </div><p id="close-job-detail">Close</p></div>
     </article>
 </article>
