@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Repositories
             {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
             {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
-            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "", GeographicName="North Muskham" } },
+            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
