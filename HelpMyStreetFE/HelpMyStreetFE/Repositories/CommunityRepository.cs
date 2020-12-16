@@ -88,6 +88,27 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
                 },
+                new CommunityVolunteer()
+                {
+                    Name = "Rita Berkin",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/rita-birkin.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Kirstie Crook",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/kirstie-crook.JPG"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Richard Hartley",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/richard-hartley.jpg"
+                },
             };
 
             var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
