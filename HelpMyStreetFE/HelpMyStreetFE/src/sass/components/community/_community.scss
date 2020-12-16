@@ -1,80 +1,115 @@
 @import "../../mixins/effects";
 
-.community-banner {
-    max-height: 300px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
+.community {
+    .community-banner {
+        max-height: 300px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
 
-    img {
-        width: 100%;
-    }
-}
-
-
-.btn {
-    &.disabled {
-        background: $gray-8;
-
-        &.btn--sign-up {
-            pointer-events: none;
-            cursor: default;
-        }
-
-        &.prevent-submit {
-            pointer-events: none;
-            cursor: default;
+        img {
+            width: 100%;
         }
     }
-}
 
-.commmunity-map-container {
-    height: 100%;
-    min-height: 400px;
-}
+    .north-muskham-banner {
+        img {
+            max-height: 12rem;
+            margin-bottom: 1rem;
 
-.community-volunteers-container {
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-
-    .volunteer {        
-        margin: 15px;
-
-        .volunteer-image {
-            display: flex;
-            justify-content: center;
-            overflow: hidden;
-
-            img {
-                max-height: 200px;
+            @media screen and (min-width: $med-screen) {
+                margin-bottom: 0;
             }
         }
 
-        .volunteer-text {
-            text-align: center;
+        .right-column {
+            align-content: center;
+            h2 {
+                color: $black;
+                &.proud {
+                    font-weight: normal;
+                    margin-top: 0.75rem;
+                    margin-bottom: 2rem;
+                    font-size: 1.4rem;
+                }
+            }
+
+            p {
+                &.partnership {
+                    color: $gray-8;
+                    width: 100%;
+                    text-align: right;
+                    margin: 0;
+                }
+            }
         }
     }
-}
 
-.yt-video-placeholder {
-  cursor: pointer;
-}
 
-.help-examples{
-    .card{
-        min-height:260px;
+    .btn {
+        &.disabled {
+            background: $gray-8;
+
+            &.btn--sign-up {
+                pointer-events: none;
+                cursor: default;
+            }
+
+            &.prevent-submit {
+                pointer-events: none;
+                cursor: default;
+            }
+        }
     }
-}
+
+    .commmunity-map-container {
+        height: 100%;
+        min-height: 400px;
+    }
+
+    .community-volunteers-container {
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+
+        .volunteer {        
+            margin: 15px;
+
+            .volunteer-image {
+                display: flex;
+                justify-content: center;
+                overflow: hidden;
+
+                img {
+                    max-height: 200px;
+                }
+            }
+
+            .volunteer-text {
+                text-align: center;
+            }
+        }
+    }
+
+    .yt-video-placeholder {
+      cursor: pointer;
+    }
+
+    .help-examples{
+        .card{
+            min-height:260px;
+        }
+    }
 
 
-.gfm-embed {
-    max-width: 480px;
-    margin: 0 auto;
-}
+    .gfm-embed {
+        max-width: 480px;
+        margin: 0 auto;
+    }
 
-.mw1000 {
-    max-width: 1000px;
+    .mw1000 {
+        max-width: 1000px;
+    }
 }

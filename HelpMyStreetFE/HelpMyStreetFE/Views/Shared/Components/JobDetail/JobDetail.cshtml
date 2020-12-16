@@ -15,7 +15,7 @@
     var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
 }
 
-@if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open || Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress)
+@if (Model.JobDetail.JobSummary.JobStatus.Incomplete())
 {
     <div class="job__expander">
         <div class="row">
