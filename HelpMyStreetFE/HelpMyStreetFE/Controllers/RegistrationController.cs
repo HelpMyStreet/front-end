@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> StepOne(string referringGroup = "", string source = "", string email = "")
+        public async Task<ActionResult> StepOne(string referringGroup, string source, string email, CancellationToken cancellationToken)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -64,7 +64,7 @@ namespace HelpMyStreetFE.Controllers
                 catch { }
             }
 
-            RegistrationFormVariant registrationFormVariant = await _groupService.GetRegistrationFormVariant(referringGroupId, source) ?? RegistrationFormVariant.Default;
+            RegistrationFormVariant registrationFormVariant = await _groupService.GetRegistrationFormVariant(referringGroupId, source, cancellationToken);
             var group = await _groupService.GetGroupById(referringGroupId, CancellationToken.None);
 
             return View(new RegistrationViewModel
@@ -208,7 +208,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                return await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source) ?? RegistrationFormVariant.Default;
+                return await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source, cancellationToken);
             }
         }
 
