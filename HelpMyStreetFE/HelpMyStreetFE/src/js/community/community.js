@@ -44,9 +44,11 @@ let previousZoomLevel = -1;
 
 window.initGoogleMap = async function () {
 
-    let initialLat = parseFloat($("#Latitude").val());
-    let initialLng = parseFloat($("#Longitude").val());
-    let zoomLevel = parseFloat($("#ZoomLevel").val());
+    let mapEl = document.getElementById('map');
+
+    let initialLat = parseFloat($(mapEl).data('latitude'));
+    let initialLng = parseFloat($(mapEl).data('longitude'));
+    let zoomLevel = parseFloat($(mapEl).data('zoom'));
 
     let noPoi = [
         {
@@ -124,7 +126,7 @@ window.initGoogleMap = async function () {
         }
     ];
 
-    googleMap = new google.maps.Map(document.getElementById('map'), {
+    googleMap = new google.maps.Map(mapEl, {
         center: { lat: initialLat, lng: initialLng },
         mapTypeControl: false,
         streetViewControl: false,
@@ -274,27 +276,25 @@ async function getVolunteers(swLat, swLng, neLat, neLng, minDistanceBetweenInMet
 
 $(document).ready(function () {
     const groupId = $('.community').data('group-id');
-    if ($("#ShowRequestHelpPopup").val() == "True") {
-        $('.btn--request-help').on('click', async function (event) {
-            event.preventDefault();
-            let popup = await showServerSidePopup('/api/community/get-request-help-community-popup?g=' + groupId, {
-                acceptCallbackAsync: () => {
-                    window.location.href = $(this).attr('href');
-                    return true;
-                },
-                rejectCallbackAsync: () => {
-                    showServerSidePopup('/api/community/get-request-help-elsewhere-popup?g=' + groupId, {
-                        acceptCallbackAsync: () => {
-                            window.location.href = '/request-help';
-                            return true;
-                        },
-                    });
-                    console.log(popup);
-                    hidePopup(popup, 0);
-                }
-            });
+    $('.show-request-help-popup').on('click', async function (event) {
+        event.preventDefault();
+        let popup = await showServerSidePopup('/api/community/get-request-help-community-popup?g=' + groupId, {
+            acceptCallbackAsync: () => {
+                window.location.href = $(this).attr('href');
+                return true;
+            },
+            rejectCallbackAsync: () => {
+                showServerSidePopup('/api/community/get-request-help-elsewhere-popup?g=' + groupId, {
+                    acceptCallbackAsync: () => {
+                        window.location.href = '/request-help';
+                        return true;
+                    },
+                });
+                console.log(popup);
+                hidePopup(popup, 0);
+            }
         });
-    }
+    });
 
     $('.btn--join-group').on('click', function (event) {
         event.preventDefault();

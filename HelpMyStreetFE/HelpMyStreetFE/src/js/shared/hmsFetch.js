@@ -1,6 +1,6 @@
 ﻿// HMS Bespoke Fetch Function
 // Takes fetch url, post/get data object (), options
-// Options object allows setting timeout length, number of retries for errors and timeout
+// Options object allows setting timeout length, number of retries for errors and timeout, timeout callback function to call on first timeout
 // Returns Promise that will resolve to a fetchResponse, and associated data.
 
 import "isomorphic-fetch"
@@ -9,7 +9,8 @@ import { stringifyForm } from "./form-helper";
 const defaultOptions = {
     timeOutLength: 8000,
     errorRetry: 3,
-    timeOutRetry: 4
+    timeOutRetry: 4,
+    timeOutCallback: null
 };
 
 const fetchResponses = {
@@ -41,10 +42,14 @@ async function tryFetch(url, data, options, completedAttempts) {
         const timeOut = setTimeout(function () {
             didTimeOut = true;
             if (options.timeOutRetry > completedAttempts) {
+                if (options.timeOutCallback && completedAttempts == 1) {
+                    options.timeOutCallback()
+                }
                 resolve(tryFetch(url, data, options, completedAttempts));
             } else {
                 sendNewRelicError(url, fetchResponses.TIMEOUT);
-                resolve({fetchResponse: fetchResponses.TIMEOUT});
+                resolve({ fetchResponse: fetchResponses.TIMEOUT });
+
             }
         }, options.timeOutLength);
 

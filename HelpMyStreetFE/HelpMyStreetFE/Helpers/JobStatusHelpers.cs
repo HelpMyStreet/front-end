@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return jobStatus switch
             {
+                JobStatuses.New => "new.svg",
                 JobStatuses.Open => "open.svg",
                 JobStatuses.InProgress => "inprogress.svg",
                 JobStatuses.Done => "complete.svg",

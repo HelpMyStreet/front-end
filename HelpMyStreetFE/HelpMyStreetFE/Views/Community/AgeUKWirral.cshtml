@@ -1,0 +1,192 @@
+@using HelpMyStreetFE.Models.Feedback;
+@using HelpMyStreetFE.Models.Community;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+
+    <div class="container">
+        <div class="community-banner">
+            <img src="/img/community/ageUK/wirral/age-uk-wirral-banner.png" alt="Age UK Wirral" />
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000">
+                        <h2 class="mb0 mt-md">In the Wirral, help is always available!</h2>
+                    </header>
+
+                    <p class='mt-sm mb-xs'>
+                        Age UK Wirral are proud to have an amazing range of services for older people in our local communities. Our services are supported by volunteers who are here to help with:
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        <ul class='tick-list mt-xs mb-sm compact-list'>
+                            <li>Shopping for essentials</li>
+                            <li>Collecting prescriptions</li>
+                            <li>Staying warm and healthy in the chilly winter</li>
+                            <li>Door-to-door transport for medical appointments</li>
+                        </ul>
+                    </p>
+
+                    <div class="row sm12 text-center justify-center mb-sm">
+                        <p class="mt-sm mb-sm pl-md pr-md">To ask for help, please go to our website or call us on 0151&nbsp;482&nbsp;3456.</p>
+                        <a href="https://www.ageuk.org.uk/wirral/" class="btn cta small btn--request-help fill cta--dark-blue">Go to our website</a>
+                    </div>
+
+                    <div class="row sm12 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            Age UK Wirral relies on volunteers to help us offer vital services in the local community. Would you like to lend a hand?
+                        </p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container mb-lg">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row flex justify-center">
+                <h2 class="mb15 mt-lg text-center">Welcome from Age UK Wirral</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_CommunityVolunteersSlider" model="Model" />
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row">
+                <div class="sm12">
+                    <div>
+                        <p>
+                            Age UK Wirral is an independent, local charity and we have been working in the local community to help
+                            older people, their families and carers for over 70 years. We have 700 dedicated staff and volunteers helping
+                            us to deliver services and activities for older people in the Wirral.
+                        </p>
+                        <p>
+                            In March 2020 we launched our Covid-19 Emergency Response Services to support people with shopping,
+                            prescription collections and wellbeing support. In six months we have carried out over 3,000 shopping trips,
+                            collected over 500 prescriptions, lent 250 people tablets and data sim cards and made more than 35,000 wellbeing calls
+                            to isolated people in the community.  These services will continue to support the community and are vital to keep people safe, well and connected.
+                        </p>
+                        <p>
+                            The services on this page are a selection of those available, focussing on areas where we need ad hoc
+                            volunteer assistance.
+                        </p>
+                        <p>
+                            To find out more about our other services and the support we can provide, please go to our main website <a href="https://www.ageuk.org.uk/wirral/">www.ageuk.org.uk/wirral</a>
+                            or call us on 0151&nbsp;482&nbsp;3456.
+                        </p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>How can we help?</h2>
+                        <p class="mt-sm mb-md">
+                            We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151&nbsp;482&nbsp;3456.
+                        </p>
+
+                        <div class="" style="text-align: center">
+                            <a href="https://www.ageuk.org.uk/wirral/" class="btn cta fill cta--dark-blue">Go to our website</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Useful Links</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div class="sm12 community-useful-links mb-lg">
+                    <p><a href="https://www.ageuk.org.uk/wirral/">Age UK Wirral Website</a> - Find out about our extensive range of services, donations, charity shops and further details about our organisation.</p>
+                    <p><a href="https://www.facebook.com/ageukwirral/">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
+                    <p><a href="https://www.wirralinfobank.co.uk/">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
+                    <p><a href="/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.groupKey })
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>How can we help?</h2>
+                        <p class="mt-sm mb-md">
+                            We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151&nbsp;482&nbsp;3456.
+                        </p>
+
+                        <div class="" style="text-align: center">
+                            <a href="https://www.ageuk.org.uk/wirral/" class="btn cta fill cta--dark-blue">Go to our website</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

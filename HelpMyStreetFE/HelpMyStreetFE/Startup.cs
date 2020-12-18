@@ -49,6 +49,7 @@ namespace HelpMyStreetFE
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.LoginPath = "/login";
                 });
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
@@ -183,10 +184,10 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Group>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<List<GroupCredential>>>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Group>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<List<GroupCredential>>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<UserInGroup>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Instructions>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Instructions>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
 
             services.AddControllers();
             services.AddRazorPages()
@@ -262,11 +263,6 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Pages", action = "CaseStudies" });
 
                 endpoints.MapControllerRoute(
-                    name: "community",
-                    pattern: "community/{communityName}",
-                    defaults: new { controller = "Community", action = "Index" });
-
-                endpoints.MapControllerRoute(
                     name: "privacy",
                     pattern: "privacy-policy",
                     defaults: new { controller = "Pages", action = "PrivacyPolicy" });
@@ -304,72 +300,51 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "RequestHelp", action = "Success" });
 
                 endpoints.MapControllerRoute(
-                    name: "login",
-                    pattern: "login",
-                    defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                   name: "login/group",
-                   pattern: "login/{referringGroup}",
-                   defaults: new { controller = "Account", action = "Login" });
-                endpoints.MapControllerRoute(
-                   name: "login/group/source",
-                   pattern: "login/{referringGroup}/{source}",
-                   defaults: new { controller = "Account", action = "Login" });
-
-                endpoints.MapControllerRoute(
                     name: "ForgottenPassword",
                     pattern: "forgotten-password",
                     defaults: new { controller = "Home", action = "ForgottenPassword" });
 
+                // Community pages
                 endpoints.MapControllerRoute(
-                    name: "account/g/group",
-                    pattern: "account/g/{groupKey}",
-                    defaults: new { controller = "Account", action = "Group" });
-                endpoints.MapControllerRoute(
-                    name: "account/g/group/requests",
-                    pattern: "account/g/{groupKey}/requests",
-                    defaults: new { controller = "Account", action = "GroupRequests" });
-                endpoints.MapControllerRoute(
-                    name: "account/g/group/volunteers",
-                    pattern: "account/g/{groupKey}/volunteers",
-                    defaults: new { controller = "Account", action = "GroupVolunteers" });
-
-                // Community placeholders
-                endpoints.MapControllerRoute(
-                    name: "Kimberley",
-                    pattern: "kimberley",
-                    defaults: new { controller = "Home", action = "Index", });
+                    name: "community",
+                    pattern: "community/{groupKey}",
+                    defaults: new { controller = "Community", action = "Index" });
 
                 endpoints.MapControllerRoute(
                     name: "Tankersley",
                     pattern: "tankersley",
-                    defaults: new { controller = "Community", action = "Index", communityName = "tankersley" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "tankersley" });
 
                 endpoints.MapControllerRoute(
                     name: "Balderton",
                     pattern: "balderton",
-                    defaults: new { controller = "Community", action = "Index", communityName = "balderton" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "balderton" });
 
                 endpoints.MapControllerRoute(
                     name: "Ruddington",
                     pattern: "ruddington",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ruddington" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ruddington" });
 
 
                 endpoints.MapControllerRoute(
                     name: "healthylondonpartnership",
                     pattern: "healthylondonpartnership",
-                    defaults: new { controller = "Community", action = "Index", communityName = "hlp" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "hlp" });
 
                 endpoints.MapControllerRoute(
                     name: "ageuklsl",
                     pattern: "ageuklsl",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ageuklsl" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuklsl" });
 
                 endpoints.MapControllerRoute(
                     name: "ageukwirral",
                     pattern: "ageukwirral",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ageukwirral" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ageukwirral" });
+
+                endpoints.MapControllerRoute(
+                    name: "north-muskham",
+                    pattern: "north-muskham",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "north-muskham" });
 
                 endpoints.MapControllerRoute(
                    name: "face-coverings",
@@ -384,20 +359,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "fortheloveofscrubs",
                     pattern: "for-the-love-of-scrubs",
-                    defaults: new { controller = "Community", action = "Index", communityName = "ftlos" });
-
-                endpoints.MapControllerRoute(
-                    name: "OpenRequests",
-                    pattern: "account/open-requests",
-                    defaults: new { controller = "Account", action = "OpenRequests" });
-                endpoints.MapControllerRoute(
-                   name: "AcceptedRequests",
-                   pattern: "account/accepted-requests",
-                   defaults: new { controller = "Account", action = "AcceptedRequests" });
-                endpoints.MapControllerRoute(
-                   name: "CompletedRequests",
-                   pattern: "account/completed-requests",
-                   defaults: new { controller = "Account", action = "CompletedRequests" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ftlos" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",

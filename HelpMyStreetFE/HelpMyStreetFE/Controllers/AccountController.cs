@@ -7,19 +7,13 @@ using HelpMyStreetFE.Enums.Account;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models;
-using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Yoti;
 using HelpMyStreet.Utils.Utils;
-using HelpMyStreetFE.Models.Email;
-using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreetFE.Models.Account.Jobs;
 using System.Threading;
 using HelpMyStreetFE.ViewComponents;
 using HelpMyStreetFE.Services.Users;
@@ -29,74 +23,34 @@ using HelpMyStreetFE.Services.Requests;
 namespace HelpMyStreetFE.Controllers
 {
     [Authorize]
-
+    [Route("account")]
     public class AccountController : Controller
     {
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
-        private readonly IAddressService _addressService;
-        private readonly IConfiguration _configuration;
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IRequestService _requestService;
-        private readonly IGroupService _groupService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
 
-        private Dictionary<string, string> Errors = new Dictionary<string, string>()
-        {
-            { "login", "Sorry, we couldn't find an account with that email address and password.  Please check and try again" },
-            {"server", "Uh-oh, something has gone wrong at our end. Please try again" },
-            {"email", "Please enter a valid email address" },
-            {"password", "Please enter a valid password" }
-        };
-
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
-            IAddressService addressService,
-            IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
-            IGroupService groupService,
             IAuthService authService,
             IGroupMemberService groupMemberService
             )
         {
             _logger = logger;
             _userService = userService;
-            _addressService = addressService;
-            _configuration = configuration;
             _yotiOptions = yotiOptions;
             _requestService = requestService;
-            _groupService = groupService;
             _authService = authService;
             _groupMemberService = groupMemberService;
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> Login(string email, string er, string referringGroup, string source, CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (user != null)
-            {
-                return Redirect(PROFILE_URL);
-            }
-
-            var errorMessage = String.IsNullOrEmpty(er) ? "" : Errors[er];
-
-            LoginViewModel model = new LoginViewModel
-            {
-                Email = email,
-                EmailError = er == "email" ? errorMessage : "",
-                LoginError = er != "email" ? errorMessage : "",
-                FirebaseConfiguration = _configuration["Firebase:Configuration"],
-                SignUpURL = BuildSignUpUrl(referringGroup, source),
-            };
-            return View(model);
         }
 
         [HttpGet]
@@ -117,6 +71,7 @@ namespace HelpMyStreetFE.Controllers
             }
         }
 
+        [Route("profile")]
         public async Task<IActionResult> Profile(string next, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -133,8 +88,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
+        [Route("open-requests")]
+        [Route("open-requests/j/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenRequests(string encodedJobId, CancellationToken cancellationToken)
         {
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -145,12 +102,20 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenRequests;
+
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+
             return View("Index", viewModel);
         }
 
 
+        [Route("accepted-requests")]
+        [Route("accepted-requests/j/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> AcceptedRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> AcceptedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -161,11 +126,18 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.AcceptedRequests;
 
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+
             return View("Index", viewModel);
         }
 
+        [Route("completed-requests")]
+        [Route("completed-requests/j/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> CompletedRequests(CancellationToken cancellationToken)
+        public async Task<IActionResult> CompletedRequests(string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -176,9 +148,15 @@ namespace HelpMyStreetFE.Controllers
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.CompletedRequests;
 
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+
             return View("Index", viewModel);
         }
 
+        [Route("get-awards-component")]
         [HttpGet]
         public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
         {
@@ -186,6 +164,7 @@ namespace HelpMyStreetFE.Controllers
             return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
         }
 
+        [Route("g/{groupKey}")]
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
@@ -197,7 +176,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (await _groupMemberService.GetUserHasRole(user.ID, groupKey, GroupRoles.TaskAdmin, cancellationToken))
             {
-                return await GroupRequests(groupKey, cancellationToken);
+                return await GroupRequests(groupKey, null, cancellationToken);
             }
             else if (await _groupMemberService.GetUserHasRole_Any(user.ID, groupKey, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, cancellationToken))
             {
@@ -207,8 +186,10 @@ namespace HelpMyStreetFE.Controllers
             return Redirect(PROFILE_URL);
         }
 
+        [Route("g/{groupKey}/requests")]
+        [Route("g/{groupKey}/requests/j/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupRequests(string groupKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -225,9 +206,15 @@ namespace HelpMyStreetFE.Controllers
             viewModel.CurrentPage = MenuPage.GroupRequests;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+
             return View("Index", viewModel);
         }
 
+        [Route("get-logged-in-status")]
         [HttpGet]
         [AllowAnonymous]
         [AuthorizeAttributeNoRedirect]
@@ -236,6 +223,7 @@ namespace HelpMyStreetFE.Controllers
             return true;
         }
 
+        [Route("get-navigation-badge")]
         [HttpGet]
         [AllowAnonymous]
         [AuthorizeAttributeNoRedirect]
@@ -252,6 +240,7 @@ namespace HelpMyStreetFE.Controllers
             return count;
         }
 
+        [Route("g/{groupKey}/volunteers")]
         [HttpGet]
         public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
@@ -321,22 +310,6 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return viewModel;
-        }
-
-        private string BuildSignUpUrl(string referringGroup, string source)
-        {
-            if (string.IsNullOrEmpty(referringGroup))
-            {
-                return "/registration";
-            }
-            else if (string.IsNullOrEmpty(source))
-            {
-                return $"/registration/{referringGroup}";
-            }
-            else
-            {
-                return $"/registration/{referringGroup}/{source}";
-            }
         }
     }
 }

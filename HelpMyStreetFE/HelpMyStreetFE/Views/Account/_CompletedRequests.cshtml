@@ -17,10 +17,13 @@
 
         <div class="profile">
             <div class="job-filter-panel">
-                @await Component.InvokeAsync("JobFilterPanel", new JobFilterViewModel()
+                @await Component.InvokeAsync("JobFilterPanel", new
                    {
-                       JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20 },
-                       EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
+                       jobFilterViewModel = new JobFilterViewModel
+                       {
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserCompletedRequests, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
+                           EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
+                       }
                    })
             </div>
             @if (NoJobsToDisplay)

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.Extensions.Options;
@@ -14,16 +14,17 @@ namespace HelpMyStreetFE.Services.Requests
     public class FilterService : IFilterService
     {
         private readonly IOptions<RequestSettings> _requestSettings;
+
         public FilterService(IOptions<RequestSettings> requestSettings)
         {
             _requestSettings = requestSettings;
         }
 
-        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, User user)
+        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
         {
             return jobSet switch
             {
-                JobSet.GroupRequests => GroupRequestsDefaultSortAndFilterSet,
+                JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatus),
                 JobSet.UserOpenRequests_MatchingCriteria => GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet(),
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
                 JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
@@ -32,35 +33,63 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        private SortAndFilterSet GroupRequestsDefaultSortAndFilterSet = new SortAndFilterSet()
+        private SortAndFilterSet GetGroupRequestsDefaultSortAndFilterSet(JobStatuses? jobStatus)
         {
-            JobStatuses = new List<FilterField<JobStatuses>>()
-                {
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Open, IsSelected = true },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
-                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
-                },
-            OrderBy = new List<OrderByField>()
-                {
-                    new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
-                    new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Help needed least soon" },
-                    new OrderByField() { Value = OrderBy.DateRequested_Descending, Label = "Requested last" },
-                    new OrderByField() { Value = OrderBy.DateRequested_Ascending, Label = "Requested first" },
-                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Updated most recently" },
-                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
-                },
-        };
+            SortAndFilterSet filterSet = new SortAndFilterSet
+            {
+
+                JobStatuses = new List<FilterField<JobStatuses>>
+                    {
+                        new FilterField<JobStatuses>() { Value = JobStatuses.New },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Open },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+                    },
+                OrderBy = new List<OrderByField>
+                    {
+                        new OrderByField() { Value = OrderBy.RequiringAdminAttention, Label = "Requiring attention" },
+                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest" },
+                        new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Help needed least soon" },
+                        new OrderByField() { Value = OrderBy.DateRequested_Descending, Label = "Requested last" },
+                        new OrderByField() { Value = OrderBy.DateRequested_Ascending, Label = "Requested first" },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Updated most recently" },
+                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
+                    },
+            };
+
+            if (jobStatus != null)
+            {
+                filterSet.JobStatuses.Where(js => js.Value == jobStatus).First().IsSelected = true;
+            }
+            else
+            {
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
+            }
+
+            if (jobStatus == JobStatuses.Cancelled || jobStatus == JobStatuses.Done)
+            {
+                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.DateStatusLastChanged_Descending).First().IsSelected = true;
+            }
+            else
+            {
+                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.RequiringAdminAttention).First().IsSelected = true;
+            }
+
+            return filterSet;
+        }
 
         private SortAndFilterSet GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet()
         {
-            SortAndFilterSet filterSet = new SortAndFilterSet()
+            SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                OrderBy = new List<OrderByField>()
+                OrderBy = new List<OrderByField>
                     {
                         new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
                         new OrderByField() { Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
-                  },
+                    },
             };
 
             return filterSet;
@@ -68,9 +97,9 @@ namespace HelpMyStreetFE.Services.Requests
 
         private SortAndFilterSet GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(User user)
         {
-            SortAndFilterSet filterSet = new SortAndFilterSet()
+            SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                SupportActivities = new List<FilterField<SupportActivities>>()
+                SupportActivities = new List<FilterField<SupportActivities>>
                     {
                         new FilterField<SupportActivities>() { Value = SupportActivities.Shopping, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.FaceMask, IsSelected = true },
@@ -89,14 +118,14 @@ namespace HelpMyStreetFE.Services.Requests
                         //new FilterField<SupportActivities>() { Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true },
                         //new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Anxious, IsSelected = true },
                     },
-                DueInNextXDays = new List<FilterField<int>>()
+                DueInNextXDays = new List<FilterField<int>>
                     {
                         new FilterField<int> { Value = 1, Label = "Today" },
                         new FilterField<int> { Value = 7, Label = "This week" },
                         new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
                         new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
                     },
-                OrderBy = new List<OrderByField>()
+                OrderBy = new List<OrderByField>
                     {
                         new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
                         new OrderByField() { Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
@@ -111,7 +140,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (user.SupportActivities.Intersect(_requestSettings.Value.NationalSupportActivities).Count() > 0)
             {
-                filterSet.MaxDistanceInMiles = new List<FilterField<int>>()
+                filterSet.MaxDistanceInMiles = new List<FilterField<int>>
                     {
                         new FilterField<int> { Value = 0, Label = "My street only" },
                         new FilterField<int> { Value = 1, Label = "Within 1 mile" },
@@ -123,7 +152,7 @@ namespace HelpMyStreetFE.Services.Requests
             }
             else
             {
-                filterSet.MaxDistanceInMiles = new List<FilterField<int>>()
+                filterSet.MaxDistanceInMiles = new List<FilterField<int>>
                     {
                         new FilterField<int> { Value = 0, Label = "My street only" },
                         new FilterField<int> { Value = 1, Label = "Within 1 mile" },
@@ -138,9 +167,9 @@ namespace HelpMyStreetFE.Services.Requests
 
         private SortAndFilterSet GetAcceptedRequestsDefaultSortAndFilterSet()
         {
-            SortAndFilterSet filterSet = new SortAndFilterSet()
+            SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                OrderBy = new List<OrderByField>()
+                OrderBy = new List<OrderByField>
                     {
                         new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
                         new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Accepted first" },
@@ -153,9 +182,9 @@ namespace HelpMyStreetFE.Services.Requests
 
         private SortAndFilterSet GetCompletedRequestsDefaultSortAndFilterSet()
         {
-            SortAndFilterSet filterSet = new SortAndFilterSet()
+            SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                OrderBy = new List<OrderByField>()
+                OrderBy = new List<OrderByField>
                     {
                         new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Completed last", IsSelected = true },
                         new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Completed first" },
@@ -163,6 +192,40 @@ namespace HelpMyStreetFE.Services.Requests
             };
 
             return filterSet;
+        }
+
+        public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
+        {
+            var jobsToDisplay = jobs.Where(
+                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
+                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
+                    && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
+                    && (jfr.DueInNextXDays == null || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.DueAfter == null || j.DueDate.Date >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.RequiringAdminAttention =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.RequiringAdminAttentionScore()).ThenBy(j => j.DueDate),
+                OrderBy.DateDue_Ascending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DueDate),
+                OrderBy.DateDue_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DueDate),
+                OrderBy.DateRequested_Ascending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DateRequested),
+                OrderBy.DateRequested_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateRequested),
+                OrderBy.DateStatusLastChanged_Ascending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DateStatusLastChanged),
+                OrderBy.DateStatusLastChanged_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateStatusLastChanged),
+                OrderBy.Distance_Ascending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DistanceInMiles),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
         }
     }
 }

@@ -1,35 +1,10 @@
-import { getParameterByName, updateQueryStringParam, removeQueryStringParam } from "../shared/querystring-helper";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
 
-export function initialiseRequests(isVerified) {
-    const job = getParameterByName("j");
-
-    if (job) {
-        var jobEl = $(`#${job}`);
-        if (jobEl.length) {
-            $("html, body").animate(
-                {
-                    scrollTop: jobEl.offset().top,
-                },
-                {
-                    duration: 1000,
-                    complete: () => {
-                        if (isVerified) {
-                            $(`#${job} .job__detail`).slideDown();
-                            $(`#${job}`).addClass("open highlight");
-                            loadJobDetails(jobEl);
-                        } else {
-                            $(`#${job}`).addClass("highlight");
-                        }
-                    },
-                }
-            );
-        }
-    }
+export function initialiseRequests() {
 
     $('.job-list').on('mouseover', '.job', function () {
         loadJobDetails($(this));
@@ -38,7 +13,6 @@ export function initialiseRequests(isVerified) {
     $('.job-list').on('click', '.job a.open', function (e) {
         e.preventDefault();
         const job = $(this).closest('.job');
-        updateQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
         loadJobDetails(job);
@@ -47,7 +21,6 @@ export function initialiseRequests(isVerified) {
     $('.job-list').on('click', '.job a.close', function (e) {
         e.preventDefault();
         const job = $(this).closest('.job');
-        removeQueryStringParam('j', $(job).attr('id'));
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
     });
@@ -84,6 +57,21 @@ export function initialiseRequests(isVerified) {
         }
         buttonUnload($(this));
     });
+
+    const highlightedJob = $('.job-list .job.highlight');
+    if (highlightedJob.length) {
+        $(document.scrollingElement || document.documentElement).animate(
+            {
+                scrollTop: highlightedJob.offset().top - 20
+            },
+            {
+                duration: 1000,
+                complete: () => {
+                    highlightedJob.find('.open').click();
+                }
+            }
+        );
+    }
 
     loadFeedbackComponents();
 }

@@ -19,15 +19,17 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly IFilterService _filterService;
 
-        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService)
+        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService, IFilterService filterService)
         {
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
+            _filterService = filterService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action<int> listLengthCallback, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
             JobListViewModel jobListViewModel = new JobListViewModel();
 
@@ -64,7 +66,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.UnfilteredJobs = jobs.Count();
 
-            jobs = _requestService.SortAndFilterJobs(jobs, jobFilterRequest);
+            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredJobs = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
@@ -78,12 +80,18 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobHeader = a,                
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken)
+                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
+                HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
             })));
 
-            if (listLengthCallback != null)
+            if (jobListViewModel.UnfilteredJobs == jobListViewModel.FilteredJobs && jobListViewModel.UnfilteredJobs <= 5)
             {
-                listLengthCallback.Invoke(jobListViewModel.UnfilteredJobs);
+                hideFilterPanelCallback?.Invoke();
+
+                if (jobListViewModel.UnfilteredJobs == 0)
+                {
+                    noJobsCallback?.Invoke();
+                }
             }
 
             return View("JobList", jobListViewModel);

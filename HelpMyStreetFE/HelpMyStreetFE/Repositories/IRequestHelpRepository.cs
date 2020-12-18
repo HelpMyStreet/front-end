@@ -13,6 +13,7 @@ namespace HelpMyStreetFE.Repositories
         Task<JobSummary> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
         Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
+        Task<UpdateJobStatusOutcome?> UpdateJobStatusToNewAsync(int jobId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToDoneAsync(int jobId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToOpenAsync(int jobId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToCancelledAsync(int jobId, int createdByUserId);
