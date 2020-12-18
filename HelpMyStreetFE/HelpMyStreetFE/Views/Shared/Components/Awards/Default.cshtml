@@ -1,5 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.Awards;
 @using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Extensions; 
 
 @model AwardsViewModel;
 
@@ -43,7 +44,7 @@ else
                 {
                     <div class="completed-task-summary @a.Key.Class()">
                         <img src="~/img/icons/@a.Key.Icon()" />
-                        @a.Key.Sentences(a.Value)
+                        @a.Key.PerfectTense(a.Value)
                     </div>
                 }
             </div>
