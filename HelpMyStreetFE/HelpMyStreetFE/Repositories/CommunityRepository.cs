@@ -14,12 +14,13 @@ namespace HelpMyStreetFE.Repositories
         private readonly IGroupService _groupService;
         private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
         {
-            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Latitude = 51.507602, Longitude = -0.127816, ReferenceName = "hlp", LinkURL = "/healthylondonpartnership", ZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
-            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Latitude = 53.498113, Longitude = -1.488587, ReferenceName = "tankersley", LinkURL = "/tankersley", ZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Latitude = 52.8925, Longitude = -1.150, ReferenceName = "ruddington", LinkURL = "/ruddington", ZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Latitude = 53.2304334, Longitude = -0.5435425, ReferenceName = "ageuklsl", LinkURL = "/ageuklsl", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/ageUKlogo.png"} },
-            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Latitude = 53.37, Longitude = -3.05, ReferenceName = "ageukwirral", LinkURL = "/ageukwirral", ZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
-            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Latitude = 53.0561082, Longitude = -0.8, ReferenceName = "balderton", LinkURL = "/balderton", ZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Pin_Latitude = 51.507602, Pin_Longitude = -0.127816, LinkURL = "/healthylondonpartnership", Pin_VisibilityZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
+            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, LinkURL = "/tankersley", Pin_VisibilityZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, LinkURL = "/ruddington", Pin_VisibilityZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
+            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
+            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
         };
 
@@ -28,27 +29,27 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string communityName, CancellationToken cancellationToken)
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
         {
-            switch (communityName.Trim().ToLower())
+            int groupId = await _groupService.GetGroupIdByKey(groupKey, cancellationToken);
+
+            CommunityViewModel vm = ((Groups)groupId) switch
             {
-                case "tankersley":
-                    return await GetTankersley(cancellationToken);
-                case "ruddington":
-                    return await GetRuddington(cancellationToken);
-                case "ageuklsl":
-                    return await GetAgeUKLSL(cancellationToken);
-                case "ageukwirral":
-                    return await GetAgeUKWirral(cancellationToken);
-                case "hlp":
-                    return await GetHLP(cancellationToken);
-                case "ftlos":
-                    return await GetFtLOS(cancellationToken);
-                case "balderton":
-                    return await GetBalderton(cancellationToken);
-                default:
-                    return null;
-            }
+                Groups.Tankersley => GetTankersley(),
+                Groups.Ruddington => GetRuddington(),
+                Groups.AgeUKLSL => GetAgeUKLSL(),
+                Groups.AgeUKWirral => GetAgeUKWirral(),
+                Groups.HLP => GetHLP(),
+                Groups.FTLOS => GetFtLOS(),
+                Groups.AgeUKNottsBalderton => GetBalderton(),
+                Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
+                _ => null,
+            };
+
+            vm.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+            vm.groupKey = groupKey;
+
+            return vm;
         }
 
         public async Task<List<CommunityModel>> GetCommunities()
@@ -61,72 +62,22 @@ namespace HelpMyStreetFE.Repositories
 
         }
 
-        public async Task<CommunityModel> GetCommunityDetailByKey(string key)
+        public CommunityModel GetCommunityDetailByKey(string key)
         {
             return Communities[key];
         }
 
-        private async Task<CommunityViewModel> GetBalderton(CancellationToken cancellationToken)
+        private CommunityViewModel GetBalderton()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("balderton");
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Balderton" };
+            CommunityModel communityModel = GetCommunityDetailByKey("balderton");
 
-            int groupId = await _groupService.GetGroupIdByKey("balderton", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK/notts/balderton";
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = 13.5;
-
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Other;
-            communityViewModel.groupKey = "balderton";
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 13.5;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
-
-            communityViewModel.BannerImageLocation = "/img/community/ageUK/notts/balderton/banner-wide.jpg";
-
-            communityViewModel.Header = "In Balderton, help is always available!";
-
-
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        In our community there’s always somebody here to help.
-                        If you need support from your neighbours, Balderton Community Support are here and can help with:
-                    </p>
-                    <ul class='tick-list mt-xs mb-sm ml-sm'>
-                        <li>Shopping for essentials</li>
-                        <li>Collecting prescriptions</li>
-                        <li>A friendly chat</li>
-                        <li>Anything else, just ask!</li>
-                    </ul>
-                    ";
-
-            communityViewModel.HeaderHelpButtonText = "";
-            communityViewModel.HeaderVolunteerButtonText = "";
-
-            communityViewModel.ProvideHelpButtonText_LoggedIn = "View Requests";
-
-            communityViewModel.RequestHelpButtonText = "Request Help";
-
             communityViewModel.ShowRequestHelpPopup = true;
-
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Balderton Community Support";
-
-            communityViewModel.CommunityVolunteersTextHtml =
- @"<p>The Balderton community has come together to support our neighbours. We can help with all sorts of everyday tasks, from helping with your shopping to mowing your lawn.</p>
-<p>If you'd like some help from a local volunteer, just ask by clicking on one of the ‘Request Help' buttons on this page, or if you'd prefer you can give us a call on 07487 241596</p>
-<p>To join us, sign up as a community volunteer above. You can help as much or as little as you are able, and we greatly appreciate any time and support you can give.</p>
-<p>Email us at <a href = ""mailto: baldertoncs@helpmystreet.org"">baldertoncs@helpmystreet.org</a></p> 
-";
-
-            communityViewModel.RequestHelpHeading = @"How can we help?";
-
-            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-
-            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Balderton Community Support.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -139,89 +90,69 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
+            var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/carousel-1.jpg",
+                    $"{carouselPath}/carousel-2.jpg",
+                    $"{carouselPath}/carousel-3.jpg",
+                    $"{carouselPath}/carousel-4.jpg",
+                    $"{carouselPath}/carousel-5.jpg",
+                    $"{carouselPath}/carousel-6.jpg",
+                    $"{carouselPath}/carousel-7.jpg",
+                    $"{carouselPath}/carousel-8.jpg",
+                }
+            };
 
-            communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.newark-sherwooddc.gov.uk/baldertonpc/"">Balderton Parish Council Website</a> - Get the latest news and updates from the Parish Council</p>
-            <p><a href=""https://www.facebook.com/BaldertonCommunity/"">Balderton Community Hub Facebook</a> - A page supporting the community of Balderton, sharing useful information, events, and positive comments.</p>
-";
+            return communityViewModel;
+        }
 
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
 
-            communityViewModel.AllowLeaveOurGroup = true;
-            communityViewModel.ShowHelpExampleCards = false;
+        private CommunityViewModel GetNorthMuskham()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "NorthMuskham",
+            };
+
+            CommunityModel communityModel = GetCommunityDetailByKey("north-muskham");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 14;
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            var carouselPath = "/img/community/ageUK/notts/north-muskham/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/view-over-trent.JPG",
+                    $"{carouselPath}/view-towards-sugar-factory.JPG",
+                }
+            };
+
             return communityViewModel;
         }
 
 
 
-        private async Task<CommunityViewModel> GetHLP(CancellationToken cancellationToken)
+        private CommunityViewModel GetHLP()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("hlp");
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "HLP" };
+            CommunityModel communityModel = GetCommunityDetailByKey("hlp");
 
-            int groupId = await _groupService.GetGroupIdByKey("hlp", cancellationToken);
-
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "hlp";
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Healthy London";
 
-            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
-
-            communityViewModel.Header = "What are Community Connectors?";
-            communityViewModel.DisableButtons = true;
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        Mental Health First Aid England is working with the new NHS Connect service to recruit volunteer 
-                        Community Connectors as part of the nation-wide response to Covid-19. NHS Connect is a new digital
-                        service that helps connect vulnerable people with the support they need.<br>
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                      We are looking for volunteers who combine an understanding of mental health problems with previous training 
-                        and experience in one or more of these practical and ethical frameworks: coaching, motivational interviewing,
-                        counselling or an accredited form of therapy.
-                    </p>
-                    <p class='mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer.</p>
-                   <div class='input'>
-                        <p class='mb-xs mt-sm'>Please confirm that:</p>
-                       <form>
-                            <div class='input input--checkbox'>
-                                <label class='small'>
-                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
-                                    <span class='input--checkbox__checkbox'>
-                                        <span class='mdi mdi-check'></span>
-                                    </span>
-                                    You pledge to commit 3-4 hours or your time per week (although no two weeks are alike) 
-                                </label>
-                            </div>
-                            <div class='input input--checkbox'>
-                                <label class='small'>
-                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
-                                    <span class='input--checkbox__checkbox'>
-                                        <span class='mdi mdi-check'></span>
-                                    </span>
-                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; motivational interviewing; counselling, or an accredited form of therapy)
-                                </label>
-                            </div>
-                       </form>
-                    </div>";                        
-                        
-                            
-            communityViewModel.ShowRequestHelp = false;
-            communityViewModel.HeaderVolunteerButtonText = null;
-            communityViewModel.ShowHelpExampleCards = false;
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Healthy London Partnership";
-
-
-
-            communityViewModel.CommunityVolunteersTextHtml =
-            @"<p>We aim to make London the healthiest global city by working with our partners to improve Londoners’ health and wellbeing so everyone can live healthier lives.</p>
-            <p>Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of 
-            London, Public Health England and London Councils.</p>";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -262,65 +193,21 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-
-            communityViewModel.UsefulLinksHtml =
-                @"<p><a href=""https://www.healthylondon.org/"">Healthy London Partnership</a> - for more information on the work we do.</p>
-                  <p><a href=""https://mhfaengland.org/"">MHFA England</a> - to learn more about mental health training</p>";
-
-
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetTankersley(CancellationToken cancellationToken)
+        private CommunityViewModel GetTankersley()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("tankersley");
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Tankersley" };
+            CommunityModel communityModel = GetCommunityDetailByKey("tankersley");
 
-            int groupId = await _groupService.GetGroupIdByKey("tankersley", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "tankersley";
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
-            communityViewModel.groupKey = "tankersley";
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
 
-            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
-
-            communityViewModel.Header = "In Tankersley & Pilley, help is always available!";
-
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Tankersley & Pilley Community Helpers";
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
-                        We’re the Tankersley &amp; Pilley Community Helpers, here to help with:
-                    </p>
-                    <ul class='tick-list mt-xs mb-sm compact-list'>
-                        <li>Shopping for essentials</li>
-                        <li>A friendly chat</li>
-                        <li>Help at home</li>
-                        <li>Cooking a hot meal</li>
-                    </ul>
-                    ";
-
-
-
-            communityViewModel.CommunityVolunteersTextHtml =
- @"<p>Pilley and Tankersley community helpers are here to help neighbours in need. We can help collecting shopping, running local errands or walking the dog.</p>
-<p>To join us or to get in touch, email <a href = ""mailto: tankersley@helpmystreet.org"">tankersley@helpmystreet.org</a></p> 
-";
-
-            communityViewModel.RequestHelpHeading = @"How can we help?";
-
-            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-
-            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of Tankersley & Pilley Community Helpers.  Click below to view help requests in your area.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -347,74 +234,22 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-
-            communityViewModel.UsefulLinksHtml = @"<p><a href=""https://www.facebook.com/groups/958956387798343"">Piley & Tankersley Community Page (Facebook Group)</a></p>";
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
 
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetRuddington(CancellationToken cancellationToken)
+        private CommunityViewModel GetRuddington()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("ruddington");
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Ruddington" };
+            CommunityModel communityModel = GetCommunityDetailByKey("ruddington");
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
-            communityViewModel.groupKey = "ruddington";
-            int groupId = await _groupService.GetGroupIdByKey(communityViewModel.groupKey, cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ruddington";
-            communityViewModel.Latitude = communityModel.Latitude;
-            communityViewModel.Longitude = communityModel.Longitude;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
-
-            communityViewModel.ShowHelpExampleCards = false;
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
-
-            communityViewModel.BannerImageLocation = communityModel.BannerLocation;
-
-            communityViewModel.Header = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
-
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        	In our community there’s always somebody here to help, there’s no need for anyone to struggle alone.
-                            We’re the Ruddington Community Response Team, here to help with:
-                    </p>
-                    <ul class='tick-list mt-xs mb-sm compact-list'>
-                        <li>Shopping for essentials</li>
-                        <li>Collecting prescriptions</li>
-                        <li>A friendly chat</li>
-                        <li>Local errands</li>
-                        <li>Anything else, just ask!</li>
-                    </ul>
-                    ";
-
-
-            communityViewModel.HeaderVolunteerButtonText = "";
-            communityViewModel.HeaderHelpButtonText = "";
-
-            communityViewModel.CommunityVolunteersHeader = "Welcome to the Ruddington Community Response Team HelpMyStreet page";
-            communityViewModel.CommunityVolunteersTextHtml =
-                 @"<p>Supported by the Parish Council and the Ruddington Village Centre Partnership (RVCP), we’re a group of local volunteers set up to provide a good neighbour network for those who need a little bit of extra help.</p>
-                    <p>If you’d like some local volunteer help just ask by clicking on one of the ‘Request Help’ buttons on this page or text ‘Help’ for free to 60002. You can also give the Parish Council a call on 0115 914 6660 (usual office hours Monday to Friday 9.30am to 12.30pm). Our volunteers are local people supporting our wonderful village.</p>
-                    <p>To join us sign up above or to get in touch, email <a href='mailto:ruddington@helpmystreet.org'>ruddington@helpmystreet.org</a></p> 
-                    <p>With thanks to Peter McConnochie of <a href='https://www.urbanscot.co.uk' target='_blank'>urbanscot.co.uk</a> for supplying the majority of the wonderful photographs of our village and volunteers.</p> 
-                    <p>* RVCP is a collaboration of local business owners, Ruddington Parish Councillors and residents; volunteering together to maintain a vibrant village centre, bring people together and develop opportunities for village residents.</p>
-                    ";
-
-            communityViewModel.RequestHelpHeading = @"How can we help?";
-
-            communityViewModel.RequestHelpText = @"We’ve got shoppers, sewers and hot-meal makers; walkers, talkers and home-work helpers all ready and waiting to help you!";
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-
-            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We're grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of the Ruddington Community Response Team. Click below to view help requests in your area.";
+            communityViewModel.ShowRequestHelpPopup = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -431,6 +266,13 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Proudly supported by RVCP*",
                     Location = "",
                     ImageLocation = "/img/community/ruddington/RVCP.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "RUDDINGTON.info",
+                    Role = "Promoting volunteer activities across the village",
+                    Location = "",
+                    ImageLocation = "/img/community/ruddington/ruddington-info-logo.png"
                 },
                 new CommunityVolunteer()
                 {
@@ -462,86 +304,35 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-
-            communityViewModel.UsefulLinksHtml = @"<p><a href='https://ruddingtonparishcouncil.gov.uk'>Ruddington Parish Council</a></p>
-                                                   <p><a href='https://www.facebook.com/groups/892154851236247'>Ruddington COVID-19 Mutual Aid</a> (Facebook group)</p>
-                                                   <p><a href='http://ruddington.info'>Ruddington.info</a></p>";
-
-
-            communityViewModel.ShowRequestHelpPopup = true;
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
+            var carouselPath = "/img/community/ruddington/carousel3";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/img1.jpeg",
+                    $"{carouselPath}/img2.jpeg",
+                    $"{carouselPath}/img3.jpeg",
+                    $"{carouselPath}/img4.jpeg",
+                    $"{carouselPath}/img5.jpeg",
+                }
+            };
 
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetAgeUKLSL(CancellationToken cancellationToken)
+        private CommunityViewModel GetAgeUKLSL()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
-            CommunityModel communityModel = await GetCommunityDetailByKey("ageuklsl");
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeUKLSL" };
+            CommunityModel communityModel = GetCommunityDetailByKey("ageuklsl");
 
-            int groupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK";
-            communityViewModel.Latitude = 52.95;
-            communityViewModel.Longitude = -0.2;
-            communityViewModel.ZoomLevel = communityModel.ZoomLevel;
+            communityViewModel.Map_CentreLatitude = 52.95;
+            communityViewModel.Map_CentreLongitude = -0.2;
+            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
 
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
-            communityViewModel.groupKey = "ageuklsl";
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.CommunityShortName = "Age UK LSL";
 
-            communityViewModel.BannerImageLocation = "/img/community/ageUK/ageUKlogo.png";
 
-            communityViewModel.Header = "Veterans need your help!";
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        We are now underway with our new “Vitals For Veterans” project.
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                        Over the coming months, we are aiming to deliver wellbeing packs to veterans across Lincoln & South Lincolnshire because
-                        <i>veterans should not be forgotten</i>.
-                    </p>
-                    <p class='mt-sm mb-s'>
-                        If you can help us deliver wellbeing packs to veterans in your area please sign up below - and click to view open requests in your area.
-                    </p>";
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Lincoln and South Lincolnshire";
-            communityViewModel.HeaderVolunteerButtonText = null;
-
-
-
-            communityViewModel.CommunityVolunteersTextHtml =
-                 @"<p>
-                    Age UK Lincoln & South Lincolnshire is an independent, local charity and we have been working in the local community to help older people,
-                    their families and carers for over 61 years. We have over 400 dedicated staff and volunteers helping us to deliver services and activities
-                    for older people in Lincoln and across the county.
-                </p>
-                <p>
-                    Supporting over 4,000 people aged 50 and over every week, our dedicated staff and volunteers deliver support services and activities across
-                    17 departments for people countywide.
-                </p>
-                <p>
-                    Our support is varied and extensive; 11,845 people attended activities with us in 2018/19,  helping to combat social isolation by offering
-                    opportunities for engagement through social activities, clubs and groups. Age UK Lincoln & South Lincolnshire exists to improve the lives of
-                    older people, through supporting them to love later life and helping them where possible to remain independent in their own homes. We
-                    continually work towards ending loneliness and isolation in older people, many of whom were isolated and living in a form of lockdown before
-                    the recent pandemic and sadly for whom there is no “new normal”. Their reality remains loneliness and isolation.
-                </p>
-                <p>
-                    Following a successful application to the Armed Forces Covenant Fund Age UK Lincoln & South Lincolnshire have been awarded some funding to
-                    deliver Vitals for Veterans because “Veterans should not be forgotten”. With the funding and additional support from local businesses offering
-                    generous donations of funds and items we are able to deliver free packs to veterans across Lincoln & South Lincolnshire between June and November.
-                </p>
-                <p>
-                    For more information on our services and support, please get in touch by email <a href = ""mailto:info@ageuklsl.org.uk"">info@ageuklsl.org.uk</a>
-                    or call us on 03455 564 144.
-                </p> 
-                ";
-            communityViewModel.ShowRequestHelp = false;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -550,125 +341,43 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Nicki Lee",
                     Role = "Senior Volunteer Coordinator",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/NL_cropped.jpg"
+                    ImageLocation = "/img/community/ageuk/lsl/NL_cropped.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Amanda Wilson",
                     Role = "Engagement Coordinator",
                     Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/AW_cropped.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Melanie Meik",
-                    Role = "Fundraising & Marketing Manager",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/MM_cropped.jpg"
+                    ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
                 },
             };
-
-
-            communityViewModel.UsefulLinksHtml = 
-                @"<p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire/activities-and-events/vitals-for-veterans"">Vitals for Veterans page</a> - Find out more about our incredible project reaching veterans in need across Lincoln and South Lincolnshire</p>
-                <p><a href=""https://www.ageuk.org.uk/lincolnsouthlincolnshire"">Age UK Lincoln and South Lincolnshire main site</a> - Find out more about Age UK Lincoln and South Lincolnshire services</p>
-                <p><a href=""https://www.justgiving.com/age-uk-lincoln"">Our Just Giving site</a> - Donate to help older people in Lincoln and South Lincolnshire</p>";
-
-            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
+         
+            var carouselPath = "/img/community/ageUK/lsl/carousel1";
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                Example1 = "Deliver a wellbeing parcel to a veteran in Grantham",
-                Example2 = "Collect a prescription for an older lady in Lincoln",
-                Example3 = "Post a letter for a gentleman in Spalding"
+                new List<string>
+                {
+                    $"{carouselPath}/img1.jpg",
+                    $"{carouselPath}/img2.jpg",
+                    $"{carouselPath}/img3.jpg",
+                    $"{carouselPath}/img4.jpg",
+                }
             };
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
 
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetAgeUKWirral(CancellationToken cancellationToken)
+        private CommunityViewModel GetAgeUKWirral()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeUKWirral" };
 
-            int groupId = await _groupService.GetGroupIdByKey("ageukwirral", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "ageUK/wirral";
-            communityViewModel.Latitude = 53.37;
-            communityViewModel.Longitude = -3.05;
-            communityViewModel.ZoomLevel = 11.15;
-
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.Group;
-            communityViewModel.groupKey = "ageukwirral";
+            communityViewModel.Map_CentreLatitude = 53.37;
+            communityViewModel.Map_CentreLongitude = -3.05;
+            communityViewModel.Map_ZoomLevel = 11.15;
 
             communityViewModel.CommunityName = "Age UK Wirral";
             communityViewModel.CommunityShortName = "Age UK Wirral";
 
-            communityViewModel.BannerImageLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner.png";
-
-            communityViewModel.Header = "In the Wirral, help is always available!";
-            communityViewModel.HeaderHTML = @"
-                    <p class='mt-sm mb-xs'>
-                        Age UK Wirral are proud to have an amazing range of services for older people in our local communities. Our services are supported by volunteers who are here to help with:
-                    </p>
-                    <p class='mt-sm mb-xs'>
-                        <ul class='tick-list mt-xs mb-sm compact-list'>
-                            <li>Shopping for essentials</li>
-                            <li>Collecting prescriptions</li>
-                            <li>Staying warm and healthy in the chilly winter</li>
-                            <li>Door-to-door transport for medical appointments</li>
-                        </ul>
-                    </p>";
-            communityViewModel.CommunityVolunteersHeader = "Welcome from Age UK Wirral";
-            communityViewModel.HeaderVolunteerButtonText = null;
-            communityViewModel.HeaderButtonWidth = 12;
-
-            communityViewModel.CommunityVolunteersTextHtml =
-                 @"<p>
-                    Age UK Wirral is an independent, local charity and we have been working in the local community to help 
-                    older people, their families and carers for over 70 years. We have 700 dedicated staff and volunteers helping 
-                    us to deliver services and activities for older people in the Wirral.
-                </p>
-                <p>
-                     In March 2020 we launched our Covid-19 Emergency Response Services to support people with shopping, 
-                     prescription collections and wellbeing support. In six months we have carried out over 3,000 shopping trips, 
-                     collected over 500 prescriptions, lent 250 people tablets and data sim cards and made more than 35,000 wellbeing calls 
-                     to isolated people in the community.  These services will continue to support the community and are vital to keep people safe, well and connected.
-                </p>
-                <p>
-                     The services on this page are a selection of those available, focussing on areas where we need ad hoc 
-                     volunteer assistance.
-                </p>
-                <p>
-                    To find out more about our other services and the support we can provide, please go to our main website <a href=""www.ageukwirral.org.uk"">www.ageukwirral.org.uk</a>
-                    or call us on 0151 482 3456.
-                </p> 
-                ";
-            communityViewModel.ShowRequestHelp = false;
-
-            communityViewModel.RequestHelpHeading = @"How can we help?";
-
-            communityViewModel.RequestHelpText = @"We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
-            communityViewModel.HeaderVolunteerButtonText = "Age UK Wirral relies on volunteers to help us offer vital services in the local community. Would you like to lend a hand?";
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-
-            communityViewModel.ProvideHelpText_NotGroupMember = "Join us to help your neighbours. Just let us know when, where and how you can help. You can choose to help a little, or to help a lot! We’re grateful for every contribution.";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of AgeUK Wirral.  Click below to view help requests in your area.";
-
-            communityViewModel.ShowVisitWebsite = true;
-            communityViewModel.VisitWebsiteHeading = "How can we help?";
-            communityViewModel.VisitWebsiteText = "We support older people, their families and carers. To find out more about our other services and the support we can provide, please go to our website or call us on 0151 482 3456.";
-            communityViewModel.VisitWebsiteButtonText = "Go to our website";
-            communityViewModel.WebsiteUrl = "https://www.ageuk.org.uk/wirral/";
-            communityViewModel.HeaderVisitWebsiteButtonText = "To ask for help, please go to our website or call us on 0151 482 3456.";
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -680,138 +389,56 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-            communityViewModel.UsefulLinksHtml =
-                @"<p><a href=""https://www.ageuk.org.uk/wirral/"">Age UK Wirral Website</a> - Find out about our extensive range of services, donations, charity shops and further details about our organisation.</p>
-                <p><a href=""https://www.facebook.com/ageukwirral/"">Age UK Wirral Facebook</a> - Facebook page of Age UK Wirral.</p>
-                <p><a href=""https://www.wirralinfobank.co.uk/"">Wirral InfoBank</a> - The place where Wirral residents can find local community support services, online events and up-to-date advice and information about coronavirus (COVID-19).</p>
-                <p><a href=""/pdf/ageUK/wirral/WirralVolunteerInstructions.pdf"">Volunteer Instructions</a> - Read our how-to guide (including frequently asked questions).</p>";
-
-            communityViewModel.ShowHelpExampleCards = false;
+            var carouselPath = "/img/community/ageUK/wirral/carousel1";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/hands-round-mug.jpg",
+                    $"{carouselPath}/man-knocking-on-door-325x218.jpg",
+                    $"{carouselPath}/photo-1483385573908-0a2108937c4a.jpg",
+                    $"{carouselPath}/photo-1516862523118-a3724eb136d7.jpg",
+                    $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
+                },
+            };
 
             return communityViewModel;
         }
 
-        private async Task<CommunityViewModel> GetFtLOS(CancellationToken cancellationToken)
+        private CommunityViewModel GetFtLOS()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel();
-            communityViewModel.showFeedback = true;
-            communityViewModel.ShowHelpExampleCards = false;
-            communityViewModel.showFeedbackType = Models.Feedback.FeedbackMessageType.FaceCovering;
-            communityViewModel.groupKey = "ftlos";
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "ForTheLoveOfScrubs" };
 
-            int groupId = await _groupService.GetGroupIdByKey("ftlos", cancellationToken);
-            communityViewModel.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            communityViewModel.HomeFolder = "fortheloveofscrubs";
             communityViewModel.CommunityName = "For the Love of Scrubs";
 
-            communityViewModel.BannerImageLocation = "/img/community/fortheloveofscrubs/LOSBannerWide.png";
-
-            communityViewModel.ShowMap = false;
-
-            communityViewModel.Header = "A message from Ashleigh Linsdell, Founder and Director of ‘For the Love of Scrubs’ (FTLOS)";
-            communityViewModel.HeaderHTML = @"
-                <div class='row sm8' style='padding-left: 0'>    
-                    <p class='mt-sm mb-sm'>
-                        FTLOS has supplied many thousands of items to support frontline workers in hospitals, care homes and surgeries across the
-                        country. We now have another line of defence to support - our communities.
-                    </p>
-                    <p class='mt-sm mb-sm'>
-                        We need everyone to do their bit to protect communities against coronavirus by wearing a fabric face covering when out and
-                        about in shops, buses, trains and other public places. Wearing a fabric face covering helps keep everyone safe and supports
-                        the national defence strategy against the spread of COVID-19.
-                    </p>
-                    <p class='mt-sm mb-sm'>
-                        Everyone is asked to donate £3 to £4 per face covering to cover the cost of materials and to help us support our communities.
-                        You’ll also be asked to cover the cost of postage (if needed).
-                    </p>
-                    <p class='mt-sm mb-md'>
-                        If you’d like to get involved, sign up to sew or request a face covering now.
-                    </p>
-                </div>
-                <div class='row sm4 mt-sm mb-md'>
-                    <div class='gfm-embed' data-url='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings/widget/medium'></div>
-                </div>
-                <script defer src='https://www.gofundme.com/static/js/embed.js'></script>
-                    ";
-
-            communityViewModel.HeaderButtonWidth = 4;
-            communityViewModel.HeaderPostButtonsHTML = @"<div class='row sm4 large-screen-only'></div>";
-
-            communityViewModel.HeaderHelpButtonText = null;
-            communityViewModel.HeaderVolunteerButtonText = null;
-
-
-            communityViewModel.CommunityVolunteersHeader = "What to expect from FTLOS";
-
-            communityViewModel.CommunityVolunteersTextHtml =
-            @"
-                        <p>
-                            The face coverings made by FTLOS volunteers are reusable, washable and well constructed. They can be posted straight to your home - we’ll just ask you to cover the cost of postage before we send them.
-                        </p>
-                        <p class='mb-xs mt-md'>
-                            <strong>Is there a cost for face coverings?</strong>
-                            On top of the postage, all we ask if for a small donation of £3 - £4 per face covering to cover the cost of materials and to help us support our communities. You can donate through our GoFundMe page which is linked at the top of this page. At the same time, you can also donate to support the free supply of items we’re making for the NHS and our communities:
-                        </p>
-                        <p class='mt-0 mb-0 ml-xl'>
-                            £10 pays for a metre of fabric we can use for scrubs and other NHS supplies
-                        </p>
-                        <p class='mt-0 mb-0 ml-xl'>
-                            £25 pays for enough face coverings to help a small care home receive visitors
-                        </p>
-                        <p class='mt-0 mb-0 ml-xl'>
-                            £50 pays for a full set of scrubs for an NHS nurse or doctor
-                        </p>
-                        <p class='mt-md'>
-                            <strong>Who can order face coverings?</strong>
-                            FTLOS face coverings are made by our communities for our communities, so we can’t accept commercial orders. Items supplied by our volunteers cannot be offered for resale under any circumstances.
-                        </p>
-                        <p class='mt-md'>
-                            <strong>Will all of your face coverings look the same?</strong>
-                            Hopefully not! We use a few tried and tested patterns but lots of different fabrics.
-                        </p>
-                        <p class='mt-md'>
-                            <strong>How can I volunteer with For the Love of Scrubs?</strong>
-                            Join us by signing up to sew. Our sewers receive a pre-prepared pack of materials straight to their door, once it has arrived you’ll have all you need to get sewing!
-                        </p>
-                        <p class='mt-md'>
-                            <strong>How can I donate to help you continue the good work?</strong>
-                            You can donate through For the Love of Scrubs’ <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings'>gofundme page</a>.
-                        </p>
-            ";
-
-            communityViewModel.UsefulLinksHtml = @"
-                    <h6>Patterns</h6>
-                    <p class='mb-xs'><a href='https://sustainmycrafthabit.com/how-to-make-a-simple-pleated-face-mask-with-free-pattern/#:~:text=%20Instructions%20%201%20Lay%20fabric%20out%20on,around%20the%20perimeter%20and%20stitch%20the...%20More%20'> Simple Pleated Face Mask</a> - free pattern and video</p>
-                    <p class='mt-xs mb-xs'><a href='https://hellosewing.com/wp-content/uploads/face-mask-pattern-1.jpg'>Fitted face mask pattern</a> - free pattern</p>
-                    <p class='mt-xs mb-xs'><a href='https://www.youtube.com/watch?v=b78VGVWa6hw'>Smile mask (with a clear panel)</a> - YouTube video</p>
-                    <p class='mt-xs'><a href='https://freeprintablesonline.com/2020/03/printable-face-mask-patterns-roundup/'> FreePrintablesOnline.com</a> - patterns, videos, hints and tips</p>
-
-                    <h6>Donation page</h6>
-                    <p>You can donate through For the Love of Scrubs’ <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings'>gofundme page</a></p>
-
-                    <h6>Requesting materials</h6>
-                    <p>If you’re a FTLOS sewer and need more materials contact your local group administrator or email <a href='mailto:requestmaterials.ftlos@outlook.com'>requestmaterials.ftlos@outlook.com</a></p>
-            ";
-
-            communityViewModel.RequestHelpHeading = "Do you need a face covering?";
-            communityViewModel.RequestHelpText = "If you’d like some For the Love of Scrubs face coverings for yourself, your family or an organisation, request them now. We'll do our best to help! ";
-            communityViewModel.RequestHelpButtonText = "Request Face Coverings";
-
-            communityViewModel.ProvideHelpHeading = "Volunteer with us!";
-            communityViewModel.ProvideHelpText_NotGroupMember = "If you’d like to join For the Love of Scrubs (or register as an existing member) sign up now. We’ll send you everything you need to get started (except for the sewing machine!)";
-            communityViewModel.ProvideHelpText_GroupMember = "Thanks for being part of For the Love of Scrubs.  Click below to view help requests.";
-
-            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel()
+            var carouselPath = "/img/community/fortheloveofscrubs";
+            communityViewModel.CarouselImages = new List<List<string>>
             {
-                Example1 = "6 plain face coverings to safely commute",
-                Example2 = "Bright face coverings to cheer my mum up in hospital",
-                Example3 = "10 donated face coverings for care home visitors"
+                new List<string>
+                {
+                    $"{carouselPath}/carousel1/1.jpeg",
+                    $"{carouselPath}/carousel1/2.jpeg",
+                    $"{carouselPath}/carousel1/3.jpeg",
+                    $"{carouselPath}/carousel1/4.jpeg",
+                    $"{carouselPath}/carousel1/5.jpeg",
+                },
+                new List<string>
+                {
+                    $"{carouselPath}/carousel2/1.jpeg",
+                    $"{carouselPath}/carousel2/2.jpeg",
+                    $"{carouselPath}/carousel2/3.jpeg",
+                    $"{carouselPath}/carousel2/4.jpeg",
+                    $"{carouselPath}/carousel2/5.jpeg",
+                },
+                new List<string>
+                {
+                    $"{carouselPath}/carousel3/A.png",
+                    $"{carouselPath}/carousel3/B.png",
+                    $"{carouselPath}/carousel3/C.png",
+                    $"{carouselPath}/carousel3/D.png",
+                    $"{carouselPath}/carousel3/E.png",
+                }
             };
-
-            communityViewModel.AllowJoinOurGroup = true;
-            communityViewModel.JoinOurGroupButtonText = "Join Our Group";
-
-            communityViewModel.AllowLeaveOurGroup = true;
 
             return communityViewModel;
         }

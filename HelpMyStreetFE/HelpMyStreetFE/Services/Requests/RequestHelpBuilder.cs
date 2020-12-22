@@ -103,14 +103,13 @@ namespace HelpMyStreetFE.Services.Requests
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
             }
 
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral)
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral || requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
 
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
-
             }
             return model;
         }
@@ -123,6 +122,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.HLP_CommunityConnector => "Get in touch with a Community Connector",
                 RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
                 RequestHelpFormVariant.AgeUKNottsBalderton => "Request help from Balderton Community Support",
+                RequestHelpFormVariant.AgeUKNottsNorthMuskham => "Request help from North Muskham Community Support",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -198,6 +198,17 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNottsNorthMuskham)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }

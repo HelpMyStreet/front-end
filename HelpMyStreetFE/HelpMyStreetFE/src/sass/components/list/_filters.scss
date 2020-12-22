@@ -97,6 +97,7 @@ body {
       width: 100%;
       height: calc(3.5rem - 4px);
       padding-right: 1rem;
+      flex-direction: column;
 
       &:after {
         content: " ";
@@ -125,6 +126,7 @@ body {
         text-overflow: ellipsis;
         font-weight: normal;
         margin: 0.15rem 1rem 0 1rem;
+        width: calc(100% - 2rem);
       }
     }
 

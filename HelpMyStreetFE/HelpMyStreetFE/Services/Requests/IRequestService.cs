@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Services.Requests
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source);
-        IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jobFilterRequest);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs);
+        Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken);
     }
 }

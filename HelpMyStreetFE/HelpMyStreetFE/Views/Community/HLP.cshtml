@@ -1,0 +1,140 @@
+@using HelpMyStreetFE.Models.Feedback; 
+
+@model HelpMyStreetFE.Models.Community.CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+
+    <div class="container">
+        <div class="community-banner">
+            <img src="/img/community/hlp/hlp-banner.png" alt="Healthy London Partnership" />
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000">
+                        <h2 class="mb0 mt-md">What are Community Connectors?</h2>
+                    </header>
+
+                    <p class='mt-sm mb-xs'>
+                        Mental Health First Aid England is working with the new NHS Connect service to recruit volunteer
+                        Community Connectors as part of the nation-wide response to Covid-19. NHS Connect is a new digital
+                        service that helps connect vulnerable people with the support they need.<br>
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        We are looking for volunteers who combine an understanding of mental health problems with previous training
+                        and experience in one or more of these practical and ethical frameworks: coaching, motivational interviewing,
+                        counselling or an accredited form of therapy.
+                    </p>
+                    <p class='mt-sm mb-xs'>This is your opportunity to sign up as a pioneer volunteer.</p>
+                    <div class='input'>
+                        <p class='mb-xs mt-sm'>Please confirm that:</p>
+                        <form>
+                            <div class='input input--checkbox'>
+                                <label class='small'>
+                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
+                                    <span class='input--checkbox__checkbox'>
+                                        <span class='mdi mdi-check'></span>
+                                    </span>
+                                    You pledge to commit 3-4 hours or your time per week (although no two weeks are alike)
+                                </label>
+                            </div>
+                            <div class='input input--checkbox'>
+                                <label class='small'>
+                                    <input type='checkbox' autocomplete='off' class='select-all' hidden />
+                                    <span class='input--checkbox__checkbox'>
+                                        <span class='mdi mdi-check'></span>
+                                    </span>
+                                    You have previous training and experience in one or more of these practical and ethical frameworks (coaching; motivational interviewing; counselling, or an accredited form of therapy)
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="row sm12 text-center justify-center mb-md">
+                        @if (!Model.IsLoggedIn)
+                        {
+                            <a href="/login/@Model.EncodedGroupId" class="btn cta small btn--sign-up fill disabled">Sign Up or Log In</a>
+                        }
+                        else
+                        {
+                            <a href="/account/open-requests" class="btn cta small btn--sign-up fill disabled">View Open Requests</a>
+                        }
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row flex justify-center">
+                <h2 class="mb15 mt-lg text-center">Welcome from Healthy London Partnership</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_CommunityVolunteersSlider" model="Model" />
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row">
+                <div class="sm12">
+                    <div>
+                        <p>We aim to make London the healthiest global city by working with our partners to improve Londoners&rsquo; health and wellbeing so everyone can live healthier lives.</p>
+                        <p>
+                            Our partners include the NHS in London (Clinical Commissioning Groups, Health Education England, NHS England, NHS Digital, NHS Improvement, trusts and providers), the Greater London Authority, the Mayor of
+                            London, Public Health England and London Councils.
+                        </p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Useful Links</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div class="sm12 community-useful-links mb-lg">
+                    <p><a href="https://www.healthylondon.org/">Healthy London Partnership</a> - for more information on the work we do.</p>
+                    <p><a href="https://mhfaengland.org/">MHFA England</a> - to learn more about mental health training</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker pt-lg pb-lg">
+        <div class="container mt-md mb-lg">
+            @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other })
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+</div>

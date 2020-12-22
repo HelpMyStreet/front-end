@@ -30,7 +30,7 @@
     }
 }
 
-@if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open || Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress)
+@if (Model.JobDetail.JobSummary.JobStatus.Incomplete())
 {
     <div class="job__expander">
         <div class="row">

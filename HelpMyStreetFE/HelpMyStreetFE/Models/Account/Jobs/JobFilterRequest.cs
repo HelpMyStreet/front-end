@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? RequestedBefore { get; set; }
 
         public OrderBy OrderBy { get; set; }
-        public bool OrderByAscending { get; set; }
+        public int? HighlightJobId { get; set; }
 
         public int ResultsToShow { get; set; }
         public int ResultsToShowIncrement { get; set; }
@@ -46,6 +46,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             if (filterSet.OrderBy != null)
             {
                 OrderBy = filterSet.OrderBy.Where(a => a.IsSelected).First().Value;
+            }
+            if (filterSet.HighlightJobId != null)
+            {
+                HighlightJobId = filterSet.HighlightJobId;
             }
         }
     }

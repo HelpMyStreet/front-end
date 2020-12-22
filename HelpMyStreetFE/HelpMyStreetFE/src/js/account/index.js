@@ -42,7 +42,7 @@ async function refreshBadge(badge) {
     return;
   }
 
-  var response = await hmsFetch('/account/NavigationBadge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'));
+  var response = await hmsFetch('/account/get-navigation-badge?groupKey=' + $(badge).data('group-key') + '&menuPage=' + $(badge).data('menu-page'));
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     var newCount = await response.fetchPayload;
     if ($(badge).find('.number').html() != newCount) {

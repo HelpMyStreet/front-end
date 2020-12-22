@@ -180,14 +180,13 @@ namespace HelpMyStreetFE.Controllers
         {
             _logger.LogInformation("request-help");
 
-            int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
-            source = ValidateSource(source);
-
-            // Fix to allow existing routing
             if (referringGroup == "v4v")
             {
-                referringGroupId = await _groupService.GetGroupIdByKey("ageuklsl", cancellationToken);
+                return Redirect("/account");
             }
+
+            int referringGroupId = DecodeGroupIdOrGetDefault(referringGroup);
+            source = ValidateSource(source);
 
             var requestHelpJourney = await _groupService.GetRequestHelpFormVariant(referringGroupId, source);
 

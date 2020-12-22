@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Models.Account.Jobs;
@@ -77,7 +78,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         private async Task EnsureFeedbackCanBeGiven(JobSummary jobSummary, RequestRoles requestRole, int? userId)
         {
-            if (jobSummary.JobStatus == JobStatuses.Open || jobSummary.JobStatus == JobStatuses.InProgress)
+            if (jobSummary.JobStatus.Incomplete())
             {
                 throw new Exception($"Attempt to load feedback form for job {jobSummary.JobID}, but it is {jobSummary.JobStatus}");
             }

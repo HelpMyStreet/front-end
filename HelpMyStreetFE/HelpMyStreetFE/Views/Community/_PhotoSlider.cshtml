@@ -1,0 +1,12 @@
+﻿@model IEnumerable<string>
+
+<div class="slider">
+    <div class="slides">
+        @foreach (string carouselImage in Model)
+        {
+            <div>
+                <img class="slide" src="@carouselImage" />
+            </div>
+        }
+    </div>
+</div>
