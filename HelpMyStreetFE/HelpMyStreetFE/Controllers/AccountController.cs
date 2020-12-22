@@ -172,7 +172,7 @@ namespace HelpMyStreetFE.Controllers
             return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
         }
 
-        [Route("g/{groupKey}")]
+        [Route("print-job-details")]
         [HttpGet]
         public async Task<IActionResult> PrintJobDetails(string j, CancellationToken cancellationToken)
         {
@@ -180,7 +180,7 @@ namespace HelpMyStreetFE.Controllers
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (user == null)
             {
-                return Redirect("/account/login?returnURL=/account/printJobDetails?id=" + j);
+                return Redirect("/account/login?returnURL=/account/print-job-details?id=" + j);
             }
 
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
