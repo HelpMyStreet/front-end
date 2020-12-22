@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Services.Groups
         Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);
         Task<Group> GetGroupById(int groupId, CancellationToken cancellationToken);
         Task<Group> GetGroupByKey(string groupKey, CancellationToken cancellationToken);
-        Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source = "");
+        Task<RegistrationFormVariant> GetRegistrationFormVariant(int groupId, string source, CancellationToken cancellationToken);
         Task<RequestHelpJourney> GetRequestHelpFormVariant(int groupId, string source = "");
         Task<List<List<GroupCredential>>> GetGroupActivityCredentials(int groupId, SupportActivities supportActivitiy, CancellationToken cancellationToken);
         Task<List<GroupCredential>> GetGroupCredentials(int groupId);
