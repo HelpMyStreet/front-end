@@ -22,6 +22,7 @@ using HelpMyStreetFE.Services.Requests;
 using System.Net.Http;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Contracts.CommunicationService.Request;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -45,7 +46,6 @@ namespace HelpMyStreetFE.Controllers
             IUserService userService,
             IAddressService addressService,
             ICommunicationService communicationService,
-            IConfiguration configuration,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
             IAuthService authService,
