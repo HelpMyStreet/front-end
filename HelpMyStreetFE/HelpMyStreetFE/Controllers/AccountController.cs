@@ -186,6 +186,7 @@ namespace HelpMyStreetFE.Controllers
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
         }
 
+        [Route("email-job-details")]
         [HttpGet]
         public async Task<IActionResult> EmailJobDetails(string j, CancellationToken cancellationToken)
         {
@@ -209,6 +210,7 @@ namespace HelpMyStreetFE.Controllers
 
         }
 
+        [Route("g/{groupKey}")]
         [HttpGet]
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {

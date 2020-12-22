@@ -76,7 +76,7 @@ export function initialiseRequests() {
     $('.job-list').on('click', '.email-details', async function (evt) {
         const job = $(this).closest('.job');
         let jobId = job.attr("id");
-        let response = await hmsFetch(`/account/emailJobDetails?j=${jobId}`, null, { timeOutRetry: 0});
+        let response = await hmsFetch(`/account/email-job-details?j=${jobId}`, null, { timeOutRetry: 0});
         var outcome = 'successful';
         if (response.fetchResponse == fetchResponses.SUCCESS) {
             outcome = 'failed';
