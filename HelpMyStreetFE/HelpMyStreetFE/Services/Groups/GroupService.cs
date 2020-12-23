@@ -47,11 +47,16 @@ namespace HelpMyStreetFE.Services.Groups
             }, $"{CACHE_KEY_PREFIX}-group-id-{groupKey}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<RegistrationFormVariant?> GetRegistrationFormVariant(int groupId, string source)
+        public async Task<RegistrationFormVariant> GetRegistrationFormVariant(int groupId, string source, CancellationToken cancellationToken)
         {
-            var groupServiceResponse = await _groupRepository.GetRegistrationFormVariant(groupId, source);
+            int registrationFormVariant = await _memDistCache_int.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var groupServiceResponse = await _groupRepository.GetRegistrationFormVariant(groupId, source);
 
-            return groupServiceResponse?.RegistrationFormVariant;
+                return (int)(groupServiceResponse?.RegistrationFormVariant ?? RegistrationFormVariant.Default);
+            }, $"{CACHE_KEY_PREFIX}-registration-form-variant-{groupId}-{source}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+
+            return (RegistrationFormVariant)registrationFormVariant;
         }
 
         public async Task<RequestHelpJourney> GetRequestHelpFormVariant(int groupId, string source)

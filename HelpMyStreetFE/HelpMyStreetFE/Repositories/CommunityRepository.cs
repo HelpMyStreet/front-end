@@ -107,7 +107,28 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Richard Hartley",
                     Role = "Local Volunteer",
                     Location = "",
-                    ImageLocation = "/img/community/ageUK/notts/balderton/richard-hartley.jpg"
+                    ImageLocation = "/img/community/ageUK/notts/balderton/richard-hartley-2.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Dawn Munslow",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/dawn-munslow.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Steve Pollard",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/steve-pollard.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Eunice Ray",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/eunice-ray.jpg"
                 },
             };
 

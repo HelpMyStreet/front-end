@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> StepOne(string referringGroup = "", string source = "", string email = "")
+        public async Task<ActionResult> StepOne(string referringGroup, string source, string email, CancellationToken cancellationToken)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -64,7 +64,7 @@ namespace HelpMyStreetFE.Controllers
                 catch { }
             }
 
-            RegistrationFormVariant registrationFormVariant = await _groupService.GetRegistrationFormVariant(referringGroupId, source) ?? RegistrationFormVariant.Default;
+            RegistrationFormVariant registrationFormVariant = await _groupService.GetRegistrationFormVariant(referringGroupId, source, cancellationToken);
             var group = await _groupService.GetGroupById(referringGroupId, CancellationToken.None);
 
             return View(new RegistrationViewModel
@@ -104,7 +104,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepTwo(CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            string correctPage = await GetCorrectPage(user);
+            string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-two"))
             {
                 // A different step needs to be completed at this point
@@ -122,7 +122,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            string correctPage = await GetCorrectPage(user);
+            string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-two"))
             {
                 // A different step needs to be completed at this point
@@ -146,7 +146,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepThree(CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            string correctPage = await GetCorrectPage(user);
+            string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
@@ -164,7 +164,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            string correctPage = await GetCorrectPage(user);
+            string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
@@ -208,11 +208,11 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                return await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source) ?? RegistrationFormVariant.Default;
+                return await _groupService.GetRegistrationFormVariant(user.ReferringGroupId.Value, user.Source, cancellationToken);
             }
         }
 
-        private async Task<string> GetCorrectPage(User user)
+        private string GetCorrectPage(User user)
         {
             if (user != null && user.RegistrationHistory.Count > 0)
             {
