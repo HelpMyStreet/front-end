@@ -42,7 +42,7 @@ namespace HelpMyStreetFE.Controllers
 
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
-            FeedbackRating feedbackRating = (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
+            FeedbackRating feedbackRating = string.IsNullOrEmpty(f) ? 0 : (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
             var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 

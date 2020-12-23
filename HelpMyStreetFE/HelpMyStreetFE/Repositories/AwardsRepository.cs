@@ -11,6 +11,7 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using System.Threading;
+using HelpMyStreet.Utils.Extensions;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -156,7 +157,7 @@ namespace HelpMyStreetFE.Repositories
             var listArray = new List<string>();
             foreach (var result in listOfJobs)
             {
-                var friendlyName = SupportActivityHelpers.Sentences(result.Activity, (result.Count > 1));
+                var friendlyName = result.Activity.PerfectTense(result.Count > 0);;
                 listArray.Add(result.Count + " " + friendlyName);
             }
 
