@@ -74,17 +74,33 @@ export function initialiseRequests() {
     }
 
     $('.job-list').on('click', '.email-details', async function (evt) {
+        evt.preventDefault();
         const job = $(this).closest('.job');
         let jobId = job.attr("id");
         let response = await hmsFetch(`/account/email-job-details?j=${jobId}`, null, { timeOutRetry: 0});
+
         var outcome = 'successful';
-        if (response.fetchResponse == fetchResponses.SUCCESS) {
+        if (response.fetchResponse != fetchResponses.SUCCESS) {
             outcome = 'failed';
         }
-        $('#email-notification').addClass(outcome);
-        $('#email-notification').addClass("visible");
-        $('#email-notification').html(`<p>Email sending ${outcome}<p>`);
-        setTimeout(() => { $('#email-notification').removeClass("visible"); $('#email-notification').removeClass(outcome); }, 3000);
+
+        $('.email-details').addClass(outcome);
+
+        if (outcome == 'successful') {
+            $('.email-details img').attr("src", "/img/icons/green-tick.svg");
+            setTimeout(() => {
+                $('.email-details').removeClass(outcome);
+                $('.email-details img').attr("src", "/img/icons/email.svg");
+                $('.email-details').attr("title", "")
+            }, 5000);
+        } else {
+            $('.email-details img').attr("src", "/img/icons/grey-cross.png");
+            $('.email-details span').html("Retry");
+            
+        }
+        $('.email-details').attr("title", `E-mail sending ${outcome}`);
+
+
     });
 
     loadFeedbackComponents();

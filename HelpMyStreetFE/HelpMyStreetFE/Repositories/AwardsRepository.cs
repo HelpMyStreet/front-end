@@ -154,12 +154,7 @@ namespace HelpMyStreetFE.Repositories
             var listOfJobs = jobs.GroupBy(x => x.SupportActivity, x => x.JobID, (activity, jobID) => new { Activity = activity, Count = jobID.Count() });
             listOfJobs = listOfJobs.OrderByDescending(x => x.Count);
 
-            var listArray = new List<string>();
-            foreach (var result in listOfJobs)
-            {
-                var friendlyName = result.Activity.PerfectTense(result.Count > 0);;
-                listArray.Add(result.Count + " " + friendlyName);
-            }
+            var listArray = listOfJobs.Select(result => result.Activity.PerfectTense(result.Count)).ToList();
 
             var listString = "";
             if (listArray.Count() > 0) {

@@ -178,16 +178,14 @@ namespace HelpMyStreetFE.Controllers
         {
             var jobID = Base64Utils.Base64DecodeToInt(j);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (user == null)
-            {
-                return Redirect("/account/login?returnURL=/account/print-job-details?id=" + j);
-            }
 
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
         }
 
         [Route("email-job-details")]
         [HttpGet]
+        [AllowAnonymous]
+        [AuthorizeAttributeNoRedirect]
         public async Task<IActionResult> EmailJobDetails(string j, CancellationToken cancellationToken)
         {
             var jobID = Base64Utils.Base64DecodeToInt(j);
