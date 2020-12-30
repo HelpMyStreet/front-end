@@ -230,6 +230,38 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ageukwirral",
                 },
+                new Testimonial()
+                {
+                    Tagline = "Making a difference",
+                    Message = "I like the company, the meals are very good, the carers are good, we've got bingo, quizzes, netball, chiropody and loads of activities they do to keep us happy. You get picked up, dropped off... what more could you ask for?",
+                    Person = "Alice",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "southkentcoast",
+                },                
+                new Testimonial()
+                {
+                    Tagline = "Making a difference",
+                    Message = "I have been here three times a week for the past 4 years. I find the staff and volunteers are always friendly and very helpful. Food is very good, well presented and the choice is excellent",
+                    Person = "Bill",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "southkentcoast",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Making a difference",
+                    Message = "I have been coming twenty years now and couldn't do without it. The food is very good, the people are very nice and the staff are wonderful and do things to entertain us.",
+                    Person = "Annie",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "southkentcoast",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Making a difference",
+                    Message = "I love coming for a good laugh. I like the people and the carers, I've made some good friends. Everyone's so caring here.",
+                    Person = "Keth",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "southkentcoast",
+                }
             };
 
             return messageList;
