@@ -352,6 +352,11 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "southkentcoast" });
 
                 endpoints.MapControllerRoute(
+                   name: "favershamandsittingbourne",
+                   pattern: "favershamandsittingbourne",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "favershamandsittingbourne" });
+
+                endpoints.MapControllerRoute(
                    name: "face-coverings",
                    pattern: "face-coverings",
                    defaults: new { controller = "Community", action = "FaceCoverings" });

@@ -22,6 +22,7 @@ namespace HelpMyStreetFE.Repositories
             {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
             {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham" } },
             {"southkentcoast", new CommunityModel() {FriendlyName = "South Kent Coast Team", Pin_Latitude = 51.224098, Pin_Longitude = 1.401740, LinkURL = "/southkentcoast", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="Deal or Folkestone" } },
+            {"favershamandsittingbourne", new CommunityModel() {FriendlyName = "Faversham And Sittingbourne Team", Pin_Latitude = 51.315990, Pin_Longitude = 0.892940, LinkURL = "/favershamandsittingbourne", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="Faversham or Sittingbourne" } },            
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
 
         };
@@ -46,6 +47,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeUKNottsBalderton => GetBalderton(),
                 Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
                 Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
+                Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
                 _ => null,
             };
 
@@ -185,9 +187,7 @@ namespace HelpMyStreetFE.Repositories
         }
 
         private CommunityViewModel GetSouthKentCoast()
-        {
-            
-            
+        {                       
             CommunityViewModel communityViewModel = new CommunityViewModel
             {
                 View = "SouthKentCoast",
@@ -212,6 +212,38 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/SKC5.JPG",
                     $"{carouselPath}/SKC6.JPG",
                     $"{carouselPath}/SKC7.JPG",
+                }
+            };
+
+            return communityViewModel;
+        }
+        
+        private CommunityViewModel GetFavershameAndSittingBourne()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "FavershamAndSittingBourne",
+            };
+
+            CommunityModel communityModel = GetCommunityDetailByKey("favershamandsittingbourne");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 14;
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            var carouselPath = "/img/community/ageUK/kent/favershamandsittingbourne/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/FS1.JPG",
+                    $"{carouselPath}/FS2.JPG",
+                    $"{carouselPath}/FS3.JPG",
+                    $"{carouselPath}/FS4.JPG",
+                    $"{carouselPath}/FS5.JPG",
                 }
             };
 
