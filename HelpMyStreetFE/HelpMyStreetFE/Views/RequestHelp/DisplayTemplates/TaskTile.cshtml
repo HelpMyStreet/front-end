@@ -23,7 +23,8 @@
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.ColdWeatherArmy, Description = "Getting help in an emergency during a cold snap"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealsOnWheels, Description = "Delivering freshly prepared meal straight to someone’s door"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealtimeCompanion, Description = "Provide company over a mealtime for someone who lives alone"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities"}
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Transport, Description = "Providing transport for essential appointments"}
         };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
