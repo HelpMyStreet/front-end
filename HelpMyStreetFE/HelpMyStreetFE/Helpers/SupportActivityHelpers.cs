@@ -23,6 +23,8 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.CommunityConnector => "phone-green.svg",
                 SupportActivities.ColdWeatherArmy => "snowflake.svg",
                 SupportActivities.MealsOnWheels => "mealsonwheels.png",
+                SupportActivities.MealtimeCompanion => "mealtimecompanion.svg",
+                SupportActivities.Transport => "transport.svg",
                 _ => "question-mark.svg"
             };
         }
