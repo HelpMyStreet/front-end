@@ -52,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\img\community\ageUK\kent\northwest\carousel\" />
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />
