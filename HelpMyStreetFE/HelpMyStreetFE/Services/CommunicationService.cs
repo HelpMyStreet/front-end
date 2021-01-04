@@ -85,10 +85,10 @@ namespace HelpMyStreetFE.Services
             using (HttpResponseMessage response = await Client.PostAsync("/api/RequestCommunication", content))
             {
                 string jsonResponse = await response.Content.ReadAsStringAsync();
-                var requestCommunicationResponse = JsonConvert.DeserializeObject<RequestCommunicationResponse>(jsonResponse);
-                if (requestCommunicationResponse.Success)
+                var requestCommunicationResponse = JsonConvert.DeserializeObject<ResponseWrapper<RequestCommunicationResponse, CommunicationServiceErrorCode>>(jsonResponse);
+                if (requestCommunicationResponse.HasContent && requestCommunicationResponse.IsSuccessful)
                 {
-                    return true;
+                    return requestCommunicationResponse.Content.Success;
                 }
             }
 
