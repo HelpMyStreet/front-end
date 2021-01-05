@@ -201,7 +201,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 14;
 
-            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.CommunityName = "Age UK South Kent Coast";
             communityViewModel.ShowRequestHelpPopup = true;
 
             var carouselPath = "/img/community/ageUK/kent/southkentcoast/carousel";
@@ -214,6 +214,7 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/SKC5.JPG",
                     $"{carouselPath}/SKC6.JPG",
                     $"{carouselPath}/SKC7.JPG",
+                    $"{carouselPath}/SKC7a.JPG",
                 }
             };
 
@@ -233,7 +234,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 14;
 
-            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.CommunityName = "Age UK Faversham and Sittingbourne";
             communityViewModel.ShowRequestHelpPopup = true;
 
             var carouselPath = "/img/community/ageUK/kent/favershamandsittingbourne/carousel";
@@ -265,7 +266,7 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
             communityViewModel.Map_ZoomLevel = 14;
 
-            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.CommunityName = "Age UK North West Kent";
             communityViewModel.ShowRequestHelpPopup = true;
 
             var carouselPath = "/img/community/ageUK/kent/northwest/carousel";
