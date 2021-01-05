@@ -76,7 +76,9 @@ export function initialiseRequests() {
     $('.job-list').on('click', '.email-details', async function (evt) {
         evt.preventDefault();
 
+        $('.email-details').addClass("sending");
         $('.email-details img').attr("src", "/img/loading_spinner.svg");
+        $('.email-details span').html("Sending...");
 
         const job = $(this).closest('.job');
         let jobId = job.attr("id");
@@ -87,21 +89,28 @@ export function initialiseRequests() {
             outcome = 'failed';
         }
 
+        $('.email-details').removeClass("sending");
         $('.email-details').addClass(outcome);
 
         if (outcome == 'successful') {
             $('.email-details img').attr("src", "/img/icons/green-tick.svg");
+            $('.email-details span').html("Queued");
+            $('.email-details').attr("title", "Email successfully queued");
             setTimeout(() => {
                 $('.email-details').removeClass(outcome);
                 $('.email-details img').attr("src", "/img/icons/email.svg");
-                $('.email-details').attr("title", "")
+                $('.email-details span').html("Email");
             }, 5000);
         } else {
-            $('.email-details img').attr("src", "/img/icons/grey-cross.png");
-            $('.email-details span').html("Retry");
-            
+            $('.email-details img').attr("src", "/img/icons/status/cancelled.svg");
+            $('.email-details span').html("Failed");
+            $('.email-details').attr("title", "Email not sent");
+            setTimeout(() => {
+                $('.email-details').removeClass(outcome);
+                $('.email-details img').attr("src", "/img/icons/email.svg");
+                $('.email-details span').html("Retry");
+            }, 5000);
         }
-        $('.email-details').attr("title", `E-mail sending ${outcome}`);
 
 
     });

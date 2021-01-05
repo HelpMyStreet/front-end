@@ -506,17 +506,21 @@
                     display: flex;
                     align-items: center;
                     margin-right: 0.5rem;
-                    width: 110px;
-                    transition: background-color .5s ease-in;
+                    width: 9rem;
+
+                    &.sending {
+                        text-decoration: none;
+                        color: $black;
+                    }
 
                     &.failed {
-                        background-color: $web2point0-red;
-                        border-radius: 5px;
+                        text-decoration: none;
+                        color: $green;
                     }
 
                     &.successful {
-                        background-color: $web2point0-green;
-                        border-radius: 5px;
+                        text-decoration: none;
+                        color: $orange;
                     }
                 }
 
