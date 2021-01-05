@@ -357,8 +357,8 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-favershamandsittingbourne" });
 
                 endpoints.MapControllerRoute(
-                   name: "ageuknwkent",
-                   pattern: "ageuknwkent",
+                   name: "northwestkent",
+                   pattern: "northwestkent",
                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuknwkent" });
 
                 endpoints.MapControllerRoute(
