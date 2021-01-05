@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\img\community\ageUK\kent\southkentcoast\carousel\SKC 7.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="src\sass\components\home\StyleSheet.scss" />
   </ItemGroup>
 
@@ -48,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\img\community\ageUK\kent\northwest\carousel\" />
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />
