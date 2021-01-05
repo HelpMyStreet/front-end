@@ -75,6 +75,9 @@ export function initialiseRequests() {
 
     $('.job-list').on('click', '.email-details', async function (evt) {
         evt.preventDefault();
+
+        $('.email-details img').attr("src", "/img/loading_spinner.svg");
+
         const job = $(this).closest('.job');
         let jobId = job.attr("id");
         let response = await hmsFetch(`/account/email-job-details?j=${jobId}`, null, { timeOutRetry: 0});
