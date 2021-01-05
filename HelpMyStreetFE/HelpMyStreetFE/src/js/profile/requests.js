@@ -85,29 +85,25 @@ export function initialiseRequests() {
         let jobId = job.attr("id");
         let response = await hmsFetch(`/account/email-job-details?j=${jobId}`, null, { timeOutRetry: 0});
 
-        var outcome = 'successful';
-        if (response.fetchResponse != fetchResponses.SUCCESS) {
-            outcome = 'failed';
-        }
-
         $(job).find('.email-details').removeClass("sending");
-        $(job).find('.email-details').addClass(outcome);
 
-        if (outcome == 'successful') {
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            $(job).find('.email-details').addClass("successful");
             $(job).find('.email-details img').attr("src", "/img/icons/green-tick.svg");
             $(job).find('.email-details span').html("Queued");
             $(job).find('.email-details').attr("title", "Email successfully queued");
             setTimeout(() => {
-                $(job).find('.email-details').removeClass(outcome);
+                $(job).find('.email-details').removeClass("successful");
                 $(job).find('.email-details img').attr("src", "/img/icons/email.svg");
                 $(job).find('.email-details span').html("Email");
             }, 5000);
         } else {
+            $(job).find('.email-details').addClass("failed");
             $(job).find('.email-details img').attr("src", "/img/icons/status/cancelled.svg");
             $(job).find('.email-details span').html("Failed");
             $(job).find('.email-details').attr("title", "Email not sent");
             setTimeout(() => {
-                $(job).find('.email-details').removeClass(outcome);
+                $(job).find('.email-details').removeClass("failed");
                 $(job).find('.email-details img').attr("src", "/img/icons/email.svg");
                 $(job).find('.email-details span').html("Retry");
             }, 5000);
