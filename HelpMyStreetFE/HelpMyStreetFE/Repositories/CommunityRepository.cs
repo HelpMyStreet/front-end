@@ -214,6 +214,7 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/SKC5.JPG",
                     $"{carouselPath}/SKC6.JPG",
                     $"{carouselPath}/SKC7.JPG",
+                    $"{carouselPath}/SKC7a.JPG",
                 }
             };
 
