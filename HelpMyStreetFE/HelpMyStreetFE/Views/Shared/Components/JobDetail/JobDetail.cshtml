@@ -219,7 +219,7 @@
             </div>
         </div>
     }
-    @if (questionsToDisplay.Count() > 0 && Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
+    @if (!Model.UserActingAsAdmin && questionsToDisplay.Count() > 0 && Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
     {
         <div class="job__expander offline-details-container">
             <div class="row">
