@@ -349,12 +349,12 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "southkentcoast",
                     pattern: "southkentcoast",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "southkentcoast" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-southkentcoast" });
 
                 endpoints.MapControllerRoute(
                    name: "favershamandsittingbourne",
                    pattern: "favershamandsittingbourne",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "favershamandsittingbourne" });
+                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-favershamandsittingbourne" });
 
                 endpoints.MapControllerRoute(
                    name: "ageuknwkent",

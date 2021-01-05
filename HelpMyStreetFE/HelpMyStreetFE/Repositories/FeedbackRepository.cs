@@ -236,7 +236,7 @@ namespace HelpMyStreetFE.Repositories
                     Message = "I like the company, the meals are very good, the carers are good, we've got bingo, quizzes, netball, chiropody and loads of activities they do to keep us happy. You get picked up, dropped off... what more could you ask for?",
                     Person = "Alice",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "southkentcoast",
+                    GroupKey = "ageuk-southkentcoast",
                 },                
                 new Testimonial()
                 {
@@ -244,7 +244,7 @@ namespace HelpMyStreetFE.Repositories
                     Message = "I have been here three times a week for the past 4 years. I find the staff and volunteers are always friendly and very helpful. Food is very good, well presented and the choice is excellent",
                     Person = "Bill",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "southkentcoast",
+                    GroupKey = "ageuk-southkentcoast",
                 },
                 new Testimonial()
                 {
@@ -252,15 +252,15 @@ namespace HelpMyStreetFE.Repositories
                     Message = "I have been coming twenty years now and couldn't do without it. The food is very good, the people are very nice and the staff are wonderful and do things to entertain us.",
                     Person = "Annie",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "southkentcoast",
+                    GroupKey = "ageuk-southkentcoast",
                 },
                 new Testimonial()
                 {
                     Tagline = "Making a difference",
                     Message = "I love coming for a good laugh. I like the people and the carers, I've made some good friends. Everyone's so caring here.",
-                    Person = "Keth",
+                    Person = "Keith",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "southkentcoast",
+                    GroupKey = "ageuk-southkentcoast",
                 },
                 new Testimonial()
                 {
@@ -268,23 +268,23 @@ namespace HelpMyStreetFE.Repositories
                     Message = "It gives me something to look forward to each week, I don’t know anyone in this area, and although people chat to me when I’m out with the dog, I don’t have any friends here, so can go days without really seeing anyone. It’s reassuring knowing I have someone just down the road if anything happens.",
                     Person = "Yvonne",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "favershamandsittingbourne",
+                    GroupKey = "ageuk-favershamandsittingbourne",
                 },
                 new Testimonial()
                 {
                     Tagline = "Making a difference",
-                    Message = "I have been volunteering for Age UK as a befriender since January this year. Befriending for me gives me a break from the computer, and some much needed social interaction in the week, as well as the feeling like I am doing something worthwhile for someone else at the same time. No matter what age you are, I feel if you sit around the house with no one to talk to for days on end, it is very easy to suddenly feel isolated and dis-spirited. I feel I benefit from the social side of volunteering, just as much as Yvonne does.",
+                    Message = "I have been volunteering for Age UK as a befriender since January this year. Befriending for me gives me a break from the computer, and some much needed social interaction in the week, as well as the feeling like I am doing something worthwhile for someone else at the same time. No matter what age you are, I feel if you sit around the house with no one to talk to for days on end, it is very easy to suddenly feel isolated and dispirited. I feel I benefit from the social side of volunteering, just as much as Yvonne does.",
                     Person = "Robyn",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "favershamandsittingbourne",
+                    GroupKey = "ageuk-favershamandsittingbourne",
                 },
                 new Testimonial()
                 {
                     Tagline = "Making a difference",
-                    Message = "Les and I get on like a house on fire and it is one of the most nourishing relationships I could have. He's and ex miner and has just tuned 91 though you'd never know it. He has a cracking sense of humour and we've become really good friends over the last year and I wouldn't miss our weekly meet up for the world and neither would Les. We talk about all manner of things and it truly is a two way process of learning and growing in openness and understanding.",
+                    Message = "Les and I get on like a house on fire and it is one of the most nourishing relationships I could have. He's an ex-miner and has just tuned 91 though you'd never know it. He has a cracking sense of humour and we've become really good friends over the last year and I wouldn't miss our weekly meet up for the world and neither would Les. We talk about all manner of things and it truly is a two way process of learning and growing in openness and understanding.",
                     Person = "Simon",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "favershamandsittingbourne",
+                    GroupKey = "ageuk-favershamandsittingbourne",
                 }
             };
 
