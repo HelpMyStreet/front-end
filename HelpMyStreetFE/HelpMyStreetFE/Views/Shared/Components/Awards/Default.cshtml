@@ -1,43 +1,14 @@
-﻿@model HelpMyStreetFE.Models.Awards.AwardsViewModel;
-@using HelpMyStreetFE.Models.Awards;
+﻿@using HelpMyStreetFE.Models.Awards;
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Extensions; 
+
+@model AwardsViewModel;
 
 
-@if (Model.CurrentAward.Award != null)
+@if (Model.CurrentAward.CompletedJobCount == 0)
 {
-<div class="profile-panel">
-    @if (Model.CurrentAward.NextAwardLevel != 0)
-    {
+    <div class="profile-panel">
         <div class="award">
-
-            <div class="tooltiptext"><p>HelpMyStreet volunteers earn badges for helping their neighbours. Complete @(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more request@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel == 1 ? "" : "s") to reveal your next award!</p><button id="close-tooltip"></button></div>
-
-            <div class="user-badge">
-                <div class="user-icon">
-                    <img src="@Model.CurrentAward.Award.ImageLocation" />
-                </div>
-                <div class="awards-user-detail">
-                    <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
-                    <div class="award-description__wrapper">
-                        <h5>@Model.CurrentAward.Award.AwardName</h5>
-                        <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
-                    </div>
-                    @if (Model.CurrentAward.CurrentAwardLevel > 0)
-                    {
-                        <a id="what-is-this" href="#">What is this?</a>
-                        <span>
-                            <progress id="pg-bar" max="@Model.CurrentAward.NextAwardLevel" value="@Model.CurrentAward.CurrentAwardLevel"></progress>
-                            <label for="pg-bar">@(Model.CurrentAward.NextAwardLevel - Model.CurrentAward.CurrentAwardLevel) more to reach next level</label>
-                        </span>
-                    }
-                </div>
-            </div>
-        </div>
-    }
-    else
-    {
-        <div class="award">
-
-            <span class="tooltiptext">As a HelpMyStreet.org volunteer, you gain awards for completing tasks. You've reached the highest and most prestigious award level available, but we're always making more so check back soon!</span>
             <div class="user-badge">
                 <div class="user-icon">
                     <img src="@Model.CurrentAward.Award.ImageLocation" />
@@ -45,19 +16,39 @@
 
                 <div class="awards-user-detail">
                     <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
-                    <h5>@Model.CurrentAward.Award.AwardName</h5>
-                    <span>
-                        <progress id="pg-bar" max="10" value="10"></progress>
-                        <label for="pg-bar">Maximum Award Level</label>
-                    </span>
+                    <h5>Ready to start helping?</h5>
                 </div>
             </div>
             <div class="award-description__wrapper">
-                <p class="award-description">@Html.Raw(Model.CurrentAward.Award.AwardDescription)</p>
-
+                <p class="award-description">@Model.CurrentAward.Award.AwardDescription</p>
             </div>
         </div>
-    }
-</div>
+    </div>
+}
+else
+{
+    <div class="profile-panel">
+        <div class="award">
+            <div class="user-badge">
+                <div class="user-icon">
+                    <img src="@Model.CurrentAward.Award.ImageLocation" title="@Model.CurrentAward.Award.AwardValue+ requests completed" />
+                </div>
+
+                <div class="awards-user-detail">
+                    <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
+                    <h5>@Model.CurrentAward.CompletedJobCount @(Model.CurrentAward.CompletedJobCount == 1 ? "request" : "requests") completed</h5>
+                </div>
+            </div>
+            <div class="award-description__wrapper">
+                @foreach (var a in Model.CurrentAward.CompletedJobs.OrderByDescending(a => a.Value).Take(8))
+                {
+                    <div class="completed-task-summary @a.Key.Class()">
+                        <img src="~/img/icons/@a.Key.Icon()" />
+                        @a.Key.PerfectTense(a.Value)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 }
 
