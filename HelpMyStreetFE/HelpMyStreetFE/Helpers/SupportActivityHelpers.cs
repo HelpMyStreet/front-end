@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
                 SupportActivities.ColdWeatherArmy => "blue",
-                _ => ""
+                _ => "dark-blue",
             };
         }
     }
