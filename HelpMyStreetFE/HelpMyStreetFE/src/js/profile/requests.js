@@ -76,11 +76,12 @@ export function initialiseRequests() {
     $('.job-list').on('click', '.email-details', async function (evt) {
         evt.preventDefault();
 
-        $('.email-details').addClass("sending");
-        $('.email-details img').attr("src", "/img/loading_spinner.svg");
-        $('.email-details span').html("Sending...");
-
         const job = $(this).closest('.job');
+
+        $(job).find('.email-details').addClass("sending");
+        $(job).find('.email-details img').attr("src", "/img/loading_spinner.svg");
+        $(job).find('.email-details span').html("Sending...");
+
         let jobId = job.attr("id");
         let response = await hmsFetch(`/account/email-job-details?j=${jobId}`, null, { timeOutRetry: 0});
 
@@ -89,26 +90,26 @@ export function initialiseRequests() {
             outcome = 'failed';
         }
 
-        $('.email-details').removeClass("sending");
-        $('.email-details').addClass(outcome);
+        $(job).find('.email-details').removeClass("sending");
+        $(job).find('.email-details').addClass(outcome);
 
         if (outcome == 'successful') {
-            $('.email-details img').attr("src", "/img/icons/green-tick.svg");
-            $('.email-details span').html("Queued");
-            $('.email-details').attr("title", "Email successfully queued");
+            $(job).find('.email-details img').attr("src", "/img/icons/green-tick.svg");
+            $(job).find('.email-details span').html("Queued");
+            $(job).find('.email-details').attr("title", "Email successfully queued");
             setTimeout(() => {
-                $('.email-details').removeClass(outcome);
-                $('.email-details img').attr("src", "/img/icons/email.svg");
-                $('.email-details span').html("Email");
+                $(job).find('.email-details').removeClass(outcome);
+                $(job).find('.email-details img').attr("src", "/img/icons/email.svg");
+                $(job).find('.email-details span').html("Email");
             }, 5000);
         } else {
-            $('.email-details img').attr("src", "/img/icons/status/cancelled.svg");
-            $('.email-details span').html("Failed");
-            $('.email-details').attr("title", "Email not sent");
+            $(job).find('.email-details img').attr("src", "/img/icons/status/cancelled.svg");
+            $(job).find('.email-details span').html("Failed");
+            $(job).find('.email-details').attr("title", "Email not sent");
             setTimeout(() => {
-                $('.email-details').removeClass(outcome);
-                $('.email-details img').attr("src", "/img/icons/email.svg");
-                $('.email-details span').html("Retry");
+                $(job).find('.email-details').removeClass(outcome);
+                $(job).find('.email-details img').attr("src", "/img/icons/email.svg");
+                $(job).find('.email-details span').html("Retry");
             }, 5000);
         }
 
