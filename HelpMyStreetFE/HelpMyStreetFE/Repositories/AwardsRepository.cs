@@ -28,34 +28,12 @@ namespace HelpMyStreetFE.Repositories
             _groupMemberService = groupMemberService;
         }
 
-        public Dictionary<string, Func<Dictionary<string, Object>, string, string>> DescriptionModifiers = new Dictionary<string, Func<Dictionary<string, Object>, string, string>>()
-        {
-            {"default",
-                (attributes, description) => {
-                    if (attributes.ContainsKey("countOfJobsCompleted") && attributes.ContainsKey("listOfJobsCompleted"))
-                    {
-                        var count = (int)attributes["countOfJobsCompleted"];
-                        var list = attributes["listOfJobsCompleted"];
-                        var desc = description;
-                        desc = count == 1 ? desc.Replace("requests", "request") : desc;
-                        return desc.Replace("{{count}}",count.ToString()).Replace("{{list}}",list.ToString());
-                    }
-                    else
-                    {
-                        return description;
-                    }
-                }
-
-            }
-        };
-
         public async Task<List<AwardsModel>> GetAwards()
         {
             var awardsList = new List<AwardsModel>()
             {
                 new AwardsModel()
                 {
-                    AwardName = "Ready to start helping?",
                     AwardValue = 0,
                     AwardDescription = "Verify your ID in the My Profile tab so you can start accepting requests near you.",
                     ImageLocation = "/img/awards/round-placeholder.svg",
@@ -70,7 +48,6 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Ready to start helping?",
                     AwardValue = 0,
                     AwardDescription = "Find out what help is needed near you in the Open Requests tab.",
                     ImageLocation = "/img/awards/round-placeholder.svg",
@@ -85,50 +62,32 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Good Samaritan",
                     AwardValue = 1,
-                    AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
-                    DescriptionModifier = DescriptionModifiers["default"],
                     ImageLocation = "/img/awards/good-samaritan.png"
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Helping Hand",
-                    AwardValue = 2,
-                    AwardDescription = "{{count}} requests completed so far{{list}} - you're brill!",
-                    DescriptionModifier = DescriptionModifiers["default"],
+                    AwardValue = 5,
                     ImageLocation = "/img/awards/helping-hand.png"
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Top Neighbour",
-                    AwardValue = 5,
-                    AwardDescription = "{{count}} requests completed so far{{list}} - keep up the great work!",
-                    DescriptionModifier = DescriptionModifiers["default"],
+                    AwardValue = 10,
                     ImageLocation = "/img/awards/top-neighbour.png"
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Budding Humanitarian",
-                    AwardValue = 10,
-                    AwardDescription = "{{count}} requests completed so far{{list}} - you're awesome!",
-                    DescriptionModifier = DescriptionModifiers["default"],
+                    AwardValue = 20,
                     ImageLocation = "/img/awards/budding-humanitarian.png"
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Helping Hero",
-                    AwardValue = 20,
-                    AwardDescription = "{{count}} requests completed so far{{list}} - keep up the good work!",
-                    DescriptionModifier = DescriptionModifiers["default"],
+                    AwardValue = 50,
                     ImageLocation = "/img/awards/helping-hero.png"
                 },
                 new AwardsModel()
                 {
-                    AwardName = "Volunteer Superstar",
-                    AwardValue = 50,
-                    AwardDescription = "{{count}} requests completed so far{{list}} - you're amazing!",
-                    DescriptionModifier = DescriptionModifiers["default"],
+                    AwardValue = 100,
                     ImageLocation = "/img/awards/volunteer-superstar.png"
                 }
             };
@@ -139,61 +98,22 @@ namespace HelpMyStreetFE.Repositories
         public async Task<CurrentAwardModel> GetAwardsByUserID(int userID, CancellationToken cancellationToken)
         {
             var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
-            var viewModel = new AwardsViewModel();
             var awards = await GetAwards();
-            bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
 
+            bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
             var predicates = new List<Object>() { userIsVerified };
 
-            jobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
-            var completedJobs = jobs.Count();
+            var completedJobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
+            var relevantAward = awards.Where(x => completedJobs.Count() >= x.AwardValue && x.SpecificPredicate(predicates)).OrderBy(x => x.AwardValue).LastOrDefault();
 
-            awards = awards.OrderBy(x => x.AwardValue).ToList();
-            var relevantAwards = awards.Where(x => completedJobs >= x.AwardValue && x.SpecificPredicate(predicates));
+            var completedJobDictionary = completedJobs.GroupBy(x => x.SupportActivity).ToDictionary(g => g.Key, g => g.Count());
 
-            var listOfJobs = jobs.GroupBy(x => x.SupportActivity, x => x.JobID, (activity, jobID) => new { Activity = activity, Count = jobID.Count() });
-            listOfJobs = listOfJobs.OrderByDescending(x => x.Count);
-
-            var listArray = listOfJobs.Select(result => result.Activity.PerfectTense(result.Count)).ToList();
-
-            var listString = "";
-            if (listArray.Count() > 0) {
-                var listOfActivities = String.Join(", ", listArray);
-                var lastComma = listOfActivities.LastIndexOf(",");
-                if (lastComma != -1) listOfActivities = listOfActivities.Remove(lastComma, 1).Insert(lastComma, " and");
-                listString = ", including " + listOfActivities;
-            }
-  
-
-            var returnAward = new CurrentAwardModel();
-
-            if (relevantAwards.Count() >= 1)
+            return new CurrentAwardModel
             {
-
-                var higherAwards = awards.Where(x => x.AwardValue > completedJobs);
-                returnAward.Award = relevantAwards.LastOrDefault();
-                var attributes = new Dictionary<string, Object>()
-                {
-                    {"countOfJobsCompleted",  completedJobs},
-                    {"listOfJobsCompleted", listString }
-                };
-                returnAward.Award.AwardAttributes = attributes;
-                if (higherAwards.Count() != 0)
-                {
-                    
-                    returnAward.NextAwardLevel = awards.Where(x => x.AwardValue > completedJobs).FirstOrDefault().AwardValue;
-                } else
-                {
-                    returnAward.NextAwardLevel = 0;
-                }
-            }
-            else
-            {
-                returnAward.NextAwardLevel = awards.FirstOrDefault().AwardValue;
-            }
-
-            returnAward.CurrentAwardLevel = completedJobs;
-            return returnAward;
+                Award = relevantAward,
+                CompletedJobCount = completedJobs.Count(),
+                CompletedJobs = completedJobDictionary
+            };
         }
     }
  }

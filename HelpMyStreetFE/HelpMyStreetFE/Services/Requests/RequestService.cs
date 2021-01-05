@@ -74,6 +74,7 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 HelpRequest = new HelpRequest
                 {
+                    Guid = Guid.NewGuid(),
                     AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
                     ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
                     OrganisationName = detailStage.Organisation ?? "",
