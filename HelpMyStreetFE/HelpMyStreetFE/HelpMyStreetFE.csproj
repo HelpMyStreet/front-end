@@ -20,14 +20,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\img\community\ageUK\kent\southkentcoast\carousel\SKC 7.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="src\sass\components\home\StyleSheet.scss" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.526" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.526" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.526" />  
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.557" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.557" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.557" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
@@ -48,6 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\img\community\ageUK\kent\northwest\carousel\" />
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />

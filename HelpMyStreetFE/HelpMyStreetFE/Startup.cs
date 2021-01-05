@@ -347,6 +347,21 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "north-muskham" });
 
                 endpoints.MapControllerRoute(
+                    name: "southkentcoast",
+                    pattern: "southkentcoast",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-southkentcoast" });
+
+                endpoints.MapControllerRoute(
+                   name: "favershamandsittingbourne",
+                   pattern: "favershamandsittingbourne",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-favershamandsittingbourne" });
+
+                endpoints.MapControllerRoute(
+                   name: "northwestkent",
+                   pattern: "northwestkent",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuknwkent" });
+
+                endpoints.MapControllerRoute(
                    name: "face-coverings",
                    pattern: "face-coverings",
                    defaults: new { controller = "Community", action = "FaceCoverings" });

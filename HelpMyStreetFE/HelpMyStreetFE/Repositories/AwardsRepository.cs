@@ -157,7 +157,7 @@ namespace HelpMyStreetFE.Repositories
             var listArray = new List<string>();
             foreach (var result in listOfJobs)
             {
-                var friendlyName = result.Activity.PerfectTense(result.Count > 0);;
+                var friendlyName = result.Activity.PerfectTense(result.Count);
                 listArray.Add(result.Count + " " + friendlyName);
             }
 
