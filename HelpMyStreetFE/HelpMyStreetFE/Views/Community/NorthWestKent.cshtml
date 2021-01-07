@@ -15,9 +15,11 @@
 
 <div class="community" data-group-id="@Model.EncodedGroupId">
     <div class="container">
-        <div class="community-banner">
+       
+        @*<div class="community-banner">
             <img src="~/img/community/ageUK/kent/northwest/banner.jpg" alt="North West Kent Team" />
-        </div>
+        </div>*@
+        
     </div>
     <div class="outer-container">
         <div class="container">
@@ -28,14 +30,13 @@
                     </header>
 
                     <p class='mt-sm mb-xs'>
-                        Age UK North West Kent is an independent local charity delivering service for older people in Gravesend, Dartford, Swanscombe & Greenhithe, Northfleet and the surrounding areas. Here are just some of things we can help with:
+                        Age UK North West Kent is an independent local charity delivering services for older people in Gravesend, Dartford, Swanscombe & Greenhithe, Northfleet and the surrounding areas. Here are just some of things we can help with:
                     </p>
                     <ul class='tick-list mt-xs mb-sm ml-sm'>
                         <li>A friendly chat</li>                        
                         <li>Collecting prescriptions</li>
                         <li>Fresh meal delivery service</li>
                         <li>Urgent medical transport</li>
-                        <li>Meals on wheels</li>
                     </ul>
 
 
@@ -50,7 +51,7 @@
                     </div>
                 </div>
 
-                <div class="sm6 pl-md">
+                <div class="sm6 pl-md card">
                     <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
                 </div>
             </div>
@@ -63,32 +64,31 @@
                 <div class="sm12">
                     <h2 class="mb15 mt-lg text-center">Welcome from Age UK North West Kent</h2>
                     <div>
-                        <ul>
-                            <li>
+                        
+                            <p>
                                 Age UK North West Kent is an independent local charity. We've been working in the local community
                                 to help older people since 2011, following a merger between four Age Concerns in the boroughs of Dartford
                                 and Gravesham. We have dedicated staff and volunteers helping us to deliver services and activities for older
                                 people in Gravesend, Dartford, Swanscombe & Greenhithe, Northfleet and the surrounding areas.
-                            </li>
-                            <li>
+                            </p>
+                            <p>
                                 Our aim is to be the principal organisation in delivering support for older people in North West Kent, enabling
                                 people to love later life, to live independently, access appropriate services and enrich their lives.
-                            </li>
-                            <li>
+                            </>
+                            <p>
                                 We intend to do this by developing additional services and enhancing our current services in order to support more
                                 people. With your help, we can deliver more services to people in later life in the local North West Kent areas. We
-                                have a wide range of fun and interesting volunteering opportunities - sign up on this page or find out more here.
-                            </li>
-                            <li>
+                                have a wide range of fun and interesting volunteering opportunities - sign up on this page or find out more <a href="https://www.ageuk.org.uk/northwestkent/get-involved/volunteer/">here</a>.
+                            </p>
+                            <p>
                                 To request help, simply fill in the request help form on this page or give us a call on one of the numbers below.
-                            </li>
-                            <li>
+                            </p>
+                            <p>
                                 Telephone: 01474 564898 (Gravesend Office and Day Centre)
-                            </li>
-                            <li>
+                            </p>
+                            <p>
                                 Telephone: 01322 226496 (Dartford 'Meadowside' Centre)
-                            </li>
-                        </ul>                                               
+                            </p>                                              
                     </div>
                     <div class="mb-md"></div>
                 </div>
@@ -127,11 +127,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-    <div class="outer-container outer-container--darker mb-md">
-        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
     </div>
 
 
