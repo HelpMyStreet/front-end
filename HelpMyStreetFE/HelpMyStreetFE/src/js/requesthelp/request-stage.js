@@ -121,6 +121,7 @@ var handleActivity = function (el) {
 }
 
 var updateOptionsForActivity = function (taskId) {
+  let requestHelpFormVariant = JSON.parse($('input[name="requestHelp"]').val()).RequestHelpFormVariant;
   if (taskId == 12) { // facemask   
     $('#requestorFor_3').show(); // onbehalf of organisation
     if ($('#requestorFor_3').hasClass("selected")) {
@@ -131,16 +132,26 @@ var updateOptionsForActivity = function (taskId) {
     $('#requestorFor_1').hide(); // myself
     $('#requestorFor_2').hide(); // someone else
     $('#requestorFor_3').show(); // onbehalf of organisation
-  } else {
-    $('#requestorFor_3').hide();
-    var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-    // if they have previously selected On behalf of organisation,
-    //set selected RequestorID as empty since that option is only available to facemasks
-    if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
-      $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-    }
     displayTodayHelpNeededOptions(true);
+  } else {
+      if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
+          $('#requestorFor_1').hide(); // myself
+          $('#requestorFor_2').show(); // someone else
+          $('#requestorFor_3').hide(); // onbehalf of organisation
+      } else {
+          $('#requestorFor_3').hide();
+          var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
+          // if they have previously selected On behalf of organisation,
+          //set selected RequestorID as empty since that option is only available to facemasks
+          if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+              $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+          }
+          
+      }
+      displayTodayHelpNeededOptions(true);
   }
+
+    
 
   // preselect value if theres only one
   if ($('.requestorFor:visible').length == 1) {
