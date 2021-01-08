@@ -127,6 +127,10 @@ var updateOptionsForActivity = function (taskId) {
       $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
     }
     displayTodayHelpNeededOptions(false);
+  } else if (taskId == 22) { // Volunteer Support
+    $('#requestorFor_1').hide(); // myself
+    $('#requestorFor_2').hide(); // someone else
+    $('#requestorFor_3').show(); // onbehalf of organisation
   } else {
     $('#requestorFor_3').hide();
     var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
