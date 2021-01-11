@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.WellbeingPackage => "package.svg",
                 SupportActivities.CommunityConnector => "phone-green.svg",
                 SupportActivities.ColdWeatherArmy => "snowflake.svg",
-                SupportActivities.MealsOnWheels => "mealsonwheels.svg",
+                SupportActivities.MealsToYourDoor => "mealsonwheels.svg",
                 SupportActivities.MealtimeCompanion => "mealtimecompanion.svg",
                 SupportActivities.VolunteerSupport => "volunteers.png",
                 SupportActivities.Transport => "transport.svg",
