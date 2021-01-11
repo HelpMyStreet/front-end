@@ -11,6 +11,7 @@ namespace HelpMyStreetFE.Services
     {
         Task<bool> SendEmail(string subject, string textContent, string htmlContent, RecipientModel recipient);
         Task<bool> SendInterUserMessage(MessageParticipant from, MessageParticipant to, string message, int? jobId = null);
+        Task<bool> RequestCommunication(int? groupID, int? recipientID, int? jobID, CommunicationJob communicationJob);
         Task<string> GetLinkDestination(string token);
     }
 }

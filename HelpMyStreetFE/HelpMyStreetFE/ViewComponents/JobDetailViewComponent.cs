@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
         {
             JobDetail jobDetails = jobSet switch
             {
@@ -40,6 +40,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobDetail = jobDetails,
                 UserActingAsAdmin = jobSet == JobSet.GroupRequests,
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
+                ToPrint = toPrint
             };
 
             return View("JobDetail", jobDetailViewModel);
