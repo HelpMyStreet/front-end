@@ -267,7 +267,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsOnWheels },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
@@ -279,7 +279,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsOnWheels },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
@@ -290,7 +290,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsOnWheels },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
@@ -300,7 +300,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsOnWheels },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
@@ -309,7 +309,7 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 tasks.AddRange(new List<TasksViewModel>
                 {
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsOnWheels },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },                    
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
@@ -319,7 +319,7 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 tasks.AddRange(new List<TasksViewModel>
                 {
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsOnWheels },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
