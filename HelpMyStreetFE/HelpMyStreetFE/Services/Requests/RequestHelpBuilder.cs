@@ -111,6 +111,41 @@ namespace HelpMyStreetFE.Services.Requests
 
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
             }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_Public)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter)
+            {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter)
+            {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_Public)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter)
+            {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+
+            }
+
             return model;
         }
 
@@ -123,6 +158,12 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
                 RequestHelpFormVariant.AgeUKNottsBalderton => "Request help from Balderton Community Support",
                 RequestHelpFormVariant.AgeUKNottsNorthMuskham => "Request help from North Muskham Community Support",
+                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => "Request Help from Age UK South Kent Coast",
+                RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter => "Request Help from Age UK South Kent Coast",
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => "Request Help from Age UK Faversham And Sittingbourne",
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter => "Request Help from Age UK Faversham And Sittingbourne",
+                RequestHelpFormVariant.AgeUKNorthWestKent_Public => "Request Help from Age UK North West Kent",
+                RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter => "Request Help from Age UK North West Kent",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -134,6 +175,12 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.FtLOS => "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.",
                 RequestHelpFormVariant.HLP_CommunityConnector => "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.",
                 RequestHelpFormVariant.AgeUKWirral => string.Empty,
+                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => "If you need help from Age UK South Kent Coast, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter => "If you need help from Age UK South Kent Coast, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => "If you need help from Age UK Faversham and Sittingbourne, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter => "If you need help from Age UK Faversham and Sittingbourne, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.AgeUKNorthWestKent_Public => "If you need help from Age UK North West Kent, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter => "If you need help from Age UK North West Kent, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
             };
         }
@@ -209,6 +256,73 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }

@@ -21,7 +21,11 @@ namespace HelpMyStreetFE.Repositories
             {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
             {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
             {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham" } },
+            {"ageuk-southkentcoast", new CommunityModel() {FriendlyName = "Age UK South Kent Coast", Pin_Latitude = 51.15670694376801, Pin_Longitude = 1.2906096124741184, LinkURL = "/southkentcoast", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/southkentcoast/banner.jpg", GeographicName="Deal or Folkestone" } },
+            {"ageuk-favershamandsittingbourne", new CommunityModel() {FriendlyName = "Age UK Faversham & Sittingbourne", Pin_Latitude = 51.32681418199929, Pin_Longitude = 0.8065864663737088, LinkURL = "/favershamandsittingbourne", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/favershamandsittingbourne/banner.jpg", GeographicName="Faversham or Sittingbourne" } },
+            {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/northwest/banner.jpg", GeographicName="North West Kent (Dartford, Swanley or Gravesend)" } },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
+
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -43,6 +47,9 @@ namespace HelpMyStreetFE.Repositories
                 Groups.FTLOS => GetFtLOS(),
                 Groups.AgeUKNottsBalderton => GetBalderton(),
                 Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
+                Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
+                Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
+                Groups.AgeUKNorthWestKent => GetNorthWestKent(),
                 _ => null,
             };
 
@@ -181,7 +188,108 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
+        private CommunityViewModel GetSouthKentCoast()
+        {                       
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "SouthKentCoast",
+            };
 
+            CommunityModel communityModel = GetCommunityDetailByKey("ageuk-southkentcoast");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 11;
+
+            communityViewModel.CommunityName = "Age UK South Kent Coast";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Debbie Barry",
+                    Role = "Chief Executive Officer",
+                    ImageLocation = "/img/community/ageuk/kent/southkentcoast/DB.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Mary Colley",
+                    Role = "Volunteer Coordinator",
+                    ImageLocation = "/img/community/ageuk/kent/southkentcoast/MC.jpg"
+                },
+            };
+
+            var carouselPath = "/img/community/ageUK/kent/southkentcoast/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/SKC2.JPG",
+                    $"{carouselPath}/SKC4.JPG",
+                    $"{carouselPath}/SKC5.JPG",
+                    $"{carouselPath}/SKC6.JPG",
+                    $"{carouselPath}/SKC7.JPG",
+                    $"{carouselPath}/SKC7a.JPG",
+                }
+            };
+
+            return communityViewModel;
+        }
+        
+        private CommunityViewModel GetFavershameAndSittingBourne()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "FavershamAndSittingBourne",
+            };
+
+            CommunityModel communityModel = GetCommunityDetailByKey("ageuk-favershamandsittingbourne");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 12;
+
+            communityViewModel.CommunityName = "Age UK Faversham and Sittingbourne";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            var carouselPath = "/img/community/ageUK/kent/favershamandsittingbourne/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/FS1.JPG",
+                    $"{carouselPath}/FS2.JPG",
+                    $"{carouselPath}/FS3.JPG",
+                    $"{carouselPath}/FS4.JPG",
+                    $"{carouselPath}/FS5.JPG",
+                }
+            };
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetNorthWestKent()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "NorthWestKent",
+            };
+
+            CommunityModel communityModel = GetCommunityDetailByKey("ageuknwkent");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 12;
+
+            communityViewModel.CommunityName = "Age UK North West Kent";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            var carouselPath = "/img/community/ageUK/kent/northwest/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>();
+
+            return communityViewModel;
+        }
 
         private CommunityViewModel GetHLP()
         {

@@ -12,9 +12,9 @@
     "not dead"
   ],
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-env": "^7.12.11",
     "babel-loader": "^8.2.2",
     "css-loader": "^3.6.0",
     "file-loader": "^6.2.0",
@@ -31,9 +31,9 @@
     "@babel/runtime": "^7.12.5",
     "core-js": "^3.8.0",
     "firebase": "^7.24.0",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-fetch": "^3.0.0",
     "jquery-ajax-unobtrusive": "^3.2.6",
     "slick-carousel": "^1.8.1",
-    "ua-parser-js": "^0.7.22"
+    "ua-parser-js": "^0.7.23"
   }
 }
