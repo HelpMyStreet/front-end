@@ -35,7 +35,7 @@
                         <li>Collecting prescriptions</li>
                         <li>A friendly chat</li>
                         <li>A mealtime companion</li>
-                        <li>Meals on wheels</li>
+                        <li>Meals to your door</li>
                     </ul>
 
 
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="sm6 pl-md">
+                <div class="sm6 pl-md card">
                     <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
                 </div>
             </div>
@@ -62,6 +62,11 @@
             <div class="row">
                 <div class="sm12">
                     <h2 class="mb15 mt-lg text-center">Welcome from the Age UK South Kent Coast Team</h2>
+
+
+                   <partial name="_CommunityVolunteersSlider" model="Model" />
+
+
                     <div>
                         <p>
                             Age UK South Kent Coast (formerly known as Age UK Folkestone and Age Concern Deal) has been operating in this area
@@ -75,18 +80,17 @@
                             We also offer clubs with activities for those with dementia as well as advice for carers of those with dementia.
                         </p>
                         <p><strong>What we do:</strong></p>
-                        <ul>
-                            <li>We give advice - our trained advisors offer free information and advice to older people and their families.</li>
-                            <li>We provide meals - you can order a two-course lunch, freshly prepared in our kitchen, to be delivered, hot, straight to your door seven days a week.</li>
-                            <li>We help you get benefits - at Age UK South Kent Coast, we aim to help you get the benefits that you're entitled to and more!</li>
-                            <li>We befriend - The Keep In Touch (KIT) telephone befriending service is primarily for people over the age of 50 who would benefit from the additional support a telephone friendship could provide.</li>
-                            <li>We provide activities - our day centres have a range of activity groups and events, giving older people the opportunity to participate, socialise, or learn a new skill.</li>
-                            <li>With your help, we can deliver more services to people in later life in the local Deal and Folkestone areas. We have a wide range of fun and interesting volunteering opportunities - sign up on this page or find out more here.</li>
-                            <li>To request help, simply fill in the request help form on this page or give us a call on one of the numbers below.</li>
-                            <li>Telephone: 01303 279 031 or 01303 279 621 (Folkestone)</li>
-                            <li>Telephone: 01304 372 608 (Deal)</li>
-                            <li>We are open Monday - Friday 9.00am - 4.00pm.</li>
-                        </ul>
+
+                        <p>We give advice - our trained advisors offer free information and advice to older people and their families.</p>
+                        <p>We provide meals - you can order a two-course lunch, freshly prepared in our kitchen, to be delivered, hot, straight to your door seven days a week.</p>
+                        <p>We help you get benefits - at Age UK South Kent Coast, we aim to help you get the benefits that you're entitled to and more!</p>
+                        <p>We befriend - The Keep In Touch (KIT) telephone befriending service is primarily for people over the age of 50 who would benefit from the additional support a telephone friendship could provide.</p>
+                        <p>We provide activities - our day centres have a range of activity groups and events, giving older people the opportunity to participate, socialise, or learn a new skill.</p>
+                        <p>With your help, we can deliver more services to people in later life in the local Deal and Folkestone areas. We have a wide range of fun and interesting volunteering opportunities - sign up on this page or find out more <a href="https://www.ageuk.org.uk/southkentcoast/get-involved/volunteer/">here</a>.</p>
+                        <p>To request help, simply fill in the request help form on this page or give us a call on one of the numbers below.</p>
+                        <p>Telephone: 01303 279 031 or 01303 279 621 (Folkestone)</p>
+                        <p>Telephone: 01304 372 608 (Deal)</p>
+                        <p>We are open Monday - Friday 9.00am - 4.00pm.</p>
                     </div>
                     <div class="mb-md"></div>
                 </div>
