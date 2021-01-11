@@ -24,7 +24,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.ColdWeatherArmy => "snowflake.svg",
                 SupportActivities.MealsToYourDoor => "mealsonwheels.svg",
                 SupportActivities.MealtimeCompanion => "mealtimecompanion.svg",
-                SupportActivities.VolunteerSupport => "volunteers.png",
+                SupportActivities.VolunteerSupport => "volunteers.svg",
                 SupportActivities.Transport => "transport.svg",
                 _ => "question-mark.svg"
             };
