@@ -322,12 +322,17 @@ async function updateMap(swLat, swLng, neLat, neLng) {
             
             let thisMarker;
             let thisInfoWindow;
+            let thisBannerLocation = "";
+            if (coord.bannerLocation != "") {
+                thisBannerLocation = `<img src="${coord.bannerLocation}"></img>`
+            }
+
             thisInfoWindow = new google.maps.InfoWindow({
               content: `
                   <div class="community-marker">
                     <div>
                       <a href="${coord.linkURL}">
-                        <img src="${coord.bannerLocation}"></img>
+                        ${thisBannerLocation}
                         <div class="marker-title">
                           <h4>${coord.friendlyName}</h4>
                           <div class="marker-subtitle">
@@ -366,6 +371,8 @@ async function updateMap(swLat, swLng, neLat, neLng) {
     showMarkers();
 
     previousZoomLevel = zoomLevel;
+
+    console.log(`coords: ${googleMap.getCenter()} zoom: ${googleMap.getZoom()}`);
     
 }
 
