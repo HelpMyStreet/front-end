@@ -535,3 +535,12 @@
         }
     }
 }
+
+.status-bar {
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    width: 3rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}

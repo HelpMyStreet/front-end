@@ -1,0 +1,17 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model HelpMyStreetFE.Models.Account.Jobs.StatusBarViewModel
+@{
+    var unacceptedJobs = ((double)Model.TotalJobs - (double)Model.AcceptedJobs)/(double)Model.TotalJobs * 100;
+    var acceptedJobs = ((double)Model.AcceptedJobs / (double)Model.TotalJobs) * 100;
+}
+
+<div class="status-bar">
+    <svg style="width: 100%">
+        <rect x="0" y="@unacceptedJobs%" rx="0" ry="0" width="100%" height="@acceptedJobs%" style="fill:green;stroke-width:2;opacity:0.8"><title>@Model.AcceptedJobs shifts filled</title></rect>
+        <rect x="0" y="0%" rx="0" ry="0" width="100%" height="@unacceptedJobs%" style="fill:red;stroke-width:2;opacity:0.8"><title>@(Model.TotalJobs-Model.AcceptedJobs) shifts not yet filled</title></rect>
+        <rect x="0" y="0" rx="0" ry="0" width="100%" height="100%" style="stroke:black;fill:none;stroke-width:2;opacity:1"></rect>
+    </svg>
+    <span>@Model.AcceptedJobs/@Model.TotalJobs</span>
+</div>
