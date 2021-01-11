@@ -553,3 +553,21 @@
         font-size: 0.9rem;
     }
 }
+
+.status-circle {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    align-items: center;
+
+    svg {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    span {
+        font-size: 0.9rem;
+    }
+}
+
