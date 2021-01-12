@@ -164,6 +164,38 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [Route("my-shifts")]
+        [HttpGet]
+        public async Task<IActionResult> MyShifts(CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            viewModel.CurrentPage = MenuPage.MyShifts;
+
+            return View("Index", viewModel);
+        }
+
+        [Route("open-shifts")]
+        [HttpGet]
+        public async Task<IActionResult> OpenShifts(CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            viewModel.CurrentPage = MenuPage.OpenShifts;
+
+            return View("Index", viewModel);
+        }
+
         [Route("get-awards-component")]
         [HttpGet]
         public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
@@ -254,6 +286,28 @@ namespace HelpMyStreetFE.Controllers
             {
                 viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
             }
+
+            return View("Index", viewModel);
+        }
+
+        [Route("g/{groupKey}/shifts")]
+        [HttpGet]
+        public async Task<IActionResult> GroupShifts(string groupKey, CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            viewModel.CurrentPage = MenuPage.GroupShifts;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }

@@ -12,6 +12,9 @@ namespace HelpMyStreetFE.Enums.Account
         AcceptedRequests,
         CompletedRequests,
         GroupRequests,
-        GroupVolunteers
+        GroupVolunteers,
+        OpenShifts,
+        MyShifts,
+        GroupShifts,
     }
 }
