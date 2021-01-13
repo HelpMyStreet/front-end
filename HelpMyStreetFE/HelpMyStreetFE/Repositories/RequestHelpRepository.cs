@@ -162,5 +162,16 @@ namespace HelpMyStreetFE.Repositories
             }
             return null;
         }
+
+        public async Task<IEnumerable<ShiftJob>> GetOpenShiftJobsByFilter(GetOpenShiftJobsByFilterRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetOpenShiftJobsByFilterResponse>>($"/api/GetUserShiftJobsByFilter", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ShiftJobs;
+            }
+            return null;
+        }
     }
 }
