@@ -357,6 +357,11 @@ namespace HelpMyStreetFE.Services.Requests
 
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
         }
+
+        public Task<IEnumerable<ShiftJob>> GetGroupShiftRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
