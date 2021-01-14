@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            JobListViewModel jobListViewModel = new JobListViewModel();
+            var jobListViewModel = new ListViewModel<JobViewModel>();
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
@@ -64,11 +64,11 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
             }
 
-            jobListViewModel.UnfilteredJobs = jobs.Count();
+            jobListViewModel.UnfilteredItems = jobs.Count();
 
             jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
-            jobListViewModel.FilteredJobs = jobs.Count();
+            jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
 
             if (jobFilterRequest.ResultsToShow > 0)
@@ -76,7 +76,7 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Jobs = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
+            jobListViewModel.Items = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
             {
                 JobHeader = a,                
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
@@ -84,11 +84,11 @@ namespace HelpMyStreetFE.ViewComponents
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
             })));
 
-            if (jobListViewModel.UnfilteredJobs == jobListViewModel.FilteredJobs && jobListViewModel.UnfilteredJobs <= 5)
+            if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
             {
                 hideFilterPanelCallback?.Invoke();
 
-                if (jobListViewModel.UnfilteredJobs == 0)
+                if (jobListViewModel.UnfilteredItems == 0)
                 {
                     noJobsCallback?.Invoke();
                 }
