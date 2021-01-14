@@ -1,1 +1,63 @@
-﻿<p>My shifts</p>
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs
+
+@model AccountViewModel
+
+@{
+    bool NoJobsToDisplay = false;
+}
+
+﻿<div class="verification-panel">
+    <div class="user-profile profile-panel p-md">
+        <header class="profile-panel__header">
+            <h3 class="profile-panel__title">My Shifts</h3>
+            <p>Shifts that you’ve accepted</p>
+        </header>
+
+        <div class="profile">
+            <div class="job-filter-panel">
+                @await Component.InvokeAsync("JobFilterPanel", new
+                   {
+                       jobFilterViewModel = new JobFilterViewModel()
+                       {
+                           ListViewComponent = "ShiftList",
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserMyShifts, ResultsToShow = -1, HighlightJobId = Model.HighlightJobId },
+                           EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
+                       }
+                   })
+            </div>
+            @if (NoJobsToDisplay)
+            {
+                @if (Model.VerificationViewModel.IsVerified)
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__title">
+                            Can you help?
+                        </p>
+                        <p class="profile__empty__text">
+                            Please check the <a href="/account/open-requests">Open Requests</a> page to see new requests for help and support - they're being added all the time
+                        </p>
+                        <p class="profile__empty__text">
+                            Once you accept a request for help or support on the <a href="/account/open-requests">Open Requests</a> page, they'll appear on this page.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="profile__empty">
+                        <p class="profile__empty__title">
+                            Ready to start helping?
+                        </p>
+                        <p class="profile__empty__text">
+                            <a href="/account?next=verify">Complete your ID verification</a> today and see what help is needed near you in the Open Requests tab.
+                        </p>
+                        <p class="profile__empty__text">
+                            Verifying your ID helps to keep you, and the people we help, safe. Find out more in our <a href="/questions">FAQs</a>.
+                        </p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

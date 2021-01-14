@@ -1,1 +1,43 @@
-﻿<p>Open shifts</p>
+﻿@using HelpMyStreetFE.Models.Account
+@using HelpMyStreetFE.Enums.Account
+@using HelpMyStreetFE.Models.Account.Jobs
+
+@model AccountViewModel
+
+@{
+    bool NoJobsToDisplay = false;
+}
+
+﻿<div class="verification-panel">
+    <div class="user-profile profile-panel p-md">
+        <header class="profile-panel__header">
+            <h3 class="profile-panel__title">Open Shifts</h3>
+            <p>Shifts needing to be filled</p>
+        </header>
+
+        <div class="profile">
+            <div class="job-filter-panel">
+                @await Component.InvokeAsync("JobFilterPanel", new
+                   {
+                       jobFilterViewModel = new JobFilterViewModel()
+                       {
+                           ListViewComponent = "ShiftList",
+                           JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenShifts, ResultsToShow = 20, HighlightJobId = Model.HighlightJobId },
+                           EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true)
+                       }
+                   })
+            </div>
+            @if (NoJobsToDisplay)
+            {
+                <div class="profile__empty">
+                    <p class="profile__empty__title">Everyone's taken care of!</p>
+                    <p class="profile__empty__text">
+                        Please come back later to check for new shifts - they’re being added all the time.
+                        We’ll also send you email notifications.
+                    </p>
+                    <p class="profile__empty__title">Thank You!</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
