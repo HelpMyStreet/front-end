@@ -29,6 +29,9 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
                 JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
                 JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
+
+                JobSet.UserOpenShifts => new SortAndFilterSet(),
+                JobSet.UserMyShifts => new SortAndFilterSet(),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
