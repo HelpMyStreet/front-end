@@ -6,10 +6,17 @@
     var unacceptedJobs = ((double)Model.TotalJobs - (double)Model.AcceptedJobs) / (double)Model.TotalJobs * 100;
     var acceptedJobs = ((double)Model.AcceptedJobs / (double)Model.TotalJobs) * 100;
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    let aJobs = @Model.AcceptedJobs;
+    let uaJobs = @(Model.TotalJobs - Model.AcceptedJobs);
+    let totalJobs = @Model.TotalJobs;
 
+</script>
 
-@if (Model.IsCircle)
+@if (true)
 {
+    <button id="addJob">Add Job</button>
 <div class="status-circle">
 
     <svg>
@@ -24,14 +31,24 @@
                 <feMergeNode in="SourceGraphic"></feMergeNode> <!-- this contains the element that the filter is applied to -->
             </feMerge>
         </filter>
-        <circle cx="50%" cy="50%" r="35%" style="filter: url(#dropshadow); fill: none; stroke-width: 0.4rem; stroke: red; opacity: 0.8"><title>@(Model.TotalJobs - Model.AcceptedJobs) shifts not yet filled</title></circle>
-        <circle cx="50%" cy="50%" r="35%" style="        fill: none;
+
+
+        <circle cx="50%" cy="50%" r="35%" style="filter: url(#dropshadow); fill: none; stroke-width: 0.4rem; stroke: red; stroke-opacity: 0.8"><title>@(Model.TotalJobs - Model.AcceptedJobs) shifts not yet filled</title></circle>
+        <circle id="jobBar" cx="50%" cy="50%" r="35%" style="        fill: none;
         stroke: green;
-        opacity: 0.8;
+        fill-opacity: 0;
+        fill: green;
+        stroke-opacity: 1;
         stroke-width: 0.4rem;
-        stroke-dasharray: calc( @acceptedJobs /100 * 3.141 * 70%);">
+        stroke-dasharray: 0 calc(3.141 * 70%) 100000;
+        transform-origin: center;
+        transform: rotateZ(-90deg);
+    ">
             <title>@Model.AcceptedJobs shifts filled</title>
+
         </circle>
+        <path id="tick" fill="none" stroke="white" stroke-width="3" d="M12 27.2l7.1 7 16.7-16.8" />
+
     </svg>
     <span>@Model.AcceptedJobs/@Model.TotalJobs</span>
 </div>
