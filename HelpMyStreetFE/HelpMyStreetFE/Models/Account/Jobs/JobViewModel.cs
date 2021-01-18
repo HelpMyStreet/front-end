@@ -3,9 +3,9 @@ using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
-    public class JobViewModel
+    public class JobViewModel<T>
     {
-        public JobHeader JobHeader { get; set; }
+        public T JobHeader { get; set; }
         public bool UserHasRequiredCredentials { get; set; }
         public RequestRoles UserRole { get; set; }
         public bool HighlightJob { get; set; }
