@@ -220,7 +220,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             UpdateJobStatusOutcome? outcome = status switch
             {
-                JobStatuses.InProgress => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value),
+                JobStatuses.InProgress => await UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value, cancellationToken),
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
                 JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
@@ -236,10 +236,30 @@ namespace HelpMyStreetFE.Services.Requests
             return outcome;
         }
 
+        private async Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken)
+        {
+            var job = await GetJobSummaryAsync(jobID, cancellationToken);
+
+            //TODO: Replace with actual values
+            var isShiftRequest = false;
+            int requestId = 99999;
+
+            if (isShiftRequest)
+            {
+                return await _requestHelpRepository.PutUpdateShiftStatusToAccepted(requestId, job.SupportActivity, createdByUserId, volunteerUserId);
+            }
+            else
+            {
+                return await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId);
+            }
+        }
+
+
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
         }
+
         public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
