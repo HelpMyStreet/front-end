@@ -13,5 +13,17 @@ namespace HelpMyStreetFE.Helpers
         {
             return JobStatuses.InProgress;
         }
+
+        public static string TimeSpan(this ShiftJob shiftJob)
+        {
+            if (shiftJob.StartDate.Date.Equals(shiftJob.EndDate.Date))
+            {
+                return $"{shiftJob.StartDate:dd/mm/yyyy HH:mm}-{shiftJob.EndDate:HH:mm}";
+            }
+            else
+            {
+                return $"{shiftJob.StartDate:dd/mm/yyyy HH:mm} – {shiftJob.EndDate:dd/mm/yyyy HH:mm}";
+            }
+        }
     }
 }

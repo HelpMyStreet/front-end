@@ -11,7 +11,6 @@
     var jobId = Base64Utils.Base64Encode(Model.Item.JobID);
     var requestId = Base64Utils.Base64Encode(Model.Item.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
-    var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
     var className = "";
 
@@ -35,45 +34,22 @@
 }
 
 <div class="job @className" job-id="@jobId" request-id="@requestId" data-job-status="@Model.Item.JobStatus" data-role="@role">
-    <div class="job__info @(admin ? "admin-view" : "")">
+    <div class="job__info">
         <div class="job__info__col1">
-            @if (admin)
-            {
-            <span class="job__info__col1__status toggle-on-status-change">
-                <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
-            </span>
-            }
 
             <div class="toggle-on-status-change">
                 <div class="job__info__col1__referrer">
-                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = -1 /*Model.JobHeader.ReferringGroupID*/ }" />
+                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
                 </div>
             </div>
 
-            @*@if (Model.Item.JobStatuses.Incomplete())
-                {
-                    <span class="job__info__col1__urgency toggle-on-status-change">
-                        @if (admin)
-                        {
-                            <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
-                            <span class="job__info__col1__urgency__dates due-date" title="@((Model.JobHeader.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.JobHeader.DueDate.ToString("dd/MM/yyyy"))">
-                                Due @Model.JobHeader.DueDate.FriendlyFutureDate()
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
-                                @dueDate
-                            </span>
-                        }
-                    </span>
-                }*@
-
+            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
+                @Model.Item.TimeSpan()
+            </span>
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
-            @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
+            @if (Model.Item.JobStatus == JobStatuses.Open)
             {
             <span class="job__info__col1__next-step dnone toggle-on-status-change">
                 <a href="/account/my-shifts?r=@Base64Utils.Base64Encode(requestId)">Go to My Accepted Requests</a>
@@ -90,78 +66,38 @@
                     @Model.Item.SupportActivity.FriendlyNameShort()
                 </span>
             </span>
-            @*@if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
-                {
-                    <span class="job__info__activity__title @Model.Item.Activity.Class()">
-                        @($"({Model.JobHeader.Reference})")
-                    </span>
-                }*@
-            @*<span class="job__info__activity__location">
-                    @Model.JobHeader.PostCode
-                    @if (!admin && Model.Item.JobStatuses == JobStatuses.Open)
-                    {
-                        <span class="distance">(@Math.Round(Model.JobHeader.DistanceInMiles, 1) miles away)</span>
-                    }
-                </span>*@
+            <span class="job__info__activity__location">
+                Location details here
+            </span>
         </div>
         <div class="job__info__col3 flex-end">
             <div class="job__info__actions">
                 @switch (Model.Item.JobStatus)
                 {
-                    case JobStatuses.New:
-                @if (admin)
-                        {
-                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                    <span class="text">Approve</span>
-                </button>
-                        }
-                        break;
                     case JobStatuses.Open:
-                @if (!admin)
-                        {
-                <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
-                    <span class="text">Accept</span>
-                </button>
-                        }
+                        <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                            <span class="text">Accept</span>
+                        </button>
                         break;
                     case JobStatuses.InProgress:
-                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
-                    <span class="text">Mark as Done</span>
-                </button>
-                <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                    @if (admin)
-                            {
-                    <span class="text">Mark as Open</span>
-                            }
-                            else
-                            {
-                    <span class="text">Can't do</span>
-                            }
-                </button>
+                        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                            <span class="text">Mark as Done</span>
+                        </button>
+                        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                            <span class="text">Can't do</span>
+                        </button>
                         break;
                     case JobStatuses.Done:
-                <div class="feedback-container">
-                    <button class="btn cta--gray-8-border">
-                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
-                    </button>
-                </div>
-                @*if (admin && !(Model.JobHeader.Archive ?? false))
-                    {
-                        <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.Item.VolunteerUserID.ToString())">
-                            <span class="text">Not done</span>
-                        </button>
-                    }*@
+                        <div class="feedback-container">
+                            <button class="btn cta--gray-8-border">
+                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
+                            </button>
+                        </div>
                         break;
                     case JobStatuses.Cancelled:
-                <div class="feedback-container"></div>
+                        <div class="feedback-container"></div>
                         break;
                 }
-                @*@if (admin && Model.Item.JobStatuses != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
-                    {
-                        <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                            <span class="text">Cancel</span>
-                        </button>
-                    }*@
                 <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">
                     <span class="text">Undo</span>
                     <div class="loader dnone">
