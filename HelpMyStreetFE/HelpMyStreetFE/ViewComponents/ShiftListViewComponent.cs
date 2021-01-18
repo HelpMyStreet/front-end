@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobSet.UserOpenShifts => await _requestService.GetOpenShiftsForUserAsync(user, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
                 JobSet.UserMyShifts => await _requestService.GetShiftsForUserAsync(user.ID, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
-                JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
+               // JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value (for shifts): {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 

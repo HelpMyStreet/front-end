@@ -347,20 +347,38 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo)
         {
+            //var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
+            //{
+            //    ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
+            //    DateFrom = dateFrom,
+            //    DateTo = dateTo,
+            //    Groups = new GroupRequest { Groups = await _groupMemberService.GetUserGroups(user.ID) },
+            //    Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
+            //    SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities> { SupportActivities.BackOfficeAdmin, SupportActivities.FrontOfHouseAdmin, SupportActivities.HealthcareAssistant, SupportActivities.Steward } }
+            //};
+            
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {
                 ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
-                Groups = new GroupRequest { Groups = await _groupMemberService.GetUserGroups(user.ID) }
+                Groups = new GroupRequest { Groups = new List<int>() },
+                Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
+                SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
-
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
         }
 
-        public Task<IEnumerable<ShiftJob>> GetGroupShiftRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<ShiftRequest>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+            {
+                ReferringGroupID = groupId,
+                DateFrom = dateFrom,
+                DateTo = dateTo,
+            };
+
+            return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
         }
     }
 }
