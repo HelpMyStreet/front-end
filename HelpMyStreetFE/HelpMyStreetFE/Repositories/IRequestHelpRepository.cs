@@ -21,6 +21,7 @@ namespace HelpMyStreetFE.Repositories
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
         Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request);
         Task<IEnumerable<ShiftJob>> GetOpenShiftJobsByFilter(GetOpenShiftJobsByFilterRequest request);
+        Task<IEnumerable<ShiftRequest>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request);
     }
 }
 

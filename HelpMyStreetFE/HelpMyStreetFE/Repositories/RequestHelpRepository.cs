@@ -184,5 +184,16 @@ namespace HelpMyStreetFE.Repositories
             }
             return null;
         }
+
+        public async Task<IEnumerable<ShiftRequest>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetShiftRequestsByFilterResponse>>($"/api/GetShiftRequestsByFilter", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ShiftRequests;
+            }
+            return null;
+        }
     }
 }
