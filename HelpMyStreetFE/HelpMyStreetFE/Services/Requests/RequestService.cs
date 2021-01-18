@@ -380,6 +380,13 @@ namespace HelpMyStreetFE.Services.Requests
 
             return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
         }
+
+        public async Task<IEnumerable<ShiftRequest>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        {
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
+
+            return await GetGroupShiftRequestsAsync(groupId, dateFrom, dateTo, waitForData, cancellationToken);
+        }
     }
 }
 
