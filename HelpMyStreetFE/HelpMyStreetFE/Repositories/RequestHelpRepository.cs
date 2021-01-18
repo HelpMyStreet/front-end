@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -210,7 +212,9 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.ShiftJobs;
+                var jobs = response.Content.ShiftJobs;
+
+                return jobs.Distinct(new ShiftJob_EqualityComparer());
             }
             return null;
         }
@@ -224,6 +228,21 @@ namespace HelpMyStreetFE.Repositories
                 return response.Content.ShiftRequests;
             }
             return null;
+        }
+
+
+        private class ShiftJob_EqualityComparer : IEqualityComparer<ShiftJob>
+        {
+            public bool Equals(ShiftJob a, ShiftJob b)
+            {
+                return a.RequestID == b.RequestID && a.SupportActivity == b.SupportActivity;
+
+            }
+
+            public int GetHashCode([DisallowNull] ShiftJob obj)
+            {
+                return obj.RequestID.GetHashCode() + obj.SupportActivity.GetHashCode();
+            }
         }
     }
 }
