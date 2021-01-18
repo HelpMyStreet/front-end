@@ -1,0 +1,26 @@
+﻿@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Models;
+@model ListViewModel<JobViewModel<ShiftRequest>>
+
+<div class="profile job-list">
+    @foreach (var j in Model.Items)
+    {
+        @Html.DisplayFor(model => j, "ShiftRequestViewModel")
+    }
+
+    @if (Model.FilteredItems > Model.DisplayedItems)
+    {
+        <p class="text-center">
+            Showing first @Model.DisplayedItems requests@(Model.UnfilteredItems > Model.FilteredItems ? " matching filter" : "").
+            @if (Model.FilteredItems - Model.DisplayedItems > Model.ResultsToShowIncrement)
+            {
+                <a href="#" class="show-more-jobs">Show more</a><span>.</span>
+            }
+            <a href="#" class="show-all-jobs">Show all @Model.FilteredItems</a>.
+        </p>
+    }
+    else if (Model.DisplayedItems == 0 && Model.UnfilteredItems > 0)
+    {
+        <p>No requests to display.  Try adjusting the filters above.</p>
+    }
+</div>
