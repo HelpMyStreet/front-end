@@ -8,16 +8,16 @@
 @model HelpMyStreetFE.Models.Account.Jobs.JobViewModel<JobHeader>
 
 @{
-    var id = Base64Utils.Base64Encode(Model.JobHeader.JobID);
+    var id = Base64Utils.Base64Encode(Model.Item.JobID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
     var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
     var className = "";
     var dueDate = "";
 
-    if (Model.JobHeader.JobStatus.Incomplete())
+    if (Model.Item.JobStatus.Incomplete())
     {
-        dueDate = Model.JobHeader.DueDate.JobDueDate(Model.JobHeader.DueDateType);
+        dueDate = Model.Item.DueDate.JobDueDate(Model.Item.DueDateType);
 
         if (dueDate.Contains("urgent"))
         {
@@ -36,18 +36,18 @@
     }
 }
 
-<div class="job @className" id="@id" data-job-status="@Model.JobHeader.JobStatus" data-role="@role">
+<div class="job @className" id="@id" data-job-status="@Model.Item.JobStatus" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             @if (admin)
             {
                 <span class="job__info__col1__status toggle-on-status-change">
-                    <img class="status-icon" src="~/img/icons/status/@Model.JobHeader.JobStatus.Icon()" alt="@Model.JobHeader.JobStatus.FriendlyName()" />
-                    <span class="job__status">@Model.JobHeader.JobStatus.FriendlyName()</span>
+                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
 
-            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus.Incomplete()))
+            @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
                 <span class="job__info__col1__criticality">
                     <span class="critical-icon">!</span>
@@ -56,23 +56,23 @@
             }
             <div class="toggle-on-status-change">
                 <div class="job__info__col1__referrer">
-                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.JobHeader.ReferringGroupID }" />
+                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
                 </div>
             </div>
 
-            @if (Model.JobHeader.JobStatus.Incomplete())
+            @if (Model.Item.JobStatus.Incomplete())
             {
                 <span class="job__info__col1__urgency toggle-on-status-change">
                     @if (admin)
                     {
-                        <span class="" title="@Model.JobHeader.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.JobHeader.DateRequested.FriendlyPastDate()</span>
-                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.JobHeader.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.JobHeader.DueDate.ToString("dd/MM/yyyy"))">
-                            Due @Model.JobHeader.DueDate.FriendlyFutureDate()
+                        <span class="" title="@Model.Item.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.Item.DateRequested.FriendlyPastDate()</span>
+                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.Item.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.Item.DueDate.ToString("dd/MM/yyyy"))">
+                            Due @Model.Item.DueDate.FriendlyFutureDate()
                         </span>
                     }
                     else
                     {
-                        <span class="job__info__col1__urgency__dates due-date" title="@(Model.JobHeader.DueDateType == DueDateType.On ? Model.JobHeader.DueDate.FriendlyFutureDate() : "")">
+                        <span class="job__info__col1__urgency__dates due-date" title="@(Model.Item.DueDateType == DueDateType.On ? Model.Item.DueDate.FriendlyFutureDate() : "")">
                             @dueDate
                         </span>
                     }
@@ -82,46 +82,46 @@
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
-            @if (!admin && Model.JobHeader.JobStatus == JobStatuses.Open)
+            @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
             {
                 <span class="job__info__col1__next-step dnone toggle-on-status-change">
-                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.JobHeader.JobID)">Go to My Accepted Requests</a>
+                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.Item.JobID)">Go to My Accepted Requests</a>
                 </span>
             }
         </div>
         <div class="job__info__activity">
-            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus.Incomplete()))
+            @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
                 <span class="job__info__activity__criticality">
                     <span class="critical-icon">!</span>
                     <span class="critical">Critical</span>
                 </span>
             }
-            <span class="job__info__activity__title @Model.JobHeader.SupportActivity.Class()">
-                @if (Model.JobHeader.SupportActivity != SupportActivities.Other)
+            <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
+                @if (Model.Item.SupportActivity != SupportActivities.Other)
                 {
-                    <img src="~/img/icons/@Model.JobHeader.SupportActivity.Icon()" />
+                    <img src="~/img/icons/@Model.Item.SupportActivity.Icon()" />
                 }
                 <span>
-                    @Model.JobHeader.SupportActivity.FriendlyNameShort()
+                    @Model.Item.SupportActivity.FriendlyNameShort()
                 </span>
             </span>
-            @if (!string.IsNullOrWhiteSpace(Model.JobHeader.Reference))
+            @if (!string.IsNullOrWhiteSpace(Model.Item.Reference))
             {
-                <span class="job__info__activity__title @Model.JobHeader.SupportActivity.Class()">
-                    @($"({Model.JobHeader.Reference})")
+                <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
+                    @($"({Model.Item.Reference})")
                 </span>
             }
             <span class="job__info__activity__location">
-                @Model.JobHeader.PostCode
-                @if (!admin && Model.JobHeader.JobStatus == JobStatuses.Open)
+                @Model.Item.PostCode
+                @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
                 {
-                    <span class="distance">(@Math.Round(Model.JobHeader.DistanceInMiles, 1) miles away)</span>
+                    <span class="distance">(@Math.Round(Model.Item.DistanceInMiles, 1) miles away)</span>
                 }
             </span>
         </div>
         <div class="job__info__col3 flex-end">
-            @if (Model.JobHeader.IsHealthCritical && (Model.JobHeader.JobStatus.Incomplete()))
+            @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
                 <span class="job__info__col3__criticality">
                     <span class="critical-icon">!</span>
@@ -129,7 +129,7 @@
                 </span>
             }
             <div class="job__info__actions">
-                @switch (Model.JobHeader.JobStatus)
+                @switch (Model.Item.JobStatus)
                 {
                     case JobStatuses.New:
                         @if (admin)
@@ -168,9 +168,9 @@
                                 <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
                             </button>
                         </div>
-                        if (admin && !(Model.JobHeader.Archive ?? false))
+                        if (admin && !(Model.Item.Archive ?? false))
                         {
-                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.ToString())">
+                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.Item.VolunteerUserID.ToString())">
                                 <span class="text">Not done</span>
                             </button>
                         }
@@ -179,13 +179,13 @@
                         <div class="feedback-container"></div>
                         break;
                 }
-                @if (admin && Model.JobHeader.JobStatus != JobStatuses.Cancelled && !(Model.JobHeader.Archive ?? false))
+                @if (admin && Model.Item.JobStatus != JobStatuses.Cancelled && !(Model.Item.Archive ?? false))
                 {
                     <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel</span>
                     </button>
                 }
-                <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.JobHeader.JobStatus" data-target-user="@(Model.JobHeader.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.JobHeader.VolunteerUserID.Value) : "")">
+                <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">
                     <span class="text">Undo</span>
                     <div class="loader dnone">
                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />

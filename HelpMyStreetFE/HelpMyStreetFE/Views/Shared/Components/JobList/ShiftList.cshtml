@@ -1,8 +1,12 @@
 ﻿@using HelpMyStreetFE.Models.Account.Jobs;
-@model ListViewModel<ShiftViewModel>
+@using HelpMyStreet.Utils.Models;
+@model ListViewModel<JobViewModel<ShiftJob>>
 
 <div class="profile job-list">
-    @Html.DisplayFor(x => Model.Items)
+    @foreach (var j in Model.Items)
+    {
+        @Html.DisplayFor(model => j, "ShiftViewModel")
+    }
 
     @if (Model.FilteredItems > Model.DisplayedItems)
     {
