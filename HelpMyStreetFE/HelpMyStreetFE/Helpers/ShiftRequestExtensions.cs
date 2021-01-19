@@ -9,8 +9,9 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class ShiftRequestExtensions
     {
-        public static JobStatuses JobStatus(this ShiftRequest shiftRequest)
+        public static JobStatuses JobStatus(this RequestSummary shiftRequest)
         {
+            // TODO: Request summary status should be some kind of summary of job statuses
             return JobStatuses.InProgress;
         }
 
@@ -26,7 +27,7 @@ namespace HelpMyStreetFE.Helpers
             }
         }
 
-        public static string TimeSpan(this ShiftRequest shiftRequest)
+        public static string TimeSpan(this RequestSummary shiftRequest)
         {
             if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))
             {
