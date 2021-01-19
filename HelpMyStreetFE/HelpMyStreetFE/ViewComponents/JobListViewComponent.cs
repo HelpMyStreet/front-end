@@ -146,7 +146,7 @@ namespace HelpMyStreetFE.ViewComponents
             //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
             jobListViewModel.UnfilteredItems = int.MaxValue;
 
-            //jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
+            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
@@ -196,7 +196,7 @@ namespace HelpMyStreetFE.ViewComponents
             //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
             jobListViewModel.UnfilteredItems = int.MaxValue;
 
-            //jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
+            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
