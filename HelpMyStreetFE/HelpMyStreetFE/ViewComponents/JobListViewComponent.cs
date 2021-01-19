@@ -142,7 +142,11 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
             }
 
-            jobListViewModel.UnfilteredItems = 999;
+            // Some jobs will already be filtered out in the Request Service, by jobFilterRequest.DueAfter and jobFilterRequest.DueBefore
+            //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
+            jobListViewModel.UnfilteredItems = int.MaxValue;
+
+            //jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
@@ -188,7 +192,11 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
             }
 
-            jobListViewModel.UnfilteredItems = 999;
+            // Some jobs will already be filtered out in the Request Service, by jobFilterRequest.DueAfter and jobFilterRequest.DueBefore
+            //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
+            jobListViewModel.UnfilteredItems = int.MaxValue;
+
+            //jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
