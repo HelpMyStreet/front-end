@@ -25,7 +25,7 @@
         </filter>
 
 
-        <circle cx="50%" cy="50%" r="35%" style="filter: url(#dropshadow); fill: none; stroke-width: 0.4rem; stroke: red; stroke-opacity: 0.8"><title>@(Model.TotalJobs - Model.AcceptedJobs) shifts not yet filled</title></circle>
+        <circle class="backBar" cx="50%" cy="50%" r="35%" style="filter: url(#dropshadow);"><title>@(Model.TotalJobs - Model.AcceptedJobs) shifts not yet filled</title></circle>
         <circle class="jobBar" cx="50%" cy="50%" r="35%">
             <title>@Model.AcceptedJobs shifts filled</title>
 

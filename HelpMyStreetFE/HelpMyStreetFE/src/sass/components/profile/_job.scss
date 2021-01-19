@@ -598,23 +598,6 @@
     }
 }
 
-.status-bar {
-    display: flex;
-    flex-direction: column;
-    height: 60%;
-    width: 2rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-
-    svg {
-        width: 100%;
-        box-shadow: inset 0 0 7px 4px #525151
-    }
-
-    span {
-        font-size: 0.9rem;
-    }
-}
 
 .status-circle {
     display: flex;
@@ -632,11 +615,18 @@
         font-size: 0.9rem;
     }
 
+    .backBar {
+        fill: none;
+        stroke-width: 0.4rem;
+        stroke: red;
+        stroke-opacity: 0.8
+    }
+
     .jobBar {
         fill: none;
-        stroke: $green;
+        stroke: green;
         fill-opacity: 0;
-        fill: $green;
+        fill: green;
         stroke-opacity: 1;
         stroke-width: 0.4rem;
         stroke-dasharray: 0 calc(3.141 * 70%) 100000;
