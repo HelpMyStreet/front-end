@@ -5,6 +5,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public int TotalJobs { get; set; }
         public int AcceptedJobs { get; set; }
-        public bool IsCircle { get; set; }
+        public string JobID { get; set; }
     }
 }

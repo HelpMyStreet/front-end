@@ -570,11 +570,11 @@
         font-size: 0.9rem;
     }
 
-    #jobBar {
+    .jobBar {
         fill: none;
-        stroke: green;
+        stroke: $green;
         fill-opacity: 0;
-        fill: green;
+        fill: $green;
         stroke-opacity: 1;
         stroke-width: 0.4rem;
         stroke-dasharray: 0 calc(3.141 * 70%) 100000;
