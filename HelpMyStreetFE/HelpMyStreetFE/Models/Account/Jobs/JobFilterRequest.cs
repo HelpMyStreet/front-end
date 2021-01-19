@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? DueBefore { get; set; }
         public DateTime? RequestedAfter { get; set; }
         public DateTime? RequestedBefore { get; set; }
+        public IEnumerable<Location> Locations { get; set; }
 
         public OrderBy OrderBy { get; set; }
         public int? HighlightJobId { get; set; }
@@ -34,6 +35,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             if (filterSet.SupportActivities != null)
             {
                 SupportActivities = filterSet.SupportActivities.Where(a => a.IsSelected).Select(a => a.Value);
+            }
+            if (filterSet.Locations != null)
+            {
+                Locations = filterSet.Locations.Where(a => a.IsSelected).Select(a => a.Value);
             }
             if (filterSet.MaxDistanceInMiles != null)
             {

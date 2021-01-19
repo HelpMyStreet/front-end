@@ -2,25 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {
         private readonly IOptions<RequestSettings> _requestSettings;
+        private IRequestService _requestService;
+        private IAddressService _addressService;
 
-        public FilterService(IOptions<RequestSettings> requestSettings)
+        public FilterService(IOptions<RequestSettings> requestSettings, IRequestService requestService, IAddressService addressService)
         {
+            _requestService = requestService;
             _requestSettings = requestSettings;
+            _addressService = addressService;
         }
 
-        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
+        public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
         {
             return jobSet switch
             {
@@ -30,11 +36,84 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
                 JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
 
-                JobSet.GroupShifts => new SortAndFilterSet(),
-                JobSet.UserOpenShifts => new SortAndFilterSet(),
-                JobSet.UserMyShifts => new SortAndFilterSet(),
+                JobSet.GroupShifts => await GetGroupShiftsFilterSet(user, jobStatus),
+                JobSet.UserOpenShifts => await GetShiftsFilterSet(user),
+                JobSet.UserMyShifts => await GetShiftsFilterSet(user),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
+        }
+
+        private async Task<SortAndFilterSet> GetShiftsFilterSet(User user)
+        {
+            //this will eventually call some kind of "GetLocations" method to find relevant locations
+            var locations = new List<Location>() { Location.Location1, Location.Location2};
+            var locationDetails = new List<LocationDetails>() { };
+            var supportActivities = new List<SupportActivities>() { SupportActivities.HealthcareAssistant, SupportActivities.BackOfficeAdmin, SupportActivities.FrontOfHouseAdmin, SupportActivities.Steward };
+
+            SortAndFilterSet filterSet = new SortAndFilterSet
+            {
+                Locations = locations.Select(location => new FilterField<Location>() { Value = location, IsSelected = true, Label = locationDetails.Where(ld => ld.ID == (int)location).First().ShortName }), //hopfully this will be an extension like .GetShortName(),
+                SupportActivities = supportActivities.Select(sa => new FilterField<SupportActivities> { Value = sa, IsSelected = true, Label = sa.FriendlyNameShort() }),
+                OrderBy = new List<OrderByField>
+                {
+                    new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest"},
+                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest Away"}
+                },
+                DueInNextXDays = new List<FilterField<int>>
+                    {
+                        new FilterField<int> { Value = 1, Label = "Today" },
+                        new FilterField<int> { Value = 7, Label = "This week" },
+                        new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
+                        new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                    }
+            };
+
+
+            return filterSet;
+        }
+
+        private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(User user, JobStatuses? jobStatus)
+        {
+            var filterSet = await GetShiftsFilterSet(user);
+
+            filterSet.OrderBy = new List<OrderByField>
+                    {
+                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Soonest" },
+                        new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Furthest Away" },
+                    };
+
+            filterSet.JobStatuses = new List<FilterField<JobStatuses>>
+                    {
+                        new FilterField<JobStatuses>() { Value = JobStatuses.New },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Open },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+                    };
+
+
+
+            if (jobStatus != null)
+            {
+                filterSet.JobStatuses.Where(js => js.Value == jobStatus).First().IsSelected = true;
+            }
+            else
+            {
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
+            }
+
+            if (jobStatus == JobStatuses.Cancelled || jobStatus == JobStatuses.Done)
+            {
+                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.DateStatusLastChanged_Descending).First().IsSelected = true;
+            }
+            else
+            {
+                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.RequiringAdminAttention).First().IsSelected = true;
+            }
+
+            return filterSet;
         }
 
         private SortAndFilterSet GetGroupRequestsDefaultSortAndFilterSet(JobStatuses? jobStatus)
@@ -199,6 +278,45 @@ namespace HelpMyStreetFE.Services.Requests
             };
 
             return filterSet;
+        }
+
+        public IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
+        {
+
+
+            var jobsToDisplay = jobs.Where(
+                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
+                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
+                    && (jfr.Locations == null || jfr.Locations.Contains(j.Location))
+                    && (jfr.DueInNextXDays == null || j.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    );
+
+            return jfr.OrderBy switch
+            {
+                 OrderBy.DateDue_Ascending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.StartDate),
+                OrderBy.DateDue_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.StartDate)
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
+        }
+
+        public IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
+        {
+            var jobsToDisplay = jobs.Where(
+                j => (jfr.SupportActivities == null || j.JobSummaries.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
+                    && (jfr.JobStatuses == null || j.JobSummaries.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
+                    && (jfr.Locations == null || j.JobSummaries.Where(js => { var sj = (ShiftJob)js; return jfr.Locations.Contains(sj.Location); }).Count() > 0)
+                    && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)));
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.DateDue_Ascending =>
+                   jobsToDisplay.OrderBy(j => j.Shift.StartDate),
+                OrderBy.DateDue_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
         }
 
         public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
