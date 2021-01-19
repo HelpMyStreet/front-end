@@ -178,7 +178,7 @@ namespace HelpMyStreetFE.Services.Requests
                 VolunteerUserId = userId,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
-                //JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { jobStatus } }
+                JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
             });
             
             
@@ -240,18 +240,12 @@ namespace HelpMyStreetFE.Services.Requests
         {
             var job = await GetJobSummaryAsync(jobID, cancellationToken);
 
-            //TODO: Replace with actual values
-            var isShiftRequest = false;
-            int requestId = 99999;
-
-            if (isShiftRequest)
+            return job.RequestType switch
             {
-                return await _requestHelpRepository.PutUpdateShiftStatusToAccepted(requestId, job.SupportActivity, createdByUserId, volunteerUserId);
-            }
-            else
-            {
-                return await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId);
-            }
+                RequestType.Shift => await _requestHelpRepository.PutUpdateShiftStatusToAccepted(job.RequestID, job.SupportActivity, createdByUserId, volunteerUserId),
+                RequestType.Task  => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId),
+                _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
+            };
         }
 
 
