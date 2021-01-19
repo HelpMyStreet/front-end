@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts.RequestService.Response;
@@ -24,5 +25,10 @@ namespace HelpMyStreetFE.Services.Requests
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs);
         Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken);
+
+        Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<ShiftRequest>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<ShiftRequest>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
     }
 }

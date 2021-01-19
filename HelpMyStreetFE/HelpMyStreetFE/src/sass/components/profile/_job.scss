@@ -12,6 +12,20 @@
   }
 }
 
+@keyframes boing {
+    0% {
+        transform: scale(0.8);
+    }
+
+    80% {
+        transform: scale(1.01);
+    }
+
+    100% {
+        transform: scale(1.0);
+    }
+}
+
 .job {
     @include shadow-xs;
     width: 100%;
@@ -467,6 +481,54 @@
                 span {
                     @include arrow( 8px, 3px, $dark-blue, up, $white);
                     float: right;
+                }
+            }
+        }
+
+        &.offline-details-container {
+            @media screen and (max-width: $med-screen) {
+                display: none;
+            }
+        }
+
+        .offline-details {
+            display: flex;
+
+            dd {
+                display: flex;
+            }
+
+            .link-icons {
+                display: flex;
+                justify-content: center;
+
+                a {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 0.5rem;
+                    width: 9rem;
+
+                    &.sending {
+                        text-decoration: none;
+                        color: $black;
+                    }
+
+                    &.failed {
+                        text-decoration: none;
+                        color: $green;
+                    }
+
+                    &.successful {
+                        text-decoration: none;
+                        color: $orange;
+                    }
+                }
+
+
+
+                img {
+                    padding: 5px;
+                    width: 50px;
                 }
             }
         }

@@ -19,6 +19,10 @@ using HelpMyStreetFE.ViewComponents;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
+using System.Net.Http;
+using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.CommunicationService.Request;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -32,6 +36,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly ICommunicationService _communicationService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
@@ -39,6 +44,8 @@ namespace HelpMyStreetFE.Controllers
         public AccountController(
             ILogger<AccountController> logger,
             IUserService userService,
+            IAddressService addressService,
+            ICommunicationService communicationService,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
             IAuthService authService,
@@ -51,6 +58,7 @@ namespace HelpMyStreetFE.Controllers
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
+            _communicationService = communicationService;
         }
 
         [HttpGet]
@@ -156,12 +164,80 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [Route("my-shifts")]
+        [HttpGet]
+        public async Task<IActionResult> MyShifts(CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            viewModel.CurrentPage = MenuPage.MyShifts;
+
+            return View("Index", viewModel);
+        }
+
+        [Route("open-shifts")]
+        [HttpGet]
+        public async Task<IActionResult> OpenShifts(CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            viewModel.CurrentPage = MenuPage.OpenShifts;
+
+            return View("Index", viewModel);
+        }
+
         [Route("get-awards-component")]
         [HttpGet]
         public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken); 
             return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
+        }
+
+        [Route("print-job-details")]
+        [HttpGet]
+        public async Task<IActionResult> PrintJobDetails(string j, CancellationToken cancellationToken)
+        {
+            var jobID = Base64Utils.Base64DecodeToInt(j);
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
+        }
+
+        [Route("email-job-details")]
+        [HttpGet]
+        [AllowAnonymous]
+        [AuthorizeAttributeNoRedirect]
+        public async Task<IActionResult> EmailJobDetails(string j, CancellationToken cancellationToken)
+        {
+            var jobID = Base64Utils.Base64DecodeToInt(j);
+            
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var commsResponse = await _communicationService.RequestCommunication(null, user.ID, jobID, new CommunicationJob() { CommunicationJobType = CommunicationJobTypes.TaskDetail });
+
+            if (commsResponse)
+            {
+                return Ok();
+            } else
+            {
+                return new StatusCodeResult(500);
+            }
+
         }
 
         [Route("g/{groupKey}")]
@@ -210,6 +286,28 @@ namespace HelpMyStreetFE.Controllers
             {
                 viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
             }
+
+            return View("Index", viewModel);
+        }
+
+        [Route("g/{groupKey}/shifts")]
+        [HttpGet]
+        public async Task<IActionResult> GroupShifts(string groupKey, CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
+
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+            if (!_groupMemberService.GetUserHasRole(viewModel.UserGroups, groupKey, GroupRoles.TaskAdmin))
+            {
+                return Redirect(PROFILE_URL);
+            }
+
+            viewModel.CurrentPage = MenuPage.GroupShifts;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
 
             return View("Index", viewModel);
         }

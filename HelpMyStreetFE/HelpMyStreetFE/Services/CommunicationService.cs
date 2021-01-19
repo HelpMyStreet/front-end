@@ -65,6 +65,36 @@ namespace HelpMyStreetFE.Services
             return false;
         }
 
+        public async Task<bool> RequestCommunication(int? groupID, int? recipientID, int? jobID, CommunicationJob communicationJob)
+        {
+            
+            var communicationRequest = new RequestCommunicationRequest()
+            {
+                GroupID = groupID,
+                JobID = jobID,
+                RecipientUserID = recipientID,
+                CommunicationJob = communicationJob,
+                AdditionalParameters = null
+            };
+
+            string json = JsonConvert.SerializeObject(communicationRequest);
+
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+            using (HttpResponseMessage response = await Client.PostAsync("/api/RequestCommunication", content))
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                var requestCommunicationResponse = JsonConvert.DeserializeObject<ResponseWrapper<RequestCommunicationResponse, CommunicationServiceErrorCode>>(jsonResponse);
+                if (requestCommunicationResponse.HasContent && requestCommunicationResponse.IsSuccessful)
+                {
+                    return requestCommunicationResponse.Content.Success;
+                }
+            }
+
+            return false;
+        }
+
         public async Task<bool> SendInterUserMessage(MessageParticipant from, MessageParticipant to, string message, int? jobId)
         {
             var interUserMessageRequest = new InterUserMessageRequest

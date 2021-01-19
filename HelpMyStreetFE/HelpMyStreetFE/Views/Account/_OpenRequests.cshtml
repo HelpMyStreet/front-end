@@ -12,6 +12,7 @@
     {
         jobFilterViewModel = new JobFilterViewModel()
         {
+            ListViewComponent = "JobList",
             PanelId = "criteria-requests",
             JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
             EmptyJobSetCallback = new Action(() => NoCriteriaJobsToDisplay = true),
@@ -22,6 +23,7 @@
     {
         jobFilterViewModel = new JobFilterViewModel()
         {
+            ListViewComponent = "JobList",
             PanelId = "non-criteria-requests",
             JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
             User = @Model.UserDetails.User,

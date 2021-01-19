@@ -1,14 +1,11 @@
 ﻿@using HelpMyStreetFE.Models.Account.Jobs;
 @using HelpMyStreet.Utils.Models;
-@model ListViewModel<JobViewModel<JobHeader>>
-
-
-<script>let jobCompleteness = [];</script>
+@model ListViewModel<JobViewModel<ShiftJob>>
 
 <div class="profile job-list">
     @foreach (var j in Model.Items)
     {
-        @Html.DisplayFor(model => j, "JobViewModel")
+        @Html.DisplayFor(model => j, "ShiftViewModel")
     }
 
     @if (Model.FilteredItems > Model.DisplayedItems)

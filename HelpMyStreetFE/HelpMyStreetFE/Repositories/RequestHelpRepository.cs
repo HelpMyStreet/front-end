@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -26,6 +28,17 @@ namespace HelpMyStreetFE.Repositories
 		{
 			var response = await PostAsync<BaseRequestHelpResponse<LogRequestResponse>>("/api/PostNewRequestForHelp", request);
          
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            return null;
+        }
+
+        public async Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<LogRequestResponse>>("/api/PostNewShifts", request);
+
             if (response.HasContent && response.IsSuccessful)
             {
                 return response.Content;
@@ -152,6 +165,25 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<UpdateJobStatusOutcome?> PutUpdateShiftStatusToAccepted(int requestId, SupportActivities supportActivity, int createdByUserId, int volunteerUserId)
+        {
+            var request = new PutUpdateShiftStatusToAcceptedRequest()
+            {
+                RequestID = requestId,
+                SupportActivity = new SingleSupportActivityRequest() { SupportActivity = supportActivity},
+                CreatedByUserID = createdByUserId,
+                VolunteerUserID = volunteerUserId
+            };
+
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateShiftStatusToAcceptedResponse>>($"/api/PutUpdateShiftStatusToAccepted", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            return null;
+        }
+
         public async Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetQuestionsByActivtiesResponse>>($"/api/GetQuestionsByActivity", request);
@@ -161,6 +193,56 @@ namespace HelpMyStreetFE.Repositories
                 return response.Content;
             }
             return null;
+        }
+
+        public async Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetUserShiftJobsByFilterResponse>>($"/api/GetUserShiftJobsByFilter", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ShiftJobs;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<ShiftJob>> GetOpenShiftJobsByFilter(GetOpenShiftJobsByFilterRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetOpenShiftJobsByFilterResponse>>($"/api/GetOpenShiftJobsByFilter", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                var jobs = response.Content.ShiftJobs;
+
+                return jobs.Distinct(new ShiftJob_EqualityComparer());
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<ShiftRequest>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetShiftRequestsByFilterResponse>>($"/api/GetShiftRequestsByFilter", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.ShiftRequests;
+            }
+            return null;
+        }
+
+
+        private class ShiftJob_EqualityComparer : IEqualityComparer<ShiftJob>
+        {
+            public bool Equals(ShiftJob a, ShiftJob b)
+            {
+                return a.RequestID == b.RequestID && a.SupportActivity == b.SupportActivity;
+
+            }
+
+            public int GetHashCode([DisallowNull] ShiftJob obj)
+            {
+                return obj.RequestID.GetHashCode() + obj.SupportActivity.GetHashCode();
+            }
         }
     }
 }

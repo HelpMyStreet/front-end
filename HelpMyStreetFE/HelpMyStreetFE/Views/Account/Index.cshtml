@@ -20,8 +20,11 @@
         MenuPage.AcceptedRequests => "My Accepted Requests",
         MenuPage.CompletedRequests => "My Completed Requests",
         MenuPage.OpenRequests => "Open Requests",
+        MenuPage.OpenShifts => "Open Shifts",
+        MenuPage.MyShifts => "My Shifts",
         MenuPage.GroupRequests => $"{Model.CurrentGroup.GroupName} Requests",
         MenuPage.GroupVolunteers => $"{Model.CurrentGroup.GroupName} Volunteers",
+        MenuPage.GroupShifts => $"{Model.CurrentGroup.GroupName} Shifts",
         _ => "My Profile"
     };
 }
@@ -45,8 +48,17 @@
             case MenuPage.CompletedRequests:
                 <partial name="_CompletedRequests" for="@Model" />
                 break;
+            case MenuPage.OpenShifts:
+                <partial name="_OpenShifts" for="@Model" />
+                break;
+            case MenuPage.MyShifts:
+                <partial name="_MyShifts" for="@Model" />
+                break;
             case MenuPage.GroupRequests:
                 <partial name="_GroupRequests" for="@Model" />
+                break;
+            case MenuPage.GroupShifts:
+                <partial name="_GroupShifts" for="@Model" />
                 break;
             case MenuPage.GroupVolunteers:
                 <partial name="_GroupVolunteers" for="@Model" />

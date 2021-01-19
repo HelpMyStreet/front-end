@@ -1,6 +1,7 @@
 ﻿@using HelpMyStreetFE.Models.Awards;
 @using HelpMyStreetFE.Helpers;
-@using HelpMyStreet.Utils.Extensions; 
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
 
 @model AwardsViewModel;
 
@@ -40,7 +41,7 @@ else
                 </div>
             </div>
             <div class="award-description__wrapper">
-                @foreach (var a in Model.CurrentAward.CompletedJobs.OrderByDescending(a => a.Value).Take(8))
+                @foreach (var a in Model.CurrentAward.CompletedJobs.OrderBy(a => a.Key.Equals(SupportActivities.Other)).ThenByDescending(a => a.Value))
                 {
                     <div class="completed-task-summary @a.Key.Class()">
                         <img src="~/img/icons/@a.Key.Icon()" />

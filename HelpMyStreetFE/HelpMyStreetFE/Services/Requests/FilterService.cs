@@ -29,6 +29,10 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
                 JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
                 JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
+
+                JobSet.GroupShifts => new SortAndFilterSet(),
+                JobSet.UserOpenShifts => new SortAndFilterSet(),
+                JobSet.UserMyShifts => new SortAndFilterSet(),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
@@ -112,6 +116,9 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<SupportActivities>() { Value = SupportActivities.HomeworkSupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.DogWalking, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.ColdWeatherArmy, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.Transport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.MealsToYourDoor, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.MealtimeCompanion, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
 
                         // The following are not currently on any request help form

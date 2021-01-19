@@ -5,7 +5,7 @@
 @{
     bool showFilterPanel = true;
 
-    var joblist = await Component.InvokeAsync("JobList", new
+    var joblist = await Component.InvokeAsync(Model.ListViewComponent, new
     {
         JobFilterRequest = Model.JobFilterRequest,
         HideFilterPanelCallback = new Action(() =>

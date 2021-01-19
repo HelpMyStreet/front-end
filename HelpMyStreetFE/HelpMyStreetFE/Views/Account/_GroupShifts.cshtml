@@ -7,8 +7,8 @@
 
 <div class="user-profile profile-panel p-md">
     <header class="profile-panel__header">
-        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Requests</h3>
-        <p>Requests submitted to @Model.CurrentGroup.GroupName</p>
+        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Shifts</h3>
+        <p>Shifts for @Model.CurrentGroup.GroupName</p>
     </header>
 
     <div class="job-filter-panel">
@@ -17,7 +17,7 @@
                jobFilterViewModel = new JobFilterViewModel()
                {
                    ListViewComponent = "JobList",
-                   JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupRequests, GroupId = Model.CurrentGroup.GroupId, ResultsToShow = 50, ResultsToShowIncrement = 50, HighlightJobId = Model.HighlightJobId },
+                   JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.GroupShifts, GroupId = Model.CurrentGroup.GroupId, ResultsToShow = 50, ResultsToShowIncrement = 50, HighlightJobId = Model.HighlightJobId },
                }
            })
     </div>
