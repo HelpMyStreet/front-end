@@ -389,7 +389,7 @@ namespace HelpMyStreetFE.Services.Requests
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
         }
 
-        public async Task<IEnumerable<ShiftRequest>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
             var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
             {
@@ -401,7 +401,7 @@ namespace HelpMyStreetFE.Services.Requests
             return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
         }
 
-        public async Task<IEnumerable<ShiftRequest>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 

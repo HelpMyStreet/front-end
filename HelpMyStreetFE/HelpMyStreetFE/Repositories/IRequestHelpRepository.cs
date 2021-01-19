@@ -21,7 +21,7 @@ namespace HelpMyStreetFE.Repositories
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
         Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request);
         Task<IEnumerable<ShiftJob>> GetOpenShiftJobsByFilter(GetOpenShiftJobsByFilterRequest request);
-        Task<IEnumerable<ShiftRequest>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request);
+        Task<IEnumerable<RequestSummary>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request);
         Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request);
         Task<UpdateJobStatusOutcome?> PutUpdateShiftStatusToAccepted(int requestId, SupportActivities supportActivity, int createdByUserId, int volunteerUserId);
     }

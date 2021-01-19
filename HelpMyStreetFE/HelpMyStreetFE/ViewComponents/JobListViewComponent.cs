@@ -177,11 +177,11 @@ namespace HelpMyStreetFE.ViewComponents
             return jobListViewModel;
         }
 
-        private async Task<ListViewModel<JobViewModel<ShiftRequest>>> InvokeAsync_ShiftRequests(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        private async Task<ListViewModel<JobViewModel<RequestSummary>>> InvokeAsync_ShiftRequests(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            var jobListViewModel = new ListViewModel<JobViewModel<ShiftRequest>>();
+            var jobListViewModel = new ListViewModel<JobViewModel<RequestSummary>>();
 
-            IEnumerable<ShiftRequest> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<RequestSummary> jobs = jobFilterRequest.JobSet switch
             {
                 JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
@@ -206,7 +206,7 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Items = jobs.Select(a => new JobViewModel<ShiftRequest>()
+            jobListViewModel.Items = jobs.Select(a => new JobViewModel<RequestSummary>()
             {
                 Item = a,
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
