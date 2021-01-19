@@ -25,5 +25,17 @@ namespace HelpMyStreetFE.Helpers
                 return $"{shiftJob.StartDate:dd/mm/yyyy HH:mm} – {shiftJob.EndDate:dd/mm/yyyy HH:mm}";
             }
         }
+
+        public static string TimeSpan(this ShiftRequest shiftRequest)
+        {
+            if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))
+            {
+                return $"{shiftRequest.Shift.StartDate:dd/mm/yyyy HH:mm}-{shiftRequest.Shift.EndDate:HH:mm}";
+            }
+            else
+            {
+                return $"{shiftRequest.Shift.StartDate:dd/mm/yyyy HH:mm} – {shiftRequest.Shift.EndDate:dd/mm/yyyy HH:mm}";
+            }
+        }
     }
 }
