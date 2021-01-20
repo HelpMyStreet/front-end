@@ -54,19 +54,11 @@
             <div class="row">
                 <div class="sm12">
                     <h2 class="mb15 mt-lg text-center">Welcome from organisations across Lincolnshire</h2>
-                    <div class="organisation-slider">
-                        @foreach (CommunityVolunteer volunteer in Model.CommunityVolunteers)
-                        {
-                            <div class="card-feedback mr-sm ml-sm mb-sm">
-                                <div class="card-feedback-inner">
-                                    <img src="@volunteer.ImageLocation" />
-                                    <h3>@volunteer.Name</h3>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div>
 
+                    <div>
+                        <div class="outer-container outer-container--darker">
+                            <partial name="_CommunityVolunteersSlider" model="Model" />
+                        </div>
                         <p><strong>About the COVID-19 Vaccination Programme support opportunities</strong></p>
                         <p>
                             There are a number of locations spread across the county that have already been designated to deliver vaccinations. As the centres continue to invite people in for their vaccinations, they will need volunteers to help support the smooth running of the sites and be a friendly, supportive face and voice to the people who attend for their vaccinations.

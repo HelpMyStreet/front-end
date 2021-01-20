@@ -272,49 +272,56 @@ namespace HelpMyStreetFE.Repositories
                     Name = "Lincolnshire CVS",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/LCVS-Master-New.jpg"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Voluntary Centre Services",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/cropped-vcs-logo-new-site.png"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "VET",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/cropped-VET_Logo.png"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Age UK",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Local Resilience Forum",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/lrf-logo.jpg"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "NHS Lincolnshire",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/nhs-lincolnshire.jpg"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg"
                 },
                 new CommunityVolunteer()
                 {
                     Name = "Lincolnshire County Council",
                     Role = "",
                     Location = "",
-                    ImageLocation = "/img/community/vacc/linconshirevolunteers/Lincolnshire-LOGO.png"
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png"
                 },
             };
 
