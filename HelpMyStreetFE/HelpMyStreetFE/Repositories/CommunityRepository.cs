@@ -36,15 +36,7 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
         {
-            if (groupKey == "lincolnshirevolunteers")
-            {
-                CommunityViewModel vm = GetLincolnshireVolunteers();
-                vm.groupKey = groupKey;
-                vm.EncodedGroupId = "test";
-                return vm;
-            }
-            else
-            {
+
                 int groupId = await _groupService.GetGroupIdByKey(groupKey, cancellationToken);
 
                 CommunityViewModel vm = ((Groups)groupId) switch
@@ -67,7 +59,7 @@ namespace HelpMyStreetFE.Repositories
                 vm.groupKey = groupKey;
 
                 return vm;
-            }
+            
         }
 
         public async Task<List<CommunityModel>> GetCommunities()
