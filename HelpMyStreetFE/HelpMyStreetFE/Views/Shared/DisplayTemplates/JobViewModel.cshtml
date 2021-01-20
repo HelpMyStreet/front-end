@@ -10,6 +10,7 @@
 
 @{
     var id = Base64Utils.Base64Encode(Model.Item.JobID);
+    var requestId = Base64Utils.Base64Encode(Model.Item.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
     var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
@@ -38,7 +39,7 @@
 
 }
 
-<div class="job @className" id="@id" data-job-status="@Model.Item.JobStatus" data-role="@role">
+<div class="job @className" id="@id" request-id="@requestId" data-job-status="@Model.Item.JobStatus" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         
 

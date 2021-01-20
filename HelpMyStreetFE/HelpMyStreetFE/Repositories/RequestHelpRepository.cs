@@ -230,9 +230,9 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetRequestDetailsResponse> GetRequestDetailsAsync(GetRequestDetailsRequest request)
+        public async Task<GetRequestDetailsResponse> GetRequestDetailsAsync(int requestId, int userId)
         {
-            var response = await PostAsync<BaseRequestHelpResponse<GetRequestDetailsResponse>>($"/api/GetRequestDetails", request);
+            var response = await GetAsync<BaseRequestHelpResponse<GetRequestDetailsResponse>>($"/api/GetRequestDetails?requestId={requestId}&authorisedByUserId={userId}");
 
             if (response.HasContent && response.IsSuccessful)
             {

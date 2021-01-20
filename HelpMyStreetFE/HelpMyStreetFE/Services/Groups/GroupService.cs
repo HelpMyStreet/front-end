@@ -139,5 +139,16 @@ namespace HelpMyStreetFE.Services.Groups
 
             return instructions;
         }
+
+        public async Task<Dictionary<SupportActivities, Instructions>> GetAllGroupSupportActivityInstructions(int groupId, IEnumerable<SupportActivities> supportActivities, CancellationToken cancellationToken)
+        {
+            var keyValuePairs = await Task.WhenAll(
+                supportActivities.Select(async sa => 
+                    new KeyValuePair<SupportActivities, Instructions>(sa, await GetGroupSupportActivityInstructions(groupId, sa, cancellationToken))
+                )
+            );
+
+            return keyValuePairs.ToDictionary(x => x.Key, x => x.Value);
+        }
     }
 }

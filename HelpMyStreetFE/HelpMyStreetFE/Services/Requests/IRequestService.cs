@@ -19,6 +19,7 @@ namespace HelpMyStreetFE.Services.Requests
         Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken);
         Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken);
+        Task<RequestDetail> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken);
         Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken);

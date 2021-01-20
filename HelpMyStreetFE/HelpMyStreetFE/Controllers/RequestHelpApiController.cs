@@ -81,10 +81,8 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("get-job-details")]
-        public async Task<IActionResult> GetJobDetails(string j, JobSet js, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetJobDetails(string j, string rq, JobSet js, CancellationToken cancellationToken)
         {
-            int jobId = Base64Utils.Base64DecodeToInt(j);
-
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (user == null)
@@ -92,7 +90,16 @@ namespace HelpMyStreetFE.Controllers {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            return ViewComponent("JobDetail", new { jobId, user, jobSet = js });
+            if (string.IsNullOrEmpty(j))
+            {
+                int requestId = Base64Utils.Base64DecodeToInt(rq);
+                return ViewComponent("RequestDetail", new { requestId, user, jobSet = js });
+            }
+            else
+            {
+                int jobId = Base64Utils.Base64DecodeToInt(j);
+                return ViewComponent("JobDetail", new { jobId, user, jobSet = js });
+            }
         }
 
         [AuthorizeAttributeNoRedirect]
