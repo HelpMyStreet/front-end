@@ -40,13 +40,10 @@
         <div class="row">
             <div class="sm12">
                 <dl>
-                    @if (!Model.ToPrint)
+                    @if (jobSummary.RequestType == RequestType.Shift)
                     {
                         <dt>When is the help needed?</dt>
-                    }
-                    @if (jobSummary.DueDateType == DueDateType.SpecificStartAndEndTimes && jobSummary.RequestType == RequestType.Shift)
-                    {
-                        if (true)
+                        if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
                         {
                             <dd>This shift occurs on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@requestSummary.Shift.StartDate.ToString("HH:mm") - @requestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
                         }
@@ -54,36 +51,45 @@
                         {
                             <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
                         }
-                    }
-                    else if (jobSummary.DueDays < 0)
-                    {
-                        if (jobSummary.JobStatus == JobStatuses.Open)
-                        {
-                            <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
-                        }
-                        else
-                        {
-                            <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
-                        }
-                    }
-                    else if (jobSummary.DueDateType == DueDateType.On)
-                    {
-                        <dd>This request should be completed on <strong>@(jobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong>; the person who requested the help would prefer it on this date.</dd>
-                    }
-                    else if (jobSummary.DueDays == 0)
-                    {
-                        if (jobSummary.JobStatus == JobStatuses.Open)
-                        {
-                            <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
-                        }
-                        else
-                        {
-                            <dd>This request is due <strong>today</strong>. Please get in touch with the help recipient urgently to arrange the support they need.</dd>
-                        }
+                        <dt>Where is the shift?</dt>
+                        <dd>Further location details</dd>
                     }
                     else
                     {
-                        <dd>You can complete this request <strong>any time on or before @(jobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong></dd>
+                        @if (!Model.ToPrint)
+                        {
+                            <dt>When is the help needed?</dt>
+                        }
+                        @if (jobSummary.DueDays < 0)
+                        {
+                            if (jobSummary.JobStatus == JobStatuses.Open)
+                            {
+                                <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+                            }
+                            else
+                            {
+                                <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
+                            }
+                        }
+                        else if (jobSummary.DueDateType == DueDateType.On)
+                        {
+                            <dd>This request should be completed on <strong>@(jobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong>; the person who requested the help would prefer it on this date.</dd>
+                        }
+                        else if (jobSummary.DueDays == 0)
+                        {
+                            if (jobSummary.JobStatus == JobStatuses.Open)
+                            {
+                                <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
+                            }
+                            else
+                            {
+                                <dd>This request is due <strong>today</strong>. Please get in touch with the help recipient urgently to arrange the support they need.</dd>
+                            }
+                        }
+                        else
+                        {
+                            <dd>You can complete this request <strong>any time on or before @(jobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong></dd>
+                        }
                     }
                 </dl>
             </div>
@@ -91,7 +97,7 @@
     </div>
 }
 
-@if (jobSummary.JobStatus == JobStatuses.InProgress || jobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
+@if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress || jobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
 {
     @if (!Model.ToPrint)
     {
@@ -223,7 +229,7 @@
         </div>
     }
 
-    @if (jobSummary.JobStatus == JobStatuses.InProgress)
+    @if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress)
     {
         <div class="job__expander">
             <h4>Volunteer Instructions<span></span></h4>
