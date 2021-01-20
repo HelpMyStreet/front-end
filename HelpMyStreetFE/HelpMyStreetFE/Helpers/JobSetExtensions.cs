@@ -45,5 +45,23 @@ namespace HelpMyStreetFE.Helpers
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
+
+        public static bool PrivilegedView(this JobSet jobSet)
+        {
+            return jobSet switch
+            {
+                JobSet.UserOpenRequests_MatchingCriteria => false,
+                JobSet.UserOpenRequests_NotMatchingCriteria => false,
+                JobSet.UserOpenShifts => false,
+
+                JobSet.GroupRequests => true,
+                JobSet.GroupShifts => true,
+                JobSet.UserAcceptedRequests => true,
+                JobSet.UserCompletedRequests => true,
+                JobSet.UserMyShifts => true,
+
+                _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet))
+            };
+        }
     }
 }

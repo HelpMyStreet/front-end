@@ -187,6 +187,13 @@ namespace HelpMyStreetFE.Services.Requests
             //return jobs?.OrderOpenJobsForDisplay();
         }
 
+        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, int userId, CancellationToken cancellationToken)
+        {
+            var requestDetail = await _requestHelpRepository.GetRequestDetailsAsync(new GetRequestDetailsRequest { RequestID = requestId, AuthorisedByUserID = userId });
+
+            return requestDetail.RequestSummary;
+        }
+
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
             return await _requestHelpRepository.GetJobSummaryAsync(jobId);

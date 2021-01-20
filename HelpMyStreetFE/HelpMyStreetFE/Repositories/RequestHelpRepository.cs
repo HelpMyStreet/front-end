@@ -230,6 +230,16 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<GetRequestDetailsResponse> GetRequestDetailsAsync(GetRequestDetailsRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetRequestDetailsResponse>>($"/api/GetRequestDetails", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            return null;
+        }
 
         private class ShiftJob_EqualityComparer : IEqualityComparer<ShiftJob>
         {

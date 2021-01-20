@@ -7,6 +7,7 @@ using System;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -22,12 +23,10 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
         {
-            JobDetail jobDetails = jobSet switch
+            JobDetail jobDetails = jobSet.PrivilegedView() switch
             {
-                JobSet.GroupRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
-                JobSet.UserCompletedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
-                JobSet.UserAcceptedRequests => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
-                _ => new JobDetail() { JobSummary = await _requestService.GetJobSummaryAsync(jobId, cancellationToken) }
+                true => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
+                false => new JobDetail() { JobSummary = await _requestService.GetJobSummaryAsync(jobId, cancellationToken) }
             };
 
             if (jobDetails == null)

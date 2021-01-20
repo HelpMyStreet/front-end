@@ -37,8 +37,21 @@
             <div class="sm12">
                 <dl>
                     @if (!Model.ToPrint)
-                    {<dt>When is the help needed?</dt>}
-                    @if (Model.JobDetail.JobSummary.DueDays < 0)
+                    {
+                        <dt>When is the help needed?</dt>
+                    }
+                    @if (Model.JobDetail.JobSummary.DueDateType == DueDateType.SpecificStartAndEndTimes && Model.JobDetail.JobSummary.RequestType == RequestType.Shift)
+                    {
+                        if (true)
+                        {
+                            <dd>This shift occurs on Monday 01/01/2000 between 08:00 - 10:00.</dd>
+                        }
+                        else
+                        {
+                            <dd>This shift occurs between Monday 01/01/2000 between 22:00 - Tuesday 02/01/2000 07:00.</dd>
+                        }
+                    }
+                    else if (Model.JobDetail.JobSummary.DueDays < 0)
                     {
                         if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
                         {
