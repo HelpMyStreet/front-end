@@ -1,4 +1,4 @@
-@using HelpMyStreetFE.Helpers;
+﻿@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
@@ -10,27 +10,31 @@
     {
         Layout = "_LayoutPrint";
     }
-    var AgeUk = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.WellbeingPackage;
-    var Hlp = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.CommunityConnector;
 
-    var forFaceMask = Model.JobDetail.JobSummary.SupportActivity == SupportActivities.FaceMask;
+    var jobSummary = Model.JobDetail.JobSummary;
+    var requestSummary = Model.JobDetail.RequestSummary;
+
+    var AgeUk = jobSummary.SupportActivity == SupportActivities.WellbeingPackage;
+    var Hlp = jobSummary.SupportActivity == SupportActivities.CommunityConnector;
+
+    var forFaceMask = jobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
 
-    var showSensitiveData = Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin;
-    var questionsToDisplay = Model.JobDetail.JobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
-    var encodedJobID = Base64Utils.Base64Encode(Model.JobDetail.JobSummary.JobID);
+    var showSensitiveData = jobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin;
+    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
 @if (Model.ToPrint)
 {
-    <h4>@Model.JobDetail.JobSummary.SupportActivity.FriendlyNameShort()</h4>
-    @if (!String.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+    <h4>@jobSummary.SupportActivity.FriendlyNameShort()</h4>
+    @if (!String.IsNullOrEmpty(jobSummary.RecipientOrganisation))
     {
-        <h4>Group Name: @Model.JobDetail.JobSummary.RecipientOrganisation </h4>
+        <h4>Group Name: @jobSummary.RecipientOrganisation </h4>
     }
 }
 
-@if (Model.JobDetail.JobSummary.JobStatus.Incomplete())
+@if (jobSummary.JobStatus.Incomplete())
 {
     <div class="job__expander">
         <div class="row">
@@ -40,20 +44,20 @@
                     {
                         <dt>When is the help needed?</dt>
                     }
-                    @if (Model.JobDetail.JobSummary.DueDateType == DueDateType.SpecificStartAndEndTimes && Model.JobDetail.JobSummary.RequestType == RequestType.Shift)
+                    @if (jobSummary.DueDateType == DueDateType.SpecificStartAndEndTimes && jobSummary.RequestType == RequestType.Shift)
                     {
                         if (true)
                         {
-                            <dd>This shift occurs on <strong>@Model.JobDetail.RequestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@Model.JobDetail.RequestSummary.Shift.StartDate.ToString("HH:mm") - @Model.JobDetail.RequestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
+                            <dd>This shift occurs on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@requestSummary.Shift.StartDate.ToString("HH:mm") - @requestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
                         }
                         else
                         {
-                            <dd>This shift occurs between <strong>@Model.JobDetail.RequestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @Model.JobDetail.RequestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
+                            <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
                         }
                     }
-                    else if (Model.JobDetail.JobSummary.DueDays < 0)
+                    else if (jobSummary.DueDays < 0)
                     {
-                        if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
+                        if (jobSummary.JobStatus == JobStatuses.Open)
                         {
                             <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
                         }
@@ -62,13 +66,13 @@
                             <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
                         }
                     }
-                    else if (Model.JobDetail.JobSummary.DueDateType == DueDateType.On)
+                    else if (jobSummary.DueDateType == DueDateType.On)
                     {
-                        <dd>This request should be completed on <strong>@(Model.JobDetail.JobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong>; the person who requested the help would prefer it on this date.</dd>
+                        <dd>This request should be completed on <strong>@(jobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong>; the person who requested the help would prefer it on this date.</dd>
                     }
-                    else if (Model.JobDetail.JobSummary.DueDays == 0)
+                    else if (jobSummary.DueDays == 0)
                     {
-                        if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.Open)
+                        if (jobSummary.JobStatus == JobStatuses.Open)
                         {
                             <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
                         }
@@ -79,7 +83,7 @@
                     }
                     else
                     {
-                        <dd>You can complete this request <strong>any time on or before @(Model.JobDetail.JobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong></dd>
+                        <dd>You can complete this request <strong>any time on or before @(jobSummary.DueDate.ToString("dddd dnn MMMM", true))</strong></dd>
                     }
                 </dl>
             </div>
@@ -87,7 +91,7 @@
     </div>
 }
 
-@if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress || Model.JobDetail.JobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
+@if (jobSummary.JobStatus == JobStatuses.InProgress || jobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
 {
     @if (!Model.ToPrint)
     {
@@ -95,16 +99,16 @@
             <h4>Contact Details<span></span></h4>
             <div class="job__expander__content">
                 <div class="row">
-                    @if (Model.JobDetail.JobSummary.Archive ?? false)
+                    @if (jobSummary.Archive ?? false)
                     {
                         <div class="sm12">
                             <h5>Recipient</h5>
                             <dl>
-                                <dd><i>The @(Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself ? "requestor and" : "" ) recipient contact details for this request have been archived.</i></dd>
-                                @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                                <dd><i>The @(jobSummary.RequestorType != RequestorType.Myself ? "requestor and" : "" ) recipient contact details for this request have been archived.</i></dd>
+                                @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
                                 {
                                     <dt>Organisation</dt>
-                                    <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                                    <dd>@jobSummary.RecipientOrganisation</dd>
                                 }
                             </dl>
                         </div>
@@ -121,15 +125,15 @@
                     }
                     else
                     {
-                        @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
+                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
                         {
                             <div class="sm6">
                                 <h5>Recipient</h5>
                                 <dl>
-                                    @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                                    @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
                                     {
                                         <dt>Organisation</dt>
-                                        <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                                        <dd>@jobSummary.RecipientOrganisation</dd>
                                     }
                                     @if (@Model.JobDetail.Recipient != null)
                                     {
@@ -175,7 +179,7 @@
                                 </dl>
                             </div>
                         }
-                        @if (Model.JobDetail.Requestor != null && Model.JobDetail.JobSummary.RequestorType != RequestorType.Myself)
+                        @if (Model.JobDetail.Requestor != null && jobSummary.RequestorType != RequestorType.Myself)
                         {
                             <div class="sm6">
                                 <h5>Requester</h5>
@@ -219,7 +223,7 @@
         </div>
     }
 
-    @if (Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress)
+    @if (jobSummary.JobStatus == JobStatuses.InProgress)
     {
         <div class="job__expander">
             <h4>Volunteer Instructions<span></span></h4>
@@ -232,7 +236,7 @@
             </div>
         </div>
     }
-    @if (!Model.UserActingAsAdmin && questionsToDisplay.Count() > 0 && Model.JobDetail.JobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
+    @if (!Model.UserActingAsAdmin && questionsToDisplay.Count() > 0 && jobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
     {
         <div class="job__expander offline-details-container">
             <div class="row">
@@ -252,16 +256,16 @@
         </div>
     }
 }
-else if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
+else if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
 {
     <div class="job__expander">
         <div class="row">
             <div class="sm12">
-                @if (!string.IsNullOrEmpty(Model.JobDetail.JobSummary.RecipientOrganisation))
+                @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
                 {
                     <dl>
                         <dt>Organisation</dt>
-                        <dd>@Model.JobDetail.JobSummary.RecipientOrganisation</dd>
+                        <dd>@jobSummary.RecipientOrganisation</dd>
                     </dl>
                 }
 
