@@ -474,7 +474,7 @@
                 margin-right: 0.5rem;
             }
 
-            span {
+            span:last-child {
 
                 @include arrow( 8px, 3px, $dark-blue, down, $white);
                 float: right;
@@ -486,7 +486,7 @@
             }
 
             &.open {
-                span {
+                span:last-child {
                     @include arrow( 8px, 3px, $dark-blue, up, $white);
                     float: right;
                 }
@@ -581,6 +581,16 @@
 
             dd {
                 word-wrap: break-word;
+            }
+        }
+
+        &.job {
+            margin: 1rem 0.5rem;
+            width: auto;
+
+            &:before {
+                border-top: none;
+                margin: 0;
             }
         }
     }
