@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.ViewComponents
             JobDetail jobDetails = jobSet.PrivilegedView() switch
             {
                 true => await _requestService.GetJobDetailsAsync(jobId, user.ID, cancellationToken),
-                false => new JobDetail() { JobSummary = await _requestService.GetJobSummaryAsync(jobId, cancellationToken) }
+                false => await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken)
             };
 
             if (jobDetails == null)

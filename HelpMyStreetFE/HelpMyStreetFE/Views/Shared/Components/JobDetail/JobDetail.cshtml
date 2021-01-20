@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
@@ -44,11 +44,11 @@
                     {
                         if (true)
                         {
-                            <dd>This shift occurs on Monday 01/01/2000 between 08:00 - 10:00.</dd>
+                            <dd>This shift occurs on <strong>@Model.JobDetail.RequestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@Model.JobDetail.RequestSummary.Shift.StartDate.ToString("HH:mm") - @Model.JobDetail.RequestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
                         }
                         else
                         {
-                            <dd>This shift occurs between Monday 01/01/2000 between 22:00 - Tuesday 02/01/2000 07:00.</dd>
+                            <dd>This shift occurs between <strong>@Model.JobDetail.RequestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @Model.JobDetail.RequestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
                         }
                     }
                     else if (Model.JobDetail.JobSummary.DueDays < 0)

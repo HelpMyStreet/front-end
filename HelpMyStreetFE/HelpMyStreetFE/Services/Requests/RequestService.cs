@@ -196,7 +196,18 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            return await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            return (await GetJobAndRequestSummaryAsync(jobId, cancellationToken)).JobSummary;
+        }
+
+        public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
+        {
+            var getJobSummaryResponse = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+
+            return new JobDetail()
+            {
+                RequestSummary = getJobSummaryResponse.RequestSummary,
+                JobSummary = getJobSummaryResponse.JobSummary,
+            };
         }
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
@@ -213,6 +224,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 return new JobDetail()
                 {
+                    RequestSummary = jobDetails.RequestSummary,
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
@@ -281,7 +293,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var job = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            var job = (await _requestHelpRepository.GetJobSummaryAsync(jobId)).JobSummary;
 
             if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
             {

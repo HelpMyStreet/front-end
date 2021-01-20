@@ -46,13 +46,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<JobSummary> GetJobSummaryAsync(int jobId)
+        public async Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.JobSummary;
+                return response.Content;
             }
             return null;
         }
