@@ -4,6 +4,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Models;
 @using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Models.Account.Jobs;
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobViewModel<JobHeader>
 
@@ -34,10 +35,13 @@
     {
         className += " highlight";
     }
+
 }
 
 <div class="job @className" id="@id" data-job-status="@Model.Item.JobStatus" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
+        
+
         <div class="job__info__col1">
             @if (admin)
             {
@@ -46,6 +50,8 @@
                     <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
+
+        <div>
 
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
@@ -88,6 +94,7 @@
                     <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.Item.JobID)">Go to My Accepted Requests</a>
                 </span>
             }
+        </div>
         </div>
         <div class="job__info__activity">
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))

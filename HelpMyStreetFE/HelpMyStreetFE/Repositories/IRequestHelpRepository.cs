@@ -7,10 +7,11 @@ using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Repositories
 {
-	public interface IRequestHelpRepository
-	{
+    public interface IRequestHelpRepository
+    {
         Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
-        Task<JobSummary> GetJobSummaryAsync(int jobId);
+        Task<GetRequestDetailsResponse> GetRequestDetailsAsync(GetRequestDetailsRequest request);
+        Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
         Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToNewAsync(int jobId, int createdByUserId);
