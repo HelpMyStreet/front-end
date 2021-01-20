@@ -52,7 +52,7 @@
             @if (Model.Item.JobStatus == JobStatuses.Open)
             {
             <span class="job__info__col1__next-step dnone toggle-on-status-change">
-                <a href="/account/my-shifts?r=@Base64Utils.Base64Encode(requestId)">Go to My Accepted Requests</a>
+                <a href="/account/my-shifts?rq=@requestId">Go to My Shifts</a>
             </span>
             }
         </div>

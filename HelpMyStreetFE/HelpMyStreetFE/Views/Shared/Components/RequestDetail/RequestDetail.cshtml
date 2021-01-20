@@ -77,7 +77,7 @@
                         </dl>
                     </div>
                 }
-                <div class="sm5 toggle-on-status-change">
+                <div class="sm4 toggle-on-status-change">
                     <h5>Job Status History</h5>
                     <dl>
                         @foreach (var statusChange in jobDetails.JobStatusHistory)
@@ -87,8 +87,9 @@
                         }
                     </dl>
                 </div>
-                <div class="sm3">
-                    <div class="job__info__actions">
+                <div class="space-filler"></div>
+                <div class="sm2">
+                    <div class="job__info__actions mt-sm">
                         @switch (jobDetails.JobSummary.JobStatus)
                         {
                             case JobStatuses.New:
