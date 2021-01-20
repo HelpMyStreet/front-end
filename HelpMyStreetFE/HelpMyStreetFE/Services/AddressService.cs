@@ -17,6 +17,7 @@ using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Utils;
 using GetPostcodesResponse = HelpMyStreetFE.Models.Reponses.GetPostcodesResponse;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Services
 {
@@ -76,6 +77,62 @@ namespace HelpMyStreetFE.Services
                 IncludeAddressDetails = false
             };
             return await _addressRepository.GetPostcodes(request);
+
+        }
+
+        public async Task<ResponseWrapper<GetLocationsByDistanceResponse, AddressServiceErrorCode>> GetLocationsByDistance(int distance, string postcode)
+        {
+            GetLocationsByDistanceRequest getLocationsByDistanceRequest = new GetLocationsByDistanceRequest()
+            {
+                MaxDistance = distance,
+                Postcode = postcode
+            };
+            string json = JsonConvert.SerializeObject(getLocationsByDistanceRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
+            string str = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ResponseWrapper<GetLocationsByDistanceResponse, AddressServiceErrorCode>>(str);
+        }
+
+        public async Task<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>> GetLocationDetails(Location location)
+        {
+            var locationRequest = new LocationRequest();
+            locationRequest.Location = location;
+
+            var getLocationRequest = new GetLocationRequest();
+            getLocationRequest.LocationRequest = locationRequest;
+
+            string json = JsonConvert.SerializeObject(getLocationRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
+            string str = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>>(str);
+        }
+
+        public async Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations)
+        {
+
+            var locationRequests = locations.Select(location => {
+                var lr = new LocationRequest();
+                lr.Location = location;
+                var glr = new GetLocationRequest();
+                glr.LocationRequest = lr;
+                return glr;
+            });
+
+            var responses = new List<LocationDetails>();
+
+            foreach (GetLocationRequest glr in locationRequests) {
+                string json = JsonConvert.SerializeObject(glr);
+                StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
+                string str = await response.Content.ReadAsStringAsync();
+                var outcome = JsonConvert.DeserializeObject<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>>(str);
+                if (outcome.IsSuccessful && outcome.HasContent) {
+                    responses.Add(outcome.Content.LocationDetails);
+                }
+            }
+            return responses;
 
         }
 

@@ -18,11 +18,13 @@ namespace HelpMyStreetFE.Services.Users
         private readonly IUserRepository _userRepository;
         private readonly ILogger<UserService> _logger;
         private readonly IMemDistCache<User> _memDistCache;
+        private readonly IAddressService _addressService;
 
         private const string CACHE_KEY_PREFIX = "user-service-";
 
-        public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache)
+        public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache, IAddressService addressService)
         {
+            _addressService = addressService;
             _userRepository = userRepository;
             _logger = logger;
             _memDistCache = memDistCache;
@@ -161,6 +163,17 @@ namespace HelpMyStreetFE.Services.Users
             {
                 return await _userRepository.GetUser(userId);
             }, $"{CACHE_KEY_PREFIX}-user-{userId}", cancellationToken);
+        }
+
+        public async Task<IEnumerable<Location>> GetLocations(int userId, CancellationToken cancellationToken)
+        {
+            var user = await GetUserAsync(userId, cancellationToken);
+            var locationResponse = await _addressService.GetLocationsByDistance((int)user.SupportRadiusMiles, user.PostalCode);
+            if (locationResponse.IsSuccessful && locationResponse.HasContent)
+            {
+                var content = locationResponse.Content;
+                return content.LocationDistances.Select(ld => ld.Location);
+            }
         }
 
         public async Task<User> GetUserByAuthId(string authId)

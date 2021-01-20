@@ -8,6 +8,7 @@ using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -18,12 +19,14 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IOptions<RequestSettings> _requestSettings;
         private IRequestService _requestService;
         private IAddressService _addressService;
+        private IUserService _userService;
 
-        public FilterService(IOptions<RequestSettings> requestSettings, IRequestService requestService, IAddressService addressService)
+        public FilterService(IOptions<RequestSettings> requestSettings, IRequestService requestService, IAddressService addressService, IUserService userService)
         {
             _requestService = requestService;
             _requestSettings = requestSettings;
             _addressService = addressService;
+            _userService = userService;
         }
 
         public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
@@ -45,19 +48,22 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<SortAndFilterSet> GetShiftsFilterSet(User user)
         {
-            //this will eventually call some kind of "GetLocations" method to find relevant locations
-            var locations = new List<Location>() { Location.Location1, Location.Location2};
-            var locationDetails = new List<LocationDetails>() { };
-            var supportActivities = new List<SupportActivities>() { SupportActivities.HealthcareAssistant, SupportActivities.BackOfficeAdmin, SupportActivities.FrontOfHouseAdmin, SupportActivities.Steward };
-
+            var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
+            var locationDetails = await _addressService.GetLocationDetails(locations);
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                Locations = locations.Select(location => new FilterField<Location>() { Value = location, IsSelected = true, Label = locationDetails.Where(ld => ld.ID == (int)location).First().ShortName }), //hopfully this will be an extension like .GetShortName(),
-                SupportActivities = supportActivities.Select(sa => new FilterField<SupportActivities> { Value = sa, IsSelected = true, Label = sa.FriendlyNameShort() }),
+                Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName }),
+                PartOfDay = new List<FilterField<PartOfDay>>()
+                {
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning Shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Afternoon, Label = "Afternoon Shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Night, Label = "Night Shifts", IsSelected = true}
+                },
                 OrderBy = new List<OrderByField>
                 {
                     new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest"},
-                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest Away"}
+                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest Away"},
+                    
                 },
                 DueInNextXDays = new List<FilterField<int>>
                     {
@@ -65,7 +71,8 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<int> { Value = 7, Label = "This week" },
                         new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
                         new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
-                    }
+                    },
+
             };
 
 
@@ -76,11 +83,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             var filterSet = await GetShiftsFilterSet(user);
 
-            filterSet.OrderBy = new List<OrderByField>
-                    {
-                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Soonest" },
-                        new OrderByField() { Value = OrderBy.DateDue_Descending, Label = "Furthest Away" },
-                    };
+            filterSet.OrderBy.Append(new OrderByField() { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" });
 
             filterSet.JobStatuses = new List<FilterField<JobStatuses>>
                     {
@@ -289,6 +292,7 @@ namespace HelpMyStreetFE.Services.Requests
                     && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
                     && (jfr.Locations == null || jfr.Locations.Contains(j.Location))
                     && (jfr.DueInNextXDays == null || j.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.StartDate)).Count() > 0)
                     );
 
             return jfr.OrderBy switch
@@ -307,7 +311,9 @@ namespace HelpMyStreetFE.Services.Requests
                 j => (jfr.SupportActivities == null || j.JobSummaries.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
                     && (jfr.JobStatuses == null || j.JobSummaries.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.Locations == null || j.JobSummaries.Where(js => { var sj = (ShiftJob)js; return jfr.Locations.Contains(sj.Location); }).Count() > 0)
-                    && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)));
+                    && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0 )
+                    );
 
             return jfr.OrderBy switch
             {
@@ -315,6 +321,8 @@ namespace HelpMyStreetFE.Services.Requests
                    jobsToDisplay.OrderBy(j => j.Shift.StartDate),
                 OrderBy.DateDue_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
+                OrderBy.Emptiest =>
+                    jobsToDisplay.OrderBy(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Done).Count()).ThenBy(j => j.Shift.StartDate),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }

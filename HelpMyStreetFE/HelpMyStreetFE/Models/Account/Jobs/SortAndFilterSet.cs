@@ -11,6 +11,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public IEnumerable<FilterField<int>> DueInNextXDays { get; set; }
         public IEnumerable<FilterField<Location>> Locations { get; set; }
         public IEnumerable<OrderByField> OrderBy { get; set; }
+        public IEnumerable<FilterField<PartOfDay>> PartOfDay { get; set; }
         public int? HighlightJobId { get; set; }
     }
 }
