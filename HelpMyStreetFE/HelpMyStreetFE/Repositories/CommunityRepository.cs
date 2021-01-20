@@ -52,6 +52,7 @@ namespace HelpMyStreetFE.Repositories
                     Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
                     Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
                     Groups.AgeUKNorthWestKent => GetNorthWestKent(),
+                    Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
                     _ => null,
                 };
 
