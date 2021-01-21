@@ -1,0 +1,147 @@
+@using HelpMyStreetFE.Models.Community; 
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = "Lincolnshire Volunteers", PrimaryMobileText = "Lincolnshire Volunteers", ShowSecondaryText = true };
+    ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+       
+        <div class="community-banner">
+            <img src="~/img/community/vacc/lincolnshirevolunteers/banner.png" alt="Lincolnshire Volunteers" />
+        </div>
+        
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm4 align-center justify-center text-center content-page mr-md">
+
+                        <h2 class="mb0 mt-md">Welcome to Lincolnshire Volunteers</h2>
+
+                    <p class='row sm12 text-center justify-center mb-sm'>
+                        Lincolnshire Volunteers has been set up to support our community through times of need. Our ambition is to have our own network of community volunteers who can be called upon when they are needed.
+                        </p><p class="row sm12 text-center justify-center mb-sm ">
+                        Our main priority at the moment is to find volunteers to support our local programme for COVID-19 vaccinations. Find out more about the roles below.
+                    </p>
+                
+
+                    <div class="row sm12 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            To register your interest as a community volunteer and find opportunities near you, sign up today</p>
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+</div>
+                </div>
+
+                <div class="sm6 pl-md card">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Welcome from organisations across Lincolnshire</h2>
+
+                    <div>
+                        <div class="outer-container outer-container--darker">
+                            <partial name="_CommunityVolunteersSlider" model="Model" />
+                        </div>
+                        <p><strong>About the COVID-19 Vaccination Programme support opportunities</strong></p>
+                        <p>
+                            There are a number of locations spread across the county that have already been designated to deliver vaccinations. As the centres continue to invite people in for their vaccinations, they will need volunteers to help support the smooth running of the sites and be a friendly, supportive face and voice to the people who attend for their vaccinations.
+                        </p>
+                        <p>
+                            As a volunteer you will be provided with appropriate PPE (protective wear) and training, and could be undertaking tasks such as:
+                            <ul>
+                                <li>guiding cars into the car park</li>
+                                <li>helping people find their way around the site</li>
+                                <li>screening (questioning) people on arrival to check that they do not have any Covid-19 symptoms</li>
+                                <li>making sure people are ready for their vaccination and know what to do</li>
+                            </ul>
+                        <p>
+                            If you're an approachable and caring person, sign up now to view open shifts and offer your support to help us deliver a fast and effective vaccination programme. Please note, there is no minimum commitment for volunteers, but you will be expected to turn up on time and stay for the whole shift for any shifts you choose to accept.
+                        </p>
+                        <p>
+                            <strong>Our vision for community volunteers</strong>
+
+                        </p>
+                        <p>
+                            Beyond COVID, we would also like to build a maintain a team of volunteers who can support their communities in other ways, for example, to help local communities affected by flooding, or to tackle local issues like loneliness and isolation. There are lots of opportunities to help which we hope to build into this platform over time, so please don't hesitate to register your interest by signing up today.
+                        </p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Useful Links</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div class="sm12 community-useful-links mb-lg">
+                    <p><a href="http://www.lincolnshirecvs.org.uk/">Lincolnshire Community and Voluntary Service</a> - Find out more about the Lincolnshire CVS</p>
+                    <p><a href="https://voluntarycentreservices.org.uk/">Voluntary Centre Services</a> - Find out more about Voluntary Centre Services in West Lincolnshire</p>
+                    <p><a href="https://lincsvoluntarysectorportal.org.uk/">VET</a> - Find out more about the Voluntary Executive Team for Lincolnshire; a partnership of voluntary organisations and statutory stakeholders who have chosen to work together to further opportunities for the voluntary sector in Lincolnshire.</p>
+                    <p><a href="https://www.ageuk.org.uk/lincolnsouthlincolnshire/">Age UK Lincoln & South Lincolnshire</a> - Helping older people in Lincoln and Lincolnshire</p>
+                    <p><a href="https://www.facebook.com/lincsresilientcommunities/">Lincolnshire's Resilience Forum</a> - Facebook page for Lincolnshire's Resilience Forum</p>
+                    <p><a href="https://www.lincolnshire.nhs.uk/">Lincolnshire NHS</a> - Find out more about Lincolnshire NHS</p>
+                    <p><a href="https://www.lincolnshire.gov.uk/">Lincolnshire County Council</a> - Find out more about the county council</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.groupKey })
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
