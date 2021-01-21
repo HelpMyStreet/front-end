@@ -5,7 +5,7 @@
         public string Name { get; set; }
         public string Role { get; set; }
         public string Location { get; set; }
-
+        public bool IsLogo { get; set; } = false;
         public string ImageLocation { get; set; }
     }
 }
