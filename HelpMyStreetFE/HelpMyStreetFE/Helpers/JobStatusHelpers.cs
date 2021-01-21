@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Helpers
 {
@@ -22,5 +24,16 @@ namespace HelpMyStreetFE.Helpers
             };
         }
 
+        public static string SlotJobStatusWithVolunteerName(this JobStatuses jobStatus, UserPersonalDetails userPersonalDetails)
+        {
+            return jobStatus switch
+            {
+                JobStatuses.Open => "Vacant",
+                JobStatuses.Accepted => $"Accepted by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                JobStatuses.InProgress => $"In Progress with {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                JobStatuses.Done => $"Completed by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                _ => jobStatus.FriendlyName()
+            };
+        }
     }
 }
