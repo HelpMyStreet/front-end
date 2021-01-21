@@ -19,11 +19,11 @@ namespace HelpMyStreetFE.Helpers
         {
             if (shiftJob.StartDate.Date.Equals(shiftJob.EndDate.Date))
             {
-                return $"{shiftJob.StartDate:dd/mm/yyyy HH:mm}-{shiftJob.EndDate:HH:mm}";
+                return $"{shiftJob.StartDate:dd/MM/yyyy HH:mm}-{shiftJob.EndDate:HH:mm}";
             }
             else
             {
-                return $"{shiftJob.StartDate:dd/mm/yyyy HH:mm} – {shiftJob.EndDate:dd/mm/yyyy HH:mm}";
+                return $"{shiftJob.StartDate:dd/MM/yyyy HH:mm} – {shiftJob.EndDate:dd/MM/yyyy HH:mm}";
             }
         }
 
@@ -31,11 +31,11 @@ namespace HelpMyStreetFE.Helpers
         {
             if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))
             {
-                return $"{shiftRequest.Shift.StartDate:dd/mm/yyyy HH:mm}-{shiftRequest.Shift.EndDate:HH:mm}";
+                return $"{shiftRequest.Shift.StartDate:dd/MM/yyyy HH:mm}-{shiftRequest.Shift.EndDate:HH:mm}";
             }
             else
             {
-                return $"{shiftRequest.Shift.StartDate:dd/mm/yyyy HH:mm} – {shiftRequest.Shift.EndDate:dd/mm/yyyy HH:mm}";
+                return $"{shiftRequest.Shift.StartDate:dd/MM/yyyy HH:mm} – {shiftRequest.Shift.EndDate:dd/MM/yyyy HH:mm}";
             }
         }
     }
