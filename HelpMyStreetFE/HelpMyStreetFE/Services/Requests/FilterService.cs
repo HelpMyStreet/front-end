@@ -61,9 +61,8 @@ namespace HelpMyStreetFE.Services.Requests
                 },
                 OrderBy = new List<OrderByField>
                 {
-                    new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest"},
-                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest Away"},
-                    
+                    new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true},
+                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest in the future"},
                 },
                 DueInNextXDays = new List<FilterField<int>>
                     {
@@ -92,6 +91,7 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Accepted },
                     };
 
 
@@ -105,15 +105,7 @@ namespace HelpMyStreetFE.Services.Requests
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
-            }
-
-            if (jobStatus == JobStatuses.Cancelled || jobStatus == JobStatuses.Done)
-            {
-                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.DateStatusLastChanged_Descending).First().IsSelected = true;
-            }
-            else
-            {
-                filterSet.OrderBy.Where(ob => ob.Value == OrderBy.RequiringAdminAttention).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Accepted).First().IsSelected = true;
             }
 
             return filterSet;
@@ -300,7 +292,7 @@ namespace HelpMyStreetFE.Services.Requests
                  OrderBy.DateDue_Ascending =>
                     jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.StartDate),
                 OrderBy.DateDue_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.StartDate)
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.StartDate),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }

@@ -395,14 +395,16 @@ namespace HelpMyStreetFE.Services.Requests
             //    Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
             //    SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities> { SupportActivities.BackOfficeAdmin, SupportActivities.FrontOfHouseAdmin, SupportActivities.HealthcareAssistant, SupportActivities.Steward } }
             //};
-            
+
+            var locations = await _userService.GetLocations(user.ID, new CancellationToken());
+
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {
                 ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 Groups = new GroupRequest { Groups = new List<int>() },
-                Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
+                Locations = new LocationsRequest { Locations = locations.ToList() },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);

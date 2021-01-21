@@ -16,27 +16,38 @@ using System.Threading.Tasks;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Utils;
-using GetPostcodesResponse = HelpMyStreetFE.Models.Reponses.GetPostcodesResponse;
 using HelpMyStreet.Utils.Enums;
+using Microsoft.Extensions.Options;
+using HelpMyStreetFE.Models.Email;
+using HelpMyStreet.Cache;
+using System.Threading;
 
 namespace HelpMyStreetFE.Services
 {
     public class AddressService : BaseHttpService, IAddressService
     {
+        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
+        private readonly IMemDistCache<LocationDetails> _memDistCache;
         private readonly IUserRepository _userRepository;
+
+        private const string CACHE_KEY_PREFIX = "address-service-";
 
         public AddressService(
             ILogger<AddressService> logger,
             IConfiguration configuration,
             IAddressRepository addressRepository,
             IUserRepository userRepository,
+            IOptions<RequestSettings> requestSettings,
+            IMemDistCache<LocationDetails> memDistCache,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
             _userRepository = userRepository;
+            _requestSettings = requestSettings;
+            _memDistCache = memDistCache;
         }
 
         public Task<int> GetTotalStreets()
@@ -80,59 +91,46 @@ namespace HelpMyStreetFE.Services
 
         }
 
-        public async Task<ResponseWrapper<GetLocationsByDistanceResponse, AddressServiceErrorCode>> GetLocationsByDistance(int distance, string postcode)
+        public async Task<List<Location>> GetLocationsByDistance(string postcode)
         {
-            GetLocationsByDistanceRequest getLocationsByDistanceRequest = new GetLocationsByDistanceRequest()
+            var locationsResponse = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, postcode);
+
+            if (locationsResponse.IsSuccessful && locationsResponse.HasContent)
             {
-                MaxDistance = distance,
-                Postcode = postcode
-            };
-            string json = JsonConvert.SerializeObject(getLocationsByDistanceRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
-            string str = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ResponseWrapper<GetLocationsByDistanceResponse, AddressServiceErrorCode>>(str);
+                var content = locationsResponse.Content;
+                return content.LocationDistances.Select(ld => ld.Location).ToList();
+            }
+            else
+            {
+                throw new HttpRequestException("Unable to fetch locations by distance");
+            }
         }
 
-        public async Task<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>> GetLocationDetails(Location location)
+        public async Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken)
         {
-            var locationRequest = new LocationRequest();
-            locationRequest.Location = location;
+            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var response = await _addressRepository.GetLocationDetails(location);
+                if (response.HasContent && response.IsSuccessful)
+                {
+                    return response.Content.LocationDetails;
+                }
+                else
+                {
+                    throw new HttpRequestException("Unable to fetch location details");
+                }
+            }, $"{CACHE_KEY_PREFIX}-location-{(int)location}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
 
-            var getLocationRequest = new GetLocationRequest();
-            getLocationRequest.LocationRequest = locationRequest;
 
-            string json = JsonConvert.SerializeObject(getLocationRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
-            string str = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>>(str);
         }
 
         public async Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations)
         {
 
-            var locationRequests = locations.Select(location => {
-                var lr = new LocationRequest();
-                lr.Location = location;
-                var glr = new GetLocationRequest();
-                glr.LocationRequest = lr;
-                return glr;
-            });
+            var responses = locations.Select(location => GetLocationDetails(location, new CancellationToken()));
+            var awaitedResponses = await Task.WhenAll(responses);
 
-            var responses = new List<LocationDetails>();
-
-            foreach (GetLocationRequest glr in locationRequests) {
-                string json = JsonConvert.SerializeObject(glr);
-                StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
-                string str = await response.Content.ReadAsStringAsync();
-                var outcome = JsonConvert.DeserializeObject<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>>(str);
-                if (outcome.IsSuccessful && outcome.HasContent) {
-                    responses.Add(outcome.Content.LocationDetails);
-                }
-            }
-            return responses;
+            return awaitedResponses.ToList();
 
         }
 

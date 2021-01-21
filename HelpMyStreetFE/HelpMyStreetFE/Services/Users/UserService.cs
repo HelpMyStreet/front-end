@@ -168,12 +168,8 @@ namespace HelpMyStreetFE.Services.Users
         public async Task<IEnumerable<Location>> GetLocations(int userId, CancellationToken cancellationToken)
         {
             var user = await GetUserAsync(userId, cancellationToken);
-            var locationResponse = await _addressService.GetLocationsByDistance((int)user.SupportRadiusMiles, user.PostalCode);
-            if (locationResponse.IsSuccessful && locationResponse.HasContent)
-            {
-                var content = locationResponse.Content;
-                return content.LocationDistances.Select(ld => ld.Location);
-            }
+            return await _addressService.GetLocationsByDistance(user.PostalCode);
+            
         }
 
         public async Task<User> GetUserByAuthId(string authId)

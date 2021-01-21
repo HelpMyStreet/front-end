@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.ViewComponents
                     jobStatus = job?.JobStatus;
                 }
 
-                jobFilterViewModel.FilterSet = _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobStatus, jobFilterViewModel.User);
+                jobFilterViewModel.FilterSet = await _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobStatus, jobFilterViewModel.User);
             }
 
             jobFilterViewModel.JobFilterRequest.UpdateFromFilterSet(jobFilterViewModel.FilterSet);
