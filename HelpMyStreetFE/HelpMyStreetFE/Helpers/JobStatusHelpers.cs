@@ -35,5 +35,19 @@ namespace HelpMyStreetFE.Helpers
                 _ => jobStatus.FriendlyName()
             };
         }
+
+        public static int UsualOrderOfProgression(this JobStatuses jobStatus)
+        {
+            return jobStatus switch
+            {
+                JobStatuses.New => 10,
+                JobStatuses.Open => 20,
+                JobStatuses.Accepted => 30,
+                JobStatuses.InProgress => 40,
+                JobStatuses.Done => 50,
+                JobStatuses.Cancelled => 100,
+                _ => throw new ArgumentException(message: $"Unexpected JobStatuses value: {jobStatus}", paramName: nameof(jobStatus))
+            };
+        }
     }
 }

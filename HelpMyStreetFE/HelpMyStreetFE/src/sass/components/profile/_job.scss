@@ -627,10 +627,38 @@
     svg {
         width: 3rem;
         height: 3rem;
+        transform: rotate(-90deg);
     }
 
     span {
         font-size: 0.9rem;
+    }
+
+    circle {
+        fill: none;
+        stroke-width: 0.4rem;
+
+        &.new {
+            stroke: #C00000;
+            fill: #C00000;
+        }
+
+        &.Open {
+            stroke: #A0A0A0;
+        }
+
+        &.Accepted {
+            stroke: $green;
+        }
+
+        &.InProgress {
+            stroke: green;
+        }
+
+        &.Done {
+            fill: black;
+            stroke: blue;
+        }
     }
 
     .backBar {

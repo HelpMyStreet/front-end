@@ -33,12 +33,12 @@
     }
 }
 
-<div class="job @className" id="" request-id="@requestId" data-job-status="@Model.Item.JobStatus()" data-role="@role">
+<div class="job @className" id="" request-id="@requestId" data-job-status="" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
-                <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus().Icon()" alt="@Model.Item.JobStatus().FriendlyName()" />
-                <span class="job__status">@Model.Item.JobStatus().FriendlyName()</span>
+
+                <partial name="_RequestStatus" model="@Model.Item.JobStatuses()" />
             </span>
 
             <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">
@@ -69,26 +69,26 @@
         </div>
         <div class="job__info__col3 flex-end">
             <div class="job__info__actions">
-                @switch (Model.Item.JobStatus())
-                {
-                    case JobStatuses.New:
-                        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                            <span class="text">Approve</span>
-                        </button>
-                        break;
-                }
-                @if (Model.Item.JobStatus() != JobStatuses.Cancelled)// && !(Model.JobHeader.Archive ?? false))
-                    {
-                        <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                            <span class="text">Cancel shift</span>
-                        </button>
-                    }
-                <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus()">
-                    <span class="text">Undo</span>
-                    <div class="loader dnone">
-                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
-                    </div>
+                @*@switch (Model.Item.JobStatus())
+        {
+            case JobStatuses.New:
+                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                    <span class="text">Approve</span>
                 </button>
+                break;
+        }
+        @if (Model.Item.JobStatus() != JobStatuses.Cancelled)// && !(Model.JobHeader.Archive ?? false))
+            {
+                <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                    <span class="text">Cancel shift</span>
+                </button>
+            }
+        <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus()">
+            <span class="text">Undo</span>
+            <div class="loader dnone">
+                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
+            </div>
+        </button>*@
             </div>
             <div class="job__info__footer">
                 <a href="#" class="open">View more info <span></span></a>

@@ -9,12 +9,6 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class ShiftRequestExtensions
     {
-        public static JobStatuses JobStatus(this RequestSummary shiftRequest)
-        {
-            // TODO: Request summary status should be some kind of summary of job statuses
-            return JobStatuses.InProgress;
-        }
-
         public static string TimeSpan(this ShiftJob shiftJob)
         {
             if (shiftJob.StartDate.Date.Equals(shiftJob.EndDate.Date))
@@ -37,6 +31,13 @@ namespace HelpMyStreetFE.Helpers
             {
                 return $"{shiftRequest.Shift.StartDate:dd/MM/yyyy HH:mm} – {shiftRequest.Shift.EndDate:dd/MM/yyyy HH:mm}";
             }
+        }
+
+        public static IEnumerable<KeyValuePair<JobStatuses, int>> JobStatuses(this RequestSummary shiftRequest)
+        {
+            return shiftRequest.JobSummaries.GroupBy(j => j.JobStatus)
+                .Select(g => new KeyValuePair<JobStatuses, int>(g.Key, g.Count()))
+                .OrderBy(g => g.Key.UsualOrderOfProgression());
         }
     }
 }
