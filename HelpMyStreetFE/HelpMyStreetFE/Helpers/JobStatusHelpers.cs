@@ -14,6 +14,7 @@ namespace HelpMyStreetFE.Helpers
             {
                 JobStatuses.New => "new.svg",
                 JobStatuses.Open => "open.svg",
+                JobStatuses.Accepted => "accepted.svg",
                 JobStatuses.InProgress => "inprogress.svg",
                 JobStatuses.Done => "complete.svg",
                 JobStatuses.Cancelled => "cancelled.svg",

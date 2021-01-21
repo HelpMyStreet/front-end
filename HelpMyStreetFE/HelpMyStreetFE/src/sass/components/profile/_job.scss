@@ -466,7 +466,15 @@
             padding: 10px 30px 10px 0.5rem;
             margin: 0;
 
-            span {
+            img.status-icon,
+            img.activity-icon {
+                width: 2rem;
+                max-height: 1.9rem;
+                vertical-align: middle;
+                margin-right: 0.5rem;
+            }
+
+            span:last-child {
 
                 @include arrow( 8px, 3px, $dark-blue, down, $white);
                 float: right;
@@ -478,7 +486,7 @@
             }
 
             &.open {
-                span {
+                span:last-child {
                     @include arrow( 8px, 3px, $dark-blue, up, $white);
                     float: right;
                 }
@@ -575,6 +583,16 @@
                 word-wrap: break-word;
             }
         }
+
+        &.job {
+            margin: 1rem 0.5rem;
+            width: auto;
+
+            &:before {
+                border-top: none;
+                margin: 0;
+            }
+        }
     }
 
     &.open {
@@ -597,3 +615,42 @@
         }
     }
 }
+
+
+.status-circle {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    align-items: center;
+
+    svg {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    span {
+        font-size: 0.9rem;
+    }
+
+    .backBar {
+        fill: none;
+        stroke-width: 0.4rem;
+        stroke: red;
+        stroke-opacity: 0.8
+    }
+
+    .jobBar {
+        fill: none;
+        stroke: green;
+        fill-opacity: 0;
+        fill: green;
+        stroke-opacity: 1;
+        stroke-width: 0.4rem;
+        stroke-dasharray: 0 calc(3.141 * 70%) 100000;
+        transform-origin: center;
+        transform: rotateZ(-90deg);
+    }
+}
+
+

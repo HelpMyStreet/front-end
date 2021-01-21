@@ -187,9 +187,32 @@ namespace HelpMyStreetFE.Services.Requests
             //return jobs?.OrderOpenJobsForDisplay();
         }
 
+        public async Task<RequestDetail> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
+        {
+            var requestDetail = await _requestHelpRepository.GetRequestDetailsAsync(requestId, userId);
+
+            return new RequestDetail
+            {
+                RequestSummary = requestDetail.RequestSummary,
+                Recipient = requestDetail.Recipient,
+                Requestor = requestDetail.Requestor,
+            };
+        }
+
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            return await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            return (await GetJobAndRequestSummaryAsync(jobId, cancellationToken)).JobSummary;
+        }
+
+        public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
+        {
+            var getJobSummaryResponse = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+
+            return new JobDetail()
+            {
+                RequestSummary = getJobSummaryResponse.RequestSummary,
+                JobSummary = getJobSummaryResponse.JobSummary,
+            };
         }
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
@@ -206,6 +229,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 return new JobDetail()
                 {
+                    RequestSummary = jobDetails.RequestSummary,
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
@@ -220,6 +244,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             UpdateJobStatusOutcome? outcome = status switch
             {
+                JobStatuses.Accepted => await _requestHelpRepository.UpdateJobStatusToAcceptedAsync(jobID, createdByUserId, volunteerUserId.Value),
                 JobStatuses.InProgress => await UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value, cancellationToken),
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
@@ -243,7 +268,7 @@ namespace HelpMyStreetFE.Services.Requests
             return job.RequestType switch
             {
                 RequestType.Shift => await _requestHelpRepository.PutUpdateShiftStatusToAccepted(job.RequestID, job.SupportActivity, createdByUserId, volunteerUserId),
-                RequestType.Task  => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId),
+                RequestType.Task => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId),
                 _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
             };
         }
@@ -274,7 +299,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var job = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            var job = (await _requestHelpRepository.GetJobSummaryAsync(jobId)).JobSummary;
 
             if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
             {

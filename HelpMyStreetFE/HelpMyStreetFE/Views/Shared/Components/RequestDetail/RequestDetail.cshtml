@@ -1,0 +1,208 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+
+@model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
+
+@{
+    var requestSummary = Model.RequestDetail.RequestSummary;
+    var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
+    var role = Base64Utils.Base64Encode((int)RequestRoles.GroupAdmin);
+}
+
+@if (requestSummary.RequestType == RequestType.Shift)
+{
+    <div class="job__expander">
+        <div class="row">
+            <div class="sm12">
+                <dl>
+                    @if (requestSummary.RequestType == RequestType.Shift)
+                    {
+                        <dt>When is the help needed?</dt>
+                        if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
+                        {
+                            <dd>This shift occurs on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@requestSummary.Shift.StartDate.ToString("HH:mm") - @requestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
+                        }
+                        else
+                        {
+                            <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
+                        }
+                        <dt>Where is the shift?</dt>
+                        <dd>Further location details</dd>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="job__expander">
+    <h4>Slots</h4>
+</div>
+
+@foreach (var jobDetails in Model.JobDetails)
+{
+    var id = Base64Utils.Base64Encode(jobDetails.JobSummary.JobID);
+    var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
+
+    <div class="job__expander job" id="@id" request-id="@requestId"  data-role="@role">
+        <h4>
+            <img class="status-icon" src="~/img/icons/status/@jobDetails.JobSummary.JobStatus.Icon()" alt="@jobDetails.JobSummary.JobStatus.FriendlyName()" title="@jobDetails.JobSummary.JobStatus.FriendlyName()" />
+            @if (jobDetails.JobSummary.SupportActivity != SupportActivities.Other)
+            {
+                <img class="activity-icon" src="~/img/icons/@jobDetails.JobSummary.SupportActivity.Icon()" alt="@jobDetails.JobSummary.SupportActivity.FriendlyNameShort()" title="@jobDetails.JobSummary.SupportActivity.FriendlyNameShort()" />
+            }
+            <span class="toggle-on-status-change">@volunteerDetails?.FirstName @volunteerDetails?.LastName</span>
+            <span class="job__status__new dnone toggle-on-status-change"></span>
+            <span></span>
+        </h4>
+        <div class="job__expander__content">
+            <div class="row">
+                @if (volunteerDetails != null)
+                {
+                    <div class="sm5 toggle-on-status-change">
+                        <h5>Volunteer</h5>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
+                            <dt>Email</dt>
+                            <dd>@volunteerDetails.EmailAddress</dd>
+                            <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                            <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                            <dt>Address</dt>
+                            <dd>
+                                @volunteerDetails.LocationSummary()
+                            </dd>
+                        </dl>
+                    </div>
+                }
+                <div class="sm4 toggle-on-status-change">
+                    <h5>Job Status History</h5>
+                    <dl>
+                        @foreach (var statusChange in jobDetails.JobStatusHistory)
+                        {
+                            <dt>@statusChange.JobStatus.FriendlyName()</dt>
+                            <dd>@statusChange.StatusDate.ToString("dd/MM/yyyy hh:mm tt").ToLower()</dd>
+                        }
+                    </dl>
+                </div>
+                <div class="space-filler"></div>
+                <div class="sm2">
+                    <div class="job__info__actions mt-sm">
+                        @switch (jobDetails.JobSummary.JobStatus)
+                        {
+                            case JobStatuses.New:
+                                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                                    <span class="text">Approve</span>
+                                </button>
+                                break;
+                            case JobStatuses.Open:
+                                break;
+                            case JobStatuses.Accepted:
+                                <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                                    <span class="text">Mark as Open</span>
+                                </button>
+                                break;
+                            case JobStatuses.InProgress:
+                                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                                    <span class="text">Mark as Done</span>
+                                </button>
+                                <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                                    <span class="text">Mark as Open</span>
+                                </button>
+                                break;
+                            case JobStatuses.Done:
+                                <div class="feedback-container">
+                                    <button class="btn cta--gray-8-border">
+                                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
+                                    </button>
+                                </div>
+                                if (!(jobDetails.JobSummary.Archive ?? false))
+                                {
+                                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(jobDetails.JobSummary.VolunteerUserID.ToString())">
+                                        <span class="text">Not done</span>
+                                    </button>
+                                }
+                                break;
+                            case JobStatuses.Cancelled:
+                                <div class="feedback-container"></div>
+                                break;
+                        }
+                        @if (jobDetails.JobSummary.JobStatus != JobStatuses.Cancelled && !(jobDetails.JobSummary.Archive ?? false))
+                        {
+                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                                <span class="text">Cancel</span>
+                            </button>
+                        }
+                        <button class="btn cta--green-border undo-request dnone" data-target-state="@jobDetails.JobSummary.JobStatus" data-target-user="@(jobDetails.JobSummary.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(jobDetails.JobSummary.VolunteerUserID.Value) : "")">
+                            <span class="text">Undo</span>
+                            <div class="loader dnone">
+                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="job__expander">
+    <h4>Volunteer Instructions<span></span></h4>
+    <div class="job__expander__content">
+        @foreach (var activity in Model.GroupSupportActivityInstructions)
+        {
+            <div class="row">
+                <h5>@activity.Key.FriendlyNameShort()</h5>
+                <div class="sm12 volunteer-instructions">
+                    <partial name="_GroupSupportActivityInstructions" model="activity.Value" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="job__expander">
+    <h4>Request Contact Details<span></span></h4>
+    <div class="job__expander__content">
+        <div class="row">
+            @if (Model.RequestDetail.Recipient != null)
+            {
+                <div class="sm6">
+                    <h5>Recipient</h5>
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@Model.RequestDetail.Recipient.FirstName @Model.RequestDetail.Recipient.LastName</dd>
+                        <dt>Email</dt>
+                        <dd>@Model.RequestDetail.Recipient.EmailAddress</dd>
+                        <dt>@(Model.RequestDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                        <dd>@string.Join(" / ", Model.RequestDetail.Recipient.PhoneNumbers())</dd>
+                        <dt>Address</dt>
+                        <dd>
+                            @Html.DisplayFor(x => Model.RequestDetail.Recipient.Address, new { MaskAddress = false })
+                        </dd>
+                    </dl>
+                </div>
+            }
+            @if (Model.RequestDetail.Requestor != null)
+            {
+                <div class="sm6">
+                    <h5>Requester</h5>
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@Model.RequestDetail.Requestor.FirstName @Model.RequestDetail.Requestor.LastName</dd>
+                        <dt>Email</dt>
+                        <dd>@Model.RequestDetail.Requestor.EmailAddress</dd>
+                        <dt>@(Model.RequestDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                        <dd>@string.Join(" / ", Model.RequestDetail.Requestor.PhoneNumbers())</dd>
+                        <dt>Address</dt>
+                        <dd>
+                            @Model.RequestDetail.Requestor.Address.Postcode
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+</div>

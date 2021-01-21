@@ -33,7 +33,7 @@
     }
 }
 
-<div class="job @className" request-id="@requestId" data-job-status="@Model.Item.JobStatus()" data-role="@role">
+<div class="job @className" id="" request-id="@requestId" data-job-status="@Model.Item.JobStatus()" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
@@ -80,7 +80,7 @@
                 @if (Model.Item.JobStatus() != JobStatuses.Cancelled)// && !(Model.JobHeader.Archive ?? false))
                     {
                         <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                            <span class="text">Cancel</span>
+                            <span class="text">Cancel shift</span>
                         </button>
                     }
                 <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus()">

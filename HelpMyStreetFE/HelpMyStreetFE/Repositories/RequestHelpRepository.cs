@@ -46,13 +46,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<JobSummary> GetJobSummaryAsync(int jobId)
+        public async Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.JobSummary;
+                return response.Content;
             }
             return null;
         }
@@ -147,6 +147,24 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToAcceptedAsync(int jobId, int createdByUserId, int volunteerUserId)
+        {
+            //var request = new PutUpdateJobStatusToAcceptedRequest()
+            //{
+            //    JobID = jobId,
+            //    CreatedByUserID = createdByUserId,
+            //    VolunteerUserID = volunteerUserId
+            //};
+
+            //var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToAcceptedResponse>>($"/api/PutUpdateJobStatusToAccepted", request);
+
+            //if (response.HasContent && response.IsSuccessful)
+            //{
+            //    return response.Content.Outcome;
+            //}
+            return null;
+        }
+
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId)
         {
             var request = new PutUpdateJobStatusToInProgressRequest()
@@ -230,6 +248,16 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<GetRequestDetailsResponse> GetRequestDetailsAsync(int requestId, int userId)
+        {
+            var response = await GetAsync<BaseRequestHelpResponse<GetRequestDetailsResponse>>($"/api/GetRequestDetails?requestId={requestId}&authorisedByUserId={userId}");
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            return null;
+        }
 
         private class ShiftJob_EqualityComparer : IEqualityComparer<ShiftJob>
         {

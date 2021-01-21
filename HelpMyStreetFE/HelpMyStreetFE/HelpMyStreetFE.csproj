@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.582" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.592" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.592" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.592" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -69,5 +69,7 @@
     <Folder Include="wwwroot\img\community\ageUK\notts\" />
     <Folder Include="wwwroot\img\community\ageUK\notts\balderton\" />
     <Folder Include="wwwroot\img\community\ageUK\notts\balderton\carousel1\" />
+    <Folder Include="wwwroot\img\community\vacc\" />
+    <Folder Include="wwwroot\img\community\vacc\lincolnshirevolunteers\" />
   </ItemGroup>
 </Project>
