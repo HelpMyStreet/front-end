@@ -23,6 +23,7 @@ using System.Net.Http;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreetFE.Services;
+using System.Text;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -36,6 +37,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IRequestService _requestService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly IGroupService _groupService;
         private readonly ICommunicationService _communicationService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
@@ -45,6 +47,7 @@ namespace HelpMyStreetFE.Controllers
             ILogger<AccountController> logger,
             IUserService userService,
             IAddressService addressService,
+            IGroupService groupService,
             ICommunicationService communicationService,
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
@@ -57,6 +60,7 @@ namespace HelpMyStreetFE.Controllers
             _yotiOptions = yotiOptions;
             _requestService = requestService;
             _authService = authService;
+            _groupService = groupService;
             _groupMemberService = groupMemberService;
             _communicationService = communicationService;
         }
@@ -212,6 +216,42 @@ namespace HelpMyStreetFE.Controllers
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
+        }
+
+        [Route("get-shift-calendar")]
+        [HttpGet]
+        public async Task<IActionResult> GetShiftCalendar(string j, CancellationToken cancellationToken)
+        {
+            long jobID = 0;
+            Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+            var location = shiftDetails.RequestSummary.Shift.Location;
+            //LocationDetails locationDetails = await _addressService.GetLocationDetails(location);
+            LocationDetails locationDetails = new LocationDetails();
+            var startDate = shiftDetails.RequestSummary.Shift.StartDate.ToUniversalTime()
+                         .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
+            var stopDate = shiftDetails.RequestSummary.Shift.EndDate.ToUniversalTime()
+                         .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
+            var group = await _groupService.GetGroupById(shiftDetails.RequestSummary.ReferringGroupID, cancellationToken);
+
+            var icalContent = $"BEGIN:VCALENDAR\n" +
+                $"VERSION:2.0\n" +
+                $"PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n" +
+                $"BEGIN:VEVENT\n" +
+                $"UID:{j}\n" +
+                $"DTSTAMP:{startDate}\n" +
+                $"ORGANIZER;CN={group.GroupName}:MAILTO:groups@helpmystreet.org\n" +
+                $"DTSTART:{startDate}\n" +
+                $"DTEND:{stopDate}\n" +
+                $"SUMMARY:Vaccination Volunteer Shift\n" +
+                $"GEO:{locationDetails.Latitude};{locationDetails.Longitude}\n" +
+                $"END:VEVENT\n" +
+                $"END:VCALENDAR";
+
+            var calBytes = Encoding.ASCII.GetBytes(icalContent);
+
+            return File(fileContents: calBytes, fileDownloadName: "shift-event.ics", contentType: "text/calendar");
         }
 
         [Route("email-job-details")]
