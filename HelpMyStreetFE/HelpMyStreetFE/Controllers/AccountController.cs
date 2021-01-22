@@ -239,7 +239,7 @@ namespace HelpMyStreetFE.Controllers
                 $"VERSION:2.0\n" +
                 $"PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n" +
                 $"BEGIN:VEVENT\n" +
-                $"UID:{j}\n" +
+                $"UID:hms-vacc-{group.GroupId}-{j}\n" +
                 $"DTSTAMP:{startDate}\n" +
                 $"ORGANIZER;CN={group.GroupName}:MAILTO:groups@helpmystreet.org\n" +
                 $"DTSTART:{startDate}\n" +
@@ -248,7 +248,6 @@ namespace HelpMyStreetFE.Controllers
                 $"GEO:{locationDetails.Latitude};{locationDetails.Longitude}\n" +
                 $"END:VEVENT\n" +
                 $"END:VCALENDAR";
-
             var calBytes = Encoding.ASCII.GetBytes(icalContent);
 
             return File(fileContents: calBytes, fileDownloadName: "shift-event.ics", contentType: "text/calendar");
