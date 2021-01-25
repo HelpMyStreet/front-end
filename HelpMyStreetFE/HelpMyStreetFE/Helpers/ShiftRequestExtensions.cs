@@ -34,11 +34,22 @@ namespace HelpMyStreetFE.Helpers
             }
         }
 
-        public static IEnumerable<KeyValuePair<JobStatuses, int>> JobStatuses(this RequestSummary shiftRequest)
+        public static Dictionary<JobStatuses, int> JobStatusDictionary(this RequestSummary shiftRequest)
         {
             return shiftRequest.JobSummaries.GroupBy(j => j.JobStatus)
                 .Select(g => new KeyValuePair<JobStatuses, int>(g.Key, g.Count()))
-                .OrderBy(g => g.Key.UsualOrderOfProgression());
+                .Where(s => !s.Key.Equals(JobStatuses.Cancelled))
+                .ToDictionary(a => a.Key, a => a.Value);
+        }
+
+        public static JobStatuses? SingleJobStatus(this RequestSummary shiftRequest)
+        {
+            return shiftRequest.JobStatusDictionary().Count() switch
+            {
+                0 => JobStatuses.Cancelled,
+                1 => shiftRequest.JobStatusDictionary().First().Key,
+                _ => null
+            };
         }
     }
 

@@ -38,7 +38,7 @@
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
 
-                <partial name="_RequestStatus" model="@Model.Item.JobStatuses()" />
+                <partial name="_RequestStatus" model="@Model.Item.JobStatusDictionary()" />
             </span>
 
             <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">
