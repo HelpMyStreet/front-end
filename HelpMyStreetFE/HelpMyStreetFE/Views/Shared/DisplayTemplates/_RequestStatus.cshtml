@@ -13,8 +13,6 @@
     int totalUncancelledJobs = 0;
     bool allJobsAccepted = true;
 
-    int dashOffset = 0;
-
     List<StatusCircleSegment> segments = new List<StatusCircleSegment>();
 
     if (Model.All(s => s.Key.Equals(JobStatuses.Cancelled)))
@@ -30,7 +28,6 @@
         {
             singleStatus = unCancelledStatuses.First().Key;
         }
-        dashOffset = 100 * unCancelledStatuses.Last().Value / @totalUncancelledJobs;
 
         int offsetJobs = 0;
 
