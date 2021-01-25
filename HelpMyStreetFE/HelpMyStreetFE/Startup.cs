@@ -380,7 +380,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "lincolnshirevolunteers",
                     pattern: "lincolnshirevolunteers",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "lincolnshirevolunteers" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",

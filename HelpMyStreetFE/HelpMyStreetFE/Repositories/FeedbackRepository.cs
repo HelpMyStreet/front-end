@@ -292,7 +292,7 @@ namespace HelpMyStreetFE.Repositories
                     Message = "Ordinarily a volunteer for Age UK, but when Lincolnshire’s NHS teamed up with our voluntary partners to deliver the Covid-19 vaccination programme, Mary started helping in our vaccination centres (she’s even roped her husband into car parking duties!). Mary is amazing! 👏 Thank you to all our volunteers for helping bring the Covid - 19 vaccination to the people of Lincolnshire.'",
                     Person = "NHS Lincolnshire Clinical Commissioning Group",
                     Type = FeedbackMessageType.Group,
-                    GroupKey = "lincolnshirevolunteers",
+                    GroupKey = "lincs-volunteers",
                 }
             };
 

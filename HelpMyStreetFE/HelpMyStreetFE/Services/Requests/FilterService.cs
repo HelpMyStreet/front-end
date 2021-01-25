@@ -11,6 +11,7 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Users;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -31,6 +32,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
         {
+
             return jobSet switch
             {
                 JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatus),
@@ -50,6 +52,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
             var locationDetails = await _addressService.GetLocationDetails(locations);
+            
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
                 Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName }),
@@ -82,7 +85,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             var filterSet = await GetShiftsFilterSet(user);
 
-            filterSet.OrderBy.Append(new OrderByField() { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" });
+            filterSet.OrderBy = filterSet.OrderBy.Append(new OrderByField() { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" });
 
             filterSet.JobStatuses = new List<FilterField<JobStatuses>>
                     {
@@ -282,7 +285,7 @@ namespace HelpMyStreetFE.Services.Requests
             var jobsToDisplay = jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
                     && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
-                    && (jfr.Locations == null || jfr.Locations.Contains(j.Location))
+                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Location))
                     && (jfr.DueInNextXDays == null || j.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
                     && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.StartDate)).Count() > 0)
                     );
@@ -302,7 +305,7 @@ namespace HelpMyStreetFE.Services.Requests
             var jobsToDisplay = jobs.Where(
                 j => (jfr.SupportActivities == null || j.JobSummaries.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
                     && (jfr.JobStatuses == null || j.JobSummaries.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
-                    && (jfr.Locations == null || j.JobSummaries.Where(js => { var sj = (ShiftJob)js; return jfr.Locations.Contains(sj.Location); }).Count() > 0)
+                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Shift.Location))
                     && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
                     && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0 )
                     );
@@ -314,7 +317,7 @@ namespace HelpMyStreetFE.Services.Requests
                 OrderBy.DateDue_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
                 OrderBy.Emptiest =>
-                    jobsToDisplay.OrderBy(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Done).Count()).ThenBy(j => j.Shift.StartDate),
+                    jobsToDisplay.OrderBy(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Done || js.JobStatus == JobStatuses.InProgress).Count()).ThenBy(j => j.Shift.StartDate),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
