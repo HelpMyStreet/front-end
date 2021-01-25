@@ -625,13 +625,9 @@
 
 .status-icon {
     svg {
-        width: 3rem;
-        height: 3rem;
+        width: 100%;
+        height: 100%;
         transform: rotate(-90deg);
-    }
-
-    span {
-        font-size: 0.9rem;
     }
 
     circle {
@@ -639,26 +635,36 @@
         stroke-width: 0.4rem;
 
         &.new {
-            stroke: #C00000;
-            fill: #C00000;
+            stroke: red;
         }
 
-        &.Open {
-            stroke: #A0A0A0;
+        &.open {
+            stroke: $gray-8;
         }
 
-        &.Accepted {
+        &.accepted {
             stroke: $green;
         }
 
-        &.InProgress {
+        &.in-progress {
+            stroke: $green;
+        }
+
+        &.done {
             stroke: green;
         }
 
-        &.Done {
-            fill: black;
-            stroke: blue;
+        &.dots {
+            stroke: $white;
+            stroke-width: 0.18rem;
+            stroke-linecap: round;
+            stroke-dasharray: 0.1% 11%;
         }
+    }
+
+    .tick {
+        stroke: $green;
+        fill: none;
     }
 }
 
