@@ -29,7 +29,10 @@
                             <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
                         }
                         <dt>Where is the shift?</dt>
-                        <dd>Further location details</dd>
+                        <dd>
+                            @*@Model.LocationDetails.Name
+                            @Html.DisplayFor(m => m.LocationDetails.Address)*@
+                        </dd>
                     }
                 </dl>
             </div>
@@ -53,7 +56,9 @@
             {
                 <img class="activity-icon" src="~/img/icons/@jobDetails.JobSummary.SupportActivity.Icon()" alt="@jobDetails.JobSummary.SupportActivity.FriendlyNameShort()" title="@jobDetails.JobSummary.SupportActivity.FriendlyNameShort()" />
             }
-            <span class="toggle-on-status-change">@volunteerDetails?.FirstName @volunteerDetails?.LastName</span>
+            <span class="toggle-on-status-change">
+                @jobDetails.JobSummary.JobStatus.SlotJobStatusWithVolunteerName(volunteerDetails)
+            </span>
             <span class="job__status__new dnone toggle-on-status-change"></span>
             <span></span>
         </h4>
@@ -61,7 +66,7 @@
             <div class="row">
                 @if (volunteerDetails != null)
                 {
-                    <div class="sm5 toggle-on-status-change">
+                    <div class="sm4 toggle-on-status-change">
                         <h5>Volunteer</h5>
                         <dl>
                             <dt>Name</dt>
@@ -77,7 +82,7 @@
                         </dl>
                     </div>
                 }
-                <div class="sm4 toggle-on-status-change">
+                <div class="sm3 toggle-on-status-change">
                     <h5>Job Status History</h5>
                     <dl>
                         @foreach (var statusChange in jobDetails.JobStatusHistory)

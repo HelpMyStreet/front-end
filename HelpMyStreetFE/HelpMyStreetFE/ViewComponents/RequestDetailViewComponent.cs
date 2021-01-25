@@ -11,6 +11,7 @@ using HelpMyStreetFE.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -18,10 +19,12 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
-        public RequestDetailViewComponent(IRequestService requestService, IGroupService groupService)
+        private readonly IAddressService _addressService;
+        public RequestDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService)
         {
             _requestService = requestService;
             _groupService = groupService;
+            _addressService = addressService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
@@ -33,6 +36,12 @@ namespace HelpMyStreetFE.ViewComponents
 
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
+            LocationDetails locationDetails = null;
+            if (requestDetail.RequestSummary.Shift != null)
+            {
+                //locationDetails = (await _addressService.GetLocationDetails(requestDetail.RequestSummary.Shift.Location)).Content.LocationDetails;
+            }
+
             var jobDetails = await Task.WhenAll(requestDetail.RequestSummary.JobSummaries.Select(async j => await _requestService.GetJobDetailsAsync(j.JobID, user.ID, cancellationToken)));
 
             var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.JobSummary.SupportActivity).Distinct(), cancellationToken);
@@ -40,6 +49,7 @@ namespace HelpMyStreetFE.ViewComponents
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
                 RequestDetail = requestDetail,
+                LocationDetails = locationDetails,
                 JobDetails = jobDetails,
                 GroupSupportActivityInstructions = instructions,
             };

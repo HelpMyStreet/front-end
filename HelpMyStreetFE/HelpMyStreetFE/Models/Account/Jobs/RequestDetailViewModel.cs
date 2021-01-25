@@ -8,6 +8,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     public class RequestDetailViewModel
     {
         public RequestDetail RequestDetail { get; set; }
+        public LocationDetails LocationDetails { get; set; }
         public IEnumerable<JobDetail> JobDetails { get; set; }
         public Dictionary<SupportActivities, Instructions> GroupSupportActivityInstructions { get; set; }
     }

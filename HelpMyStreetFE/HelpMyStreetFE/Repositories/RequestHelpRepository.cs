@@ -259,6 +259,23 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId)
+        {
+            var request = new PutUpdateRequestStatusToCancelledRequest()
+            {
+                RequestID = requestId,
+                CreatedByUserID = createdByUserId
+            };
+
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateRequestStatusToCancelledResponse>>($"/api/PutUpdateRequestStatusToCancelled", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            return null;
+        }
+
         private class ShiftJob_EqualityComparer : IEqualityComparer<ShiftJob>
         {
             public bool Equals(ShiftJob a, ShiftJob b)
