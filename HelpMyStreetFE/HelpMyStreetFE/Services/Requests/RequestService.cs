@@ -402,7 +402,7 @@ namespace HelpMyStreetFE.Services.Requests
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 Groups = new GroupRequest { Groups = new List<int>() },
-                Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
+                Locations = new LocationsRequest { Locations = new List<Location> { Location.PilgramHospitalBolton, Location.LincolnCountyHospital } },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
