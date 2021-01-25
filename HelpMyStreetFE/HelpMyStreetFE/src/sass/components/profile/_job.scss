@@ -145,7 +145,7 @@
                 margin-bottom: 0.5rem;
                 order: 1;
 
-                img.status-icon {
+                .status-icon {
                     margin-right: 0.5rem;
                 }
 
@@ -154,7 +154,7 @@
                     background: none;
                     margin-bottom: 0;
 
-                    img.status-icon {
+                    .status-icon {
                         margin-right: 1rem;
                     }
                 }
@@ -175,6 +175,11 @@
                 font-weight: bold;
                 color: $black;
                 text-align: left;
+
+                &.multiple-statuses {
+                    font-size: 0.85rem;
+                    line-height: 1.2rem;
+                }
             }
 
             &__new-status.job__status {
@@ -413,8 +418,9 @@
         }
     }
 
-    img.status-icon {
+    .status-icon {
         width: 3rem;
+        height: 3rem;
     }
 
 
@@ -466,8 +472,8 @@
             padding: 10px 30px 10px 0.5rem;
             margin: 0;
 
-            img.status-icon,
-            img.activity-icon {
+            .status-icon,
+            .activity-icon {
                 width: 1.9rem;
                 max-height: 1.9rem;
                 vertical-align: middle;
@@ -617,13 +623,7 @@
 }
 
 
-.status-circle {
-    display: flex;
-    flex-direction: column;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    align-items: center;
-
+.status-icon {
     svg {
         width: 3rem;
         height: 3rem;
