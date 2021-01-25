@@ -50,6 +50,7 @@ namespace HelpMyStreetFE.ViewComponents
             string viewName;
             object viewModel;
 
+            // TODO: Consolidate 3 methods
             switch (jobFilterRequest.JobSet.RequestType(), jobFilterRequest.JobSet)
             {
                 case (RequestType.Task, _):

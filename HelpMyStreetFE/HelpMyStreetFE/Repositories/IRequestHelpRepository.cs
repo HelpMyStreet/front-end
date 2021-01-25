@@ -28,5 +28,3 @@ namespace HelpMyStreetFE.Repositories
         Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request);
     }
 }
-
-

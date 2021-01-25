@@ -660,25 +660,6 @@
             stroke: blue;
         }
     }
-
-    .backBar {
-        fill: none;
-        stroke-width: 0.4rem;
-        stroke: red;
-        stroke-opacity: 0.8
-    }
-
-    .jobBar {
-        fill: none;
-        stroke: green;
-        fill-opacity: 0;
-        fill: green;
-        stroke-opacity: 1;
-        stroke-width: 0.4rem;
-        stroke-dasharray: 0 calc(3.141 * 70%) 100000;
-        transform-origin: center;
-        transform: rotateZ(-90deg);
-    }
 }
 
 

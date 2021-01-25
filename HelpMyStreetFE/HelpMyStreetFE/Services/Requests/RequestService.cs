@@ -167,6 +167,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
+            //TODO: Add caching?
+
             //NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
             //var jobs = await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
@@ -386,23 +388,13 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo)
         {
-            //var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
-            //{
-            //    ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
-            //    DateFrom = dateFrom,
-            //    DateTo = dateTo,
-            //    Groups = new GroupRequest { Groups = await _groupMemberService.GetUserGroups(user.ID) },
-            //    Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
-            //    SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities> { SupportActivities.BackOfficeAdmin, SupportActivities.FrontOfHouseAdmin, SupportActivities.HealthcareAssistant, SupportActivities.Steward } }
-            //};
-            
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {
                 ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 Groups = new GroupRequest { Groups = new List<int>() },
-                Locations = new LocationsRequest { Locations = new List<Location> { Location.Location1, Location.Location2 } },
+                Locations = new LocationsRequest { Locations = new List<Location>() },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
@@ -410,6 +402,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
+            //TODO: Add caching?
+
             var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
             {
                 ReferringGroupID = groupId,

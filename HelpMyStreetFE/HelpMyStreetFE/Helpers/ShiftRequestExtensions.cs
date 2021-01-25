@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
@@ -38,6 +39,21 @@ namespace HelpMyStreetFE.Helpers
             return shiftRequest.JobSummaries.GroupBy(j => j.JobStatus)
                 .Select(g => new KeyValuePair<JobStatuses, int>(g.Key, g.Count()))
                 .OrderBy(g => g.Key.UsualOrderOfProgression());
+        }
+    }
+
+
+    public class ShiftJobDedupe_EqualityComparer : IEqualityComparer<ShiftJob>
+    {
+        public bool Equals(ShiftJob a, ShiftJob b)
+        {
+            return a.RequestID == b.RequestID && a.SupportActivity == b.SupportActivity;
+
+        }
+
+        public int GetHashCode([DisallowNull] ShiftJob obj)
+        {
+            return obj.RequestID.GetHashCode() + obj.SupportActivity.GetHashCode();
         }
     }
 }
