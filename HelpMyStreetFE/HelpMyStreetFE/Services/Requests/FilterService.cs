@@ -112,7 +112,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new OrderByField { Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true },
                     new OrderByField { Value = OrderBy.DateDue_Descending, Label = "Least soon" },
-                    new OrderByField { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" },
+                    new OrderByField { Value = OrderBy.Emptiest, Label = "Most unfilled slots" },
                     new OrderByField { Value = OrderBy.DateRequested_Descending, Label = "Most recently added" }
                 },
                 DueInNextXDays = new List<FilterField<int>>
