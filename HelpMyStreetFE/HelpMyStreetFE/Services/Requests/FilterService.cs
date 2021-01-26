@@ -62,7 +62,7 @@ namespace HelpMyStreetFE.Services.Requests
                 OrderBy = new List<OrderByField>
                 {
                     new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true},
-                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest in the future"},
+                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Least soon"},
                 },
                 DueInNextXDays = new List<FilterField<int>>
                 {
@@ -90,6 +90,10 @@ namespace HelpMyStreetFE.Services.Requests
                     new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                 };
             }
+            else if (jobSet == JobSet.UserOpenShifts)
+            {
+                filterSet.OrderBy = filterSet.OrderBy.Append(new OrderByField { Value = OrderBy.DateRequested_Descending, Label = "Most recently added" });
+            }
 
             return filterSet;
         }
@@ -106,9 +110,10 @@ namespace HelpMyStreetFE.Services.Requests
                 },
                 OrderBy = new List<OrderByField>
                 {
-                    new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true},
-                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest in the future"},
-                    new OrderByField() { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" },
+                    new OrderByField { Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true },
+                    new OrderByField { Value = OrderBy.DateDue_Descending, Label = "Least soon" },
+                    new OrderByField { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" },
+                    new OrderByField { Value = OrderBy.DateRequested_Descending, Label = "Most recently added" }
                 },
                 DueInNextXDays = new List<FilterField<int>>
                 {
@@ -317,8 +322,6 @@ namespace HelpMyStreetFE.Services.Requests
 
         public IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
         {
-
-
             var jobsToDisplay = jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
                     && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
@@ -329,10 +332,12 @@ namespace HelpMyStreetFE.Services.Requests
 
             return jfr.OrderBy switch
             {
-                 OrderBy.DateDue_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.StartDate),
+                OrderBy.DateDue_Ascending =>
+                   jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.StartDate),
                 OrderBy.DateDue_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.StartDate),
+                OrderBy.DateRequested_Descending =>
+                  jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateRequested),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
@@ -344,7 +349,7 @@ namespace HelpMyStreetFE.Services.Requests
                     && (jfr.JobStatuses == null || j.JobSummaries.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Shift.Location))
                     && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0 )
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0)
                     );
 
             return jfr.OrderBy switch
@@ -355,6 +360,8 @@ namespace HelpMyStreetFE.Services.Requests
                     jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
                 OrderBy.Emptiest =>
                     jobsToDisplay.OrderByDescending(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
+                OrderBy.DateRequested_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.DateRequested),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
