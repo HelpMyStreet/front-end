@@ -17,9 +17,6 @@
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Views\Shared\Components\Feedback\**" />
-    <Content Remove="wwwroot\img\community\ageUK\kent\northwest\logo.png" />
-    <Content Remove="wwwroot\img\icons\volunteers.svg" />
-    <Content Remove="wwwroot\img\icons\printer.svg" />
   </ItemGroup>
 
   <ItemGroup>
