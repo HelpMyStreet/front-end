@@ -317,7 +317,7 @@ namespace HelpMyStreetFE.Services.Requests
                 OrderBy.DateDue_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
                 OrderBy.Emptiest =>
-                    jobsToDisplay.OrderBy(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Done || js.JobStatus == JobStatuses.InProgress).Count()).ThenBy(j => j.Shift.StartDate),
+                    jobsToDisplay.OrderByDescending(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
