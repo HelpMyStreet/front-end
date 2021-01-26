@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.AddressService.Request;
+using HelpMyStreet.Contracts.AddressService.Request;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Enums;
@@ -52,7 +52,7 @@ namespace HelpMyStreetFE.Repositories
 
             string json = JsonConvert.SerializeObject(getLocationRequest);
             StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/GetLocationsByDistance", data);
+            HttpResponseMessage response = await Client.PostAsync("/api/GetLocation", data);
             string str = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>>(str);
         }
