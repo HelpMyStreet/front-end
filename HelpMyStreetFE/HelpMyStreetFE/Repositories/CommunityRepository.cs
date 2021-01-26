@@ -318,14 +318,6 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-            var carouselPath = "";
-            communityViewModel.CarouselImages = new List<List<string>>
-            {
-                new List<string>
-                {
-                }
-            };
-
             return communityViewModel;
         }
 

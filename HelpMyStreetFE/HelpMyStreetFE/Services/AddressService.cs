@@ -57,7 +57,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
         {
-            postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
+            postcode = PostcodeFormatter.FormatPostcode(postcode);
             var response = await Client.GetAsync($"/api/getpostcode?postcode={postcode}");
             var str = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<GetPostCodeResponse>(str);
@@ -65,8 +65,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
         {
-
-            postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
+            postcode = PostcodeFormatter.FormatPostcode(postcode);
             GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();
             response.PostCodeResponse = await CheckPostCode(postcode);
             if (response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
@@ -120,8 +119,6 @@ namespace HelpMyStreetFE.Services
                     throw new HttpRequestException("Unable to fetch location details");
                 }
             }, $"{CACHE_KEY_PREFIX}-location-{(int)location}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
-
-
         }
 
         public async Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations)
@@ -131,7 +128,6 @@ namespace HelpMyStreetFE.Services
             var awaitedResponses = await Task.WhenAll(responses);
 
             return awaitedResponses.ToList();
-
         }
 
         public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest)
