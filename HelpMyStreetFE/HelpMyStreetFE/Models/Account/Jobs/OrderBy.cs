@@ -10,5 +10,6 @@
         DateStatusLastChanged_Ascending = 6,
         DateStatusLastChanged_Descending = 7,
         RequiringAdminAttention = 8,
+        Emptiest = 9
     }
 }

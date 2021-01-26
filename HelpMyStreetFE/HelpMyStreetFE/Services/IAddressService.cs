@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using HelpMyStreet.Contracts.AddressService.Request;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
-using GetPostcodesResponse = HelpMyStreetFE.Models.Reponses.GetPostcodesResponse;
+using HelpMyStreet.Utils.Enums;
+using System.Threading;
 
 namespace HelpMyStreetFE.Services
 {
@@ -18,5 +19,8 @@ namespace HelpMyStreetFE.Services
         Task<GetPostcodesResponse> GetFriendlyNames(List<string> postcodes);
         Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest);
         Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode);
+        Task<List<Location>> GetLocationsByDistance(string postcode);
+        Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken);
+        Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations);
     }
 }

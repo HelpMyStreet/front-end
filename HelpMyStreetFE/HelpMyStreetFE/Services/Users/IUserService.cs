@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts.UserService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 
@@ -19,5 +21,6 @@ namespace HelpMyStreetFE.Services.Users
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
         Models.Account.UserDetails GetUserDetails(User user);
         bool GetRegistrationIsComplete(User user);
+        Task<IEnumerable<Location>> GetLocations(int userId, CancellationToken cancellationToken);
     }
 }

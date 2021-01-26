@@ -8,6 +8,7 @@ namespace HelpMyStreetFE.Models.Email
 {
     public class RequestSettings
     {
+        public int ShiftRadius { get; set; }
         public int OpenRequestsRadius { get; set; }
         public List<SupportActivities> NationalSupportActivities { get; set; }
     }

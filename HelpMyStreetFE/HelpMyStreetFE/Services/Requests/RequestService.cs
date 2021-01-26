@@ -388,13 +388,16 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo)
         {
+
+            var locations = await _userService.GetLocations(user.ID, new CancellationToken());
+
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {
                 ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 Groups = new GroupRequest { Groups = new List<int>() },
-                Locations = new LocationsRequest { Locations = new List<Location>() },
+                Locations = new LocationsRequest { Locations = locations.ToList() },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);

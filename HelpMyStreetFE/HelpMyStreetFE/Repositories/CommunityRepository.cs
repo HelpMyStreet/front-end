@@ -24,7 +24,7 @@ namespace HelpMyStreetFE.Repositories
             {"ageuk-southkentcoast", new CommunityModel() {FriendlyName = "Age UK South Kent Coast", Pin_Latitude = 51.15670694376801, Pin_Longitude = 1.2906096124741184, LinkURL = "/southkentcoast", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/southkentcoast/banner.jpg", GeographicName="Deal or Folkestone" } },
             {"ageuk-favershamandsittingbourne", new CommunityModel() {FriendlyName = "Age UK Faversham & Sittingbourne", Pin_Latitude = 51.32681418199929, Pin_Longitude = 0.8065864663737088, LinkURL = "/favershamandsittingbourne", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/favershamandsittingbourne/banner.jpg", GeographicName="Faversham or Sittingbourne" } },
             {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/northwest/banner.jpg", GeographicName="North West Kent (Dartford, Swanley or Gravesend)" } },
-            {"lincolnshirevolunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/imb/community/vacc/lincolnshire/banner.png", LinkURL = "/lincolnshirevolunteers"} },
+            {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/imb/community/vacc/lincolnshire/banner.png", LinkURL = "/lincolnshirevolunteers"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
 
         };
@@ -248,7 +248,7 @@ namespace HelpMyStreetFE.Repositories
                 View = "LincolnshireVolunteers",
             };
 
-            CommunityModel communityModel = GetCommunityDetailByKey("lincolnshirevolunteers");
+            CommunityModel communityModel = GetCommunityDetailByKey("lincs-volunteers");
 
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
