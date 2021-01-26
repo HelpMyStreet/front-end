@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.AddressService.Request;
+﻿using HelpMyStreet.Contracts.AddressService.Request;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Enums;
@@ -44,11 +44,13 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<ResponseWrapper<GetLocationResponse, AddressServiceErrorCode>> GetLocationDetails(Location location)
         {
-            var locationRequest = new LocationRequest();
-            locationRequest.Location = location;
-
-            var getLocationRequest = new GetLocationRequest();
-            getLocationRequest.LocationRequest = locationRequest;
+            var getLocationRequest = new GetLocationRequest
+            {
+                LocationRequest = new LocationRequest
+                {
+                    Location = location
+                }
+            };
 
             string json = JsonConvert.SerializeObject(getLocationRequest);
             StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
