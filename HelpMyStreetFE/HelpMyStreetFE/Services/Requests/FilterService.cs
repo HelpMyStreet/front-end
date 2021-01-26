@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
@@ -58,9 +58,9 @@ namespace HelpMyStreetFE.Services.Requests
                 Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName }),
                 PartOfDay = new List<FilterField<PartOfDay>>()
                 {
-                    new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning Shifts", IsSelected = true},
-                    new FilterField<PartOfDay>() {Value = PartOfDay.Afternoon, Label = "Afternoon Shifts", IsSelected = true},
-                    new FilterField<PartOfDay>() {Value = PartOfDay.Night, Label = "Night Shifts", IsSelected = true}
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Afternoon, Label = "Afternoon shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Night, Label = "Night shifts", IsSelected = true}
                 },
                 OrderBy = new List<OrderByField>
                 {
