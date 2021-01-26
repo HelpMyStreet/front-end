@@ -53,7 +53,10 @@
                         }
                         <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>
                         <dt>Where is the shift?</dt>
-                        <dd>Further location details</dd>
+                        <dd>
+                            @Model.LocationDetails.Name<br />
+                            @Html.DisplayFor(m => m.LocationDetails.Address)
+                        </dd>
                     }
                     else
                     {

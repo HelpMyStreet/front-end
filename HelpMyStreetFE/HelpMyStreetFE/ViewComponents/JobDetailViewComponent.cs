@@ -8,6 +8,7 @@ using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -15,10 +16,13 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
-        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService)
+        private readonly IAddressService _addressService;
+
+        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService)
         {
             _requestService = requestService;
             _groupService = groupService;
+            _addressService = addressService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
@@ -34,9 +38,16 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to retrieve job details for JobId {jobId}");
             }
 
+            LocationDetails locationDetails = null;
+            if (jobDetails.RequestSummary.Shift != null)
+            {
+                locationDetails = await _addressService.GetLocationDetails(jobDetails.RequestSummary.Shift.Location, cancellationToken);
+            }
+
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
                 JobDetail = jobDetails,
+                LocationDetails = locationDetails,
                 UserActingAsAdmin = jobSet == JobSet.GroupRequests,
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
                 ToPrint = toPrint

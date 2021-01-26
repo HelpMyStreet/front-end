@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.ViewComponents
             LocationDetails locationDetails = null;
             if (requestDetail.RequestSummary.Shift != null)
             {
-                //locationDetails = (await _addressService.GetLocationDetails(requestDetail.RequestSummary.Shift.Location)).Content.LocationDetails;
+                locationDetails = await _addressService.GetLocationDetails(requestDetail.RequestSummary.Shift.Location, cancellationToken);
             }
 
             var jobDetails = await Task.WhenAll(requestDetail.RequestSummary.JobSummaries.Select(async j => await _requestService.GetJobDetailsAsync(j.JobID, user.ID, cancellationToken)));
