@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
@@ -50,12 +50,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<SortAndFilterSet> GetShiftsFilterSet(User user)
         {
-            var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
-            var locationDetails = await _addressService.GetLocationDetails(locations);
-            
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName }),
                 PartOfDay = new List<FilterField<PartOfDay>>()
                 {
                     new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning shifts", IsSelected = true},
@@ -74,8 +70,15 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
                         new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
                     },
-
             };
+
+            var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
+
+            if (locations.Count() > 0)
+            {
+                var locationDetails = await _addressService.GetLocationDetails(locations);
+                filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
+            }
 
 
             return filterSet;
