@@ -18,10 +18,10 @@
     {
         segments.Add(new StatusCircleSegment
         {
-            JobStatus = s.Key,
             Radius = 1.3,
-            Proportion = (double)s.Value / totalUncancelledJobs,
             GapProportion = 0.01,
+            JobStatus = s.Key,
+            Proportion = (double)s.Value / totalUncancelledJobs,
             OffsetProportion = (double)offsetJobs / totalUncancelledJobs
         });
 
