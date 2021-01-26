@@ -60,7 +60,7 @@ else
         </svg>
     </div>
     <span class="job__status multiple-statuses">
-        @foreach (var a in Model.JobStatusDictionary())
+        @foreach (var a in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
         {
             @($"{a.Value} {a.Key.FriendlyName()}")<br />
         }
