@@ -91,10 +91,10 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         new FilterField<JobStatuses>() { Value = JobStatuses.New },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Open },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.Accepted },
                         new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
-                        new FilterField<JobStatuses>() { Value = JobStatuses.Accepted },
                     };
 
 
@@ -107,8 +107,8 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
-                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Accepted).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
             }
 
             return filterSet;
