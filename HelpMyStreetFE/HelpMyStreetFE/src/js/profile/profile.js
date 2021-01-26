@@ -2,9 +2,7 @@
 import { initialiseRequests } from "./requests";
 import { initialiseGenericExpanders } from "../ui/generic-expander";
 import { initialiseVolunteerList } from "./volunteers";
-import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { updateAwards } from "../shared/awards";
-import { initialiseJobBars } from "./jobbars";
 
 
 
@@ -16,5 +14,4 @@ $(document).ready(function () {
   initialiseGenericExpanders();
   initialiseVolunteerList();
   updateAwards();
-  initialiseJobBars();
 });

@@ -145,7 +145,7 @@
                 margin-bottom: 0.5rem;
                 order: 1;
 
-                img.status-icon {
+                .status-icon {
                     margin-right: 0.5rem;
                 }
 
@@ -154,7 +154,7 @@
                     background: none;
                     margin-bottom: 0;
 
-                    img.status-icon {
+                    .status-icon {
                         margin-right: 1rem;
                     }
                 }
@@ -175,6 +175,11 @@
                 font-weight: bold;
                 color: $black;
                 text-align: left;
+
+                &.multiple-statuses {
+                    font-size: 0.85rem;
+                    line-height: 1.2rem;
+                }
             }
 
             &__new-status.job__status {
@@ -413,8 +418,9 @@
         }
     }
 
-    img.status-icon {
+    .status-icon {
         width: 3rem;
+        height: 3rem;
     }
 
 
@@ -466,8 +472,8 @@
             padding: 10px 30px 10px 0.5rem;
             margin: 0;
 
-            img.status-icon,
-            img.activity-icon {
+            .status-icon,
+            .activity-icon {
                 width: 1.9rem;
                 max-height: 1.9rem;
                 vertical-align: middle;
@@ -617,21 +623,11 @@
 }
 
 
-.status-circle {
-    display: flex;
-    flex-direction: column;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    align-items: center;
-
+.status-icon {
     svg {
-        width: 3rem;
-        height: 3rem;
+        width: 100%;
+        height: 100%;
         transform: rotate(-90deg);
-    }
-
-    span {
-        font-size: 0.9rem;
     }
 
     circle {
@@ -639,45 +635,36 @@
         stroke-width: 0.4rem;
 
         &.new {
-            stroke: #C00000;
-            fill: #C00000;
+            stroke: red;
         }
 
-        &.Open {
-            stroke: #A0A0A0;
+        &.open {
+            stroke: $gray-8;
         }
 
-        &.Accepted {
+        &.accepted {
             stroke: $green;
         }
 
-        &.InProgress {
+        &.in-progress {
+            stroke: $green;
+        }
+
+        &.done {
             stroke: green;
         }
 
-        &.Done {
-            fill: black;
-            stroke: blue;
+        &.dots {
+            stroke: $white;
+            stroke-width: 0.18rem;
+            stroke-linecap: round;
+            stroke-dasharray: 0.1% 11%;
         }
     }
 
-    .backBar {
+    .tick {
+        stroke: $green;
         fill: none;
-        stroke-width: 0.4rem;
-        stroke: red;
-        stroke-opacity: 0.8
-    }
-
-    .jobBar {
-        fill: none;
-        stroke: green;
-        fill-opacity: 0;
-        fill: green;
-        stroke-opacity: 1;
-        stroke-width: 0.4rem;
-        stroke-dasharray: 0 calc(3.141 * 70%) 100000;
-        transform-origin: center;
-        transform: rotateZ(-90deg);
     }
 }
 
