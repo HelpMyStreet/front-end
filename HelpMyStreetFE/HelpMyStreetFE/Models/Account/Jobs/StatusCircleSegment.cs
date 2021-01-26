@@ -8,10 +8,12 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class StatusCircleSegment
     {
-        public string Class { get; set; }
+        public JobStatuses JobStatus { get; set; }
         public double Radius { get; set; }
         public double Proportion { get; set; }
         public double OffsetProportion { get; set; }
+
+        public double GapProportion { get; set; }
 
         public double Circumference
         {
@@ -33,7 +35,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         {
             get
             {
-                return $"{Proportion * Circumference}rem {Circumference}rem";
+                return $"{(Proportion - GapProportion) * Circumference}rem {Circumference}rem";
             }
         }
 

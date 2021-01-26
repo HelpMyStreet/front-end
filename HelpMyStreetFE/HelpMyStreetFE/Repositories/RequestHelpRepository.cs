@@ -2,12 +2,12 @@
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,11 +16,15 @@ namespace HelpMyStreetFE.Repositories
 {
 	public class RequestHelpRepository : BaseHttpRepository, IRequestHelpRepository
 	{
-		public RequestHelpRepository(
+        private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
+
+        public RequestHelpRepository(
 			HttpClient client,
 			IConfiguration config,
 			ILogger<RequestHelpRepository> logger) : base(client, config, logger, "Services:Request")
-		{ }
+		{
+            _shiftJobDedupe_EqualityComparer = new ShiftJobDedupe_EqualityComparer();
+        }
 
 	
 
@@ -149,19 +153,19 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToAcceptedAsync(int jobId, int createdByUserId, int volunteerUserId)
         {
-            //var request = new PutUpdateJobStatusToAcceptedRequest()
-            //{
-            //    JobID = jobId,
-            //    CreatedByUserID = createdByUserId,
-            //    VolunteerUserID = volunteerUserId
-            //};
+            var request = new PutUpdateJobStatusToAcceptedRequest()
+            {
+                JobID = jobId,
+                CreatedByUserID = createdByUserId,
+                VolunteerUserID = volunteerUserId
+            };
 
-            //var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToAcceptedResponse>>($"/api/PutUpdateJobStatusToAccepted", request);
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobStatusToAcceptedResponse>>($"/api/PutUpdateJobStatusToAccepted", request);
 
-            //if (response.HasContent && response.IsSuccessful)
-            //{
-            //    return response.Content.Outcome;
-            //}
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
             return null;
         }
 
@@ -232,7 +236,7 @@ namespace HelpMyStreetFE.Repositories
             {
                 var jobs = response.Content.ShiftJobs;
 
-                return jobs.Distinct(new ShiftJob_EqualityComparer());
+                return jobs.Distinct(_shiftJobDedupe_EqualityComparer);
             }
             return null;
         }
@@ -274,20 +278,6 @@ namespace HelpMyStreetFE.Repositories
                 return response.Content.Outcome;
             }
             return null;
-        }
-
-        private class ShiftJob_EqualityComparer : IEqualityComparer<ShiftJob>
-        {
-            public bool Equals(ShiftJob a, ShiftJob b)
-            {
-                return a.RequestID == b.RequestID && a.SupportActivity == b.SupportActivity;
-
-            }
-
-            public int GetHashCode([DisallowNull] ShiftJob obj)
-            {
-                return obj.RequestID.GetHashCode() + obj.SupportActivity.GetHashCode();
-            }
         }
     }
 }

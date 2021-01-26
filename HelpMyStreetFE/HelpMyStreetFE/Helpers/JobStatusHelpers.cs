@@ -24,6 +24,20 @@ namespace HelpMyStreetFE.Helpers
             };
         }
 
+        public static string Class(this JobStatuses jobStatus)
+        {
+            return jobStatus switch
+            {
+                JobStatuses.New => "new",
+                JobStatuses.Open => "open",
+                JobStatuses.Accepted => "accepted",
+                JobStatuses.InProgress => "in-progress",
+                JobStatuses.Done => "done",
+                JobStatuses.Cancelled => "cancelled",
+                _ => throw new ArgumentException(message: $"Unexpected JobStatuses value: {jobStatus}", paramName: nameof(jobStatus))
+            };
+        }
+
         public static string SlotJobStatusWithVolunteerName(this JobStatuses jobStatus, UserPersonalDetails userPersonalDetails)
         {
             return jobStatus switch
