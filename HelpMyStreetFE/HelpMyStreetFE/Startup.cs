@@ -188,6 +188,7 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<List<GroupCredential>>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<UserInGroup>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Instructions>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<LocationDetails>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
 
             services.AddControllers();
             services.AddRazorPages()
@@ -375,6 +376,11 @@ namespace HelpMyStreetFE
                     name: "fortheloveofscrubs",
                     pattern: "for-the-love-of-scrubs",
                     defaults: new { controller = "Community", action = "Index", groupKey = "ftlos" });
+
+                endpoints.MapControllerRoute(
+                    name: "lincolnshirevolunteers",
+                    pattern: "lincolnshirevolunteers",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",

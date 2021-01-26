@@ -2,26 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Models.Email;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
 
 namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {
         private readonly IOptions<RequestSettings> _requestSettings;
+        private IRequestService _requestService;
+        private IAddressService _addressService;
+        private IUserService _userService;
 
-        public FilterService(IOptions<RequestSettings> requestSettings)
+        public FilterService(IOptions<RequestSettings> requestSettings, IRequestService requestService, IAddressService addressService, IUserService userService)
         {
+            _requestService = requestService;
             _requestSettings = requestSettings;
+            _addressService = addressService;
+            _userService = userService;
         }
 
-        public SortAndFilterSet GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
+        public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user, CancellationToken cancellationToken)
         {
+
             return jobSet switch
             {
                 JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatus),
@@ -29,8 +41,119 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
                 JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
                 JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
+
+                JobSet.GroupShifts => await GetGroupShiftsFilterSet(user, jobStatus, cancellationToken),
+                JobSet.UserOpenShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
+                JobSet.UserMyShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
+        }
+
+        private async Task<SortAndFilterSet> GetShiftsFilterSet(User user, JobSet jobSet, CancellationToken cancellationToken)
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet
+            {
+                PartOfDay = new List<FilterField<PartOfDay>>()
+                {
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Afternoon, Label = "Afternoon shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Night, Label = "Night shifts", IsSelected = true}
+                },
+                OrderBy = new List<OrderByField>
+                {
+                    new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true},
+                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Least soon"},
+                },
+                DueInNextXDays = new List<FilterField<int>>
+                {
+                    new FilterField<int> { Value = 1, Label = "Today" },
+                    new FilterField<int> { Value = 7, Label = "This week" },
+                    new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
+                    new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                },
+            };
+
+            var locations = await _userService.GetLocations(user.ID, cancellationToken);
+
+            if (locations.Count() > 0)
+            {
+                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
+                filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
+            }
+
+            if (jobSet == JobSet.UserMyShifts)
+            {
+                filterSet.JobStatuses = new List<FilterField<JobStatuses>>
+                {
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Accepted, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                };
+            }
+            else if (jobSet == JobSet.UserOpenShifts)
+            {
+                filterSet.OrderBy = filterSet.OrderBy.Append(new OrderByField { Value = OrderBy.DateRequested_Descending, Label = "Most recently added" });
+            }
+
+            return filterSet;
+        }
+
+        private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(User user, JobStatuses? jobStatus, CancellationToken cancellationToken)
+        {
+            SortAndFilterSet filterSet = new SortAndFilterSet
+            {
+                PartOfDay = new List<FilterField<PartOfDay>>()
+                {
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Afternoon, Label = "Afternoon shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Night, Label = "Night shifts", IsSelected = true}
+                },
+                OrderBy = new List<OrderByField>
+                {
+                    new OrderByField { Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true },
+                    new OrderByField { Value = OrderBy.DateDue_Descending, Label = "Least soon" },
+                    new OrderByField { Value = OrderBy.Emptiest, Label = "Most unfilled slots" },
+                    new OrderByField { Value = OrderBy.DateRequested_Descending, Label = "Most recently added" }
+                },
+                DueInNextXDays = new List<FilterField<int>>
+                {
+                    new FilterField<int> { Value = 1, Label = "Today" },
+                    new FilterField<int> { Value = 7, Label = "This week" },
+                    new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
+                    new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                },
+                JobStatuses = new List<FilterField<JobStatuses>>
+                {
+                    new FilterField<JobStatuses>() { Value = JobStatuses.New },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Open },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Accepted },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+                },
+            };
+
+            var locations = await _userService.GetLocations(user.ID, cancellationToken);
+
+            if (locations.Count() > 0)
+            {
+                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
+                filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
+            }
+
+            if (jobStatus != null)
+            {
+                filterSet.JobStatuses.Where(js => js.Value == jobStatus).First().IsSelected = true;
+            }
+            else
+            {
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Accepted).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
+            }
+
+            return filterSet;
         }
 
         private SortAndFilterSet GetGroupRequestsDefaultSortAndFilterSet(JobStatuses? jobStatus)
@@ -195,6 +318,52 @@ namespace HelpMyStreetFE.Services.Requests
             };
 
             return filterSet;
+        }
+
+        public IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
+        {
+            var jobsToDisplay = jobs.Where(
+                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
+                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
+                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Location))
+                    && (jfr.DueInNextXDays == null || j.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.StartDate)).Count() > 0)
+                    );
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.DateDue_Ascending =>
+                   jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.StartDate),
+                OrderBy.DateDue_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.StartDate),
+                OrderBy.DateRequested_Descending =>
+                  jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateRequested),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
+        }
+
+        public IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
+        {
+            var jobsToDisplay = jobs.Where(
+                j => (jfr.SupportActivities == null || j.JobSummaries.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
+                    && (jfr.JobStatuses == null || j.JobSummaries.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
+                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Shift.Location))
+                    && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0)
+                    );
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.DateDue_Ascending =>
+                   jobsToDisplay.OrderBy(j => j.Shift.StartDate),
+                OrderBy.DateDue_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
+                OrderBy.Emptiest =>
+                    jobsToDisplay.OrderByDescending(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
+                OrderBy.DateRequested_Descending =>
+                    jobsToDisplay.OrderByDescending(j => j.DateRequested),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
         }
 
         public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)

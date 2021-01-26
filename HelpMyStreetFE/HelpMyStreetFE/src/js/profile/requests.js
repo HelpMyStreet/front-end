@@ -169,23 +169,24 @@ async function setJobStatus(job, newStatus, targetUser) {
 
 
 async function loadJobDetails(job, forceRefresh) {
-  const jobDetail = $(job).find('.job__detail');
+    const jobDetail = $(job).find('.job__detail');
 
-  if (!forceRefresh && jobDetail.data('status') !== undefined) {
-    return;
-  }
+    if (!forceRefresh && jobDetail.data('status') !== undefined) {
+        return;
+    }
 
-  const jobId = $(job).attr("id");
-  const jobSet = $(job).closest('.job-filter-results-panel').data('jobset');
-  jobDetail.data('status', 'updating');
-  const response = await hmsFetch('/api/request-help/get-job-details?j=' + jobId + '&js=' + jobSet);
-  if (response.fetchResponse == fetchResponses.SUCCESS) {
-    jobDetail.html(await response.fetchPayload);
-    jobDetail.data('status', { 'updated': new Date() });
-  } else {
-    jobDetail.removeData('status');
-    return false;
-  }
+    const jobId = $(job).attr("id");
+    const requestId = $(job).attr("request-id");
+    const jobSet = $(job).closest('.job-filter-results-panel').data('jobset');
+    jobDetail.data('status', 'updating');
+    const response = await hmsFetch('/api/request-help/get-job-details?j=' + jobId + '&rq=' + requestId + '&js=' + jobSet);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        jobDetail.html(await response.fetchPayload);
+        jobDetail.data('status', { 'updated': new Date() });
+    } else {
+        jobDetail.removeData('status');
+        return false;
+    }
 }
 
 export async function loadFeedbackComponents() {

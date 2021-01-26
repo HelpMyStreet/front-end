@@ -47,12 +47,12 @@ namespace HelpMyStreetFE.ViewComponents
                 FeedbackRating = parameters.FeedbackRating,
 
                 VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName,
-                RecipientName = string.IsNullOrEmpty(jobDetails.JobSummary.RecipientOrganisation) ? jobDetails.Recipient.FirstName : jobDetails.JobSummary.RecipientOrganisation,
-                RequestorName = jobDetails.Requestor.FirstName,
+                RecipientName = string.IsNullOrEmpty(jobDetails.JobSummary.RecipientOrganisation) ? jobDetails.Recipient?.FirstName : jobDetails.JobSummary.RecipientOrganisation,
+                RequestorName = jobDetails.Requestor?.FirstName,
                 
                 ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null,
-                ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient && !string.IsNullOrEmpty(jobDetails.Recipient.EmailAddress),
-                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && !string.IsNullOrEmpty(jobDetails.Requestor.EmailAddress) && jobDetails.JobSummary.RequestorType != RequestorType.Myself,
+                ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient && !string.IsNullOrEmpty(jobDetails.Recipient?.EmailAddress),
+                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && !string.IsNullOrEmpty(jobDetails.Requestor?.EmailAddress) && jobDetails.JobSummary.RequestorType != RequestorType.Myself,
                 ShowHMSMessage = true
             };
             

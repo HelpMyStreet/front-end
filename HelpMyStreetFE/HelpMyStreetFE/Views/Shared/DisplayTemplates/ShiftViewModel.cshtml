@@ -1,0 +1,116 @@
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreetFE.Models.Community;
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobViewModel<ShiftJob>
+
+@{
+    var jobId = Base64Utils.Base64Encode(Model.Item.JobID);
+    var requestId = Base64Utils.Base64Encode(Model.Item.RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+
+    var className = "";
+
+    if (Model.Item.JobStatus.Incomplete())
+    {
+        if (Model.Item.StartDate < DateTime.Now.AddDays(3))
+        {
+            className += " job--urgent";
+        }
+
+        if (Model.Item.StartDate < DateTime.Now.AddDays(7))
+        {
+            className += " job--due-soon";
+        }
+    }
+
+    if (Model.HighlightJob)
+    {
+        className += " highlight";
+    }
+}
+
+<div class="job @className" id="@jobId" request-id="@requestId" data-job-status="@Model.Item.JobStatus" data-role="@role">
+    <div class="job__info">
+        <div class="job__info__col1">
+
+            <div class="toggle-on-status-change">
+                <div class="job__info__col1__referrer">
+                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
+                </div>
+            </div>
+
+            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
+                @Model.Item.TimeSpan()
+            </span>
+
+            <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
+            </span>
+            @if (Model.Item.JobStatus == JobStatuses.Open)
+            {
+            <span class="job__info__col1__next-step dnone toggle-on-status-change">
+                <a href="/account/my-shifts?rq=@requestId">Go to My Shifts</a>
+            </span>
+            }
+        </div>
+        <div class="job__info__activity">
+            <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
+                @if (Model.Item.SupportActivity != SupportActivities.Other)
+                {
+                <img src="~/img/icons/@Model.Item.SupportActivity.Icon()" />
+                }
+                <span>
+                    @Model.Item.SupportActivity.FriendlyNameShort()
+                </span>
+            </span>
+            <span class="job__info__activity__location">
+                @Model.LocationDetails.Name
+            </span>
+        </div>
+        <div class="job__info__col3 flex-end">
+            <div class="job__info__actions">
+                @switch (Model.Item.JobStatus)
+                {
+                    case JobStatuses.Open:
+                        <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                            <span class="text">Accept</span>
+                        </button>
+                        break;
+                    case JobStatuses.Accepted:
+                    case JobStatuses.InProgress:
+                        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                            <span class="text">Can't do</span>
+                        </button>
+                        break;
+                    case JobStatuses.Done:
+                        <div class="feedback-container">
+                            <button class="btn cta--gray-8-border">
+                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
+                            </button>
+                        </div>
+                        break;
+                    case JobStatuses.Cancelled:
+                        <div class="feedback-container"></div>
+                        break;
+                }
+                <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">
+                    <span class="text">Undo</span>
+                    <div class="loader dnone">
+                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
+                    </div>
+                </button>
+            </div>
+            <div class="job__info__footer">
+                <a href="#" class="open">View more info <span></span></a>
+                <a href="#" class="close">View less info <span></span></a>
+            </div>
+        </div>
+
+    </div>
+    <div class="job__detail">
+        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel() { Hide = false, ShowDarkSpinner = true }' />
+    </div>
+</div>

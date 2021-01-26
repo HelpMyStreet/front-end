@@ -1,0 +1,68 @@
+﻿@using System.Linq;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Models.Account.Jobs;
+
+@model RequestSummary;
+
+@{
+
+    int totalUncancelledJobs = Model.JobStatusDictionary().Sum(s => s.Value);
+
+    List<StatusCircleSegment> segments = new List<StatusCircleSegment>();
+    int offsetJobs = 0;
+
+    foreach (var s in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
+    {
+        segments.Add(new StatusCircleSegment
+        {
+            Radius = 1.3,
+            GapProportion = 0.01,
+            JobStatus = s.Key,
+            Proportion = (double)s.Value / totalUncancelledJobs,
+            OffsetProportion = (double)offsetJobs / totalUncancelledJobs
+        });
+
+        offsetJobs += s.Value;
+    }
+}
+
+
+@if (Model.SingleJobStatus() != null)
+{
+    <img class="status-icon" src="~/img/icons/status/@Model.SingleJobStatus().Value.Icon()" alt="@Model.SingleJobStatus().Value.FriendlyName()" />
+    <span class="job__status">@Model.SingleJobStatus().Value.FriendlyName()</span>
+}
+else
+{
+    <div class="status-icon">
+        <svg>
+
+            @foreach (var segment in segments.Where(s => s.JobStatus.Equals(JobStatuses.InProgress)))
+            {
+                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"></circle>
+                <circle class="dots" cx="50%" cy="50%" r="@segment.R"></circle>
+            }
+
+            @foreach (var segment in segments.Where(s => !s.JobStatus.Equals(JobStatuses.InProgress)))
+            {
+                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"></circle>
+            }
+
+
+            @if (!Model.JobStatusDictionary().ContainsKey(JobStatuses.Open))
+            {
+                <path class="tick" stroke-width="3" d="M12 27.2l7.1 7 16.7-16.8" transform="rotate(90,20,25) scale(0.8)" />
+            }
+
+        </svg>
+    </div>
+    <span class="job__status multiple-statuses">
+        @foreach (var a in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
+        {
+            @($"{a.Value} {a.Key.FriendlyName()}")<br />
+        }
+    </span>
+}

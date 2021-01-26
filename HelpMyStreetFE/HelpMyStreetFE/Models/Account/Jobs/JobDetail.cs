@@ -6,6 +6,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobDetail
     {
+        public RequestSummary RequestSummary { get; set; }
         public JobSummary JobSummary { get; set; }
         public RequestPersonalDetails Requestor { get; set; }
         public RequestPersonalDetails Recipient { get; set; }
