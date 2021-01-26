@@ -21,6 +21,6 @@ namespace HelpMyStreetFE.Services
         Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode);
         Task<List<Location>> GetLocationsByDistance(string postcode);
         Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken);
-        Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations);
+        Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations, CancellationToken cancellationToken);
     }
 }

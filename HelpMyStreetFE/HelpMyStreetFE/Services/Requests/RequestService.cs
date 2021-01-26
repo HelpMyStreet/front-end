@@ -162,7 +162,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo);
+            return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
         }
 
         public async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
@@ -386,10 +386,10 @@ namespace HelpMyStreetFE.Services.Requests
             return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
         }
 
-        private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo)
+        private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
         {
 
-            var locations = await _userService.GetLocations(user.ID, new CancellationToken());
+            var locations = await _userService.GetLocations(user.ID, canellationToken);
 
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {

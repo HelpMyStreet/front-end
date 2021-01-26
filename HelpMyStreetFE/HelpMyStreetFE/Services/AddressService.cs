@@ -121,10 +121,10 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-location-{(int)location}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations)
+        public async Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations, CancellationToken cancellationToken)
         {
 
-            var responses = locations.Select(location => GetLocationDetails(location, new CancellationToken()));
+            var responses = locations.Select(location => GetLocationDetails(location, cancellationToken));
             var awaitedResponses = await Task.WhenAll(responses);
 
             return awaitedResponses.ToList();
