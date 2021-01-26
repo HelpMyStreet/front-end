@@ -12,6 +12,7 @@ using HelpMyStreetFE.Services.Users;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Threading;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -30,7 +31,7 @@ namespace HelpMyStreetFE.Services.Requests
             _userService = userService;
         }
 
-        public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user)
+        public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, JobStatuses? jobStatus, User user, CancellationToken cancellationToken)
         {
 
             return jobSet switch
@@ -41,14 +42,14 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
                 JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
 
-                JobSet.GroupShifts => await GetGroupShiftsFilterSet(user, jobStatus),
-                JobSet.UserOpenShifts => await GetShiftsFilterSet(user, jobSet),
-                JobSet.UserMyShifts => await GetShiftsFilterSet(user, jobSet),
+                JobSet.GroupShifts => await GetGroupShiftsFilterSet(user, jobStatus, cancellationToken),
+                JobSet.UserOpenShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
+                JobSet.UserMyShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
 
-        private async Task<SortAndFilterSet> GetShiftsFilterSet(User user, JobSet jobSet)
+        private async Task<SortAndFilterSet> GetShiftsFilterSet(User user, JobSet jobSet, CancellationToken cancellationToken)
         {
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
@@ -72,7 +73,7 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
+            var locations = await _userService.GetLocations(user.ID, cancellationToken);
 
             if (locations.Count() > 0)
             {
@@ -93,7 +94,7 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(User user, JobStatuses? jobStatus)
+        private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(User user, JobStatuses? jobStatus, CancellationToken cancellationToken)
         {
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
@@ -127,7 +128,7 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
+            var locations = await _userService.GetLocations(user.ID, cancellationToken);
 
             if (locations.Count() > 0)
             {
