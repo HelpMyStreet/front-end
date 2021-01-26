@@ -40,13 +40,13 @@ else
     <div class="status-icon">
         <svg>
 
-            @foreach (var segment in segments.Where(s => s.JobStatus.Equals(JobStatuses.Accepted)))
+            @foreach (var segment in segments.Where(s => s.JobStatus.Equals(JobStatuses.InProgress)))
             {
                 <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"></circle>
                 <circle class="dots" cx="50%" cy="50%" r="@segment.R"></circle>
             }
 
-            @foreach (var segment in segments.Where(s => !s.JobStatus.Equals(JobStatuses.Accepted)))
+            @foreach (var segment in segments.Where(s => !s.JobStatus.Equals(JobStatuses.InProgress)))
             {
                 <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"></circle>
             }
