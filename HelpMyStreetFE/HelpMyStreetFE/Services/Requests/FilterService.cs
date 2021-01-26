@@ -42,13 +42,13 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
 
                 JobSet.GroupShifts => await GetGroupShiftsFilterSet(user, jobStatus),
-                JobSet.UserOpenShifts => await GetShiftsFilterSet(user),
-                JobSet.UserMyShifts => await GetShiftsFilterSet(user),
+                JobSet.UserOpenShifts => await GetShiftsFilterSet(user, jobSet),
+                JobSet.UserMyShifts => await GetShiftsFilterSet(user, jobSet),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
         }
 
-        private async Task<SortAndFilterSet> GetShiftsFilterSet(User user)
+        private async Task<SortAndFilterSet> GetShiftsFilterSet(User user, JobSet jobSet)
         {
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
@@ -64,12 +64,12 @@ namespace HelpMyStreetFE.Services.Requests
                     new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest in the future"},
                 },
                 DueInNextXDays = new List<FilterField<int>>
-                    {
-                        new FilterField<int> { Value = 1, Label = "Today" },
-                        new FilterField<int> { Value = 7, Label = "This week" },
-                        new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
-                        new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
-                    },
+                {
+                    new FilterField<int> { Value = 1, Label = "Today" },
+                    new FilterField<int> { Value = 7, Label = "This week" },
+                    new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
+                    new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                },
             };
 
             var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
@@ -80,27 +80,60 @@ namespace HelpMyStreetFE.Services.Requests
                 filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
             }
 
+            if (jobSet == JobSet.UserMyShifts)
+            {
+                filterSet.JobStatuses = new List<FilterField<JobStatuses>>
+                {
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Accepted, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                };
+            }
 
             return filterSet;
         }
 
         private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(User user, JobStatuses? jobStatus)
         {
-            var filterSet = await GetShiftsFilterSet(user);
+            SortAndFilterSet filterSet = new SortAndFilterSet
+            {
+                PartOfDay = new List<FilterField<PartOfDay>>()
+                {
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Morning, Label = "Morning shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Afternoon, Label = "Afternoon shifts", IsSelected = true},
+                    new FilterField<PartOfDay>() {Value = PartOfDay.Night, Label = "Night shifts", IsSelected = true}
+                },
+                OrderBy = new List<OrderByField>
+                {
+                    new OrderByField() {Value = OrderBy.DateDue_Ascending, Label = "Soonest", IsSelected = true},
+                    new OrderByField() {Value = OrderBy.DateDue_Descending, Label = "Furthest in the future"},
+                    new OrderByField() { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" },
+                },
+                DueInNextXDays = new List<FilterField<int>>
+                {
+                    new FilterField<int> { Value = 1, Label = "Today" },
+                    new FilterField<int> { Value = 7, Label = "This week" },
+                    new FilterField<int> { Value = 14, Label = "Next 2 weeks" },
+                    new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true }
+                },
+                JobStatuses = new List<FilterField<JobStatuses>>
+                {
+                    new FilterField<JobStatuses>() { Value = JobStatuses.New },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Open },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Accepted },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+                },
+            };
 
-            filterSet.OrderBy = filterSet.OrderBy.Append(new OrderByField() { Value = OrderBy.Emptiest, Label = "Most unfilled shifts" });
+            var locations = await _userService.GetLocations(user.ID, new System.Threading.CancellationToken());
 
-            filterSet.JobStatuses = new List<FilterField<JobStatuses>>
-                    {
-                        new FilterField<JobStatuses>() { Value = JobStatuses.New },
-                        new FilterField<JobStatuses>() { Value = JobStatuses.Open },
-                        new FilterField<JobStatuses>() { Value = JobStatuses.Accepted },
-                        new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
-                        new FilterField<JobStatuses>() { Value = JobStatuses.Done },
-                        new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
-                    };
-
-
+            if (locations.Count() > 0)
+            {
+                var locationDetails = await _addressService.GetLocationDetails(locations);
+                filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
+            }
 
             if (jobStatus != null)
             {
