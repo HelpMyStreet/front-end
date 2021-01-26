@@ -76,7 +76,7 @@ namespace HelpMyStreetFE.Repositories
             {
                 return response.Content.JobHeaders;
             }
-            return null;
+            throw new Exception("GetJobsByFilter call failed");
         }
 
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusToNewAsync(int jobId, int createdByUserId)
