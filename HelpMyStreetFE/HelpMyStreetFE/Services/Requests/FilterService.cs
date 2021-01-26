@@ -77,7 +77,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (locations.Count() > 0)
             {
-                var locationDetails = await _addressService.GetLocationDetails(locations);
+                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
                 filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
             }
 
@@ -137,7 +137,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (locations.Count() > 0)
             {
-                var locationDetails = await _addressService.GetLocationDetails(locations);
+                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
                 filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
             }
 
