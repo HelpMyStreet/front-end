@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
 
@@ -233,6 +234,20 @@
         </div>
     }
 
+    @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails))
+    {
+        <div class="job__expander">
+            <h4>Request Details<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    <div class="sm12">
+                        @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.ActivityDetails)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress)
     {
         <div class="job__expander">
@@ -254,7 +269,7 @@
                     <dl>
                         <dt>Do you need to take these details offline?</dt>
                         <dd>
-                            For data protection reasons, you'll only be able to view non-personal information. 
+                            For data protection reasons, you'll only be able to view non-personal information.
                             <span class="link-icons">
                                 <a href="#" title="" class="email-details"><img src="/img/icons/email.svg" /><span>Email </span></a>
                                 <a href="/account/print-job-details?j=@encodedJobID" target="_blank"><img src="/img/icons/printer.svg" /> Print </a>

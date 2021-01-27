@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
 
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
@@ -49,7 +50,7 @@
     var id = Base64Utils.Base64Encode(jobDetails.JobSummary.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
 
-    <div class="job__expander job" id="@id" request-id="@requestId"  data-role="@role">
+    <div class="job__expander job" id="@id" request-id="@requestId" data-role="@role">
         <h4>
             <img class="status-icon" src="~/img/icons/status/@jobDetails.JobSummary.JobStatus.Icon()" alt="@jobDetails.JobSummary.JobStatus.FriendlyName()" title="@jobDetails.JobSummary.JobStatus.FriendlyName()" />
             @if (jobDetails.JobSummary.SupportActivity != SupportActivities.Other)
@@ -154,12 +155,33 @@
 }
 
 <div class="job__expander">
+    <h4>Request Details<span></span></h4>
+    <div class="job__expander__content">
+        @foreach (var activity in Model.GroupSupportActivityInstructions)
+        {
+            <div class="row">
+                <div class="sm12">
+                    @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                    {
+                        <h5>@activity.Key.FriendlyNameShort()</h5>
+                    }
+                    @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="job__expander">
     <h4>Volunteer Instructions<span></span></h4>
     <div class="job__expander__content">
         @foreach (var activity in Model.GroupSupportActivityInstructions)
         {
             <div class="row">
-                <h5>@activity.Key.FriendlyNameShort()</h5>
+                @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                {
+                    <h5>@activity.Key.FriendlyNameShort()</h5>
+                }
                 <div class="sm12 volunteer-instructions">
                     <partial name="_GroupSupportActivityInstructions" model="activity.Value" />
                 </div>
