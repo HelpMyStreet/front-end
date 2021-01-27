@@ -96,8 +96,20 @@
             volunteerOptions.Insert(1, new SupportActivityViewModel { SupportActivities = SupportActivities.MealtimeCompanion, Description = "Providing company over a mealtime for someone who lives alone" });
             volunteerOptions.Insert(2, new SupportActivityViewModel { SupportActivities = SupportActivities.MealsToYourDoor, Description = "Delivering a freshly prepared meal straight to someone’s door" });
             volunteerOptions.Insert(3, new SupportActivityViewModel { SupportActivities = SupportActivities.Transport, Description = "Providing transport for essential appointments" });
-            volunteerOptions.Insert(4, new SupportActivityViewModel { SupportActivities = SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities" });            
+            volunteerOptions.Insert(4, new SupportActivityViewModel { SupportActivities = SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities" });
             volunteerOptions.Insert(5, new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks. Please check with me" });
+            break;
+        case RegistrationFormVariant.LincolnshireVolunteers:
+            volunteerOptions.Clear();
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.VaccineSupport, Description = "Volunteering to support the COVID-19 vaccination programme (e.g. support staff for local vaccination centres)", Selected = true });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.MealPreparation, Description = "Providing and delivering a hot / pre-prepared meal" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CheckingIn, Description = "Checking that someone is OK" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Transport, Description = "Providing transport for essential appointments" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks. Please check with me." });
             break;
     }
 
