@@ -19,6 +19,10 @@ namespace HelpMyStreetFE.Models.Reponses
         [JsonPropertyName("friendlyName")]
         public string FriendlyName { get; set; }
 
+        [DataMember(Name = "groupType")]
+        [JsonPropertyName("groupType")]
+        public string GroupType { get; set; }
+
         [DataMember(Name = "linkURL")]
         [JsonPropertyName("linkURL")]
         public string LinkURL { get; set; }

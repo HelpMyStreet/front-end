@@ -337,7 +337,7 @@ async function updateMap(swLat, swLng, neLat, neLng) {
                           <h4>${coord.friendlyName}</h4>
                           <div class="marker-subtitle">
                             <p>
-                              Local Group
+                              ${coord.groupType}
                               <span class="visit-homepage">Visit homepage</span>
                             </p>
                           </div>

@@ -69,7 +69,8 @@ namespace HelpMyStreetFE.Controllers
                     LinkURL = community.LinkURL,
                     BannerLocation = community.BannerLocation,
                     DisplayOnMap = community.DisplayOnMap,
-                    ZoomLevel = community.Pin_VisibilityZoomLevel
+                    ZoomLevel = community.Pin_VisibilityZoomLevel,
+                    GroupType = community.GroupType,
                 };
                 communityDetails.Add(communityDetail);
             }
