@@ -73,13 +73,13 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var locations = await _userService.GetLocations(user.ID, cancellationToken);
-
-            if (locations.Count() > 0)
+            var userLocations = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+            filterSet.Locations = userLocations.Select(l => new FilterField<Location>
             {
-                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
-                filterSet.Locations = locationDetails.Select(ld => new FilterField<Location>() { Value = ld.Location, IsSelected = true, Label = ld.ShortName });
-            }
+                Value = l.Location,
+                IsSelected = true,
+                Label = $"{l.LocationDetails.ShortName} ({l.Distance:0.0} miles)"
+            });
 
             if (jobSet == JobSet.UserMyShifts)
             {
@@ -133,7 +133,7 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var locations = await _userService.GetLocations(user.ID, cancellationToken);
+            var locations = new List<Location>(); ;
 
             if (locations.Count() > 0)
             {

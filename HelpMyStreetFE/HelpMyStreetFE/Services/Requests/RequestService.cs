@@ -36,10 +36,11 @@ namespace HelpMyStreetFE.Services.Requests
         //private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly IAddressService _addressService;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService)//, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService)//, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
@@ -49,6 +50,7 @@ namespace HelpMyStreetFE.Services.Requests
             _memDistCache = memDistCache;
             _requestSettings = requestSettings;
             _groupMemberService = groupMemberService;
+            _addressService = addressService;
             //_memDistCache_ShiftJobs = memDistCache_ShiftJobs;
         }
 
@@ -381,8 +383,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
         {
-
-            var locations = await _userService.GetLocations(user.ID, canellationToken);
+            var locations = (await _addressService.GetLocationsForUser(user, canellationToken)).Select(l => l.Location).ToList();
 
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {
@@ -390,7 +391,7 @@ namespace HelpMyStreetFE.Services.Requests
                 DateFrom = dateFrom,
                 DateTo = dateTo,
                 Groups = new GroupRequest { Groups = new List<int>() },
-                Locations = new LocationsRequest { Locations = locations.ToList() },
+                Locations = new LocationsRequest { Locations = locations },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
             return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);

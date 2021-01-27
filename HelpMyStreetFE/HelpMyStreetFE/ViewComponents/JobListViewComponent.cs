@@ -2,6 +2,7 @@
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Services.Groups;
@@ -160,10 +161,12 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
+            var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+
             jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<ShiftJob>()
             {
                 Item = a,
-                LocationDetails = await _addressService.GetLocationDetails(a.Location, cancellationToken),
+                Location = userLocationDetails.FirstOrDefault(l => l.Location == a.Location),
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
@@ -214,7 +217,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<RequestSummary>
             {
                 Item = a,
-                LocationDetails = (a.Shift != null ? await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) : null),
+                Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = false,
                 HighlightJob = false,//.JobID.Equals(jobFilterRequest.HighlightJobId),
