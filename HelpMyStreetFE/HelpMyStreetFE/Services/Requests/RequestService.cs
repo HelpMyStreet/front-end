@@ -159,7 +159,11 @@ namespace HelpMyStreetFE.Services.Requests
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
 
-            return jobs?.OrderOpenJobsForDisplay();
+            if (jobs != null)
+            {
+                return jobs.OrderOpenJobsForDisplay();
+            }
+            throw new Exception($"Unable to get jobs for user {userId}");
         }
 
         public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
