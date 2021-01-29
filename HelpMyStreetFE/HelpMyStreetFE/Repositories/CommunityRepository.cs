@@ -293,7 +293,18 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ShowRequestHelpPopup = true;
 
             var carouselPath = "/img/community/ageUK/kent/northwest/carousel";
-            communityViewModel.CarouselImages = new List<List<string>>();
+
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/carousel-1.jpg",
+                    $"{carouselPath}/carousel-2.jpg",
+                    $"{carouselPath}/carousel-3.jpg",
+                    $"{carouselPath}/carousel-4.jpg",
+                    $"{carouselPath}/carousel-5.jpg",
+                }
+            };
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {

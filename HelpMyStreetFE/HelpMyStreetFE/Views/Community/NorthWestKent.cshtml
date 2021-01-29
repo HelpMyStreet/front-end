@@ -15,11 +15,11 @@
 
 <div class="community" data-group-id="@Model.EncodedGroupId">
     <div class="container">
-       
+
         <div class="community-banner">
             <img src="~/img/community/ageUK/kent/northwest/nwkent-banner.png" alt="North West Kent Team" />
         </div>
-        
+
     </div>
     <div class="outer-container">
         <div class="container">
@@ -33,7 +33,7 @@
                         Age UK North West Kent is an independent local charity delivering services for older people in Gravesend, Dartford, Swanscombe & Greenhithe, Northfleet and the surrounding areas. Here are just some of things we can help with:
                     </p>
                     <ul class='tick-list mt-xs mb-sm ml-sm'>
-                        <li>A friendly chat</li>                        
+                        <li>A friendly chat</li>
                         <li>Collecting prescriptions</li>
                         <li>Fresh meal delivery service</li>
                         <li>Urgent medical transport</li>
@@ -57,6 +57,8 @@
             </div>
         </div>
     </div>
+
+
 
     <div class="outer-container outer-container--darker">
         <div class="container">
@@ -100,7 +102,9 @@
         </div>
     </div>
 
-
+    <div class="outer-container mb-lg">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
     <div class="outer-container">
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
