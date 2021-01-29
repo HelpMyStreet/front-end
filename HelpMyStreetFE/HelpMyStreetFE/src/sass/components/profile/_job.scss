@@ -623,12 +623,20 @@
     }
 }
 
+@mixin circleHover {
+    &:hover {
+        stroke: $blue;
+        stroke-width: 0.5rem;
+        transition: 0.3s;
+    }
+}
 
 .status-icon {
     svg {
         width: 100%;
         height: 100%;
         transform: rotate(-90deg);
+        filter: drop-shadow(2px 2px 2px grey);
     }
 
     circle {
@@ -637,22 +645,27 @@
 
         &.new {
             stroke: red;
+            @include circleHover;
         }
 
         &.open {
             stroke: $gray-8;
+            @include circleHover;
         }
 
         &.accepted {
             stroke: $green;
+            @include circleHover;
         }
 
         &.in-progress {
             stroke: $green;
+            @include circleHover;
         }
 
         &.done {
             stroke: green;
+            @include circleHover;
         }
 
         &.dots {
