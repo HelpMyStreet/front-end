@@ -288,6 +288,30 @@ namespace HelpMyStreetFE.Repositories
             var carouselPath = "/img/community/ageUK/kent/northwest/carousel";
             communityViewModel.CarouselImages = new List<List<string>>();
 
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Kate Smith",
+                    Role = "Joint Chief Executive",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/kent/northwest/kate-smith.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Chriss Monks",
+                    Role = "Joint Chief Executive",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/kent/northwest/chriss-monks.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Chriss Monks",
+                    Role = "Kirsty Groves",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/kent/northwest/kirsty-groves.jpg"
+                }
+            };
             return communityViewModel;
         }
 
