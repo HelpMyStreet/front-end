@@ -141,6 +141,13 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     ImageLocation = "/img/community/ageUK/notts/balderton/eunice-ray.jpg"
                 },
+                new CommunityVolunteer()
+                {
+                    Name = "Carlton Roberts",
+                    Role = "Local Volunteer",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/notts/balderton/carlton-roberts.jpg"
+                },
             };
 
             var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
@@ -370,8 +377,43 @@ namespace HelpMyStreetFE.Repositories
             communityViewModel.ShowRequestHelpPopup = true;
 
             var carouselPath = "/img/community/ageUK/kent/northwest/carousel";
-            communityViewModel.CarouselImages = new List<List<string>>();
 
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/carousel-1.jpg",
+                    $"{carouselPath}/carousel-2.jpg",
+                    $"{carouselPath}/carousel-3.jpg",
+                    $"{carouselPath}/carousel-4.jpg",
+                    $"{carouselPath}/carousel-5.jpg",
+                }
+            };
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Kate Smith",
+                    Role = "Joint Chief Executive",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/kent/northwest/kate-smith.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Chriss Monks",
+                    Role = "Joint Chief Executive",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/kent/northwest/chriss-monks.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Chriss Monks",
+                    Role = "Kirsty Groves",
+                    Location = "",
+                    ImageLocation = "/img/community/ageUK/kent/northwest/kirsty-groves.jpg"
+                }
+            };
             return communityViewModel;
         }
 
