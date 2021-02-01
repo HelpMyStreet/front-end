@@ -42,29 +42,32 @@
             </a>
         </li>
 
-        <li class="account__nav__item">
-            <a href="/account/open-shifts" class="@(Model.CurrentPage == MenuPage.OpenShifts ? "selected" : string.Empty)">
-                Open Shifts
-                @await Component.InvokeAsync("AccountNavBadge", new
-                   {
-                       CssClass = "bg-green",
-                       User = Model.UserDetails.User,
-                       MenuPage = MenuPage.OpenShifts
-                   })
-            </a>
-        </li>
+        @if (Model.UserDetails.ShiftsEnabled)
+        {
+            <li class="account__nav__item">
+                <a href="/account/open-shifts" class="@(Model.CurrentPage == MenuPage.OpenShifts ? "selected" : string.Empty)">
+                    Open Shifts
+                    @await Component.InvokeAsync("AccountNavBadge", new
+                       {
+                           CssClass = "bg-green",
+                           User = Model.UserDetails.User,
+                           MenuPage = MenuPage.OpenShifts
+                       })
+                </a>
+            </li>
 
-        <li class="account__nav__item">
-            <a href="/account/my-shifts" class="@(Model.CurrentPage == MenuPage.MyShifts ? "selected" : string.Empty)">
-                My Shifts
-                @await Component.InvokeAsync("AccountNavBadge", new
-                   {
-                       CssClass = "bg-green",
-                       User = Model.UserDetails.User,
-                       MenuPage = MenuPage.MyShifts
-                   })
-            </a>
-        </li>
+            <li class="account__nav__item">
+                <a href="/account/my-shifts" class="@(Model.CurrentPage == MenuPage.MyShifts ? "selected" : string.Empty)">
+                    My Shifts
+                    @await Component.InvokeAsync("AccountNavBadge", new
+                       {
+                           CssClass = "bg-green",
+                           User = Model.UserDetails.User,
+                           MenuPage = MenuPage.MyShifts
+                       })
+                </a>
+            </li>
+        }
 
         <li class="account__nav__item">
             <a href="/account/profile" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>

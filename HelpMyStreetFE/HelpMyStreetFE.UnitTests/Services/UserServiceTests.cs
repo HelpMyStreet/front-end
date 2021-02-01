@@ -30,7 +30,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         [Test]
         public void FormatName_EmptyString()
         {
-            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object);
+            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _addressService.Object);
 
             Assert.AreEqual("", userService.FormatName(""));
         }
@@ -38,7 +38,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         [Test]
         public void FormatName_ShortName()
         {
-            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object);
+            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _addressService.Object);
 
             Assert.AreEqual("A B C O'd", userService.FormatName(" a b C o'd"));
         }
@@ -46,7 +46,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         [Test]
         public void FormatName_MultiWordName()
         {
-            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object);
+            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _addressService.Object);
 
             Assert.AreEqual("Martin Seamus MARTY McFly", userService.FormatName("    martin seamus   MARTY mcFly "));
         }

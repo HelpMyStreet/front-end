@@ -18,14 +18,16 @@ namespace HelpMyStreetFE.Services.Users
         private readonly IUserRepository _userRepository;
         private readonly ILogger<UserService> _logger;
         private readonly IMemDistCache<User> _memDistCache;
+        private readonly IAddressService _addressService;
 
         private const string CACHE_KEY_PREFIX = "user-service-";
 
-        public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache)
+        public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache, IAddressService addressService)
         {
             _userRepository = userRepository;
             _logger = logger;
             _memDistCache = memDistCache;
+            _addressService = addressService;
         }
 
         public async Task<int> CreateUserAsync(string email, string authId, int referringGroupId, string source)
@@ -135,9 +137,14 @@ namespace HelpMyStreetFE.Services.Users
             return await _userRepository.GetVolunteerCoordinates(swLatitude, swLongitude, neLatitude, neLongitude, minDistanceBetweenInMetres);
         }
 
-        public Models.Account.UserDetails GetUserDetails(User user)
+        public async Task<Models.Account.UserDetails> GetUserDetails(User user, CancellationToken cancellationToken)
         {
-            return new Models.Account.UserDetails(user);
+            var userDetails = new Models.Account.UserDetails(user);
+
+            var locations = await _addressService.GetLocationsForUser(user, cancellationToken);
+            userDetails.ShiftsEnabled = locations.Count > 0;
+
+            return userDetails;
         }
 
         public string FormatName(string name)
