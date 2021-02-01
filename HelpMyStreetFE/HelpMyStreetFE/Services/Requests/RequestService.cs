@@ -216,7 +216,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
+        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
@@ -234,7 +234,7 @@ namespace HelpMyStreetFE.Services.Requests
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
-                    JobStatusHistory = jobDetails.History,
+                    JobStatusHistory = await EnrichStatusHistory(jobDetails.History, adminView, cancellationToken),
                     CurrentVolunteer = currentVolunteer,
                 };
             }
@@ -420,6 +420,53 @@ namespace HelpMyStreetFE.Services.Requests
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupShiftRequestsAsync(groupId, dateFrom, dateTo, waitForData, cancellationToken);
+        }
+
+        private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
+        {
+            List<EnrichedStatusHistory> eHist = history.Select(h => new EnrichedStatusHistory(h)).ToList();
+
+            int latestVolunteerId = -1;
+
+            for (int i = 0; i < eHist.Count; i++)
+            {
+                switch (eHist[i].StatusHistory.JobStatus)
+                {
+                    case JobStatuses.New:
+                        eHist[i].JobStatusDescription = "Created";
+                        break;
+                    case JobStatuses.Open:
+                        if (latestVolunteerId > 0)
+                        {
+                            eHist[i].JobStatusDescription = "Released";
+                            eHist[i].StatusHistory.VolunteerUserID = latestVolunteerId;
+                        }
+                        else if (i == 0)
+                        {
+                            eHist[i].JobStatusDescription = "Created";
+                        }
+                        else
+                        {
+                            eHist[i].JobStatusDescription = "Approved";
+                        }
+                        break;
+                    default:
+                        eHist[i].JobStatusDescription = eHist[i].StatusHistory.JobStatus.FriendlyName();
+                        break;
+                }
+
+                if ((eHist[i].StatusHistory.VolunteerUserID ?? -1) > 0)
+                {
+                    latestVolunteerId = eHist[i].StatusHistory.VolunteerUserID.Value;
+
+                    if (ShowNames)
+                    {
+                        eHist[i].VolunteerUser = await _userService.GetUserAsync(eHist[i].StatusHistory.VolunteerUserID.Value, cancellationToken);
+                    }
+                }
+            }
+
+            return eHist;
         }
     }
 }
