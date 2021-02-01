@@ -420,6 +420,7 @@
     }
 
     .status-icon {
+        filter: drop-shadow(2px 2px 2px grey);
         width: 3rem;
         height: 3rem;
     }
@@ -505,6 +506,20 @@
                 display: none;
             }
         }
+
+        .location-details {
+            dd {
+                display: flex;
+
+                @media screen and (max-width: $med-screen) {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+        }
+
+
 
         .offline-details {
             display: flex;
@@ -638,6 +653,7 @@
         transform: rotate(-90deg);
         filter: drop-shadow(2px 2px 2px grey);
     }
+
 
     circle {
         fill: none;

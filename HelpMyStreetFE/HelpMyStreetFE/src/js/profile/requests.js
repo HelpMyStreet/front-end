@@ -3,6 +3,7 @@ import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
+import { enableMaps, drawMap } from "../shared/maps";
 
 export function initialiseRequests() {
 
@@ -15,7 +16,7 @@ export function initialiseRequests() {
         const job = $(this).closest('.job');
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
-        loadJobDetails(job);
+        loadJobDetails(job).then(initialiseMaps(job));
     });
 
     $('.job-list').on('click', '.job a.close', function (e) {
@@ -29,6 +30,7 @@ export function initialiseRequests() {
         e.preventDefault();
         $(this).toggleClass('open');
         $(this).next().slideToggle();
+        
     });
 
     $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
@@ -112,9 +114,26 @@ export function initialiseRequests() {
 
     });
 
+    enableMaps();
     loadFeedbackComponents();
+    
 }
 
+async function initialiseMaps(job){
+var thisMap = {
+            displayVolunteers: false,
+            displayGroups: false,
+            allowNavigation: false,
+            allowSearch: false,
+            consoleCoordinates: false,
+            initialLat: Number(job.find(".location-map").data("lat")),
+            initialLng: Number(job.find(".location-map").data("lng")),
+            initialZoom: 9,
+            divID: "map-" + job.attr("id"),
+            singlePin: true
+        };
+drawMap(thisMap);
+}
 
 export function showStatusUpdatePopup(btn) {
     const job = btn.closest(".job");
@@ -183,6 +202,7 @@ async function loadJobDetails(job, forceRefresh) {
     if (response.fetchResponse == fetchResponses.SUCCESS) {
         jobDetail.html(await response.fetchPayload);
         jobDetail.data('status', { 'updated': new Date() });
+        
     } else {
         jobDetail.removeData('status');
         return false;
