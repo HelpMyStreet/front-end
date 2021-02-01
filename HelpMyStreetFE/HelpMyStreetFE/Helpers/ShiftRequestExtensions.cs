@@ -19,7 +19,7 @@ namespace HelpMyStreetFE.Helpers
             }
             else
             {
-                return $"{shiftJob.StartDate.ShiftyDate()} - {shiftJob.StartDate.ShiftyDate()}";
+                return $"{shiftJob.StartDate.ShiftyDate()} - {shiftJob.EndDate.ShiftyDate()}";
             }
         }
         public static string TimeSpan(this ShiftJob shiftJob)
@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Helpers
             }
             else
             {
-                return $"{shiftRequest.Shift.StartDate.ShiftyDate()} - {shiftRequest.Shift.StartDate.ShiftyDate()}";
+                return $"{shiftRequest.Shift.StartDate.ShiftyDate()} - {shiftRequest.Shift.EndDate.ShiftyDate()}";
             }
         }
         public static string TimeSpan(this RequestSummary shiftRequest)

@@ -42,10 +42,10 @@
                     <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
                 </div>
             </div>
-            <span class="job__info__col1__urgency__dates due-date" title="">
+            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
                 @Model.Item.DateSpan()
             </span>
-            <span class="job__info__col1__urgency__dates due-date" title="">
+            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
                 @Model.Item.TimeSpan()
             </span>
 
