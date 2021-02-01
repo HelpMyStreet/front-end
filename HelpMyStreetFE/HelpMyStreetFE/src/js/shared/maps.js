@@ -210,7 +210,7 @@ export async function drawMap(inputOptions) {
     fullscreenControl: false,
     zoom: options.initialZoom,
     mapTypeId: "roadmap",
-    gestureHandling: 'none',
+    gestureHandling: options.allowNavigation ? 'auto' : 'none',
     zoomControl: options.allowNavigation
   });
 
@@ -221,7 +221,7 @@ export async function drawMap(inputOptions) {
       title: null,
       icon: {
         url: "/img/logos/markers/hms5.png",
-        scaledSize: new google.maps.Size(30, 30)
+        scaledSize: new google.maps.Size(50, 50)
       },
       map: thisGoogleMap
     });
