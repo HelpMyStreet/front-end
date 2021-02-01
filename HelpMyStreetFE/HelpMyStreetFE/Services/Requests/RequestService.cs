@@ -22,6 +22,7 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -38,6 +39,8 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IGroupMemberService _groupMemberService;
         private readonly IAddressService _addressService;
 
+        private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
+
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
         public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService)//, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs)
@@ -52,6 +55,8 @@ namespace HelpMyStreetFE.Services.Requests
             _groupMemberService = groupMemberService;
             _addressService = addressService;
             //_memDistCache_ShiftJobs = memDistCache_ShiftJobs;
+
+            _shiftJobDedupe_EqualityComparer = new ShiftJobDedupe_EqualityComparer();
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -398,7 +403,13 @@ namespace HelpMyStreetFE.Services.Requests
                 Locations = new LocationsRequest { Locations = locations },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
-            return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
+            var allShifts = await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
+            var dedupedShifts = allShifts.Distinct(_shiftJobDedupe_EqualityComparer);
+
+            var userShifts = await GetShiftsForUserAsync(user.ID, null, null, true, canellationToken);
+            var notMyShifts = dedupedShifts.Where(s => !userShifts.Contains(s, _shiftJobDedupe_EqualityComparer));
+
+            return notMyShifts;
         }
 
         public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
