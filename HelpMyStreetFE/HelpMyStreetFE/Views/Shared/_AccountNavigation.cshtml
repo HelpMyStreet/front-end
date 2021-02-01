@@ -91,19 +91,6 @@
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
-                            <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
-                                    Requests
-                                    @await Component.InvokeAsync("AccountNavBadge", new
-                                       {
-                                           CssClass = "bg-green",
-                                           User = Model.UserDetails.User,
-                                           MenuPage = MenuPage.GroupRequests,
-                                           GroupKey = userGroup.GroupKey
-                                       })
-                                </a>
-                            </li>
-
                             @if (userGroup.ShiftsEnabled)
                             {
                                 <li class="account__nav__item">
@@ -119,6 +106,19 @@
                                     </a>
                                 </li>
                             }
+
+                            <li class="account__nav__item">
+                                <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
+                                    Requests
+                                    @await Component.InvokeAsync("AccountNavBadge", new
+                                       {
+                                           CssClass = "bg-green",
+                                           User = Model.UserDetails.User,
+                                           MenuPage = MenuPage.GroupRequests,
+                                           GroupKey = userGroup.GroupKey
+                                       })
+                                </a>
+                            </li>
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin_ReadOnly))
                         {
