@@ -58,7 +58,6 @@ $(document).ready(function () {
                         return true;
                     },
                 });
-                console.log(popup);
                 hidePopup(popup, 0);
             }
         });
