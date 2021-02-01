@@ -104,18 +104,21 @@
                                 </a>
                             </li>
 
-                            <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/shifts") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupShifts ? "selected" : string.Empty)">
-                                    Shifts
-                                    @await Component.InvokeAsync("AccountNavBadge", new
-                                       {
-                                           CssClass = "bg-green",
-                                           User = Model.UserDetails.User,
-                                           MenuPage = MenuPage.GroupShifts,
-                                           GroupKey = userGroup.GroupKey
-                                       })
-                                </a>
-                            </li>
+                            @if (userGroup.ShiftsEnabled)
+                            {
+                                <li class="account__nav__item">
+                                    <a href=@($"/account/g/{userGroup.GroupKey}/shifts") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupShifts ? "selected" : string.Empty)">
+                                        Shifts
+                                        @await Component.InvokeAsync("AccountNavBadge", new
+                                           {
+                                               CssClass = "bg-green",
+                                               User = Model.UserDetails.User,
+                                               MenuPage = MenuPage.GroupShifts,
+                                               GroupKey = userGroup.GroupKey
+                                           })
+                                    </a>
+                                </li>
+                            }
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin_ReadOnly))
                         {
