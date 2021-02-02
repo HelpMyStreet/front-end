@@ -245,6 +245,22 @@ namespace HelpMyStreetFE.Services.Requests
             throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
         }
 
+        public async Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken)
+        {
+            UpdateJobStatusOutcome? outcome = status switch
+            {
+                JobStatuses.Cancelled => await _requestHelpRepository.PutUpdateRequestStatusToCancelled(requestId, createdByUserId),
+                _ => throw new ArgumentException(message: $"Invalid JobStatuses value for Request: {status}", paramName: nameof(status)),
+            };
+
+            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
+            {
+                TriggerCacheRefresh(createdByUserId, cancellationToken);
+            }
+
+            return outcome;
+        }
+
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
             UpdateJobStatusOutcome? outcome = status switch
@@ -351,6 +367,26 @@ namespace HelpMyStreetFE.Services.Requests
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
+                DateTime? dateFrom = null;
+                DateTime? dateTo = null;
+                _ = _memDistCache_ShiftJobs.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await GetOpenShiftsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken), dateFrom, dateTo, cancellationToken);
+                }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
+
+
+                _ = await _memDistCache_ShiftJobs.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await _requestHelpRepository.GetUserShiftJobsByFilter(new GetUserShiftJobsByFilterRequest()
+                    {
+                        VolunteerUserId = userId,
+                        DateFrom = dateFrom,
+                        DateTo = dateTo,
+                        JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
+                    });
+                }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
+
+
                 List<UserGroup> userGroups = await _groupMemberService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
@@ -360,6 +396,18 @@ namespace HelpMyStreetFE.Services.Requests
                         {
                             return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
                         }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
+
+                        _ = _memDistCache_RequestSummaries.RefreshDataAsync(async (cancellationToken) =>
+                        {
+                            var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+                            {
+                                ReferringGroupID = g.GroupId,
+                                DateFrom = dateFrom,
+                                DateTo = dateTo,
+                            };
+
+                            return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
+                        }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
                     });
                 }
             });
