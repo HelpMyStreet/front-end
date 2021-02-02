@@ -68,7 +68,7 @@
                 @if (volunteerDetails != null)
                 {
                     <div class="sm4 toggle-on-status-change">
-                        <h5>Volunteer</h5>
+                        <h5>Current Volunteer</h5>
                         <dl>
                             <dt>Name</dt>
                             <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
@@ -84,12 +84,24 @@
                     </div>
                 }
                 <div class="sm3 toggle-on-status-change">
-                    <h5>Job Status History</h5>
-                    <dl>
+                    <h5>Slot Status History</h5>
+                    <dl class="highlight-last">
                         @foreach (var statusChange in jobDetails.JobStatusHistory)
                         {
-                            <dt>@statusChange.JobStatus.FriendlyName()</dt>
-                            <dd>@statusChange.StatusDate.ToString("dd/MM/yyyy hh:mm tt").ToLower()</dd>
+                            <dt>
+                                @statusChange.JobStatusDescription
+                            </dt>
+                            <dd>
+                                @if (statusChange.VolunteerUser != null)
+                                {
+                                    <span>
+                                        @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
+                                        @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                    </span>
+                                    <br />
+                                }
+                                @statusChange.StatusHistory.StatusDate.ToString("dd/MM/yyyy h:mm tt").ToLower()
+                            </dd>
                         }
                     </dl>
                 </div>

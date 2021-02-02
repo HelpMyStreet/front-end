@@ -22,6 +22,7 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -33,14 +34,17 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
         private readonly IMemDistCache<IEnumerable<JobHeader>> _memDistCache;
-        //private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
+        private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
+        private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IAddressService _addressService;
 
+        private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
+
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService)//, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
@@ -51,7 +55,10 @@ namespace HelpMyStreetFE.Services.Requests
             _requestSettings = requestSettings;
             _groupMemberService = groupMemberService;
             _addressService = addressService;
-            //_memDistCache_ShiftJobs = memDistCache_ShiftJobs;
+            _memDistCache_ShiftJobs = memDistCache_ShiftJobs;
+            _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
+
+            _shiftJobDedupe_EqualityComparer = new ShiftJobDedupe_EqualityComparer();
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -168,31 +175,28 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            return await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
         }
 
         public async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            //TODO: Add caching?
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            //NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
-
-            //var jobs = await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
-            //{
-
-
-            return await _requestHelpRepository.GetUserShiftJobsByFilter(new GetUserShiftJobsByFilterRequest()
+            return await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
             {
-                VolunteerUserId = userId,
-                DateFrom = dateFrom,
-                DateTo = dateTo,
-                JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
-            });
-            
-            
-            //}, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
-
-            //return jobs?.OrderOpenJobsForDisplay();
+                return await _requestHelpRepository.GetUserShiftJobsByFilter(new GetUserShiftJobsByFilterRequest()
+                {
+                    VolunteerUserId = userId,
+                    DateFrom = dateFrom,
+                    DateTo = dateTo,
+                    JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
+                });
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
         }
 
         public async Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
@@ -216,7 +220,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
+        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
@@ -234,7 +238,7 @@ namespace HelpMyStreetFE.Services.Requests
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
-                    JobStatusHistory = jobDetails.History,
+                    JobStatusHistory = await EnrichStatusHistory(jobDetails.History, adminView, cancellationToken),
                     CurrentVolunteer = currentVolunteer,
                 };
             }
@@ -398,21 +402,30 @@ namespace HelpMyStreetFE.Services.Requests
                 Locations = new LocationsRequest { Locations = locations },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
-            return await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
+            var allShifts = await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
+            var dedupedShifts = allShifts.Distinct(_shiftJobDedupe_EqualityComparer);
+
+            var userShifts = await GetShiftsForUserAsync(user.ID, null, null, true, canellationToken);
+            var notMyShifts = dedupedShifts.Where(s => !userShifts.Contains(s, _shiftJobDedupe_EqualityComparer));
+
+            return notMyShifts;
         }
 
         public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            //TODO: Add caching?
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+            return await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
             {
-                ReferringGroupID = groupId,
-                DateFrom = dateFrom,
-                DateTo = dateTo,
-            };
+                var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+                {
+                    ReferringGroupID = groupId,
+                    DateFrom = dateFrom,
+                    DateTo = dateTo,
+                };
 
-            return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
+                return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
         }
 
         public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
@@ -420,6 +433,53 @@ namespace HelpMyStreetFE.Services.Requests
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupShiftRequestsAsync(groupId, dateFrom, dateTo, waitForData, cancellationToken);
+        }
+
+        private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
+        {
+            List<EnrichedStatusHistory> eHist = history.Select(h => new EnrichedStatusHistory(h)).ToList();
+
+            int latestVolunteerId = -1;
+
+            for (int i = 0; i < eHist.Count; i++)
+            {
+                switch (eHist[i].StatusHistory.JobStatus)
+                {
+                    case JobStatuses.New:
+                        eHist[i].JobStatusDescription = "Created";
+                        break;
+                    case JobStatuses.Open:
+                        if (latestVolunteerId > 0)
+                        {
+                            eHist[i].JobStatusDescription = "Released";
+                            eHist[i].StatusHistory.VolunteerUserID = latestVolunteerId;
+                        }
+                        else if (i == 0)
+                        {
+                            eHist[i].JobStatusDescription = "Created";
+                        }
+                        else
+                        {
+                            eHist[i].JobStatusDescription = "Approved";
+                        }
+                        break;
+                    default:
+                        eHist[i].JobStatusDescription = eHist[i].StatusHistory.JobStatus.FriendlyName();
+                        break;
+                }
+
+                if ((eHist[i].StatusHistory.VolunteerUserID ?? -1) > 0)
+                {
+                    latestVolunteerId = eHist[i].StatusHistory.VolunteerUserID.Value;
+
+                    if (ShowNames)
+                    {
+                        eHist[i].VolunteerUser = await _userService.GetUserAsync(eHist[i].StatusHistory.VolunteerUserID.Value, cancellationToken);
+                    }
+                }
+            }
+
+            return eHist;
         }
     }
 }

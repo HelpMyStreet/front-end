@@ -599,10 +599,21 @@
                 font-weight: bold;
                 color: $black;
                 padding-top: 0.25rem;
+
+                span.context {
+                    font-weight: normal;
+                }
             }
 
             dd {
                 word-wrap: break-word;
+            }
+
+            &.highlight-last{
+                dt:last-of-type,
+                dd:last-of-type {
+                    color: $green;
+                }
             }
         }
 

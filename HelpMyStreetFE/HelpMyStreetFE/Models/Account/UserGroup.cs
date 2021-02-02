@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Models.Account
         public int GroupId { get; set; }
         public string GroupName { get; set; }
         public string GroupKey { get; set; }
+        public bool ShiftsEnabled { get; set; }
         public IEnumerable<GroupRoles> UserRoles { get; set; }
     }
 }

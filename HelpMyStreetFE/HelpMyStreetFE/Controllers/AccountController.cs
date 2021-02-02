@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken, next == "verify");
             viewModel.CurrentPage = MenuPage.UserDetails;
-            var userDetails = _userService.GetUserDetails(user);
+            var userDetails = await _userService.GetUserDetails(user, cancellationToken);
             viewModel.PageModel = userDetails;
             return View("Index", viewModel);
         }
@@ -429,7 +429,7 @@ namespace HelpMyStreetFE.Controllers
                         Type = NotificationType.Success
                     }
                 };
-                var userDetails = _userService.GetUserDetails(user);
+                var userDetails = await _userService.GetUserDetails(user, cancellationToken);
                 viewModel.Notifications = notifications;
                 viewModel.VerificationViewModel = new VerificationViewModel
                 {
