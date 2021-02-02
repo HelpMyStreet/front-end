@@ -1,14 +1,16 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
-
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+}
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
-        <div class="popup__content__header">Approve Request?</div>
+        <div class="popup__content__header">Approve @(isShift ? "Shift" : "Request")?</div>
         <div class="popup__content__text">
-            <p>The request will be made visible on volunteers’ Open Requests views, and email notifications will be sent to matching volunteers.</p>
+            <p>The request will be made visible on volunteers’ Open @(isShift ? "Shifts" : "Requests" ) views @(isShift ? "." : ", and email notifications will be sent to matching volunteers.")</p>
         </div>
         <div class="popup__content__buttons">
-            <p class="error dnone">Oops, we couldn’t approve this request at the moment.</p>
+            <p class="error dnone">Oops, we couldn’t approve this @(isShift ? "shift" : "request") at the moment.</p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
         </div>
     </div>

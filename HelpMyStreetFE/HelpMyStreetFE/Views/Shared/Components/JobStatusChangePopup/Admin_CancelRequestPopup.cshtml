@@ -1,5 +1,7 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
-
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+}
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
@@ -16,11 +18,11 @@
 
             @if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Open)
             {
-                <p>We can mark is as Cancelled and remove it from the “Open Requests” list.</p>
+                <p>We can mark is as Cancelled and remove it from the "@(isShift ? "Open Shifts" : "Open Requests")" list.</p>
             }
             else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.InProgress)
             {
-                <p>We can mark is as Cancelled and remove it from the relevant volunteer’s “My Accepted Requests” page.</p>
+                <p>We can mark is as Cancelled and remove it from the relevant volunteer’s “My @(isShift ? "Shifts" : "Accepted Requests")” page.</p>
             }
             else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
             {
@@ -29,7 +31,7 @@
 
         </div>
         <div class="popup__content__buttons">
-            <p class="error dnone">Oops, we couldn’t cancel this request at the moment.</p>
+            <p class="error dnone">Oops, we couldn’t cancel this @(isShift ? "shift" : "request") at the moment.</p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
         </div>
     </div>

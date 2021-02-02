@@ -76,6 +76,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel()
             {
+                RequestType = job.RequestType,
                 JobSummary = job,
                 TargetStatus = targetStatus,
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(job.ReferringGroupID, job.SupportActivity, cancellationToken),

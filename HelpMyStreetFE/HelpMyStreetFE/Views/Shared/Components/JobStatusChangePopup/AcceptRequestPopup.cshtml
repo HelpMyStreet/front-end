@@ -2,14 +2,20 @@
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
 
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+    var pageType = isShift ? "Shifts" : "Accepted Requests";
+}
+
 <div class="popup__content wide">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
-        <div class="popup__content__header">Accept this request for help?</div>
+        <div class="popup__content__header">Accept this @(isShift ? "shift" : "request for help")?</div>
         <div class="popup__content__text">
-            <p>If you click to accept this request it will appear on your “My Accepted Requests” page and you’ll be able to view more information to help you complete it.</p>
+            <p>If you click to accept this request it will appear on your “My @pageType” page and you’ll be able to view more information to help you complete it.</p>
 
-            <p>This <strong>@Model.JobSummary.SupportActivity.FriendlyNameShort()</strong> request is managed by <strong>@Model.ReferringGroup</strong>. When you accept this request your details will become visible to their administrator(s), who may use these details to contact you about this request.</p>
+            <p>This <strong>@Model.JobSummary.SupportActivity.FriendlyNameShort()</strong> @requestType is managed by <strong>@Model.ReferringGroup</strong>. When you accept this @requestType your details will become visible to their administrator(s), who may use these details to contact you about this @requestType.</p>
 
             <div class="volunteer-instructions">
                 <h5>Volunteer Instructions</h5>
@@ -17,7 +23,7 @@
             </div>
         </div>
         <div class="popup__content__buttons">
-            <p class="error dnone">Oops, we couldn’t accept this request at the moment.</p>
+            <p class="error dnone">Oops, we couldn’t accept this @requestType at the moment.</p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Accept" }' />
         </div>
     </div>

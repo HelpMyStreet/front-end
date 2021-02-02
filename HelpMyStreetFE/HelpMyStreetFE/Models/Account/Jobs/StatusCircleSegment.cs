@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     public class StatusCircleSegment
     {
         public JobStatuses JobStatus { get; set; }
+        public int Value { get; set; }
         public double Radius { get; set; }
         public double Proportion { get; set; }
         public double OffsetProportion { get; set; }
