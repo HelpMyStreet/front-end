@@ -13,7 +13,7 @@
     <script src="/community.js" asp-append-version="true"></script>
 }
 
-<div class="community" data-group-id="@Model.EncodedGroupId">
+<div class="community content-page" data-group-id="@Model.EncodedGroupId">
     <div class="container">
        
         <div class="community-banner">
@@ -39,7 +39,7 @@
                         <p class="mt-sm mb-sm pl-md pr-md">
                             To register your interest as a community volunteer and find opportunities near you, sign up today</p>
                             <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
-</div>
+                    </div>
                 </div>
 
                 <div class="sm6 pl-md">
