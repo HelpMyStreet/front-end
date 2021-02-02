@@ -67,13 +67,13 @@ function subMenuToggle(container, slideDuration = 400) {
     if ($(ul).is(':visible')) {
         $(ul).find('.account__nav__badge').hide();
         $(ul).slideUp(slideDuration, function () {
-            $(container).children('a').children('.account__nav__badge').show();
+            $(container).children('a').children('.account__nav__badge:not(.dnone)').show();
         });
     } else {
         $(container).children('a').children('.account__nav__badge').hide();
         $(ul).find('.account__nav__badge').hide();
         $(ul).slideDown(slideDuration, function () {
-            $(ul).find('.account__nav__badge').show();
+            $(ul).find('.account__nav__badge:not(.dnone)').show();
         });
     }
 }
