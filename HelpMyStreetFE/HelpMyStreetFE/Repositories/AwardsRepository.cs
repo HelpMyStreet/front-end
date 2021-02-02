@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Repositories
                 new AwardsModel()
                 {
                     AwardValue = 0,
-                    AwardDescription = "Verify your ID in the My Profile tab so you can start accepting requests near you.",
+                    AwardDescription = "To be able to accept requests from lots of different organisations, verify your ID in the My Profile tab now.",
                     ImageLocation = "/img/awards/round-placeholder.svg",
                     SpecificPredicate = u => {
                         foreach (Object o in u) {

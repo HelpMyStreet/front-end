@@ -45,7 +45,7 @@
     <h4>Slots</h4>
 </div>
 
-@foreach (var jobDetails in Model.JobDetails)
+@foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobSummary.JobStatus.Equals(JobStatuses.Cancelled)))
 {
     var id = Base64Utils.Base64Encode(jobDetails.JobSummary.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
