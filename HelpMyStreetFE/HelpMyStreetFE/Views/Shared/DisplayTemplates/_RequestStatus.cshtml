@@ -40,11 +40,12 @@ else
 {
     <div class="status-icon">
         <svg>
+            <circle class="background" cx="50%" cy="50%" r="@segments.First().R"></circle>
 
             @foreach (var segment in segments.Where(s => s.JobStatus.Equals(JobStatuses.InProgress)))
             {
                 <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value of @totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
-                
+
                 <circle class="dots" cx="50%" cy="50%" r="@segment.R"></circle>
             }
 
