@@ -20,7 +20,7 @@
         {
             Value = s.Value,
             Radius = 1.2,
-            GapProportion = 0.01,
+            GapProportion = Model.JobStatusDictionary().Count() > 1 ? 0.01 : 0,
             JobStatus = s.Key,
             Proportion = (double)s.Value / totalUncancelledJobs,
             OffsetProportion = (double)offsetJobs / totalUncancelledJobs
@@ -31,10 +31,10 @@
 }
 
 
-@if (Model.SingleJobStatus() != null)
+@if (Model.SingleJobStatus() != null && Model.SingleJobStatus() != JobStatuses.Accepted && Model.SingleJobStatus() != JobStatuses.InProgress && Model.SingleJobStatus() != JobStatuses.Open)
 {
     <img class="status-icon" src="~/img/icons/status/@Model.SingleJobStatus().Value.Icon()" alt="@Model.SingleJobStatus().Value.FriendlyName()" />
-    <span class="job__status">@(totalUncancelledJobs > 0 ? $"{totalUncancelledJobs} of {totalUncancelledJobs}" : "") @Model.SingleJobStatus().Value.FriendlyName()</span>
+    <span class="job__status multiple-statuses">@(totalUncancelledJobs > 0 ? $"{totalUncancelledJobs} of {totalUncancelledJobs}" : "") @Model.SingleJobStatus().Value.FriendlyName()</span>
 }
 else
 {
