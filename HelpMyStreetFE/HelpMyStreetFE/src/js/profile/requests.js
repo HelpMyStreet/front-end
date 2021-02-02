@@ -121,10 +121,11 @@ export function showStatusUpdatePopup(btn) {
     const targetState = $(btn).data("target-state");
     const targetUser = $(btn).data("target-user") ?? "self";
 
-    let jobId = job.attr("id");
+    const jobId = job.attr("id");
+    const requestId = $(job).attr("request-id");
     const role = $(job).data("role");
 
-    let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
+    let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&rq=${requestId}&s=${targetState}`;
 
     let popupSettings = {
         acceptCallbackAsync: async () => {
@@ -160,11 +161,12 @@ export function showStatusUpdatePopup(btn) {
 }
 
 
-async function setJobStatus(job, newStatus, targetUser) {
+async function setJobStatus(job, targetState, targetUser) {
     const jobId = job.attr("id");
+    const requestId = $(job).attr("request-id");
     const role = $(job).data("role");
 
-    return await hmsFetch('/api/request-help/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser + '&r=' + role);
+    return await hmsFetch(`/api/request-help/set-job-status?j=${jobId}&rq=${requestId}&s=${targetState}&u={targetUser}&r=${role}`);
 }
 
 

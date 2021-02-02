@@ -1,9 +1,12 @@
-﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+﻿@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreetFE.Helpers; 
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
 
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
-        @if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
+        @if (Model.RequestSummary.SingleJobStatus() == JobStatuses.Done)
         {
             <div class="popup__content__header">Mark as cancelled?</div>
         }
@@ -12,24 +15,14 @@
             <div class="popup__content__header">Cancel?</div>
         }
         <div class="popup__content__text">
-            <p>Is there a problem with this request (e.g. you have become aware that it was entered in error or that the help is no longer needed)?</p>
+            <p>Click “Confirm” to cancel this shift (and all @Model.RequestSummary.JobSummaries.Count() slots within it).</p>
 
-            @if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Open)
-            {
-                <p>We can mark is as Cancelled and remove it from the “Open Requests” list.</p>
-            }
-            else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.InProgress)
-            {
-                <p>We can mark is as Cancelled and remove it from the relevant volunteer’s “My Accepted Requests” page.</p>
-            }
-            else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
-            {
-                <p>We can mark is as Cancelled for your records.</p>
-            }
+            <p>We will notify any volunteers who have accepted the shift that it has been cancelled and will remove it from their “My Shifts” page.</p>
 
+            <p><b>This action cannot be undone.</b> Please make sure you want to make this change before you click to confirm.</p>
         </div>
         <div class="popup__content__buttons">
-            <p class="error dnone">Oops, we couldn’t cancel this request at the moment.</p>
+            <p class="error dnone">Oops, we couldn’t cancel this shift at the moment.</p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
         </div>
     </div>

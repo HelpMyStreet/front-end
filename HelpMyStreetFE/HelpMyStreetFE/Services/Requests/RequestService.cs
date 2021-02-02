@@ -245,6 +245,22 @@ namespace HelpMyStreetFE.Services.Requests
             throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
         }
 
+        public async Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken)
+        {
+            UpdateJobStatusOutcome? outcome = status switch
+            {
+                JobStatuses.Cancelled => await _requestHelpRepository.PutUpdateRequestStatusToCancelled(requestId, createdByUserId),
+                _ => throw new ArgumentException(message: $"Invalid JobStatuses value for Request: {status}", paramName: nameof(status)),
+            };
+
+            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
+            {
+                TriggerCacheRefresh(createdByUserId, cancellationToken);
+            }
+
+            return outcome;
+        }
+
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
             UpdateJobStatusOutcome? outcome = status switch

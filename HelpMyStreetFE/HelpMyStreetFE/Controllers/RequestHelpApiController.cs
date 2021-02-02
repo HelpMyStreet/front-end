@@ -39,21 +39,33 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [HttpGet("set-job-status")]
-        public async Task<ActionResult<SetJobStatusResult>> SetJobStatus(string j, JobStatuses s, string r, string u, CancellationToken cancellationToken)
+        public async Task<ActionResult<SetJobStatusResult>> SetJobStatus(string j, string rq, JobStatuses s, string r, string u, CancellationToken cancellationToken)
         {
             try
             {
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-                int jobId = Base64Utils.Base64DecodeToInt(j);
-                RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-                int? targetUserId = null;
-                if (s == JobStatuses.InProgress)
-                { 
-                    targetUserId = (requestRole == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u));
+                UpdateJobStatusOutcome? outcome;
+                bool requestFeedback = false;
+
+                if (string.IsNullOrEmpty(j))
+                {
+                    int requestId = Base64Utils.Base64DecodeToInt(rq);
+                    outcome = await _requestService.UpdateRequestStatusAsync(requestId, s, user.ID, cancellationToken);
                 }
+                else
+                {
+                    RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
+                    int? targetUserId = null;
+                    if (s == JobStatuses.InProgress)
+                    { 
+                        targetUserId = (requestRole == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u));
+                    }
 
-                UpdateJobStatusOutcome? outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
+                    int jobId = Base64Utils.Base64DecodeToInt(j);
+                    outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
+                    requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
+                }
 
                 switch (outcome)
                 {
@@ -62,7 +74,7 @@ namespace HelpMyStreetFE.Controllers {
                         return new SetJobStatusResult
                         {
                             NewStatus = s.FriendlyName(),
-                            RequestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue
+                            RequestFeedback = requestFeedback
                         };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
@@ -111,11 +123,18 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-status-change-popup")]
-        public IActionResult GetStatusChangePopup(string j, JobStatuses s)
+        public IActionResult GetStatusChangePopup(string j, string rq, JobStatuses s)
         {
-            int jobId = Base64Utils.Base64DecodeToInt(j);
-
-            return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
+            if (string.IsNullOrEmpty(j))
+            {
+                int requestId = Base64Utils.Base64DecodeToInt(rq);
+                return ViewComponent("JobStatusChangePopup", new { requestId, targetStatus = s });
+            }
+            else
+            {
+                int jobId = Base64Utils.Base64DecodeToInt(j);
+                return ViewComponent("JobStatusChangePopup", new { jobId, targetStatus = s });
+            }
         }
 
         [AuthorizeAttributeNoRedirect]
