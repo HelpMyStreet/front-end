@@ -257,9 +257,9 @@ namespace HelpMyStreetFE.Repositories
 
             CommunityModel communityModel = GetCommunityDetailByKey("lincs-volunteers");
 
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 11;
+            communityViewModel.Map_CentreLatitude = 52.95;
+            communityViewModel.Map_CentreLongitude = -0.2;
+            communityViewModel.Map_ZoomLevel = 9;
 
             communityViewModel.CommunityName = "Lincolnshire Volunteers";
             communityViewModel.ShowRequestHelpPopup = true;
