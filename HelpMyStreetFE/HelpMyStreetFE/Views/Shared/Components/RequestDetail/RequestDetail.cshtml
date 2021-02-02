@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
 
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
@@ -49,7 +50,7 @@
     var id = Base64Utils.Base64Encode(jobDetails.JobSummary.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
 
-    <div class="job__expander job" id="@id" request-id="@requestId"  data-role="@role">
+    <div class="job__expander job" id="@id" request-id="@requestId" data-role="@role">
         <h4>
             <img class="status-icon" src="~/img/icons/status/@jobDetails.JobSummary.JobStatus.Icon()" alt="@jobDetails.JobSummary.JobStatus.FriendlyName()" title="@jobDetails.JobSummary.JobStatus.FriendlyName()" />
             @if (jobDetails.JobSummary.SupportActivity != SupportActivities.Other)
@@ -67,7 +68,7 @@
                 @if (volunteerDetails != null)
                 {
                     <div class="sm4 toggle-on-status-change">
-                        <h5>Volunteer</h5>
+                        <h5>Current Volunteer</h5>
                         <dl>
                             <dt>Name</dt>
                             <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
@@ -83,12 +84,24 @@
                     </div>
                 }
                 <div class="sm3 toggle-on-status-change">
-                    <h5>Job Status History</h5>
-                    <dl>
+                    <h5>Slot Status History</h5>
+                    <dl class="highlight-last">
                         @foreach (var statusChange in jobDetails.JobStatusHistory)
                         {
-                            <dt>@statusChange.JobStatus.FriendlyName()</dt>
-                            <dd>@statusChange.StatusDate.ToString("dd/MM/yyyy hh:mm tt").ToLower()</dd>
+                            <dt>
+                                @statusChange.JobStatusDescription
+                            </dt>
+                            <dd>
+                                @if (statusChange.VolunteerUser != null)
+                                {
+                                    <span>
+                                        @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
+                                        @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                    </span>
+                                    <br />
+                                }
+                                @statusChange.StatusHistory.StatusDate.ToString("dd/MM/yyyy h:mm tt").ToLower()
+                            </dd>
                         }
                     </dl>
                 </div>
@@ -154,12 +167,33 @@
 }
 
 <div class="job__expander">
+    <h4>Request Details<span></span></h4>
+    <div class="job__expander__content">
+        @foreach (var activity in Model.GroupSupportActivityInstructions)
+        {
+            <div class="row">
+                <div class="sm12">
+                    @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                    {
+                        <h5>@activity.Key.FriendlyNameShort()</h5>
+                    }
+                    @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="job__expander">
     <h4>Volunteer Instructions<span></span></h4>
     <div class="job__expander__content">
         @foreach (var activity in Model.GroupSupportActivityInstructions)
         {
             <div class="row">
-                <h5>@activity.Key.FriendlyNameShort()</h5>
+                @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                {
+                    <h5>@activity.Key.FriendlyNameShort()</h5>
+                }
                 <div class="sm12 volunteer-instructions">
                     <partial name="_GroupSupportActivityInstructions" model="activity.Value" />
                 </div>

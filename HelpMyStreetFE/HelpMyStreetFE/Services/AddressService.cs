@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using HelpMyStreetFE.Models.Email;
 using HelpMyStreet.Cache;
 using System.Threading;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE.Services
 {
@@ -30,6 +31,7 @@ namespace HelpMyStreetFE.Services
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IMemDistCache<LocationDetails> _memDistCache;
+        private readonly IMemDistCache<List<LocationDistance>> _memDistCache_LocationDistanceList;
         private readonly IUserRepository _userRepository;
 
         private const string CACHE_KEY_PREFIX = "address-service-";
@@ -41,6 +43,7 @@ namespace HelpMyStreetFE.Services
             IUserRepository userRepository,
             IOptions<RequestSettings> requestSettings,
             IMemDistCache<LocationDetails> memDistCache,
+            IMemDistCache<List<LocationDistance>> memDistCache_LocationDistanceList,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -48,6 +51,7 @@ namespace HelpMyStreetFE.Services
             _userRepository = userRepository;
             _requestSettings = requestSettings;
             _memDistCache = memDistCache;
+            _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
         }
 
         public Task<int> GetTotalStreets()
@@ -90,19 +94,33 @@ namespace HelpMyStreetFE.Services
 
         }
 
-        public async Task<List<Location>> GetLocationsByDistance(string postcode)
+        public async Task<IEnumerable<LocationWithDistance>> GetLocationDetailsForUser(User user, CancellationToken cancellationToken)
         {
-            var locationsResponse = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, postcode);
+            var locationsWithDistance = await GetLocationsForUser(user, cancellationToken);
 
-            if (locationsResponse.IsSuccessful && locationsResponse.HasContent)
+            return await Task.WhenAll(locationsWithDistance.Select(async l => new LocationWithDistance
             {
-                var content = locationsResponse.Content;
-                return content.LocationDistances.Select(ld => ld.Location).ToList();
-            }
-            else
+                Location = l.Location,
+                Distance = l.DistanceFromPostCode,
+                LocationDetails = await GetLocationDetails(l.Location, cancellationToken)
+            }));
+        }
+
+        public async Task<List<LocationDistance>> GetLocationsForUser(User user, CancellationToken cancellationToken)
+        {
+            return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) =>
             {
-                throw new HttpRequestException("Unable to fetch locations by distance");
-            }
+                 var locationsResponse = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
+
+                 if (locationsResponse.IsSuccessful && locationsResponse.HasContent)
+                 {
+                     return locationsResponse.Content.LocationDistances;
+                 }
+                 else
+                 {
+                     throw new HttpRequestException("Unable to fetch locations by distance");
+                 }
+            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
         public async Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken)

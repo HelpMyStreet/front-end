@@ -9,6 +9,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public bool UserHasRequiredCredentials { get; set; }
         public RequestRoles UserRole { get; set; }
         public bool HighlightJob { get; set; }
-        public LocationDetails LocationDetails { get; set; }
+        public LocationWithDistance Location { get; set; }
     }
 }

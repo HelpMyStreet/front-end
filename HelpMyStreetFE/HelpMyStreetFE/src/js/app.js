@@ -10,6 +10,7 @@ import "./ui/filters";
 import { intialiseCookieConsent } from "./shared/cookie-helper"
 import { intialiseForgottonForm } from "./home/forgotton-password"
 import { buttonLoad, buttonUnload } from "./shared/btn";
+import { enableMaps, drawMap } from "./shared/maps";
 
 $(function () {
     $('.no-fouc').removeClass('no-fouc');
@@ -38,6 +39,10 @@ $(function () {
         }
         window.location.href = destination;
     });
+
+    enableMaps(() => {
+        drawMap();
+    })
 
     $(".yt-video-placeholder").click(function () {
         var height = $(this).height();

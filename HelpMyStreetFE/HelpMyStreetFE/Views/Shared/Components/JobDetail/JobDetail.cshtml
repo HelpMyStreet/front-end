@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
 
@@ -52,11 +53,17 @@
                             <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
                         }
                         <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>
-                        <dt>Where is the shift?</dt>
-                        <dd>
-                            @Model.LocationDetails.Name<br />
-                            @Html.DisplayFor(m => m.LocationDetails.Address)
-                        </dd>
+                        <div class="location-details">
+                            <dt>Where is the shift?</dt>
+
+                            <dd>
+                                <div>
+                                    @Model.LocationDetails.Name<br />
+                                    @Html.DisplayFor(m => m.LocationDetails.Address)
+                                </div>
+                                <div  class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.LocationDetails.Latitude" data-lng="@Model.LocationDetails.Longitude"></div>
+                            </dd>
+                        </div>
                     }
                     else
                     {
@@ -233,6 +240,20 @@
         </div>
     }
 
+    @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails))
+    {
+        <div class="job__expander">
+            <h4>Request Details<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    <div class="sm12">
+                        @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.ActivityDetails)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress)
     {
         <div class="job__expander">
@@ -254,7 +275,7 @@
                     <dl>
                         <dt>Do you need to take these details offline?</dt>
                         <dd>
-                            For data protection reasons, you'll only be able to view non-personal information. 
+                            For data protection reasons, you'll only be able to view non-personal information.
                             <span class="link-icons">
                                 <a href="#" title="" class="email-details"><img src="/img/icons/email.svg" /><span>Email </span></a>
                                 <a href="/account/print-job-details?j=@encodedJobID" target="_blank"><img src="/img/icons/printer.svg" /> Print </a>
@@ -298,11 +319,22 @@ else if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToD
         <div class="job__expander__content">
             <div class="row">
                 <div class="sm12">
-                    <dl>
+                    <dl class="highlight-last">
                         @foreach (var statusChange in Model.JobDetail.JobStatusHistory)
                         {
-                            <dt>@statusChange.JobStatus.FriendlyName()</dt>
-                            <dd>@statusChange.StatusDate.ToString("dd/MM/yyyy hh:mm tt").ToLower()</dd>
+                            <dt>
+                                @statusChange.JobStatusDescription
+                                @if (statusChange.VolunteerUser != null)
+                                {
+                                    <span class="context">
+                                        @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
+                                        @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                    </span>
+                                }
+                            </dt>
+                            <dd>
+                                @statusChange.StatusHistory.StatusDate.ToString("dd/MM/yyyy h:mm tt").ToLower()
+                            </dd>
                         }
                     </dl>
                 </div>

@@ -24,10 +24,10 @@ namespace HelpMyStreetFE.Services.Users
 
         public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache, IAddressService addressService)
         {
-            _addressService = addressService;
             _userRepository = userRepository;
             _logger = logger;
             _memDistCache = memDistCache;
+            _addressService = addressService;
         }
 
         public async Task<int> CreateUserAsync(string email, string authId, int referringGroupId, string source)
@@ -137,9 +137,14 @@ namespace HelpMyStreetFE.Services.Users
             return await _userRepository.GetVolunteerCoordinates(swLatitude, swLongitude, neLatitude, neLongitude, minDistanceBetweenInMetres);
         }
 
-        public Models.Account.UserDetails GetUserDetails(User user)
+        public async Task<Models.Account.UserDetails> GetUserDetails(User user, CancellationToken cancellationToken)
         {
-            return new Models.Account.UserDetails(user);
+            var userDetails = new Models.Account.UserDetails(user);
+
+            var locations = await _addressService.GetLocationsForUser(user, cancellationToken);
+            userDetails.ShiftsEnabled = locations.Count > 0;
+
+            return userDetails;
         }
 
         public string FormatName(string name)
@@ -163,13 +168,6 @@ namespace HelpMyStreetFE.Services.Users
             {
                 return await _userRepository.GetUser(userId);
             }, $"{CACHE_KEY_PREFIX}-user-{userId}", cancellationToken);
-        }
-
-        public async Task<IEnumerable<Location>> GetLocations(int userId, CancellationToken cancellationToken)
-        {
-            var user = await GetUserAsync(userId, cancellationToken);
-            return await _addressService.GetLocationsByDistance(user.PostalCode);
-            
         }
 
         public async Task<User> GetUserByAuthId(string authId)

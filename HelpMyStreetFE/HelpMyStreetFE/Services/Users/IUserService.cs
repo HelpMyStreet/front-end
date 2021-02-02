@@ -19,8 +19,7 @@ namespace HelpMyStreetFE.Services.Users
         Task<int> GetVolunteers();
         Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode);
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
-        Models.Account.UserDetails GetUserDetails(User user);
+        Task<Models.Account.UserDetails> GetUserDetails(User user, CancellationToken cancellationToken);
         bool GetRegistrationIsComplete(User user);
-        Task<IEnumerable<Location>> GetLocations(int userId, CancellationToken cancellationToken);
     }
 }

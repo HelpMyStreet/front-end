@@ -4,24 +4,40 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Helpers
 {
     public static class ShiftRequestExtensions
     {
-        public static string TimeSpan(this ShiftJob shiftJob)
+        public static string DateSpan(this ShiftJob shiftJob)
         {
             if (shiftJob.StartDate.Date.Equals(shiftJob.EndDate.Date))
             {
-                return $"{shiftJob.StartDate:dd/MM/yyyy HH:mm}-{shiftJob.EndDate:HH:mm}";
+                return $"{shiftJob.StartDate.ShiftyDate()}";
             }
             else
             {
-                return $"{shiftJob.StartDate:dd/MM/yyyy HH:mm} – {shiftJob.EndDate:dd/MM/yyyy HH:mm}";
+                return $"{shiftJob.StartDate.ShiftyDate()} - {shiftJob.EndDate.ShiftyDate()}";
             }
         }
+        public static string TimeSpan(this ShiftJob shiftJob)
+        {
 
+            return $"{shiftJob.StartDate.ShiftyTime()} - {shiftJob.EndDate.ShiftyTime()}";
+        }
+        public static string DateSpan(this RequestSummary shiftRequest)
+        {
+            if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))
+            {
+                return $"{shiftRequest.Shift.StartDate.ShiftyDate()}";
+            }
+            else
+            {
+                return $"{shiftRequest.Shift.StartDate.ShiftyDate()} - {shiftRequest.Shift.EndDate.ShiftyDate()}";
+            }
+        }
         public static string TimeSpan(this RequestSummary shiftRequest)
         {
             if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))

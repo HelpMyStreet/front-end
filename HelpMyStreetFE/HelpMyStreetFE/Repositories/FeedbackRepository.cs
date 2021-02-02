@@ -293,7 +293,47 @@ namespace HelpMyStreetFE.Repositories
                     Person = "NHS Lincolnshire Clinical Commissioning Group",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "lincs-volunteers",
-                }
+                },
+                new Testimonial()
+                {
+                    Tagline = "Craig, we salute you!",
+                    Message = "A former RAF pilot and currently furloughed from his job as an airline pilot, Craig’s volunteering role is to make it as easy as possible for the clinical staff to do their jobs. Along with all the other volunteers Craig is inspired to see the older generation lead from the front receiving their vaccines.",
+                    Person = "NHS Lincolnshire Clinical Commissioning Group",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "lincs-volunteers",
+                },
+                new Testimonial()
+                {
+                    Tagline = "What a team!",
+                    Message = "Usually a GP practice nurse, Emily has been spending lots of her time helping us set up another of Lincolnshire’s local vaccination sites. Her Dad, a retired GP is also part of the national programme.",
+                    Person = "NHS Lincolnshire Clinical Commissioning Group",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "lincs-volunteers",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Thank you Dr Thompson!",
+                    Message = "Also known as James, Dr Thompson is one of the county’s GPs delivering the local vaccination site programme, whilst continuing to keep other services running back at the practice.",
+                    Person = "NHS Lincolnshire Clinical Commissioning Group",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "lincs-volunteers",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Making sure people feel safe and well",
+                    Message = "A retired nurse, Chris is eagerly awaiting her vaccinator status to come through and until then is volunteering in the centre’s Observation Area, making sure people feel safe and well immediately after their jab.",
+                    Person = "NHS Lincolnshire Clinical Commissioning Group",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "lincs-volunteers",
+                },
+                new Testimonial()
+                {
+                    Tagline = "At the forefront",
+                    Message = "One of our primary care network leads, Amanda has been at the forefront of organising another of Lincolnshire’s local vaccination sites. From staff, to signs, to cleaning, she’s thought of it all.",
+                    Person = "NHS Lincolnshire Clinical Commissioning Group",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "lincs-volunteers",
+                },
             };
 
             return messageList;

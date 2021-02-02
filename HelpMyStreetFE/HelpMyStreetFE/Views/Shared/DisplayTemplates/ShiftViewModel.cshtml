@@ -42,7 +42,9 @@
                     <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
                 </div>
             </div>
-
+            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
+                @Model.Item.DateSpan()
+            </span>
             <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
                 @Model.Item.TimeSpan()
             </span>
@@ -51,9 +53,9 @@
             </span>
             @if (Model.Item.JobStatus == JobStatuses.Open)
             {
-            <span class="job__info__col1__next-step dnone toggle-on-status-change">
-                <a href="/account/my-shifts?rq=@requestId">Go to My Shifts</a>
-            </span>
+                <span class="job__info__col1__next-step dnone toggle-on-status-change">
+                    <a href="/account/my-shifts?rq=@requestId">Go to My Shifts</a>
+                </span>
             }
         </div>
         <div class="job__info__activity">
@@ -67,7 +69,8 @@
                 </span>
             </span>
             <span class="job__info__activity__location">
-                @Model.LocationDetails.Name
+                @Model.Location.LocationDetails.Name
+                <span class="distance">@Model.Location.Distance.ToString("0.0") miles away</span>
             </span>
         </div>
         <div class="job__info__col3 flex-end">

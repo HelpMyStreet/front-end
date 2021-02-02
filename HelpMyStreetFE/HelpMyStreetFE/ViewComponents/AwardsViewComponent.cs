@@ -33,10 +33,11 @@ namespace HelpMyStreetFE.ViewComponents
         {
             var user = await _userService.GetUserAsync(userID, cancellationToken);
             var currentAward = await _awardsRepository.GetAwardsByUserID(userID, cancellationToken);
-            var viewModel = new AwardsViewModel();
-
-            viewModel.CurrentAward = currentAward;
-            viewModel.User = user;
+            var viewModel = new AwardsViewModel
+            {
+                CurrentAward = currentAward,
+                User = user
+            };
             return View(viewModel);
         }
     }

@@ -48,28 +48,36 @@ namespace HelpMyStreetFE.ViewComponents
                 }
             }
 
-            int? count = menuPage switch
+            try
             {
-                MenuPage.Group
-                    => await GetCount(user, MenuPage.GroupRequests, groupKey, cancellationToken) + await GetCount(user, MenuPage.GroupShifts, groupKey, cancellationToken),
-                MenuPage.GroupRequests
-                    => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
-                MenuPage.AcceptedRequests
-                    => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.InProgress)?.Count(),
-                MenuPage.CompletedRequests
-                    => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.Done)?.Count(),
-                MenuPage.OpenRequests
-                    => (await _requestService.GetOpenJobsAsync(user, false, cancellationToken))?.Count(),
-                MenuPage.OpenShifts
-                    => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
-                MenuPage.MyShifts
-                    => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(),
-                MenuPage.GroupShifts
-                    => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(),
-                _ => null
-            };
+                int? count = menuPage switch
+                {
+                    MenuPage.Group
+                        => await GetCount(user, MenuPage.GroupRequests, groupKey, cancellationToken) + await GetCount(user, MenuPage.GroupShifts, groupKey, cancellationToken),
+                    MenuPage.GroupRequests
+                        => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
+                    MenuPage.AcceptedRequests
+                        => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.InProgress)?.Count(),
+                    MenuPage.CompletedRequests
+                        => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus == JobStatuses.Done)?.Count(),
+                    MenuPage.OpenRequests
+                        => (await _requestService.GetOpenJobsAsync(user, false, cancellationToken))?.Count(),
+                    MenuPage.OpenShifts
+                        => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
+                    MenuPage.MyShifts
+                        => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(s => s.JobStatus.Incomplete()),
+                    MenuPage.GroupShifts
+                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(),
+                    _ => null
+                };
 
-            return count ?? 0;
+                return count ?? 0;
+            }
+            catch
+            {
+                // Skip badge if request service has been too slow to respond
+                return 0;
+            }
         }
     }
 }

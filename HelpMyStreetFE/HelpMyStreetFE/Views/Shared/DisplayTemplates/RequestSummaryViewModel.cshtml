@@ -63,16 +63,16 @@
                 }
             }
             <span class="job__info__activity__location">
-                @Model.LocationDetails.Name
+                @Model.Location.LocationDetails.Name
             </span>
         </div>
         <div class="job__info__col3 flex-end">
             <div class="job__info__actions">
                 @if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
                 {
-                    @*<button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                         <span class="text">Cancel shift</span>
-                    </button>*@
+                    </button>
                 }
             </div>
             <div class="job__info__footer">

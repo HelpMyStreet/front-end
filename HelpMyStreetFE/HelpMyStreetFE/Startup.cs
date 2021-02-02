@@ -28,6 +28,7 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreet.Contracts.GroupService.Response;
+using HelpMyStreet.Contracts.AddressService.Response;
 
 namespace HelpMyStreetFE
 {
@@ -181,6 +182,8 @@ namespace HelpMyStreetFE
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
             services.AddMemCache();
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobHeader>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<ShiftJob>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<RequestSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
@@ -189,6 +192,7 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<UserInGroup>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Instructions>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<LocationDetails>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<LocationDistance>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
 
             services.AddControllers();
             services.AddRazorPages()

@@ -51,8 +51,7 @@ namespace HelpMyStreetFE.ViewComponents
             if (user != null)
             {
                 viewModel.Notifications = new List<NotificationModel>();
-                var userDetails = _userService.GetUserDetails(user);
-                viewModel.UserDetails = userDetails;
+                viewModel.UserDetails = await _userService.GetUserDetails(user, cancellationToken);
                 viewModel.UserGroups = await _groupMemberService.GetUserGroupRoles(user.ID, cancellationToken);
             }
 

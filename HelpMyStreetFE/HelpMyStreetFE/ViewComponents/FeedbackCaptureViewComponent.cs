@@ -37,7 +37,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             int authorisingUserId = parameters.RequestRole == RequestRoles.Volunteer || parameters.RequestRole == RequestRoles.GroupAdmin ? user.ID : -1;
-            var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, authorisingUserId, cancellationToken);
+            var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, authorisingUserId, parameters.RequestRole == RequestRoles.GroupAdmin, cancellationToken);
 
             await EnsureFeedbackCanBeGiven(jobDetails.JobSummary, parameters.RequestRole, user?.ID);
 

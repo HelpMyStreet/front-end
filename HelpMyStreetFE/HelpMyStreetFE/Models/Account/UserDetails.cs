@@ -11,6 +11,9 @@ namespace HelpMyStreetFE.Models.Account
         }
 
         public User User { get; set; }
+
+        public bool ShiftsEnabled { get; set; }
+
         public string Initials
         {
             get

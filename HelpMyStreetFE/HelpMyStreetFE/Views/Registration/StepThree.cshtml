@@ -96,8 +96,20 @@
             volunteerOptions.Insert(1, new SupportActivityViewModel { SupportActivities = SupportActivities.MealtimeCompanion, Description = "Providing company over a mealtime for someone who lives alone" });
             volunteerOptions.Insert(2, new SupportActivityViewModel { SupportActivities = SupportActivities.MealsToYourDoor, Description = "Delivering a freshly prepared meal straight to someone’s door" });
             volunteerOptions.Insert(3, new SupportActivityViewModel { SupportActivities = SupportActivities.Transport, Description = "Providing transport for essential appointments" });
-            volunteerOptions.Insert(4, new SupportActivityViewModel { SupportActivities = SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities" });            
+            volunteerOptions.Insert(4, new SupportActivityViewModel { SupportActivities = SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities" });
             volunteerOptions.Insert(5, new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks. Please check with me" });
+            break;
+        case RegistrationFormVariant.LincolnshireVolunteers:
+            volunteerOptions.Clear();
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.VaccineSupport, Description = "Volunteering to support the COVID-19 vaccination programme (e.g. support staff for local vaccination centres)", Selected = true });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.MealPreparation, Description = "Providing and delivering a hot / pre-prepared meal" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "A friendly chat on the phone" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.CheckingIn, Description = "Checking that someone is OK" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Transport, Description = "Providing transport for essential appointments" });
+            volunteerOptions.Add(new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks. Please check with me." });
             break;
     }
 
@@ -130,8 +142,13 @@
             <input name="source" type="hidden" value="@Model.RegistrationFormVariant" />
             <div class="row justify-center">
                 <div class="sm8">
-                    <p>HelpMyStreet will always try to match volunteers to requests that are appropriate for them. Some requests are local in nature (e.g. picking up groceries),
-                    while others can be performed over a wider area (e.g. posting a fabric face covering, or supporting people over the phone).</p>
+                    <p>
+                        HelpMyStreet will always try to match volunteers to requests that are appropriate for them. We will use the
+                        helping preferences you provide on this page to decide which notifications will be most helpful to you. If
+                        you sign up for activities that can be done from home (e.g. phone-based support), completed with local services
+                        (e.g. posting out homemade face coverings), or require travel to local hubs or facilities, you may see and be
+                        notified of requests that come from further afield.
+                    </p>
                     <h5>I can help people by:</h5>
                     <p>(Please tick as many as you like)</p>
                     <span class="error" id="volunteer-error">Please select at least one option</span>
