@@ -461,6 +461,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
+            
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
             return await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
@@ -468,6 +469,7 @@ namespace HelpMyStreetFE.Services.Requests
                 var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
                 {
                     ReferringGroupID = groupId,
+                    IncludeChildGroups = true,
                     DateFrom = dateFrom,
                     DateTo = dateTo,
                 };

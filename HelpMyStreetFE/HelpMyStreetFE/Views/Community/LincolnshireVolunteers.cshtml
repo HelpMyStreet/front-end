@@ -13,7 +13,7 @@
     <script src="/community.js" asp-append-version="true"></script>
 }
 
-<div class="community" data-group-id="@Model.EncodedGroupId">
+<div class="community content-page" data-group-id="@Model.EncodedGroupId">
     <div class="container">
        
         <div class="community-banner">
@@ -36,13 +36,13 @@
                 
 
                     <div class="row sm12 text-center justify-center mb-md">
-                        <p class="mt-sm mb-sm pl-md pr-md">
+                        <p class="mt-sm mb-lg pl-md pr-md">
                             To register your interest as a community volunteer and find opportunities near you, sign up today</p>
                             <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
-</div>
+                    </div>
                 </div>
 
-                <div class="sm6 pl-md card">
+                <div class="sm6 pl-md">
                     <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
                 </div>
             </div>
@@ -109,6 +109,10 @@
             </div>
             <div class="row flex justify-center">
                 <div class="sm12 community-useful-links mb-lg">
+                    <h6>Useful Information</h6>
+                    <p><a href="/pdf/lincs-vaccination-support/lincs-vaccination-support-role-description.pdf">Volunteer role description and useful information</a></p>
+
+                    <h6>Our Partners</h6>
                     <p><a href="http://www.lincolnshirecvs.org.uk/">Lincolnshire Community and Voluntary Service</a> - Find out more about the Lincolnshire CVS</p>
                     <p><a href="https://voluntarycentreservices.org.uk/">Voluntary Centre Services</a> - Find out more about Voluntary Centre Services in West Lincolnshire</p>
                     <p><a href="https://lincsvoluntarysectorportal.org.uk/">VET</a> - Find out more about the Voluntary Executive Team for Lincolnshire; a partnership of voluntary organisations and statutory stakeholders who have chosen to work together to further opportunities for the voluntary sector in Lincolnshire.</p>

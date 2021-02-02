@@ -55,7 +55,6 @@
     <div class="user-profile profile-panel p-md">
         <header class="profile-panel__header">
             <h3 class="profile-panel__title">Open Requests</h3>
-            <p>Help that’s needed near you</p>
         </header>
 
         <div class="profile">
@@ -73,7 +72,7 @@
             }
             else
             {
-                <p>Requests meeting the criteria you set when you signed up</p>
+                <h6>Requests meeting the criteria you set when you signed up</h6>
 
                 <div class="job-filter-panel">
                     @criteriaJobsList
@@ -89,7 +88,7 @@
                 }
 
 
-                <p>Other Requests</p>
+                <h6 class="mt-lg">Other requests you may be interested in</h6>
 
                 @if (NoNonCriteriaJobsToDisplay)
                 {
