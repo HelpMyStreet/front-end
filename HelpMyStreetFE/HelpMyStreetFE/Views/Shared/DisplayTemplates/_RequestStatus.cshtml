@@ -34,7 +34,7 @@
 @if (Model.SingleJobStatus() != null)
 {
     <img class="status-icon" src="~/img/icons/status/@Model.SingleJobStatus().Value.Icon()" alt="@Model.SingleJobStatus().Value.FriendlyName()" />
-    <span class="job__status">@Model.SingleJobStatus().Value.FriendlyName()</span>
+    <span class="job__status">@(totalUncancelledJobs > 0 ? $"{totalUncancelledJobs} of {totalUncancelledJobs}" : "") @Model.SingleJobStatus().Value.FriendlyName()</span>
 }
 else
 {
@@ -43,14 +43,14 @@ else
 
             @foreach (var segment in segments.Where(s => s.JobStatus.Equals(JobStatuses.InProgress)))
             {
-                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value/@totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
+                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value of @totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
                 
                 <circle class="dots" cx="50%" cy="50%" r="@segment.R"></circle>
             }
 
             @foreach (var segment in segments.Where(s => !s.JobStatus.Equals(JobStatuses.InProgress)))
             {
-                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value/@totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
+                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value of @totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
             }
 
 
@@ -64,7 +64,7 @@ else
     <span class="job__status multiple-statuses">
         @foreach (var a in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
         {
-            @($"{a.Value} {a.Key.FriendlyName()}")<br />
+            @($"{a.Value} of {totalUncancelledJobs} {a.Key.FriendlyName()}")<br />
         }
     </span>
 }
