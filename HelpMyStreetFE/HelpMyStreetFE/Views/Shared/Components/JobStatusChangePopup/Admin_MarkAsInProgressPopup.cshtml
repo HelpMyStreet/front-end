@@ -1,17 +1,20 @@
 ﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
-
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+}
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
         <div class="popup__content__header">Mark as In Progress?</div>
         <div class="popup__content__text">
-            <p>Have you become aware that this request has not been completed (though it has been marked as such)?</p>
+            <p>Have you become aware that this @requestType has not been completed (though it has been marked as such)?</p>
             <p>We can set its status back to “In Progress” for you.</p>
-            <p>It will return to the “My Accepted Requests” page of the last volunteer with who it was In Progress.</p>
-            <p>If you need to set it right back to “Open”, you can do that from this page by exiting and returning to it, finding the request again (which will now be marked as “In Progress”) and using the “Mark as Open” button.
+            <p>It will return to the “My @(isShift ? "Shifts" : "Accepted Requests")” page of the last volunteer with who it was In Progress.</p>
+            <p>If you need to set it right back to “Open”, you can do that from this page by exiting and returning to it, finding the @requestType again (which will now be marked as “In Progress”) and using the “Mark as Open” button.
         </div>
         <div class="popup__content__buttons">
-            <p class="error dnone">Oops, we couldn’t update this request at the moment.</p>
+            <p class="error dnone">Oops, we couldn’t update this @requestType at the moment.</p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
         </div>
     </div>

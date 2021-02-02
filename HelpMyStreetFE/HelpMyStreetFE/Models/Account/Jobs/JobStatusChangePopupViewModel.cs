@@ -15,5 +15,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public string ReferringGroup { get; set; }
         public JobStatuses TargetStatus { get; set; }
         public Instructions GroupSupportActivityInstructions { get; set; }
+        public RequestType RequestType { get; set; }
     }
 }

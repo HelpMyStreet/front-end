@@ -135,6 +135,7 @@
                 &__dates {
                     display: flex;
                     align-items: center;
+                    line-height: 0.8rem;
                 }
             }
 
@@ -419,6 +420,7 @@
     }
 
     .status-icon {
+        filter: drop-shadow(2px 2px 2px grey);
         width: 3rem;
         height: 3rem;
     }
@@ -504,6 +506,20 @@
                 display: none;
             }
         }
+
+        .location-details {
+            dd {
+                display: flex;
+
+                @media screen and (max-width: $med-screen) {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+        }
+
+
 
         .offline-details {
             display: flex;
@@ -633,13 +649,22 @@
     }
 }
 
+@mixin circleHover {
+    &:hover {
+        stroke: $blue;
+        stroke-width: 0.5rem;
+        transition: 0.3s;
+    }
+}
 
 .status-icon {
     svg {
         width: 100%;
         height: 100%;
         transform: rotate(-90deg);
+        filter: drop-shadow(2px 2px 2px grey);
     }
+
 
     circle {
         fill: none;
@@ -647,22 +672,27 @@
 
         &.new {
             stroke: red;
+            @include circleHover;
         }
 
         &.open {
             stroke: $gray-8;
+            @include circleHover;
         }
 
         &.accepted {
             stroke: $green;
+            @include circleHover;
         }
 
         &.in-progress {
             stroke: $green;
+            @include circleHover;
         }
 
         &.done {
             stroke: green;
+            @include circleHover;
         }
 
         &.dots {

@@ -97,6 +97,7 @@ namespace HelpMyStreetFE.ViewComponents
             JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel()
             {
                 RequestSummary = request,
+                RequestType = request.RequestType,
                 JobSummary = job,
                 TargetStatus = targetStatus,
             };
