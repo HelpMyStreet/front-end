@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.ViewComponents
                 GroupCredentials = groupCredentials,
                 Volunteers = (await Task.WhenAll(getEachUser)).Where(v => v.User != null),
                 UserId = user.ID,
-                UserHasEditRights = await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, cancellationToken),
+                UserHasEditRights = await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, true, cancellationToken),
             };
 
 

@@ -36,7 +36,7 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            if (!await _groupMemberService.GetUserHasRole_Any(user.ID, groupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, cancellationToken))
+            if (!await _groupMemberService.GetUserHasRole_Any(user.ID, groupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, true, cancellationToken))
             {
                 throw new UnauthorizedAccessException("User does not have required role.");
             }
