@@ -200,6 +200,11 @@ namespace HelpMyStreetFE.Controllers
                 }
             }
 
+            if (requestHelpJourney.RequestHelpFormVariant == RequestHelpFormVariant.ChildGroupSelector)
+            {
+                return await ChildGroupSelector(referringGroupId, cancellationToken);
+            }
+
             var model = await _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
@@ -319,6 +324,16 @@ namespace HelpMyStreetFE.Controllers
                 public int Id { get; set; }
                 public string Answer { get; set; }
             }
+        }
+
+        private async Task<IActionResult> ChildGroupSelector(int groupId, CancellationToken cancellationToken)
+        {
+            var vm = new ChildGroupSelectorViewModel
+            {
+                Groups = await _groupService.GetChildGroups(groupId)
+            };
+
+            return View("ChildGroupSelector", vm);
         }
 
         private int DecodeGroupIdOrGetDefault(string encodedGroupId)

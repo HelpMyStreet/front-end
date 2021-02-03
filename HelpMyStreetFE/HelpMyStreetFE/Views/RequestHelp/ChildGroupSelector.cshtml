@@ -1,0 +1,34 @@
+﻿@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.RequestHelp;  
+
+@model ChildGroupSelectorViewModel;
+
+@{
+    ViewData["Title"] = "Request Help";
+}
+
+<div class="container request-help">
+    <h2>Request Help</h2>
+
+    <div class="input">
+        <label>Please select the group you wish to raise a request for</label>
+    </div>
+
+    <div class="tiles">
+        <div class="row">
+            @foreach (var g in Model.Groups.OrderBy(g => g.GroupName))
+            {
+
+                <div class="sm4">
+                    <div class="tiles__tile">
+                        <div class="tiles__tile__content ">
+                            <a href="/request-help/@Base64Utils.Base64Encode(g.GroupId)/a">
+                                <div class="tiles__tile__content__header pt-xs">@g.GroupName</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
