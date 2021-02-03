@@ -128,11 +128,6 @@ var updateOptionsForActivity = function (taskId) {
       $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
     }
     displayTodayHelpNeededOptions(false);
-  } else if (taskId == 22) { // Volunteer Support
-    $('#requestorFor_1').hide(); // myself
-    $('#requestorFor_2').hide(); // someone else
-    $('#requestorFor_3').show(); // onbehalf of organisation
-    displayTodayHelpNeededOptions(true);
   } else {
       if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
           $('#requestorFor_1').hide(); // myself

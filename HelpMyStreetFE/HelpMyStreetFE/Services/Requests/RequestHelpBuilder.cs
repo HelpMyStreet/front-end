@@ -147,6 +147,13 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
+                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.OnBehalf);
+
+                requestStep.Timeframes.Clear();
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
             }
 
@@ -294,7 +301,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
@@ -304,7 +311,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
@@ -313,9 +320,9 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 tasks.AddRange(new List<TasksViewModel>
                 {
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
-                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
@@ -323,12 +330,16 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 tasks.AddRange(new List<TasksViewModel>
                 {
-                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.MealsToYourDoor },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
+            {
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.VaccineSupport, IsSelected = true });
             }
             else
             {
