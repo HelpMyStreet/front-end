@@ -143,7 +143,11 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+            }
 
+            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
+            {
+                model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
             }
 
             return model;
