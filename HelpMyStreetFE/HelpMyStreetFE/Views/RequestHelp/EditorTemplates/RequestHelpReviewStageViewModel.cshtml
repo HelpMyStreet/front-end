@@ -1,5 +1,6 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Review.RequestHelpReviewStageViewModel;
 @using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreetFE.Helpers;
 
 @{
@@ -61,7 +62,7 @@
                     <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
                     @if (Model.TimeRequested.OnDate)
                     {
-                        <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dd MMM yyyy")</div>
+                        <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dddd, ddnn MMMM yyyy", true)</div>
                     }
                 </div>
             </div>

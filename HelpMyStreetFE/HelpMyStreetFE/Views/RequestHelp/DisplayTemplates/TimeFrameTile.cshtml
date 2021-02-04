@@ -12,8 +12,8 @@
             <div class="tiles__tile__content__header pt-xs">@Model.TimeDescription</div>
             @if (Model.OnDate)
             {
-            <div class="tiles__tile__content__dateselection dnone">
-                <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" />
+            <div class="tiles__tile__content__dateselection @(Model.IsSelected ? "" : "dnone" )">
+                <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd MMM yyyy") : "")" />
                 <span id ="dateselectionError" class="error"></span>
             </div>
             }

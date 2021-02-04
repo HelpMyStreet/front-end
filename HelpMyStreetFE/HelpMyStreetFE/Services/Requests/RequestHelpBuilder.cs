@@ -152,7 +152,7 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.OnBehalf);
 
                 requestStep.Timeframes.Clear();
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true, IsSelected = true });
 
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
             }
