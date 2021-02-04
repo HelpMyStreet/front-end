@@ -14,7 +14,7 @@
             <div class="tiles__tile__content__header pt-xs">@Model.TimeDescription</div>
             @if (Model.DueDateType != DueDateType.Before)
             {
-                <div class="tiles__tile__content__visible_when_selected">
+                <div class="on-selected">
                     <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd MMM yyyy") : "")" />
                     <span id="dateselectionError" class="error"></span>
                 </div>
@@ -29,7 +29,7 @@
         <div id="start_time_@Model.ID" data-type="timeframe" data-id='@Model.ID' class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Starting at</div>
-                <div class="tiles__tile__content__visible_when_selected">
+                <div class="on-selected">
                     <input name="currentStep.SelectedTimeFrame.StartTime" type="text" placeholder="e.g. 15:00" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.Date.Date.ToString("HH:mm") : "")" />
                     <span id="timeselectionError" class="error"></span>
                 </div>
@@ -44,7 +44,7 @@
         <div id="duration_@Model.ID" data-type="timeframe" data-id='@Model.ID' class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Duration (hours and minutes)</div>
-                <div class="tiles__tile__content__visible_when_selected">
+                <div class="on-selected">
                     <input name="currentStep.SelectedTimeFrame.Duration" type="text" placeholder="e.g. 4:30" autocomplete="off" value="@(Model.Duration != TimeSpan.Zero ? Model.Duration.ToString("HH:mm") : "")" />
                     <span id="timeselectionError" class="error"></span>
                 </div>

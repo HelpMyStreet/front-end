@@ -46,11 +46,7 @@
         }
 
         .no-selected {
-            display: inline-block;
-        }
-
-        &__content__visible_when_selected {
-            display: none;
+            display: initial;
         }
 
         &.selected {
@@ -61,17 +57,14 @@
             .cirlce {
                 background: $orange;
 
-                .on-selected {
-                    display: inline-block;
-                }
-
-                .no-selected {
-                    display: none;
-                }
             }
 
-            .tiles__tile__content__visible_when_selected {
-                display: block;
+            .on-selected {
+                display: initial;
+            }
+
+            .no-selected {
+                display: none;
             }
         }
 
