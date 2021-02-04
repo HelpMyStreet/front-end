@@ -60,9 +60,22 @@
                     <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
                     <div class="tiles__tile__content__header">When is the help needed?</div>
                     <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
-                    @if (Model.TimeRequested.DueDateType == DueDateType.On)
+                    @if (Model.TimeRequested.DueDateType == DueDateType.On || Model.TimeRequested.DueDateType == DueDateType.SpecificStartTime || Model.TimeRequested.DueDateType == DueDateType.SpecificStartAndEndTimes)
                     {
                         <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dddd, ddnn MMMM yyyy", true)</div>
+                    }
+                    @if (Model.TimeRequested.DueDateType == DueDateType.SpecificStartTime || Model.TimeRequested.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                    {
+                        <div class="tiles__tile__content__description">Starting at @Model.TimeRequested.StartTime.ToString("HH:mm", true)</div>
+                    }
+                    @if (Model.TimeRequested.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                    {
+                        <div class="tiles__tile__content__description">Ending at @Model.TimeRequested.EndTime.ToString("HH:mm", true)</div>
+                        @if (Model.TimeRequested.EndTime.Date != Model.TimeRequested.StartTime.Date)
+                        {
+                            <div class="tiles__tile__content__description">on @Model.TimeRequested.EndTime.ToString("dddd, ddnn MMMM yyyy", true)</div>
+                        }
+                        <div class="tiles__tile__content__description">(duration @Model.TimeRequested.DurationString)</div>
                     }
                 </div>
             </div>

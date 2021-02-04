@@ -129,11 +129,23 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
                     time.Days = selectedDays;
                 }
-                if (time.DueDateType == DueDateType.On)
+                if (time.DueDateType == DueDateType.On || time.DueDateType == DueDateType.SpecificStartTime || time.DueDateType == DueDateType.SpecificStartAndEndTimes)
                 {
                     DateTime selectedDate;
                     DateTime.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), new CultureInfo("en-GB"), DateTimeStyles.None, out selectedDate);
                     time.Date = selectedDate;
+                    if (time.DueDateType == DueDateType.SpecificStartTime || time.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                    {
+                        time.StartTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
+                    }
+                    if (time.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                    {
+                        time.EndTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
+                        if (time.StartTime >= time.EndTime)
+                        {
+                            time.EndTime = time.EndTime.AddDays(1);
+                        }
+                    }
                 }
             }
 
@@ -150,6 +162,18 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             return model;
 
+        }
+
+        private DateTime ParseTime(DateTime date, string value)
+        {
+            var components = value.Split(':');
+            if (components.Count() >= 2)
+            {
+                int.TryParse(components[0], out int hours);
+                int.TryParse(components[1], out int minutes);
+                return date.AddHours(hours).AddMinutes(minutes);
+            }
+            throw new FormatException($"Badly formatted time string '{value}'");
         }
     }
 

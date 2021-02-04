@@ -12,7 +12,7 @@
     <div id="time_@Model.ID" data-type="timeframe" data-id='@Model.ID' data-allowcustom="@Model.AllowCustom" data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.TimeDescription</div>
-            @if (Model.DueDateType != DueDateType.Before)
+            @if (Model.DueDateType == DueDateType.On || Model.DueDateType == DueDateType.SpecificStartTime || Model.DueDateType == DueDateType.SpecificStartAndEndTimes)
             {
                 <div class="on-selected">
                     <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd MMM yyyy") : "")" />
@@ -30,7 +30,7 @@
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Starting at</div>
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.StartTime" type="text" placeholder="e.g. 15:00" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.Date.Date.ToString("HH:mm") : "")" />
+                    <input name="currentStep.SelectedTimeFrame.StartTime" type="time" step="300" placeholder="e.g. 15:00" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString("HH:mm") : "")" />
                     <span id="timeselectionError" class="error"></span>
                 </div>
             </div>
@@ -41,11 +41,11 @@
 @if (Model.DueDateType == DueDateType.SpecificStartAndEndTimes)
 {
     <div class="sm4">
-        <div id="duration_@Model.ID" data-type="timeframe" data-id='@Model.ID' class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+        <div id="end_time_@Model.ID" data-type="timeframe" data-id='@Model.ID' class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
             <div class="tiles__tile__content ">
-                <div class="tiles__tile__content__header pt-xs">Duration (hours and minutes)</div>
+                <div class="tiles__tile__content__header pt-xs">Ending at</div>
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.Duration" type="text" placeholder="e.g. 4:30" autocomplete="off" value="@(Model.Duration != TimeSpan.Zero ? Model.Duration.ToString("HH:mm") : "")" />
+                    <input name="currentStep.SelectedTimeFrame.EndTime" type="time" step="300" placeholder="e.g. 18:00" autocomplete="off" value="@(Model.EndTime != DateTime.MinValue ? Model.EndTime.ToString("HH:mm") : "")" />
                     <span id="timeselectionError" class="error"></span>
                 </div>
             </div>
