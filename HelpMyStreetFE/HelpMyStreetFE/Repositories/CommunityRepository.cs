@@ -324,8 +324,8 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Chriss Monks",
-                    Role = "Kirsty Groves",
+                    Name = "Kirsty Groves",
+                    Role = "Community Services Administrator",
                     Location = "",
                     ImageLocation = "/img/community/ageUK/kent/northwest/kirsty-groves.jpg"
                 }
