@@ -1,0 +1,88 @@
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreetFE.Models.Account.Jobs;
+
+@model JobViewModel<RequestSummary>
+
+@{
+    var requestId = Base64Utils.Base64Encode(Model.Item.Shift.RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+    var admin = Model.UserRole == RequestRoles.GroupAdmin;
+
+    var className = "";
+
+    //if (Model.Item.JobStatus.Incomplete())
+    //{
+    //    if (Model.Item.StartDate < DateTime.Now.AddDays(3))
+    //    {
+    //        className += " job--urgent";
+    //    }
+
+    //    if (Model.Item.StartDate < DateTime.Now.AddDays(7))
+    //    {
+    //        className += " job--due-soon";
+    //    }
+    //}
+
+    if (Model.HighlightJob)
+    {
+        className += " highlight";
+    }
+}
+
+<div class="job @className" id="" request-id="@requestId" data-job-status="" data-role="@role">
+    <div class="job__info @(admin ? "admin-view" : "")">
+        <div class="job__info__col1">
+            <span class="job__info__col1__status toggle-on-status-change">
+                <partial name="_RequestStatus" model="@Model.Item" />
+            </span>
+
+            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">
+                @Model.Item.TimeSpan()
+            </span>
+
+            <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
+            </span>
+        </div>
+        <div class="job__info__activity">
+            @foreach (SupportActivities activity in Model.Item.JobSummaries.Select(a => a.SupportActivity).Distinct())
+            {
+                {
+                    <span class="job__info__activity__title @activity.Class()">
+                        @if (activity != SupportActivities.Other)
+                        {
+                            <img src="~/img/icons/@activity.Icon()" />
+                        }
+                        <span>
+                            @activity.FriendlyNameShort()
+                        </span>
+                    </span>
+                }
+            }
+            <span class="job__info__activity__location">
+                @Model.Location.LocationDetails.Name
+            </span>
+        </div>
+        <div class="job__info__col3 flex-end">
+            <div class="job__info__actions">
+                @if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
+                {
+                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                        <span class="text">Cancel shift</span>
+                    </button>
+                }
+            </div>
+            <div class="job__info__footer">
+                <a href="#" class="open">View more info <span></span></a>
+                <a href="#" class="close">View less info <span></span></a>
+            </div>
+        </div>
+
+    </div>
+    <div class="job__detail">
+        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel() { Hide = false, ShowDarkSpinner = true }' />
+    </div>
+</div>

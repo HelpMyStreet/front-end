@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Repositories
                 new AwardsModel()
                 {
                     AwardValue = 0,
-                    AwardDescription = "Verify your ID in the My Profile tab so you can start accepting requests near you.",
+                    AwardDescription = "To be able to accept requests from lots of different organisations, verify your ID in the My Profile tab now.",
                     ImageLocation = "/img/awards/round-placeholder.svg",
                     SpecificPredicate = u => {
                         foreach (Object o in u) {
@@ -97,23 +97,31 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<CurrentAwardModel> GetAwardsByUserID(int userID, CancellationToken cancellationToken)
         {
-            var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
-            var awards = await GetAwards();
-
-            bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
-            var predicates = new List<Object>() { userIsVerified };
-
-            var completedJobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
-            var relevantAward = awards.Where(x => completedJobs.Count() >= x.AwardValue && x.SpecificPredicate(predicates)).OrderBy(x => x.AwardValue).LastOrDefault();
-
-            var completedJobDictionary = completedJobs.GroupBy(x => x.SupportActivity).ToDictionary(g => g.Key, g => g.Count());
-
-            return new CurrentAwardModel
+            try
             {
-                Award = relevantAward,
-                CompletedJobCount = completedJobs.Count(),
-                CompletedJobs = completedJobDictionary
-            };
+                var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
+                var awards = await GetAwards();
+
+                bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
+                var predicates = new List<Object>() { userIsVerified };
+
+                var completedJobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
+                var relevantAward = awards.Where(x => completedJobs.Count() >= x.AwardValue && x.SpecificPredicate(predicates)).OrderBy(x => x.AwardValue).LastOrDefault();
+
+                var completedJobDictionary = completedJobs.GroupBy(x => x.SupportActivity).ToDictionary(g => g.Key, g => g.Count());
+
+                return new CurrentAwardModel
+                {
+                    Award = relevantAward,
+                    CompletedJobCount = completedJobs.Count(),
+                    CompletedJobs = completedJobDictionary
+                };
+            }
+            catch
+            {
+                // Skip awards component if request service has been too slow to respond
+                return null;
+            }
         }
     }
  }

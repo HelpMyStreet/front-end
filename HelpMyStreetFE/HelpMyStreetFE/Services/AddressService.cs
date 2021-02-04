@@ -16,26 +16,42 @@ using System.Threading.Tasks;
 using HelpMyStreet.Contracts.AddressService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Utils;
-using GetPostcodesResponse = HelpMyStreetFE.Models.Reponses.GetPostcodesResponse;
+using HelpMyStreet.Utils.Enums;
+using Microsoft.Extensions.Options;
+using HelpMyStreetFE.Models.Email;
+using HelpMyStreet.Cache;
+using System.Threading;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE.Services
 {
     public class AddressService : BaseHttpService, IAddressService
     {
+        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
+        private readonly IMemDistCache<LocationDetails> _memDistCache;
+        private readonly IMemDistCache<List<LocationDistance>> _memDistCache_LocationDistanceList;
         private readonly IUserRepository _userRepository;
+
+        private const string CACHE_KEY_PREFIX = "address-service-";
 
         public AddressService(
             ILogger<AddressService> logger,
             IConfiguration configuration,
             IAddressRepository addressRepository,
             IUserRepository userRepository,
+            IOptions<RequestSettings> requestSettings,
+            IMemDistCache<LocationDetails> memDistCache,
+            IMemDistCache<List<LocationDistance>> memDistCache_LocationDistanceList,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
             _userRepository = userRepository;
+            _requestSettings = requestSettings;
+            _memDistCache = memDistCache;
+            _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
         }
 
         public Task<int> GetTotalStreets()
@@ -45,7 +61,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
         {
-            postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
+            postcode = PostcodeFormatter.FormatPostcode(postcode);
             var response = await Client.GetAsync($"/api/getpostcode?postcode={postcode}");
             var str = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<GetPostCodeResponse>(str);
@@ -53,8 +69,7 @@ namespace HelpMyStreetFE.Services
 
         public async Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode)
         {
-
-            postcode = HelpMyStreet.Utils.Utils.PostcodeFormatter.FormatPostcode(postcode);
+            postcode = PostcodeFormatter.FormatPostcode(postcode);
             GetPostCodeCoverageResponse response = new GetPostCodeCoverageResponse();
             response.PostCodeResponse = await CheckPostCode(postcode);
             if (response.PostCodeResponse.HasContent && response.PostCodeResponse.IsSuccessful)
@@ -77,6 +92,60 @@ namespace HelpMyStreetFE.Services
             };
             return await _addressRepository.GetPostcodes(request);
 
+        }
+
+        public async Task<IEnumerable<LocationWithDistance>> GetLocationDetailsForUser(User user, CancellationToken cancellationToken)
+        {
+            var locationsWithDistance = await GetLocationsForUser(user, cancellationToken);
+
+            return await Task.WhenAll(locationsWithDistance.Select(async l => new LocationWithDistance
+            {
+                Location = l.Location,
+                Distance = l.DistanceFromPostCode,
+                LocationDetails = await GetLocationDetails(l.Location, cancellationToken)
+            }));
+        }
+
+        public async Task<List<LocationDistance>> GetLocationsForUser(User user, CancellationToken cancellationToken)
+        {
+            return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                 var locationsResponse = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
+
+                 if (locationsResponse.IsSuccessful && locationsResponse.HasContent)
+                 {
+                     return locationsResponse.Content.LocationDistances;
+                 }
+                 else
+                 {
+                     throw new HttpRequestException("Unable to fetch locations by distance");
+                 }
+            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+        }
+
+        public async Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken)
+        {
+            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var response = await _addressRepository.GetLocationDetails(location);
+                if (response.HasContent && response.IsSuccessful)
+                {
+                    return response.Content.LocationDetails;
+                }
+                else
+                {
+                    throw new HttpRequestException("Unable to fetch location details");
+                }
+            }, $"{CACHE_KEY_PREFIX}-location-{(int)location}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+        }
+
+        public async Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations, CancellationToken cancellationToken)
+        {
+
+            var responses = locations.Select(location => GetLocationDetails(location, cancellationToken));
+            var awaitedResponses = await Task.WhenAll(responses);
+
+            return awaitedResponses.ToList();
         }
 
         public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest)

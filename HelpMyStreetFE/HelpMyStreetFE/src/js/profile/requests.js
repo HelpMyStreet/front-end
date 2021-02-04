@@ -3,6 +3,7 @@ import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
+import { enableMaps, drawMap } from "../shared/maps";
 
 export function initialiseRequests() {
 
@@ -15,7 +16,7 @@ export function initialiseRequests() {
         const job = $(this).closest('.job');
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
-        loadJobDetails(job);
+        loadJobDetails(job).then(initialiseMaps(job));
     });
 
     $('.job-list').on('click', '.job a.close', function (e) {
@@ -29,6 +30,7 @@ export function initialiseRequests() {
         e.preventDefault();
         $(this).toggleClass('open');
         $(this).next().slideToggle();
+        
     });
 
     $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
@@ -112,19 +114,37 @@ export function initialiseRequests() {
 
     });
 
+    enableMaps();
     loadFeedbackComponents();
+    
 }
 
+async function initialiseMaps(job){
+var thisMap = {
+            displayVolunteers: false,
+            displayGroups: false,
+            allowNavigation: false,
+            allowSearch: false,
+            consoleCoordinates: false,
+            initialLat: Number(job.find(".location-map").data("lat")),
+            initialLng: Number(job.find(".location-map").data("lng")),
+            initialZoom: 9,
+            divID: "map-" + job.attr("id"),
+            singlePin: true
+        };
+drawMap(thisMap);
+}
 
 export function showStatusUpdatePopup(btn) {
     const job = btn.closest(".job");
     const targetState = $(btn).data("target-state");
     const targetUser = $(btn).data("target-user") ?? "self";
 
-    let jobId = job.attr("id");
+    const jobId = job.attr("id");
+    const requestId = $(job).attr("request-id");
     const role = $(job).data("role");
 
-    let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&s=${targetState}`;
+    let popupSource = `/api/request-help/get-status-change-popup?j=${jobId}&rq=${requestId}&s=${targetState}`;
 
     let popupSettings = {
         acceptCallbackAsync: async () => {
@@ -160,32 +180,35 @@ export function showStatusUpdatePopup(btn) {
 }
 
 
-async function setJobStatus(job, newStatus, targetUser) {
+async function setJobStatus(job, targetState, targetUser) {
     const jobId = job.attr("id");
+    const requestId = $(job).attr("request-id");
     const role = $(job).data("role");
 
-    return await hmsFetch('/api/request-help/set-job-status?j=' + jobId + '&s=' + newStatus + '&u=' + targetUser + '&r=' + role);
+    return await hmsFetch(`/api/request-help/set-job-status?j=${jobId}&rq=${requestId}&s=${targetState}&u={targetUser}&r=${role}`);
 }
 
 
 async function loadJobDetails(job, forceRefresh) {
-  const jobDetail = $(job).find('.job__detail');
+    const jobDetail = $(job).find('.job__detail');
 
-  if (!forceRefresh && jobDetail.data('status') !== undefined) {
-    return;
-  }
+    if (!forceRefresh && jobDetail.data('status') !== undefined) {
+        return;
+    }
 
-  const jobId = $(job).attr("id");
-  const jobSet = $(job).closest('.job-filter-results-panel').data('jobset');
-  jobDetail.data('status', 'updating');
-  const response = await hmsFetch('/api/request-help/get-job-details?j=' + jobId + '&js=' + jobSet);
-  if (response.fetchResponse == fetchResponses.SUCCESS) {
-    jobDetail.html(await response.fetchPayload);
-    jobDetail.data('status', { 'updated': new Date() });
-  } else {
-    jobDetail.removeData('status');
-    return false;
-  }
+    const jobId = $(job).attr("id");
+    const requestId = $(job).attr("request-id");
+    const jobSet = $(job).closest('.job-filter-results-panel').data('jobset');
+    jobDetail.data('status', 'updating');
+    const response = await hmsFetch('/api/request-help/get-job-details?j=' + jobId + '&rq=' + requestId + '&js=' + jobSet);
+    if (response.fetchResponse == fetchResponses.SUCCESS) {
+        jobDetail.html(await response.fetchPayload);
+        jobDetail.data('status', { 'updated': new Date() });
+        
+    } else {
+        jobDetail.removeData('status');
+        return false;
+    }
 }
 
 export async function loadFeedbackComponents() {

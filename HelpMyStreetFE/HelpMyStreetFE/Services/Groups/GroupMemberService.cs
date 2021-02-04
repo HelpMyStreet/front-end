@@ -137,13 +137,14 @@ namespace HelpMyStreetFE.Services.Groups
                 var group = await _groupService.GetGroupById(groupRoles.Key, cancellationToken);
                 var roles = groupRoles.Value.Select(role => (GroupRoles)role);
 
-                response.Add(new UserGroup()
+                response.Add(new UserGroup
                 {
                     UserId = userId,
                     GroupId = group.GroupId,
                     GroupKey = group.GroupKey,
                     GroupName = group.GroupName,
-                    UserRoles = roles
+                    UserRoles = roles,
+                    ShiftsEnabled = group.ShiftsEnabled,
                 });
             }
 

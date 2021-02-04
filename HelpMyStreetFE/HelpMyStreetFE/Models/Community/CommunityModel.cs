@@ -4,6 +4,7 @@ namespace HelpMyStreetFE.Models.Community
     public class CommunityModel
     {
         public string FriendlyName { get; set; }
+        public string GroupType { get; set; }
         public string GeographicName { get; set; }
         public string LinkURL { get; set; }
         public double Pin_Latitude { get; set; }

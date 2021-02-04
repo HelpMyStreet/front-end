@@ -15,15 +15,16 @@ namespace HelpMyStreetFE.Repositories
         private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
         {
             {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Pin_Latitude = 51.507602, Pin_Longitude = -0.127816, LinkURL = "/healthylondonpartnership", Pin_VisibilityZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
-            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, LinkURL = "/tankersley", Pin_VisibilityZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, LinkURL = "/ruddington", Pin_VisibilityZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington" } },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png"} },
-            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png"} },
-            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton" } },
-            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham" } },
+            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, LinkURL = "/tankersley", Pin_VisibilityZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg", GroupType = "Local Group" } },
+            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, LinkURL = "/ruddington", Pin_VisibilityZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington", GroupType = "Local Group" } },
+            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png", GroupType = "Local Group"} },
+            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png", GroupType = "Local Group"} },
+            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton", GroupType = "Local Group" } },
+            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham", GroupType = "Local Group" } },
             {"ageuk-southkentcoast", new CommunityModel() {FriendlyName = "Age UK South Kent Coast", Pin_Latitude = 51.15670694376801, Pin_Longitude = 1.2906096124741184, LinkURL = "/southkentcoast", Pin_VisibilityZoomLevel = 12, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/kent/southkentcoast/banner.jpg", GeographicName="Deal or Folkestone" } },
             {"ageuk-favershamandsittingbourne", new CommunityModel() {FriendlyName = "Age UK Faversham & Sittingbourne", Pin_Latitude = 51.32681418199929, Pin_Longitude = 0.8065864663737088, LinkURL = "/favershamandsittingbourne", Pin_VisibilityZoomLevel = 12, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/kent/favershamandsittingbourne/banner.jpg", GeographicName="Faversham or Sittingbourne" } },
             {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/kent/northwest/banner.jpg", GeographicName="North West Kent (Dartford, Swanley or Gravesend)" } },
+            {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
 
         };
@@ -35,28 +36,31 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
         {
-            int groupId = await _groupService.GetGroupIdByKey(groupKey, cancellationToken);
 
-            CommunityViewModel vm = ((Groups)groupId) switch
-            {
-                Groups.Tankersley => GetTankersley(),
-                Groups.Ruddington => GetRuddington(),
-                Groups.AgeUKLSL => GetAgeUKLSL(),
-                Groups.AgeUKWirral => GetAgeUKWirral(),
-                Groups.HLP => GetHLP(),
-                Groups.FTLOS => GetFtLOS(),
-                Groups.AgeUKNottsBalderton => GetBalderton(),
-                Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
-                Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
-                Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
-                Groups.AgeUKNorthWestKent => GetNorthWestKent(),
-                _ => null,
-            };
+                int groupId = await _groupService.GetGroupIdByKey(groupKey, cancellationToken);
 
-            vm.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-            vm.groupKey = groupKey;
+                CommunityViewModel vm = ((Groups)groupId) switch
+                {
+                    Groups.Tankersley => GetTankersley(),
+                    Groups.Ruddington => GetRuddington(),
+                    Groups.AgeUKLSL => GetAgeUKLSL(),
+                    Groups.AgeUKWirral => GetAgeUKWirral(),
+                    Groups.HLP => GetHLP(),
+                    Groups.FTLOS => GetFtLOS(),
+                    Groups.AgeUKNottsBalderton => GetBalderton(),
+                    Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
+                    Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
+                    Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
+                    Groups.AgeUKNorthWestKent => GetNorthWestKent(),
+                    Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
+                    _ => null,
+                };
 
-            return vm;
+                vm.EncodedGroupId = Base64Utils.Base64Encode(groupId);
+                vm.groupKey = groupKey;
+
+                return vm;
+            
         }
 
         public async Task<List<CommunityModel>> GetCommunities()
@@ -243,7 +247,87 @@ namespace HelpMyStreetFE.Repositories
 
             return communityViewModel;
         }
-        
+
+        private CommunityViewModel GetLincolnshireVolunteers()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "LincolnshireVolunteers",
+            };
+
+            CommunityModel communityModel = GetCommunityDetailByKey("lincs-volunteers");
+
+            communityViewModel.Map_CentreLatitude = 52.95;
+            communityViewModel.Map_CentreLongitude = -0.2;
+            communityViewModel.Map_ZoomLevel = 9;
+
+            communityViewModel.CommunityName = "Lincolnshire Volunteers";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Lincolnshire CVS",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Voluntary Centre Services",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "VET",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Age UK",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Local Resilience Forum",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "NHS Lincolnshire",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Lincolnshire County Council",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png"
+                },
+            };
+
+            return communityViewModel;
+        }
+
         private CommunityViewModel GetFavershameAndSittingBourne()
         {
             CommunityViewModel communityViewModel = new CommunityViewModel

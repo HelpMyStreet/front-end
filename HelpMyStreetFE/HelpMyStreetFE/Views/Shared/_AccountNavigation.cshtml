@@ -42,6 +42,33 @@
             </a>
         </li>
 
+        @if (Model.UserDetails.ShiftsEnabled)
+        {
+            <li class="account__nav__item">
+                <a href="/account/open-shifts" class="@(Model.CurrentPage == MenuPage.OpenShifts ? "selected" : string.Empty)">
+                    Open Shifts
+                    @await Component.InvokeAsync("AccountNavBadge", new
+                       {
+                           CssClass = "bg-green",
+                           User = Model.UserDetails.User,
+                           MenuPage = MenuPage.OpenShifts
+                       })
+                </a>
+            </li>
+
+            <li class="account__nav__item">
+                <a href="/account/my-shifts" class="@(Model.CurrentPage == MenuPage.MyShifts ? "selected" : string.Empty)">
+                    My Shifts
+                    @await Component.InvokeAsync("AccountNavBadge", new
+                       {
+                           CssClass = "bg-green",
+                           User = Model.UserDetails.User,
+                           MenuPage = MenuPage.MyShifts
+                       })
+                </a>
+            </li>
+        }
+
         <li class="account__nav__item">
             <a href="/account/profile" class="@(Model.CurrentPage == MenuPage.UserDetails ? "selected" : string.Empty)">My Profile</a>
         </li>
@@ -59,7 +86,7 @@
                                {
                                    CssClass = "bg-green",
                                    User = Model.UserDetails.User,
-                                   MenuPage = MenuPage.GroupRequests,
+                                   MenuPage = MenuPage.Group,
                                    GroupKey = userGroup.GroupKey
                                })
                         }
@@ -67,6 +94,22 @@
                     <ul>
                         @if (userGroup.UserRoles.Contains(GroupRoles.TaskAdmin))
                         {
+                            @if (userGroup.ShiftsEnabled)
+                            {
+                                <li class="account__nav__item">
+                                    <a href=@($"/account/g/{userGroup.GroupKey}/shifts") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupShifts ? "selected" : string.Empty)">
+                                        Shifts
+                                        @await Component.InvokeAsync("AccountNavBadge", new
+                                           {
+                                               CssClass = "bg-green",
+                                               User = Model.UserDetails.User,
+                                               MenuPage = MenuPage.GroupShifts,
+                                               GroupKey = userGroup.GroupKey
+                                           })
+                                    </a>
+                                </li>
+                            }
+
                             <li class="account__nav__item">
                                 <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
                                     Requests

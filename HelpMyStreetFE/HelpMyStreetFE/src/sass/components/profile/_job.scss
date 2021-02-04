@@ -135,6 +135,7 @@
                 &__dates {
                     display: flex;
                     align-items: center;
+                    line-height: 0.8rem;
                 }
             }
 
@@ -145,7 +146,7 @@
                 margin-bottom: 0.5rem;
                 order: 1;
 
-                img.status-icon {
+                .status-icon {
                     margin-right: 0.5rem;
                 }
 
@@ -154,7 +155,7 @@
                     background: none;
                     margin-bottom: 0;
 
-                    img.status-icon {
+                    .status-icon {
                         margin-right: 1rem;
                     }
                 }
@@ -175,6 +176,11 @@
                 font-weight: bold;
                 color: $black;
                 text-align: left;
+
+                &.multiple-statuses {
+                    font-size: 0.85rem;
+                    line-height: 1.2rem;
+                }
             }
 
             &__new-status.job__status {
@@ -413,8 +419,10 @@
         }
     }
 
-    img.status-icon {
+    .status-icon {
+        filter: drop-shadow(2px 2px 2px grey);
         width: 3rem;
+        height: 3rem;
     }
 
 
@@ -466,7 +474,15 @@
             padding: 10px 30px 10px 0.5rem;
             margin: 0;
 
-            span {
+            .status-icon,
+            .activity-icon {
+                width: 1.9rem;
+                max-height: 1.9rem;
+                vertical-align: middle;
+                margin-right: 0.5rem;
+            }
+
+            span:last-child {
 
                 @include arrow( 8px, 3px, $dark-blue, down, $white);
                 float: right;
@@ -478,7 +494,7 @@
             }
 
             &.open {
-                span {
+                span:last-child {
                     @include arrow( 8px, 3px, $dark-blue, up, $white);
                     float: right;
                 }
@@ -490,6 +506,20 @@
                 display: none;
             }
         }
+
+        .location-details {
+            dd {
+                display: flex;
+
+                @media screen and (max-width: $med-screen) {
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+
+        }
+
+
 
         .offline-details {
             display: flex;
@@ -569,10 +599,31 @@
                 font-weight: bold;
                 color: $black;
                 padding-top: 0.25rem;
+
+                span.context {
+                    font-weight: normal;
+                }
             }
 
             dd {
                 word-wrap: break-word;
+            }
+
+            &.highlight-last{
+                dt:last-of-type,
+                dd:last-of-type {
+                    color: $green;
+                }
+            }
+        }
+
+        &.job {
+            margin: 1rem 0.5rem;
+            width: auto;
+
+            &:before {
+                border-top: none;
+                margin: 0;
             }
         }
     }
@@ -597,3 +648,69 @@
         }
     }
 }
+
+@mixin circleHover {
+    &:hover {
+        stroke: $blue;
+        stroke-width: 0.5rem;
+        transition: 0.3s;
+    }
+}
+
+.status-icon {
+    svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+
+
+    circle {
+        fill: none;
+        stroke-width: 0.4rem;
+
+        &.background {
+            stroke: white;
+        }
+
+        &.new {
+            stroke: red;
+            @include circleHover;
+        }
+
+        &.open {
+            stroke: $gray-8;
+            @include circleHover;
+        }
+
+        &.accepted {
+            stroke: $green;
+            @include circleHover;
+        }
+
+        &.in-progress {
+            stroke: $green;
+            @include circleHover;
+        }
+
+        &.done {
+            stroke: green;
+            @include circleHover;
+        }
+
+        &.dots {
+            stroke: $white;
+            stroke-width: 0.18rem;
+            stroke-linecap: round;
+            stroke-dasharray: 0.1% 11%;
+        }
+    }
+
+    .tick {
+        stroke: $green;
+        stroke-opacity: 0.5;
+        fill: none;
+    }
+}
+
+

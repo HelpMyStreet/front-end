@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts.UserService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 
@@ -17,7 +19,7 @@ namespace HelpMyStreetFE.Services.Users
         Task<int> GetVolunteers();
         Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode);
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
-        Models.Account.UserDetails GetUserDetails(User user);
+        Task<Models.Account.UserDetails> GetUserDetails(User user, CancellationToken cancellationToken);
         bool GetRegistrationIsComplete(User user);
     }
 }

@@ -7,5 +7,9 @@
         UserOpenRequests_NotMatchingCriteria,
         UserAcceptedRequests,
         UserCompletedRequests,
+
+        GroupShifts,
+        UserOpenShifts,
+        UserMyShifts,
     }
 }

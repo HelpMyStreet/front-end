@@ -18,6 +18,8 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? DueBefore { get; set; }
         public DateTime? RequestedAfter { get; set; }
         public DateTime? RequestedBefore { get; set; }
+        public IEnumerable<Location> Locations { get; set; }
+        public IEnumerable<PartOfDay> PartsOfDay { get; set; }
 
         public OrderBy OrderBy { get; set; }
         public int? HighlightJobId { get; set; }
@@ -35,6 +37,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             {
                 SupportActivities = filterSet.SupportActivities.Where(a => a.IsSelected).Select(a => a.Value);
             }
+            if (filterSet.Locations != null)
+            {
+                Locations = filterSet.Locations.Where(a => a.IsSelected).Select(a => a.Value);
+            }
             if (filterSet.MaxDistanceInMiles != null)
             {
                 MaxDistanceInMiles = filterSet.MaxDistanceInMiles.Where(a => a.IsSelected).First().Value;
@@ -42,6 +48,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             if (filterSet.DueInNextXDays != null)
             {
                 DueInNextXDays = filterSet.DueInNextXDays.Where(a => a.IsSelected).First().Value;
+            }
+            if (filterSet.PartOfDay != null)
+            {
+                PartsOfDay = filterSet.PartOfDay.Where(a => a.IsSelected).Select(a => a.Value);
             }
             if (filterSet.OrderBy != null)
             {

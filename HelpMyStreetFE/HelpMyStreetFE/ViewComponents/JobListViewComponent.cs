@@ -1,7 +1,10 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Account.Jobs;
+using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
@@ -20,19 +23,19 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IFilterService _filterService;
+        private readonly IAddressService _addressService;
 
-        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService, IFilterService filterService)
+        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService, IFilterService filterService, IAddressService addressService)
         {
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
             _filterService = filterService;
+            _addressService = addressService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            JobListViewModel jobListViewModel = new JobListViewModel();
-
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             if (user == null)
@@ -40,14 +43,45 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-
-            if (jobFilterRequest.JobSet == JobSet.GroupRequests)
+            if (jobFilterRequest.JobSet.GroupAdminView())
             {
                 if (!(await _groupMemberService.GetUserHasRole(user.ID, jobFilterRequest.GroupId.Value, GroupRoles.TaskAdmin, cancellationToken)))
                 {
                     throw new UnauthorizedAccessException("User not authorized to view group tasks");
                 }
             }
+
+            string viewName;
+            object viewModel;
+
+            // TODO: Consolidate 3 methods
+            switch (jobFilterRequest.JobSet.RequestType(), jobFilterRequest.JobSet)
+            {
+                case (RequestType.Task, _):
+                    viewName = "JobList";
+                    viewModel = await InvokeAsync_Jobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    break;
+
+                case (RequestType.Shift, JobSet.UserOpenShifts):
+                case (RequestType.Shift, JobSet.UserMyShifts):
+                    viewName = "ShiftList";
+                    viewModel = await InvokeAsync_ShiftJobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    break;
+
+                case (RequestType.Shift, JobSet.GroupShifts):
+                    viewName = "ShiftRequestList";
+                    viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    break;
+
+                default: throw new ArgumentException(message: $"Unexpected RequestType value: {jobFilterRequest.JobSet.RequestType()}");
+            }
+
+            return View(viewName, viewModel);
+        }
+
+        private async Task<ListViewModel<JobViewModel<JobHeader>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        {
+            var jobListViewModel = new ListViewModel<JobViewModel<JobHeader>>();
 
             IEnumerable<JobHeader> jobs = jobFilterRequest.JobSet switch
             {
@@ -56,7 +90,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.OtherJobs,
                 JobSet.UserAcceptedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
                 JobSet.UserCompletedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled),
-                _ => throw new ArgumentException(message: $"Invalid JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
+                _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
             if (jobs == null)
@@ -64,11 +98,11 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
             }
 
-            jobListViewModel.UnfilteredJobs = jobs.Count();
+            jobListViewModel.UnfilteredItems = jobs.Count();
 
             jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
-            jobListViewModel.FilteredJobs = jobs.Count();
+            jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
 
             if (jobFilterRequest.ResultsToShow > 0)
@@ -76,25 +110,130 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Jobs = (await Task.WhenAll(jobs.Select(async a => new JobViewModel()
+            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobHeader>()
             {
-                JobHeader = a,                
+                Item = a,
                 UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
-            })));
+            }));
 
-            if (jobListViewModel.UnfilteredJobs == jobListViewModel.FilteredJobs && jobListViewModel.UnfilteredJobs <= 5)
+            if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
             {
                 hideFilterPanelCallback?.Invoke();
 
-                if (jobListViewModel.UnfilteredJobs == 0)
+                if (jobListViewModel.UnfilteredItems == 0)
                 {
                     noJobsCallback?.Invoke();
                 }
             }
 
-            return View("JobList", jobListViewModel);
+            return jobListViewModel;
+        }
+
+        private async Task<ListViewModel<JobViewModel<ShiftJob>>> InvokeAsync_ShiftJobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        {
+            var jobListViewModel = new ListViewModel<JobViewModel<ShiftJob>>();
+
+            IEnumerable<ShiftJob> jobs = jobFilterRequest.JobSet switch
+            {
+                JobSet.UserOpenShifts => await _requestService.GetOpenShiftsForUserAsync(user, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
+                JobSet.UserMyShifts => await _requestService.GetShiftsForUserAsync(user.ID, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
+                _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
+            };
+
+            if (jobs == null)
+            {
+                throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
+            }
+
+            // Some jobs will already be filtered out in the Request Service, by jobFilterRequest.DueAfter and jobFilterRequest.DueBefore
+            //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
+            jobListViewModel.UnfilteredItems = int.MaxValue;
+
+            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
+
+            jobListViewModel.FilteredItems = jobs.Count();
+            jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
+
+            if (jobFilterRequest.ResultsToShow > 0)
+            {
+                jobs = jobs.Take(jobFilterRequest.ResultsToShow);
+            }
+
+            var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+
+            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<ShiftJob>()
+            {
+                Item = a,
+                Location = userLocationDetails.FirstOrDefault(l => l.Location == a.Location),
+                UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
+                HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
+            }));
+
+            if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
+            {
+                hideFilterPanelCallback?.Invoke();
+
+                if (jobListViewModel.UnfilteredItems == 0)
+                {
+                    noJobsCallback?.Invoke();
+                }
+            }
+
+            return jobListViewModel;
+        }
+
+        private async Task<ListViewModel<JobViewModel<RequestSummary>>> InvokeAsync_ShiftRequests(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        {
+            var jobListViewModel = new ListViewModel<JobViewModel<RequestSummary>>();
+
+            IEnumerable<RequestSummary> jobs = jobFilterRequest.JobSet switch
+            {
+                JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
+                _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
+            };
+
+            if (jobs == null)
+            {
+                throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
+            }
+
+            // Some jobs will already be filtered out in the Request Service, by jobFilterRequest.DueAfter and jobFilterRequest.DueBefore
+            //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
+            jobListViewModel.UnfilteredItems = int.MaxValue;
+
+            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
+
+            jobListViewModel.FilteredItems = jobs.Count();
+            jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
+
+            if (jobFilterRequest.ResultsToShow > 0)
+            {
+                jobs = jobs.Take(jobFilterRequest.ResultsToShow);
+            }
+
+            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<RequestSummary>
+            {
+                Item = a,
+                Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
+                UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                UserHasRequiredCredentials = false,
+                HighlightJob = false,//.JobID.Equals(jobFilterRequest.HighlightJobId),
+            }));
+
+            if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
+            {
+                hideFilterPanelCallback?.Invoke();
+
+                if (jobListViewModel.UnfilteredItems == 0)
+                {
+                    noJobsCallback?.Invoke();
+                }
+            }
+
+            return jobListViewModel;
         }
     }
 }

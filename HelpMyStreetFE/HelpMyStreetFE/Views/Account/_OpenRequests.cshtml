@@ -12,6 +12,7 @@
     {
         jobFilterViewModel = new JobFilterViewModel()
         {
+            ListViewComponent = "JobList",
             PanelId = "criteria-requests",
             JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
             EmptyJobSetCallback = new Action(() => NoCriteriaJobsToDisplay = true),
@@ -22,6 +23,7 @@
     {
         jobFilterViewModel = new JobFilterViewModel()
         {
+            ListViewComponent = "JobList",
             PanelId = "non-criteria-requests",
             JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId },
             User = @Model.UserDetails.User,
@@ -32,10 +34,27 @@
 }
 
 <div class="verification-panel">
+
+    @if (Model.UserDetails.ShiftsEnabled)
+    {
+        <div class="notification__card mb-md" data-notificationId="">
+            <div class="notification__icon__wrapper">
+                <img class="notification__icon" src="~/img/icons/vaccination.svg" />
+            </div>
+            <div class="notification__content">
+                <div class="notification__title">COVID-19 Vaccination Support</div>
+                <div class="notification__message">
+                    HelpMyStreet are proudly supporting the COVID-19 vaccination programme - take a look at your
+                    <a href="/account/open-shifts">Open Shifts</a>
+                    page to find volunteering opportunities near you!
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="user-profile profile-panel p-md">
         <header class="profile-panel__header">
             <h3 class="profile-panel__title">Open Requests</h3>
-            <p>Help that’s needed near you</p>
         </header>
 
         <div class="profile">
@@ -53,7 +72,7 @@
             }
             else
             {
-                <p>Requests meeting the criteria you set when you signed up</p>
+                <h6>Requests meeting the criteria you set when you signed up</h6>
 
                 <div class="job-filter-panel">
                     @criteriaJobsList
@@ -69,7 +88,7 @@
                 }
 
 
-                <p>Other Requests</p>
+                <h6 class="mt-lg">Other requests you may be interested in</h6>
 
                 @if (NoNonCriteriaJobsToDisplay)
                 {

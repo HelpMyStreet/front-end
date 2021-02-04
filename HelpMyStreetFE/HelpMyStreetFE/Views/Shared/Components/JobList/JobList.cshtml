@@ -1,24 +1,29 @@
-﻿@model HelpMyStreetFE.Models.Account.Jobs.JobListViewModel
+﻿@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Models;
+@model ListViewModel<JobViewModel<JobHeader>>
 
+
+<script>let jobCompleteness = [];</script>
 
 <div class="profile job-list">
-    @Html.DisplayFor(x => Model.Jobs)
+    @foreach (var j in Model.Items)
+    {
+        @Html.DisplayFor(model => j, "JobViewModel")
+    }
 
-    @if (Model.FilteredJobs > Model.DisplayedJobs)
+    @if (Model.FilteredItems > Model.DisplayedItems)
     {
         <p class="text-center">
-            Showing first @Model.DisplayedJobs requests@(Model.UnfilteredJobs > Model.FilteredJobs ? " matching filter" : "").
-            @if (Model.FilteredJobs - Model.DisplayedJobs > Model.ResultsToShowIncrement) 
-            { 
+            Showing first @Model.DisplayedItems requests@(Model.UnfilteredItems > Model.FilteredItems ? " matching filter" : "").
+            @if (Model.FilteredItems - Model.DisplayedItems > Model.ResultsToShowIncrement)
+            {
                 <a href="#" class="show-more-jobs">Show more</a><span>.</span>
             }
-            <a href="#" class="show-all-jobs">Show all @Model.FilteredJobs</a>.
+            <a href="#" class="show-all-jobs">Show all @Model.FilteredItems</a>.
         </p>
     }
-    else if (Model.DisplayedJobs == 0 && Model.UnfilteredJobs > 0)
+    else if (Model.DisplayedItems == 0 && Model.UnfilteredItems > 0)
     {
         <p>No requests to display.  Try adjusting the filters above.</p>
     }
-</div>
-
 </div>

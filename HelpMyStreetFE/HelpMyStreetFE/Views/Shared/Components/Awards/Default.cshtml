@@ -6,50 +6,52 @@
 @model AwardsViewModel;
 
 
-@if (Model.CurrentAward.CompletedJobCount == 0)
+@if (Model.CurrentAward != null)
 {
-    <div class="profile-panel">
-        <div class="award">
-            <div class="user-badge">
-                <div class="user-icon">
-                    <img src="@Model.CurrentAward.Award.ImageLocation" />
-                </div>
-
-                <div class="awards-user-detail">
-                    <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
-                    <h5>Ready to start helping?</h5>
-                </div>
-            </div>
-            <div class="award-description__wrapper">
-                <p class="award-description">@Model.CurrentAward.Award.AwardDescription</p>
-            </div>
-        </div>
-    </div>
-}
-else
-{
-    <div class="profile-panel">
-        <div class="award">
-            <div class="user-badge">
-                <div class="user-icon">
-                    <img src="@Model.CurrentAward.Award.ImageLocation" title="@Model.CurrentAward.Award.AwardValue+ requests completed" />
-                </div>
-
-                <div class="awards-user-detail">
-                    <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
-                    <h5>@Model.CurrentAward.CompletedJobCount @(Model.CurrentAward.CompletedJobCount == 1 ? "request" : "requests") completed</h5>
-                </div>
-            </div>
-            <div class="award-description__wrapper">
-                @foreach (var a in Model.CurrentAward.CompletedJobs.OrderBy(a => a.Key.Equals(SupportActivities.Other)).ThenByDescending(a => a.Value))
-                {
-                    <div class="completed-task-summary @a.Key.Class()">
-                        <img src="~/img/icons/@a.Key.Icon()" />
-                        @a.Key.PerfectTense(a.Value)
+    if (Model.CurrentAward.CompletedJobCount == 0)
+    {
+        <div class="profile-panel">
+            <div class="award">
+                <div class="user-badge">
+                    <div class="user-icon">
+                        <img src="@Model.CurrentAward.Award.ImageLocation" />
                     </div>
-                }
+
+                    <div class="awards-user-detail">
+                        <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
+                        <h5>Ready to start helping?</h5>
+                    </div>
+                </div>
+                <div class="award-description__wrapper">
+                    <p class="award-description">@Model.CurrentAward.Award.AwardDescription</p>
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+    else
+    {
+        <div class="profile-panel">
+            <div class="award">
+                <div class="user-badge">
+                    <div class="user-icon">
+                        <img src="@Model.CurrentAward.Award.ImageLocation" title="@Model.CurrentAward.Award.AwardValue+ requests completed" />
+                    </div>
 
+                    <div class="awards-user-detail">
+                        <h4 class="mini-user-profile__user-name m-0">@Model.User.UserPersonalDetails.DisplayName</h4>
+                        <h5>@Model.CurrentAward.CompletedJobCount @(Model.CurrentAward.CompletedJobCount == 1 ? "request" : "requests") completed</h5>
+                    </div>
+                </div>
+                <div class="award-description__wrapper">
+                    @foreach (var a in Model.CurrentAward.CompletedJobs.OrderBy(a => a.Key.Equals(SupportActivities.Other)).ThenByDescending(a => a.Value))
+                    {
+                        <div class="completed-task-summary @a.Key.Class()">
+                            <img src="~/img/icons/@a.Key.Icon()" />
+                            @a.Key.PerfectTense(a.Value)
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}

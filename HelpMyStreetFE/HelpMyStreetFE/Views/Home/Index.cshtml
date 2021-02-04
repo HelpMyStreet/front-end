@@ -1,34 +1,31 @@
 ﻿@model HomeViewModel;
 @using HelpMyStreetFE.Models.Feedback;
 
-@{
-    ViewData["Title"] = "Home Page";
-}
+@{ ViewData["Title"] = "Home Page"; }
 @section Scripts {
-    <script src="~/coverageMap.js" asp-append-version="true"></script>
+    @*<script src="~/coverageMap.js" asp-append-version="true"></script>*@
     <script src="~/stickynav.js" asp-append-version="true"></script>
-    
+
 }
 
 
 @if (!Model.isLoggedIn)
 {
-    <div class="sticky-nav" id="sticky-nav">
-        <div class="row sm12 justify-center">
-            <div class="flex row">
-                <div class="sm6 mr-sm">
-                    <a href="/login" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up or Log In</a>
-                    <span>  </span>
+<div class="sticky-nav" id="sticky-nav">
+    <div class="row sm12 justify-center">
+        <div class="flex row">
+            <div class="sm6 mr-sm">
+                <a href="/login" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up or Log In</a>
+                <span>  </span>
 
-                </div>
-                <div class="sm6">
-                    <span>  </span>
-                    <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
-                </div>
+            </div>
+            <div class="sm6">
+                <span>  </span>
+                <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
             </div>
         </div>
     </div>
-}
+</div>}
 <div class="container">
     <header class="content-page__header">
         <div class="row">
@@ -62,14 +59,10 @@
             <div class="row sm12 text-center justify-center mb-lg">
                 @if (!Model.isLoggedIn)
                 {
-                    <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a>
-
-                }
+    <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
                 else
                 {
-                    <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>
-
-                }
+    <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
             </div>
         </div>
         <div class="flex sm7 home-video-container justify-center align-center text-right mb-lg pad-sm" id="video">
@@ -111,9 +104,9 @@
         </div>
     </div>
 
-        <div class="mt-lg">
-            @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
-        </div>
+    <div class="mt-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
+    </div>
 
     <div class="how-to-use row mt72 justify-center card">
         <partial name="_HowToUse" model=@Model.isLoggedIn />
@@ -141,11 +134,9 @@
     <div class="row justify-center text-center">
         @if (Model.isLoggedIn)
         {
-            <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">View Open Requests</a>
-        }
-        else
-        {
-            <a href="/login" class="btn cta large fill mt16 btn--sign-up fill">Sign Up or Log In</a>
-        }
+<a href="/account" class="btn cta large fill mt16 btn--sign-up fill">View Open Requests</a> }
+            else
+            {
+<a href="/login" class="btn cta large fill mt16 btn--sign-up fill">Sign Up or Log In</a>}
     </div>
 </div>

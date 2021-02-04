@@ -22,6 +22,7 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -33,12 +34,17 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
         private readonly IMemDistCache<IEnumerable<JobHeader>> _memDistCache;
+        private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
+        private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
         private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly IAddressService _addressService;
+
+        private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobHeader>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries)
         {
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
@@ -48,6 +54,11 @@ namespace HelpMyStreetFE.Services.Requests
             _memDistCache = memDistCache;
             _requestSettings = requestSettings;
             _groupMemberService = groupMemberService;
+            _addressService = addressService;
+            _memDistCache_ShiftJobs = memDistCache_ShiftJobs;
+            _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
+
+            _shiftJobDedupe_EqualityComparer = new ShiftJobDedupe_EqualityComparer();
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -155,15 +166,61 @@ namespace HelpMyStreetFE.Services.Requests
                 return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { UserID = userId });
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
 
-            return jobs?.OrderOpenJobsForDisplay();
+            if (jobs != null)
+            {
+                return jobs.OrderOpenJobsForDisplay();
+            }
+            throw new Exception($"Unable to get jobs for user {userId}");
+        }
+
+        public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        {
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            return await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
+        }
+
+        public async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        {
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            return await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await _requestHelpRepository.GetUserShiftJobsByFilter(new GetUserShiftJobsByFilterRequest()
+                {
+                    VolunteerUserId = userId,
+                    DateFrom = dateFrom,
+                    DateTo = dateTo,
+                    JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
+                });
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
+        }
+
+        public async Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
+        {
+            return await _requestHelpRepository.GetRequestDetailsAsync(requestId, userId);
         }
 
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            return await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            return (await GetJobAndRequestSummaryAsync(jobId, cancellationToken)).JobSummary;
         }
 
-        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, CancellationToken cancellationToken)
+        public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
+        {
+            var getJobSummaryResponse = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+
+            return new JobDetail()
+            {
+                RequestSummary = getJobSummaryResponse.RequestSummary,
+                JobSummary = getJobSummaryResponse.JobSummary,
+            };
+        }
+
+        public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
 
@@ -177,21 +234,39 @@ namespace HelpMyStreetFE.Services.Requests
 
                 return new JobDetail()
                 {
+                    RequestSummary = jobDetails.RequestSummary,
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
-                    JobStatusHistory = jobDetails.History,
+                    JobStatusHistory = await EnrichStatusHistory(jobDetails.History, adminView, cancellationToken),
                     CurrentVolunteer = currentVolunteer,
                 };
             }
             throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
         }
 
+        public async Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken)
+        {
+            UpdateJobStatusOutcome? outcome = status switch
+            {
+                JobStatuses.Cancelled => await _requestHelpRepository.PutUpdateRequestStatusToCancelled(requestId, createdByUserId),
+                _ => throw new ArgumentException(message: $"Invalid JobStatuses value for Request: {status}", paramName: nameof(status)),
+            };
+
+            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
+            {
+                TriggerCacheRefresh(createdByUserId, cancellationToken);
+            }
+
+            return outcome;
+        }
+
         public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
         {
             UpdateJobStatusOutcome? outcome = status switch
             {
-                JobStatuses.InProgress => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value),
+                JobStatuses.Accepted => await _requestHelpRepository.UpdateJobStatusToAcceptedAsync(jobID, createdByUserId, volunteerUserId.Value),
+                JobStatuses.InProgress => await UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value, cancellationToken),
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
                 JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
@@ -207,10 +282,24 @@ namespace HelpMyStreetFE.Services.Requests
             return outcome;
         }
 
+        private async Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken)
+        {
+            var job = await GetJobSummaryAsync(jobID, cancellationToken);
+
+            return job.RequestType switch
+            {
+                RequestType.Shift => await _requestHelpRepository.PutUpdateShiftStatusToAccepted(job.RequestID, job.SupportActivity, createdByUserId, volunteerUserId),
+                RequestType.Task => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId),
+                _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
+            };
+        }
+
+
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
         }
+
         public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
@@ -231,7 +320,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var job = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            var job = (await _requestHelpRepository.GetJobSummaryAsync(jobId)).JobSummary;
 
             if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
             {
@@ -278,6 +367,26 @@ namespace HelpMyStreetFE.Services.Requests
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
+                DateTime? dateFrom = null;
+                DateTime? dateTo = null;
+                _ = _memDistCache_ShiftJobs.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await GetOpenShiftsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken), dateFrom, dateTo, cancellationToken);
+                }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
+
+
+                _ = await _memDistCache_ShiftJobs.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return await _requestHelpRepository.GetUserShiftJobsByFilter(new GetUserShiftJobsByFilterRequest()
+                    {
+                        VolunteerUserId = userId,
+                        DateFrom = dateFrom,
+                        DateTo = dateTo,
+                        JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
+                    });
+                }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
+
+
                 List<UserGroup> userGroups = await _groupMemberService.GetUserGroupRoles(userId, cancellationToken);
                 if (userGroups != null)
                 {
@@ -287,6 +396,18 @@ namespace HelpMyStreetFE.Services.Requests
                         {
                             return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
                         }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
+
+                        _ = _memDistCache_RequestSummaries.RefreshDataAsync(async (cancellationToken) =>
+                        {
+                            var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+                            {
+                                ReferringGroupID = g.GroupId,
+                                DateFrom = dateFrom,
+                                DateTo = dateTo,
+                            };
+
+                            return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
+                        }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
                     });
                 }
             });
@@ -314,6 +435,101 @@ namespace HelpMyStreetFE.Services.Requests
             };
 
             return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+        }
+
+        private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
+        {
+            var locations = (await _addressService.GetLocationsForUser(user, canellationToken)).Select(l => l.Location).ToList();
+
+            var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
+            {
+                ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
+                DateFrom = dateFrom,
+                DateTo = dateTo,
+                Groups = new GroupRequest { Groups = new List<int>() },
+                Locations = new LocationsRequest { Locations = locations },
+                SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
+            };
+            var allShifts = await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
+            var dedupedShifts = allShifts.Distinct(_shiftJobDedupe_EqualityComparer);
+
+            var userShifts = await GetShiftsForUserAsync(user.ID, null, null, true, canellationToken);
+            var notMyShifts = dedupedShifts.Where(s => !userShifts.Contains(s, _shiftJobDedupe_EqualityComparer));
+
+            return notMyShifts;
+        }
+
+        public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        {
+            
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            return await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+                {
+                    ReferringGroupID = groupId,
+                    IncludeChildGroups = true,
+                    DateFrom = dateFrom,
+                    DateTo = dateTo,
+                };
+
+                return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
+        }
+
+        public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        {
+            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
+
+            return await GetGroupShiftRequestsAsync(groupId, dateFrom, dateTo, waitForData, cancellationToken);
+        }
+
+        private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
+        {
+            List<EnrichedStatusHistory> eHist = history.Select(h => new EnrichedStatusHistory(h)).ToList();
+
+            int latestVolunteerId = -1;
+
+            for (int i = 0; i < eHist.Count; i++)
+            {
+                switch (eHist[i].StatusHistory.JobStatus)
+                {
+                    case JobStatuses.New:
+                        eHist[i].JobStatusDescription = "Created";
+                        break;
+                    case JobStatuses.Open:
+                        if (latestVolunteerId > 0)
+                        {
+                            eHist[i].JobStatusDescription = "Released";
+                            eHist[i].StatusHistory.VolunteerUserID = latestVolunteerId;
+                        }
+                        else if (i == 0)
+                        {
+                            eHist[i].JobStatusDescription = "Created";
+                        }
+                        else
+                        {
+                            eHist[i].JobStatusDescription = "Approved";
+                        }
+                        break;
+                    default:
+                        eHist[i].JobStatusDescription = eHist[i].StatusHistory.JobStatus.FriendlyName();
+                        break;
+                }
+
+                if ((eHist[i].StatusHistory.VolunteerUserID ?? -1) > 0)
+                {
+                    latestVolunteerId = eHist[i].StatusHistory.VolunteerUserID.Value;
+
+                    if (ShowNames)
+                    {
+                        eHist[i].VolunteerUser = await _userService.GetUserAsync(eHist[i].StatusHistory.VolunteerUserID.Value, cancellationToken);
+                    }
+                }
+            }
+
+            return eHist;
         }
     }
 }

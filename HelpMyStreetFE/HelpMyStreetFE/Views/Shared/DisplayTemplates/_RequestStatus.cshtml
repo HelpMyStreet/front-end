@@ -1,0 +1,71 @@
+﻿@using System.Linq;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Models.Account.Jobs;
+
+@model RequestSummary;
+
+@{
+
+    int totalUncancelledJobs = Model.JobStatusDictionary().Sum(s => s.Value);
+
+    List<StatusCircleSegment> segments = new List<StatusCircleSegment>();
+    int offsetJobs = 0;
+
+    foreach (var s in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
+    {
+        segments.Add(new StatusCircleSegment
+        {
+            Value = s.Value,
+            Radius = 1.2,
+            GapProportion = Model.JobStatusDictionary().Count() > 1 ? 0.01 : 0,
+            JobStatus = s.Key,
+            Proportion = (double)s.Value / totalUncancelledJobs,
+            OffsetProportion = (double)offsetJobs / totalUncancelledJobs
+        });
+
+        offsetJobs += s.Value;
+    }
+}
+
+
+@if (Model.SingleJobStatus() != null && Model.SingleJobStatus() != JobStatuses.Accepted && Model.SingleJobStatus() != JobStatuses.InProgress && Model.SingleJobStatus() != JobStatuses.Open)
+{
+    <img class="status-icon" src="~/img/icons/status/@Model.SingleJobStatus().Value.Icon()" alt="@Model.SingleJobStatus().Value.FriendlyName()" />
+    <span class="job__status multiple-statuses">@(totalUncancelledJobs > 0 ? $"{totalUncancelledJobs} of {totalUncancelledJobs}" : "") @Model.SingleJobStatus().Value.FriendlyName()</span>
+}
+else
+{
+    <div class="status-icon">
+        <svg>
+            <circle class="background" cx="50%" cy="50%" r="@segments.First().R"></circle>
+
+            @foreach (var segment in segments.Where(s => s.JobStatus.Equals(JobStatuses.InProgress)))
+            {
+                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value of @totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
+
+                <circle class="dots" cx="50%" cy="50%" r="@segment.R"></circle>
+            }
+
+            @foreach (var segment in segments.Where(s => !s.JobStatus.Equals(JobStatuses.InProgress)))
+            {
+                <circle class="@segment.JobStatus.Class()" cx="50%" cy="50%" r="@segment.R" style="stroke-dashoffset: @segment.DashOffset; stroke-dasharray: @segment.DashArray"><title>@segment.Value of @totalUncancelledJobs @segment.JobStatus.FriendlyName()</title></circle>
+            }
+
+
+            @if (!Model.JobStatusDictionary().ContainsKey(JobStatuses.Open))
+            {
+                <path class="tick" stroke-width="3" d="M12 27.2l7.1 7 16.7-16.8" transform="rotate(90,20,25) scale(0.8)" />
+            }
+
+        </svg>
+    </div>
+    <span class="job__status multiple-statuses">
+        @foreach (var a in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
+        {
+            @($"{a.Value} of {totalUncancelledJobs} {a.Key.FriendlyName()}")<br />
+        }
+    </span>
+}

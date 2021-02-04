@@ -4,6 +4,7 @@ using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Services.Requests;
 using System.Threading;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -11,11 +12,13 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IFilterService _filterService;
         private readonly IRequestService _requestService;
+        private readonly IAuthService _authService;
 
-        public JobFilterPanelViewComponent(IFilterService filterService, IRequestService requestService)
+        public JobFilterPanelViewComponent(IFilterService filterService, IAuthService authService, IRequestService requestService)
         {
             _filterService = filterService;
             _requestService = requestService;
+            _authService = authService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterViewModel jobFilterViewModel, CancellationToken cancellationToken)
@@ -24,6 +27,8 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobStatuses? jobStatus = null;
 
+                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
                 if (jobFilterViewModel.JobFilterRequest.HighlightJobId.HasValue)
                 {
                     int jobId = jobFilterViewModel.JobFilterRequest.HighlightJobId.Value;
@@ -31,7 +36,7 @@ namespace HelpMyStreetFE.ViewComponents
                     jobStatus = job?.JobStatus;
                 }
 
-                jobFilterViewModel.FilterSet = _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobStatus, jobFilterViewModel.User);
+                jobFilterViewModel.FilterSet = await _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.JobFilterRequest.GroupId, jobStatus, user, cancellationToken);
             }
 
             jobFilterViewModel.JobFilterRequest.UpdateFromFilterSet(jobFilterViewModel.FilterSet);

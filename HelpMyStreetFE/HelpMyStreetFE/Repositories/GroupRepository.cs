@@ -251,5 +251,17 @@ namespace HelpMyStreetFE.Repositories
             }
             throw new Exception("Bad response from GetGroupSupportActivityInstructions");
         }
+
+        public async Task<GetGroupLocationsResponse> GetGroupLocations(int groupId, bool includeChildGroups)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetGroupLocations?groupID={groupId}&includeChildGroups={includeChildGroups}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupLocationsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content;
+            }
+            throw new Exception($"Bad response from GetGroup for GroupId {groupId}");
+        }
     }
 }
