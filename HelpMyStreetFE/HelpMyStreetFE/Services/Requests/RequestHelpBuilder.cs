@@ -75,11 +75,11 @@ namespace HelpMyStreetFE.Services.Requests
                         },
                         Timeframes =  new List<RequestHelpTimeViewModel>
                         {
-                            new RequestHelpTimeViewModel{ID = 1, TimeDescription = "Today", Days = 0},
-                            new RequestHelpTimeViewModel{ID = 2, TimeDescription = "Within 24 Hours", Days = 1},
-                            new RequestHelpTimeViewModel{ID = 3, TimeDescription = "Within a Week", Days = 7},
-                            new RequestHelpTimeViewModel{ID = 4, TimeDescription = "When Convenient", Days = 30},
-                            new RequestHelpTimeViewModel{ID = 5, TimeDescription = "Other", AllowCustom = true},
+                            new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, TimeDescription = "Today", Days = 0 },
+                            new RequestHelpTimeViewModel { ID = 2, DueDateType = DueDateType.Before, TimeDescription = "Within 24 Hours", Days = 1 },
+                            new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a Week", Days = 7 },
+                            new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When Convenient", Days = 30 },
+                            new RequestHelpTimeViewModel { ID = 5, DueDateType = DueDateType.Before, TimeDescription = "Other", AllowCustom = true },
                         },
                     },
                     new RequestHelpDetailStageViewModel()
@@ -109,7 +109,7 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
 
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_Public)
@@ -120,7 +120,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public)
@@ -131,7 +131,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_Public)
@@ -142,7 +142,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true });
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
@@ -152,7 +152,7 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.OnBehalf);
 
                 requestStep.Timeframes.Clear();
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", OnDate = true, IsSelected = true });
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes, IsSelected = true });
 
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
             }

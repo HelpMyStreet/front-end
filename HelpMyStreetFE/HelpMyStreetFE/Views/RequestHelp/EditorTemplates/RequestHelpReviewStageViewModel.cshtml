@@ -60,7 +60,7 @@
                     <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
                     <div class="tiles__tile__content__header">When is the help needed?</div>
                     <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
-                    @if (Model.TimeRequested.OnDate)
+                    @if (Model.TimeRequested.DueDateType == DueDateType.On)
                     {
                         <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dddd, ddnn MMMM yyyy", true)</div>
                     }

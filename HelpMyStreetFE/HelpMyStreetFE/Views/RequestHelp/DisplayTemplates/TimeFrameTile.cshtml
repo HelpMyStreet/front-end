@@ -7,10 +7,10 @@
 }
 
 <div class="sm4">
-    <div id="time_@Model.ID" data-type="timeframe" data-id='@Model.ID' data-allowcustom="@Model.AllowCustom" data-ondate="@Model.OnDate" data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+    <div id="time_@Model.ID" data-type="timeframe" data-id='@Model.ID' data-allowcustom="@Model.AllowCustom" data-ondate="@(Model.DueDateType == HelpMyStreet.Utils.Enums.DueDateType.On)" data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.TimeDescription</div>
-            @if (Model.OnDate)
+            @if (Model.DueDateType == HelpMyStreet.Utils.Enums.DueDateType.On)
             {
             <div class="tiles__tile__content__dateselection @(Model.IsSelected ? "" : "dnone" )">
                 <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd MMM yyyy") : "")" />

@@ -129,7 +129,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
                     time.Days = selectedDays;
                 }
-                if (time.OnDate)
+                if (time.DueDateType == DueDateType.On)
                 {
                     DateTime selectedDate;
                     DateTime.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), new CultureInfo("en-GB"), DateTimeStyles.None, out selectedDate);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
@@ -12,7 +13,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public int Days { get; set; } 
         public bool AllowCustom { get; set; }
         public bool IsSelected { get; set; }
-        public bool OnDate { get; set; }
+        public DueDateType DueDateType { get; set; }
         public DateTime Date { get; set; }
  
     }
