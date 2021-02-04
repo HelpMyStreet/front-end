@@ -49,6 +49,10 @@
             display: inline-block;
         }
 
+        &__content__visible_when_selected {
+            display: none;
+        }
+
         &.selected {
             border: 2px solid $light-orange;
             background: $light-orange-opaque;
@@ -64,6 +68,10 @@
                 .no-selected {
                     display: none;
                 }
+            }
+
+            .tiles__tile__content__visible_when_selected {
+                display: block;
             }
         }
 
