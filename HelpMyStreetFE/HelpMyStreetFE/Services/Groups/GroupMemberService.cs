@@ -52,43 +52,47 @@ namespace HelpMyStreetFE.Services.Groups
             }, $"{CACHE_KEY_PREFIX}-user-roles-user-{userId}", RefreshBehaviour.WaitForFreshData, cancellationToken);
         }
 
-        public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken)
-        {
-            var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
-            var group = await _groupService.GetGroupById(groupId, cancellationToken);
-
-            return GetUserHasRole(userGroupRoles, group.GroupKey, role);
-        }
-
-        public async Task<bool> GetUserHasRole_Any(int userId, int groupId, IEnumerable<GroupRoles> rolesRequested, CancellationToken cancellationToken)
-        {
-            var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
-            var group = await _groupService.GetGroupById(groupId, cancellationToken);
-
-            return GetUserHasRole_Any(userGroupRoles, group.GroupKey, rolesRequested);
-        }
-
-        public async Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken)
+        public async Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, bool allowRoleFromParentGroup, CancellationToken cancellationToken)
         {
             var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
 
-            return GetUserHasRole(userGroupRoles, groupKey, role);
+            if (GetUserHasRole(userGroupRoles, groupId, role))
+            {
+                return true;
+            }
+            else if (allowRoleFromParentGroup)
+            {
+                var group = await _groupService.GetGroupById(groupId, cancellationToken);
+                if (group.ParentGroupId.HasValue)
+                {
+                    return await GetUserHasRole(userId, group.ParentGroupId.Value, role, false, cancellationToken);
+                }
+            }
+            return false;
         }
-        public async Task<bool> GetUserHasRole_Any(int userId, string groupKey, IEnumerable<GroupRoles> rolesRequested, CancellationToken cancellationToken)
+
+        public async Task<bool> GetUserHasRole_Any(int userId, int groupId, IEnumerable<GroupRoles> rolesRequested, bool allowRoleFromParentGroup, CancellationToken cancellationToken)
         {
             var userGroupRoles = await GetUserGroupRoles(userId, cancellationToken);
 
-            return GetUserHasRole_Any(userGroupRoles, groupKey, rolesRequested);
+            if (rolesRequested.Any(role => GetUserHasRole(userGroupRoles, groupId, role)))
+            {
+                return true;
+            }
+            else if (allowRoleFromParentGroup)
+            {
+                var group = await _groupService.GetGroupById(groupId, cancellationToken);
+                if (group.ParentGroupId.HasValue)
+                {
+                    return await GetUserHasRole_Any(userId, group.ParentGroupId.Value, rolesRequested, false, cancellationToken);
+                }
+            }
+            return false;
         }
 
-        public bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role)
+        private bool GetUserHasRole(List<UserGroup> userGroupRoles, int groupId, GroupRoles role)
         {
-            return userGroupRoles?.Where(g => g.GroupKey == groupKey).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
-        }
-
-        public bool GetUserHasRole_Any(List<UserGroup> userGroupRoles, string groupKey, IEnumerable<GroupRoles> rolesRequested)
-        {
-            return rolesRequested.Any(role => GetUserHasRole(userGroupRoles, groupKey, role));
+            return userGroupRoles?.Where(g => g.GroupId == groupId).FirstOrDefault()?.UserRoles.Contains(role) ?? false;
         }
 
         public async Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken)

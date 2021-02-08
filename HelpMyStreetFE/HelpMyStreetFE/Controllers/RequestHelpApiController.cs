@@ -57,14 +57,19 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
                     int? targetUserId = null;
-                    if (s == JobStatuses.InProgress)
+                    if (s == JobStatuses.Accepted || s == JobStatuses.InProgress)
                     { 
                         targetUserId = (requestRole == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u));
                     }
 
                     int jobId = Base64Utils.Base64DecodeToInt(j);
                     outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
-                    requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
+
+                    var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                    if (job.RequestType.Equals(RequestType.Task))
+                    {
+                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
+                    }
                 }
 
                 switch (outcome)

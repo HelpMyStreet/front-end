@@ -5,3 +5,7 @@
 @mixin shadow-md {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.29);
 }
+
+@mixin border-red-yellow {
+    background-image: repeating-linear-gradient(-45deg, red, red 15px, yellow 15px, yellow 30px);
+}
