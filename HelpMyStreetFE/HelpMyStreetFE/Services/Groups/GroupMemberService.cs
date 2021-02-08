@@ -149,6 +149,8 @@ namespace HelpMyStreetFE.Services.Groups
                     GroupName = group.GroupName,
                     UserRoles = roles,
                     ShiftsEnabled = group.ShiftsEnabled,
+                    TasksEnabled = group.TasksEnabled,
+                    HomepageEnabled = group.HomepageEnabled,
                 });
             }
 

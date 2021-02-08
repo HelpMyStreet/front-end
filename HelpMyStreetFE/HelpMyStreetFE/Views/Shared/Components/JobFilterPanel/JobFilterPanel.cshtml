@@ -44,7 +44,7 @@
             <div class="filter__list">
                 @if (Model.FilterSet.JobStatuses != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-statuses">
+                    <div class="filter__list__category group--filters-jobs" id="list-statuses">
                         <div class="filter__list__category__inner">
                             <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-statuses" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Status</div>
@@ -64,12 +64,12 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 @if (Model.FilterSet.SupportActivities != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-activities">
+                    <div class="filter__list__category group--filters-jobs" id="list-activities">
                         <div class="filter__list__category__inner">
                             <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-activities" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Support Activities</div>
@@ -89,12 +89,12 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 @if (Model.FilterSet.Locations != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-locations">
+                    <div class="filter__list__category group--filters-jobs" id="list-locations">
                         <div class="filter__list__category__inner">
                             <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-locations" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Location</div>
@@ -114,12 +114,12 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 @if (Model.FilterSet.PartOfDay != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-parts-of-day">
+                    <div class="filter__list__category group--filters-jobs" id="list-parts-of-day">
                         <div class="filter__list__category__inner">
                             <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-parts-of-day" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Time</div>
@@ -139,12 +139,12 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 @if (Model.FilterSet.MaxDistanceInMiles != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-distances">
+                    <div class="filter__list__category group--filters-jobs" id="list-distances">
                         <div class="filter__list__category__inner">
                             <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-distances" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Distance</div>
@@ -160,12 +160,12 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 @if (Model.FilterSet.DueInNextXDays != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-due">
+                    <div class="filter__list__category group--filters-jobs" id="list-due">
                         <div class="filter__list__category__inner">
                             <button class="btn small blue filter__list__toggle btn__toggle-show" data-target-item="list-due" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Due</div>
@@ -181,12 +181,12 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 @if (Model.FilterSet.OrderBy != null)
                 {
-                    <fieldset class="filter__list__category group--filters-jobs" id="list-orderby">
+                    <div class="filter__list__category group--filters-jobs" id="list-orderby">
                         <div class="filter__list__category__inner list-orderby">
                             <button class="btn small gray-5 filter__list__toggle btn__toggle-show" data-target-item="list-orderby" data-target-group="filters-jobs">
                                 <div class="filter__list__category__title">Sort by</div>
@@ -202,7 +202,7 @@
                                 }
                             </div>
                         </div>
-                    </fieldset>
+                    </div>
                 }
 
                 <div class="filter__list__apply__wrapper">

@@ -110,18 +110,21 @@
                                 </li>
                             }
 
-                            <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
-                                    Requests
-                                    @await Component.InvokeAsync("AccountNavBadge", new
-                                       {
-                                           CssClass = "bg-green",
-                                           User = Model.UserDetails.User,
-                                           MenuPage = MenuPage.GroupRequests,
-                                           GroupKey = userGroup.GroupKey
-                                       })
-                                </a>
-                            </li>
+                            @if (userGroup.TasksEnabled)
+                            {
+                                <li class="account__nav__item">
+                                    <a href=@($"/account/g/{userGroup.GroupKey}/requests") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.GroupRequests ? "selected" : string.Empty)">
+                                        Requests
+                                        @await Component.InvokeAsync("AccountNavBadge", new
+                                           {
+                                               CssClass = "bg-green",
+                                               User = Model.UserDetails.User,
+                                               MenuPage = MenuPage.GroupRequests,
+                                               GroupKey = userGroup.GroupKey
+                                           })
+                                    </a>
+                                </li>
+                            }
                         }
                         @if (userGroup.UserRoles.Contains(GroupRoles.UserAdmin) || userGroup.UserRoles.Contains(GroupRoles.UserAdmin_ReadOnly))
                         {
@@ -141,7 +144,7 @@
         }
 
         @{
-            var myGroups = Model.UserGroups.Where(g => g.GroupId != (int)Groups.Generic && g.UserRoles.Contains(GroupRoles.Member));
+            var myGroups = Model.UserGroups.Where(g => g.HomepageEnabled && g.UserRoles.Contains(GroupRoles.Member));
         }
         @if (myGroups.Count() > 0)
         {
