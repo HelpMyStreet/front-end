@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
@@ -83,7 +83,7 @@
                         </dl>
                     </div>
                 }
-                <div class="sm3 toggle-on-status-change">
+                <div class="sm3 space-filler toggle-on-status-change">
                     <h5>Slot Status History</h5>
                     <dl class="highlight-last">
                         @foreach (var statusChange in jobDetails.JobStatusHistory)
@@ -92,15 +92,16 @@
                                 @statusChange.JobStatusDescription
                             </dt>
                             <dd>
+                                <span>
+                                    @statusChange.StatusHistory.StatusDate.ToString("dd/MM/yyyy h:mm tt").ToLower()
+                                </span>
                                 @if (statusChange.VolunteerUser != null)
                                 {
                                     <span>
                                         @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
                                         @statusChange.VolunteerUser.UserPersonalDetails.FullName()
                                     </span>
-                                    <br />
                                 }
-                                @statusChange.StatusHistory.StatusDate.ToString("dd/MM/yyyy h:mm tt").ToLower()
                             </dd>
                         }
                     </dl>

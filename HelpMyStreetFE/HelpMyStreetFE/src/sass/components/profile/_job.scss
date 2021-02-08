@@ -607,6 +607,10 @@
 
             dd {
                 word-wrap: break-word;
+
+                span {
+                    white-space: nowrap;
+                }
             }
 
             &.highlight-last{
