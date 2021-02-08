@@ -406,6 +406,7 @@ namespace HelpMyStreetFE.Services.Requests
                             var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
                             {
                                 ReferringGroupID = g.GroupId,
+                                IncludeChildGroups = true,
                                 DateFrom = dateFrom,
                                 DateTo = dateTo,
                             };
