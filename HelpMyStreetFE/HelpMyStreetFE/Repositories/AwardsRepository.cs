@@ -100,12 +100,14 @@ namespace HelpMyStreetFE.Repositories
             try
             {
                 var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
+                var shifts = await _requestService.GetShiftsForUserAsync(userID, null, null, true, cancellationToken);
                 var awards = await GetAwards();
 
                 bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
                 var predicates = new List<Object>() { userIsVerified };
 
-                var completedJobs = jobs.Where(x => x.JobStatus == JobStatuses.Done);
+                IEnumerable<JobBasic> shiftsAndJobs = jobs.Select(j => (JobBasic)j).Concat(shifts.Select(s => (JobBasic)s));
+                var completedJobs = shiftsAndJobs.Where(x => x.JobStatus == JobStatuses.Done);
                 var relevantAward = awards.Where(x => completedJobs.Count() >= x.AwardValue && x.SpecificPredicate(predicates)).OrderBy(x => x.AwardValue).LastOrDefault();
 
                 var completedJobDictionary = completedJobs.GroupBy(x => x.SupportActivity).ToDictionary(g => g.Key, g => g.Count());
