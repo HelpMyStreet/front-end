@@ -292,7 +292,14 @@ namespace HelpMyStreetFE.Controllers
 
             if (await _groupMemberService.GetUserHasRole(user.ID, group.GroupId, GroupRoles.TaskAdmin, true, cancellationToken))
             {
-                return await GroupRequests(groupKey, null, cancellationToken);
+                if (group.TasksEnabled)
+                {
+                    return await GroupRequests(groupKey, null, cancellationToken);
+                }
+                else if (group.ShiftsEnabled)
+                {
+                    return await GroupShifts(groupKey, cancellationToken);
+                }
             }
             else if (await _groupMemberService.GetUserHasRole_Any(user.ID, group.GroupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, true, cancellationToken))
             {
