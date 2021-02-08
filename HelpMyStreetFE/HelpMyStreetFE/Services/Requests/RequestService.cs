@@ -326,12 +326,16 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 return new JobLocation
                 {
-                    JobSet = job.JobStatus switch
+                    JobSet = (job.RequestType, job.JobStatus) switch
                     {
-                        JobStatuses.InProgress => JobSet.UserAcceptedRequests,
-                        JobStatuses.Done => JobSet.UserCompletedRequests,
-                        JobStatuses.Cancelled => JobSet.UserCompletedRequests,
-                        _ => throw new ArgumentException($"Unexpected JobStatuses value: {job.JobStatus}", nameof(job.JobStatus)),
+                        (RequestType.Task, JobStatuses.InProgress) => JobSet.UserAcceptedRequests,
+                        (RequestType.Task, JobStatuses.Done) => JobSet.UserCompletedRequests,
+                        (RequestType.Task, JobStatuses.Cancelled) => JobSet.UserCompletedRequests,
+                        (RequestType.Shift, JobStatuses.Accepted) => JobSet.UserMyShifts,
+                        (RequestType.Shift, JobStatuses.InProgress) => JobSet.UserMyShifts,
+                        (RequestType.Shift, JobStatuses.Done) => JobSet.UserMyShifts,
+                        (RequestType.Shift, JobStatuses.Cancelled) => JobSet.UserMyShifts,
+                        _ => throw new ArgumentException($"Unexpected RequestType / JobStatuses combination: {job.RequestType} / {job.JobStatus}"),
                     }
                 };
             }
@@ -339,13 +343,13 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 return new JobLocation
                 {
-                    JobSet = JobSet.GroupRequests,
+                    JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
                     GroupKey = (await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken)).GroupKey,
                 };
             }
             else if (job.JobStatus == JobStatuses.Open)
             {
-                return new JobLocation { JobSet = JobSet.UserOpenRequests_MatchingCriteria };
+                return new JobLocation { JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
             }
 
             return null;
