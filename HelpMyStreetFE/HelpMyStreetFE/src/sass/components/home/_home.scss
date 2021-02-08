@@ -11,8 +11,14 @@
     text-decoration: none;
 }
 
+.homepage-vaccination-banner {
+    @include border-red-yellow;
 
-.card .age-uk-wirral-logo {
-  display: block;
-  margin: 2rem auto;
+    &__inner {
+        background: white;
+
+        &__left {
+            align-self: center;
+        }
+    }
 }
