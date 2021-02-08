@@ -57,7 +57,7 @@ namespace HelpMyStreetFE.Controllers {
                 {
                     RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
                     int? targetUserId = null;
-                    if (s == JobStatuses.InProgress)
+                    if (s == JobStatuses.Accepted || s == JobStatuses.InProgress)
                     { 
                         targetUserId = (requestRole == RequestRoles.Volunteer ? user.ID : Base64Utils.Base64DecodeToInt(u));
                     }
