@@ -50,6 +50,7 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction(nameof(ErrorsController.Error404), "Errors");
             }
 
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(groupKey, cancellationToken);
 
             if (communityViewModel == null)
@@ -61,7 +62,7 @@ namespace HelpMyStreetFE.Controllers
             if (user != null)
             {
                 communityViewModel.IsLoggedIn = true;
-                communityViewModel.IsGroupMember = await _groupMemberService.GetUserHasRole(user.ID, communityViewModel.groupKey, GroupRoles.Member, cancellationToken);
+                communityViewModel.IsGroupMember = await _groupMemberService.GetUserHasRole(user.ID, group.GroupId, GroupRoles.Member, false, cancellationToken);
             }
             
             return View(communityViewModel.View, communityViewModel);

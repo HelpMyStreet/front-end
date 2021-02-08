@@ -19,12 +19,8 @@ namespace HelpMyStreetFE.Services.Groups
         Task<UserInGroup> GetGroupMember(int groupId, int userId, int authorisingUserId, CancellationToken cancellationToken);
         Task<List<UserInGroup>> GetAllGroupMembers(int groupId, int authorisingUserId);
 
-        Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, CancellationToken cancellationToken);
-        Task<bool> GetUserHasRole(int userId, string groupKey, GroupRoles role, CancellationToken cancellationToken);
-        bool GetUserHasRole(List<UserGroup> userGroupRoles, string groupKey, GroupRoles role);
-        Task<bool> GetUserHasRole_Any(int userId, int groupId, IEnumerable<GroupRoles> rolesRequested, CancellationToken cancellationToken);
-        Task<bool> GetUserHasRole_Any(int userId, string groupKey, IEnumerable<GroupRoles> rolesRequested, CancellationToken cancellationToken);
-        bool GetUserHasRole_Any(List<UserGroup> userGroupRoles, string groupKey, IEnumerable<GroupRoles> rolesRequested);
+        Task<bool> GetUserHasRole(int userId, int groupId, GroupRoles role, bool allowRoleFromParentGroup, CancellationToken cancellationToken);
+        Task<bool> GetUserHasRole_Any(int userId, int groupId, IEnumerable<GroupRoles> rolesRequested, bool allowRoleFromParentGroup, CancellationToken cancellationToken);
 
         Task<GroupPermissionOutcome> PostAssignRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken);
         Task<GroupPermissionOutcome> PostRevokeRole(int userId, int groupId, GroupRoles role, int authorisedByUserID, CancellationToken cancellationToken);

@@ -45,7 +45,7 @@ namespace HelpMyStreetFE.ViewComponents
             if (job == null)
             {
                 var request = (await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken)).RequestSummary;
-                bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, cancellationToken);
+                bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
 
                 JobStatusChangePopupViewModel vm = await BuildVm(request, job, targetStatus, cancellationToken);
             
@@ -58,7 +58,7 @@ namespace HelpMyStreetFE.ViewComponents
             else
             {
                 bool userIsAllocatedToTask = job.VolunteerUserID.GetValueOrDefault() == user.ID;
-                bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, job.ReferringGroupID, GroupRoles.TaskAdmin, cancellationToken);
+                bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
 
                 JobStatusChangePopupViewModel vm = await BuildVm(null, job, targetStatus, cancellationToken);
 

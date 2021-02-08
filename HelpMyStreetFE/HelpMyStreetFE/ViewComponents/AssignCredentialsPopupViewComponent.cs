@@ -37,12 +37,12 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            if(!await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, cancellationToken))
+            if(!await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.UserAdmin, true, cancellationToken))
             {
                 throw new UnauthorizedAccessException("User does not have required role.");
             }
 
-            if (!await _groupMemberService.GetUserHasRole(targetUserId, groupId, GroupRoles.Member, cancellationToken))
+            if (!await _groupMemberService.GetUserHasRole(targetUserId, groupId, GroupRoles.Member, false, cancellationToken))
             {
                 throw new UnauthorizedAccessException("Target user is not member of group.");
             }

@@ -339,7 +339,7 @@ namespace HelpMyStreetFE.Services.Requests
                     }
                 };
             }
-            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
             {
                 return new JobLocation
                 {

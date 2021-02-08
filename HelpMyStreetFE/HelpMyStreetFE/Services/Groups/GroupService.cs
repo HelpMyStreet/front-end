@@ -155,5 +155,11 @@ namespace HelpMyStreetFE.Services.Groups
         {
             return (await _groupRepository.GetGroupLocations(groupId, includeChildGroups)).Locations;
         }
+
+        public async Task<List<Group>> GetChildGroups(int groupId)
+        {
+            return (await _groupRepository.GetChildGroups(groupId)).ChildGroups;
+        }
+
     }
 }
