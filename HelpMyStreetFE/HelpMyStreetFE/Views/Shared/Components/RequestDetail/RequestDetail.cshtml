@@ -42,7 +42,7 @@
 }
 
 <div class="job__expander">
-    <h4>Slots</h4>
+    <h4 class="no-click">Slots</h4>
 </div>
 
 @foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobSummary.JobStatus.Equals(JobStatuses.Cancelled)))
