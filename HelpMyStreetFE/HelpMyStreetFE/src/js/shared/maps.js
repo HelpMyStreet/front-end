@@ -284,7 +284,7 @@ export async function drawMap(inputOptions) {
       if (navigator.geolocation) {
         geolocationState.geoLocationInProgress();
         navigator.geolocation.getCurrentPosition(
-          geoLocationSuccess(thisGoogleMap),
+          (position) => geoLocationSuccess(position, thisGoogleMap),
           geolocationState.geolocationComplete(false),
           { enableHighAccuracy: true }
         );
