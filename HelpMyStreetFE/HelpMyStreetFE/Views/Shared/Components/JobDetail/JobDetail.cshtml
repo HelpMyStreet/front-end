@@ -50,7 +50,7 @@
                         }
                         else
                         {
-                            <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
+                <dd>This shift starts on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.StartDate.ToString("HH:mm", true)</strong> and ends <strong>@requestSummary.Shift.EndDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.EndDate.ToString("HH:mm", true)</strong>.</dd>
                         }
                         @*<dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>*@
                         <div class="location-details">
