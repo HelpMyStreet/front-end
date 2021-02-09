@@ -52,8 +52,6 @@
                 </span>
             }
 
-        <div>
-
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
                 <span class="job__info__col1__criticality">
@@ -96,7 +94,6 @@
                 </span>
             }
         </div>
-        </div>
         <div class="job__info__activity">
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
@@ -124,7 +121,7 @@
                 @Model.Item.PostCode
                 @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
                 {
-                    <span class="distance">(@Math.Round(Model.Item.DistanceInMiles, 1) miles away)</span>
+                    <span>(@Math.Round(Model.Item.DistanceInMiles, 1) miles away)</span>
                 }
             </span>
         </div>
