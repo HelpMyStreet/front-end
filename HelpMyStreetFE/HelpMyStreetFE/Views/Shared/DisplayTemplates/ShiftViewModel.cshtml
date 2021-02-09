@@ -74,6 +74,13 @@
             </span>
         </div>
         <div class="job__info__col3 flex-end">
+            @if (Model.Item.JobStatus != JobStatuses.Open)
+            {
+                <span class="job__info__col1__status toggle-on-status-change">
+                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                </span>
+            }
             <div class="job__info__actions">
                 @switch (Model.Item.JobStatus)
                 {
