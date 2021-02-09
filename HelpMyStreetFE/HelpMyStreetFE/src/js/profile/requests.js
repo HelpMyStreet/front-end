@@ -13,12 +13,17 @@ export async function initialiseRequests() {
         loadJobDetails($(this));
     });
 
-    $('.job-list').on('click', '.job a.open', function (e) {
+    $('.job-list').on('click', '.job a.open', async function (e) {
         e.preventDefault();
         const job = $(this).closest('.job');
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
-        loadJobDetails(job).then(mapsAreGo.then(() => createMap(job)));
+        loadJobDetails(job).then(async () => {
+            var canMap = await mapsAreGo;
+            if (canMap){
+                createMap(job);
+            }
+        });
     });
 
     $('.job-list').on('click', '.job a.close', function (e) {
@@ -134,7 +139,9 @@ var thisMap = {
             divID: "map-" + job.attr("id"),
             singlePin: true
         };
+if ($(`#${thisMap.divID}`).length){
 drawMap(thisMap);
+}
 }
 
 export function showStatusUpdatePopup(btn) {

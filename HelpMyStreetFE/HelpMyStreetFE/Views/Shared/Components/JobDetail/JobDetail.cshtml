@@ -44,7 +44,7 @@
                     @if (jobSummary.RequestType == RequestType.Shift)
                     {
                         <dt>When is the help needed?</dt>
-                        if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
+                        @if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
                         {
                             <dd>This shift occurs on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@requestSummary.Shift.StartDate.ToString("HH:mm") - @requestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
                         }
@@ -52,7 +52,10 @@
                         {
                 <dd>This shift starts on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.StartDate.ToString("HH:mm", true)</strong> and ends <strong>@requestSummary.Shift.EndDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.EndDate.ToString("HH:mm", true)</strong>.</dd>
                         }
-                        @*<dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>*@
+                        @if (jobSummary.JobStatus == JobStatuses.Accepted)
+                        {
+                        <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>
+                        }
                         <div class="location-details">
                             <dt>Where is the shift?</dt>
 
