@@ -67,6 +67,9 @@ namespace HelpMyStreetFE.Controllers
                 JobSet.UserAcceptedRequests => $"/account/accepted-requests/j/{encodedJobId}",
                 JobSet.UserCompletedRequests => $"/account/completed-requests/j/{encodedJobId}",
                 JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/j/{encodedJobId}",
+                JobSet.UserOpenShifts => $"/account/open-shifts/j/{encodedJobId}",
+                JobSet.UserMyShifts => $"/account/my-shifts/j/{encodedJobId}",
+                JobSet.GroupShifts => $"/account/g/{jobLocation.GroupKey}/shifts/j/{encodedJobId}",
                 _ => LINK_EXPIRED_URL,
             };
 

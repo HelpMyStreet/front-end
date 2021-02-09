@@ -7,6 +7,7 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
@@ -70,7 +71,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyShifts
                         => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(s => s.JobStatus.Incomplete()),
                     MenuPage.GroupShifts
-                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(),
+                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(r => r.Incomplete()),
                     _ => null
                 };
 

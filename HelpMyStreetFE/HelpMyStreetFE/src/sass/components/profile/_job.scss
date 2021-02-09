@@ -493,6 +493,10 @@
                 cursor: pointer;
             }
 
+            &.no-click:hover {
+                cursor: auto;
+            }
+
             &.open {
                 span:last-child {
                     @include arrow( 8px, 3px, $dark-blue, up, $white);
@@ -516,7 +520,6 @@
                     align-items: center;
                 }
             }
-
         }
 
 
@@ -607,9 +610,13 @@
 
             dd {
                 word-wrap: break-word;
+
+                span {
+                    white-space: nowrap;
+                }
             }
 
-            &.highlight-last{
+            &.highlight-last {
                 dt:last-of-type,
                 dd:last-of-type {
                     color: $green;

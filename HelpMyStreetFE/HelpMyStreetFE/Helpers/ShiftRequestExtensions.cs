@@ -50,22 +50,32 @@ namespace HelpMyStreetFE.Helpers
             }
         }
 
-        public static Dictionary<JobStatuses, int> JobStatusDictionary(this RequestSummary shiftRequest)
+        public static Dictionary<JobStatuses, int> JobStatusDictionary(this RequestSummary requestSummary)
         {
-            return shiftRequest.JobSummaries.GroupBy(j => j.JobStatus)
+            return requestSummary.JobSummaries.GroupBy(j => j.JobStatus)
                 .Select(g => new KeyValuePair<JobStatuses, int>(g.Key, g.Count()))
                 .Where(s => !s.Key.Equals(JobStatuses.Cancelled))
                 .ToDictionary(a => a.Key, a => a.Value);
         }
 
-        public static JobStatuses? SingleJobStatus(this RequestSummary shiftRequest)
+        public static JobStatuses? SingleJobStatus(this RequestSummary requestSummary)
         {
-            return shiftRequest.JobStatusDictionary().Count() switch
+            return requestSummary.JobStatusDictionary().Count() switch
             {
                 0 => JobStatuses.Cancelled,
-                1 => shiftRequest.JobStatusDictionary().First().Key,
+                1 => requestSummary.JobStatusDictionary().First().Key,
                 _ => null
             };
+        }
+
+        public static bool Complete(this RequestSummary requestSummary)
+        {
+            return requestSummary.JobSummaries.All(j => j.JobStatus.Complete());
+        }
+
+        public static bool Incomplete(this RequestSummary requestSummary)
+        {
+            return requestSummary.JobSummaries.Any(j => j.JobStatus.Incomplete());
         }
     }
 

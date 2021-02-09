@@ -185,7 +185,7 @@ async function setJobStatus(job, targetState, targetUser) {
     const requestId = $(job).attr("request-id");
     const role = $(job).data("role");
 
-    return await hmsFetch(`/api/request-help/set-job-status?j=${jobId}&rq=${requestId}&s=${targetState}&u={targetUser}&r=${role}`);
+    return await hmsFetch(`/api/request-help/set-job-status?j=${jobId}&rq=${requestId}&s=${targetState}&u=${targetUser}&r=${role}`);
 }
 
 

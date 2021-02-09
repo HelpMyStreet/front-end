@@ -28,7 +28,7 @@ async function initialiseMaps(){
     enableMaps(() => {
         var options = {
             displayVolunteers: true,
-            displayGroups: true,
+            displayGroups: false,
             allowNavigation: false,
             allowSearch: false,
             consoleCoordinates: false,

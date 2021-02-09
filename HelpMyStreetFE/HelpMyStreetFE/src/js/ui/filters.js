@@ -8,11 +8,7 @@ toggleButtons.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     const target = form.find('#' + btn.getAttribute("data-target-item"));
-      target.toggleClass("filter--show");
-      if (!target.hasClass("filter--show")) {
-          $('.filter__list').css("display", "none");
-          setTimeout(() => $('.filter__list').css("display", "grid"), 2);
-      };
+    target.toggleClass("filter--show");
     if (target.hasClass("filter__list-wrapper")) {
       // Div containing all filters
       if (target.hasClass("filter--show")) {
