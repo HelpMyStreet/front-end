@@ -44,7 +44,7 @@
         
 
         <div class="job__info__col1">
-            @if (admin)
+            @if (admin || Model.Item.JobStatus != JobStatuses.Open)
             {
                 <span class="job__info__col1__status toggle-on-status-change">
                     <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
