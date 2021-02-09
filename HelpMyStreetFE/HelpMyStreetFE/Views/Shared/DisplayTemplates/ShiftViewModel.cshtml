@@ -33,21 +33,23 @@
     }
 }
 
-<div class="job @className" id="@jobId" request-id="@requestId" data-job-status="@Model.Item.JobStatus" data-role="@role">
+<div class="job shift @className" id="@jobId" request-id="@requestId" data-job-status="@Model.Item.JobStatus" data-role="@role">
     <div class="job__info">
         <div class="job__info__col1">
+
+            @if (Model.Item.JobStatus != JobStatuses.Open)
+            {
+                <span class="job__info__col1__status toggle-on-status-change">
+                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                </span>
+            }
 
             <div class="toggle-on-status-change">
                 <div class="job__info__col1__referrer">
                     <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
                 </div>
             </div>
-            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
-                @Model.Item.DateSpan()
-            </span>
-            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
-                @Model.Item.TimeSpan()
-            </span>
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
@@ -62,21 +64,24 @@
             <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
                 @if (Model.Item.SupportActivity != SupportActivities.Other)
                 {
-                <img src="~/img/icons/@Model.Item.SupportActivity.Icon()" />
+                    <img src="~/img/icons/@Model.Item.SupportActivity.Icon()" />
                 }
                 <span>
                     @Model.Item.SupportActivity.FriendlyNameShort()
                 </span>
             </span>
-            <span class="job__info__activity__location">
+            <span class="job__info__activity__date due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
+                <span>@Model.Item.DateSpan()</span>
+                <span>@Model.Item.TimeSpan()</span>
+            </span>
+            <span class="job__info__activity__location" title="@Model.Location.Distance.ToString("0.0") miles away">
                 @Model.Location.LocationDetails.Name
-                <span class="distance">(@Model.Location.Distance.ToString("0.0") miles away)</span>
             </span>
         </div>
         <div class="job__info__col3 flex-end">
             @if (Model.Item.JobStatus != JobStatuses.Open)
             {
-                <span class="job__info__col1__status toggle-on-status-change">
+                <span class="job__info__col3__status toggle-on-status-change">
                     <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
                     <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>

@@ -56,7 +56,7 @@
 
         @media (min-width: $med-screen) {
             padding: 0 0.5rem;
-            grid-template-columns: 1.1fr 2fr 14rem;
+            grid-template-columns: 0.5fr 2fr 14rem;
         }
 
         &__col1 {
@@ -172,17 +172,6 @@
                 align-self: flex-start;
             }
 
-            .job__status {
-                font-weight: bold;
-                color: $black;
-                text-align: left;
-
-                &.multiple-statuses {
-                    font-size: 0.85rem;
-                    line-height: 1.2rem;
-                }
-            }
-
             &__new-status.job__status {
                 text-align: center;
             }
@@ -239,11 +228,11 @@
                 }
             }
 
-            &__location {
+            &__location, &__date {
                 text-align: center;
                 margin: 0.25rem 0.5rem 0.25rem 0;
 
-                .distance {
+                span {
                     white-space: nowrap;
                 }
 
@@ -266,6 +255,23 @@
 
             &__criticality {
                 display: none;
+            }
+
+            &__status {
+                display: flex;
+                padding: 0.5rem;
+                align-items: center;
+
+                .status-icon {
+                    margin-right: 0.5rem;
+                }
+
+                @media (min-width: $med-screen) {
+
+                    .status-icon {
+                        margin-right: 1rem;
+                    }
+                }
             }
 
             @media (min-width: $med-screen) {
@@ -374,6 +380,17 @@
 
             .job__info__col3__criticality {
                 display: none;
+            }
+        }
+
+        .job__status {
+            font-weight: bold;
+            color: $black;
+            text-align: left;
+
+            &.multiple-statuses {
+                font-size: 0.85rem;
+                line-height: 1.2rem;
             }
         }
     }
@@ -651,6 +668,22 @@
 
             &.close {
                 display: inline;
+            }
+        }
+    }
+
+    &.shift {
+        .job__info__col3__status {
+            display: none;
+        }
+
+        @media (min-width: $med-screen) {
+            .job__info__col1__status {
+                display: none;
+            }
+
+            .job__info__col3__status {
+                display: flex;
             }
         }
     }
