@@ -133,11 +133,12 @@ if (linkResponse.fetchResponse == fetchResponses.SUCCESS){
     var link = await linkResponse.fetchPayload;
     marker = {
         clickable: true,
+        position: {lat: Number(job.find(".location-map").data("lat")), lng: Number(job.find(".location-map").data("lng"))},
         title: "Click for directions",
+        origin: new google.maps.Point(0, 35),
         icon: {
-            labelOrigin: new google.maps.Point(20, 50),
             url: "/img/logos/markers/vaccination-marker.svg",
-            scaledSize: new google.maps.Size(50, 50),
+            scaledSize: new google.maps.Size(50, 70),
           },
         
         clickListener: () => {window.open(link , "_blank")}
@@ -151,7 +152,7 @@ var thisMap = {
             allowNavigation: false,
             allowSearch: false,
             consoleCoordinates: false,
-            initialLat: Number(job.find(".location-map").data("lat")),
+            initialLat: Number(job.find(".location-map").data("lat")) + 0.001,
             initialLng: Number(job.find(".location-map").data("lng")),
             initialZoom: 14,
             divID: "map-" + job.attr("id"),
