@@ -221,6 +221,28 @@ namespace HelpMyStreetFE.Controllers
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
         }
 
+        [Route("get-directions-link")]
+        [HttpGet]
+        public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
+        {
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var postCode = user.PostalCode.Replace(" ", "%20");
+            
+
+            long jobID = 0;
+            Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
+            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+
+            var location = shiftDetails.RequestSummary.Shift.Location;
+            LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
+
+            var locationPostcode = locationDetails.Address.Postcode.Replace(" ", "%20");
+
+            var directionsLink = $"https://www.google.com/maps/dir/?api=1&origin={postCode}&destination={locationPostcode}";
+
+            return new OkObjectResult(directionsLink);
+        }
+
         [Route("get-shift-calendar")]
         [HttpGet]
         public async Task<IActionResult> GetShiftCalendar(string j, CancellationToken cancellationToken)
@@ -245,7 +267,7 @@ namespace HelpMyStreetFE.Controllers
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
             var stopDate = shiftDetails.RequestSummary.Shift.EndDate.ToUniversalTime()
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
-            var stampDate = new DateTime().ToUniversalTime()
+            var stampDate = DateTime.Now.ToUniversalTime()
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
             var group = await _groupService.GetGroupById(shiftDetails.RequestSummary.ReferringGroupID, cancellationToken);
 

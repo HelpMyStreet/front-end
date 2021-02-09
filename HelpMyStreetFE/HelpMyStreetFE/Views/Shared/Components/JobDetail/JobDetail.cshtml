@@ -52,7 +52,7 @@
                         {
                 <dd>This shift starts on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.StartDate.ToString("HH:mm", true)</strong> and ends <strong>@requestSummary.Shift.EndDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.EndDate.ToString("HH:mm", true)</strong>.</dd>
                         }
-                        @if (jobSummary.JobStatus == JobStatuses.Accepted)
+                        @if (jobSummary.JobStatus == JobStatuses.Accepted && jobSummary.DueDate.CompareTo(DateTime.Now) >= 0)
                         {
                         <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>
                         }

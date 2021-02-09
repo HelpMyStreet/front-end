@@ -216,16 +216,19 @@ export async function drawMap(inputOptions) {
   );
 
   if (options.singlePin) {
-    let thisMarker = new google.maps.Marker({
+    var markerOptions = {
       position: { lat: options.initialLat, lng: options.initialLng },
       clickable: false,
       title: null,
-      icon: {
-        url: "/img/logos/markers/hms5.png",
-        scaledSize: new google.maps.Size(50, 50),
-      },
       map: thisGoogleMap,
-    });
+    };
+    if (typeof(options.singlePin) === 'object'){
+      Object.assign(markerOptions, options.singlePin);
+    }
+    let thisMarker = new google.maps.Marker(markerOptions);
+    if (options.singlePin.clickListener){
+     thisMarker.addListener('click', options.singlePin.clickListener);   
+    }
   }
 
   thisGoogleMap.setOptions({ styles: noPoi, maxZoom: maxUserZoom });

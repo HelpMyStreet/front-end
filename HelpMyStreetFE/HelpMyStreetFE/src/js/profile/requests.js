@@ -13,7 +13,7 @@ export async function initialiseRequests() {
         loadJobDetails($(this));
     });
 
-    $('.job-list').on('click', '.job a.open', async function (e) {
+    $('.job-list').on('click', '.job a.open', function (e) {
         e.preventDefault();
         const job = $(this).closest('.job');
         job.toggleClass('open');
@@ -127,6 +127,24 @@ export async function initialiseRequests() {
 }
 
 async function createMap(job){
+var linkResponse = await hmsFetch('/account/get-directions-link?j=' + job.attr("id"))
+var marker;
+if (linkResponse.fetchResponse == fetchResponses.SUCCESS){
+    var link = await linkResponse.fetchPayload;
+    marker = {
+        clickable: true,
+        title: "Click for directions",
+        icon: {
+            labelOrigin: new google.maps.Point(20, 50),
+            url: "/img/logos/markers/vaccination-marker.svg",
+            scaledSize: new google.maps.Size(50, 50),
+          },
+        
+        clickListener: () => {window.open(link , "_blank")}
+    }
+} else {
+    marker = true;
+}
 var thisMap = {
             displayVolunteers: false,
             displayGroups: false,
@@ -135,9 +153,9 @@ var thisMap = {
             consoleCoordinates: false,
             initialLat: Number(job.find(".location-map").data("lat")),
             initialLng: Number(job.find(".location-map").data("lng")),
-            initialZoom: 9,
+            initialZoom: 14,
             divID: "map-" + job.attr("id"),
-            singlePin: true
+            singlePin: marker
         };
 if ($(`#${thisMap.divID}`).length){
 drawMap(thisMap);
