@@ -326,16 +326,11 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 return new JobLocation
                 {
-                    JobSet = (job.RequestType, job.JobStatus) switch
+                    JobSet = job.RequestType switch
                     {
-                        (RequestType.Task, JobStatuses.InProgress) => JobSet.UserAcceptedRequests,
-                        (RequestType.Task, JobStatuses.Done) => JobSet.UserCompletedRequests,
-                        (RequestType.Task, JobStatuses.Cancelled) => JobSet.UserCompletedRequests,
-                        (RequestType.Shift, JobStatuses.Accepted) => JobSet.UserMyShifts,
-                        (RequestType.Shift, JobStatuses.InProgress) => JobSet.UserMyShifts,
-                        (RequestType.Shift, JobStatuses.Done) => JobSet.UserMyShifts,
-                        (RequestType.Shift, JobStatuses.Cancelled) => JobSet.UserMyShifts,
-                        _ => throw new ArgumentException($"Unexpected RequestType / JobStatuses combination: {job.RequestType} / {job.JobStatus}"),
+                        RequestType.Task => JobSet.UserMyRequests,
+                        RequestType.Shift => JobSet.UserMyShifts,
+                        _ => throw new ArgumentException($"Unexpected RequestType: {job.RequestType}", nameof(job.RequestType)),
                     }
                 };
             }

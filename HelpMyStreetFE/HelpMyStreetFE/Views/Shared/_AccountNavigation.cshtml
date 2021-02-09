@@ -19,25 +19,13 @@
         </li>
 
         <li class="account__nav__item">
-            <a href="/account/accepted-requests" class="@(Model.CurrentPage == MenuPage.AcceptedRequests ? "selected" : string.Empty)">
-                My Accepted Requests
+            <a href="/account/my-requests" class="@(Model.CurrentPage == MenuPage.MyRequests ? "selected" : string.Empty)">
+                My Requests
                 @await Component.InvokeAsync("AccountNavBadge", new
                    {
                        CssClass = "bg-green",
                        User = Model.UserDetails.User,
-                       MenuPage = MenuPage.AcceptedRequests
-                   })
-            </a>
-        </li>
-
-        <li class="account__nav__item">
-            <a href="/account/completed-requests" class="@(Model.CurrentPage == MenuPage.CompletedRequests ? "selected" : string.Empty)">
-                My Completed Requests
-                @await Component.InvokeAsync("AccountNavBadge", new
-                   {
-                       CssClass = "bg-gray-8",
-                       User = Model.UserDetails.User,
-                       MenuPage = MenuPage.CompletedRequests
+                       MenuPage = MenuPage.MyRequests
                    })
             </a>
         </li>
