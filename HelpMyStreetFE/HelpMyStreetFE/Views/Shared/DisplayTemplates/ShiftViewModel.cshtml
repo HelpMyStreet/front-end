@@ -89,14 +89,14 @@
                         </button>
                         break;
                     case JobStatuses.Done:
-                        <div class="feedback-container">
+                        @*<div class="feedback-container">
                             <button class="btn cta--gray-8-border">
                                 <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
                             </button>
-                        </div>
+                        </div>*@
                         break;
                     case JobStatuses.Cancelled:
-                        <div class="feedback-container"></div>
+                        @*<div class="feedback-container"></div>*@
                         break;
                 }
                 <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">

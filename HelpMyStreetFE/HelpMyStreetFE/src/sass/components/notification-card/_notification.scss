@@ -58,7 +58,7 @@
     &__content {
         -ms-grid-row: 1;
         -ms-grid-column: 3;
-        padding: 28px 0px;
+        padding: 28px 28px 28px 0px;
     }
 
     &__button {
@@ -79,6 +79,10 @@
         color: $p-color;
         @include copy-sz-lg;
         margin-bottom: 15px;
+
+        &__smaller {
+            font-size: inherit;
+        }
     }
 
     &__close {
