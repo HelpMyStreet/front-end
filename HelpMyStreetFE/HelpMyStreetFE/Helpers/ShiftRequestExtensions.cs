@@ -40,14 +40,7 @@ namespace HelpMyStreetFE.Helpers
         }
         public static string TimeSpan(this RequestSummary shiftRequest)
         {
-            if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))
-            {
-                return $"{shiftRequest.Shift.StartDate:dd/MM/yyyy HH:mm}-{shiftRequest.Shift.EndDate:HH:mm}";
-            }
-            else
-            {
-                return $"{shiftRequest.Shift.StartDate:dd/MM/yyyy HH:mm} – {shiftRequest.Shift.EndDate:dd/MM/yyyy HH:mm}";
-            }
+            return $"{shiftRequest.Shift.StartDate.ShiftyTime()} - {shiftRequest.Shift.EndDate.ShiftyTime()}";
         }
 
         public static Dictionary<JobStatuses, int> JobStatusDictionary(this RequestSummary requestSummary)
@@ -76,6 +69,11 @@ namespace HelpMyStreetFE.Helpers
         public static bool Incomplete(this RequestSummary requestSummary)
         {
             return requestSummary.JobSummaries.Any(j => j.JobStatus.Incomplete());
+        }
+
+        public static bool Unfilled(this RequestSummary requestSummary)
+        {
+            return requestSummary.JobSummaries.Any(j => j.JobStatus.Equals(JobStatuses.Open));
         }
     }
 
