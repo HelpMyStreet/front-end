@@ -1,3 +1,4 @@
+//import { resolve } from "core-js/fn/promise";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 
 let defaultOptions = {
@@ -10,11 +11,8 @@ let defaultOptions = {
   initialLng: -10.0,
   initialZoom: 5.3,
   divID: "map",
-  singlePin: false
+  singlePin: false,
 };
-
-let mapsEnabled = false;
-var mapsReady = false;
 
 var visiMaps = [];
 
@@ -58,17 +56,17 @@ let geolocationState = {
   failed: false,
   active: false,
 
-  setHover: function(value) {
+  setHover: function (value) {
     this.hover = value;
     this.updateIcon();
   },
 
-  geoLocationInProgress: function() {
+  geoLocationInProgress: function () {
     this.pending = true;
     this.updateIcon();
   },
 
-  geolocationComplete: function(success) {
+  geolocationComplete: function (success) {
     this.active = success;
     this.failed = !success;
     this.pending = false;
@@ -76,12 +74,12 @@ let geolocationState = {
     this.updateIcon();
   },
 
-  setActive: function(value) {
+  setActive: function (value) {
     this.active = value;
     this.updateIcon();
   },
 
-  updateIcon: function() {
+  updateIcon: function () {
     let icon = 0;
     if (this.pending === true) {
       icon = 3;
@@ -94,7 +92,7 @@ let geolocationState = {
     }
     let offset = icon * -24;
     $("#your-location-image").css("background-position", offset + "px 0px");
-  }
+  },
 };
 
 const noPoi = [
@@ -102,98 +100,98 @@ const noPoi = [
     featureType: "poi.attraction",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.business",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.government",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.medical",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.park",
     elementType: "labels.icon",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.place_of_worship",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.school",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "poi.sports_complex",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: "off",
+      },
+    ],
   },
   {
     featureType: "transit",
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
-  }
+        visibility: "off",
+      },
+    ],
+  },
 ];
 
-export async function enableMaps(callback) {
-  if (!mapsEnabled){
-  let script = document.createElement("script");
-  script.src = "/api/Maps/js";
-  script.defer = false;
-  script.async = false;
-  document.head.appendChild(script);
-  mapsEnabled = true;
-  window.initGoogleMap = callback ? callback : setMapsReady;
-}
-}
-
-async function setMapsReady(){
-  mapsReady = true;
+export async function enableMaps() {
+  if (typeof(google) == "undefined") {
+    let scriptComplete = new Promise(function (resolve) {
+      let script = document.createElement("script");
+      script.src = "/api/Maps/js";
+      script.defer = false;
+      script.async = false;
+      document.head.appendChild(script);
+      window.initGoogleMap = () => resolve(true);
+    });
+    return await scriptComplete;
+  } else {
+    return true;
+  }
 }
 
 export async function drawMap(inputOptions) {
   var options = {};
   Object.assign(options, defaultOptions);
-  
-  if(!inputOptions){
+
+  if (!inputOptions) {
     if (window.innerWidth <= 1000) {
       options.initialLng = -4.5;
       maxGeometryZoom = 11;
@@ -203,27 +201,30 @@ export async function drawMap(inputOptions) {
   }
   // re-center map for narrow screens/mobile
 
-  let thisGoogleMap = new google.maps.Map(document.getElementById(options.divID), {
-    center: { lat: options.initialLat, lng: Number(options.initialLng) },
-    mapTypeControl: false,
-    streetViewControl: false,
-    fullscreenControl: false,
-    zoom: options.initialZoom,
-    mapTypeId: "roadmap",
-    gestureHandling: options.allowNavigation ? 'auto' : 'none',
-    zoomControl: options.allowNavigation
-  });
+  let thisGoogleMap = new google.maps.Map(
+    document.getElementById(options.divID),
+    {
+      center: { lat: options.initialLat, lng: Number(options.initialLng) },
+      mapTypeControl: false,
+      streetViewControl: false,
+      fullscreenControl: false,
+      zoom: options.initialZoom,
+      mapTypeId: "roadmap",
+      gestureHandling: options.allowNavigation ? "auto" : "none",
+      zoomControl: options.allowNavigation,
+    }
+  );
 
-  if (options.singlePin){
+  if (options.singlePin) {
     let thisMarker = new google.maps.Marker({
       position: { lat: options.initialLat, lng: options.initialLng },
       clickable: false,
       title: null,
       icon: {
         url: "/img/logos/markers/hms5.png",
-        scaledSize: new google.maps.Size(50, 50)
+        scaledSize: new google.maps.Size(50, 50),
       },
-      map: thisGoogleMap
+      map: thisGoogleMap,
     });
   }
 
@@ -238,7 +239,7 @@ export async function drawMap(inputOptions) {
     var autocomplete = new google.maps.places.Autocomplete(autocompleteInput);
     autocomplete.setComponentRestrictions({ country: "uk" });
 
-    autocomplete.addListener("place_changed", function() {
+    autocomplete.addListener("place_changed", function () {
       var place = autocomplete.getPlace();
 
       if (!place.geometry) {
@@ -246,10 +247,12 @@ export async function drawMap(inputOptions) {
         autocompleteService.getPlacePredictions(
           {
             input: autocompleteInput.value,
-            componentRestrictions: { country: "uk" }
+            componentRestrictions: { country: "uk" },
           },
           (result, status) => {
-            var placesService = new google.maps.places.PlacesService(thisGoogleMap);
+            var placesService = new google.maps.places.PlacesService(
+              thisGoogleMap
+            );
             placesService.getDetails(
               { placeId: result[0].place_id },
               (result, status) => {
@@ -277,7 +280,7 @@ export async function drawMap(inputOptions) {
       geolocateButton
     );
 
-    geolocateButton.addEventListener("click", function() {
+    geolocateButton.addEventListener("click", function () {
       if (navigator.geolocation) {
         geolocationState.geoLocationInProgress();
         navigator.geolocation.getCurrentPosition(
@@ -290,15 +293,15 @@ export async function drawMap(inputOptions) {
       }
     });
 
-    geolocateButton.addEventListener("mouseover", function() {
+    geolocateButton.addEventListener("mouseover", function () {
       geolocationState.setHover(true);
     });
 
-    geolocateButton.addEventListener("mouseout", function() {
+    geolocateButton.addEventListener("mouseout", function () {
       geolocationState.setHover(false);
     });
 
-    thisGoogleMap.addListener("dragstart", function() {
+    thisGoogleMap.addListener("dragstart", function () {
       geolocationState.setActive(false);
     });
   }
@@ -326,7 +329,8 @@ function removedMarkerForPostcodeLookup() {
 }
 
 function geoLocationSuccess(position, googleMap) {
-  setMapCentre(googleMap,
+  setMapCentre(
+    googleMap,
     position.coords.latitude,
     position.coords.longitude,
     maxGeometryZoom
@@ -390,7 +394,7 @@ async function updateMap(googleMap, options, swLat, swLng, neLat, neLng) {
       minDistanceBetweenInMetres
     );
 
-    coords.map(coord => {
+    coords.map((coord) => {
       let thisMarker;
       if (isMapShowingLargeArea === true) {
         thisMarker = new google.maps.Marker({
@@ -399,8 +403,8 @@ async function updateMap(googleMap, options, swLat, swLng, neLat, neLng) {
           title: null,
           icon: {
             url: "/img/logos/markers/hms5.png",
-            scaledSize: new google.maps.Size(30, 30)
-          }
+            scaledSize: new google.maps.Size(30, 30),
+          },
         });
       } else {
         thisMarker = new google.maps.Marker({
@@ -409,8 +413,8 @@ async function updateMap(googleMap, options, swLat, swLng, neLat, neLng) {
           title: coord.pc,
           icon: {
             url: "/img/logos/markers/hms5.png",
-            scaledSize: new google.maps.Size(35, 35)
-          }
+            scaledSize: new google.maps.Size(35, 35),
+          },
         });
       }
       addMarker(thisMarker);
@@ -422,12 +426,14 @@ async function updateMap(googleMap, options, swLat, swLng, neLat, neLng) {
 
     var infoWindows = [];
 
-    communityMarkerCoords.map(coord => {
+    communityMarkerCoords.map((coord) => {
       if (
         (zoomLevel >= coord.zoomLevel || zoomLevel > 10) &&
         coord.displayOnMap &&
-        (swLng <= coord.longitude && coord.longitude <= neLng) &&
-        (swLat <= coord.latitude && coord.latitude <= neLat)
+        swLng <= coord.longitude &&
+        coord.longitude <= neLng &&
+        swLat <= coord.latitude &&
+        coord.latitude <= neLat
       ) {
         //Map zooms for homepages don't correlate well with when you'd want to "see" the blue pin
 
@@ -444,7 +450,7 @@ async function updateMap(googleMap, options, swLat, swLng, neLat, neLng) {
             thisBannerLocation,
             coord.friendlyName,
             coord.groupType
-          )
+          ),
         });
         thisMarker = new google.maps.Marker({
           zoomLevel: zoomLevel,
@@ -453,10 +459,10 @@ async function updateMap(googleMap, options, swLat, swLng, neLat, neLng) {
           title: coord.friendlyName,
           icon: {
             url: "/img/logos/markers/hms2.png",
-            scaledSize: new google.maps.Size(70, 70)
+            scaledSize: new google.maps.Size(70, 70),
           },
           zIndex: 1000,
-          animation: google.maps.Animation.BOUNCE
+          animation: google.maps.Animation.BOUNCE,
         });
         infoWindows.push({ marker: thisMarker, infoWindow: thisInfoWindow });
         thisMarker.addListener("click", () => {
@@ -530,7 +536,7 @@ function getMarkerKey(marker) {
 }
 
 function setMapOnAll(googleMap) {
-  googleMapMarkers.forEach(function(value, key, mapCollection) {
+  googleMapMarkers.forEach(function (value, key, mapCollection) {
     var onMap = value.getMap() != undefined && value.getMap() == googleMap;
     if (!onMap) {
       value.setMap(googleMap);
@@ -539,18 +545,18 @@ function setMapOnAll(googleMap) {
 }
 
 function clearMarkers(googleMap) {
-  googleMapMarkers.forEach(function(value, key, mapCollection) {
-    if (value.getMap() == googleMap){
-    if (value.type == "community") {
-      if (googleMap.getZoom() < value.zoomLevel) {
+  googleMapMarkers.forEach(function (value, key, mapCollection) {
+    if (value.getMap() == googleMap) {
+      if (value.type == "community") {
+        if (googleMap.getZoom() < value.zoomLevel) {
+          value.setMap(null);
+          googleMapMarkers.delete(key);
+        }
+      } else {
         value.setMap(null);
         googleMapMarkers.delete(key);
       }
-    } else {
-      value.setMap(null);
-      googleMapMarkers.delete(key);
     }
-  }
   });
 }
 

@@ -5,7 +5,9 @@ import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
 import { enableMaps, drawMap } from "../shared/maps";
 
-export function initialiseRequests() {
+let mapsAreGo;
+
+export async function initialiseRequests() {
 
     $('.job-list').on('mouseover', '.job', function () {
         loadJobDetails($(this));
@@ -16,7 +18,7 @@ export function initialiseRequests() {
         const job = $(this).closest('.job');
         job.toggleClass('open');
         job.find('.job__detail').slideToggle();
-        loadJobDetails(job).then(initialiseMaps(job));
+        loadJobDetails(job).then(mapsAreGo.then(() => createMap(job)));
     });
 
     $('.job-list').on('click', '.job a.close', function (e) {
@@ -114,12 +116,12 @@ export function initialiseRequests() {
 
     });
 
-    enableMaps();
+    mapsAreGo = await enableMaps();
     loadFeedbackComponents();
     
 }
 
-async function initialiseMaps(job){
+async function createMap(job){
 var thisMap = {
             displayVolunteers: false,
             displayGroups: false,
