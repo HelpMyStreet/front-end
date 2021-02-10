@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Models.Account;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -36,12 +37,6 @@ namespace HelpMyStreetFE.ViewComponents
 
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
-            LocationDetails locationDetails = null;
-            if (requestDetail.RequestSummary.Shift != null)
-            {
-                locationDetails = await _addressService.GetLocationDetails(requestDetail.RequestSummary.Shift.Location, cancellationToken);
-            }
-
             var jobDetails = await Task.WhenAll(requestDetail.RequestSummary.JobSummaries.Select(async j => await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken)));
 
             var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.JobSummary.SupportActivity).Distinct(), cancellationToken);
@@ -49,10 +44,14 @@ namespace HelpMyStreetFE.ViewComponents
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
                 RequestDetail = requestDetail,
-                LocationDetails = locationDetails,
                 JobDetails = jobDetails,
                 GroupSupportActivityInstructions = instructions,
             };
+
+            if (requestDetail.RequestSummary.Shift != null)
+            {
+                requestDetailViewModel.LocationDetails = await _addressService.GetLocationDetails(requestDetail.RequestSummary.Shift.Location, cancellationToken);
+            }
 
             return View("RequestDetail", requestDetailViewModel);
         }

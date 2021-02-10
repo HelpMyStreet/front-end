@@ -35,6 +35,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
                 }
             }
         }
+        public string FriendlyName { get; set; } = "Review";
         public string TemplateName { get; set; } = "RequestHelpReviewStageViewModel";
     }
 }

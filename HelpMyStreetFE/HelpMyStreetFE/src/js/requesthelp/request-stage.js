@@ -76,26 +76,19 @@ var handleRequestFor = function (el) {
   }
 }
 var handleTimeFrame = function (el) {
-  $('*[data-type="timeframe"]').removeClass("selected");
-  let allowCustomEntry = el.attr("data-allowcustom");
-  let datePickerSelect = el.attr("data-ondate");
-  if (allowCustomEntry == "True") {
-    $("#CustomTime").show();
+    $('*[data-type="timeframe"]').removeClass("selected");
+    let allowCustomEntry = el.attr("data-allowcustom");
+    if (allowCustomEntry == "True") {
+        $("#CustomTime").show();
 
-  } else {
-    $("#CustomTime").hide();
-  }
-  if (datePickerSelect == "True") {
-    $(".tiles__tile__content__dateselection").removeClass("dnone");
-  }
-  else {
-    $(".tiles__tile__content__dateselection").addClass("dnone");
-  }
-  el.addClass("selected");
-  $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
+    } else {
+        $("#CustomTime").hide();
+    }
+    $(`*[data-type="timeframe"][data-id="${el.attr("data-id")}"]`).addClass("selected");
+    $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
 
-  let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
-  trackEvent("Request form", "Select timeframe", selectedValue, 0);
+    let selectedValue = $(el).find('.tiles__tile__content__header').first().html();
+    trackEvent("Request form", "Select timeframe", selectedValue, 0);
 }
 
 var handleActivity = function (el) {
@@ -128,11 +121,6 @@ var updateOptionsForActivity = function (taskId) {
       $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
     }
     displayTodayHelpNeededOptions(false);
-  } else if (taskId == 22) { // Volunteer Support
-    $('#requestorFor_1').hide(); // myself
-    $('#requestorFor_2').hide(); // someone else
-    $('#requestorFor_3').show(); // onbehalf of organisation
-    displayTodayHelpNeededOptions(true);
   } else {
       if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
           $('#requestorFor_1').hide(); // myself

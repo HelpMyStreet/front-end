@@ -31,7 +31,7 @@
     min-width: 0;
     text-align: center;
     border-top: 8px solid var(--color-gray-disabled);
-  
+    height: 2.8rem;
 }
 .progress-bar  .is-complete {
     span {
@@ -121,7 +121,7 @@
 
 .progress-bar .is-complete:last-child:after,
 .progress-bar .is-active:last-child:after {
-    width: 193%;
+    width: 199%;
     left: -100%;
 }
 

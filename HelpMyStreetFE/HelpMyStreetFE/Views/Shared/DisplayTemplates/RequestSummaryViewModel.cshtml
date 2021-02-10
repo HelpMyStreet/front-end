@@ -14,18 +14,18 @@
 
     var className = "";
 
-    //if (Model.Item.JobStatus.Incomplete())
-    //{
-    //    if (Model.Item.StartDate < DateTime.Now.AddDays(3))
-    //    {
-    //        className += " job--urgent";
-    //    }
+    if (Model.Item.Unfilled())
+    {
+        if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(3))
+        {
+            className += " job--urgent";
+        }
 
-    //    if (Model.Item.StartDate < DateTime.Now.AddDays(7))
-    //    {
-    //        className += " job--due-soon";
-    //    }
-    //}
+        if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(7))
+        {
+            className += " job--due-soon";
+        }
+    }
 
     if (Model.HighlightJob)
     {
@@ -38,10 +38,6 @@
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
                 <partial name="_RequestStatus" model="@Model.Item" />
-            </span>
-
-            <span class="job__info__col1__urgency__dates due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">
-                @Model.Item.TimeSpan()
             </span>
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
@@ -62,6 +58,10 @@
                     </span>
                 }
             }
+            <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">
+                <span>@Model.Item.DateSpan()</span>
+                <span>@Model.Item.TimeSpan()</span>
+            </span>
             <span class="job__info__activity__location">
                 @Model.Location.LocationDetails.Name
             </span>
