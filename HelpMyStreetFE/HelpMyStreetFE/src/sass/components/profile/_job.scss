@@ -151,13 +151,7 @@
                 }
 
                 @media (min-width: $med-screen) {
-                    margin: 0 0 1rem 0;
-                    background: none;
-                    margin-bottom: 0;
-
-                    .status-icon {
-                        margin-right: 1rem;
-                    }
+                    display: none;
                 }
             }
 
@@ -258,15 +252,12 @@
             }
 
             &__status {
-                display: flex;
-                padding: 0.5rem;
-                align-items: center;
-
-                .status-icon {
-                    margin-right: 0.5rem;
-                }
+                display: none;
 
                 @media (min-width: $med-screen) {
+                    display: flex;
+                    padding: 0.5rem;
+                    align-items: center;
 
                     .status-icon {
                         margin-right: 1rem;
@@ -353,6 +344,14 @@
         &.admin-view {
             @media (min-width: $med-screen) {
                 grid-template-columns: 1.2fr 2fr 14rem;
+            }
+
+            .job__info__col1__status {
+                display: flex;
+            }
+
+            .job__info__col3__status {
+                display: none;
             }
 
             .job__info__col1__referrer {
@@ -674,22 +673,6 @@
 
             &.close {
                 display: inline;
-            }
-        }
-    }
-
-    &.shift {
-        .job__info__col3__status {
-            display: none;
-        }
-
-        @media (min-width: $med-screen) {
-            .job__info__col1__status {
-                display: none;
-            }
-
-            .job__info__col3__status {
-                display: flex;
             }
         }
     }

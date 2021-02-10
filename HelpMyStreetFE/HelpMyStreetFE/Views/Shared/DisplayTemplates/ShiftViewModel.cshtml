@@ -11,6 +11,7 @@
     var jobId = Base64Utils.Base64Encode(Model.Item.JobID);
     var requestId = Base64Utils.Base64Encode(Model.Item.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
+    var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
     var className = "";
 
@@ -34,7 +35,7 @@
 }
 
 <div class="job shift @className" id="@jobId" request-id="@requestId" data-job-status="@Model.Item.JobStatus" data-role="@role">
-    <div class="job__info">
+    <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
 
             @if (Model.Item.JobStatus != JobStatuses.Open)
