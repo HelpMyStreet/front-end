@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Response;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
@@ -150,7 +150,7 @@ namespace HelpMyStreetFE.Controllers
                 if (requestHelp.Action == "finish")
                 {
                     var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
-                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
@@ -282,7 +282,7 @@ namespace HelpMyStreetFE.Controllers
 
             QuestionsViewModel questionsViewModel = new QuestionsViewModel()
             {
-                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity)
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity, request.GroupId)
             };
 
             questionsViewModel = questionsViewModel.GetQuestionsByLocation(request.Position);
