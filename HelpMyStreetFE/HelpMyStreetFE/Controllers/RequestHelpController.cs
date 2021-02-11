@@ -154,7 +154,7 @@ namespace HelpMyStreetFE.Controllers
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
-                    if (response != null)
+                    if (response != null && response.Fulfillable.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new
                         {
@@ -163,6 +163,10 @@ namespace HelpMyStreetFE.Controllers
                             referringGroup = Base64Utils.Base64Encode(requestHelp.ReferringGroupID),
                             source = requestHelp.Source
                         });
+                    }
+                    else
+                    {
+                        throw new Exception($"Bad response from PostNewRequestForHelpRequest: {response?.Fulfillable}");
                     }
                 }
             }
