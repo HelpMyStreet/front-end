@@ -81,50 +81,59 @@ namespace HelpMyStreetFE.Controllers
                     {
 
                         var requestStep = (RequestHelpRequestStageViewModel)step;
-                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                        var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
+                        var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
 
-                        detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
-                        detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
-
-                        var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-                        if (loggedInUser != null)
+                        if (detailStage != null)
                         {
-                            switch (detailStage.Type)
+                            detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
+                            detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
+
+                            var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                            if (loggedInUser != null)
                             {
-                                case RequestorType.Myself:
-                                    if (detailStage.Recipient == null)
-                                    {
-                                        detailStage.Recipient = new RecipientDetails
+                                switch (detailStage.Type)
+                                {
+                                    case RequestorType.Myself:
+                                        if (detailStage.Recipient == null)
                                         {
-                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
-                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
-                                            AddressLine1 = loggedInUser.UserPersonalDetails.Address.AddressLine1,
-                                            AddressLine2 = loggedInUser.UserPersonalDetails.Address.AddressLine2,
-                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
-                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
-                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
-                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
-                                            Town = loggedInUser.UserPersonalDetails.Address.Locality
-                                        };
-                                    }
-                                    break;
-                                case RequestorType.Organisation:
-                                case RequestorType.OnBehalf:
-                                    if (detailStage.Requestor == null)
-                                    {
-                                        detailStage.Requestor = new RequestorDetails
+                                            detailStage.Recipient = new RecipientDetails
+                                            {
+                                                Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                                Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                                AddressLine1 = loggedInUser.UserPersonalDetails.Address.AddressLine1,
+                                                AddressLine2 = loggedInUser.UserPersonalDetails.Address.AddressLine2,
+                                                AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                                MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                                Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                                Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                                Town = loggedInUser.UserPersonalDetails.Address.Locality
+                                            };
+                                        }
+                                        break;
+                                    case RequestorType.Organisation:
+                                    case RequestorType.OnBehalf:
+                                        if (detailStage.Requestor == null)
                                         {
-                                            Firstname = loggedInUser.UserPersonalDetails.FirstName,
-                                            Lastname = loggedInUser.UserPersonalDetails.LastName,
-                                            AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
-                                            MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
-                                            Email = loggedInUser.UserPersonalDetails.EmailAddress,
-                                            Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
-                                        };
-                                    }
-                                    break;
+                                            detailStage.Requestor = new RequestorDetails
+                                            {
+                                                Firstname = loggedInUser.UserPersonalDetails.FirstName,
+                                                Lastname = loggedInUser.UserPersonalDetails.LastName,
+                                                AlternatePhoneNumber = loggedInUser.UserPersonalDetails.OtherPhone,
+                                                MobileNumber = loggedInUser.UserPersonalDetails.MobilePhone,
+                                                Email = loggedInUser.UserPersonalDetails.EmailAddress,
+                                                Postcode = loggedInUser.UserPersonalDetails.Address.Postcode,
+                                            };
+                                        }
+                                        break;
+                                }
                             }
                         }
+
+                        reviewStage.Task = requestStep.Tasks.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.TimeRequested = requestStep.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
+                        reviewStage.RequestedFor = requestStep.Requestors.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.RequestStageQuestions = requestStep.Questions.Questions;
                     }
                     if (step is RequestHelpDetailStageViewModel)
                     {
@@ -133,11 +142,7 @@ namespace HelpMyStreetFE.Controllers
                         var reviewStage = (RequestHelpReviewStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpReviewStageViewModel).First();
                         reviewStage.Recipient = detailStage.Recipient;
                         reviewStage.Requestor = detailStage.Requestor;
-                        reviewStage.Task = requestStage.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.OrganisationName = detailStage.Organisation;
-                        reviewStage.TimeRequested = requestStage.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
-                        reviewStage.RequestedFor = requestStage.Requestors.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.RequestStageQuestions = requestStage.Questions.Questions;
                         reviewStage.DetailsStageQuestions = detailStage.Questions.Questions;
                         reviewStage.ShowRequestor = detailStage.ShowRequestorFields && (reviewStage.RequestedFor.Type != RequestorType.Myself);
                     }

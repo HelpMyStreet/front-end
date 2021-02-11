@@ -10,6 +10,7 @@ namespace HelpMyStreetFE.Helpers
             return question.ID switch
             {
                 (int)Questions.FaceMask_Amount => "small-width",
+                (int)Questions.NumberOfSlots => "small-width",
                 _ => ""
             };
         }

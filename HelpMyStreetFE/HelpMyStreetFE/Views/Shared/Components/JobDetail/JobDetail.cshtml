@@ -61,8 +61,8 @@
 
                             <dd>
                                 <div>
-                                    @Model.LocationDetails.Name<br />
-                                    @Html.DisplayFor(m => m.LocationDetails.Address)
+                                    @Html.DisplayFor(m => m.Location.LocationDetails.Address)
+                                    <span class="distance">(@Model.Location.Distance.ToString("0.0") miles away)</span>
                                 </div>
                                 <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.LocationDetails.Latitude" data-lng="@Model.LocationDetails.Longitude"></div>
                             </dd>

@@ -127,10 +127,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        [Route("accepted-requests")]
-        [Route("accepted-requests/j/{encodedJobId}")]
+        [Route("my-requests")]
+        [Route("my-requests/j/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> AcceptedRequests(string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> MyRequests(string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -139,29 +139,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            viewModel.CurrentPage = MenuPage.AcceptedRequests;
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
-
-            return View("Index", viewModel);
-        }
-
-        [Route("completed-requests")]
-        [Route("completed-requests/j/{encodedJobId}")]
-        [HttpGet]
-        public async Task<IActionResult> CompletedRequests(string encodedJobId, CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (!_userService.GetRegistrationIsComplete(user))
-            {
-                return Redirect(REGISTRATION_URL);
-            }
-
-            var viewModel = await GetAccountViewModel(user, cancellationToken);
-            viewModel.CurrentPage = MenuPage.CompletedRequests;
+            viewModel.CurrentPage = MenuPage.MyRequests;
 
             if (!string.IsNullOrEmpty(encodedJobId))
             {
@@ -218,7 +196,7 @@ namespace HelpMyStreetFE.Controllers
             var jobID = Base64Utils.Base64DecodeToInt(j);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
+            return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserMyRequests, ToPrint = true});
         }
 
         [Route("get-directions-link")]

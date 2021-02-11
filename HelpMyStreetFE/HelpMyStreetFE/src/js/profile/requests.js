@@ -252,7 +252,10 @@ async function loadFeedbackComponent(job) {
 
     const response = await hmsFetch('/api/request-help/get-feedback-component?j=' + jobId + '&r=' + role);
     if (response.fetchResponse == fetchResponses.SUCCESS) {
-        job.find('.feedback-container').html(await response.fetchPayload);
+        const feedback = await response.fetchPayload;
+        if (feedback) {
+            job.find('.feedback-container').html(feedback);
+        }
     } else {
         return false;
     }

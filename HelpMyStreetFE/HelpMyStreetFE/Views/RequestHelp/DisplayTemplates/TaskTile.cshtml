@@ -24,7 +24,8 @@
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealsToYourDoor, Description = "Freshly prepared meals, delivered straight to your door"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealtimeCompanion, Description = "Finding someone to keep me company at mealtimes when I would otherwise be alone"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Transport, Description = "Finding transport for essential appointments"}
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Transport, Description = "Finding transport for essential appointments"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VaccineSupport, Description = "Finding volunteers to support the COVID-19 vaccination programme"},
         };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();

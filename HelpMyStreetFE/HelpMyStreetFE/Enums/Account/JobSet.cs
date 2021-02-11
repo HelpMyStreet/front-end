@@ -2,14 +2,13 @@
 {
     public enum JobSet
     {
-        GroupRequests,
-        UserOpenRequests_MatchingCriteria,
-        UserOpenRequests_NotMatchingCriteria,
-        UserAcceptedRequests,
-        UserCompletedRequests,
+        GroupRequests = 0,
+        UserOpenRequests_MatchingCriteria = 1,
+        UserOpenRequests_NotMatchingCriteria = 2,
+        UserMyRequests = 8,
 
-        GroupShifts,
-        UserOpenShifts,
-        UserMyShifts,
+        GroupShifts = 5,
+        UserOpenShifts = 6,
+        UserMyShifts = 7,
     }
 }

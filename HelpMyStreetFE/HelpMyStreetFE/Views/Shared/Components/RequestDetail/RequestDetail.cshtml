@@ -18,7 +18,8 @@
         <div class="row">
             <div class="sm12">
                 <dl>
-                    @if (requestSummary.RequestType == RequestType.Shift)
+                    <dt>When is the help needed?</dt>
+                    @if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
                     {
                         <dt>When is the help needed?</dt>
                         if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
@@ -27,14 +28,13 @@
                         }
                         else
                         {
-                <dd>This shift starts on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.StartDate.ToString("HH:mm", true)</strong> and ends <strong>@requestSummary.Shift.EndDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.EndDate.ToString("HH:mm", true)</strong>.</dd>
+                            <dd>This shift starts on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.StartDate.ToString("HH:mm", true)</strong> and ends <strong>@requestSummary.Shift.EndDate.ToString("dddd dnn MMMM", true)</strong> at <strong>@requestSummary.Shift.EndDate.ToString("HH:mm", true)</strong>.</dd>
                         }
-                        <dt>Where is the shift?</dt>
-                        <dd>
-                            @Model.LocationDetails.Name<br />
-                            @Html.DisplayFor(m => m.LocationDetails.Address)
-                        </dd>
                     }
+                    <dt>Where is the shift?</dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.LocationDetails.Address)
+                    </dd>
                 </dl>
             </div>
         </div>

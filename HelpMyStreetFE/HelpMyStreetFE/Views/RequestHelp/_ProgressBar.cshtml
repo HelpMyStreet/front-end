@@ -1,13 +1,10 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.RequestHelpViewModel;
 
 <ol class="progress-bar">
-    <li class="@(Model.CurrentStepIndex == 0 ? "is-active" : "") @(Model.CurrentStepIndex > 0 ? "is-complete" : "")">
-        <span>Request</span>
-    </li>
-    <li class="@(Model.CurrentStepIndex == 1 ? "is-active" : "") @(Model.CurrentStepIndex > 1 ? "is-complete" : "") ">
-        <span>Details</span>
-    </li>
-    <li class="@(Model.CurrentStepIndex == 2 ? "is-active" : "")">
-        <span>Review</span>
-    </li>
+    @for (int i = 0; i < Model.Steps.Count; i++)
+    {
+        <li class="@(Model.CurrentStepIndex == i ? "is-active" : "") @(Model.CurrentStepIndex > i ? "is-complete" : "")">
+            <span>@Model.Steps[i].FriendlyName</span>
+        </li>
+    }
 </ol>

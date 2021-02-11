@@ -16,8 +16,7 @@ namespace HelpMyStreetFE.Helpers
                 JobSet.GroupRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
                 JobSet.UserOpenRequests_MatchingCriteria => HelpMyStreet.Utils.Enums.RequestType.Task,
                 JobSet.UserOpenRequests_NotMatchingCriteria => HelpMyStreet.Utils.Enums.RequestType.Task,
-                JobSet.UserAcceptedRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
-                JobSet.UserCompletedRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
+                JobSet.UserMyRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
 
                 JobSet.UserMyShifts => HelpMyStreet.Utils.Enums.RequestType.Shift,
                 JobSet.GroupShifts => HelpMyStreet.Utils.Enums.RequestType.Shift,
@@ -36,8 +35,7 @@ namespace HelpMyStreetFE.Helpers
 
                 JobSet.UserOpenRequests_MatchingCriteria => false,
                 JobSet.UserOpenRequests_NotMatchingCriteria => false,
-                JobSet.UserAcceptedRequests => false,
-                JobSet.UserCompletedRequests => false,
+                JobSet.UserMyRequests => false,
 
                 JobSet.UserMyShifts => false,
                 JobSet.UserOpenShifts => false,
@@ -56,8 +54,7 @@ namespace HelpMyStreetFE.Helpers
 
                 JobSet.GroupRequests => true,
                 JobSet.GroupShifts => true,
-                JobSet.UserAcceptedRequests => true,
-                JobSet.UserCompletedRequests => true,
+                JobSet.UserMyRequests => true,
                 JobSet.UserMyShifts => true,
 
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet))

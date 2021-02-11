@@ -46,7 +46,7 @@
         }
 
         .no-selected {
-            display: inline-block;
+            display: initial;
         }
 
         &.selected {
@@ -57,13 +57,14 @@
             .cirlce {
                 background: $orange;
 
-                .on-selected {
-                    display: inline-block;
-                }
+            }
 
-                .no-selected {
-                    display: none;
-                }
+            .on-selected {
+                display: initial;
+            }
+
+            .no-selected {
+                display: none;
             }
         }
 
