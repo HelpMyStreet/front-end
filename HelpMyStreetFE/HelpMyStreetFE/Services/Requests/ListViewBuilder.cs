@@ -51,15 +51,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             jobListViewModel.UnfilteredItems = jobs.Count();
 
-            switch (jobFilterRequest.JobSet.RequestType())
-            {
-                case RequestType.Task:
-                    jobs = (IEnumerable<T>)_filterService.SortAndFilterJobs((IEnumerable<JobHeader>)jobs, jobFilterRequest);
-                    break;
-                case RequestType.Shift:
-                    jobs = (IEnumerable<T>)_filterService.SortAndFilterJobs((IEnumerable<ShiftJob>)jobs, jobFilterRequest);
-                    break;
-            }
+            jobs = (IEnumerable<T>)_filterService.SortAndFilterJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;

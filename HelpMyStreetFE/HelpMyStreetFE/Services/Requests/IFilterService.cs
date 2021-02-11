@@ -11,9 +11,8 @@ namespace HelpMyStreetFE.Services.Requests
     public interface IFilterService
     {
         public Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, JobStatuses? jobStatus, User user, CancellationToken cancellationToken);
-       
-        IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jobFilterRequest);
-        IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jobFilterRequest);
+
+        IEnumerable<JobBasic> SortAndFilterJobs(IEnumerable<JobBasic> jobs, JobFilterRequest jobFilterRequest);
         IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jobFilterRequest);
     }
 }

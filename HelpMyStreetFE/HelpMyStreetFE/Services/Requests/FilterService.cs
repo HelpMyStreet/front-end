@@ -312,26 +312,61 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        public IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
+        public IEnumerable<JobBasic> SortAndFilterJobs(IEnumerable<JobBasic> jobs, JobFilterRequest jfr)
         {
-            var jobsToDisplay = jobs.Where(
-                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
-                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
-                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Location))
-                    && (jfr.DueInNextXDays == null || j.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.StartDate)).Count() > 0)
-                    );
+            if (jfr.JobStatuses != null) { jobs = jobs.Where(j => jfr.JobStatuses.Contains(j.JobStatus)); }
+            if (jfr.SupportActivities != null) { jobs = jobs.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)); }
 
-            return jfr.OrderBy switch
+            if (jobs.GetType() == typeof(IEnumerable<ShiftJob>))
             {
-                OrderBy.DateDue_Ascending =>
-                   jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.StartDate),
-                OrderBy.DateDue_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.StartDate),
-                OrderBy.DateRequested_Descending =>
-                  jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateRequested),
-                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
-            };
+                if (jfr.Locations != null && jfr.Locations.Count() > 0) { jobs = jobs.Where(j => jfr.Locations.Contains(((ShiftJob)j).Location)); }
+                if (jfr.DueInNextXDays != null) { jobs = jobs.Where(j => ((ShiftJob)j).StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)); }
+                if (jfr.PartsOfDay != null) { jobs = jobs.Where(j => jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(((ShiftJob)j).StartDate)).Count() > 0); }
+
+                return jfr.OrderBy switch
+                {
+                    OrderBy.DateDue_Ascending =>
+                       jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((ShiftJob)j).StartDate),
+                    OrderBy.DateDue_Descending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((ShiftJob)j).StartDate),
+                    OrderBy.DateRequested_Descending =>
+                      jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((ShiftJob)j).DateRequested),
+                    _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+                };
+            }
+
+            if (jobs.GetType() == typeof(IEnumerable<JobHeader>))
+            {
+                if (jfr.MaxDistanceInMiles != null) { jobs = jobs.Where(j => ((JobHeader)j).DistanceInMiles <= jfr.MaxDistanceInMiles); }
+                if (jfr.DueInNextXDays != null) { jobs = jobs.Where(j => ((JobHeader)j).DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)); }
+                if (jfr.DueAfter != null) { jobs = jobs.Where(j => ((JobHeader)j).DueDate.Date >= jfr.DueAfter?.Date); }
+                if (jfr.DueBefore != null) { jobs = jobs.Where(j => ((JobHeader)j).DueDate.Date <= jfr.DueBefore?.Date); }
+                if (jfr.RequestedAfter != null) { jobs = jobs.Where(j => ((JobHeader)j).DateRequested.Date >= jfr.RequestedAfter?.Date); }
+                if (jfr.RequestedBefore != null) { jobs = jobs.Where(j => ((JobHeader)j).DateRequested.Date <= jfr.RequestedBefore?.Date); }
+
+                return jfr.OrderBy switch
+                {
+                    OrderBy.RequiringAdminAttention =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).RequiringAdminAttentionScore()).ThenBy(j => ((JobHeader)j).DueDate),
+                    OrderBy.DateDue_Ascending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DueDate),
+                    OrderBy.DateDue_Descending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).DueDate),
+                    OrderBy.DateRequested_Ascending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DateRequested),
+                    OrderBy.DateRequested_Descending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).DateRequested),
+                    OrderBy.DateStatusLastChanged_Ascending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DateStatusLastChanged),
+                    OrderBy.DateStatusLastChanged_Descending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).DateStatusLastChanged),
+                    OrderBy.Distance_Ascending =>
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DistanceInMiles),
+                    _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+                };
+            }
+
+            return jobs;
         }
 
         public IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
@@ -354,40 +389,6 @@ namespace HelpMyStreetFE.Services.Requests
                     jobsToDisplay.OrderByDescending(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
                 OrderBy.DateRequested_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.DateRequested),
-                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
-            };
-        }
-
-        public IEnumerable<JobHeader> SortAndFilterJobs(IEnumerable<JobHeader> jobs, JobFilterRequest jfr)
-        {
-            var jobsToDisplay = jobs.Where(
-                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
-                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
-                    && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    && (jfr.DueInNextXDays == null || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.DueAfter == null || j.DueDate.Date >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
-                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
-
-            return jfr.OrderBy switch
-            {
-                OrderBy.RequiringAdminAttention =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.RequiringAdminAttentionScore()).ThenBy(j => j.DueDate),
-                OrderBy.DateDue_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DueDate),
-                OrderBy.DateDue_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DueDate),
-                OrderBy.DateRequested_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DateRequested),
-                OrderBy.DateRequested_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateRequested),
-                OrderBy.DateStatusLastChanged_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DateStatusLastChanged),
-                OrderBy.DateStatusLastChanged_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => j.DateStatusLastChanged),
-                OrderBy.Distance_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => j.DistanceInMiles),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
