@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
@@ -87,7 +87,7 @@ namespace HelpMyStreetFE.Controllers
                         if (detailStage != null)
                         {
                             detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
-                            detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
+                            detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity(), requestHelp.ReferringGroupID);
 
                             var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                             if (loggedInUser != null)
@@ -216,7 +216,7 @@ namespace HelpMyStreetFE.Controllers
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;
             if (selectedTask != null)
             {
-                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpJourney.RequestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value);
+                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpJourney.RequestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value, referringGroupId);
             }
 
             return View(model);
@@ -295,11 +295,11 @@ namespace HelpMyStreetFE.Controllers
             return PartialView("_Questions", questionsViewModel);
         }
 
-        private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity)
+        private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity, int groupId)
         {
             QuestionsViewModel updatedQuestionsViewModel = new QuestionsViewModel()
             {
-                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity)
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity, groupId)
             };
 
             if (previousQuestionsViewModel != null)
@@ -319,6 +319,7 @@ namespace HelpMyStreetFE.Controllers
 
         public class QuestionRequest
         {
+            public int GroupId { get; set; }
             public string FormVariant { get; set; }
             public string FormStage { get; set; }
             public string SupportActivity { get; set; }
