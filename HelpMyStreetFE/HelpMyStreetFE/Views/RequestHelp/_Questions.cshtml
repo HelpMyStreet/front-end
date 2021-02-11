@@ -33,9 +33,10 @@
 
                         @foreach (var radio in question.AdditionalData)
                         {
+                            var singleOption = question.AdditionalData.Count == 1;
                             <div class="input--radio">
                                 <label>
-                                    <input type="radio" name="@name" value="@radio.Key" data-id="@question.ID" data-required="@question.Required" data-val-message="@question.DataValidationMessage" class="question @question.Class()" @(question.Model == radio.Key ? "checked" : "") hidden />
+                                    <input type="radio" name="@name" value="@radio.Key" data-id="@question.ID" data-required="@question.Required" data-val-message="@question.DataValidationMessage" class="question @question.Class()" @(question.Model == radio.Key || singleOption ? "checked" : "") hidden />
                                     <span class="input--radio__radio">
                                         <span class="input--radio__radio__inner"></span>
                                     </span>
