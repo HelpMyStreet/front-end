@@ -18,7 +18,7 @@
         <div class="row">
             @foreach (var g in Model.Groups.OrderBy(g => g.GroupName))
             {
-                <div class="sm4">
+                <div class="sm12">
                     <a href="/request-help/@Base64Utils.Base64Encode(g.GroupId)/a">
                         <div class="tiles__tile">
                             <div class="tiles__tile__content ">
