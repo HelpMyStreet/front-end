@@ -56,7 +56,6 @@
 
             .cirlce {
                 background: $orange;
-
             }
 
             .on-selected {
@@ -191,12 +190,17 @@
                 }
             }
         }
+    }
 
-        a, a:hover, a:active {
-            text-decoration: none;
-            color: inherit;
-            text-align: center;
-        }
+    a, a:hover, a:active {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    a:active .tiles__tile {
+        border: 2px solid $light-orange;
+        background: $light-orange-opaque;
+        color: $dark-blue;
     }
 }
 

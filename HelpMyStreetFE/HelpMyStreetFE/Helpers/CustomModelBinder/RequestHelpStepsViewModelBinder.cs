@@ -27,16 +27,16 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             var stepTypeValue = bindingContext.ValueProvider.GetValue("StepType");
             var stepType = Type.GetType(stepTypeValue.ToString());
             RequestHelpFormVariant requestHelpFormVariant = Enum.Parse<RequestHelpFormVariant>(bindingContext.ValueProvider.GetValue("FormVariant").FirstValue);
-            SupportActivities selectedSupportActivity;
-            Enum.TryParse<SupportActivities>(bindingContext.ValueProvider.GetValue("SelectedSupportActivity").FirstValue, out selectedSupportActivity);
+            int.TryParse(bindingContext.ValueProvider.GetValue("ReferringGroupId").FirstValue, out int groupId);
+            Enum.TryParse<SupportActivities>(bindingContext.ValueProvider.GetValue("SelectedSupportActivity").FirstValue, out SupportActivities selectedSupportActivity);
             bindingContext.ModelMetadata = _provider.GetMetadataForType(stepType);
             switch (stepType.Name)
             {
                 case nameof(RequestHelpRequestStageViewModel):
-                    bindingContext.Result = ModelBindingResult.Success(BindRequestStage(bindingContext, requestHelpFormVariant).Result);
+                    bindingContext.Result = ModelBindingResult.Success(BindRequestStage(bindingContext, requestHelpFormVariant, groupId).Result);
                     break;
                 case nameof(RequestHelpDetailStageViewModel):
-                    bindingContext.Result = ModelBindingResult.Success(BindDetailStage(bindingContext, requestHelpFormVariant, selectedSupportActivity).Result);
+                    bindingContext.Result = ModelBindingResult.Success(BindDetailStage(bindingContext, requestHelpFormVariant, selectedSupportActivity, groupId).Result);
                     break;
                 case nameof(RequestHelpReviewStageViewModel):
                     bindingContext.Result = ModelBindingResult.Success(BindReviewStage(bindingContext));
@@ -52,7 +52,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             return model;
         }
 
-        private async Task<RequestHelpDetailStageViewModel> BindDetailStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant, SupportActivities selectedSupportActivity)
+        private async Task<RequestHelpDetailStageViewModel> BindDetailStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant, SupportActivities selectedSupportActivity, int groupId)
         {
             RequestHelpDetailStageViewModel model = JsonConvert.DeserializeObject<RequestHelpDetailStageViewModel>(bindingContext.ValueProvider.GetValue("DetailStep").FirstValue);
             var recpientnamePrefix = "currentStep.Recipient.";
@@ -84,7 +84,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             model.Organisation = bindingContext.ValueProvider.GetValue("currentStep.Organisation").FirstValue;
 
-            model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity) };
+            model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Detail, selectedSupportActivity, groupId) };
 
             foreach (RequestHelpQuestion question in model.Questions.Questions)
             {
@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             return model;
         }
 
-        private async Task<RequestHelpRequestStageViewModel> BindRequestStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant)
+        private async Task<RequestHelpRequestStageViewModel> BindRequestStage(ModelBindingContext bindingContext, RequestHelpFormVariant requestHelpFormVariant, int groupId)
         {
             RequestHelpRequestStageViewModel model = JsonConvert.DeserializeObject<RequestHelpRequestStageViewModel>(bindingContext.ValueProvider.GetValue("RequestStep").FirstValue);
 
@@ -129,16 +129,16 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
                     time.Days = selectedDays;
                 }
-                if (time.DueDateType == DueDateType.On || time.DueDateType == DueDateType.SpecificStartTime || time.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                if (time.DueDateType.HasDate())
                 {
                     DateTime selectedDate;
                     DateTime.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), new CultureInfo("en-GB"), DateTimeStyles.None, out selectedDate);
                     time.Date = selectedDate;
-                    if (time.DueDateType == DueDateType.SpecificStartTime || time.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                    if (time.DueDateType.HasStartTime())
                     {
                         time.StartTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
                     }
-                    if (time.DueDateType == DueDateType.SpecificStartAndEndTimes)
+                    if (time.DueDateType.HasEndTime())
                     {
                         time.EndTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
                         if (time.StartTime >= time.EndTime)
@@ -149,7 +149,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
             }
 
-            model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity) };
+            model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity, groupId) };
 
             foreach (RequestHelpQuestion question in model.Questions.Questions)
             {

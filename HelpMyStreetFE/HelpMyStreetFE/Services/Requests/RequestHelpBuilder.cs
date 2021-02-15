@@ -360,7 +360,7 @@ namespace HelpMyStreetFE.Services.Requests
             return tasks;
         }
 
-        public async Task<List<RequestHelpQuestion>> GetQuestionsForTask(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity)
+        public async Task<List<RequestHelpQuestion>> GetQuestionsForTask(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity, int groupId)
         {
             var questions = await _requestHelpRepository.GetQuestionsByActivity(new GetQuestionsByActivitiesRequest
             {
@@ -375,7 +375,8 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormStageRequest = new RequestHelpFormStageRequest
                 {
                     RequestHelpFormStage = requestHelpFormStage
-                }
+                },
+                GroupId = groupId,
             });
 
             List<RequestHelpQuestion> requestHelpQuestions = questions.SupportActivityQuestions[supportActivity].Select(x => new RequestHelpQuestion

@@ -54,7 +54,7 @@ export function validateDate(val, id, errorId, dateValidationScheme = dateValida
           return false;
         }
       } else if (dateValidationScheme == dateValidationSchemes.FUTURE_DATES) {
-        if (dateObject < new Date()) {
+        if (dateObject < new Date().setHours(0, 0, 0, 0)) {
           $('#' + errorId).show();
           $('#' + errorId).text("Please enter a date in the future");
           return false;

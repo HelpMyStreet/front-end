@@ -30,12 +30,12 @@
                         <input type="number" min="1" max="@question.Max()" placeholder="@question.PlaceholderText" data-id="@question.ID" class="question @question.Class()" data-required="@question.Required" data-val-message="@question.DataValidationMessage" value="@question.Model" name="@name">
                         break;
                     case QuestionType.Radio:
-
+                        var singleOption = question.AdditionalData.Count == 1;
                         @foreach (var radio in question.AdditionalData)
                         {
                             <div class="input--radio">
                                 <label>
-                                    <input type="radio" name="@name" value="@radio.Key" data-id="@question.ID" data-required="@question.Required" data-val-message="@question.DataValidationMessage" class="question @question.Class()" @(question.Model == radio.Key ? "checked" : "") hidden />
+                                    <input type="radio" name="@name" value="@radio.Key" data-id="@question.ID" data-required="@question.Required" data-val-message="@question.DataValidationMessage" class="question @question.Class()" @(question.Model == radio.Key || singleOption ? "checked" : "") hidden />
                                     <span class="input--radio__radio">
                                         <span class="input--radio__radio__inner"></span>
                                     </span>
