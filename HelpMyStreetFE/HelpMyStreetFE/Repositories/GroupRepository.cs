@@ -263,5 +263,29 @@ namespace HelpMyStreetFE.Repositories
             }
             throw new Exception($"Bad response from GetGroup for GroupId {groupId}");
         }
+
+        public async Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant)
+        {
+            var rfvRequest = new RegistrationFormVariantRequest();
+            rfvRequest.RegistrationFormVariant = registrationFormVariant;
+
+            var request = new GetRegistrationFormSupportActivitiesRequest();
+            request.RegistrationFormVariantRequest = rfvRequest;
+
+            var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await Client.PostAsync("/api/GetRegistrationFormSupportActivities", requestContent);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var deserializeContent = JsonConvert.DeserializeObject<ResponseWrapper<GetRegistrationFormSupportActivitiesResponse, GroupServiceErrorCode>>(responseString);
+            if (deserializeContent.HasContent && deserializeContent.IsSuccessful)
+            {
+                return deserializeContent.Content;
+            }
+            else
+            {
+                throw new Exception("Unable to fetch Support Activities For Form Varient");
+            }
+            
+        }
     }
 }

@@ -147,16 +147,19 @@ namespace HelpMyStreetFE.Controllers
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             string correctPage = GetCorrectPage(user);
+            
             if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
             }
-
+            var registrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken);
+            var supportActivities = await _groupService.GetSupportActivitesForRegistrationForm(registrationFormVariant);
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
-                RegistrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken),
+                RegistrationFormVariant = registrationFormVariant,
+                ActivityDetails = supportActivities
             });
         }
 

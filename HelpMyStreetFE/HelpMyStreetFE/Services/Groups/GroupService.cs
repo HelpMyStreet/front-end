@@ -161,5 +161,10 @@ namespace HelpMyStreetFE.Services.Groups
             return (await _groupRepository.GetChildGroups(groupId)).ChildGroups;
         }
 
+        public async Task<List<SupportActivityDetail>> GetSupportActivitesForRegistrationForm(RegistrationFormVariant registrationFormVariant)
+        {
+            var response = await _groupRepository.GetRegistrationFormSupportActivies(registrationFormVariant);
+            return response.SupportActivityDetails;
+        }
     }
 }

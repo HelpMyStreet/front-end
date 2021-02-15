@@ -27,5 +27,6 @@ namespace HelpMyStreetFE.Repositories
         Task<bool> PutGroupMemberCredentials(PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest);
         Task<Instructions> GetGroupSupportActivityInstructions(int groupId, SupportActivities supportActivity);
         Task<GetGroupLocationsResponse> GetGroupLocations(int groupId, bool includeChildGroups);
+        Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant);
     }
 }

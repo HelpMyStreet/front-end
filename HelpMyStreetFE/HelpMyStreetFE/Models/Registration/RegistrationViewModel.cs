@@ -1,4 +1,6 @@
-﻿using HelpMyStreet.Utils.Enums;
+﻿using System.Collections.Generic;
+using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp.Enum;
 
 namespace HelpMyStreetFE.Models.Registration
@@ -12,5 +14,6 @@ namespace HelpMyStreetFE.Models.Registration
         public RegistrationFormVariant RegistrationFormVariant { get; set; }
         public string GroupName { get; set; }
         public string Email { get; set; }
+        public List<SupportActivityDetail> ActivityDetails { get; set; }
     }
 }
