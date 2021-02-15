@@ -152,7 +152,7 @@ var thisMap = {
             allowNavigation: false,
             allowSearch: false,
             consoleCoordinates: false,
-            initialLat: Number(job.find(".location-map").data("lat")) + 0.001,
+            initialLat: Number(job.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
             initialLng: Number(job.find(".location-map").data("lng")),
             initialZoom: 14,
             divID: "map-" + job.attr("id"),

@@ -203,10 +203,6 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
         {
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            var postCode = user.PostalCode.Replace(" ", "%20");
-            
-
             long jobID = 0;
             Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
@@ -216,7 +212,7 @@ namespace HelpMyStreetFE.Controllers
 
             var locationPostcode = locationDetails.Address.Postcode.Replace(" ", "%20");
 
-            var directionsLink = $"https://www.google.com/maps/dir/?api=1&origin={postCode}&destination={locationPostcode}";
+            var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
 
             return new OkObjectResult(directionsLink);
         }
