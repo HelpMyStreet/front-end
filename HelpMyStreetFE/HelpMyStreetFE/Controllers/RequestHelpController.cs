@@ -87,7 +87,7 @@ namespace HelpMyStreetFE.Controllers
                         if (detailStage != null)
                         {
                             detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
-                            detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity());
+                            detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity(), requestHelp.ReferringGroupID);
 
                             var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                             if (loggedInUser != null)
@@ -150,11 +150,11 @@ namespace HelpMyStreetFE.Controllers
                 if (requestHelp.Action == "finish")
                 {
                     var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
-                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).First();
+                    var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
                     var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
-                    if (response != null)
+                    if (response != null && response.Fulfillable.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new
                         {
@@ -163,6 +163,10 @@ namespace HelpMyStreetFE.Controllers
                             referringGroup = Base64Utils.Base64Encode(requestHelp.ReferringGroupID),
                             source = requestHelp.Source
                         });
+                    }
+                    else
+                    {
+                        throw new Exception($"Bad response from PostNewRequestForHelpRequest: {response?.Fulfillable}");
                     }
                 }
             }
@@ -216,7 +220,7 @@ namespace HelpMyStreetFE.Controllers
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;
             if (selectedTask != null)
             {
-                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpJourney.RequestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value);
+                requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpJourney.RequestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value, referringGroupId);
             }
 
             return View(model);
@@ -278,7 +282,7 @@ namespace HelpMyStreetFE.Controllers
 
             QuestionsViewModel questionsViewModel = new QuestionsViewModel()
             {
-                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity)
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, supportActivity, request.GroupId)
             };
 
             questionsViewModel = questionsViewModel.GetQuestionsByLocation(request.Position);
@@ -295,11 +299,11 @@ namespace HelpMyStreetFE.Controllers
             return PartialView("_Questions", questionsViewModel);
         }
 
-        private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity)
+        private async Task<QuestionsViewModel> UpdateQuestionsViewModel(QuestionsViewModel previousQuestionsViewModel, RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities selectedSupportActivity, int groupId)
         {
             QuestionsViewModel updatedQuestionsViewModel = new QuestionsViewModel()
             {
-                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity)
+                Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, requestHelpFormStage, selectedSupportActivity, groupId)
             };
 
             if (previousQuestionsViewModel != null)
@@ -319,6 +323,7 @@ namespace HelpMyStreetFE.Controllers
 
         public class QuestionRequest
         {
+            public int GroupId { get; set; }
             public string FormVariant { get; set; }
             public string FormStage { get; set; }
             public string SupportActivity { get; set; }

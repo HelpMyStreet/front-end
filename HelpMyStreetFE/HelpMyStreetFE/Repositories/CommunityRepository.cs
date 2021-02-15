@@ -37,30 +37,29 @@ namespace HelpMyStreetFE.Repositories
         public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
         {
 
-                int groupId = await _groupService.GetGroupIdByKey(groupKey, cancellationToken);
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
 
-                CommunityViewModel vm = ((Groups)groupId) switch
-                {
-                    Groups.Tankersley => GetTankersley(),
-                    Groups.Ruddington => GetRuddington(),
-                    Groups.AgeUKLSL => GetAgeUKLSL(),
-                    Groups.AgeUKWirral => GetAgeUKWirral(),
-                    Groups.HLP => GetHLP(),
-                    Groups.FTLOS => GetFtLOS(),
-                    Groups.AgeUKNottsBalderton => GetBalderton(),
-                    Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
-                    Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
-                    Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
-                    Groups.AgeUKNorthWestKent => GetNorthWestKent(),
-                    Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
-                    _ => null,
-                };
+            CommunityViewModel vm = ((Groups)group.GroupId) switch
+            {
+                Groups.Tankersley => GetTankersley(),
+                Groups.Ruddington => GetRuddington(),
+                Groups.AgeUKLSL => GetAgeUKLSL(),
+                Groups.AgeUKWirral => GetAgeUKWirral(),
+                Groups.HLP => GetHLP(),
+                Groups.FTLOS => GetFtLOS(),
+                Groups.AgeUKNottsBalderton => GetBalderton(),
+                Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
+                Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
+                Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
+                Groups.AgeUKNorthWestKent => GetNorthWestKent(),
+                Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
+                _ => null,
+            };
 
-                vm.EncodedGroupId = Base64Utils.Base64Encode(groupId);
-                vm.groupKey = groupKey;
+            vm.Group = group;
 
-                return vm;
-            
+            return vm;
+
         }
 
         public async Task<List<CommunityModel>> GetCommunities()
