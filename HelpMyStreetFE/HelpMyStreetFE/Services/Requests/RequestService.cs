@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -203,6 +203,11 @@ namespace HelpMyStreetFE.Services.Requests
                     JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
                 });
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
+        }
+
+        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken)
+        {
+            return (await _requestHelpRepository.GetRequestSummaryAsync(requestId)).RequestSummary;
         }
 
         public async Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
