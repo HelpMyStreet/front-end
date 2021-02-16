@@ -64,13 +64,6 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Logging Request");
-            var recipient = _requestHelpBuilder.MapRecipient(detailStage);
-
-            RequestPersonalDetails requestor = null;
-            if (detailStage.ShowRequestorFields)
-            {
-                requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);
-            }
 
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
@@ -79,7 +72,19 @@ namespace HelpMyStreetFE.Services.Requests
             var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
             if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
 
-            IEnumerable<RequestHelpQuestion> questions = requestStage.Questions.Questions.Union(detailStage.Questions.Questions);
+            RequestPersonalDetails recipient = null;
+            RequestPersonalDetails requestor = null;
+            IEnumerable<RequestHelpQuestion> questions = requestStage.Questions.Questions;
+
+            if (detailStage != null)
+            {
+                if (detailStage.ShowRequestorFields)
+                {
+                    requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);
+                }
+                recipient = _requestHelpBuilder.MapRecipient(detailStage);
+                questions = questions.Union(detailStage.Questions.Questions);
+            }
 
             var request = new PostNewRequestForHelpRequest
             {
@@ -88,8 +93,8 @@ namespace HelpMyStreetFE.Services.Requests
                     Guid = Guid.NewGuid(),
                     AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
                     ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
-                    OrganisationName = detailStage.Organisation ?? "",
-                    RequestorType = detailStage.Type,
+                    OrganisationName = detailStage?.Organisation ?? "",
+                    RequestorType = detailStage?.Type ?? RequestorType.Organisation,
                     ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
                     CreatedByUserId = userId,
                     Recipient = recipient,
@@ -103,9 +108,10 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         new Job
                         {
-                            DueDateType = selectedTime.OnDate ? DueDateType.On : DueDateType.Before,
-                            DueDays = selectedTime.OnDate ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
-                            Details = "",
+                            DueDateType = selectedTime.DueDateType,
+                            DueDays = selectedTime.DueDateType == DueDateType.On ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
+                            StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime : (DateTime?)null,
+                            EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime : (DateTime?)null,
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
@@ -326,16 +332,11 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 return new JobLocation
                 {
-                    JobSet = (job.RequestType, job.JobStatus) switch
+                    JobSet = job.RequestType switch
                     {
-                        (RequestType.Task, JobStatuses.InProgress) => JobSet.UserAcceptedRequests,
-                        (RequestType.Task, JobStatuses.Done) => JobSet.UserCompletedRequests,
-                        (RequestType.Task, JobStatuses.Cancelled) => JobSet.UserCompletedRequests,
-                        (RequestType.Shift, JobStatuses.Accepted) => JobSet.UserMyShifts,
-                        (RequestType.Shift, JobStatuses.InProgress) => JobSet.UserMyShifts,
-                        (RequestType.Shift, JobStatuses.Done) => JobSet.UserMyShifts,
-                        (RequestType.Shift, JobStatuses.Cancelled) => JobSet.UserMyShifts,
-                        _ => throw new ArgumentException($"Unexpected RequestType / JobStatuses combination: {job.RequestType} / {job.JobStatus}"),
+                        RequestType.Task => JobSet.UserMyRequests,
+                        RequestType.Shift => JobSet.UserMyShifts,
+                        _ => throw new ArgumentException($"Unexpected RequestType: {job.RequestType}", nameof(job.RequestType)),
                     }
                 };
             }

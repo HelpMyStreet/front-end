@@ -1,21 +1,28 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Review.RequestHelpReviewStageViewModel;
 @using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreetFE.Helpers;
 
 @{
-    var onBehalf = Model.RequestedFor.Type == RequestorType.OnBehalf;
-    var forOrg = Model.RequestedFor.Type == RequestorType.Organisation;
+    var onBehalf = Model.RequestedFor?.Type == RequestorType.OnBehalf;
+    var forOrg = Model.RequestedFor?.Type == RequestorType.Organisation;
 
 
     var requestor = Model.Requestor;
-    var recipient = Model.Recipient;
-    requestor.AlternatePhoneNumber = string.IsNullOrEmpty(requestor.AlternatePhoneNumber) ? "None Provided" : requestor.AlternatePhoneNumber;
-    requestor.MobileNumber = string.IsNullOrEmpty(requestor.MobileNumber) ? "None Provided" : requestor.MobileNumber;
-    requestor.Email = string.IsNullOrEmpty(requestor.Email) ? "None Provided" : requestor.Email;
+    if (requestor != null)
+    {
+        requestor.AlternatePhoneNumber = string.IsNullOrEmpty(requestor.AlternatePhoneNumber) ? "None Provided" : requestor.AlternatePhoneNumber;
+        requestor.MobileNumber = string.IsNullOrEmpty(requestor.MobileNumber) ? "None Provided" : requestor.MobileNumber;
+        requestor.Email = string.IsNullOrEmpty(requestor.Email) ? "None Provided" : requestor.Email;
+    }
 
-    recipient.Email = string.IsNullOrEmpty(recipient.Email) ? "None Provided" : recipient.Email;
-    recipient.MobileNumber = string.IsNullOrEmpty(recipient.MobileNumber) ? "None Provided" : recipient.MobileNumber;
-    recipient.AlternatePhoneNumber = string.IsNullOrEmpty(recipient.AlternatePhoneNumber) ? "None Provided" : recipient.AlternatePhoneNumber;
+    var recipient = Model.Recipient;
+    if (recipient != null)
+    {
+        recipient.Email = string.IsNullOrEmpty(recipient.Email) ? "None Provided" : recipient.Email;
+        recipient.MobileNumber = string.IsNullOrEmpty(recipient.MobileNumber) ? "None Provided" : recipient.MobileNumber;
+        recipient.AlternatePhoneNumber = string.IsNullOrEmpty(recipient.AlternatePhoneNumber) ? "None Provided" : recipient.AlternatePhoneNumber;
+    }
 
 }
 <input type="hidden" name="ReviewStep" class="model" value='@Json.Serialize(Model)' />
@@ -53,9 +60,22 @@
                     <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
                     <div class="tiles__tile__content__header">When is the help needed?</div>
                     <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
-                    @if (Model.TimeRequested.OnDate)
+                    @if (Model.TimeRequested.DueDateType.HasDate())
                     {
-                        <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dd MMM yyyy")</div>
+                        <div class="tiles__tile__content__description">@Model.TimeRequested.Date.ToString("dddd, ddnn MMMM yyyy", true)</div>
+                    }
+                    @if (Model.TimeRequested.DueDateType.HasStartTime())
+                    {
+                        <div class="tiles__tile__content__description">Starting at @Model.TimeRequested.StartTime.ToString("HH:mm", true)</div>
+                    }
+                    @if (Model.TimeRequested.DueDateType.HasEndTime())
+                    {
+                        <div class="tiles__tile__content__description">Ending at @Model.TimeRequested.EndTime.ToString("HH:mm", true)</div>
+                        @if (Model.TimeRequested.EndTime.Date != Model.TimeRequested.StartTime.Date)
+                        {
+                            <div class="tiles__tile__content__description">on @Model.TimeRequested.EndTime.ToString("dddd, ddnn MMMM yyyy", true)</div>
+                        }
+                        <div class="tiles__tile__content__description">(duration @Model.TimeRequested.DurationString)</div>
                     }
                 </div>
             </div>
@@ -93,58 +113,62 @@
             </div>
         </div>
     }
-    <hr class="input--separator" />
-    <div class="row mt-md justify-center">
-        <div class="sm8">
-            <label class="tiles__label--large"> Personal Details</label> <button class="edit-button" type="submit" name="formAction" value="EditDetails">Edit</button>
-        </div>
-    </div>
-    <div class="row justify-center ">
 
-        @if (Model.ShowRequestor)
-        {
-            <div class="sm4">
-                <div id="requestor" class="tiles__tile">
-                    <div class="tiles__tile__content--top ">
-                        <div class="tiles__tile__content--top__header  pt-xs left">Your Details</div>
+    @if (requestor != null || recipient != null)
+    {
+        <hr class="input--separator" />
+        <div class="row mt-md justify-center">
+            <div class="sm8">
+                <label class="tiles__label--large"> Personal Details</label> <button class="edit-button" type="submit" name="formAction" value="EditDetails">Edit</button>
+            </div>
+        </div>
+        <div class="row justify-center ">
+
+            @if (Model.ShowRequestor)
+            {
+                <div class="sm4">
+                    <div id="requestor" class="tiles__tile">
+                        <div class="tiles__tile__content--top ">
+                            <div class="tiles__tile__content--top__header  pt-xs left">Your Details</div>
+                            <div class="tiles__tile__content__description tiles__tile__content--top__description">
+                                <div><strong>Name:</strong> @requestor.Firstname @requestor.Lastname </div>
+                                <div><strong>Address:</strong> @requestor.Postcode </div>
+                                <div><strong>Email:</strong> @requestor.Email </div>
+                                <div><strong>Mobile Number:</strong> @requestor.MobileNumber </div>
+                                <div><strong>Alternate Number:</strong> @requestor.AlternatePhoneNumber </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="@(Model.ShowRequestor ? "sm4" : "sm8 pad-sm-md")">
+                <div id="recipient" class="tiles__tile">
+                    <div class="tiles__tile__content--top">
+                        <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Recipient" : "Your") Details</div>
                         <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                            <div><strong>Name:</strong> @requestor.Firstname @requestor.Lastname </div>
-                            <div><strong>Address:</strong> @requestor.Postcode </div>
-                            <div><strong>Email:</strong> @requestor.Email </div>
-                            <div><strong>Mobile Number:</strong> @requestor.MobileNumber </div>
-                            <div><strong>Alternate Number:</strong> @requestor.AlternatePhoneNumber </div>
+                            @if (forOrg)
+                            {
+                                <div><strong>Organisation:</strong> @Model.OrganisationName </div>
+                            }
+                            <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
+                            @if (string.IsNullOrEmpty(recipient.AddressLine1))
+                            {
+                                <div><strong>Postcode:</strong> @recipient.Postcode </div>
+                            }
+                            else
+                            {
+                                <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
+                            }
+                            <div><strong>Email:</strong> @recipient.Email </div>
+                            <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
+                            <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
                         </div>
                     </div>
                 </div>
             </div>
-        }
-
-        <div class="@(Model.ShowRequestor ? "sm4" : "sm8 pad-sm-md")">
-            <div id="recipient" class="tiles__tile">
-                <div class="tiles__tile__content--top">
-                    <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Recipient" : "Your") Details</div>
-                    <div class="tiles__tile__content__description tiles__tile__content--top__description">
-                        @if (forOrg)
-                        {
-                            <div><strong>Organisation:</strong> @Model.OrganisationName </div>
-                        }
-                        <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
-                        @if (string.IsNullOrEmpty(recipient.AddressLine1))
-                        {
-                            <div><strong>Postcode:</strong> @recipient.Postcode </div>
-                        }
-                        else
-                        {
-                            <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
-                        }
-                        <div><strong>Email:</strong> @recipient.Email </div>
-                        <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
-                        <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
+    }
 
     @if (Model.DetailsStageQuestions != null)
     {

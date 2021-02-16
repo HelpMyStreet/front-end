@@ -11,22 +11,21 @@
     <h2>Request Help</h2>
 
     <div class="input">
-        <label>Please select the group you wish to raise a request for</label>
+        <label>Please select the group for which you wish to submit a request</label>
     </div>
 
     <div class="tiles">
         <div class="row">
             @foreach (var g in Model.Groups.OrderBy(g => g.GroupName))
             {
-
-                <div class="sm4">
-                    <div class="tiles__tile">
-                        <div class="tiles__tile__content ">
-                            <a href="/request-help/@Base64Utils.Base64Encode(g.GroupId)/a">
+                <div class="sm12">
+                    <a href="/request-help/@Base64Utils.Base64Encode(g.GroupId)/a">
+                        <div class="tiles__tile">
+                            <div class="tiles__tile__content ">
                                 <div class="tiles__tile__content__header pt-xs">@g.GroupName</div>
-                            </a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             }
         </div>

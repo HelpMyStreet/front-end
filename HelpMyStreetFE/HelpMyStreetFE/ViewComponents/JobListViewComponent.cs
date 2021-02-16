@@ -88,8 +88,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
                 JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.OtherJobs,
-                JobSet.UserAcceptedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.InProgress),
-                JobSet.UserCompletedRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(j => j.JobStatus == JobStatuses.Done || j.JobStatus == JobStatuses.Cancelled),
+                JobSet.UserMyRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
@@ -113,7 +112,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobHeader>()
             {
                 Item = a,
-                UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
             }));
@@ -167,7 +166,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a,
                 Location = userLocationDetails.FirstOrDefault(l => l.Location == a.Location),
-                UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId),
             }));
@@ -218,7 +217,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a,
                 Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
-                UserRole = jobFilterRequest.JobSet == JobSet.GroupRequests ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 UserHasRequiredCredentials = false,
                 HighlightJob = false,//.JobID.Equals(jobFilterRequest.HighlightJobId),
             }));

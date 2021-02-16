@@ -64,8 +64,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 JobSet.UserOpenRequests_MatchingCriteria => $"/account/open-requests/j/{encodedJobId}",
                 JobSet.UserOpenRequests_NotMatchingCriteria => $"/account/open-requests/j/{encodedJobId}",
-                JobSet.UserAcceptedRequests => $"/account/accepted-requests/j/{encodedJobId}",
-                JobSet.UserCompletedRequests => $"/account/completed-requests/j/{encodedJobId}",
+                JobSet.UserMyRequests => $"/account/my-requests/j/{encodedJobId}",
                 JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/j/{encodedJobId}",
                 JobSet.UserOpenShifts => $"/account/open-shifts/j/{encodedJobId}",
                 JobSet.UserMyShifts => $"/account/my-shifts/j/{encodedJobId}",

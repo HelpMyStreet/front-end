@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
 using HelpMyStreetFE.Models.Feedback;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Utils;
 
 namespace HelpMyStreetFE.Models.Community
 {
@@ -10,7 +12,6 @@ namespace HelpMyStreetFE.Models.Community
         public bool IsGroupMember { get; set; }
 
         public string View { get; set; }
-        public string EncodedGroupId { get; set; }
         public double Map_CentreLatitude { get; set; }
         public double Map_CentreLongitude { get; set; }
         public double Map_ZoomLevel { get; set; }
@@ -24,7 +25,15 @@ namespace HelpMyStreetFE.Models.Community
 
         public List<List<string>> CarouselImages { get; set; }
 
-        public string groupKey { get; set; }
+        public Group Group { get; set; }
+        public string EncodedGroupId
+        {
+            get
+            {
+                return Base64Utils.Base64Encode(Group.GroupId);
+            }
+        }
+
         public bool ShowRequestHelpPopup { get; set; }
     }
 }

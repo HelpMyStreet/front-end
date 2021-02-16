@@ -17,8 +17,7 @@
 @{
     ViewBag.Title = Model.CurrentPage switch
     {
-        MenuPage.AcceptedRequests => "My Accepted Requests",
-        MenuPage.CompletedRequests => "My Completed Requests",
+        MenuPage.MyRequests => "My Requests",
         MenuPage.OpenRequests => "Open Requests",
         MenuPage.OpenShifts => "Open Shifts",
         MenuPage.MyShifts => "My Shifts",
@@ -42,11 +41,8 @@
             case MenuPage.OpenRequests:
                 <partial name="_OpenRequests" for="@Model" />
                 break;
-            case MenuPage.AcceptedRequests:
-                <partial name="_AcceptedRequests" for="@Model" />
-                break;
-            case MenuPage.CompletedRequests:
-                <partial name="_CompletedRequests" for="@Model" />
+            case MenuPage.MyRequests:
+                <partial name="_MyRequests" for="@Model" />
                 break;
             case MenuPage.OpenShifts:
                 <partial name="_OpenShifts" for="@Model" />

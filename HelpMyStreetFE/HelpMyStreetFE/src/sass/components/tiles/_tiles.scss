@@ -46,7 +46,7 @@
         }
 
         .no-selected {
-            display: inline-block;
+            display: initial;
         }
 
         &.selected {
@@ -56,14 +56,14 @@
 
             .cirlce {
                 background: $orange;
+            }
 
-                .on-selected {
-                    display: inline-block;
-                }
+            .on-selected {
+                display: initial;
+            }
 
-                .no-selected {
-                    display: none;
-                }
+            .no-selected {
+                display: none;
             }
         }
 
@@ -190,12 +190,17 @@
                 }
             }
         }
+    }
 
-        a, a:hover, a:active {
-            text-decoration: none;
-            color: inherit;
-            text-align: center;
-        }
+    a, a:hover, a:active {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    a:active .tiles__tile {
+        border: 2px solid $light-orange;
+        background: $light-orange-opaque;
+        color: $dark-blue;
     }
 }
 

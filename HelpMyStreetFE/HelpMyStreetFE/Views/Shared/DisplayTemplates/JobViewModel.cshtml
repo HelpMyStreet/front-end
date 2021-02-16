@@ -44,15 +44,13 @@
         
 
         <div class="job__info__col1">
-            @if (admin)
+            @if (admin || Model.Item.JobStatus != JobStatuses.Open)
             {
                 <span class="job__info__col1__status toggle-on-status-change">
                     <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
                     <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
-
-        <div>
 
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
@@ -92,10 +90,9 @@
             @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
             {
                 <span class="job__info__col1__next-step dnone toggle-on-status-change">
-                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.Item.JobID)">Go to My Accepted Requests</a>
+                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.Item.JobID)">Go to My Requests</a>
                 </span>
             }
-        </div>
         </div>
         <div class="job__info__activity">
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
@@ -124,11 +121,19 @@
                 @Model.Item.PostCode
                 @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
                 {
-                    <span class="distance">(@Math.Round(Model.Item.DistanceInMiles, 1) miles away)</span>
+                    <span>(@Math.Round(Model.Item.DistanceInMiles, 1) miles away)</span>
                 }
             </span>
         </div>
         <div class="job__info__col3 flex-end">
+            @if (admin)
+            {
+                <span class="job__info__col3__status toggle-on-status-change">
+                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                </span>
+            }
+
             @if (Model.Item.IsHealthCritical && (Model.Item.JobStatus.Incomplete()))
             {
                 <span class="job__info__col3__criticality">
@@ -172,9 +177,10 @@
                         break;
                     case JobStatuses.Done:
                         <div class="feedback-container">
-                            <button class="btn cta--gray-8-border">
-                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
-                            </button>
+                            <span class="job__info__col3__status toggle-on-status-change">
+                                <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                                <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                            </span>
                         </div>
                         if (admin && !(Model.Item.Archive ?? false))
                         {

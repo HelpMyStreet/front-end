@@ -36,8 +36,7 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatus),
                 JobSet.UserOpenRequests_MatchingCriteria => GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet(),
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
-                JobSet.UserAcceptedRequests => GetAcceptedRequestsDefaultSortAndFilterSet(),
-                JobSet.UserCompletedRequests => GetCompletedRequestsDefaultSortAndFilterSet(),
+                JobSet.UserMyRequests => GetMyRequestsDefaultSortAndFilterSet(),
 
                 JobSet.GroupShifts => await GetGroupShiftsFilterSet(groupId.Value, user, jobStatus, cancellationToken),
                 JobSet.UserOpenShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
@@ -293,30 +292,21 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        private SortAndFilterSet GetAcceptedRequestsDefaultSortAndFilterSet()
+        private SortAndFilterSet GetMyRequestsDefaultSortAndFilterSet()
         {
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
+                JobStatuses = new List<FilterField<JobStatuses>>
+                {
+                    new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.Done },
+                },
                 OrderBy = new List<OrderByField>
-                    {
-                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Accepted first" },
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Accepted last" },
-                    },
-            };
-
-            return filterSet;
-        }
-
-        private SortAndFilterSet GetCompletedRequestsDefaultSortAndFilterSet()
-        {
-            SortAndFilterSet filterSet = new SortAndFilterSet
-            {
-                OrderBy = new List<OrderByField>
-                    {
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Completed last", IsSelected = true },
-                        new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Completed first" },
-                    },
+                {
+                    new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
+                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Descending, Label = "Updated most recently" },
+                    new OrderByField() { Value = OrderBy.DateStatusLastChanged_Ascending, Label = "Updated least recently" },
+                },
             };
 
             return filterSet;

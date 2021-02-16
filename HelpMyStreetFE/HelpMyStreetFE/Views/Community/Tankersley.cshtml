@@ -125,7 +125,7 @@
     </div>
 
     <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.groupKey })
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey })
     </div>
 
 

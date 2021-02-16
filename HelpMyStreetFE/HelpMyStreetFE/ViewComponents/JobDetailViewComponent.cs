@@ -9,6 +9,7 @@ using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Services;
+using System.Linq;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -38,20 +39,19 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to retrieve job details for JobId {jobId}");
             }
 
-            LocationDetails locationDetails = null;
-            if (jobDetails.RequestSummary.Shift != null)
-            {
-                locationDetails = await _addressService.GetLocationDetails(jobDetails.RequestSummary.Shift.Location, cancellationToken);
-            }
-
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
                 JobDetail = jobDetails,
-                LocationDetails = locationDetails,
                 UserActingAsAdmin = jobSet == JobSet.GroupRequests,
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
                 ToPrint = toPrint
             };
+
+            if (jobDetails.RequestSummary.Shift != null)
+            {
+                var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+                jobDetailViewModel.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
+            }
 
             return View("JobDetail", jobDetailViewModel);
         }

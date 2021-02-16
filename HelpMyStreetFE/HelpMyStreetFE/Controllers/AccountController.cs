@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
@@ -39,6 +40,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupMemberService _groupMemberService;
         private readonly IGroupService _groupService;
         private readonly ICommunicationService _communicationService;
+        private readonly IAddressService _addressService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
@@ -63,6 +65,7 @@ namespace HelpMyStreetFE.Controllers
             _groupService = groupService;
             _groupMemberService = groupMemberService;
             _communicationService = communicationService;
+            _addressService = addressService;
         }
 
         [HttpGet]
@@ -124,10 +127,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        [Route("accepted-requests")]
-        [Route("accepted-requests/j/{encodedJobId}")]
+        [Route("my-requests")]
+        [Route("my-requests/j/{encodedJobId}")]
         [HttpGet]
-        public async Task<IActionResult> AcceptedRequests(string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> MyRequests(string encodedJobId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -136,29 +139,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
-            viewModel.CurrentPage = MenuPage.AcceptedRequests;
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
-
-            return View("Index", viewModel);
-        }
-
-        [Route("completed-requests")]
-        [Route("completed-requests/j/{encodedJobId}")]
-        [HttpGet]
-        public async Task<IActionResult> CompletedRequests(string encodedJobId, CancellationToken cancellationToken)
-        {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            if (!_userService.GetRegistrationIsComplete(user))
-            {
-                return Redirect(REGISTRATION_URL);
-            }
-
-            var viewModel = await GetAccountViewModel(user, cancellationToken);
-            viewModel.CurrentPage = MenuPage.CompletedRequests;
+            viewModel.CurrentPage = MenuPage.MyRequests;
 
             if (!string.IsNullOrEmpty(encodedJobId))
             {
@@ -215,7 +196,25 @@ namespace HelpMyStreetFE.Controllers
             var jobID = Base64Utils.Base64DecodeToInt(j);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserAcceptedRequests, ToPrint = true});
+            return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserMyRequests, ToPrint = true});
+        }
+
+        [Route("get-directions-link")]
+        [HttpGet]
+        public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
+        {
+            long jobID = 0;
+            Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
+            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+
+            var location = shiftDetails.RequestSummary.Shift.Location;
+            LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
+
+            var locationPostcode = locationDetails.Address.Postcode.Replace(" ", "%20");
+
+            var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
+
+            return new OkObjectResult(directionsLink);
         }
 
         [Route("get-shift-calendar")]
@@ -226,26 +225,39 @@ namespace HelpMyStreetFE.Controllers
             Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+            if (shiftDetails == null || shiftDetails.JobSummary.RequestType != RequestType.Shift)
+            {
+                throw new Exception("Job does not exist or Not a shift");
+            }
+            if (shiftDetails.JobSummary.VolunteerUserID == null || shiftDetails.JobSummary.VolunteerUserID != user.ID)
+            {
+                throw new Exception("User not assigned to shift");
+            }
+
             var location = shiftDetails.RequestSummary.Shift.Location;
-            //LocationDetails locationDetails = await _addressService.GetLocationDetails(location);
-            LocationDetails locationDetails = new LocationDetails();
+            LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
+
             var startDate = shiftDetails.RequestSummary.Shift.StartDate.ToUniversalTime()
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
             var stopDate = shiftDetails.RequestSummary.Shift.EndDate.ToUniversalTime()
+                         .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
+            var stampDate = DateTime.Now.ToUniversalTime()
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
             var group = await _groupService.GetGroupById(shiftDetails.RequestSummary.ReferringGroupID, cancellationToken);
 
             var icalContent = $"BEGIN:VCALENDAR\n" +
                 $"VERSION:2.0\n" +
-                $"PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n" +
+                $"PRODID:-//Help My Street/iCal Support\\EN\n" +
                 $"BEGIN:VEVENT\n" +
                 $"UID:hms-vacc-{group.GroupId}-{j}\n" +
-                $"DTSTAMP:{startDate}\n" +
-                $"ORGANIZER;CN={group.GroupName}:MAILTO:groups@helpmystreet.org\n" +
+                $"DTSTAMP:{stampDate}\n" +
+                $"ORGANIZER;CN={group.GroupName}MAILTO:no-reply@helpymstreet.org\n" +
                 $"DTSTART:{startDate}\n" +
                 $"DTEND:{stopDate}\n" +
-                $"SUMMARY:Vaccination Volunteer Shift\n" +
+                $"SUMMARY:{shiftDetails.JobSummary.SupportActivity.FriendlyNameShort()} Shift\n" +
+                $"LOCATION:{locationDetails.Address.AddressLine1}, {locationDetails.Address.Postcode}\n" +
                 $"GEO:{locationDetails.Latitude};{locationDetails.Longitude}\n" +
+                $"URL:https://www.helpmystreet.org/link/j/{j}\n" +
                 $"END:VEVENT\n" +
                 $"END:VCALENDAR";
             var calBytes = Encoding.ASCII.GetBytes(icalContent);
