@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Response;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -345,7 +345,7 @@ namespace HelpMyStreetFE.Services.Requests
                     }
                 };
             }
-            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, false, cancellationToken))
             {
                 return new JobLocation
                 {
@@ -353,9 +353,61 @@ namespace HelpMyStreetFE.Services.Requests
                     GroupKey = (await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken)).GroupKey,
                 };
             }
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
+            {
+                var group = await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken);
+                var parentGroup = await _groupService.GetGroupById(group.ParentGroupId.Value, cancellationToken);
+                return new JobLocation
+                {
+                    JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
+                    GroupKey = parentGroup.GroupKey,
+                };
+            }
             else if (job.JobStatus == JobStatuses.Open)
             {
                 return new JobLocation { JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
+            }
+
+            return null;
+        }
+
+        public async Task<JobLocation> LocateRequest(int requestId, int userId, CancellationToken cancellationToken)
+        {
+            var request =  await GetRequestSummaryAsync(requestId, cancellationToken);
+
+            if (request.JobSummaries.Count(j => j.VolunteerUserID == userId && j.JobStatus != JobStatuses.Open) > 0)
+            {
+                return new JobLocation
+                {
+                    JobSet = request.RequestType switch
+                    {
+                        RequestType.Task => JobSet.UserMyRequests,
+                        RequestType.Shift => JobSet.UserMyShifts,
+                        _ => throw new ArgumentException($"Unexpected RequestType: {request.RequestType}", nameof(request.RequestType)),
+                    }
+                };
+            }
+            else if (await _groupMemberService.GetUserHasRole(userId, request.ReferringGroupID, GroupRoles.TaskAdmin, false, cancellationToken))
+            {
+                return new JobLocation
+                {
+                    JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
+                    GroupKey = (await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken)).GroupKey,
+                };
+            }
+            else if (await _groupMemberService.GetUserHasRole(userId, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
+            {
+                var group = await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken);
+                var parentGroup = await _groupService.GetGroupById(group.ParentGroupId.Value, cancellationToken);
+                return new JobLocation
+                {
+                    JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
+                    GroupKey = parentGroup.GroupKey,
+                };
+            }
+            else if (request.JobStatusDictionary().ContainsKey(JobStatuses.Open))
+            {
+                return new JobLocation { JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
             }
 
             return null;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +29,7 @@ namespace HelpMyStreetFE.Services.Requests
         Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobHeader> jobs);
         Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken);
+        Task<JobLocation> LocateRequest(int requestId, int userId, CancellationToken cancellationToken);
 
         Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
