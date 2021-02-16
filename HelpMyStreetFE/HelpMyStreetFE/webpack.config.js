@@ -17,7 +17,7 @@ module.exports = {
     requesthelp: "./js/requesthelp/requesthelp.js",
     feedback: "./js/feedback/feedback.js",
     profile: "./js/profile/profile.js",
-    coveragemap: "./js/coveragemap.js",
+    homepage: "./js/home/homepage.js",
     stickynav: "./js/stickynav.js",
     community: "./js/community/community.js",
     testimonials: "./js/testimonialSliders.js",

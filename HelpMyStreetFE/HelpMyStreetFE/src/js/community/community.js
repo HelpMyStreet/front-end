@@ -5,7 +5,7 @@ import { enableMaps, drawMap } from "../shared/maps";
 
 $(document).ready(function () {
     initialiseSliders();
-    initialiseMaps();
+    enableMaps().then(() => initialiseMaps());
     if ($('.select-all').length > 0) {
         $('.btn--sign-up').addClass("disabled");
     }
@@ -25,21 +25,19 @@ $(document).ready(function () {
 
 
 async function initialiseMaps(){
-    enableMaps(() => {
-        var options = {
-            displayVolunteers: true,
-            displayGroups: false,
-            allowNavigation: false,
-            allowSearch: false,
-            consoleCoordinates: false,
-            initialLat: parseFloat($('#map').data('latitude')),
-            initialLng: parseFloat($('#map').data('longitude')),
-            initialZoom: parseFloat($('#map').data('zoom')),
-            divID: "map",
-            singlePin: false
-        };
-        drawMap(options);
-    })
+    var options = {
+        displayVolunteers: true,
+        displayGroups: false,
+        allowNavigation: false,
+        allowSearch: false,
+        consoleCoordinates: false,
+        initialLat: parseFloat($('#map').data('latitude')),
+        initialLng: parseFloat($('#map').data('longitude')),
+        initialZoom: parseFloat($('#map').data('zoom')),
+        divID: "map",
+        singlePin: false
+    };
+    drawMap(options);
 }
 
 $(document).ready(function () {
