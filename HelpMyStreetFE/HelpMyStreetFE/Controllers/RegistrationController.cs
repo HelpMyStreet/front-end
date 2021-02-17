@@ -179,6 +179,8 @@ namespace HelpMyStreetFE.Controllers
                 form.VolunteerDistance = form.CustomDistance;
             }
 
+            var registrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken);
+
             try
             {
                 _logger.LogInformation($"Step 3 submission for {user.ID}");
@@ -187,6 +189,7 @@ namespace HelpMyStreetFE.Controllers
                     user.ID,
                     form.VolunteerOptions,
                     form.VolunteerDistance,
+                    registrationFormVariant,
                     cancellationToken);
 
                 await _groupMemberService.AddUserToDefaultGroups(user.ID);

@@ -109,6 +109,7 @@ namespace HelpMyStreetFE.Services.Users
             int id,
             List<SupportActivities> activities,
             float supportRadius,
+            RegistrationFormVariant registrationFormVariant,
             CancellationToken cancellationToken)
         {
             await _userRepository.CreateUserStepThree(new RegistrationStepThree
@@ -117,7 +118,8 @@ namespace HelpMyStreetFE.Services.Users
                 Activities = activities,
                 SupportRadiusMiles = supportRadius,
                 SupportVolunteersByPhone = null,
-                UnderlyingMedicalCondition = null
+                UnderlyingMedicalCondition = null,
+                RegistrationFormVariant = registrationFormVariant,
             });
         }
 

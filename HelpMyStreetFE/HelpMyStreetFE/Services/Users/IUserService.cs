@@ -15,7 +15,7 @@ namespace HelpMyStreetFE.Services.Users
         Task<User> GetUserByAuthId(string authId);
         Task<User> GetUserAsync(int id, CancellationToken cancellationToken);
         Task CreateUserStepTwoAsync(int id, string postCode, string firstName, string lastName, string addressLine1, string addressLine2, string addressLine3, string locality, string mobile, string otherPhone, System.DateTime dob, CancellationToken cancellationToken);
-        Task CreateUserStepThreeAsync(int id, System.Collections.Generic.List<HelpMyStreet.Utils.Enums.SupportActivities> activities, float supportRadius, CancellationToken cancellationToken);
+        Task CreateUserStepThreeAsync(int id, System.Collections.Generic.List<HelpMyStreet.Utils.Enums.SupportActivities> activities, float supportRadius, RegistrationFormVariant registrationFormVariant, CancellationToken cancellationToken);
         Task<int> GetVolunteers();
         Task<GetHelpersByPostcodeResponse> GetHelpersByPostcode(string postcode);
         Task<VolunteerCoordinatesResponse> GetVolunteerCoordinates(double swLatitude, double swLongitude, double neLatitude, double neLongitude, int minDistanceBetweenInMetres);
