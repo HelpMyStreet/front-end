@@ -70,8 +70,8 @@
                 <span class="job__info__col1__urgency toggle-on-status-change">
                     @if (admin)
                     {
-                        <span class="" title="@Model.Item.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.Item.DateRequested.FriendlyPastDate()</span>
-                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.Item.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.Item.DueDate.ToString("dd/MM/yyyy"))">
+                        <span class="" title="@Model.Item.DateRequested.FormatDate(DateTimeFormat.ShortDateFormat)">Requested @Model.Item.DateRequested.FriendlyPastDate()</span>
+                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.Item.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.Item.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
                             Due @Model.Item.DueDate.FriendlyFutureDate()
                         </span>
                     }

@@ -110,8 +110,8 @@ namespace HelpMyStreetFE.Services.Requests
                         {
                             DueDateType = selectedTime.DueDateType,
                             DueDays = selectedTime.DueDateType == DueDateType.On ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
-                            StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime : (DateTime?)null,
-                            EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime : (DateTime?)null,
+                            StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime.ToUTCFromUKTime() : (DateTime?)null,
+                            EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime.ToUTCFromUKTime() : (DateTime?)null,
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
