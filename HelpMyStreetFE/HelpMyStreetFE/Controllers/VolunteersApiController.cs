@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,7 +59,7 @@ namespace HelpMyStreetFE.Controllers
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            DateTime? validUntil = assignCredentialsViewModel.ValidUntil == "Null" ? (DateTime?)null : DateTime.Parse(assignCredentialsViewModel.ValidUntil);
+            DateTime? validUntil = assignCredentialsViewModel.ValidUntil == "Null" ? (DateTime?)null : DateTime.ParseExact(assignCredentialsViewModel.ValidUntil, "dd / MM / yyyy", new CultureInfo("en-GB"));
 
             PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest = new PutGroupMemberCredentialsRequest()
             {

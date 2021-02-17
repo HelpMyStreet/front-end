@@ -40,9 +40,9 @@
 
             @if (Model.Item.JobStatus != JobStatuses.Open)
             {
-                <span class="job__info__col1__status toggle-on-status-change">
-                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                <span class="job__info__col1__status">
+                    <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status toggle-on-status-change">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
 
@@ -57,7 +57,7 @@
             @if (Model.Item.JobStatus == JobStatuses.Open)
             {
                 <span class="job__info__col1__next-step dnone toggle-on-status-change">
-                    <a href="/account/my-shifts?rq=@requestId">Go to My Shifts</a>
+                    <a href="/account/my-shifts/r/@requestId">Go to My Shifts</a>
                 </span>
             }
         </div>
@@ -71,13 +71,19 @@
                     @Model.Item.SupportActivity.FriendlyNameShort()
                 </span>
             </span>
-            <span class="job__info__activity__date due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">
-                <span>@Model.Item.DateSpan()</span>
-                <span>@Model.Item.TimeSpan()</span>
-            </span>
             <span class="job__info__activity__location" title="@Model.Location.Distance.ToString("0.0") miles away">
                 @Model.Location.LocationDetails.Name
             </span>
+            @if (Model.Item.StartDate.ToUKFromUTCTime().Date.Equals(Model.Item.EndDate.ToUKFromUTCTime().Date))
+            {
+                <span class="job__info__activity__date due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</span>
+                <span class="job__info__activity__date due-date">@Model.Item.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; @Model.Item.EndDate.FormatDate(DateTimeFormat.TimeFormat)</span>
+            }
+            else
+            {
+                <span class="job__info__activity__date due-date" title="@Model.Item.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.StartDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                <span class="job__info__activity__date due-date">&ndash; @Html.Raw(Model.Item.EndDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+            }
         </div>
         <div class="job__info__col3 flex-end">
             @if (Model.Item.JobStatus != JobStatuses.Open)

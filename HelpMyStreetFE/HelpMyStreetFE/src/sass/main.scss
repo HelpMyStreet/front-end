@@ -125,6 +125,11 @@ span, b, strong, a, i {
   font-size: inherit;
 }
 
+sup {
+    font-size: 70%;
+    line-height: 0;
+}
+
 img {
   max-width: 100%;
 }

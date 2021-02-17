@@ -105,8 +105,9 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("open-requests")]
         [Route("open-requests/j/{encodedJobId}")]
+        [Route("open-requests/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenRequests(string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenRequests(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -117,11 +118,7 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
@@ -129,8 +126,9 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("my-requests")]
         [Route("my-requests/j/{encodedJobId}")]
+        [Route("my-requests/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> MyRequests(string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> MyRequests(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -140,18 +138,15 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.MyRequests;
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("my-shifts")]
+        [Route("my-shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> MyShifts(CancellationToken cancellationToken)
+        public async Task<IActionResult> MyShifts(string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -161,13 +156,15 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.MyShifts;
+            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("open-shifts")]
+        [Route("open-shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenShifts(CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenShifts(string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -177,6 +174,7 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenShifts;
+            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
 
             return View("Index", viewModel);
         }
@@ -306,11 +304,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 if (group.TasksEnabled)
                 {
-                    return await GroupRequests(groupKey, null, cancellationToken);
+                    return await GroupRequests(groupKey, null, null, cancellationToken);
                 }
                 else if (group.ShiftsEnabled)
                 {
-                    return await GroupShifts(groupKey, cancellationToken);
+                    return await GroupShifts(groupKey, null, cancellationToken);
                 }
             }
             else if (await _groupMemberService.GetUserHasRole_Any(user.ID, group.GroupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, true, cancellationToken))
@@ -323,8 +321,9 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("g/{groupKey}/requests")]
         [Route("g/{groupKey}/requests/j/{encodedJobId}")]
+        [Route("g/{groupKey}/requests/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -341,18 +340,15 @@ namespace HelpMyStreetFE.Controllers
 
             viewModel.CurrentPage = MenuPage.GroupRequests;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("g/{groupKey}/shifts")]
+        [Route("g/{groupKey}/shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupShifts(string groupKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupShifts(string groupKey, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -369,6 +365,7 @@ namespace HelpMyStreetFE.Controllers
 
             viewModel.CurrentPage = MenuPage.GroupShifts;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
 
             return View("Index", viewModel);
         }
@@ -470,6 +467,18 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return viewModel;
+        }
+
+        private void AddHighlightIdsToViewModel(AccountViewModel viewModel, string encodedJobId, string encodedRequestId)
+        {
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+            if (!string.IsNullOrEmpty(encodedRequestId))
+            {
+                viewModel.HighlightRequestId = Base64Utils.Base64DecodeToInt(encodedRequestId);
+            }
         }
     }
 }
