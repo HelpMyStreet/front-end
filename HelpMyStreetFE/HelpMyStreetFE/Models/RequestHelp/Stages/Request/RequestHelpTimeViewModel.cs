@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
@@ -19,7 +20,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public DateTime EndTime { get; set; }
         public TimeSpan Duration
         {
-            get { return EndTime.Subtract(StartTime); }
+            get { return EndTime.ToUTCFromUKTime().Subtract(StartTime.ToUTCFromUKTime()); }
         }
         public string DurationString
         {

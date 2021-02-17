@@ -13,5 +13,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public IEnumerable<OrderByField> OrderBy { get; set; }
         public IEnumerable<FilterField<PartOfDay>> PartOfDay { get; set; }
         public int? HighlightJobId { get; set; }
+        public int? HighlightRequestId { get; set; }
     }
 }

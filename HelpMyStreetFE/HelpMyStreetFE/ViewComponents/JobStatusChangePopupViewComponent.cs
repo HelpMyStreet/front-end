@@ -39,16 +39,15 @@ namespace HelpMyStreetFE.ViewComponents
                 job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
                 requestId = job.RequestID;
             }
-
+            var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
+            
+            JobStatusChangePopupViewModel vm = await BuildVm(request, job, targetStatus, cancellationToken);
 
             if (job == null)
             {
-                var request = (await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken)).RequestSummary;
-                bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
-
-                JobStatusChangePopupViewModel vm = await BuildVm(request, job, targetStatus, cancellationToken);
-            
                 return (request.SingleJobStatus(), targetStatus, userIsAdmin) switch
                 {
                     (_, JobStatuses.Cancelled, true) => View("Admin_CancelRequestPopup", vm),
@@ -58,11 +57,8 @@ namespace HelpMyStreetFE.ViewComponents
             else
             {
                 bool userIsAllocatedToTask = job.VolunteerUserID.GetValueOrDefault() == user.ID;
-                bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
 
-                JobStatusChangePopupViewModel vm = await BuildVm(null, job, targetStatus, cancellationToken);
-
-                return (job.JobStatus, targetStatus, userIsAdmin, userIsAllocatedToTask) switch
+                return (job?.JobStatus, targetStatus, userIsAdmin, userIsAllocatedToTask) switch
                 {
                     (JobStatuses.Open, JobStatuses.InProgress, _, _   ) => await AcceptRequestIfCredentialsSatisfied(vm, user, cancellationToken),
                     (JobStatuses.InProgress, JobStatuses.Done, _, true) => View("MarkAsCompletePopup", vm),
@@ -101,25 +97,23 @@ namespace HelpMyStreetFE.ViewComponents
             JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel()
             {
                 RequestSummary = request,
-                RequestType = request != null ? request.RequestType : job.RequestType,
+                RequestType = request.RequestType,
                 JobSummary = job,
                 TargetStatus = targetStatus,
             };
 
-            int referringGroupId = request != null ? request.ReferringGroupID : job.ReferringGroupID;
-
             if (job != null)
             {
-                vm.GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(referringGroupId, job.SupportActivity, cancellationToken);
+                vm.GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(request.ReferringGroupID, job.SupportActivity, cancellationToken);
             }
 
-            if (referringGroupId == (int)Groups.Generic)
+            if (request.ReferringGroupID == (int)Groups.Generic)
             {
                 vm.ReferringGroup = "HelpMyStreet.org";
             }
             else
             {
-                var group = await _groupService.GetGroupById(referringGroupId, cancellationToken);
+                var group = await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken);
                 vm.ReferringGroup = group.GroupName;
             }
 

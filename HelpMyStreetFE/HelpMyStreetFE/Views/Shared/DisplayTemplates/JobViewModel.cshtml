@@ -46,9 +46,9 @@
         <div class="job__info__col1">
             @if (admin || Model.Item.JobStatus != JobStatuses.Open)
             {
-                <span class="job__info__col1__status toggle-on-status-change">
-                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                <span class="job__info__col1__status">
+                    <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status toggle-on-status-change">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
 
@@ -70,8 +70,8 @@
                 <span class="job__info__col1__urgency toggle-on-status-change">
                     @if (admin)
                     {
-                        <span class="" title="@Model.Item.DateRequested.ToString("dd/MM/yyyy")">Requested @Model.Item.DateRequested.FriendlyPastDate()</span>
-                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.Item.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.Item.DueDate.ToString("dd/MM/yyyy"))">
+                        <span class="" title="@Model.Item.DateRequested.FormatDate(DateTimeFormat.ShortDateFormat)">Requested @Model.Item.DateRequested.FriendlyPastDate()</span>
+                        <span class="job__info__col1__urgency__dates due-date" title="@((Model.Item.DueDateType == DueDateType.On ? "On " : "On or before ") + Model.Item.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
                             Due @Model.Item.DueDate.FriendlyFutureDate()
                         </span>
                     }
@@ -90,7 +90,7 @@
             @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
             {
                 <span class="job__info__col1__next-step dnone toggle-on-status-change">
-                    <a href="/account/accepted-requests?j=@Base64Utils.Base64Encode(Model.Item.JobID)">Go to My Requests</a>
+                    <a href="/account/my-requests/j/@id">Go to My Requests</a>
                 </span>
             }
         </div>
@@ -128,9 +128,9 @@
         <div class="job__info__col3 flex-end">
             @if (admin)
             {
-                <span class="job__info__col3__status toggle-on-status-change">
-                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                <span class="job__info__col3__status">
+                    <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status toggle-on-status-change">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
 

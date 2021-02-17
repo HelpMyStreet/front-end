@@ -14,5 +14,6 @@ namespace HelpMyStreetFE.Models.Account
         public List<NotificationModel> Notifications { get; set; }
         public VerificationViewModel VerificationViewModel { get; set; }
         public int? HighlightJobId { get; set; }
+        public int? HighlightRequestId { get; set; }
     }
 }

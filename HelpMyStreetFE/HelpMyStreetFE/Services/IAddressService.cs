@@ -15,14 +15,11 @@ namespace HelpMyStreetFE.Services
     public interface IAddressService
     {
         Task<GetPostCodeResponse> CheckPostCode(string postCode);
-        Task<int> GetTotalStreets();
         Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode);
-        Task<GetPostcodesResponse> GetFriendlyNames(List<string> postcodes);
         Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest);
         Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode);
-        Task<List<LocationDistance>> GetLocationsForUser(User user, CancellationToken cancellationToken);
         Task<IEnumerable<LocationWithDistance>> GetLocationDetailsForUser(User user, CancellationToken cancellationToken);
+        Task<IEnumerable<LocationDetails>> GetLocationDetailsForGroup(int groupId, bool includeChildGroups, CancellationToken cancellationToken);
         Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken);
-        Task<List<LocationDetails>> GetLocationDetails(IEnumerable<Location> locations, CancellationToken cancellationToken);
     }
 }

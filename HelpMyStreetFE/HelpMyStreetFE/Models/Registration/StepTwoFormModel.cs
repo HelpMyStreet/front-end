@@ -35,6 +35,6 @@ namespace HelpMyStreetFE.Models.Registration
         public string OtherPhone { get; set; }
 
         [BindProperty(Name = "dob")]
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
     }
 }

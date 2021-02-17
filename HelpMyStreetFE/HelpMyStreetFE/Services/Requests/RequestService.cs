@@ -78,11 +78,11 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (detailStage != null)
             {
+                recipient = _requestHelpBuilder.MapRecipient(detailStage);
                 if (detailStage.ShowRequestorFields)
                 {
                     requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);
                 }
-                recipient = _requestHelpBuilder.MapRecipient(detailStage);
                 questions = questions.Union(detailStage.Questions.Questions);
             }
 
@@ -110,8 +110,8 @@ namespace HelpMyStreetFE.Services.Requests
                         {
                             DueDateType = selectedTime.DueDateType,
                             DueDays = selectedTime.DueDateType == DueDateType.On ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
-                            StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime : (DateTime?)null,
-                            EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime : (DateTime?)null,
+                            StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime.ToUTCFromUKTime() : (DateTime?)null,
+                            EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime.ToUTCFromUKTime() : (DateTime?)null,
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
@@ -203,6 +203,11 @@ namespace HelpMyStreetFE.Services.Requests
                     JobStatusRequest = new JobStatusRequest() { JobStatuses = new List<JobStatuses>() { JobStatuses.Accepted, JobStatuses.InProgress, JobStatuses.Done } }
                 });
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
+        }
+
+        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken)
+        {
+            return (await _requestHelpRepository.GetRequestSummaryAsync(requestId)).RequestSummary;
         }
 
         public async Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
@@ -340,7 +345,7 @@ namespace HelpMyStreetFE.Services.Requests
                     }
                 };
             }
-            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, false, cancellationToken))
             {
                 return new JobLocation
                 {
@@ -348,9 +353,61 @@ namespace HelpMyStreetFE.Services.Requests
                     GroupKey = (await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken)).GroupKey,
                 };
             }
+            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
+            {
+                var group = await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken);
+                var parentGroup = await _groupService.GetGroupById(group.ParentGroupId.Value, cancellationToken);
+                return new JobLocation
+                {
+                    JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
+                    GroupKey = parentGroup.GroupKey,
+                };
+            }
             else if (job.JobStatus == JobStatuses.Open)
             {
                 return new JobLocation { JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
+            }
+
+            return null;
+        }
+
+        public async Task<JobLocation> LocateRequest(int requestId, int userId, CancellationToken cancellationToken)
+        {
+            var request =  await GetRequestSummaryAsync(requestId, cancellationToken);
+
+            if (request.JobSummaries.Count(j => j.VolunteerUserID == userId && j.JobStatus != JobStatuses.Open) > 0)
+            {
+                return new JobLocation
+                {
+                    JobSet = request.RequestType switch
+                    {
+                        RequestType.Task => JobSet.UserMyRequests,
+                        RequestType.Shift => JobSet.UserMyShifts,
+                        _ => throw new ArgumentException($"Unexpected RequestType: {request.RequestType}", nameof(request.RequestType)),
+                    }
+                };
+            }
+            else if (await _groupMemberService.GetUserHasRole(userId, request.ReferringGroupID, GroupRoles.TaskAdmin, false, cancellationToken))
+            {
+                return new JobLocation
+                {
+                    JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
+                    GroupKey = (await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken)).GroupKey,
+                };
+            }
+            else if (await _groupMemberService.GetUserHasRole(userId, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
+            {
+                var group = await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken);
+                var parentGroup = await _groupService.GetGroupById(group.ParentGroupId.Value, cancellationToken);
+                return new JobLocation
+                {
+                    JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
+                    GroupKey = parentGroup.GroupKey,
+                };
+            }
+            else if (request.JobStatusDictionary().ContainsKey(JobStatuses.Open))
+            {
+                return new JobLocation { JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
             }
 
             return null;
@@ -445,7 +502,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
         {
-            var locations = (await _addressService.GetLocationsForUser(user, canellationToken)).Select(l => l.Location).ToList();
+            var locations = (await _addressService.GetLocationDetailsForUser(user, canellationToken)).Select(l => l.Location).ToList();
 
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {

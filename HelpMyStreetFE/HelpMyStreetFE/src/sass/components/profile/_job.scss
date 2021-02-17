@@ -135,7 +135,10 @@
                 &__dates {
                     display: flex;
                     align-items: center;
-                    line-height: 0.8rem;
+                    @media (min-width: $med-screen) {
+                        white-space: nowrap;
+                        margin: 0;
+                    }
                 }
             }
 
@@ -359,6 +362,16 @@
 
                 @media (min-width: $med-screen) {
                     display: none;
+
+                    &.other-group {
+                        display: flex;
+                        width: 100%;
+
+                        .group-logo img {
+                            max-height: 3rem;
+                        }
+                    }
+
                 }
             }
 

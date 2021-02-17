@@ -14,6 +14,7 @@ using HelpMyStreet.Utils.Enums;
 using System.Threading;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
+using System.Globalization;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -131,7 +132,8 @@ namespace HelpMyStreetFE.Controllers
 
             try
             {
-                await _userService.CreateUserStepTwoAsync(user.ID, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, form.DateOfBirth, cancellationToken);
+                DateTime dob = DateTime.ParseExact(form.DateOfBirth, "dd / MM / yyyy", new CultureInfo("en-GB"));
+                await _userService.CreateUserStepTwoAsync(user.ID, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, dob, cancellationToken);
                 return Redirect("/registration/step-three");
             }
             catch (Exception ex)
