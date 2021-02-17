@@ -5,20 +5,20 @@ import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
 import { dateValidationSchemes, datepickerLoad, validateDate } from "../shared/date-picker";
 
 export function intialiseRequestStage() {
-  intialiseRequestTiles();
-  validateForm();
+    intialiseRequestTiles();
+    validateForm();
 
-  $("#CustomTime").find("select").change(function () {
-    $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
-  });
+    $("#CustomTime").find("select").change(function () {
+        $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
+    });
 
-  trackEvent("Request form", "View 0.request", "", 0);
+    trackEvent("Request form", "View 0.request", "", 0);
 
-  const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
-  updateOptionsForActivity(taskId);
-  if ($('#datepicker').length > 0) {
-    datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES);
-  }
+    const taskId = $('input[name="currentStep.SelectedTask.Id"]').val();
+    updateOptionsForActivity(taskId);
+    if ($('#datepicker').length > 0) {
+        datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
+    }
 }
 
 
@@ -160,9 +160,9 @@ function displayTodayHelpNeededOptions(show) {
 }
 
 function validateDateIfNecessary() {
-  if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
-    return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES);
-  } else {
-    return true;
-  }
+    if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
+        return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
+    } else {
+        return true;
+    }
 }
