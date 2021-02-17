@@ -78,11 +78,11 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (detailStage != null)
             {
+                recipient = _requestHelpBuilder.MapRecipient(detailStage);
                 if (detailStage.ShowRequestorFields)
                 {
                     requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);
                 }
-                recipient = _requestHelpBuilder.MapRecipient(detailStage);
                 questions = questions.Union(detailStage.Questions.Questions);
             }
 
