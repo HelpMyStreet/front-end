@@ -1,5 +1,7 @@
 ﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Extensions;
 using System.Collections.Generic;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Models.Account
 {
@@ -40,6 +42,6 @@ namespace HelpMyStreetFE.Models.Account
         }
         public string MobileNumber { get { return User?.UserPersonalDetails?.MobilePhone ?? "Not Set"; } }
         public string OtherNumber { get { return User?.UserPersonalDetails?.OtherPhone ?? "Not Set"; } }
-        public string DateOfBirth { get { return User?.UserPersonalDetails?.DateOfBirth?.ToString("dd/MM/yyyy") ?? "Not Set"; } }
+        public string DateOfBirth { get { return User?.UserPersonalDetails?.DateOfBirth?.FormatDate(DateTimeFormat.ShortDateFormat, false) ?? "Not Set"; } }
     }
 }

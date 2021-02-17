@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using HelpMyStreetFE.Models.Home;
 using System.Linq;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreet.Utils.Extensions;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -75,7 +77,7 @@ namespace HelpMyStreetFE.Controllers
 
         public IActionResult HealthCheck()
         {
-            return Ok(DateTime.Now.ToString("dd-MM-yyy hh:mmtt"));
+            return Ok(DateTime.Now.FormatDate(DateTimeFormat.LongDateTimeFormat, false));
         }
     }
 }

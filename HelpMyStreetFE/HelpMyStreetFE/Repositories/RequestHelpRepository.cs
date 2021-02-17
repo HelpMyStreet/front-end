@@ -258,6 +258,17 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId)
+        {
+            var response = await GetAsync<BaseRequestHelpResponse<GetRequestSummaryResponse>>($"/api/GetRequestSummary?requestId={requestId}");
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            return null;
+        }
+
         public async Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId)
         {
             var request = new PutUpdateRequestStatusToCancelledRequest()

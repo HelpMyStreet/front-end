@@ -11,38 +11,6 @@ namespace HelpMyStreetFE.Helpers
 {
     public static class ShiftRequestExtensions
     {
-        public static string DateSpan(this ShiftJob shiftJob)
-        {
-            if (shiftJob.StartDate.Date.Equals(shiftJob.EndDate.Date))
-            {
-                return $"{shiftJob.StartDate.ShiftyDate()}";
-            }
-            else
-            {
-                return $"{shiftJob.StartDate.ShiftyDate()} - {shiftJob.EndDate.ShiftyDate()}";
-            }
-        }
-        public static string TimeSpan(this ShiftJob shiftJob)
-        {
-
-            return $"{shiftJob.StartDate.ShiftyTime()} - {shiftJob.EndDate.ShiftyTime()}";
-        }
-        public static string DateSpan(this RequestSummary shiftRequest)
-        {
-            if (shiftRequest.Shift.StartDate.Date.Equals(shiftRequest.Shift.EndDate.Date))
-            {
-                return $"{shiftRequest.Shift.StartDate.ShiftyDate()}";
-            }
-            else
-            {
-                return $"{shiftRequest.Shift.StartDate.ShiftyDate()} - {shiftRequest.Shift.EndDate.ShiftyDate()}";
-            }
-        }
-        public static string TimeSpan(this RequestSummary shiftRequest)
-        {
-            return $"{shiftRequest.Shift.StartDate.ShiftyTime()} - {shiftRequest.Shift.EndDate.ShiftyTime()}";
-        }
-
         public static Dictionary<JobStatuses, int> JobStatusDictionary(this RequestSummary requestSummary)
         {
             return requestSummary.JobSummaries.GroupBy(j => j.JobStatus)
