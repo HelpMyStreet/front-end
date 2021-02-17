@@ -222,7 +222,7 @@ namespace HelpMyStreetFE.ViewComponents
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = false,
-                HighlightJob = false,//.JobID.Equals(jobFilterRequest.HighlightJobId),
+                HighlightJob = a.JobSummaries.Select(j => (int?)j.JobID).Contains(jobFilterRequest.HighlightJobId) || a.RequestID.Equals(jobFilterRequest.HighlightRequestId),
             }));
 
             if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
