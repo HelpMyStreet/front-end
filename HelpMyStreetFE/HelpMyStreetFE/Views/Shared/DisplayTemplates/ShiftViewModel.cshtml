@@ -40,9 +40,9 @@
 
             @if (Model.Item.JobStatus != JobStatuses.Open)
             {
-                <span class="job__info__col1__status toggle-on-status-change">
-                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                <span class="job__info__col1__status">
+                    <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                    <span class="job__status toggle-on-status-change">@Model.Item.JobStatus.FriendlyName()</span>
                 </span>
             }
 
