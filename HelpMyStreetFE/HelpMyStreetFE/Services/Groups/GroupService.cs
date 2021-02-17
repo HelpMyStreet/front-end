@@ -151,11 +151,6 @@ namespace HelpMyStreetFE.Services.Groups
             return keyValuePairs.ToDictionary(x => x.Key, x => x.Value);
         }
 
-        public async Task<List<Location>> GetGroupLocations(int groupId, bool includeChildGroups)
-        {
-            return (await _groupRepository.GetGroupLocations(groupId, includeChildGroups)).Locations;
-        }
-
         public async Task<List<Group>> GetChildGroups(int groupId)
         {
             return (await _groupRepository.GetChildGroups(groupId)).ChildGroups;

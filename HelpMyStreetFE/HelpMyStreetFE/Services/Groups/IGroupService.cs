@@ -20,7 +20,6 @@ namespace HelpMyStreetFE.Services.Groups
         Task<GroupCredential> GetGroupCredential(int groupId, int credentialId);
         Task<Instructions> GetGroupSupportActivityInstructions(int groupId, SupportActivities supportActivity, CancellationToken cancellationToken);
         Task<Dictionary<SupportActivities, Instructions>> GetAllGroupSupportActivityInstructions(int groupId, IEnumerable<SupportActivities> supportActivities, CancellationToken cancellationToken); 
-        Task<List<Location>> GetGroupLocations(int groupId, bool includeChildGroups);
         Task<List<Group>> GetChildGroups(int groupId);
     }
 }

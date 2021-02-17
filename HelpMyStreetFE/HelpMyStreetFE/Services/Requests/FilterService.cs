@@ -129,11 +129,10 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var locations = await _groupService.GetGroupLocations(groupId, true);
+            var locationDetails = await _addressService.GetLocationDetailsForGroup(groupId, true, cancellationToken);
 
-            if (locations.Count() > 0)
+            if (locationDetails.Count() > 0)
             {
-                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
                 filterSet.Locations = locationDetails.OrderBy(ld => ld.ShortName).Select(ld => new FilterField<Location>()
                 {
                     Value = ld.Location,

@@ -502,7 +502,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
         {
-            var locations = (await _addressService.GetLocationsForUser(user, canellationToken)).Select(l => l.Location).ToList();
+            var locations = (await _addressService.GetLocationDetailsForUser(user, canellationToken)).Select(l => l.Location).ToList();
 
             var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
             {
