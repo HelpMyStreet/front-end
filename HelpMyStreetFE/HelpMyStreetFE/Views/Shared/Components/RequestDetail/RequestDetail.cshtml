@@ -19,13 +19,29 @@
             <div class="sm12">
                 <dl>
                     <dt>When is the help needed?</dt>
-                    @if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
+                    @if (requestSummary.Shift.StartDate.ToUKFromUTCTime().Date.Equals(requestSummary.Shift.EndDate.ToUKFromUTCTime().Date))
                     {
-                        <dd>This shift occurs on <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM", true)</strong> between <strong>@requestSummary.Shift.StartDate.ToString("HH:mm") - @requestSummary.Shift.EndDate.ToString("HH:mm")</strong>.</dd>
-                    }
-                    else
-                    {
-                        <dd>This shift occurs between <strong>@requestSummary.Shift.StartDate.ToString("dddd dnn MMMM HH:mm", true) - @requestSummary.Shift.EndDate.ToString("dddd dnn MMMM HH:mm", true)</strong>.</dd>
+                        if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
+                        {
+                            <dd>
+                                This shift occurs on 
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between 
+                                <strong>
+                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
+                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
+                                </strong>.
+                            </dd>
+                        }
+                        else
+                        {
+                            <dd>
+                                This shift starts on 
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
+                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends 
+                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
+                                <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
+                            </dd>
+                        }
                     }
                     <dt>Where is the shift?</dt>
                     <dd>
@@ -89,7 +105,7 @@
                             </dt>
                             <dd>
                                 <span>
-                                    @statusChange.StatusHistory.StatusDate.ToString("dd/MM/yyyy h:mm tt").ToLower()
+                                    @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
                                 </span>
                                 @if (statusChange.VolunteerUser != null)
                                 {

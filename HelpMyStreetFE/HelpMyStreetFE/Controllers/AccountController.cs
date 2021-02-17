@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Helpers;
 using Microsoft.Extensions.Options;
@@ -39,6 +40,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupMemberService _groupMemberService;
         private readonly IGroupService _groupService;
         private readonly ICommunicationService _communicationService;
+        private readonly IAddressService _addressService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
@@ -63,6 +65,7 @@ namespace HelpMyStreetFE.Controllers
             _groupService = groupService;
             _groupMemberService = groupMemberService;
             _communicationService = communicationService;
+            _addressService = addressService;
         }
 
         [HttpGet]
@@ -102,8 +105,9 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("open-requests")]
         [Route("open-requests/j/{encodedJobId}")]
+        [Route("open-requests/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenRequests(string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenRequests(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -114,11 +118,7 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenRequests;
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
@@ -126,8 +126,9 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("my-requests")]
         [Route("my-requests/j/{encodedJobId}")]
+        [Route("my-requests/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> MyRequests(string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> MyRequests(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -137,18 +138,15 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.MyRequests;
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("my-shifts")]
+        [Route("my-shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> MyShifts(CancellationToken cancellationToken)
+        public async Task<IActionResult> MyShifts(string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -158,13 +156,15 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.MyShifts;
+            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("open-shifts")]
+        [Route("open-shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenShifts(CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenShifts(string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -174,6 +174,7 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenShifts;
+            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
 
             return View("Index", viewModel);
         }
@@ -196,6 +197,24 @@ namespace HelpMyStreetFE.Controllers
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserMyRequests, ToPrint = true});
         }
 
+        [Route("get-directions-link")]
+        [HttpGet]
+        public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
+        {
+            long jobID = 0;
+            Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
+            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+
+            var location = shiftDetails.RequestSummary.Shift.Location;
+            LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
+
+            var locationPostcode = locationDetails.Address.Postcode.Replace(" ", "%20");
+
+            var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
+
+            return new OkObjectResult(directionsLink);
+        }
+
         [Route("get-shift-calendar")]
         [HttpGet]
         public async Task<IActionResult> GetShiftCalendar(string j, CancellationToken cancellationToken)
@@ -204,26 +223,39 @@ namespace HelpMyStreetFE.Controllers
             Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+            if (shiftDetails == null || shiftDetails.JobSummary.RequestType != RequestType.Shift)
+            {
+                throw new Exception("Job does not exist or Not a shift");
+            }
+            if (shiftDetails.JobSummary.VolunteerUserID == null || shiftDetails.JobSummary.VolunteerUserID != user.ID)
+            {
+                throw new Exception("User not assigned to shift");
+            }
+
             var location = shiftDetails.RequestSummary.Shift.Location;
-            //LocationDetails locationDetails = await _addressService.GetLocationDetails(location);
-            LocationDetails locationDetails = new LocationDetails();
+            LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
+
             var startDate = shiftDetails.RequestSummary.Shift.StartDate.ToUniversalTime()
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
             var stopDate = shiftDetails.RequestSummary.Shift.EndDate.ToUniversalTime()
+                         .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
+            var stampDate = DateTime.Now.ToUniversalTime()
                          .ToString("yyyy''MM''dd'T'HH''mm''ss'Z'");
             var group = await _groupService.GetGroupById(shiftDetails.RequestSummary.ReferringGroupID, cancellationToken);
 
             var icalContent = $"BEGIN:VCALENDAR\n" +
                 $"VERSION:2.0\n" +
-                $"PRODID:-//hacksw/handcal//NONSGML v1.0//EN\n" +
+                $"PRODID:-//Help My Street/iCal Support\\EN\n" +
                 $"BEGIN:VEVENT\n" +
                 $"UID:hms-vacc-{group.GroupId}-{j}\n" +
-                $"DTSTAMP:{startDate}\n" +
-                $"ORGANIZER;CN={group.GroupName}:MAILTO:groups@helpmystreet.org\n" +
+                $"DTSTAMP:{stampDate}\n" +
+                $"ORGANIZER;CN={group.GroupName}MAILTO:no-reply@helpymstreet.org\n" +
                 $"DTSTART:{startDate}\n" +
                 $"DTEND:{stopDate}\n" +
-                $"SUMMARY:Vaccination Volunteer Shift\n" +
+                $"SUMMARY:{shiftDetails.JobSummary.SupportActivity.FriendlyNameShort()} Shift\n" +
+                $"LOCATION:{locationDetails.Address.AddressLine1}, {locationDetails.Address.Postcode}\n" +
                 $"GEO:{locationDetails.Latitude};{locationDetails.Longitude}\n" +
+                $"URL:https://www.helpmystreet.org/link/j/{j}\n" +
                 $"END:VEVENT\n" +
                 $"END:VCALENDAR";
             var calBytes = Encoding.ASCII.GetBytes(icalContent);
@@ -272,11 +304,11 @@ namespace HelpMyStreetFE.Controllers
             {
                 if (group.TasksEnabled)
                 {
-                    return await GroupRequests(groupKey, null, cancellationToken);
+                    return await GroupRequests(groupKey, null, null, cancellationToken);
                 }
                 else if (group.ShiftsEnabled)
                 {
-                    return await GroupShifts(groupKey, cancellationToken);
+                    return await GroupShifts(groupKey, null, cancellationToken);
                 }
             }
             else if (await _groupMemberService.GetUserHasRole_Any(user.ID, group.GroupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, true, cancellationToken))
@@ -289,8 +321,9 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("g/{groupKey}/requests")]
         [Route("g/{groupKey}/requests/j/{encodedJobId}")]
+        [Route("g/{groupKey}/requests/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -307,18 +340,15 @@ namespace HelpMyStreetFE.Controllers
 
             viewModel.CurrentPage = MenuPage.GroupRequests;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-
-            if (!string.IsNullOrEmpty(encodedJobId))
-            {
-                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            }
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("g/{groupKey}/shifts")]
+        [Route("g/{groupKey}/shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupShifts(string groupKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupShifts(string groupKey, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -335,6 +365,7 @@ namespace HelpMyStreetFE.Controllers
 
             viewModel.CurrentPage = MenuPage.GroupShifts;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
 
             return View("Index", viewModel);
         }
@@ -436,6 +467,18 @@ namespace HelpMyStreetFE.Controllers
             }
 
             return viewModel;
+        }
+
+        private void AddHighlightIdsToViewModel(AccountViewModel viewModel, string encodedJobId, string encodedRequestId)
+        {
+            if (!string.IsNullOrEmpty(encodedJobId))
+            {
+                viewModel.HighlightJobId = Base64Utils.Base64DecodeToInt(encodedJobId);
+            }
+            if (!string.IsNullOrEmpty(encodedRequestId))
+            {
+                viewModel.HighlightRequestId = Base64Utils.Base64DecodeToInt(encodedRequestId);
+            }
         }
     }
 }

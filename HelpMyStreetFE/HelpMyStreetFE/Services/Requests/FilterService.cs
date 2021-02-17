@@ -29,16 +29,16 @@ namespace HelpMyStreetFE.Services.Requests
             _groupService = groupService;
         }
 
-        public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, JobStatuses? jobStatus, User user, CancellationToken cancellationToken)
+        public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, List<JobStatuses> jobStatuses, User user, CancellationToken cancellationToken)
         {
             return jobSet switch
             {
-                JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatus),
+                JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatuses),
                 JobSet.UserOpenRequests_MatchingCriteria => GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet(),
                 JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
                 JobSet.UserMyRequests => GetMyRequestsDefaultSortAndFilterSet(),
 
-                JobSet.GroupShifts => await GetGroupShiftsFilterSet(groupId.Value, user, jobStatus, cancellationToken),
+                JobSet.GroupShifts => await GetGroupShiftsFilterSet(groupId.Value, user, jobStatuses, cancellationToken),
                 JobSet.UserOpenShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
                 JobSet.UserMyShifts => await GetShiftsFilterSet(user, jobSet, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobFilterRequest.JobSet value: {jobSet}", paramName: nameof(jobSet))
@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(int groupId, User user, JobStatuses? jobStatus, CancellationToken cancellationToken)
+        private async Task<SortAndFilterSet> GetGroupShiftsFilterSet(int groupId, User user, List<JobStatuses> jobStatuses, CancellationToken cancellationToken)
         {
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
@@ -129,11 +129,10 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var locations = await _groupService.GetGroupLocations(groupId, true);
+            var locationDetails = await _addressService.GetLocationDetailsForGroup(groupId, true, cancellationToken);
 
-            if (locations.Count() > 0)
+            if (locationDetails.Count() > 0)
             {
-                var locationDetails = await _addressService.GetLocationDetails(locations, cancellationToken);
                 filterSet.Locations = locationDetails.OrderBy(ld => ld.ShortName).Select(ld => new FilterField<Location>()
                 {
                     Value = ld.Location,
@@ -142,9 +141,9 @@ namespace HelpMyStreetFE.Services.Requests
                 });
             }
 
-            if (jobStatus != null)
+            if (jobStatuses != null && jobStatuses.Count > 0)
             {
-                filterSet.JobStatuses.Where(js => js.Value == jobStatus).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => jobStatuses.Contains(js.Value)).ForEach(s => s.IsSelected = true);
             }
             else
             {
@@ -157,7 +156,7 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        private SortAndFilterSet GetGroupRequestsDefaultSortAndFilterSet(JobStatuses? jobStatus)
+        private SortAndFilterSet GetGroupRequestsDefaultSortAndFilterSet(List<JobStatuses> jobStatuses)
         {
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
@@ -182,9 +181,9 @@ namespace HelpMyStreetFE.Services.Requests
                     },
             };
 
-            if (jobStatus != null)
+            if (jobStatuses != null && jobStatuses.Count > 0)
             {
-                filterSet.JobStatuses.Where(js => js.Value == jobStatus).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => jobStatuses.Contains(js.Value)).ForEach(s => s.IsSelected = true);
             }
             else
             {
@@ -193,7 +192,7 @@ namespace HelpMyStreetFE.Services.Requests
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
             }
 
-            if (jobStatus == JobStatuses.Cancelled || jobStatus == JobStatuses.Done)
+            if (jobStatuses.All(s => s.Complete()))
             {
                 filterSet.OrderBy.Where(ob => ob.Value == OrderBy.DateStatusLastChanged_Descending).First().IsSelected = true;
             }
@@ -326,11 +325,11 @@ namespace HelpMyStreetFE.Services.Requests
                 return jfr.OrderBy switch
                 {
                     OrderBy.DateDue_Ascending =>
-                       jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((ShiftJob)j).StartDate),
+                       jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenBy(j => ((ShiftJob)j).StartDate),
                     OrderBy.DateDue_Descending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((ShiftJob)j).StartDate),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenByDescending(j => ((ShiftJob)j).StartDate),
                     OrderBy.DateRequested_Descending =>
-                      jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((ShiftJob)j).DateRequested),
+                      jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenByDescending(j => ((ShiftJob)j).DateRequested),
                     _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
                 };
             }
@@ -347,21 +346,21 @@ namespace HelpMyStreetFE.Services.Requests
                 return jfr.OrderBy switch
                 {
                     OrderBy.RequiringAdminAttention =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).RequiringAdminAttentionScore()).ThenBy(j => ((JobHeader)j).DueDate),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenByDescending(j => ((JobHeader)j).RequiringAdminAttentionScore()).ThenBy(j => ((JobHeader)j).DueDate),
                     OrderBy.DateDue_Ascending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DueDate),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenBy(j => ((JobHeader)j).DueDate),
                     OrderBy.DateDue_Descending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).DueDate),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenByDescending(j => ((JobHeader)j).DueDate),
                     OrderBy.DateRequested_Ascending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DateRequested),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenBy(j => ((JobHeader)j).DateRequested),
                     OrderBy.DateRequested_Descending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).DateRequested),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenByDescending(j => ((JobHeader)j).DateRequested),
                     OrderBy.DateStatusLastChanged_Ascending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DateStatusLastChanged),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenBy(j => ((JobHeader)j).DateStatusLastChanged),
                     OrderBy.DateStatusLastChanged_Descending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenByDescending(j => ((JobHeader)j).DateStatusLastChanged),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenByDescending(j => ((JobHeader)j).DateStatusLastChanged),
                     OrderBy.Distance_Ascending =>
-                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId)).ThenBy(j => ((JobHeader)j).DistanceInMiles),
+                        jobs.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenBy(j => ((JobHeader)j).DistanceInMiles),
                     _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
                 };
             }
