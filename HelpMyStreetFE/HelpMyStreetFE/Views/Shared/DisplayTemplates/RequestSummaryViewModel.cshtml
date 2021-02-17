@@ -4,6 +4,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Models;
 @using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreetFE.Models.Community;
 
 @model JobViewModel<RequestSummary>
 
@@ -40,6 +41,16 @@
                 <partial name="_RequestStatus" model="@Model.Item" />
             </span>
 
+            @if (Model.JobListGroupId != Model.Item.ReferringGroupID)
+            {
+                <div class="job__info__col1__referrer other-group">
+                    <div class="toggle-on-status-change">
+                        <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
+                    </div>
+                </div>
+            }
+
+
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
         </div>
@@ -58,13 +69,19 @@
                     </span>
                 }
             }
-            <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">
-                <span>@Model.Item.DateSpan()</span>
-                <span>@Model.Item.TimeSpan()</span>
-            </span>
             <span class="job__info__activity__location">
                 @Model.Location.LocationDetails.Name
             </span>
+            @if (Model.Item.Shift.StartDate.ToUKFromUTCTime().Date.Equals(Model.Item.Shift.EndDate.ToUKFromUTCTime().Date))
+            {
+                <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</span>
+                <span class="job__info__activity__date due-date">@Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; @Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</span>
+            }
+            else
+            {
+                <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                <span class="job__info__activity__date due-date">&ndash; @Html.Raw(Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+            }
         </div>
         <div class="job__info__col3 flex-end">
             <div class="job__info__actions">

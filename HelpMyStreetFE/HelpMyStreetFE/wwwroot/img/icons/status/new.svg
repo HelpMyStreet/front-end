@@ -7,8 +7,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="247"
-   height="215"
+   width="213.3333"
+   height="213.3333"
    overflow="hidden"
    version="1.1"
    id="svg72"
@@ -22,6 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -34,17 +35,22 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1441"
-     inkscape:window-height="906"
+     inkscape:window-width="1955"
+     inkscape:window-height="1142"
      id="namedview74"
      showgrid="false"
      inkscape:zoom="2.8284271"
-     inkscape:cx="172.15889"
-     inkscape:cy="105.91016"
+     inkscape:cx="89.034279"
+     inkscape:cy="105.07681"
      inkscape:window-x="137"
      inkscape:window-y="67"
      inkscape:window-maximized="0"
-     inkscape:current-layer="svg72" />
+     inkscape:current-layer="svg72"
+     inkscape:document-rotation="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <defs
      id="defs64">
     <clipPath
@@ -59,19 +65,19 @@
   </defs>
   <g
      clip-path="url(#clip0)"
-     transform="translate(-54 -417)"
+     transform="translate(-70.83335,-417.83335)"
      id="g70">
     <path
-       d="M80 524.5C80 470.652 123.652 427 177.5 427 231.348 427 275 470.652 275 524.5 275 578.348 231.348 622 177.5 622 123.652 622 80 578.348 80 524.5Z"
-       stroke="#C00000"
+       d="m 80,524.5 c 0,-53.848 43.652,-97.5 97.5,-97.5 53.848,0 97.5,43.652 97.5,97.5 0,53.848 -43.652,97.5 -97.5,97.5 C 123.652,622 80,578.348 80,524.5 Z"
+       stroke="#c00000"
        stroke-width="18.3333"
        stroke-miterlimit="8"
-       fill="#C00000"
+       fill="#c00000"
        fill-rule="evenodd"
        id="path66" />
     <g
        aria-label="NEW"
-       transform="translate(92.7312 548)"
+       transform="translate(92.7312,548)"
        id="text68"
        style="font-weight:700;font-size:64px;font-family:'Gill Sans MT', 'Gill Sans MT_MSFontService', sans-serif;fill:#ffffff">
       <path

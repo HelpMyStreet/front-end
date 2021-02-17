@@ -74,5 +74,36 @@ namespace HelpMyStreetFE.Controllers
 
             return Redirect(destination);
         }
+
+        [Route("link/r/{encodedRequestId}")]
+        [Authorize]
+        public async Task<IActionResult> RequestId(string encodedRequestId, CancellationToken cancellationToken)
+        {
+
+            int requestId = Base64Utils.Base64DecodeToInt(encodedRequestId);
+            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            var jobLocation = await _requestService.LocateRequest(requestId, user.ID, cancellationToken);
+            encodedRequestId = Base64Utils.Base64Encode(requestId);
+
+            string destination = jobLocation?.JobSet switch
+            {
+                JobSet.UserOpenRequests_MatchingCriteria => $"/account/open-requests/r/{encodedRequestId}",
+                JobSet.UserOpenRequests_NotMatchingCriteria => $"/account/open-requests/r/{encodedRequestId}",
+                JobSet.UserMyRequests => $"/account/my-requests/r/{encodedRequestId}",
+                JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/r/{encodedRequestId}",
+                JobSet.UserOpenShifts => $"/account/open-shifts/r/{encodedRequestId}",
+                JobSet.UserMyShifts => $"/account/my-shifts/r/{encodedRequestId}",
+                JobSet.GroupShifts => $"/account/g/{jobLocation.GroupKey}/shifts/r/{encodedRequestId}",
+                _ => LINK_EXPIRED_URL,
+            };
+
+            return Redirect(destination);
+        }
     }
 }

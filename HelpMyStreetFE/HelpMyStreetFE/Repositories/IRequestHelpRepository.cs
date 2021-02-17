@@ -10,6 +10,7 @@ namespace HelpMyStreetFE.Repositories
     public interface IRequestHelpRepository
     {
         Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
+        Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId);
         Task<GetRequestDetailsResponse> GetRequestDetailsAsync(int requestId, int userId);
         Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);

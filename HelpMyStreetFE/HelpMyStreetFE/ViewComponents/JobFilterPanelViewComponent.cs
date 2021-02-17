@@ -5,6 +5,9 @@ using HelpMyStreetFE.Services.Requests;
 using System.Threading;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Helpers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -25,7 +28,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             if (jobFilterViewModel.FilterSet == null)
             {
-                JobStatuses? jobStatus = null;
+                var jobStatuses = new List<JobStatuses>();
 
                 var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
@@ -33,16 +36,28 @@ namespace HelpMyStreetFE.ViewComponents
                 {
                     int jobId = jobFilterViewModel.JobFilterRequest.HighlightJobId.Value;
                     var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
-                    jobStatus = job?.JobStatus;
+                    if (job != null)
+                    {
+                        jobStatuses.Add(job.JobStatus);
+                    }
                 }
 
-                jobFilterViewModel.FilterSet = await _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.JobFilterRequest.GroupId, jobStatus, user, cancellationToken);
+                if (jobFilterViewModel.JobFilterRequest.HighlightRequestId.HasValue)
+                {
+                    int requestId = jobFilterViewModel.JobFilterRequest.HighlightRequestId.Value;
+                    var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+                    if (request != null)
+                    {
+                        jobStatuses = request.JobStatusDictionary().Keys.ToList();
+                    }
+                }
+
+                jobFilterViewModel.FilterSet = await _filterService.GetDefaultSortAndFilterSet(jobFilterViewModel.JobFilterRequest.JobSet, jobFilterViewModel.JobFilterRequest.GroupId, jobStatuses, user, cancellationToken);
             }
 
             jobFilterViewModel.JobFilterRequest.UpdateFromFilterSet(jobFilterViewModel.FilterSet);
 
             return View("JobFilterPanel", jobFilterViewModel);
         }
-
     }
 }

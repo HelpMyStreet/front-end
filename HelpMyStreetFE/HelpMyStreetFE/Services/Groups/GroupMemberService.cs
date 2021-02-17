@@ -162,7 +162,7 @@ namespace HelpMyStreetFE.Services.Groups
             var result = await _memDistCache_userInGroup.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _groupRepository.GetGroupMember(groupId, userId, authorisingUserId);
-            }, $"{CACHE_KEY_PREFIX}-group-member-{groupId}-{userId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, $"{CACHE_KEY_PREFIX}-group-member-{groupId}-{userId}-{authorisingUserId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
 
             return result;
         }
@@ -197,7 +197,7 @@ namespace HelpMyStreetFE.Services.Groups
 
         public async Task<bool> GetUserIsVerified(int userId, CancellationToken cancellationToken)
         {
-            var groupMember = await _groupRepository.GetGroupMember((int)HelpMyStreet.Utils.Enums.Groups.Generic, userId, userId);
+            var groupMember = await GetGroupMember((int)HelpMyStreet.Utils.Enums.Groups.Generic, userId, userId, cancellationToken);
 
             return groupMember.ValidCredentials.Contains(YOTI_CREDENTIAL_ID);
         }

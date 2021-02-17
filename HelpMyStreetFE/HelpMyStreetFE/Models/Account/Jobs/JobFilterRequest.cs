@@ -23,6 +23,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 
         public OrderBy OrderBy { get; set; }
         public int? HighlightJobId { get; set; }
+        public int? HighlightRequestId { get; set; }
 
         public int ResultsToShow { get; set; }
         public int ResultsToShowIncrement { get; set; }
@@ -60,6 +61,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             if (filterSet.HighlightJobId != null)
             {
                 HighlightJobId = filterSet.HighlightJobId;
+            }
+            if (filterSet.HighlightRequestId != null)
+            {
+                HighlightRequestId = filterSet.HighlightRequestId;
             }
         }
     }
