@@ -4,6 +4,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Models;
 @using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreetFE.Models.Community;
 
 @model JobViewModel<RequestSummary>
 
@@ -39,6 +40,16 @@
             <span class="job__info__col1__status toggle-on-status-change">
                 <partial name="_RequestStatus" model="@Model.Item" />
             </span>
+
+            @if (Model.JobListGroupId != Model.Item.ReferringGroupID)
+            {
+                <div class="job__info__col1__referrer other-group">
+                    <div class="toggle-on-status-change">
+                        <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
+                    </div>
+                </div>
+            }
+
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>

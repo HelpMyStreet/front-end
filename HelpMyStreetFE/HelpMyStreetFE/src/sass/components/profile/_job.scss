@@ -362,6 +362,16 @@
 
                 @media (min-width: $med-screen) {
                     display: none;
+
+                    &.other-group {
+                        display: flex;
+                        width: 100%;
+
+                        .group-logo img {
+                            max-height: 3rem;
+                        }
+                    }
+
                 }
             }
 

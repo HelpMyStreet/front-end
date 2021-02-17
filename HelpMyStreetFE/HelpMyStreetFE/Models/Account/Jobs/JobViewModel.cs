@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public RequestRoles UserRole { get; set; }
         public bool HighlightJob { get; set; }
         public LocationWithDistance Location { get; set; }
+        public int? JobListGroupId { get; set; }
     }
 }

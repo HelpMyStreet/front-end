@@ -113,6 +113,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a,
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId) || a.RequestID.Equals(jobFilterRequest.HighlightRequestId),
             }));
@@ -167,6 +168,7 @@ namespace HelpMyStreetFE.ViewComponents
                 Item = a,
                 Location = userLocationDetails.FirstOrDefault(l => l.Location == a.Location),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId) || a.RequestID.Equals(jobFilterRequest.HighlightRequestId),
             }));
@@ -218,6 +220,7 @@ namespace HelpMyStreetFE.ViewComponents
                 Item = a,
                 Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = false,
                 HighlightJob = false,//.JobID.Equals(jobFilterRequest.HighlightJobId),
             }));
