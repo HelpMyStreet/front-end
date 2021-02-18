@@ -222,6 +222,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 requestStage.Questions = await UpdateQuestionsViewModel(null, requestHelpJourney.RequestHelpFormVariant, RequestHelpFormStage.Request, selectedTask.Value, referringGroupId);
             }
+            requestStage.RequestGuid = Guid.NewGuid();
 
             return View(model);
         }

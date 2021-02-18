@@ -8,6 +8,7 @@
 }
 <input type="hidden" name="RequestStep" class="model" value='@Json.Serialize(Model)' />
 @Html.Hidden("FormStage", RequestHelpFormStage.Request)
+@Html.HiddenFor(m => m.RequestGuid)
 <input type="hidden" name="selectAction" />
 <h2>@Model.PageHeading</h2>
 <div class="row">
