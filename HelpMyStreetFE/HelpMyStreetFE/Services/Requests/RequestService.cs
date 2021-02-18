@@ -90,7 +90,7 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 HelpRequest = new HelpRequest
                 {
-                    Guid = Guid.NewGuid(),
+                    Guid = requestStage.RequestGuid,
                     AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
                     ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
                     OrganisationName = detailStage?.Organisation ?? "",
