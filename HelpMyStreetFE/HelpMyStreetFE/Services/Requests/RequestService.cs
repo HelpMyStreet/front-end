@@ -454,23 +454,29 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     userGroups.Where(g => g.UserRoles.Contains(GroupRoles.TaskAdmin)).ToList().ForEach(g =>
                     {
-                        _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                        if (g.TasksEnabled)
                         {
-                            return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
-                        }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
-
-                        _ = _memDistCache_RequestSummaries.RefreshDataAsync(async (cancellationToken) =>
-                        {
-                            var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+                            _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                             {
-                                ReferringGroupID = g.GroupId,
-                                IncludeChildGroups = true,
-                                DateFrom = dateFrom,
-                                DateTo = dateTo,
-                            };
+                                return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
+                            }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
+                        }
 
-                            return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
-                        }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
+                        if (g.ShiftsEnabled)
+                        {
+                            _ = _memDistCache_RequestSummaries.RefreshDataAsync(async (cancellationToken) =>
+                            {
+                                var getShiftRequestsByFilterRequest = new GetShiftRequestsByFilterRequest
+                                {
+                                    ReferringGroupID = g.GroupId,
+                                    IncludeChildGroups = true,
+                                    DateFrom = dateFrom,
+                                    DateTo = dateTo,
+                                };
+
+                                return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
+                            }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
+                        }
                     });
                 }
             });

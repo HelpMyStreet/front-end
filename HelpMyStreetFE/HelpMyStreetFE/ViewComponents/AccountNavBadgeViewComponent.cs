@@ -50,6 +50,14 @@ namespace HelpMyStreetFE.ViewComponents
                 {
                     return 0;
                 }
+                if (!group.ShiftsEnabled && menuPage == MenuPage.GroupShifts)
+                {
+                    return 0;
+                }
+                if (!group.TasksEnabled && menuPage == MenuPage.GroupRequests)
+                {
+                    return 0;
+                }
             }
 
             try
