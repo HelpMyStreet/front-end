@@ -3,6 +3,24 @@ import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 import { hidePopup, showServerSidePopup } from "../shared/popup";
 import { enableMaps, drawMap } from "../shared/maps";
 
+async function initialiseMaps(){
+    var options = {
+        displayVolunteers: true,
+        displayGroups: false,
+        allowNavigation: false,
+        allowSearch: false,
+        consoleCoordinates: false,
+        initialLat: parseFloat($('#map').data('latitude')),
+        initialLng: parseFloat($('#map').data('longitude')),
+        initialZoom: parseFloat($('#map').data('zoom')),
+        divID: "map",
+        singlePin: false
+    };
+    if ($(`#map`).length != 0){
+        drawMap(options);
+        }
+}
+
 $(document).ready(function () {
     initialiseSliders();
     enableMaps().then(() => initialiseMaps());
@@ -21,26 +39,7 @@ $(document).ready(function () {
             $('.btn--sign-up').addClass("disabled");
         }
     })
-});
 
-
-async function initialiseMaps(){
-    var options = {
-        displayVolunteers: true,
-        displayGroups: false,
-        allowNavigation: false,
-        allowSearch: false,
-        consoleCoordinates: false,
-        initialLat: parseFloat($('#map').data('latitude')),
-        initialLng: parseFloat($('#map').data('longitude')),
-        initialZoom: parseFloat($('#map').data('zoom')),
-        divID: "map",
-        singlePin: false
-    };
-    drawMap(options);
-}
-
-$(document).ready(function () {
     const groupId = $('.community').data('group-id');
     $('.show-request-help-popup').on('click', async function (event) {
         event.preventDefault();
