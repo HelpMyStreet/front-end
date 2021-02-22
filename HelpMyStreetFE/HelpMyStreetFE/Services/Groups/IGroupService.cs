@@ -21,5 +21,6 @@ namespace HelpMyStreetFE.Services.Groups
         Task<Instructions> GetGroupSupportActivityInstructions(int groupId, SupportActivities supportActivity, CancellationToken cancellationToken);
         Task<Dictionary<SupportActivities, Instructions>> GetAllGroupSupportActivityInstructions(int groupId, IEnumerable<SupportActivities> supportActivities, CancellationToken cancellationToken); 
         Task<List<Group>> GetChildGroups(int groupId);
+        Task<List<SupportActivityDetail>> GetSupportActivitesForRegistrationForm(RegistrationFormVariant registrationFormVariant);
     }
 }
