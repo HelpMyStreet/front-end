@@ -1,5 +1,6 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Validation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
     [RequestStageValidation]
     public class RequestHelpRequestStageViewModel : IRequestHelpStageViewModel
     {
+        public Guid RequestGuid { get; set; }
         public string PageHeading { get; set; }
         public string IntoText { get; set; }
         public List<TasksViewModel> Tasks { get; set; }
