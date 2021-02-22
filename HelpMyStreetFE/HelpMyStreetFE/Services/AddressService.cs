@@ -100,21 +100,27 @@ namespace HelpMyStreetFE.Services
         {
             return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) =>
             {
-                var locationsWithDistance = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
-
-                if (locationsWithDistance.Count() == 0)
+                if (user.PostalCode != null)
                 {
+                    var locationsWithDistance = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
+                    if (locationsWithDistance.Count() == 0)
+                    {
+                        return new List<LocationWithDistance>();
+                    }
+                    var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+
+                    return locationsWithDistance.Select(l => new LocationWithDistance
+                    {
+                        Location = l.Location,
+                        Distance = l.DistanceFromPostCode,
+                        LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
+                    });
+                } else {
                     return new List<LocationWithDistance>();
                 }
+                
 
-                var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
-
-                return locationsWithDistance.Select(l => new LocationWithDistance
-                {
-                    Location = l.Location,
-                    Distance = l.DistanceFromPostCode,
-                    LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
-                });
+                
             }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 

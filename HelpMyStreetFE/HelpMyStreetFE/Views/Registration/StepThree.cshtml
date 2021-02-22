@@ -1,5 +1,6 @@
 ﻿@using HelpMyStreetFE.Models.Registration;
-@using HelpMyStreet.Utils.Enums
+@using HelpMyStreet.Utils.Enums;
+@using Westwind.AspNetCore.Markdown;
 
 @model RegistrationViewModel
 
@@ -15,31 +16,6 @@
     ViewData["Title"] = "Volunteers - Registration";
     Layout = "~/Views/Shared/_LayoutNoHeader.cshtml";
 
-    var volunteerOptions = Model.ActivityDetails
-        .OrderBy(x => x.DisplayOrder)
-        .Select(x => new SupportActivityViewModel() {
-            SupportActivities = x.SupportActivity,
-            Description = x.Label,
-            Selected = x.IsPreSelected });
-
-    if (volunteerOptions.Count() == 0)
-    {
-        volunteerOptions = new List<SupportActivityViewModel>() {
-
-                new SupportActivityViewModel { SupportActivities = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products etc.)" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.FaceMask, Description = "Supplying homemade face coverings" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.CollectingPrescriptions, Description = "Collecting prescriptions from a local pharmacy" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.Errands, Description = "Running essential local errands (e.g. posting mail)" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.WellbeingPackage, Description = "Collecting and delivering a pre-prepared wellbeing package" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.DogWalking, Description = "Walking the dog" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.MealPreparation, Description = "Preparing and/or delivering a hot / pre-prepared meal" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Friendly, Description = "Calling someone in need of a friendly chat" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.PhoneCalls_Anxious, Description = "Providing support over the phone to someone who may be anxious (relevant experience required e.g. mental health first-aider)" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.HomeworkSupport, Description = "Providing remote support for parents and carers home-schooling their children" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.CheckingIn, Description = "Reaching out to people in my area to check-in" },
-                new SupportActivityViewModel { SupportActivities = SupportActivities.Other, Description = "I may be able to help with other tasks, so please check with me." },
-            };
-    }
 
     var distanceOptions = new Dictionary<double, string>
     {
@@ -79,15 +55,15 @@
                     <h5>I can help people by:</h5>
                     <p>(Please tick as many as you like)</p>
                     <span class="error" id="volunteer-error">Please select at least one option</span>
-                    @foreach (var option in volunteerOptions)
+                    @foreach (var option in Model.ActivityDetails)
                     {
                         <div class="input input--checkbox">
                             <label for="volunteer-@option.SupportActivities">
-                                <input name="volunteer[]" type="checkbox" id="volunteer-@option.SupportActivities" value="@option.SupportActivities" checked="@option.Selected"  hidden />
+                                <input name="volunteer[]" type="checkbox" id="volunteer-@option.SupportActivities" value="@option.SupportActivities" checked="@option.Selected" hidden />
                                 <span class="input--checkbox__checkbox">
                                     <span class="mdi mdi-check"></span>
                                 </span>
-                                @Html.Raw(@option.Description)
+                                @Markdown.ParseHtmlString(option.Description)
                             </label>
                         </div>
                         <hr class="input--separator" />

@@ -14,6 +14,6 @@ namespace HelpMyStreetFE.Models.Registration
         public RegistrationFormVariant RegistrationFormVariant { get; set; }
         public string GroupName { get; set; }
         public string Email { get; set; }
-        public List<SupportActivityDetail> ActivityDetails { get; set; }
+        public List<SupportActivityViewModel> ActivityDetails { get; set; }
     }
 }

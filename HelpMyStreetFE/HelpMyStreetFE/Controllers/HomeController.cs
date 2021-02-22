@@ -36,6 +36,8 @@ namespace HelpMyStreetFE.Controllers
                 isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated),
             };
 
+            
+
             return View(model);
         }
 
