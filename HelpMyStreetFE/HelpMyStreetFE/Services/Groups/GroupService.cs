@@ -161,7 +161,7 @@ namespace HelpMyStreetFE.Services.Groups
             var response = await _groupRepository.GetRegistrationFormSupportActivies(registrationFormVariant);
             if (response.SupportActivityDetails.Count() == 0)
             {
-                throw new Exception("No support activies for registration form type");
+                throw new Exception($"No support activies for registration form: {registrationFormVariant}");
             }
             return response.SupportActivityDetails;
         }

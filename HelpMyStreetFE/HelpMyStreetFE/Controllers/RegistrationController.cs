@@ -119,24 +119,6 @@ namespace HelpMyStreetFE.Controllers
             });
         }
 
-        public DateTime ParseRequestDate(string date)
-        {
-            // https://stackoverflow.com/questions/2883576/how-do-you-convert-epoch-time-in-c
-
-            CultureInfo enGB = new CultureInfo("en-GB");
-
-            DateTime dateValue;
-
-            // Scenario #2
-            if (DateTime.TryParseExact(date, "dd / MM / yyyy", enGB, DateTimeStyles.None, out dateValue))
-                return dateValue;
-
-            // Scenario #3
-            if (DateTime.TryParseExact(date, "dd MMM yyyy", enGB, DateTimeStyles.None, out dateValue))
-                return dateValue;
-
-            throw new Exception("Unable to Parse Date");
-        }
 
         [HttpPost("[controller]/step-two")]
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form, CancellationToken cancellationToken)
@@ -151,7 +133,7 @@ namespace HelpMyStreetFE.Controllers
 
             try
             {
-                DateTime dob = ParseRequestDate(form.DateOfBirth);
+                DateTime dob = DateTime.ParseExact(form.DateOfBirth, "dd / MM / yyyy", new CultureInfo("en-GB"));
                 await _userService.CreateUserStepTwoAsync(user.ID, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, dob, cancellationToken);
                 return Redirect("/registration/step-three");
             }
@@ -175,19 +157,19 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
             var registrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken);
-            var supportActivities = (await _groupService.GetSupportActivitesForRegistrationForm(registrationFormVariant)).OrderBy(x => x.DisplayOrder).ToList();
-            var saViewModels = supportActivities.Select(x => new SupportActivityViewModel()
-            {
-                SupportActivities = x.SupportActivity,
-                Description = x.Label,
-                Selected = x.IsPreSelected
-            }).ToList();
+            var supportActivities = (await _groupService.GetSupportActivitesForRegistrationForm(registrationFormVariant)).OrderBy(x => x.DisplayOrder)
+                .Select(x => new SupportActivityViewModel()
+                {
+                    SupportActivities = x.SupportActivity,
+                    Description = x.Label,
+                    Selected = x.IsPreSelected
+                }).ToList();
 
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
                 RegistrationFormVariant = registrationFormVariant,
-                ActivityDetails = saViewModels
+                ActivityDetails = supportActivities
             });
         }
 
