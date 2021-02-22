@@ -127,40 +127,43 @@ export async function initialiseRequests() {
 }
 
 async function createMap(job){
-var linkResponse = await hmsFetch('/account/get-directions-link?j=' + job.attr("id"))
-var marker;
-if (linkResponse.fetchResponse == fetchResponses.SUCCESS){
-    var link = await linkResponse.fetchPayload;
-    marker = {
-        clickable: true,
-        position: {lat: Number(job.find(".location-map").data("lat")), lng: Number(job.find(".location-map").data("lng"))},
-        title: "Click for directions",
-        origin: new google.maps.Point(0, 35),
-        icon: {
-            url: "/img/logos/markers/vaccination-marker.svg",
-            scaledSize: new google.maps.Size(50, 70),
-          },
+    if ($(`#map-${job.attr("id")}`).length != 0){
+        var linkResponse = await hmsFetch('/account/get-directions-link?j=' + job.attr("id"))
+        var marker;
+
+        if (linkResponse.fetchResponse == fetchResponses.SUCCESS){
+            var link = await linkResponse.fetchPayload;
+            marker = {
+                clickable: true,
+                position: {lat: Number(job.find(".location-map").data("lat")), lng: Number(job.find(".location-map").data("lng"))},
+                title: "Click for directions",
+                origin: new google.maps.Point(0, 35),
+                icon: {
+                    url: "/img/logos/markers/vaccination-marker.svg",
+                    scaledSize: new google.maps.Size(50, 70),
+                },
+                
+                clickListener: () => {window.open(link , "_blank")}
+            }
+        } else {
+            marker = true;
+        }
         
-        clickListener: () => {window.open(link , "_blank")}
+        var thisMap = {
+                    displayVolunteers: false,
+                    displayGroups: false,
+                    allowNavigation: false,
+                    allowSearch: false,
+                    consoleCoordinates: false,
+                    initialLat: Number(job.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
+                    initialLng: Number(job.find(".location-map").data("lng")),
+                    initialZoom: 14,
+                    divID: "map-" + job.attr("id"),
+                    singlePin: marker
+                };
+
+        drawMap(thisMap);
     }
-} else {
-    marker = true;
-}
-var thisMap = {
-            displayVolunteers: false,
-            displayGroups: false,
-            allowNavigation: false,
-            allowSearch: false,
-            consoleCoordinates: false,
-            initialLat: Number(job.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
-            initialLng: Number(job.find(".location-map").data("lng")),
-            initialZoom: 14,
-            divID: "map-" + job.attr("id"),
-            singlePin: marker
-        };
-if ($(`#${thisMap.divID}`).length){
-drawMap(thisMap);
-}
 }
 
 export function showStatusUpdatePopup(btn) {

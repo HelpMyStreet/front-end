@@ -109,6 +109,7 @@ namespace HelpMyStreetFE.Services.Users
             int id,
             List<SupportActivities> activities,
             float supportRadius,
+            RegistrationFormVariant registrationFormVariant,
             CancellationToken cancellationToken)
         {
             await _userRepository.CreateUserStepThree(new RegistrationStepThree
@@ -117,7 +118,8 @@ namespace HelpMyStreetFE.Services.Users
                 Activities = activities,
                 SupportRadiusMiles = supportRadius,
                 SupportVolunteersByPhone = null,
-                UnderlyingMedicalCondition = null
+                UnderlyingMedicalCondition = null,
+                RegistrationFormVariant = registrationFormVariant,
             });
         }
 
@@ -140,8 +142,8 @@ namespace HelpMyStreetFE.Services.Users
         public async Task<Models.Account.UserDetails> GetUserDetails(User user, CancellationToken cancellationToken)
         {
             var userDetails = new Models.Account.UserDetails(user);
-
             var locations = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+
             userDetails.ShiftsEnabled = locations.Count() > 0;
 
             return userDetails;

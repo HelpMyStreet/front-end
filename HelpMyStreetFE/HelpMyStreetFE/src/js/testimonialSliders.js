@@ -2,7 +2,7 @@
 import "slick-carousel"
 
 $(function () {
-    $(".feedback-message").slick({
+    $(".feedback-message").not('.slick-initialized').slick({
         slidesToShow: 3,
         slidesToScroll: 3,
         autoplay: true,

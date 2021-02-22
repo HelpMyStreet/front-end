@@ -119,6 +119,7 @@ namespace HelpMyStreetFE.Controllers
             });
         }
 
+
         [HttpPost("[controller]/step-two")]
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form, CancellationToken cancellationToken)
         {
@@ -149,16 +150,26 @@ namespace HelpMyStreetFE.Controllers
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             string correctPage = GetCorrectPage(user);
+            
             if (!correctPage.StartsWith("/registration/step-three"))
             {
                 // A different step needs to be completed at this point
                 return Redirect(correctPage);
             }
+            var registrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken);
+            var supportActivities = (await _groupService.GetSupportActivitesForRegistrationForm(registrationFormVariant)).OrderBy(x => x.DisplayOrder)
+                .Select(x => new SupportActivityViewModel()
+                {
+                    SupportActivities = x.SupportActivity,
+                    Description = x.Label,
+                    Selected = x.IsPreSelected
+                }).ToList();
 
             return View(new RegistrationViewModel
             {
                 ActiveStep = 3,
-                RegistrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken),
+                RegistrationFormVariant = registrationFormVariant,
+                ActivityDetails = supportActivities
             });
         }
 
@@ -178,6 +189,8 @@ namespace HelpMyStreetFE.Controllers
                 form.VolunteerDistance = form.CustomDistance;
             }
 
+            var registrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken);
+
             try
             {
                 _logger.LogInformation($"Step 3 submission for {user.ID}");
@@ -186,6 +199,7 @@ namespace HelpMyStreetFE.Controllers
                     user.ID,
                     form.VolunteerOptions,
                     form.VolunteerDistance,
+                    registrationFormVariant,
                     cancellationToken);
 
                 await _groupMemberService.AddUserToDefaultGroups(user.ID);
