@@ -25,6 +25,7 @@ using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreetFE.Services;
 using System.Text;
+using System.Net;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -208,7 +209,7 @@ namespace HelpMyStreetFE.Controllers
             var location = shiftDetails.RequestSummary.Shift.Location;
             LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
 
-            var locationPostcode = locationDetails.Address.Postcode.Replace(" ", "%20");
+            var locationPostcode = WebUtility.UrlEncode(locationDetails.Address.Postcode);
 
             var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
 
