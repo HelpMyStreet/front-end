@@ -51,8 +51,7 @@
                                 <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between 
                                 <strong>
                                     @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; 
-                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
-                                </strong>.
+                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
                             </dd>
                         }
                         else
@@ -65,9 +64,9 @@
                                 <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
                             </dd>
                         }
-                        @if (jobSummary.JobStatus == JobStatuses.Accepted && jobSummary.DueDate.CompareTo(DateTime.Now) >= 0)
+                        @if (jobSummary.JobStatus == JobStatuses.Accepted && requestSummary.Shift.StartDate.CompareTo(DateTime.Now) >= 0)
                         {
-                        <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a></dd>
+                            <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a>.</dd>
                         }
                         <div class="location-details">
                             <dt>Where is the shift?</dt>
