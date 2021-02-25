@@ -1,5 +1,6 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpRequestStageViewModel
 @using HelpMyStreet.Utils.Enums;
+@using Westwind.AspNetCore.Markdown;
 
 @{
 
@@ -13,7 +14,7 @@
 <h2>@Model.PageHeading</h2>
 <div class="row">
     <div class="sm12">
-        <p>@Model.IntoText</p>
+        @Markdown.ParseHtmlString(Model.IntoText)
     </div>
 </div>
 
