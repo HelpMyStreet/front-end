@@ -515,7 +515,7 @@ namespace HelpMyStreetFE.Services.Requests
                 ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
-                Groups = new GroupRequest { Groups = new List<int>() },
+                Groups = new GroupRequest { Groups = await _groupMemberService.GetUserGroups(user.ID) },
                 Locations = new LocationsRequest { Locations = locations },
                 SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
             };
