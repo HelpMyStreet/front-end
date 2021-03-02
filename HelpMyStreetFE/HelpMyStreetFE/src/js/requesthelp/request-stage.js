@@ -114,39 +114,68 @@ var handleActivity = function (el) {
 }
 
 var updateOptionsForActivity = function (taskId) {
-  let requestHelpFormVariant = JSON.parse($('input[name="requestHelp"]').val()).RequestHelpFormVariant;
-  if (taskId == 12) { // facemask   
-    $('#requestorFor_3').show(); // onbehalf of organisation
-    if ($('#requestorFor_3').hasClass("selected")) {
-      $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
+    let requestHelpFormVariant = JSON.parse($('input[name="requestHelp"]').val()).RequestHelpFormVariant;
+    if (taskId == 12) { // facemask   
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
+        if ($('#requestorFor_3').hasClass("selected")) {
+            $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
+        }
+        displayTodayHelpNeededOptions(false);
+    } else {
+        if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
+            $('#requestorFor_1').parent().hide(); // myself
+            $('#requestorFor_2').parent().show(); // someone else
+            $('#requestorFor_3').parent().hide(); // onbehalf of organisation
+            displayTodayHelpNeededOptions(true);
+        } else if (requestHelpFormVariant == 19) { // Sandbox
+            $('#requestorFor_3').parent().show(); // onbehalf of organisation
+            if (taskId == 22 || taskId == 24) { // Volunteer Support, Vaccine Support
+                $('#requestorFor_1').parent().hide(); // myself
+                $('#requestorFor_2').parent().hide(); // someone else
+                $('#time_1').parent().hide(); // Today
+                $('#time_2').parent().hide(); // 24H
+                $('#time_3').parent().hide(); // Week
+                $('#time_4').parent().hide(); // When convenient
+                $('#time_5').parent().hide(); // Other
+                $('#time_7').parent().show(); // Date and Time
+                $('#start_time_7').parent().show(); // Date and Time
+                $('#end_time_7').parent().show(); // Date and Time
+            } else {
+                $('#requestorFor_1').parent().show(); // myself
+                $('#requestorFor_2').parent().show(); // someone else
+                $('#time_1').parent().show(); // Today
+                $('#time_2').parent().show(); // 24H
+                $('#time_3').parent().show(); // Week
+                $('#time_4').parent().show(); // When convenient
+                $('#time_5').parent().show(); // Other
+                $('#time_7').parent().hide(); // Date and Time
+                $('#start_time_7').parent().hide(); // Date and Time
+                $('#end_time_7').parent().hide(); // Date and Time
+            }
+            $('div[data-type="request-for"]').removeClass("selected");
+            $('div[data-type="timeframe"]').removeClass("selected");
+            $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+            $('input[name="currentStep.selectedTimeFrame.Id"]').val("");
+        } else {
+            $('#requestorFor_3').parent().hide();
+            var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
+            // if they have previously selected On behalf of organisation,
+            //set selected RequestorID as empty since that option is only available to facemasks
+            if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
+                $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+            }
+            displayTodayHelpNeededOptions(true);
+        }
     }
-    displayTodayHelpNeededOptions(false);
-  } else {
-      if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
-          $('#requestorFor_1').hide(); // myself
-          $('#requestorFor_2').show(); // someone else
-          $('#requestorFor_3').hide(); // onbehalf of organisation
-      } else {
-          $('#requestorFor_3').hide();
-          var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-          // if they have previously selected On behalf of organisation,
-          //set selected RequestorID as empty since that option is only available to facemasks
-          if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
-              $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-          }
-          
-      }
-      displayTodayHelpNeededOptions(true);
-  }
 
-    
 
-  // preselect value if theres only one
-  if ($('.requestorFor:visible').length == 1) {
-    $('.requestorFor:visible').addClass("selected");
-    let selectedId = $('.requestorFor:visible').attr("data-id");
-    $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
-  }
+
+    // preselect value if theres only one
+    if ($('.requestorFor:visible').length == 1) {
+        $('.requestorFor:visible').addClass("selected");
+        let selectedId = $('.requestorFor:visible').attr("data-id");
+        $('input[name="currentStep.SelectedRequestor.Id"]').val(selectedId);
+    }
 }
 
 function displayTodayHelpNeededOptions(show) {
