@@ -9,13 +9,12 @@ using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Helpers
 {
-    public static class ShiftRequestExtensions
+    public static class RequestSummaryExtensions
     {
         public static Dictionary<JobStatuses, int> JobStatusDictionary(this RequestSummary requestSummary)
         {
-            return requestSummary.JobBasics.GroupBy(j => j.JobStatus)
+            return requestSummary.UncancelledJobs().GroupBy(j => j.JobStatus)
                 .Select(g => new KeyValuePair<JobStatuses, int>(g.Key, g.Count()))
-                .Where(s => !s.Key.Equals(JobStatuses.Cancelled))
                 .ToDictionary(a => a.Key, a => a.Value);
         }
 
@@ -29,19 +28,24 @@ namespace HelpMyStreetFE.Helpers
             };
         }
 
-        public static bool Complete(this RequestSummary requestSummary)
+        public static bool RequestComplete(this RequestSummary requestSummary)
         {
             return requestSummary.JobBasics.All(j => j.JobStatus.Complete());
         }
 
-        public static bool Incomplete(this RequestSummary requestSummary)
+        public static IEnumerable<JobBasic> UncancelledJobs(this RequestSummary requestSummary)
         {
-            return requestSummary.JobBasics.Any(j => j.JobStatus.Incomplete());
+            return requestSummary.JobBasics.Where(j => !j.JobStatus.Equals(JobStatuses.Cancelled));
         }
 
-        public static bool Unfilled(this RequestSummary requestSummary)
+        public static IEnumerable<JobBasic> IncompleteJobs(this RequestSummary requestSummary)
         {
-            return requestSummary.JobBasics.Any(j => j.JobStatus.Equals(JobStatuses.Open));
+            return requestSummary.JobBasics.Where(j => j.JobStatus.Incomplete());
+        }
+
+        public static IEnumerable<JobBasic> UnfilledJobs(this RequestSummary requestSummary)
+        {
+            return requestSummary.JobBasics.Where(j => j.JobStatus.Equals(JobStatuses.Open));
         }
     }
 }

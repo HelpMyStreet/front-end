@@ -15,7 +15,7 @@
 
     var className = "";
 
-    if (Model.Item.Unfilled())
+    if (Model.Item.UnfilledJobs().Count() > 0)
     {
         if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(3))
         {
