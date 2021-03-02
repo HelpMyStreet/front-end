@@ -514,7 +514,7 @@ namespace HelpMyStreetFE.Services.Requests
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
             var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobHeaderJobDedupe_EqualityComparer));
 
-            return allJobs;
+            return notMyJobs;
         }
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
