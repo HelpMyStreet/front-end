@@ -42,6 +42,7 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IAddressService _addressService;
 
         private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
+        private IEqualityComparer<JobHeader> _jobHeaderJobDedupe_EqualityComparer;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
@@ -60,6 +61,7 @@ namespace HelpMyStreetFE.Services.Requests
             _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
 
             _shiftJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
+            _jobHeaderJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -142,7 +144,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetOpenJobsForUserFromRepo(user);
+                return await GetOpenJobsForUserFromRepo(user, cancellationToken);
             }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
             return jobs;
@@ -426,7 +428,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken));
+                    return await GetOpenJobsForUserFromRepo(await _userService.GetUserAsync(userId, cancellationToken), cancellationToken);
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-open-jobs", cancellationToken);
 
 
@@ -483,7 +485,7 @@ namespace HelpMyStreetFE.Services.Requests
             });
         }
 
-        private async Task<IEnumerable<JobHeader>> GetOpenJobsForUserFromRepo(User user)
+        private async Task<IEnumerable<JobHeader>> GetOpenJobsForUserFromRepo(User user, CancellationToken cancellationToken)
         {
             if (user.PostalCode == null)
             {
@@ -504,7 +506,12 @@ namespace HelpMyStreetFE.Services.Requests
                 Groups = new GroupRequest() { Groups = await _groupMemberService.GetUserGroups(user.ID) }
             };
 
-            return await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+            var allJobs = await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest);
+            var dedupedJobs = allJobs.Distinct(_jobHeaderJobDedupe_EqualityComparer);
+            var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
+            var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobHeaderJobDedupe_EqualityComparer));
+
+            return notMyJobs;
         }
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
