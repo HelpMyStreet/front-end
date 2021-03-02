@@ -36,7 +36,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         {
             get
             {
-                return $"0px {OffsetProportion * Circumference}px {Proportion * Circumference}px {(1/(OffsetProportion + Proportion)) * Circumference}px";
+                return $"0px {OffsetProportion * Circumference}px {(Proportion - GapProportion) * Circumference}px {(1/(OffsetProportion + Proportion)) * Circumference}px";
             }
         }
 
