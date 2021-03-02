@@ -220,16 +220,19 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            return (await GetJobAndRequestSummaryAsync(jobId, cancellationToken)).JobSummary;
+            var getJobSummaryResponse = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+
+            return getJobSummaryResponse.JobSummary;
         }
 
         public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
             var getJobSummaryResponse = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+            var getRequestSummaryResponse = await _requestHelpRepository.GetRequestSummaryAsync(getJobSummaryResponse.RequestID);
 
             return new JobDetail()
             {
-                RequestSummary = getJobSummaryResponse.RequestSummary,
+                RequestSummary = getRequestSummaryResponse.RequestSummary,
                 JobSummary = getJobSummaryResponse.JobSummary,
             };
         }
@@ -511,7 +514,7 @@ namespace HelpMyStreetFE.Services.Requests
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
             var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobHeaderJobDedupe_EqualityComparer));
 
-            return notMyJobs;
+            return allJobs;
         }
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
