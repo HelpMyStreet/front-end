@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -23,6 +23,7 @@ using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
+using HelpMyStreet.Utils.EqualityComparers;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -58,7 +59,7 @@ namespace HelpMyStreetFE.Services.Requests
             _memDistCache_ShiftJobs = memDistCache_ShiftJobs;
             _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
 
-            _shiftJobDedupe_EqualityComparer = new ShiftJobDedupe_EqualityComparer();
+            _shiftJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)

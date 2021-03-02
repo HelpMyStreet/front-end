@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -42,21 +42,6 @@ namespace HelpMyStreetFE.Helpers
         public static bool Unfilled(this RequestSummary requestSummary)
         {
             return requestSummary.JobSummaries.Any(j => j.JobStatus.Equals(JobStatuses.Open));
-        }
-    }
-
-
-    public class ShiftJobDedupe_EqualityComparer : IEqualityComparer<ShiftJob>
-    {
-        public bool Equals(ShiftJob a, ShiftJob b)
-        {
-            return a.RequestID == b.RequestID && a.SupportActivity == b.SupportActivity;
-
-        }
-
-        public int GetHashCode([DisallowNull] ShiftJob obj)
-        {
-            return obj.RequestID.GetHashCode() + obj.SupportActivity.GetHashCode();
         }
     }
 }
