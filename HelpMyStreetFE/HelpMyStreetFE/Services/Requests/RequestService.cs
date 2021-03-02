@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Response;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -376,7 +376,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             var request =  await GetRequestSummaryAsync(requestId, cancellationToken);
 
-            if (request.JobSummaries.Count(j => j.VolunteerUserID == userId && j.JobStatus != JobStatuses.Open) > 0)
+            if (request.JobBasics.Count(j => j.VolunteerUserID == userId && j.JobStatus != JobStatuses.Open) > 0)
             {
                 return new JobLocation
                 {

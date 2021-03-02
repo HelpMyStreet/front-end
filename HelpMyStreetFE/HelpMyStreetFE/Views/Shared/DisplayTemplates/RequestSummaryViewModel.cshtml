@@ -55,7 +55,7 @@
             </span>
         </div>
         <div class="job__info__activity">
-            @foreach (SupportActivities activity in Model.Item.JobSummaries.Select(a => a.SupportActivity).Distinct())
+            @foreach (SupportActivities activity in Model.Item.JobBasics.Select(a => a.SupportActivity).Distinct())
             {
                 {
                     <span class="job__info__activity__title @activity.Class()">

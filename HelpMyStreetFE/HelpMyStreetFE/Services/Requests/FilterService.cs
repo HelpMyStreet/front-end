@@ -338,8 +338,8 @@ namespace HelpMyStreetFE.Services.Requests
         public IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
         {
             var jobsToDisplay = jobs.Where(
-                j => (jfr.SupportActivities == null || j.JobSummaries.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
-                    && (jfr.JobStatuses == null || j.JobSummaries.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
+                j => (jfr.SupportActivities == null || j.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
+                    && (jfr.JobStatuses == null || j.JobBasics.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Shift.Location))
                     && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
                     && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0)
@@ -352,7 +352,7 @@ namespace HelpMyStreetFE.Services.Requests
                 OrderBy.DateDue_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
                 OrderBy.Emptiest =>
-                    jobsToDisplay.OrderByDescending(j => j.JobSummaries.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
+                    jobsToDisplay.OrderByDescending(j => j.JobBasics.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
                 OrderBy.DateRequested_Descending =>
                     jobsToDisplay.OrderByDescending(j => j.DateRequested),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
