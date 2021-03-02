@@ -238,6 +238,8 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<SupportActivities>() { Value = SupportActivities.Transport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.MealsToYourDoor, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.MealtimeCompanion, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.EmergencySupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.VolunteerSupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
 
                         // The following are not currently on any request help form
