@@ -5,7 +5,6 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="42.521"
@@ -13,7 +12,7 @@
    viewBox="0 0 42.521 51.743514"
    version="1.1"
    id="svg288"
-   sodipodi:docname="HelpMyStreet_BrandMarque_Transparent.svg"
+   sodipodi:docname="HelpMyStreet_BrandMarque_White.svg"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
   <metadata
      id="metadata292">
@@ -41,7 +40,7 @@
      id="namedview290"
      showgrid="false"
      inkscape:zoom="4.3238434"
-     inkscape:cx="139.34162"
+     inkscape:cx="139.34262"
      inkscape:cy="25.8745"
      inkscape:window-x="4269"
      inkscape:window-y="347"
@@ -82,26 +81,6 @@
          transform="translate(-406.41,-233.173)"
          id="path237" />
     </clipPath>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#b"
-       id="linearGradient1183"
-       gradientUnits="userSpaceOnUse"
-       y1="61.181831"
-       x2="18.208789"
-       y2="61.181831"
-       gradientTransform="scale(2.3302482,0.42913884)"
-       x1="0" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#b"
-       id="linearGradient1185"
-       gradientUnits="userSpaceOnUse"
-       y1="61.181831"
-       x2="18.208789"
-       y2="61.181831"
-       gradientTransform="scale(2.3302482,0.42913884)"
-       x1="0" />
   </defs>
   <g
      transform="translate(-0.001,-115.38)"
@@ -109,32 +88,35 @@
     <g
        transform="translate(0,115.38)"
        id="g278"
-       style="opacity:1">
+       style="opacity:1;fill:#ffffff">
       <g
          class="c"
          clip-path="url(#a)"
-         id="g276">
+         id="g276"
+         style="fill:#ffffff">
         <path
            class="d"
            d="M 0,52.13 H 281 V 0.381 H 0 Z"
            transform="translate(0,-0.381)"
            id="path274"
-           style="fill:url(#linearGradient1183)" />
+           style="fill:#ffffff" />
       </g>
     </g>
     <g
        transform="translate(13.216,128.575)"
-       id="g284">
+       id="g284"
+       style="fill:#ffffff">
       <g
          class="e"
          clip-path="url(#c)"
-         id="g282">
+         id="g282"
+         style="fill:#ffffff">
         <path
            class="d"
            d="M 0,52.13 H 281 V 0.381 H 0 Z"
            transform="translate(-13.216,-12.597)"
            id="path280"
-           style="fill:url(#linearGradient1185)" />
+           style="fill:#ffffff" />
       </g>
     </g>
   </g>
