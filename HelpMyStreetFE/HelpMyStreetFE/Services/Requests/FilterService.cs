@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
@@ -192,7 +192,7 @@ namespace HelpMyStreetFE.Services.Requests
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
             }
 
-            if (jobStatuses.All(s => s.Complete()))
+            if (jobStatuses.Count() > 0 && jobStatuses.All(s => s.Complete()))
             {
                 filterSet.OrderBy.Where(ob => ob.Value == OrderBy.DateStatusLastChanged_Descending).First().IsSelected = true;
             }
