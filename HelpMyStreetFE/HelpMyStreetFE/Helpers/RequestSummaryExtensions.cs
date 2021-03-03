@@ -47,5 +47,28 @@ namespace HelpMyStreetFE.Helpers
         {
             return requestSummary.JobBasics.Where(j => j.JobStatus.Equals(JobStatuses.Open));
         }
+
+        public static double RequiringAdminAttentionScore(this RequestSummary requestSummary)
+        {
+            if (requestSummary.JobSummaries.Count() == 0)
+            {
+                return 0;
+            }
+
+            return requestSummary.JobSummaries.Select(j => j.RequiringAdminAttentionScore()).Average();
+        }
+
+        public static DateTime NextDueDate(this RequestSummary requestSummary)
+        {
+            if (requestSummary.Shift != null)
+            {
+                return requestSummary.Shift.StartDate;
+            }
+            else if (requestSummary.JobSummaries.Exists(j => j.JobStatus.Incomplete()))
+            {
+                return requestSummary.JobSummaries.Where(j => j.JobStatus.Incomplete()).Min(j => j.DueDate);
+            }
+            return DateTime.MaxValue;
+        }
     }
 }

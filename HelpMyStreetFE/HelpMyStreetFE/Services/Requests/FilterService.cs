@@ -343,18 +343,29 @@ namespace HelpMyStreetFE.Services.Requests
                     && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Shift.Location))
                     && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
                     && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0)
-                    );
+                    && (jfr.DueAfter == null || j.NextDueDate() >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || j.NextDueDate() <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
 
             return jfr.OrderBy switch
             {
                 OrderBy.DateDue_Ascending =>
-                   jobsToDisplay.OrderBy(j => j.Shift.StartDate),
+                   jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate()),
                 OrderBy.DateDue_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.Shift.StartDate),
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate()),
                 OrderBy.Emptiest =>
-                    jobsToDisplay.OrderByDescending(j => j.JobBasics.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(j => j.Shift.StartDate),
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobBasics.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(r => r.NextDueDate()),
+                OrderBy.DateRequested_Ascending =>
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.DateRequested),
                 OrderBy.DateRequested_Descending =>
-                    jobsToDisplay.OrderByDescending(j => j.DateRequested),
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.DateRequested),
+                OrderBy.RequiringAdminAttention =>
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.RequiringAdminAttentionScore()).ThenBy(r => r.NextDueDate()),
+                OrderBy.DateStatusLastChanged_Ascending =>
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Min(j => j.DateStatusLastChanged)),
+                OrderBy.DateStatusLastChanged_Descending =>
+                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Max(j => j.DateStatusLastChanged)),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
@@ -391,6 +402,11 @@ namespace HelpMyStreetFE.Services.Requests
                     jobsToDisplay.OrderByDescending(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).ThenBy(j => j.DistanceInMiles),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
+        }
+
+        private bool Highlight(RequestSummary requestSummary, JobFilterRequest jfr)
+        {
+            return requestSummary.JobBasics.Exists(j => j.JobID.Equals(jfr.HighlightJobId)) || requestSummary.RequestID.Equals(jfr.HighlightRequestId);
         }
     }
 }
