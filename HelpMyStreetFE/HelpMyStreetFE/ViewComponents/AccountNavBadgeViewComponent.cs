@@ -67,7 +67,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.Group
                         => await GetCount(user, MenuPage.GroupRequests, groupKey, cancellationToken) + await GetCount(user, MenuPage.GroupShifts, groupKey, cancellationToken),
                     MenuPage.GroupRequests
-                        => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
+                        => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Count(r => !r.RequestComplete()),
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests

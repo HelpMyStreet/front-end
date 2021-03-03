@@ -317,22 +317,22 @@ namespace HelpMyStreetFE.Services.Requests
             return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
         }
 
-        public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
         {
             int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
 
             return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
 
-        public async Task<IEnumerable<JobHeader>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            return await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = groupId });
-            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+                return await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest() { ReferringGroupID = groupId, IncludeChildGroups = true, RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Task } } });
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}-requests", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
@@ -462,10 +462,10 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         if (g.TasksEnabled)
                         {
-                            _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                            _ = _memDistCache_RequestSummaries.RefreshDataAsync(async (cancellationToken) =>
                             {
-                                return await _requestHelpRepository.GetJobsByFilterAsync(new GetJobsByFilterRequest() { ReferringGroupID = g.GroupId });
-                            }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}", cancellationToken);
+                                return await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest() { ReferringGroupID = g.GroupId, IncludeChildGroups = true, RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Task } } });
+                            }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-requests", cancellationToken);
                         }
 
                         if (g.ShiftsEnabled)
