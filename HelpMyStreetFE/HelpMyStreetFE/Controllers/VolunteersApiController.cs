@@ -59,7 +59,7 @@ namespace HelpMyStreetFE.Controllers
 
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-            DateTime? validUntil = assignCredentialsViewModel.ValidUntil == "Null" ? (DateTime?)null : DateTime.ParseExact(assignCredentialsViewModel.ValidUntil, "dd / MM / yyyy", new CultureInfo("en-GB"));
+            DateTime? validUntil = assignCredentialsViewModel.ValidUntil == "Null" ? (DateTime?)null : DateTime.ParseExact(assignCredentialsViewModel.ValidUntil, DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"));
 
             PutGroupMemberCredentialsRequest putGroupMemberCredentialsRequest = new PutGroupMemberCredentialsRequest()
             {

@@ -131,7 +131,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
                 if (time.DueDateType.HasDate())
                 {
-                    time.Date = DateTime.ParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), "dd / MM / yyyy", new CultureInfo("en-GB"));
+                    time.Date = DateTime.ParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"));
                     if (time.DueDateType.HasStartTime())
                     {
                         time.StartTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
