@@ -6,7 +6,7 @@
 @{
     var todaysDate = DateTime.Now;
     todaysDate = todaysDate.ToLocalTime();
-    var stringDate = todaysDate.AddDays(7).ToString("dd/MM/yyyy");
+    var stringDate = todaysDate.AddDays(7).ToString("dd / MM / yyyy");
 }
 
 <div class="sm4">
@@ -16,7 +16,7 @@
             @if (Model.DueDateType.HasDate())
             {
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd MMM yyyy") : "")" />
+                    <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd / MM / yyyy") : "")" />
                     <span id="dateselectionError" class="error"></span>
                 </div>
             }
