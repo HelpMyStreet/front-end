@@ -34,7 +34,6 @@
 @if (Model.SingleJobStatus() != null && Model.SingleJobStatus() != JobStatuses.Accepted && Model.SingleJobStatus() != JobStatuses.InProgress && Model.SingleJobStatus() != JobStatuses.Open)
 {
     <img class="status-icon" src="~/img/icons/status/@Model.SingleJobStatus().Value.Icon()" alt="@Model.SingleJobStatus().Value.FriendlyName()" />
-    <span class="job__status multiple-statuses">@(totalUncancelledJobs > 0 ? $"{totalUncancelledJobs} of {totalUncancelledJobs}" : "") @Model.SingleJobStatus().Value.FriendlyName()</span>
 }
 else
 {
@@ -62,6 +61,21 @@ else
 
         </svg>
     </div>
+}
+@if (totalUncancelledJobs == 0)
+{
+    <span class="job__status">
+        @Model.SingleJobStatus()?.FriendlyName()
+    </span>
+}
+else if (totalUncancelledJobs == 1)
+{
+    <span class="job__status">
+        @Model.JobStatusDictionary().First().Key.FriendlyName()
+    </span>
+}
+else
+{
     <span class="job__status multiple-statuses">
         @foreach (var a in Model.JobStatusDictionary().OrderBy(s => s.Key.UsualOrderOfProgression()))
         {
