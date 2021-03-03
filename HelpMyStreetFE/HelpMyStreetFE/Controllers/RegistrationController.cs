@@ -133,7 +133,7 @@ namespace HelpMyStreetFE.Controllers
 
             try
             {
-                DateTime dob = DateTime.ParseExact(form.DateOfBirth, "dd / MM / yyyy", new CultureInfo("en-GB"));
+                DateTime dob = DateTime.ParseExact(form.DateOfBirth, DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"));
                 await _userService.CreateUserStepTwoAsync(user.ID, form.Postcode, form.FirstName, form.LastName, form.AddressLine1, form.AddressLine2, form.County, form.City, form.MobilePhone, form.OtherPhone, dob, cancellationToken);
                 return Redirect("/registration/step-three");
             }

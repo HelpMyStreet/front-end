@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Models.Account.Volunteers;
 using HelpMyStreetFE.Models;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -61,9 +62,9 @@ namespace HelpMyStreetFE.ViewComponents
         {
             return new List<ValidUntilViewModel>() {
                 new ValidUntilViewModel() { ID = "1", Label = "Never", Value = "Null" } ,
-                new ValidUntilViewModel() { ID = "2", Label = "In one month", Value = DateTime.Now.AddMonths(1).ToString("dd MMM yyyy") } ,
-                new ValidUntilViewModel() { ID = "3", Label = "In one year", Value = DateTime.Now.AddYears(1).ToString("dd MMM yyyy") } ,
-                new ValidUntilViewModel() { ID = "4", Label = "In two years", Value = DateTime.Now.AddYears(2).ToString("dd MMM yyyy") } ,
+                new ValidUntilViewModel() { ID = "2", Label = "In one month", Value = DateTime.Now.AddMonths(1).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
+                new ValidUntilViewModel() { ID = "3", Label = "In one year", Value = DateTime.Now.AddYears(1).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
+                new ValidUntilViewModel() { ID = "4", Label = "In two years", Value = DateTime.Now.AddYears(2).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
                 new ValidUntilViewModel() { ID = "5", Label = "Enter a date", Value = "", ShowDatePicker = true } ,
             };
         }

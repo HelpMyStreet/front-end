@@ -6,7 +6,7 @@
 @{
     var todaysDate = DateTime.Now;
     todaysDate = todaysDate.ToLocalTime();
-    var stringDate = todaysDate.AddDays(7).ToString("dd/MM/yyyy");
+    var stringDate = todaysDate.AddDays(7).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT);
 }
 
 <div class="sm4">
@@ -16,7 +16,7 @@
             @if (Model.DueDateType.HasDate())
             {
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString("dd MMM yyyy") : "")" />
+                    <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.Date != DateTime.MinValue ? Model.Date.Date.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
                     <span id="dateselectionError" class="error"></span>
                 </div>
             }
@@ -31,7 +31,7 @@
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Starting at</div>
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.StartTime" type="time" step="300" placeholder="e.g. 15:00" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString("HH:mm") : "")" />
+                    <input name="currentStep.SelectedTimeFrame.StartTime" type="time" step="300" placeholder="e.g. 15:00" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.TIME_FIELD_FORMAT) : "")" />
                     <span id="timeselectionError" class="error"></span>
                 </div>
             </div>
@@ -46,7 +46,7 @@
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Ending at</div>
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.EndTime" type="time" step="300" placeholder="e.g. 18:00" autocomplete="off" value="@(Model.EndTime != DateTime.MinValue ? Model.EndTime.ToString("HH:mm") : "")" />
+                    <input name="currentStep.SelectedTimeFrame.EndTime" type="time" step="300" placeholder="e.g. 18:00" autocomplete="off" value="@(Model.EndTime != DateTime.MinValue ? Model.EndTime.ToString(DatePickerHelpers.TIME_FIELD_FORMAT) : "")" />
                     <span id="timeselectionError" class="error"></span>
                 </div>
             </div>
