@@ -21,7 +21,7 @@
         }
         break;
     case RequestorType.Organisation:
-        <h2>Recipient Details</h2>
+        <h2>Recipient Contact Details</h2>
         <div class="row">
             <div class="input sm12 pad-md">
                 <label for="currentStep_Organisation">Organisation</label>
@@ -29,9 +29,10 @@
                 <span class="error"></span>
             </div>
         </div>
-        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", FullAddressRequired = Model.FullRecipientAddressRequired });
+        @Html.EditorFor(x => x.Recipient, "RecipientDetails_Organisation", new { FullAddressRequired = Model.FullRecipientAddressRequired });
         if (Model.ShowRequestorFields)
         {
+            <hr class="input--separator" />
             <h2>Your Details</h2>
             @Html.EditorFor(x => x.Requestor);
         }
