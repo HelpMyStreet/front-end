@@ -1,0 +1,113 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RecipientDetails
+
+
+
+@{ 
+    var fullAddressRequired = ViewData["FullAddressRequired"] is bool ? (bool)ViewData["FullAddressRequired"] : true;
+}
+<div class="user-detail">
+    <div class="row">
+        <div class="input sm6 pad-md">
+            <label for="currentStep_Recipient_Firstname">First name</label>
+            @Html.TextBoxFor(x => x.Firstname)
+            <span class="error"></span>
+        </div>
+        <div class="input sm6 pad-md">
+            <label for="currentStep_Recipient_Lastname">Last name</label>
+            @Html.TextBoxFor(x => x.Lastname)
+            <span class="error"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input sm6 pad-md">
+            <label for="currentStep_Recipient_MobileNumber">Mobile number</label>
+            @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
+            <span class="error"></span>
+        </div>
+        <div class="input sm6 pad-md">
+            <label for="currentStep_Recipient_AlternatePhoneNumber">Alternative phone number</label>
+            @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
+            <span class="error"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input sm12 pad-md">
+            <label for="currentStep_Recipient_Email">Email address</label>
+            @Html.TextBoxFor(x => x.Email)
+            <span class="error"></span>
+        </div>
+    </div>
+</div>
+<div class="user-detail">
+
+    <hr class="input--separator" />
+
+    <h2>Where is the help needed?</h2>
+    <div class="row">
+        @if (fullAddressRequired)
+        {
+            <div class="input sm6 pad-md">
+                <label for="postcode-search">Postcode</label>
+                <input name="postcode_search" id="postcode-search" type="text" placeholder="e.g. NG1 1PS" value="@Model?.Postcode" />
+                <span class="error"></span>
+            </div>
+            <div class="input sm6 pad-md find-address">
+                <button id="address_finder" type="button" class="btn large cta--blue fill">
+                    <span class="text">Find address</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Searching...",  ShowDarkSpinner= true}' /></div>
+                </button>
+                <a class="input__link manual_entry">Or enter address manually</a>
+            </div>
+        }
+        else
+        {
+            <div class="input sm12 pad-md">
+                <label id="currentStep_Requestor_Postcode">Postcode</label>
+                @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input" })
+                <span class="error"></span>
+            </div>
+        }
+    </div>
+
+    @if (fullAddressRequired)
+    {
+        <div class="row">
+            <div class="input sm12 pad-md dnone" id="address_selector">
+                <label for="address-selector-dropdown">Select address <a class="input__link manual_entry edit-address">Edit address</a></label>
+                <select id="address-selector-dropdown" name="address_selector">
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="@(Model?.Postcode != null ?  "dblock" : "")  expander sm12 pt-xs">
+                <div class="row">
+                    <div class="input sm6 pad-md">
+                        <label for="currentStep_Recipient_AddressLine1">Address line 1</label>
+                        @Html.TextBoxFor(x => x.AddressLine1)
+                        <span class="error"></span>
+                    </div>
+                    <div class="input sm6 pad-md">
+                        <label for="currentStep.Recipient.AddressLine2">Address line 2</label>
+                        @Html.TextBoxFor(x => x.AddressLine2)
+                        <span class="error"></span>
+                    </div>
+                    <div class="input sm6 pad-md">
+                        <label for="currentStep_Recipient_Town">Town / city</label>
+                        @Html.TextBoxFor(x => x.Town)
+                        <span class="error"></span>
+                    </div>
+                    <div class="input sm6 pad-md">
+                        <label for="currentStep_Recipient_County">County</label>
+                        @Html.TextBoxFor(x => x.County)
+                        <span class="error"></span>
+                    </div>
+                    <div class="input sm6 pad-md">
+                        <label for="currentStep_Recipient_Postcode">Postcode</label>
+                        @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input" })
+                        <span class="error"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

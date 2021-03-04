@@ -202,9 +202,8 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
         {
-            long jobID = 0;
-            Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
-            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+            int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
+            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
 
             var location = shiftDetails.RequestSummary.Shift.Location;
             LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
@@ -220,10 +219,9 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> GetShiftCalendar(string j, CancellationToken cancellationToken)
         {
-            long jobID = 0;
-            Int64.TryParse(Base64Utils.Base64Decode(j), out jobID);
+            int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync((int)jobID, cancellationToken);
+            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
             if (shiftDetails == null || shiftDetails.JobSummary.RequestType != RequestType.Shift)
             {
                 throw new Exception("Job does not exist or Not a shift");

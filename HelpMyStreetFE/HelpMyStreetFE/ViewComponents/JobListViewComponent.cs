@@ -57,20 +57,20 @@ namespace HelpMyStreetFE.ViewComponents
             // TODO: Consolidate 3 methods
             switch (jobFilterRequest.JobSet.RequestType(), jobFilterRequest.JobSet)
             {
+                case (RequestType.Shift, JobSet.GroupShifts):
+                case (RequestType.Task, JobSet.GroupRequests):
+                    viewName = "ShiftRequestList";
+                    viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    break;
+
                 case (RequestType.Task, _):
                     viewName = "JobList";
                     viewModel = await InvokeAsync_Jobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
-                case (RequestType.Shift, JobSet.UserOpenShifts):
-                case (RequestType.Shift, JobSet.UserMyShifts):
+                case (RequestType.Shift, _):
                     viewName = "ShiftList";
                     viewModel = await InvokeAsync_ShiftJobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
-                    break;
-
-                case (RequestType.Shift, JobSet.GroupShifts):
-                    viewName = "ShiftRequestList";
-                    viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
                 default: throw new ArgumentException(message: $"Unexpected RequestType value: {jobFilterRequest.JobSet.RequestType()}");
@@ -85,7 +85,6 @@ namespace HelpMyStreetFE.ViewComponents
 
             IEnumerable<JobHeader> jobs = jobFilterRequest.JobSet switch
             {
-                JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
                 JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.OtherJobs,
                 JobSet.UserMyRequests => (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)),
@@ -192,6 +191,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             IEnumerable<RequestSummary> jobs = jobFilterRequest.JobSet switch
             {
+                JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
@@ -222,7 +222,7 @@ namespace HelpMyStreetFE.ViewComponents
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = false,
-                HighlightJob = a.JobSummaries.Select(j => (int?)j.JobID).Contains(jobFilterRequest.HighlightJobId) || a.RequestID.Equals(jobFilterRequest.HighlightRequestId),
+                HighlightJob = a.JobBasics.Select(j => (int?)j.JobID).Contains(jobFilterRequest.HighlightJobId) || a.RequestID.Equals(jobFilterRequest.HighlightRequestId),
             }));
 
             if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)

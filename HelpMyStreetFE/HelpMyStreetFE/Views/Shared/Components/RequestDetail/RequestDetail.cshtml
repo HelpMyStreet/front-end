@@ -120,57 +120,7 @@
                 <div class="space-filler"></div>
                 <div class="sm2">
                     <div class="job__info__actions mt-sm">
-                        @switch (jobDetails.JobSummary.JobStatus)
-                        {
-                            case JobStatuses.New:
-                                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                                    <span class="text">Approve</span>
-                                </button>
-                                break;
-                            case JobStatuses.Open:
-                                break;
-                            case JobStatuses.Accepted:
-                                <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                                    <span class="text">Mark as Open</span>
-                                </button>
-                                break;
-                            case JobStatuses.InProgress:
-                                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
-                                    <span class="text">Mark as Done</span>
-                                </button>
-                                <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                                    <span class="text">Mark as Open</span>
-                                </button>
-                                break;
-                            case JobStatuses.Done:
-                                @*<div class="feedback-container">
-                                    <button class="btn cta--gray-8-border">
-                                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading...", Hide = false, ShowDarkSpinner = true }' />
-                                    </button>
-                                </div>*@
-                                if (!(jobDetails.JobSummary.Archive ?? false))
-                                {
-                                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(jobDetails.JobSummary.VolunteerUserID.ToString())">
-                                        <span class="text">Not done</span>
-                                    </button>
-                                }
-                                break;
-                            case JobStatuses.Cancelled:
-                                @*<div class="feedback-container"></div>*@
-                                break;
-                        }
-                        @if (jobDetails.JobSummary.JobStatus != JobStatuses.Cancelled && !(jobDetails.JobSummary.Archive ?? false))
-                        {
-                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                                <span class="text">Cancel</span>
-                            </button>
-                        }
-                        <button class="btn cta--green-border undo-request dnone" data-target-state="@jobDetails.JobSummary.JobStatus" data-target-user="@(jobDetails.JobSummary.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(jobDetails.JobSummary.VolunteerUserID.Value) : "")">
-                            <span class="text">Undo</span>
-                            <div class="loader dnone">
-                                <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
-                            </div>
-                        </button>
+                        <partial name="_JobButtons_Admin" model="jobDetails.JobSummary" />
                     </div>
                 </div>
             </div>
