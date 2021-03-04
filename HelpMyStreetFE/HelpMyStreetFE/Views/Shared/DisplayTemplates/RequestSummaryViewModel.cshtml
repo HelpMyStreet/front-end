@@ -164,54 +164,7 @@
         <div class="job__info__actions">
             @if (singleJob)
             {
-                var job = Model.Item.JobBasics.First();
-                @switch (job.JobStatus)
-                {
-                    case JobStatuses.New:
-                        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                            <span class="text">Approve</span>
-                        </button>
-                        break;
-                    case JobStatuses.Open:
-                        break;
-                    case JobStatuses.InProgress:
-                        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
-                            <span class="text">Mark as Done</span>
-                        </button>
-                        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                            <span class="text">Mark as Open</span>
-                        </button>
-                        break;
-                    case JobStatuses.Done:
-                        <div class="feedback-container">
-                            <span class="job__info__col3__status toggle-on-status-change">
-                                <img class="status-icon" src="~/img/icons/status/@job.JobStatus.Icon()" alt="@job.JobStatus.FriendlyName()" />
-                                <span class="job__status">@job.JobStatus.FriendlyName()</span>
-                            </span>
-                        </div>
-                        if (!(Model.Item.JobSummaries?.First().Archive ?? false))
-                        {
-                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(job.VolunteerUserID.ToString())">
-                                <span class="text">Not done</span>
-                            </button>
-                        }
-                        break;
-                    case JobStatuses.Cancelled:
-                        <div class="feedback-container"></div>
-                        break;
-                }
-                @if (job.JobStatus != JobStatuses.Cancelled && !(Model.Item.JobSummaries?.First().Archive ?? false))
-                {
-                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                        <span class="text">Cancel</span>
-                    </button>
-                }
-                <button class="btn cta--green-border undo-request dnone" data-target-state="@job.JobStatus" data-target-user="@(job.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(job.VolunteerUserID.Value) : "")">
-                    <span class="text">Undo</span>
-                    <div class="loader dnone">
-                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
-                    </div>
-                </button>
+                <partial name="_JobButtons_Admin" model="Model.Item.JobBasics.First()" />
             }
             else if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
             {
