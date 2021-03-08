@@ -131,7 +131,8 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 }
                 if (time.DueDateType.HasDate())
                 {
-                    time.Date = DateTime.ParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"));
+                    DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime date);
+                    time.Date = date;
                     if (time.DueDateType.HasStartTime())
                     {
                         time.StartTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
@@ -171,7 +172,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 int.TryParse(components[1], out int minutes);
                 return date.AddHours(hours).AddMinutes(minutes);
             }
-            throw new FormatException($"Badly formatted time string '{value}'");
+            return DateTime.MinValue;
         }
     }
 
