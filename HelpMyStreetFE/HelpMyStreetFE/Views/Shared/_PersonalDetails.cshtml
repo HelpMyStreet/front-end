@@ -1,0 +1,35 @@
+﻿@using HelpMyStreet.Utils.Extensions
+@model HelpMyStreetFE.Models.PersonalDetailsView
+
+<div class="sm6">
+    <h5>@Model.RequestRole.FriendlyName()</h5>
+    <dl>
+        @if (!string.IsNullOrEmpty(Model.RecipientOrganisation))
+        {
+            <dt>Organisation</dt>
+            <dd>@Model.RecipientOrganisation</dd>
+        }
+        @if (@Model.PersonalDetails != null)
+        {
+            @if (!String.IsNullOrEmpty(Model.PersonalDetails.FullName()))
+            {
+            <dt>Name</dt>
+            <dd>@Model.PersonalDetails.FullName()</dd>
+            }
+            @if (!String.IsNullOrEmpty(Model.PersonalDetails.EmailAddress)) {
+            <dt>Email</dt>
+            <dd>@Model.PersonalDetails.EmailAddress</dd>
+            }
+            @if (Model.PersonalDetails.PhoneNumbers().Count() > 0) {
+            <dt>@(Model.PersonalDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+            <dd>
+                @string.Join(" / ", Model.PersonalDetails.PhoneNumbers())
+            </dd>
+            }
+            <dt>Address</dt>
+            <dd>
+                @Html.DisplayFor(x => Model.PersonalDetails.Address)
+            </dd>
+        }
+    </dl>
+</div>

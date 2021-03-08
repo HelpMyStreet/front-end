@@ -118,10 +118,10 @@
                 </span>
             }
             <span class="job__info__activity__location">
-                @Model.Item.PostCode
+                @Math.Round(Model.Item.DistanceInMiles, 1) miles away
                 @if (!admin && Model.Item.JobStatus == JobStatuses.Open)
                 {
-                    <span>(@Math.Round(Model.Item.DistanceInMiles, 1) miles away)</span>
+                    <span>(@Model.Item.PostCode)</span>
                 }
             </span>
         </div>
