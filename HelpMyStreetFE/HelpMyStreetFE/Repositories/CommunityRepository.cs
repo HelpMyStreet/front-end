@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Repositories
             {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/kent/northwest/banner.jpg", GeographicName="North West Kent (Dartford, Swanley or Gravesend)" } },
             {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
-
+            {"ageconnectscardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnectscardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Local Group" } },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -53,6 +53,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
                 Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
+                Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
                 _ => null,
             };
 
@@ -75,6 +76,42 @@ namespace HelpMyStreetFE.Repositories
         public CommunityModel GetCommunityDetailByKey(string key)
         {
             return Communities[key];
+        }
+
+        private CommunityViewModel GetAgeConnectsCardiff()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeConnectsCardiff" };
+            CommunityModel communityModel = GetCommunityDetailByKey("ageconnectscardiff");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 13.5;
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                
+            };
+
+            var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/carousel-1.jpg",
+                    $"{carouselPath}/carousel-2.jpg",
+                    $"{carouselPath}/carousel-3.jpg",
+                    $"{carouselPath}/carousel-4.jpg",
+                    $"{carouselPath}/carousel-5.jpg",
+                    $"{carouselPath}/carousel-6.jpg",
+                    $"{carouselPath}/carousel-7.jpg",
+                    $"{carouselPath}/carousel-8.jpg",
+                }
+            };
+
+            return communityViewModel;
         }
 
         private CommunityViewModel GetBalderton()
