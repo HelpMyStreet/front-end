@@ -85,7 +85,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
             communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 13.5;
+            communityViewModel.Map_ZoomLevel = 11;
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
@@ -95,19 +95,17 @@ namespace HelpMyStreetFE.Repositories
                 
             };
 
-            var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
+            var carouselPath = "/img/community/ageconnectscardiff/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
             {
                 new List<string>
                 {
-                    $"{carouselPath}/carousel-1.jpg",
-                    $"{carouselPath}/carousel-2.jpg",
-                    $"{carouselPath}/carousel-3.jpg",
-                    $"{carouselPath}/carousel-4.jpg",
-                    $"{carouselPath}/carousel-5.jpg",
-                    $"{carouselPath}/carousel-6.jpg",
-                    $"{carouselPath}/carousel-7.jpg",
-                    $"{carouselPath}/carousel-8.jpg",
+                    $"{carouselPath}/carousel-1.jpeg",
+                    $"{carouselPath}/carousel-2.jpeg",
+                    $"{carouselPath}/carousel-3.jpeg",
+                    $"{carouselPath}/carousel-4.jpeg",
+                    $"{carouselPath}/carousel-5.jpeg",
+                    $"{carouselPath}/carousel-6.jpeg",
                 }
             };
 
