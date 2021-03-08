@@ -69,13 +69,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetAllJobsByFilterResponse> GetJobsByFilterAsync(GetAllJobsByFilterRequest request)
+        public async Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
         {
-            var response = await PostAsync<BaseRequestHelpResponse<GetAllJobsByFilterResponse>>($"/api/GetAllJobsByFilter", request);
+            var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.JobHeaders;
             }
             throw new Exception("GetJobsByFilter call failed");
         }

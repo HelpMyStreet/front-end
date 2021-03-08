@@ -7,9 +7,9 @@ using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Helpers
 {
-    public static class JobSummaryExtensions
+    public static class JobHeaderExtensions
     {
-        public static int RequiringAdminAttentionScore(this JobSummary job)
+        public static int RequiringAdminAttentionScore(this JobHeader job)
         {
             int daysUntilDueDate = (int)job.DueDate.Date.Subtract(DateTime.UtcNow.Date).TotalDays;
             int daysSinceLastUpdate = (int)DateTime.UtcNow.Date.Subtract(job.DateStatusLastChanged.Date).TotalDays;
