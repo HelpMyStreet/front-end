@@ -57,11 +57,11 @@ namespace HelpMyStreetFE.Models.Validation
                     }
                 }
             }
-            else if (value is RequestHelpDetailStageViewModel vm)
+            else if (value is RequestHelpDetailStageViewModel rsvm)
             {
-                if (vm.Questions != null && vm.Questions.Questions != null)
+                if (rsvm.Questions != null && rsvm.Questions.Questions != null)
                 {
-                    foreach (var q in vm.Questions.Questions)
+                    foreach (var q in rsvm.Questions.Questions)
                     {
                         if (q.Required && string.IsNullOrEmpty(q.Model)) errors.Add($"{q.DataValidationMessage}");
                     }
