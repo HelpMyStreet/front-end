@@ -185,7 +185,7 @@ namespace HelpMyStreetFE.Controllers {
                         FeedbackDue = false,
                     };
                 }
-                else if (!job.Archive)
+                else if (!(job.Archive ?? false))
                 {
                     _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
                     _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");

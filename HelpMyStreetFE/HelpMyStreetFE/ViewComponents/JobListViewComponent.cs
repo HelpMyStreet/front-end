@@ -79,11 +79,11 @@ namespace HelpMyStreetFE.ViewComponents
             return View(viewName, viewModel);
         }
 
-        private async Task<ListViewModel<JobViewModel<JobSummary>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        private async Task<ListViewModel<JobViewModel<JobHeader>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            var jobListViewModel = new ListViewModel<JobViewModel<JobSummary>>();
+            var jobListViewModel = new ListViewModel<JobViewModel<JobHeader>>();
 
-            IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<JobHeader> jobs = jobFilterRequest.JobSet switch
             {
                 JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
                 JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.OtherJobs,
@@ -108,7 +108,7 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobSummary>()
+            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobHeader>()
             {
                 Item = a,
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
