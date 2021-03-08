@@ -235,7 +235,12 @@ async function loadJobDetails(job, forceRefresh) {
     if (response.fetchResponse == fetchResponses.SUCCESS) {
         jobDetail.html(await response.fetchPayload);
         jobDetail.data('status', { 'updated': new Date() });
-        
+        if (jobId == "") { // Request
+            $(jobDetail).find('.job').each(function () {
+                if ($(this).find('.feedback-container').length > 0)
+                    loadFeedbackComponent($(this));
+            });
+        }
     } else {
         jobDetail.removeData('status');
         return false;
