@@ -24,15 +24,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
             get
             {
                 if (TimeRequested == null) return "";
-                if (TimeRequested.AllowCustom)
-                {
-                    if (TimeRequested.Days == 1) return $"Within {TimeRequested.Days} Day";
-                    return $"Within {TimeRequested.Days} Days";
-                }
-                else
-                {
-                    return TimeRequested.TimeDescription;
-                }
+                return TimeRequested.TimeDescription;
             }
         }
         public string FriendlyName { get; set; } = "Review";

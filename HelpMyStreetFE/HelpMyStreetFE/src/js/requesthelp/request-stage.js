@@ -1,4 +1,4 @@
-﻿import { validateFormData, scrollToFirstError } from "../shared/validator";
+import { validateFormData, scrollToFirstError } from "../shared/validator";
 import { buttonLoad, buttonUnload } from "../shared/btn";
 import { trackEvent } from "../shared/tracking-helper";
 import { loadQuestions, validateQuestions } from "./requesthelp-shared.js";
@@ -7,10 +7,6 @@ import { dateValidationSchemes, datepickerLoad, validateDate } from "../shared/d
 export function intialiseRequestStage() {
     intialiseRequestTiles();
     validateForm();
-
-    $("#CustomTime").find("select").change(function () {
-        $('input[name="currentStep.SelectedTimeFrame.CustomDays"]').val($(this).val());
-    });
 
     trackEvent("Request form", "View 0.request", "", 0);
 
@@ -77,13 +73,6 @@ var handleRequestFor = function (el) {
 }
 var handleTimeFrame = function (el) {
     $('*[data-type="timeframe"]').removeClass("selected");
-    let allowCustomEntry = el.attr("data-allowcustom");
-    if (allowCustomEntry == "True") {
-        $("#CustomTime").show();
-
-    } else {
-        $("#CustomTime").hide();
-    }
     $(`*[data-type="timeframe"][data-id="${el.attr("data-id")}"]`).addClass("selected");
     $('input[name="currentStep.SelectedTimeFrame.Id"]').val(el.attr("data-id"));
 

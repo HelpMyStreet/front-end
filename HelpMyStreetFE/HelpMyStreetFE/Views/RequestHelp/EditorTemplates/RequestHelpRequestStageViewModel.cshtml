@@ -2,11 +2,6 @@
 @using HelpMyStreet.Utils.Enums;
 @using Westwind.AspNetCore.Markdown;
 
-@{
-
-    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();
-
-}
 <input type="hidden" name="RequestStep" class="model" value='@Json.Serialize(Model)' />
 @Html.Hidden("FormStage", RequestHelpFormStage.Request)
 @Html.HiddenFor(m => m.RequestGuid)
@@ -104,28 +99,6 @@ else
                 <span class="error"></span>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="row">
-    <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
-    <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
-        <span>Within</span>
-        <select>
-            <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
-            @for (int i = 1; i <= 30; ++i)
-            {
-                if (i == 1)
-                {
-                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
-                }
-                else
-                {
-                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
-                }
-            }
-        </select>
-
     </div>
 </div>
 

@@ -123,12 +123,6 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             if (time != null)
             {
                 time.IsSelected = true;
-                if (time.AllowCustom)
-                {
-                    int selectedDays = -1;
-                    int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
-                    time.Days = selectedDays;
-                }
                 if (time.DueDateType.HasDate())
                 {
                     DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime date);

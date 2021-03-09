@@ -1,4 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Helpers;
 @using HelpMyStreet.Utils.Enums;
 
 @model HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpTimeViewModel;
@@ -10,7 +10,7 @@
 }
 
 <div class="sm4">
-    <div id="time_@Model.ID" data-type="timeframe" data-id='@Model.ID' data-allowcustom="@Model.AllowCustom" data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+    <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.TimeDescription</div>
             @if (Model.DueDateType.HasDate())

@@ -12,7 +12,6 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public int ID { get; set; }
         public string TimeDescription { get; set; }
         public int Days { get; set; }
-        public bool AllowCustom { get; set; }
         public bool IsSelected { get; set; }
         public DueDateType DueDateType { get; set; }
         public DateTime Date { get; set; }
