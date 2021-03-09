@@ -40,7 +40,7 @@ export function validateDate(val, id, errorId, dateValidationScheme = dateValida
     }
     if (regex.test(val) == false && stringDate == false) {
         $('#' + errorId).show();
-        $('#' + errorId).text("Please enter a valid date in the format DD/MM/YYYY");
+        $('#' + errorId).text("Please enter a valid date in the format DD / MM / YYYY");
         return false;
     } else {
         $('#' + errorId).hide();

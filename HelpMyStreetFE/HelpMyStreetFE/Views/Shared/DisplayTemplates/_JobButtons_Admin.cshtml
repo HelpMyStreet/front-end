@@ -38,7 +38,7 @@
                 </span>
             </div>
         }
-        if (true /*&& !(Model.Item.JobSummaries?.First().Archive ?? false)*/)
+        if (!Model.Archive)
         {
             <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.Value)">
                 <span class="text">Not done</span>
@@ -52,7 +52,7 @@
         }
         break;
 }
-@if (Model.JobStatus != JobStatuses.Cancelled /*&& !(Model.Item.JobSummaries?.First().Archive ?? false)*/)
+@if (Model.JobStatus != JobStatuses.Cancelled && !Model.Archive)
 {
     <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
         <span class="text">Cancel</span>

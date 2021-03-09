@@ -191,6 +191,22 @@ function displayTodayHelpNeededOptions(show) {
 function validateDateIfNecessary() {
     if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
         return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
+    } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "7") {
+        let valid = true;
+        if (!validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M)) {
+            valid = false;
+        }
+        if ($('input[name="currentStep.SelectedTimeFrame.StartTime"]').val() == "") {
+            $('#starttimeselectionError').show().text("Please enter a start time");
+            $('input[name="currentStep.SelectedTimeFrame.StartTime"]').on('blur', function () { $('#starttimeselectionError').hide(); });
+            valid = false;
+        }
+        if ($('input[name="currentStep.SelectedTimeFrame.EndTime"]').val() == "") {
+            $('#endtimeselectionError').show().text("Please enter an end time");
+            $('input[name="currentStep.SelectedTimeFrame.EndTime"]').on('blur', function () { $('#endtimeselectionError').hide(); });
+          valid = false;
+        }
+        return valid;
     } else {
         return true;
     }
