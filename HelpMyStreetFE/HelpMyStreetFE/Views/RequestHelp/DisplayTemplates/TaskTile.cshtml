@@ -38,7 +38,7 @@
 
 <div class="sm4">
 
-    <div id="task_@((int)Model.SupportActivity)" data-type="activities" data-id='@((int)Model.SupportActivity)' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
+    <div id="task_@((int)Model.SupportActivity)" data-type="activities" data-support-activity="@Model.SupportActivity" data-id='@((int)Model.SupportActivity)' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
         <div class="tiles__tile__content ">
             @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
             {
