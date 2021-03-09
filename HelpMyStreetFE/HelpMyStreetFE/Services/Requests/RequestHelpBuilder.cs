@@ -52,11 +52,6 @@ namespace HelpMyStreetFE.Services.Requests
                 }
             };
 
-            if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(2, 1);
-            }
-
             if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
@@ -384,11 +379,11 @@ namespace HelpMyStreetFE.Services.Requests
                 if (includeToday)
                 {
                     vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, TimeDescription = "Today", Days = 0 });
-                    vms.Add(new RequestHelpTimeViewModel { ID = 2, DueDateType = DueDateType.Before, TimeDescription = "Within 24 Hours", Days = 1 });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, TimeDescription = "Within 3 Days", Days = 3 });
                 }
                 vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a Week", Days = 7 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, TimeDescription = "Within 2 Weeks", Days = 14 });
                 vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When Convenient", Days = 30 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 5, DueDateType = DueDateType.Before, TimeDescription = "Other", AllowCustom = true });
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
