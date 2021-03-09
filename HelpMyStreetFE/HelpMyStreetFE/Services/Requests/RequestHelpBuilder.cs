@@ -351,21 +351,15 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
                 RequestHelpFormVariant.HLP_CommunityConnector => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
-                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
-                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
-                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
-
-                RequestHelpFormVariant.AgeUKWirral => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
-                RequestHelpFormVariant.VitalsForVeterans => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
-                RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
-                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
-                RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
+                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
 
                 RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
               
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
 
-                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, true)
+                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
             };
         }
 
@@ -379,11 +373,11 @@ namespace HelpMyStreetFE.Services.Requests
                 if (includeToday)
                 {
                     vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, TimeDescription = "Today", Days = 0 });
-                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, TimeDescription = "Within 3 Days", Days = 3 });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, TimeDescription = "Within 3 days", Days = 3 });
                 }
-                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a Week", Days = 7 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, TimeDescription = "Within 2 Weeks", Days = 14 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When Convenient", Days = 30 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a week", Days = 7 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, TimeDescription = "Within 2 weeks", Days = 14 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When convenient", Days = 30 });
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
