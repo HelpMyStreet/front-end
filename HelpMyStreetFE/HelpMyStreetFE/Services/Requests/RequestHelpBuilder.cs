@@ -40,47 +40,8 @@ namespace HelpMyStreetFE.Services.Requests
                         PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
                         IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
                         Tasks = await GetRequestHelpTasks(requestHelpFormVariant),
-                        Requestors = new List<RequestorViewModel>
-                        {
-                            new RequestorViewModel
-                            {
-                                ID = 1,
-                                ColourCode = "orange",
-                                Title = "I am requesting help for myself",
-                                Text = "I'm the person in need of help",
-                                IconDark = "request-myself.svg",
-                                IconLight = "request-myself-white.svg",
-                                Type = RequestorType.Myself
-                            },
-                            new RequestorViewModel
-                            {
-                                ID = 2,
-                                ColourCode = "dark-blue",
-                                Title = "On behalf of someone else",
-                                Text = "I'm looking for help for a relative, neighbour or friend",
-                                IconDark = "request-behalf.svg",
-                                IconLight = "request-behalf-white.svg",
-                                Type = RequestorType.OnBehalf
-                            },
-                            new RequestorViewModel
-                            {
-                                ID = 3,
-                                ColourCode = "dark-blue",
-                                Title = "On behalf of an organisation",
-                                Text = "I'm looking for help for an organisation",
-                                IconDark = "request-organisation.svg",
-                                IconLight = "request-organisation-white.svg",
-                                Type = RequestorType.Organisation
-                            }
-                        },
-                        Timeframes =  new List<RequestHelpTimeViewModel>
-                        {
-                            new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, TimeDescription = "Today", Days = 0 },
-                            new RequestHelpTimeViewModel { ID = 2, DueDateType = DueDateType.Before, TimeDescription = "Within 24 Hours", Days = 1 },
-                            new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a Week", Days = 7 },
-                            new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When Convenient", Days = 30 },
-                            new RequestHelpTimeViewModel { ID = 5, DueDateType = DueDateType.Before, TimeDescription = "Other", AllowCustom = true },
-                        },
+                        Requestors = GetRequestorViewModels(requestHelpFormVariant),
+                        Timeframes = GetRequestHelpTimeViewModels(requestHelpFormVariant),
                     },
                     new RequestHelpDetailStageViewModel()
                     {
@@ -89,78 +50,16 @@ namespace HelpMyStreetFE.Services.Requests
                     },
                     new RequestHelpReviewStageViewModel(),
                 }
-
             };
-            if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
             {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(2, 1);
-
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral || requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
-            {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
-                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
-
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_Public)
-            {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter)
-            {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public)
-            {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter)
-            {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_Public)
-            {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter)
-            {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
-                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.OnBehalf);
-
-                requestStep.Timeframes.Clear();
-                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes, IsSelected = true });
-
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
-            }
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.Sandbox_RequestSubmitter)
-            {
-                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-                requestStep.Timeframes.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes });
             }
 
             return model;
@@ -449,6 +348,124 @@ namespace HelpMyStreetFE.Services.Requests
                     Postcode = PostcodeFormatter.FormatPostcode(detailStage.Requestor.Postcode),
                 }
             };
+        }
+
+        private List<RequestHelpTimeViewModel> GetRequestHelpTimeViewModels(RequestHelpFormVariant variant)
+        {
+            return variant switch
+            {
+                RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
+                RequestHelpFormVariant.HLP_CommunityConnector => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
+                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
+                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
+
+                RequestHelpFormVariant.AgeUKWirral => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.VitalsForVeterans => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+
+                RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
+              
+                RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
+
+                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, true)
+            };
+        }
+
+
+        private List<RequestHelpTimeViewModel> GetRequestHelpTimeViewModels(List<DueDateType> dueDateTypes, bool includeToday)
+        {
+            var vms = new List<RequestHelpTimeViewModel>();
+
+            if (dueDateTypes.Contains(DueDateType.Before))
+            {
+                if (includeToday)
+                {
+                    vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, TimeDescription = "Today", Days = 0 });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 2, DueDateType = DueDateType.Before, TimeDescription = "Within 24 Hours", Days = 1 });
+                }
+                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a Week", Days = 7 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When Convenient", Days = 30 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 5, DueDateType = DueDateType.Before, TimeDescription = "Other", AllowCustom = true });
+            }
+
+            if (dueDateTypes.Contains(DueDateType.On))
+            {
+                vms.Add(new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
+            }
+
+            if (dueDateTypes.Contains(DueDateType.SpecificStartAndEndTimes))
+            {
+                vms.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes });
+            }
+
+            if (vms.Count == 1)
+            {
+                vms.First().IsSelected = true;
+            }
+
+            return vms;
+        }
+        private List<RequestorViewModel> GetRequestorViewModels(RequestHelpFormVariant variant)
+        {
+            return variant switch
+            {
+                RequestHelpFormVariant.HLP_CommunityConnector => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf }),
+                RequestHelpFormVariant.AgeUKWirral => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf }),
+                RequestHelpFormVariant.LincolnshireVolunteers => GetRequestorViewModels(new List<RequestorType> { RequestorType.Organisation }),
+                _ => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf, RequestorType.Organisation }),
+            };
+        }
+
+        private List<RequestorViewModel> GetRequestorViewModels(List<RequestorType> requestorTypes)
+        {
+            var vms = new List<RequestorViewModel>();
+
+            if (requestorTypes.Contains(RequestorType.Myself))
+            {
+                vms.Add(new RequestorViewModel
+                {
+                    ID = 1,
+                    ColourCode = "orange",
+                    Title = "I am requesting help for myself",
+                    Text = "I'm the person in need of help",
+                    IconDark = "request-myself.svg",
+                    IconLight = "request-myself-white.svg",
+                    Type = RequestorType.Myself
+                });
+            }
+
+            if (requestorTypes.Contains(RequestorType.OnBehalf))
+            {
+                vms.Add(new RequestorViewModel
+                {
+                    ID = 2,
+                    ColourCode = "dark-blue",
+                    Title = "On behalf of someone else",
+                    Text = "I'm looking for help for a relative, neighbour or friend",
+                    IconDark = "request-behalf.svg",
+                    IconLight = "request-behalf-white.svg",
+                    Type = RequestorType.OnBehalf
+                });
+            }
+
+            if (requestorTypes.Contains(RequestorType.Organisation))
+            {
+                vms.Add(new RequestorViewModel
+                {
+                    ID = 3,
+                    ColourCode = "dark-blue",
+                    Title = "On behalf of an organisation",
+                    Text = "I'm looking for help for an organisation",
+                    IconDark = "request-organisation.svg",
+                    IconLight = "request-organisation-white.svg",
+                    Type = RequestorType.Organisation
+                });
+            }
+
+            return vms;
         }
     }
 }
