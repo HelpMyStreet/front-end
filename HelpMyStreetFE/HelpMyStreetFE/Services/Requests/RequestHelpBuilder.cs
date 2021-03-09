@@ -382,12 +382,12 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (dueDateTypes.Contains(DueDateType.On))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a specific date", DueDateType = DueDateType.On });
             }
 
             if (dueDateTypes.Contains(DueDateType.SpecificStartAndEndTimes))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes });
             }
 
             if (vms.Count == 1)
