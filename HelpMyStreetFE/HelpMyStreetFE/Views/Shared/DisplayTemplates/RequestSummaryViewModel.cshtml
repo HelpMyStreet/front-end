@@ -13,7 +13,7 @@
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
     var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
-    bool singleJob = Model.Item.JobBasics.Count() == 1;
+    bool singleJob = Model.Item.JobBasics.Count() == 1 && Model.Item.RequestType.Equals(RequestType.Task);
     var jobId = singleJob ? Base64Utils.Base64Encode(Model.Item.JobBasics.First().JobID) : "";
 
     var className = "";
