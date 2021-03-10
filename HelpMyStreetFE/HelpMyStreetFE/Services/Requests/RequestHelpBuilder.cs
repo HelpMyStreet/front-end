@@ -361,6 +361,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.VaccineSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.EmergencySupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
