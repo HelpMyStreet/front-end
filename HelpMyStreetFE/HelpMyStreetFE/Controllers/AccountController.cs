@@ -307,7 +307,7 @@ namespace HelpMyStreetFE.Controllers
                 }
                 else if (group.ShiftsEnabled)
                 {
-                    return await GroupShifts(groupKey, null, cancellationToken);
+                    return await GroupShifts(groupKey, null, null, cancellationToken);
                 }
             }
             else if (await _groupMemberService.GetUserHasRole_Any(user.ID, group.GroupId, new List<GroupRoles> { GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly }, true, cancellationToken))
@@ -345,9 +345,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [Route("g/{groupKey}/shifts")]
+        [Route("g/{groupKey}/shifts/j/{encodedJobId}")]
         [Route("g/{groupKey}/shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> GroupShifts(string groupKey, string encodedRequestId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GroupShifts(string groupKey, string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
@@ -364,7 +365,7 @@ namespace HelpMyStreetFE.Controllers
 
             viewModel.CurrentPage = MenuPage.GroupShifts;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
-            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
