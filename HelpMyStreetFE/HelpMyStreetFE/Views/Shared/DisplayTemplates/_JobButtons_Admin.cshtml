@@ -1,0 +1,66 @@
+﻿@using HelpMyStreet.Utils.Models;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreetFE.Helpers;
+
+@model JobBasic;
+
+@switch (Model.JobStatus)
+{
+    case JobStatuses.New:
+        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+            <span class="text">Approve</span>
+        </button>
+        break;
+    case JobStatuses.Open:
+        break;
+    case JobStatuses.Accepted:
+        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+            <span class="text">Mark as Open</span>
+        </button>
+        break;
+    case JobStatuses.InProgress:
+        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+            <span class="text">Mark as Done</span>
+        </button>
+        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+            <span class="text">Mark as Open</span>
+        </button>
+        break;
+    case JobStatuses.Done:
+        if (Model.RequestType.Equals(RequestType.Task))
+        {
+            <div class="feedback-container">
+                <span class="job__info__col3__status toggle-on-status-change">
+                    <img class="status-icon" src="~/img/icons/status/@Model.JobStatus.Icon()" alt="@Model.JobStatus.FriendlyName()" />
+                    <span class="job__status">@Model.JobStatus.FriendlyName()</span>
+                </span>
+            </div>
+        }
+        if (!Model.Archive)
+        {
+            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.Value)">
+                <span class="text">Not done</span>
+            </button>
+        }
+        break;
+    case JobStatuses.Cancelled:
+        if (Model.RequestType.Equals(RequestType.Task))
+        {
+            <div class="feedback-container"></div>
+        }
+        break;
+}
+@if (Model.JobStatus != JobStatuses.Cancelled && !Model.Archive)
+{
+    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+        <span class="text">Cancel</span>
+    </button>
+}
+<button class="btn cta--green-border undo-request dnone" data-target-state="@Model.JobStatus" data-target-user="@(Model.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.VolunteerUserID.Value) : "")">
+    <span class="text">Undo</span>
+    <div class="loader dnone">
+        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
+    </div>
+</button>

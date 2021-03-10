@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -67,7 +67,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.Group
                         => await GetCount(user, MenuPage.GroupRequests, groupKey, cancellationToken) + await GetCount(user, MenuPage.GroupShifts, groupKey, cancellationToken),
                     MenuPage.GroupRequests
-                        => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
+                        => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Count(r => !r.RequestComplete()),
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
@@ -77,7 +77,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyShifts
                         => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(s => s.JobStatus.Incomplete()),
                     MenuPage.GroupShifts
-                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(r => r.Incomplete()),
+                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(r => !r.RequestComplete()),
                     _ => null
                 };
 

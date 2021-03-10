@@ -69,13 +69,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
+        public async Task<GetAllJobsByFilterResponse> GetJobsByFilterAsync(GetAllJobsByFilterRequest request)
         {
-            var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
+            var response = await PostAsync<BaseRequestHelpResponse<GetAllJobsByFilterResponse>>($"/api/GetAllJobsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.JobHeaders;
+                return response.Content;
             }
             throw new Exception("GetJobsByFilter call failed");
         }
@@ -239,6 +239,17 @@ namespace HelpMyStreetFE.Repositories
         public async Task<IEnumerable<RequestSummary>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetShiftRequestsByFilterResponse>>($"/api/GetShiftRequestsByFilter", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.RequestSummaries;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<RequestSummary>> GetRequestsByFilter(GetRequestsByFilterRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetRequestsByFilterResponse>>($"/api/GetRequestsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
