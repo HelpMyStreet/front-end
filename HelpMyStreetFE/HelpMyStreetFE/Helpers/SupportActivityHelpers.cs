@@ -27,6 +27,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.VolunteerSupport => "volunteers.svg",
                 SupportActivities.Transport => "transport.svg",
                 SupportActivities.VaccineSupport => "vaccination.svg",
+                SupportActivities.EmergencySupport => "emergency-support.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -48,6 +49,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
                 SupportActivities.ColdWeatherArmy => "blue",
+                SupportActivities.EmergencySupport => "blue",
                 _ => "dark-blue",
             };
         }
