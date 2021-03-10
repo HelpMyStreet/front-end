@@ -222,6 +222,7 @@ namespace HelpMyStreetFE.Services.Requests
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Shopping });
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions });
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Errands });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport });
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Other });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
@@ -244,6 +245,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.MealPreparation },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.DogWalking },
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
@@ -254,6 +256,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.ColdWeatherArmy },
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
