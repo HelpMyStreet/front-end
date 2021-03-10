@@ -107,7 +107,6 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
-                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
 
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
