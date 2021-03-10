@@ -145,9 +145,10 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [Route("my-shifts")]
+        [Route("my-shifts/j/{encodedJobId}")]
         [Route("my-shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> MyShifts(string encodedRequestId, CancellationToken cancellationToken)
+        public async Task<IActionResult> MyShifts(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -157,15 +158,16 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.MyShifts;
-            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
 
         [Route("open-shifts")]
+        [Route("open-shifts/j/{encodedJobId}")]
         [Route("open-shifts/r/{encodedRequestId}")]
         [HttpGet]
-        public async Task<IActionResult> OpenShifts(string encodedRequestId, CancellationToken cancellationToken)
+        public async Task<IActionResult> OpenShifts(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
@@ -175,7 +177,7 @@ namespace HelpMyStreetFE.Controllers
 
             var viewModel = await GetAccountViewModel(user, cancellationToken);
             viewModel.CurrentPage = MenuPage.OpenShifts;
-            AddHighlightIdsToViewModel(viewModel, null, encodedRequestId);
+            AddHighlightIdsToViewModel(viewModel, encodedJobId, encodedRequestId);
 
             return View("Index", viewModel);
         }
