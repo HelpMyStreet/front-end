@@ -28,6 +28,7 @@ namespace HelpMyStreetFE.Repositories
         Task<IEnumerable<RequestSummary>> GetRequestsByFilter(GetRequestsByFilterRequest request);
         Task<IEnumerable<RequestSummary>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request);
         Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request);
+        Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
     }
 }

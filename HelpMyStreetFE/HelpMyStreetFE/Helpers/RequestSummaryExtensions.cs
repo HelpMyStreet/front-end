@@ -48,6 +48,11 @@ namespace HelpMyStreetFE.Helpers
             return requestSummary.JobBasics.Where(j => j.JobStatus.Equals(JobStatuses.Open));
         }
 
+        public static IEnumerable<JobBasic> AcceptedAndInProgressJobs(this RequestSummary requestSummary)
+        {
+            return requestSummary.JobBasics.Where(j => j.JobStatus.Equals(JobStatuses.Accepted) || j.JobStatus.Equals(JobStatuses.InProgress));
+        }
+
         public static double RequiringAdminAttentionScore(this RequestSummary requestSummary)
         {
             if (requestSummary.JobSummaries.Count() == 0)
