@@ -38,7 +38,7 @@
                 </span>
             </div>
         }
-        if (!Model.Archive)
+        if (!Model.Archive && Model.VolunteerUserID.HasValue)
         {
             <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.VolunteerUserID.Value)">
                 <span class="text">Not done</span>
