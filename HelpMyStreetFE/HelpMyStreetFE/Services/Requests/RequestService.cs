@@ -242,6 +242,7 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {
             var jobDetails = await _requestHelpRepository.GetJobDetailsAsync(jobId, userId);
+            var getRequestSummaryResponse = await _requestHelpRepository.GetRequestSummaryAsync(jobDetails.RequestSummary.RequestID);
 
             if (jobDetails != null)
             {
@@ -253,7 +254,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 return new JobDetail()
                 {
-                    RequestSummary = jobDetails.RequestSummary,
+                    RequestSummary = getRequestSummaryResponse.RequestSummary,
                     JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
