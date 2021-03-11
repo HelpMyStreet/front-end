@@ -268,6 +268,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             UpdateJobStatusOutcome? outcome = status switch
             {
+                JobStatuses.Done => await _requestHelpRepository.PutUpdateRequestStatusToDone(requestId, createdByUserId),
                 JobStatuses.Cancelled => await _requestHelpRepository.PutUpdateRequestStatusToCancelled(requestId, createdByUserId),
                 _ => throw new ArgumentException(message: $"Invalid JobStatuses value for Request: {status}", paramName: nameof(status)),
             };
