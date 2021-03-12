@@ -23,10 +23,10 @@
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.ColdWeatherArmy, Description = "Getting help in an emergency during a cold snap"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealsToYourDoor, Description = "Freshly prepared meals, delivered straight to your door"},
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.MealtimeCompanion, Description = "Finding someone to keep me company at mealtimes when I would otherwise be alone"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VolunteerSupport, Description = "Helping with events, admin duties or not-for-profit activities", MultiVolunteer = true },
                 new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.Transport, Description = "Finding transport for essential appointments"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VaccineSupport, Description = "Finding volunteers to support the COVID-19 vaccination programme"},
-                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.EmergencySupport, Description = "Finding volunteers for help in emergency situations (e.g. extreme weather)"},
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.VaccineSupport, Description = "Finding volunteers to support the COVID-19 vaccination programme", MultiVolunteer = true },
+                new RequestActivityViewModel{ Activity = HelpMyStreet.Utils.Enums.SupportActivities.EmergencySupport, Description = "Finding volunteers for help in emergency situations (e.g. extreme weather)", MultiVolunteer = true }
         };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
@@ -41,6 +41,12 @@
 
     <div id="task_@((int)Model.SupportActivity)" data-type="activities" data-id='@((int)Model.SupportActivity)' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
         <div class="tiles__tile__content ">
+            @if (activity.MultiVolunteer && !ForReview)
+            {
+                <div class="tiles__tile__content__badge" title="Enabled for multiple volunteers">
+                    MULTI
+                </div>
+            }
             @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
             {
                 <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Activity.Icon()" /> </div>
