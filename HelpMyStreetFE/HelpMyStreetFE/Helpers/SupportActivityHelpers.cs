@@ -49,7 +49,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.WellbeingPackage => "light-purple",
                 SupportActivities.CommunityConnector => "green",
                 SupportActivities.ColdWeatherArmy => "blue",
-                SupportActivities.EmergencySupport => "blue",
+                SupportActivities.EmergencySupport => "dark-blue",
                 _ => "dark-blue",
             };
         }
