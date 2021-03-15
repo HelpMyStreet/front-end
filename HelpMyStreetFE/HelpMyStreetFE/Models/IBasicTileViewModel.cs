@@ -7,7 +7,7 @@ namespace HelpMyStreetFE.Models
 {
     public interface IBasicTileViewModel
     {
-        public string ID { get; }
+        public int ID { get; }
         public string Value { get; }
         public string Description { get; }
         public bool IsSelected { get; set; }

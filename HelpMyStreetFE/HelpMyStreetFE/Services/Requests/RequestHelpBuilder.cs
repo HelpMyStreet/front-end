@@ -41,6 +41,7 @@ namespace HelpMyStreetFE.Services.Requests
                         IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
                         Tasks = await GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = GetRequestorViewModels(requestHelpFormVariant),
+                        Frequencies = GetFrequencies(requestHelpFormVariant),
                         Timeframes = GetRequestHelpTimeViewModels(requestHelpFormVariant),
                     },
                     new RequestHelpDetailStageViewModel()
@@ -411,6 +412,18 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.VitalsForVeterans => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
                 RequestHelpFormVariant.LincolnshireVolunteers => GetRequestorViewModels(new List<RequestorType> { RequestorType.Organisation }),
                 _ => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf, RequestorType.Organisation }),
+            };
+        }
+
+        private List<FrequencyViewModel> GetFrequencies(RequestHelpFormVariant variant)
+        {
+            return new List<FrequencyViewModel> 
+            { 
+                new FrequencyViewModel(Frequency.Once),
+                new FrequencyViewModel(Frequency.Daily),
+                new FrequencyViewModel(Frequency.Weekly),
+                new FrequencyViewModel(Frequency.Fortnightly),
+                new FrequencyViewModel(Frequency.Monthly)
             };
         }
 
