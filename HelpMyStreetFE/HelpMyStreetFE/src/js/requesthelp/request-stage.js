@@ -107,6 +107,8 @@ var handleActivity = function (el) {
 var updateOptionsForActivity = function (supportActivity) {
     let requestHelpFormVariant = JSON.parse($('input[name="requestHelp"]').val()).RequestHelpFormVariant;
     if (supportActivity == 'FaceMask') {
+        $('#requestorFor_1').parent().show(); // myself
+        $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
 
         $('*[data-type="timeframe"]').each(function () { $(this).parent().hide(); });
@@ -116,43 +118,28 @@ var updateOptionsForActivity = function (supportActivity) {
             if (days < 7) { $(this).parent().hide(); }
             else { $(this).parent().show(); }
         });
-
-        if ($('#requestorFor_3').hasClass("selected")) {
-            $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
-        }
     } else if (supportActivity == 'VolunteerSupport' || supportActivity == 'VaccineSupport') {
+        $('#requestorFor_1').parent().hide(); // myself
+        $('#requestorFor_2').parent().hide(); // someone else
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
+
         $('*[data-type="timeframe"]').each(function () { $(this).parent().hide(); });
         $('*[data-type="timeframe"][data-duedatetype="SpecificStartAndEndTimes"]').each(function () { $(this).parent().show(); });
     } else {
+        $('#requestorFor_1').parent().show(); // myself
+        $('#requestorFor_2').parent().show(); // someone else
+        $('#requestorFor_3').parent().hide(); // onbehalf of organisation
+
         $('*[data-type="timeframe"]').each(function () { $(this).parent().show(); });
         $('*[data-type="timeframe"][data-duedatetype="SpecificStartAndEndTimes"]').each(function () { $(this).parent().hide(); });
     }
 
+    // Deselect any hidden values
     if ($('*[data-type="timeframe"].selected:not(:visible)').length > 0) {
         $('*[data-type="timeframe"]').removeClass("selected");
         $('input[name="currentStep.SelectedTimeFrame.Id"]').val("");
     }
 
-    if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
-        $('#requestorFor_1').parent().hide(); // myself
-        $('#requestorFor_2').parent().show(); // someone else
-        $('#requestorFor_3').parent().hide(); // onbehalf of organisation
-        displayTodayHelpNeededOptions(true);
-    } else if (requestHelpFormVariant == 19) { // Sandbox
-        $('#requestorFor_3').parent().show(); // onbehalf of organisation
-        $('div[data-type="request-for"]').removeClass("selected");
-        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-    } else {
-        $('#requestorFor_3').parent().hide();
-        var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-        // if they have previously selected On behalf of organisation,
-        //set selected RequestorID as empty since that option is only available to facemasks
-        if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
-            $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-        }
-    }
-
-    // Deselect any hidden values
     if ($('.requestorFor.selected:not(:visible)').length > 0) {
         $('.requestorFor.selected:not(:visible)').removeClass("selected");
         $('input[name="currentStep.SelectedRequestor.Id"]').val("");
