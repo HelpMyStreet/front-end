@@ -13,15 +13,6 @@ export function initaliseDetailStage() {
     trackEvent("Request form", "View 1.details", "", 0);
 }
 
-var allowOneName = function (type, otherName){
-    const needBothNames = $('input[name="NeedBothNames"]').val() == "True";
-    if (!needBothNames) {
-        return (v, d) => ((d[`currentStep.${type}.${otherName}`].length > 2 && !hasNumber(d[`currentStep.${type}.${otherName}`])) || (v.length >= 2 && !hasNumber(v))) || "Please enter at least one name of at least 2 characters (letters and common punctuation marks only)";
-    } else {
-        return (v) => (v.length >= 2 && !hasNumber(v)) || "Please enter a name of at least 2 characters (letters and common punctuation marks only)";
-    }
-}
-
 var validateForm = function (validateRecipientAsRequestor) {
     
     $("form").on("submit", function (evt) {        
@@ -33,14 +24,9 @@ var validateForm = function (validateRecipientAsRequestor) {
         buttonLoad($("#btnNext"));
         
         const valid = validateQuestions() && validateFormData($(this), {
-            "currentStep.Recipient.Firstname": allowOneName("Recipient", "Lastname"),
-            "currentStep.Recipient.Lastname": allowOneName("Recipient", "Firstname"),
-            "currentStep.Recipient.MobileNumber": (v, d) => {                
-              if (validateRecipientAsRequestor && (d["currentStep.Recipient.AlternatePhoneNumber"] == "" && v == "")) {                    
-                    return "Please enter a mobile number or an alternative phone number"
-                }
-                return true;
-            },
+            "currentStep.Recipient.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
+            "currentStep.Recipient.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
+            "currentStep.Recipient.MobileNumber": (v) => v != "" && validateRecipientAsRequestor || "a phone number",
             "currentStep.Recipient.Email": (v) => {
               if (validateRecipientAsRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
                     return "Please enter a valid email address";
@@ -68,23 +54,19 @@ var validateForm = function (validateRecipientAsRequestor) {
                 }
                 return true;
             },                                            
-            "currentStep.Requestor.Firstname": allowOneName("Requestor", "Lastname"),
-            "currentStep.Requestor.Lastname": allowOneName("Requestor", "Firstname"),
-            "currentStep.Requestor.MobileNumber": (v, d) => ((d["currentStep.Requestor.AlternatePhoneNumber"] !== "") || (v !== "")) || "Please enter a mobile number or an alternative phone number",
+            "currentStep.Requestor.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
+            "currentStep.Requestor.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
+            "currentStep.Requestor.MobileNumber": (v) => v !== "" || "Please enter a mobile number or an alternative phone number",
             "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "Please enter a valid email address",
             "currentStep.Requestor.Postcode": (v) => (v != "") || "Please enter a postcode",
           
         });   
-        
-        console.log(`${valid}`);
         
         runAdditionalValidation($(this)).then(async function (additonalChecks) {
             evt.preventDefault();
             let validForm = (additonalChecks && valid);
             event.preventDefault(); //this will prevent the default submit needed now we do a call to api
             // avoid calling service when possible, so check if the form is valid first
-
-            console.log(`${validForm}`);
 
             trackEvent("Request form", "Submit 1.details", validForm ? "(Valid)" : "(Invalid)", 0);
 
