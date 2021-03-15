@@ -20,6 +20,7 @@ namespace HelpMyStreetFE.Helpers
             return question.ID switch
             {
                 (int)Questions.FaceMask_Amount => 200,
+                (int)Questions.NumberOfSlots => 20,
                 _ => null
             };
         }
@@ -29,6 +30,7 @@ namespace HelpMyStreetFE.Helpers
             return question.ID switch
             {
                 (int)Questions.FaceMask_Amount => @"Please enter a number between 1 and 200. We can only accept requests for up to 200 face coverings using this form, if you need more email For the Love of Scrubs at fortheloveofscrubs@outlook.com",
+                (int)Questions.NumberOfSlots => @"Please enter a number between 1 and 20.",
                 _ => question.DataValidationMessage
             };
         }

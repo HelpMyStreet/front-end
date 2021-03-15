@@ -117,6 +117,18 @@
                             <dd>You can complete this request <strong>any time on or before @Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>
                         }
                     }
+                    @if (requestSummary.IncompleteJobs().Count() > 1)
+                    {
+                        var total = requestSummary.IncompleteJobs().Count();
+                        var unfilled = requestSummary.UnfilledJobs().Count();
+                        var filled = total - unfilled;
+                        <dt>How many volunteers are needed?</dt>
+                        <dd>
+                            This help request requires <strong>@total</strong> volunteers.
+                            <strong>@filled</strong> @(filled == 1 ? "place has" : "places have") been filled
+                            (<strong>@unfilled</strong> remaining).
+                        </dd>
+                    }
                 </dl>
             </div>
         </div>
@@ -145,7 +157,7 @@
             <h4>Contact Details<span></span></h4>
             <div class="job__expander__content">
                 <div class="row">
-                    @if (jobSummary.Archive ?? false)
+                    @if (jobSummary.Archive)
                     {
                         <div class="sm12">
                             <h5>Recipient</h5>

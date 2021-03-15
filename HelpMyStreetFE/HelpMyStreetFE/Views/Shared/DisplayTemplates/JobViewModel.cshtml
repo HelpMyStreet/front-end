@@ -6,7 +6,7 @@
 @using HelpMyStreetFE.Models.Community;
 @using HelpMyStreetFE.Models.Account.Jobs;
 
-@model HelpMyStreetFE.Models.Account.Jobs.JobViewModel<JobHeader>
+@model JobViewModel<JobSummary>
 
 @{
     var id = Base64Utils.Base64Encode(Model.Item.JobID);
@@ -141,71 +141,16 @@
                     <span class="critical">Critical</span>
                 </span>
             }
-            <div class="job__info__actions">
-                @switch (Model.Item.JobStatus)
-                {
-                    case JobStatuses.New:
-                        @if (admin)
-                        {
-                            <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                                <span class="text">Approve</span>
-                            </button>
-                        }
-                        break;
-                    case JobStatuses.Open:
-                        @if (!admin)
-                        {
-                            <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
-                                <span class="text">Accept</span>
-                            </button>
-                        }
-                        break;
-                    case JobStatuses.InProgress:
-                        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
-                            <span class="text">Mark as Done</span>
-                        </button>
-                        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-                            @if (admin)
-                            {
-                                <span class="text">Mark as Open</span>
-                            }
-                            else
-                            {
-                                <span class="text">Can't do</span>
-                            }
-                        </button>
-                        break;
-                    case JobStatuses.Done:
-                        <div class="feedback-container">
-                            <span class="job__info__col3__status toggle-on-status-change">
-                                <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                                <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
-                            </span>
-                        </div>
-                        if (admin && !(Model.Item.Archive ?? false))
-                        {
-                            <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.InProgress" data-target-user="@Base64Utils.Base64Encode(Model.Item.VolunteerUserID.ToString())">
-                                <span class="text">Not done</span>
-                            </button>
-                        }
-                        break;
-                    case JobStatuses.Cancelled:
-                        <div class="feedback-container"></div>
-                        break;
-                }
-                @if (admin && Model.Item.JobStatus != JobStatuses.Cancelled && !(Model.Item.Archive ?? false))
-                {
-                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                        <span class="text">Cancel</span>
-                    </button>
-                }
-                <button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">
-                    <span class="text">Undo</span>
-                    <div class="loader dnone">
-                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />
-                    </div>
-                </button>
-            </div>
+        <div class="job__info__actions">
+            @if (admin)
+            {
+                <partial name="_JobButtons_Admin" model="Model.Item" />
+            }
+            else
+            {
+                <partial name="_JobButtons_Volunteer" model="Model" />
+            }
+        </div>
             <div class="job__info__footer">
                 <a href="#" class="open">View more info <span></span></a>
                 <a href="#" class="close">View less info <span></span></a>

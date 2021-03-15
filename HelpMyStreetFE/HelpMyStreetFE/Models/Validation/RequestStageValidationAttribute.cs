@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using System;
@@ -19,13 +20,33 @@ namespace HelpMyStreetFE.Models.Validation
         public override bool IsValid(object value)
         {
             List<string> errors = new List<string>();
-            if (value is RequestHelpRequestStageViewModel)
+            if (value is RequestHelpRequestStageViewModel vm)
             {
-                var vm = (RequestHelpRequestStageViewModel)value;
                 var task = vm.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                 if (task == null) errors.Add($"A Task must be selected");
 
-                if (vm.Timeframes.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Timeframe must be selected");
+                if (vm.Timeframes.Where(x => x.IsSelected).FirstOrDefault() == null)
+                {
+                    errors.Add($"A Timeframe must be selected");
+                }
+                else
+                {
+                    var selectedTimeframe = vm.Timeframes.Where(x => x.IsSelected).First();
+
+                    if (selectedTimeframe.DueDateType.HasDate())
+                    {
+                        if (selectedTimeframe.Date.Equals(DateTime.MinValue)) errors.Add("A date must be specified");
+                        if (selectedTimeframe.DueDateType.HasStartTime())
+                        {
+                            if (selectedTimeframe.StartTime.Equals(DateTime.MinValue)) errors.Add("A start time must be specified");
+                        }
+                        if (selectedTimeframe.DueDateType.HasEndTime())
+                        {
+                            if (selectedTimeframe.EndTime.Equals(DateTime.MinValue)) errors.Add("An end time must be specified");
+                        }
+                    }
+                }
+
                 if (vm.Requestors.Where(x => x.IsSelected).FirstOrDefault() == null) errors.Add($"A Requestor must be selected");
 
                 if (vm.Questions != null && vm.Questions.Questions != null)
@@ -36,12 +57,11 @@ namespace HelpMyStreetFE.Models.Validation
                     }
                 }
             }
-            else if (value is RequestHelpDetailStageViewModel)
+            else if (value is RequestHelpDetailStageViewModel rsvm)
             {
-                var vm = (RequestHelpDetailStageViewModel)value;
-                if (vm.Questions != null && vm.Questions.Questions != null)
+                if (rsvm.Questions != null && rsvm.Questions.Questions != null)
                 {
-                    foreach (var q in vm.Questions.Questions)
+                    foreach (var q in rsvm.Questions.Questions)
                     {
                         if (q.Required && string.IsNullOrEmpty(q.Model)) errors.Add($"{q.DataValidationMessage}");
                     }

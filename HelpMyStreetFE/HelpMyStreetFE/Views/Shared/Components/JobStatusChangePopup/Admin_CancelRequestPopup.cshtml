@@ -1,7 +1,8 @@
 @using HelpMyStreet.Utils.Enums;
-@using HelpMyStreetFE.Helpers; 
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Models.Account.Jobs; 
 
-@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+@model JobStatusChangePopupViewModel;
 
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
@@ -15,14 +16,14 @@
             <div class="popup__content__header">Cancel?</div>
         }
         <div class="popup__content__text">
-            <p>Click “Confirm” to cancel this shift (and all @Model.RequestSummary.JobSummaries.Count() slots within it).</p>
+            <p>Click “Confirm” to cancel this @(Model.RequestType.Equals(RequestType.Shift) ? "shift" : "request") (and all @Model.RequestSummary.JobBasics.Count() @(Model.RequestType.Equals(RequestType.Shift) ? "slots" : "tasks") within it).</p>
 
-            <p>We will notify any volunteers who have accepted the shift that it has been cancelled and will remove it from their “My Shifts” page.</p>
+            <p>We will notify any volunteers who have accepted this @(Model.RequestType.Equals(RequestType.Shift) ? "shift" : "request") that it has been cancelled and will remove it from their “@(Model.RequestType.Equals(RequestType.Shift) ? "My Shifts" : "My Requests")” page.</p>
 
             <p><b>This action cannot be undone.</b> Please make sure you want to make this change before you click to confirm.</p>
         </div>
         <div class="popup__content__buttons">
-            <p class="error dnone">Oops, we couldn’t cancel this shift at the moment.</p>
+            <p class="error dnone">Oops, we couldn’t cancel this @(Model.RequestType.Equals(RequestType.Shift) ? "shift" : "request") at the moment.</p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
         </div>
     </div>

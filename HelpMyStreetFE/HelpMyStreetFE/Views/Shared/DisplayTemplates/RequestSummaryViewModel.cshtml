@@ -9,22 +9,48 @@
 @model JobViewModel<RequestSummary>
 
 @{
-    var requestId = Base64Utils.Base64Encode(Model.Item.Shift.RequestID);
+    var requestId = Base64Utils.Base64Encode(Model.Item.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
     var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
+    bool singleJob = Model.Item.JobBasics.Count() == 1 && Model.Item.RequestType.Equals(RequestType.Task);
+    var jobId = singleJob ? Base64Utils.Base64Encode(Model.Item.JobBasics.First().JobID) : "";
+
     var className = "";
+    JobSummary nextTaskDue = null;
 
-    if (Model.Item.Unfilled())
+    if (Model.Item.JobSummaries.Exists(j => j.JobStatus.Incomplete()))
     {
-        if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(3))
-        {
-            className += " job--urgent";
-        }
+        nextTaskDue = Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).OrderBy(j => j.DueDate).First();
+    }
 
-        if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(7))
+    if (Model.Item.UnfilledJobs().Count() > 0)
+    {
+        if (Model.Item.Shift != null)
         {
-            className += " job--due-soon";
+            if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(3))
+            {
+                className += " job--urgent";
+            }
+
+            if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(7))
+            {
+                className += " job--due-soon";
+            }
+        }
+        else if (nextTaskDue != null)
+        {
+            var dueDate = nextTaskDue.DueDate.JobDueDate(nextTaskDue.DueDateType);
+
+            if (dueDate.Contains("urgent"))
+            {
+                className += " job--urgent";
+            }
+
+            if (dueDate.Contains("soon"))
+            {
+                className += " job--due-soon";
+            }
         }
     }
 
@@ -34,12 +60,20 @@
     }
 }
 
-<div class="job @className" id="" request-id="@requestId" data-job-status="" data-role="@role">
+<div class="job @className" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
                 <partial name="_RequestStatus" model="@Model.Item" />
             </span>
+
+            @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
+            {
+                <span class="job__info__col1__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
 
             @if (Model.JobListGroupId != Model.Item.ReferringGroupID)
             {
@@ -50,12 +84,29 @@
                 </div>
             }
 
+            @if (nextTaskDue != null)
+            {
+                <span class="job__info__col1__urgency toggle-on-status-change">
+                    <span class="" title="@nextTaskDue.DateRequested.FormatDate(DateTimeFormat.ShortDateFormat)">Requested @nextTaskDue.DateRequested.FriendlyPastDate()</span>
+                    <span class="job__info__col1__urgency__dates due-date" title="@((nextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + nextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
+                        Due @nextTaskDue.DueDate.FriendlyFutureDate()
+                    </span>
+                </span>
+            }
 
             <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
             </span>
         </div>
         <div class="job__info__activity">
-            @foreach (SupportActivities activity in Model.Item.JobSummaries.Select(a => a.SupportActivity).Distinct())
+            @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
+            {
+                <span class="job__info__activity__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+
+            @foreach (SupportActivities activity in Model.Item.JobBasics.Select(a => a.SupportActivity).Distinct())
             {
                 {
                     <span class="job__info__activity__title @activity.Class()">
@@ -67,31 +118,67 @@
                             @activity.FriendlyNameShort()
                         </span>
                     </span>
+
+                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity) && !string.IsNullOrWhiteSpace(j.Reference));
+                    if (references.Count() > 0)
+                    {
+                        <span class="job__info__activity__title @activity.Class()">
+                            @($"({string.Join(", ", references)})")
+                        </span>
+                    }
                 }
             }
             <span class="job__info__activity__location">
-                @Model.Location.LocationDetails.Name
+                @if (Model.Location != null)
+                {
+                    @Model.Location.LocationDetails.Name
+                }
+                else
+                {
+                    @Model.Item.PostCode
+                }
             </span>
-            @if (Model.Item.Shift.StartDate.ToUKFromUTCTime().Date.Equals(Model.Item.Shift.EndDate.ToUKFromUTCTime().Date))
+            @if (Model.Item.Shift != null)
             {
-                <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</span>
-                <span class="job__info__activity__date due-date">@Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; @Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</span>
-            }
-            else
-            {
-                <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
-                <span class="job__info__activity__date due-date">&ndash; @Html.Raw(Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                if (Model.Item.Shift.StartDate.ToUKFromUTCTime().Date.Equals(Model.Item.Shift.EndDate.ToUKFromUTCTime().Date))
+                {
+                    <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</span>
+                    <span class="job__info__activity__date due-date">@Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; @Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</span>
+                }
+                else
+                {
+                    <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                    <span class="job__info__activity__date due-date">&ndash; @Html.Raw(Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                }
             }
         </div>
         <div class="job__info__col3 flex-end">
-            <div class="job__info__actions">
-                @if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
+            @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
+            {
+                <span class="job__info__col3__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+
+        <div class="job__info__actions">
+            @if (singleJob)
+            {
+                <partial name="_JobButtons_Admin" model="Model.Item.JobBasics.First()" />
+            }
+            else if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
+            {
+                if (Model.Item.AcceptedAndInProgressJobs().Count() > 0)
                 {
-                    <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                        <span class="text">Cancel shift</span>
+                    <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                        <span class="text">Mark all as Done</span>
                     </button>
                 }
-            </div>
+                <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
+                    <span class="text">Cancel @(Model.Item.RequestType.Equals(RequestType.Shift) ? "shift" : "")</span>
+                </button>
+            }
+        </div>
             <div class="job__info__footer">
                 <a href="#" class="open">View more info <span></span></a>
                 <a href="#" class="close">View less info <span></span></a>

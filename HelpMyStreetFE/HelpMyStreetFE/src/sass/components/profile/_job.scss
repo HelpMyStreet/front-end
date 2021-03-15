@@ -135,6 +135,7 @@
                 &__dates {
                     display: flex;
                     align-items: center;
+
                     @media (min-width: $med-screen) {
                         white-space: nowrap;
                         margin: 0;
@@ -371,7 +372,6 @@
                             max-height: 3rem;
                         }
                     }
-
                 }
             }
 
@@ -450,7 +450,6 @@
     }
 
     .status-icon {
-        filter: drop-shadow(2px 2px 2px grey);
         width: 3rem;
         height: 3rem;
 
@@ -742,13 +741,12 @@
             stroke: $white;
             stroke-width: 0.18rem;
             stroke-linecap: round;
-            stroke-dasharray: 0.1% 11%;
+            stroke-dasharray: 0.1% 11.3%;
         }
     }
 
     .tick {
         stroke: $green;
-        stroke-opacity: 0.5;
         fill: none;
     }
 }

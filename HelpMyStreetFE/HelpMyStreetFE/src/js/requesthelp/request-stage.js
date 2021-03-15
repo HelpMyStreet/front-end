@@ -116,11 +116,17 @@ var handleActivity = function (el) {
 var updateOptionsForActivity = function (taskId) {
     let requestHelpFormVariant = JSON.parse($('input[name="requestHelp"]').val()).RequestHelpFormVariant;
     if (taskId == 12) { // facemask   
+        $('#requestorFor_1').parent().show(); // myself
+        $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
         if ($('#requestorFor_3').hasClass("selected")) {
             $('input[name="currentStep.SelectedRequestor.Id"]').val($('#requestorFor_3').attr("data-id"));
         }
         displayTodayHelpNeededOptions(false);
+    } else if (taskId == 22) { // volunteer support
+        $('#requestorFor_1').parent().hide(); // myself
+        $('#requestorFor_2').parent().hide(); // someone else
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
     } else {
         if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
             $('#requestorFor_1').parent().hide(); // myself
@@ -128,6 +134,8 @@ var updateOptionsForActivity = function (taskId) {
             $('#requestorFor_3').parent().hide(); // onbehalf of organisation
             displayTodayHelpNeededOptions(true);
         } else if (requestHelpFormVariant == 19) { // Sandbox
+            $('#requestorFor_1').parent().show(); // myself
+            $('#requestorFor_2').parent().show(); // someone else
             $('#requestorFor_3').parent().show(); // onbehalf of organisation
             if (taskId == 22 || taskId == 24) { // Volunteer Support, Vaccine Support
                 $('#requestorFor_1').parent().hide(); // myself
@@ -157,18 +165,19 @@ var updateOptionsForActivity = function (taskId) {
             $('input[name="currentStep.SelectedRequestor.Id"]').val("");
             $('input[name="currentStep.selectedTimeFrame.Id"]').val("");
         } else {
-            $('#requestorFor_3').parent().hide();
-            var currentRequestedFor = $('input[name="currentStep.SelectedRequestor.Id"]').val();
-            // if they have previously selected On behalf of organisation,
-            //set selected RequestorID as empty since that option is only available to facemasks
-            if (currentRequestedFor == $('#requestorFor_3').attr("data-id")) {
-                $('input[name="currentStep.SelectedRequestor.Id"]').val("");
-            }
+            $('#requestorFor_1').parent().show(); // myself
+            $('#requestorFor_2').parent().show(); // someone else
+            $('#requestorFor_3').parent().hide(); // onbehalf of organisation
+
             displayTodayHelpNeededOptions(true);
         }
     }
 
-
+    // Deselect any hidden values
+    if ($('.requestorFor.selected:not(:visible)').length > 0) {
+        $('.requestorFor.selected:not(:visible)').removeClass("selected");
+        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+    }
 
     // preselect value if theres only one
     if ($('.requestorFor:visible').length == 1) {
@@ -191,6 +200,22 @@ function displayTodayHelpNeededOptions(show) {
 function validateDateIfNecessary() {
     if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
         return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
+    } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "7") {
+        let valid = true;
+        if (!validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M)) {
+            valid = false;
+        }
+        if ($('input[name="currentStep.SelectedTimeFrame.StartTime"]').val() == "") {
+            $('#starttimeselectionError').show().text("Please enter a start time");
+            $('input[name="currentStep.SelectedTimeFrame.StartTime"]').on('blur', function () { $('#starttimeselectionError').hide(); });
+            valid = false;
+        }
+        if ($('input[name="currentStep.SelectedTimeFrame.EndTime"]').val() == "") {
+            $('#endtimeselectionError').show().text("Please enter an end time");
+            $('input[name="currentStep.SelectedTimeFrame.EndTime"]').on('blur', function () { $('#endtimeselectionError').hide(); });
+          valid = false;
+        }
+        return valid;
     } else {
         return true;
     }
