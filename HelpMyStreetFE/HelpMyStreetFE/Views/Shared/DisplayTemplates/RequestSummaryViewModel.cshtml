@@ -13,7 +13,7 @@
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
     var admin = Model.UserRole == RequestRoles.GroupAdmin;
 
-    bool singleJob = Model.Item.JobBasics.Count() == 1;
+    bool singleJob = Model.Item.JobBasics.Count() == 1 && Model.Item.RequestType.Equals(RequestType.Task);
     var jobId = singleJob ? Base64Utils.Base64Encode(Model.Item.JobBasics.First().JobID) : "";
 
     var className = "";
@@ -168,6 +168,12 @@
             }
             else if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
             {
+                if (Model.Item.AcceptedAndInProgressJobs().Count() > 0)
+                {
+                    <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                        <span class="text">Mark all as Done</span>
+                    </button>
+                }
                 <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
                     <span class="text">Cancel @(Model.Item.RequestType.Equals(RequestType.Shift) ? "shift" : "")</span>
                 </button>

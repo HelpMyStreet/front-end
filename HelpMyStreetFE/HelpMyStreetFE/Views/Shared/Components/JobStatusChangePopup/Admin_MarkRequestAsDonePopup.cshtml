@@ -1,0 +1,39 @@
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreetFE.Helpers; 
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+
+@{ 
+    var openJobs = Model.RequestSummary.UnfilledJobs().Count();
+    var acceptedJobs = Model.RequestSummary.AcceptedAndInProgressJobs().Count();
+
+    var slotNounSingular = Model.RequestType.Equals(RequestType.Shift) ? "slot" : "task";
+    var slotNounPlural = Model.RequestType.Equals(RequestType.Shift) ? "slots" : "tasks";
+}
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Mark all as done?</div>
+        <div class="popup__content__text">
+            <p>Click “Confirm” to mark this @(Model.RequestType.Equals(RequestType.Shift) ? "shift" : "request") as done.</p>
+
+            @if (acceptedJobs > 0)
+            {
+                <p>The @acceptedJobs accepted @(acceptedJobs == 1 ? slotNounSingular : slotNounPlural) will be marked as done, and we will notify @(acceptedJobs == 1 ? "the volunteer" : "those volunteers").</p>
+            }
+
+            @if (openJobs > 0)
+            {
+                <p>The @openJobs open @(openJobs == 1 ? slotNounSingular : slotNounPlural) will be cancelled.</p>
+            }
+
+            <p><b>This action cannot be undone.</b> Please make sure you want to make this change before you click to confirm.</p>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t update this @(Model.RequestType.Equals(RequestType.Shift) ? "shift" : "request") at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
+        </div>
+    </div>
+</div>
+

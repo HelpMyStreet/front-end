@@ -152,6 +152,12 @@ var updateOptionsForActivity = function (supportActivity) {
         }
     }
 
+    // Deselect any hidden values
+    if ($('.requestorFor.selected:not(:visible)').length > 0) {
+        $('.requestorFor.selected:not(:visible)').removeClass("selected");
+        $('input[name="currentStep.SelectedRequestor.Id"]').val("");
+    }
+
     // preselect value if theres only one
     if ($('.requestorFor:visible').length == 1) {
         $('.requestorFor:visible').addClass("selected");

@@ -50,6 +50,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 return (request.SingleJobStatus(), targetStatus, userIsAdmin) switch
                 {
+                    (_, JobStatuses.Done, true) => View("Admin_MarkRequestAsDonePopup", vm),
                     (_, JobStatuses.Cancelled, true) => View("Admin_CancelRequestPopup", vm),
                     _ => throw new Exception($"Unhandled status/admin combination for request: {request.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
                 };
