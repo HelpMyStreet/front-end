@@ -114,7 +114,13 @@
             @if (!string.IsNullOrWhiteSpace(Model.Item.Reference))
             {
                 <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
-                    @($"({Model.Item.Reference})")
+                    @($"Group Ref: {Model.Item.Reference}")
+                </span>
+            }
+            @if (admin)
+            {
+                <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
+                    @($"HMS Ref: {Model.Item.JobID} ")
                 </span>
             }
             <span class="job__info__activity__location">
