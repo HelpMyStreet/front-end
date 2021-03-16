@@ -15,20 +15,7 @@
 
 <div class="row">
     <div class="sm12 input">
-        <label for="selectedTask">What's the main thing you need help with? </label>
-        <div class="tiles">
-            <div class="input">
-                <input id="selectedTask" type="hidden" name="currentStep.SelectedTask.Id" value="@((int?)Model.Tasks.Where(x => x.IsSelected).FirstOrDefault()?.SupportActivity)" />
-                <div class="row">
-                    @foreach (var task in Model.Tasks)
-                    {
-                        @Html.DisplayFor(x => task, "TaskTile")
-                    }
-                </div>
-                <span class="error"></span>
-            </div>
-        </div>
-
+        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "What’s the main thing you need help with?", TileVMs = Model.Tasks, FieldName = "currentStep.SelectedTask.Id", TileView = "TaskTile" }' />
     </div>
 </div>
 
