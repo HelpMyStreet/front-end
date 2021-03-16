@@ -25,26 +25,27 @@ export function intialiseRequestStage() {
 
 
 var validateForm = function () {
-  $("form").on("submit", function (evt) {
-    buttonLoad($("#btnNext"));
-    const valid = validateFormData($(this), {
-      "currentStep.SelectedTask": (v) => v !== "" || "Please select at least one task type",
-      "currentStep.SelectedRequestor": (v) => v !== "" || "Please select from one of the available options",
-      "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",
-      "currentStep.AgreeToPrivacyAndTerms": (v) => v === true || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",
+    $("form").on("submit", function (evt) {
+        buttonLoad($("#btnNext"));
+        const valid = validateFormData($(this), {
+            "currentStep.SelectedTask": (v) => v !== "" || "Please select at least one task type",
+            "currentStep.SelectedRequestor": (v) => v !== "" || "Please select from one of the available options",
+            "currentStep.SelectedFrequency": (v) => v !== "" || "Please tell us how often the help is needed",
+            "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",
+            "currentStep.AgreeToPrivacyAndTerms": (v) => v === true || "Please tick to indicate that you acknowledge our Privacy Policy and accept our Terms and Conditions.",
+        });
+
+        const validForm = validateQuestions() && validateDateIfNecessary() && valid;
+
+        trackEvent("Request form", "Submit 0.request", validForm ? "(Valid)" : "(Invalid)", 0);
+
+        if (validForm == false) {
+            buttonUnload($("#btnNext"));;
+            scrollToFirstError();
+        }
+
+        return validForm;
     });
-
-    const validForm = validateQuestions() && validateDateIfNecessary() && valid;
-
-    trackEvent("Request form", "Submit 0.request", validForm ? "(Valid)" : "(Invalid)", 0);
-
-    if (validForm == false) {
-      buttonUnload($("#btnNext"));;
-      scrollToFirstError();
-    }
-
-    return validForm;
-  });
 }
 
 var onTileSelected = function (type, value) {
