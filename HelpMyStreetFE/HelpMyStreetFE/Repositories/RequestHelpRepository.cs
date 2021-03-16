@@ -69,13 +69,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<JobHeader>> GetJobsByFilterAsync(GetJobsByFilterRequest request)
+        public async Task<GetAllJobsByFilterResponse> GetJobsByFilterAsync(GetAllJobsByFilterRequest request)
         {
-            var response = await PostAsync<BaseRequestHelpResponse<GetJobsByFilterResponse>>($"/api/GetJobsByFilter", request);
+            var response = await PostAsync<BaseRequestHelpResponse<GetAllJobsByFilterResponse>>($"/api/GetAllJobsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.JobHeaders;
+                return response.Content;
             }
             throw new Exception("GetJobsByFilter call failed");
         }
@@ -276,6 +276,23 @@ namespace HelpMyStreetFE.Repositories
             if (response.HasContent && response.IsSuccessful)
             {
                 return response.Content;
+            }
+            return null;
+        }
+
+        public async Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId)
+        {
+            var request = new PutUpdateRequestStatusToDoneRequest()
+            {
+                RequestID = requestId,
+                CreatedByUserID = createdByUserId
+            };
+
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateRequestStatusToDoneResponse>>($"/api/PutUpdateRequestStatusToDone", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
             }
             return null;
         }

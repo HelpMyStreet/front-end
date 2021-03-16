@@ -6,7 +6,7 @@
 @using HelpMyStreetFE.Models.Community;
 @using HelpMyStreetFE.Models.Account.Jobs;
 
-@model JobViewModel<JobHeader>
+@model JobViewModel<JobSummary>
 
 @{
     var id = Base64Utils.Base64Encode(Model.Item.JobID);
