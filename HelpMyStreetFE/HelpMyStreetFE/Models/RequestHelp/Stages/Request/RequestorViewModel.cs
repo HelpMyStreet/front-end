@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
-    public class RequestorViewModel
+    public class RequestorViewModel : IBasicTileViewModel
     {
         public int ID { get; set; }
-        public string Title { get; set; }
+        public string Description { get; set; }
         public string Text { get; set; }
         public string IconDark { get; set; }
         public string IconLight { get; set; }
         public string ColourCode { get; set; }
         public bool IsSelected { get; set; }
         public RequestorType Type { get; set; }
+
+        public string Value { get { return Type.ToString(); } }
+
+        public string DataType { get { return "request-for"; } }
     }
 }

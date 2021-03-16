@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string PageHeading { get; set; }
         public string IntoText { get; set; }
         public List<TasksViewModel> Tasks { get; set; }
-        public List<RequestorViewModel> Requestors { get; set; }
+        public IEnumerable<RequestorViewModel> Requestors { get; set; }
         public QuestionsViewModel Questions { get; set; } = new QuestionsViewModel();
         public string FriendlyName { get; set; } = "Request";
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";

@@ -437,7 +437,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     ID = 1,
                     ColourCode = "orange",
-                    Title = "I am requesting help for myself",
+                    Description = "I am requesting help for myself",
                     Text = "I'm the person in need of help",
                     IconDark = "request-myself.svg",
                     IconLight = "request-myself-white.svg",
@@ -451,7 +451,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     ID = 2,
                     ColourCode = "dark-blue",
-                    Title = "On behalf of someone else",
+                    Description = "On behalf of someone else",
                     Text = "I'm looking for help for a relative, neighbour or friend",
                     IconDark = "request-behalf.svg",
                     IconLight = "request-behalf-white.svg",
@@ -465,7 +465,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     ID = 3,
                     ColourCode = "dark-blue",
-                    Title = "On behalf of an organisation",
+                    Description = "On behalf of an organisation",
                     Text = "I'm looking for help for an organisation",
                     IconDark = "request-organisation.svg",
                     IconLight = "request-organisation-white.svg",

@@ -52,31 +52,14 @@
     </div>
 </div>
 
-@if (Model.Requestors.Count == 1)
+@if (Model.Requestors.Count() == 1)
 {
     <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.First().ID" />
 }
 else
 {
     <div class="row">
-        <div class="sm12 input">
-            <label for="selectedRequestor">Who is the help for?</label>
-            <div class="tiles">
-                <div class="input">
-                    <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
-
-                    <div class="row">
-                        @foreach (var requestor in Model.Requestors)
-                        {
-                            @Html.DisplayFor(x => requestor, "RequestForTile")
-                        }
-
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
-
-        </div>
+        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "Who is the help for?", TileVMs = Model.Requestors, FieldName = "currentStep.SelectedRequestor.Id", TileView = "RequestForTile" }' />
     </div>
 
     <hr class="input--separator" />
