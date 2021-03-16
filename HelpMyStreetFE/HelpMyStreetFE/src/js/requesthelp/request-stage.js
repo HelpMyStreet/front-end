@@ -14,6 +14,12 @@ export function intialiseRequestStage() {
     if ($('#datepicker').length > 0) {
         datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
     }
+
+    if ($('.activity-selector-container input').val() !== '') {
+        console.log($('.activity-selector-container input').val());
+        updateOptionsForActivity($('.activity-selector-container input').val());
+        refreshTileSelectors();
+    }
 }
 
 

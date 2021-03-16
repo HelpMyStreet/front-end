@@ -3,11 +3,11 @@
 @model TileSelectorViewModel;
 
 <div class="sm12 input tile-selector">
-    <label for="@Model.FieldName">@Model.Label</label>
+    <label for="@Model.FieldName.Replace('.', '_')">@Model.Label</label>
 
     <div class="tiles">
         <div class="input">
-            <input type="hidden" id="@Model.FieldName" name="@Model.FieldName" value="@Model.TileVMs.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
+            <input type="hidden" id="@Model.FieldName.Replace('.', '_')" name="@Model.FieldName" value="@Model.TileVMs.Where(x => x.IsSelected).FirstOrDefault()?.Value" />
 
             <div class="row">
                 @foreach (var frequency in Model.TileVMs)
