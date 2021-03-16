@@ -54,7 +54,19 @@
 
 
     <div class="row justify-center">
-        <div class="sm8 pad-sm-md">
+        @if (Model.FrequencyRequested.Frequency != Frequency.Once)
+        {
+            <div class="sm4 pad-sm-md">
+                <div class="tiles__tile tiles__tile--large">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
+                        <div class="tiles__tile__content__header">How often is the help needed?</div>
+                        <div class="tiles__tile__content__description">@Model.FrequencyRequested.Frequency.FriendlyName()</div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="sm4 pad-sm-md">
             <div class="tiles__tile tiles__tile--large">
                 <div class="tiles__tile__content ">
                     <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>

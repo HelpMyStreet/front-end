@@ -100,22 +100,30 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
 
             int selectedTimeId = -1;
 
-            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask").FirstValue, out SupportActivities activity);
-            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor").FirstValue, out RequestorType requestorType);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask").FirstValue, out SupportActivities selectedTask);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor").FirstValue, out RequestorType selectedRequestor);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedFrequency").FirstValue, out Frequency selectedFrequency);
             int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Id").FirstValue, out selectedTimeId);
 
             model.Requestors.ForEach(x => x.IsSelected = false);
-            var requestor = model.Requestors.Where(x => x.Type == requestorType).FirstOrDefault();
+            var requestor = model.Requestors.Where(x => x.Type == selectedRequestor).FirstOrDefault();
             if (requestor != null)
             {
                 requestor.IsSelected = true;
             }
 
             model.Tasks.ForEach(x => x.IsSelected = false);
-            var task = model.Tasks.Where(x => x.SupportActivity == activity).FirstOrDefault();
+            var task = model.Tasks.Where(x => x.SupportActivity == selectedTask).FirstOrDefault();
             if (task != null)
             {
                 task.IsSelected = true;
+            }
+
+            model.Frequencies.ForEach(x => x.IsSelected = false);
+            var frequency = model.Frequencies.Where(x => x.Frequency == selectedFrequency).FirstOrDefault();
+            if (frequency != null)
+            {
+                frequency.IsSelected = true;
             }
 
             model.Timeframes.ForEach(x => x.IsSelected = false);

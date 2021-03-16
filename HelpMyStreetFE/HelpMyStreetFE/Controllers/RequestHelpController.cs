@@ -131,7 +131,8 @@ namespace HelpMyStreetFE.Controllers
                         }
 
                         reviewStage.Task = requestStep.Tasks.Where(x => x.IsSelected).FirstOrDefault();
-                        reviewStage.TimeRequested = requestStep.Timeframes.Where(X => X.IsSelected).FirstOrDefault();
+                        reviewStage.FrequencyRequested = requestStep.Frequencies.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.TimeRequested = requestStep.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.RequestedFor = requestStep.Requestors.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.RequestStageQuestions = requestStep.Questions.Questions;
                     }
