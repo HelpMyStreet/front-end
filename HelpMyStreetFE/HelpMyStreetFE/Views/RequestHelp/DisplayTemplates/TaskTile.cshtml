@@ -28,7 +28,10 @@
                 new RequestActivityViewModel{ Activity = SupportActivities.VolunteerSupport, Description = "Finding one or more volunteers to help with events, admin duties or not-for-profit activities", MultiVolunteer = true },
                 new RequestActivityViewModel{ Activity = SupportActivities.Transport, Description = "Finding transport for essential appointments"},
                 new RequestActivityViewModel{ Activity = SupportActivities.VaccineSupport, Description = "Find volunteers for vaccine programme support shifts", MultiVolunteer = true },
-                new RequestActivityViewModel{ Activity = SupportActivities.EmergencySupport, Description = "Finding one or more volunteers to help in an emergency situation (e.g. extreme weather)", MultiVolunteer = true }
+                new RequestActivityViewModel{ Activity = SupportActivities.EmergencySupport, Description = "Finding one or more volunteers to help in an emergency situation (e.g. extreme weather)", MultiVolunteer = true },
+                new RequestActivityViewModel{ Activity = SupportActivities.BinDayAssistance, Description = "Help taking out and bringing in bins on collection day"},
+                new RequestActivityViewModel{ Activity = SupportActivities.Covid19Help, Description = "Help booking a COVID-19 test or vaccination appointment"},
+                new RequestActivityViewModel{ Activity = SupportActivities.DigitalSupport, Description = "Help with computers, phones and other technology for people finding it difficult to get online"},
         };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();

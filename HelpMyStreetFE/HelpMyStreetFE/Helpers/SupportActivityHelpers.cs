@@ -28,6 +28,9 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.Transport => "transport.svg",
                 SupportActivities.VaccineSupport => "vaccination.svg",
                 SupportActivities.EmergencySupport => "emergency-support.svg",
+                SupportActivities.BinDayAssistance => "bin-day-assistance.svg",
+                SupportActivities.Covid19Help => "covid-19-support.svg",
+                SupportActivities.DigitalSupport => "digital-support.svg",
                 _ => "question-mark.svg"
             };
         }

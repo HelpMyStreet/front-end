@@ -181,6 +181,8 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeUKNorthWestKent_Public => "Request Help from Age UK North West Kent",
                 RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter => "Request Help from Age UK North West Kent",
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => "SANDBOX request form",
+                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => "Request Help from the Meadows Community Helpers",
+                RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter => "Request Help from the Meadows Community Helpers",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -199,6 +201,8 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeUKNorthWestKent_Public => "If you need help from Age UK North West Kent, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter => "If you need help from Age UK North West Kent, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => "Requests made through **this** form will be available within the Sandbox area of HelpMyStreet, for testing purposes, and will not trigger notifications to general users of HelpMyStreet.\r\n\r\nPlease ensure you can see this message whenever you wish to submit a Sandbox request.",
+                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => "If you need help from a volunteer in the Meadows, fill in this short form to see if there is someone who can help!",
+                RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter => "If you need help from a volunteer in the Meadows, fill in this short form to see if there is someone who can help!",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
             };
         }
@@ -350,6 +354,39 @@ namespace HelpMyStreetFE.Services.Requests
             else if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.VaccineSupport, IsSelected = true });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask },
+                    new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.DigitalSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.BinDayAssistance },
+                    new TasksViewModel { SupportActivity = SupportActivities.Covid19Help },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask },
+                    new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.DigitalSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.BinDayAssistance },
+                    new TasksViewModel { SupportActivity = SupportActivities.Covid19Help },
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.Sandbox_RequestSubmitter)
             {
