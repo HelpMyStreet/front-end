@@ -12,7 +12,7 @@
 <div class="sm4">
     <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
-            <div class="tiles__tile__content__header pt-xs">@Model.TimeDescription</div>
+            <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
             @if (Model.DueDateType.HasDate())
             {
                 <div class="on-selected">

@@ -378,22 +378,22 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 if (includeToday)
                 {
-                    vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, TimeDescription = "Today", Days = 0 });
-                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, TimeDescription = "Within 3 days", Days = 3 });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, Description = "Today", Days = 0 });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, Description = "Within 3 days", Days = 3 });
                 }
-                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, TimeDescription = "Within a week", Days = 7 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, TimeDescription = "Within 2 weeks", Days = 14 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, TimeDescription = "When convenient", Days = 30 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "When convenient", Days = 30 });
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a specific date", DueDateType = DueDateType.On });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On });
             }
 
             if (dueDateTypes.Contains(DueDateType.SpecificStartAndEndTimes))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes });
             }
 
             if (vms.Count == 1)

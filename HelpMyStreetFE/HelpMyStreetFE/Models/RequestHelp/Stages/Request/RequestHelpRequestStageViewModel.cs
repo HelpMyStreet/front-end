@@ -17,7 +17,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public QuestionsViewModel Questions { get; set; } = new QuestionsViewModel();
         public string FriendlyName { get; set; } = "Request";
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
-        public List<RequestHelpTimeViewModel> Timeframes { get; set; }
+        public IEnumerable<RequestHelpTimeViewModel> Timeframes { get; set; }
         public IEnumerable<FrequencyViewModel> Frequencies { get; set; }
         public bool AgreeToPrivacyAndTerms { get; set; }
     }

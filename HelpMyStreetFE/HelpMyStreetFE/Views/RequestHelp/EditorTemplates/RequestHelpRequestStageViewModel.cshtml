@@ -86,24 +86,9 @@ else
     <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "How often is the help needed?", TileVMs = Model.Frequencies, FieldName = "currentStep.SelectedFrequency.Id" }' />
 </div>
 
+
 <div class="row">
-    <div class="sm12 input">
-        <label for="selectedTimeFrame">When is the help needed?</label>
-
-        <div class="tiles">
-            <div class="input">
-                <input type="hidden" id="selectedTimeFrame" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
-
-                <div class="row">
-                    @foreach (var time in Model.Timeframes)
-                    {
-                        @Html.DisplayFor(x => time, "TimeFrameTile")
-                    }
-                </div>
-                <span class="error"></span>
-            </div>
-        </div>
-    </div>
+    <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "When is the help needed?", TileVMs = Model.Timeframes, FieldName = "currentStep.SelectedTimeFrame.Id", TileView = "TimeFrameTile" }' />
 </div>
 
 <hr class="input--separator" />

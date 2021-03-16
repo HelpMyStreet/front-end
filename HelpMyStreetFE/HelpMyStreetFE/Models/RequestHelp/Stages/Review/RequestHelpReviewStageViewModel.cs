@@ -24,7 +24,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
             get
             {
                 if (TimeRequested == null) return "";
-                return TimeRequested.TimeDescription;
+                return TimeRequested.Description;
             }
         }
         public string FriendlyName { get; set; } = "Review";

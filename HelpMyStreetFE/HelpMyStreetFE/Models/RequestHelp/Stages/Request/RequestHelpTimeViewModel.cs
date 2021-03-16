@@ -7,10 +7,10 @@ using HelpMyStreet.Utils.Extensions;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
-    public class RequestHelpTimeViewModel
+    public class RequestHelpTimeViewModel : IBasicTileViewModel
     {
         public int ID { get; set; }
-        public string TimeDescription { get; set; }
+        public string Description { get; set; }
         public int Days { get; set; }
         public bool IsSelected { get; set; }
         public DueDateType DueDateType { get; set; }
@@ -39,5 +39,15 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
                 return string.Join(", ", components);
             }
         }
+
+        public string Value
+        {
+            get
+            {
+                return DueDateType.ToString();
+            }
+        }
+
+        public string DataType { get { return "timeframe"; } }
     }
 }
