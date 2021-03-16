@@ -10,7 +10,7 @@
 }
 
 <div class="sm4">
-    <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' data-val="@Model.Days.ToString()" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+    <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-value="@Model.Value" data-id='@Model.ID' data-val="@Model.Days.ToString()" class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
             @if (Model.DueDateType.HasDate())
@@ -27,7 +27,7 @@
 @if (Model.DueDateType.HasStartTime())
 {
     <div class="sm4">
-        <div id="start_time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+        <div id="start_time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Starting at</div>
                 <div class="on-selected">
@@ -42,7 +42,7 @@
 @if (Model.DueDateType.HasEndTime())
 {
     <div class="sm4">
-        <div id="end_time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+        <div id="end_time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Ending at</div>
                 <div class="on-selected">

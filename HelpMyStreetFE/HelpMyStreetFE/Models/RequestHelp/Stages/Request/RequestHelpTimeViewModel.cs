@@ -44,7 +44,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         {
             get
             {
-                return DueDateType.ToString();
+                return ID.ToString();
             }
         }
 

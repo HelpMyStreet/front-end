@@ -98,21 +98,21 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
         {
             RequestHelpRequestStageViewModel model = JsonConvert.DeserializeObject<RequestHelpRequestStageViewModel>(bindingContext.ValueProvider.GetValue("RequestStep").FirstValue);
 
-            int selectedTaskId, selectedRequestorId, selectedTimeId = -1;
+            int selectedTimeId = -1;
 
-            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask.Id").FirstValue, out selectedTaskId);
-            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor.Id").FirstValue, out selectedRequestorId);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask").FirstValue, out SupportActivities activity);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor").FirstValue, out RequestorType requestorType);
             int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Id").FirstValue, out selectedTimeId);
 
             model.Requestors.ForEach(x => x.IsSelected = false);
-            var requestor = model.Requestors.Where(x => x.ID == selectedRequestorId).FirstOrDefault();
+            var requestor = model.Requestors.Where(x => x.Type == requestorType).FirstOrDefault();
             if (requestor != null)
             {
                 requestor.IsSelected = true;
             }
 
             model.Tasks.ForEach(x => x.IsSelected = false);
-            var task = model.Tasks.Where(x => (int)x.SupportActivity == selectedTaskId).FirstOrDefault();
+            var task = model.Tasks.Where(x => x.SupportActivity == activity).FirstOrDefault();
             if (task != null)
             {
                 task.IsSelected = true;

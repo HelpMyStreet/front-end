@@ -13,9 +13,9 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row activity-selector-container">
     <div class="sm12 input">
-        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "What’s the main thing you need help with?", TileVMs = Model.Tasks, FieldName = "currentStep.SelectedTask.Id", TileView = "TaskTile" }' />
+        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "What’s the main thing you need help with?", TileVMs = Model.Tasks, FieldName = "currentStep.SelectedTask", TileView = "TaskTile" }' />
     </div>
 </div>
 
@@ -41,12 +41,12 @@
 
 @if (Model.Requestors.Count() == 1)
 {
-    <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.First().ID" />
+    <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor" value="@Model.Requestors.First().Value" />
 }
 else
 {
     <div class="row">
-        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "Who is the help for?", TileVMs = Model.Requestors, FieldName = "currentStep.SelectedRequestor.Id", TileView = "RequestForTile" }' />
+        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "Who is the help for?", TileVMs = Model.Requestors, FieldName = "currentStep.SelectedRequestor", TileView = "RequestForTile" }' />
     </div>
 
     <hr class="input--separator" />

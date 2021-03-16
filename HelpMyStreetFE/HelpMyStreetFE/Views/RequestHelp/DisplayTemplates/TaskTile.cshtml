@@ -41,7 +41,7 @@
 
 <div class="sm4">
 
-    <div id="task_@((int)Model.SupportActivity)" data-type="@Model.DataType" data-support-activity="@Model.Value" data-id='@Model.ID' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
+    <div id="task_@((int)Model.SupportActivity)" data-type="@Model.DataType" data-value="@Model.Value" data-id='@Model.ID' class="tile-selector__tile tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
         <div class="tiles__tile__content ">
             @if (activity.MultiVolunteer && !ForReview)
             {

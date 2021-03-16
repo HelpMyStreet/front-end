@@ -3,7 +3,7 @@
 @model IBasicTileViewModel;
 
 <div class="sm4">
-    <div data-type="@Model.DataType" data-id="@Model.ID" data-value="@Model.Value" class="tiles__tile @(Model.IsSelected ? "selected" : "" )">
+    <div data-type="@Model.DataType" data-id="@Model.ID" data-value="@Model.Value" class="tile-selector__tile tiles__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
         </div>
