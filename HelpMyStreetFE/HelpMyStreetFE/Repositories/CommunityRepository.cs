@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Repositories
             {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/kent/northwest/banner.jpg", GeographicName="North West Kent (Dartford, Swanley or Gravesend)" } },
             {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
-            {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
+            {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -273,7 +273,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/meadows/notts_county_foundation.jpg"
+                    ImageLocation = "/img/community/meadows/notts_county_foundation.png"
                 },
                 new CommunityVolunteer()
                 {
