@@ -27,6 +27,7 @@ namespace HelpMyStreetFE.Repositories
             {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
             {"ageconnectscardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnectscardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Local Group" } },
+            {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -54,6 +55,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
                 Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
                 Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
+                Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),             
                 _ => null,
             };
 
@@ -276,6 +278,65 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/SKC6.JPG",
                     $"{carouselPath}/SKC7.JPG",
                     $"{carouselPath}/SKC7a.JPG",
+                }
+            };
+
+            return communityViewModel;
+        }
+        
+        private CommunityViewModel GetMeadowsCommunityHelpers()                    
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "MeadowsComunityHelpers",
+            };
+
+            communityViewModel.Map_CentreLatitude = 52.94107706186348;
+            communityViewModel.Map_CentreLongitude = -1.1435562260432748;
+            communityViewModel.Map_ZoomLevel = 14;
+
+            communityViewModel.CommunityName = "Meadows Community Helpers";
+            communityViewModel.CommunityShortName = "Meadows";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Notts County Foundation",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/meadows/notts_county_foundation.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "The Bridges Community Trust",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/meadows/the_bridges_trust.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Meadows Community Helpers",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/meadows/meadows_community_helpers.png"
+                }
+            };
+
+            var carouselPath = "/img/community/meadows/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/meadowscarousel1.JPG",
+                    $"{carouselPath}/meadowscarousel2.JPEG",
+                    $"{carouselPath}/meadowscarousel3.JPG",
+                    $"{carouselPath}/meadowscarousel4.JPG"
                 }
             };
 

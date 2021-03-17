@@ -334,7 +334,7 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "lincs-volunteers",
                 },
-                 new Testimonial()
+                new Testimonial()
                 {
                     Tagline = "Brightens up her week",
                     Message = "Liz takes herself on her usual dog walk with Oscar the gorgeous Golden Retriever and walks to her client’s home where they have a socially distanced chat through the window. According to the client – the regular visits from Liz and Oscar really brighten her week!",
@@ -357,6 +357,21 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Sara, the  niece of an 80-year-old Cardiff client",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ageconnectscardiff",
+                new Testimonial()
+                {
+                    Tagline = "Thank you",
+                    Message = "I am touched and moved by this generosity. God bless the hands of those who have prepared the food boxes, provided the contents and organised and administered the distribution. Thank you.",
+                    Person = "Shared on Facebook (Caroline Beaumont)",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "meadows-community-helpers",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Wasim, you are a star",
+                    Message = "A big thankyou to Wasim Amin  one of our new Trustees who is a local taxi driver and a community activist for delivering us door to door to the vaccination Centre at Kings Meadow Lenton Lane for our first jab . Thanking him for his patience and help. Whilst we waited in line and went through the process. It is a well organised system doing checks all the way through. The staff are wonderful and helpful.  Thank you once more  Wasim you are a star.",
+                    Person = "Shared by The Bridges Community Trust",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "meadows-community-helpers",
                 },
             };
 

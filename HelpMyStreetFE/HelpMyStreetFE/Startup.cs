@@ -393,6 +393,11 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });
 
                 endpoints.MapControllerRoute(
+                    name: "meadows-community-helpers",
+                    pattern: "meadows-community-helpers",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
+
+                endpoints.MapControllerRoute(
                    name: "registration",
                    pattern: "registration",
                    defaults: new { controller = "Registration", action = "StepOne" });
