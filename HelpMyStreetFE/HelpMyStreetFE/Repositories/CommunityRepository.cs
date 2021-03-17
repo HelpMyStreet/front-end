@@ -26,7 +26,7 @@ namespace HelpMyStreetFE.Repositories
             {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = false, BannerLocation = "/img/community/ageUK/kent/northwest/banner.jpg", GeographicName="North West Kent (Dartford, Swanley or Gravesend)" } },
             {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
-
+            {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -53,6 +53,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
                 Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
+                Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),             
                 _ => null,
             };
 
@@ -241,6 +242,65 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/SKC6.JPG",
                     $"{carouselPath}/SKC7.JPG",
                     $"{carouselPath}/SKC7a.JPG",
+                }
+            };
+
+            return communityViewModel;
+        }
+        
+        private CommunityViewModel GetMeadowsCommunityHelpers()                    
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "MeadowsComunityHelpers",
+            };
+
+            communityViewModel.Map_CentreLatitude = 52.94107706186348;
+            communityViewModel.Map_CentreLongitude = -1.1435562260432748;
+            communityViewModel.Map_ZoomLevel = 14;
+
+            communityViewModel.CommunityName = "Meadows Community Helpers";
+            communityViewModel.CommunityShortName = "Meadows";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Notts County Foundation",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/meadows/notts_county_foundation.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "The Bridges Community Trust",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/meadows/the_bridges_trust.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Meadows Community Helpers",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/meadows/meadows_community_helpers.png"
+                }
+            };
+
+            var carouselPath = "/img/community/meadows/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/meadowscarousel1.JPG",
+                    $"{carouselPath}/meadowscarousel2.JPEG",
+                    $"{carouselPath}/meadowscarousel3.JPG",
+                    $"{carouselPath}/meadowscarousel4.JPG"
                 }
             };
 
