@@ -48,20 +48,24 @@ var validateForm = function () {
     });
 }
 
-var onTileSelected = function (type, value) {
-    if (type == 'activities') {
+var onTileSelected = function (type, value, triggeredByUserAction) {
+    if (type === 'activities') {
         let scrollTop = $(window).scrollTop();
 
         updateOptionsForActivity(value);
         refreshTileSelectors();
-        loadQuestions(value, function () {
-            if (scrollTop == $(window).scrollTop()) {
-                $('html, body').animate({
-                    scrollTop:
-                        $('.activity-selector-container').next().offset().top
-                }, 1000);
-            }
-        });
+        if (triggeredByUserAction) {
+            loadQuestions(value, function () {
+                if (scrollTop == $(window).scrollTop()) {
+                    $('html, body').animate({
+                        scrollTop:
+                            $('.activity-selector-container').next().offset().top
+                    }, 1000);
+                }
+            });
+        }
+    } else if (type === 'frequency') {
+        updateOptionsForFrequency(value);
     }
 }
 

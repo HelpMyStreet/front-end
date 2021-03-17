@@ -4,8 +4,12 @@
         var selector = this;
         var input = $(this).find('input');
         if ($(input).val() !== '') {
-            $(selector).find(`.tile-selector__tile[data-value="${$(input).val()}"]`).addClass('selected');
-        }
+            const tileToSelect = $(selector).find(`.tile-selector__tile[data-value="${$(input).val()}"]`);
+            tileToSelect.addClass('selected');
+            if (onClickCallback !== null) {
+                onClickCallback($(tileToSelect).data('type'), $(tileToSelect).data('value'), false);
+            }
+       }
 
         $(this).on('click', '.tile-selector__tile', function () {
             $(selector).find('.tile-selector__tile').removeClass('selected');
@@ -13,7 +17,7 @@
             input.val($(this).data('value'));
 
             if (onClickCallback !== null) {
-                onClickCallback($(this).data('type'), $(this).data('value'));
+                onClickCallback($(this).data('type'), $(this).data('value'), true);
             }
         });
     });
