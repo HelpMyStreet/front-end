@@ -255,13 +255,12 @@ namespace HelpMyStreetFE.Repositories
                 View = "MeadowsComunityHelpers",
             };
 
-            CommunityModel communityModel = GetCommunityDetailByKey("meadows-community-helpers");
-
             communityViewModel.Map_CentreLatitude = 52.94107706186348;
             communityViewModel.Map_CentreLongitude = -1.1435562260432748;
             communityViewModel.Map_ZoomLevel = 14;
 
             communityViewModel.CommunityName = "Meadows Community Helpers";
+            communityViewModel.CommunityShortName = "Meadows";
             communityViewModel.ShowRequestHelpPopup = true;
 
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
