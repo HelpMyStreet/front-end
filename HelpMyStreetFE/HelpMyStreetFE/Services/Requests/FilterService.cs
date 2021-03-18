@@ -240,6 +240,11 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<SupportActivities>() { Value = SupportActivities.MealtimeCompanion, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.EmergencySupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.VolunteerSupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.Covid19Help, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.BinDayAssistance, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.DigitalSupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.InPersonBefriending, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.PracticalSupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
 
                         // The following are not currently on any request help form
