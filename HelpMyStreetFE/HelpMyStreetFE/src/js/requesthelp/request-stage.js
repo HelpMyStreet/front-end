@@ -14,12 +14,6 @@ export function intialiseRequestStage() {
     if ($('#datepicker').length > 0) {
         datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
     }
-
-    if ($('.activity-selector-container input').val() !== '') {
-        console.log($('.activity-selector-container input').val());
-        updateOptionsForActivity($('.activity-selector-container input').val());
-        refreshTileSelectors();
-    }
 }
 
 
@@ -49,13 +43,13 @@ var validateForm = function () {
 }
 
 var onTileSelected = function (type, value, triggeredByUserAction) {
+
     if (type === 'activities') {
         let scrollTop = $(window).scrollTop();
 
         $('.request-help form').attr('selected-activity', value);
 
         updateOptionsForActivity(value);
-        refreshTileSelectors();
         if (triggeredByUserAction) {
             loadQuestions(value, function () {
                 if (scrollTop == $(window).scrollTop()) {
@@ -67,12 +61,15 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
             });
         }
     } else if (type === 'frequency') {
-        if (value === 'Once') {
-            $('.request-help form').attr('selected-repeat', 'false');
+        if (value === '') {
+            $('.request-help form').attr('selected-repeat', '');
+        } else if (value === 'Once') {
+                $('.request-help form').attr('selected-repeat', 'false');
         } else {
             $('.request-help form').attr('selected-repeat', 'true');
         }
     }
+    refreshTileSelectors(onTileSelected);
 }
 
 var updateOptionsForActivity = function (supportActivity) {
