@@ -53,7 +53,6 @@ namespace HelpMyStreetFE.Services.Requests
                 }
             };
 
-
             if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
