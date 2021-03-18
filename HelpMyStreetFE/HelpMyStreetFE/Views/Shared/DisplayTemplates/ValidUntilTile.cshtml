@@ -1,6 +1,6 @@
 ﻿@model HelpMyStreetFE.Models.ValidUntilViewModel;
 
-<div class="sm4">
+<div class="sm4" hide-tile-when="@Model.HideTileWhenAttribute">
     <div id="time_@Model.ID" data-type="timeframe" data-id='@Model.ID' data-show-date-picker="@Model.ShowDatePicker" data-value="@Model.Value" class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.Label</div>

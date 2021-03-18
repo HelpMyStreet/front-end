@@ -415,28 +415,28 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 if (includeToday)
                 {
-                    vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, Description = "Today", Days = 0 });
-                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, Description = "Within 3 days", Days = 3 });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, Description = "Today", Days = 0, HideForFaceCoverings = true, HideForRepeatRequests = true });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, Description = "Within 3 days", Days = 3, HideForFaceCoverings = true });
                 }
-                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14 });
-                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "When convenient", Days = 30 });
+                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true });
+                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true });
+                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "When convenient", Days = 30, HideForRepeatRequests = true });
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On, HideForFaceCoverings = true });
             }
 
             if (dueDateTypes.Contains(DueDateType.SpecificStartAndEndTimes))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForFaceCoverings = true });
             }
 
-            if (vms.Count == 1)
-            {
-                vms.First().IsSelected = true;
-            }
+            //if (vms.Count == 1)
+            //{
+            //    vms.First().IsSelected = true;
+            //}
 
             return vms;
         }
@@ -454,13 +454,13 @@ namespace HelpMyStreetFE.Services.Requests
 
         private List<FrequencyViewModel> GetFrequencies(RequestHelpFormVariant variant)
         {
-            return new List<FrequencyViewModel> 
-            { 
-                new FrequencyViewModel(Frequency.Once),
-                new FrequencyViewModel(Frequency.Daily),
-                new FrequencyViewModel(Frequency.Weekly),
-                new FrequencyViewModel(Frequency.Fortnightly),
-                new FrequencyViewModel(Frequency.Monthly)
+            return new List<FrequencyViewModel>
+            {
+                new FrequencyViewModel(Frequency.Once, false),
+                new FrequencyViewModel(Frequency.Daily, true),
+                new FrequencyViewModel(Frequency.Weekly, true),
+                new FrequencyViewModel(Frequency.Fortnightly, true),
+                new FrequencyViewModel(Frequency.Monthly, true)
             };
         }
 

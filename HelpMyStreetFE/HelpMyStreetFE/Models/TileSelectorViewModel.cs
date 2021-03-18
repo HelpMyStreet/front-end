@@ -8,7 +8,7 @@ namespace HelpMyStreetFE.Models
     public class TileSelectorViewModel
     {
         public string Label { get; set; }
-        public IEnumerable<IBasicTileViewModel> TileVMs { get; set; }
+        public IEnumerable<BasicTileViewModel> TileVMs { get; set; }
         public string FieldName { get; set; }
         public string TileView { get; set; } = "BasicTile";
     }

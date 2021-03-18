@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
-    public class FrequencyViewModel : IBasicTileViewModel
+    public class FrequencyViewModel : BasicTileViewModel
     {
-        public Frequency Frequency { get; set; }
-        public bool IsSelected { get; set; } 
-        
-        public string DataType
+        public FrequencyViewModel(Frequency frequency, bool hideForFaceCoverings)
         {
-            get
-            {
-                return "frequency";
-            }
+            DataType = "frequency";
+            Frequency = frequency;
+            Description = frequency.FriendlyName();
+            HideForFaceCoverings = hideForFaceCoverings;
         }
 
+        public Frequency Frequency { get; private set; }
+
+        public bool HideForFaceCoverings { set { if (value) HideTileWhen.Add("activity", "FaceMask"); } }
+        
         public int ID
         {
             get
@@ -28,25 +29,13 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             }
         }
 
-        public string Value
+        public override string Value
         {
             get
             {
                 return Frequency.ToString();
             }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return Frequency.FriendlyName();
-            }
-        }
-
-        public FrequencyViewModel(Frequency frequency)
-        {
-            Frequency = frequency;
+            set { }
         }
     }
 }

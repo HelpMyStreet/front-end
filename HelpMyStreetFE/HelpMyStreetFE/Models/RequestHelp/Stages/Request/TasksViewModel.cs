@@ -7,18 +7,14 @@ using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
-    public class TasksViewModel : IBasicTileViewModel
+    public class TasksViewModel : BasicTileViewModel
     {
-        public SupportActivities SupportActivity { get; set; }
-        public bool IsSelected { get; set; }
-
-        public string DataType
+        public TasksViewModel()
         {
-            get
-            {
-                return "activities";
-            }
+            DataType = "activities";
         }
+
+        public SupportActivities SupportActivity { get; set; }
 
         public int ID
         {
@@ -28,12 +24,13 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             }
         }
 
-        public string Value
+        public override string Value
         {
             get
             {
                 return SupportActivity.ToString();
             }
+            set { }
         }
 
         public string Description

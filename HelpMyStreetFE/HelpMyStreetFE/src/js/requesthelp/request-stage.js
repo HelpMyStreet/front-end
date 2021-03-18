@@ -52,6 +52,8 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
     if (type === 'activities') {
         let scrollTop = $(window).scrollTop();
 
+        $('.request-help form').attr('selected-activity', value);
+
         updateOptionsForActivity(value);
         refreshTileSelectors();
         if (triggeredByUserAction) {
@@ -65,24 +67,20 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
             });
         }
     } else if (type === 'frequency') {
-        updateOptionsForFrequency(value);
+        if (value === 'Once') {
+            $('.request-help form').attr('selected-repeat', 'false');
+        } else {
+            $('.request-help form').attr('selected-repeat', 'true');
+        }
     }
 }
 
 var updateOptionsForActivity = function (supportActivity) {
-    if (supportActivity == 'FaceMask') {
+    if (supportActivity === 'FaceMask') {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
-
-        $('*[data-type="timeframe"]').each(function () { $(this).parent().hide(); });
-
-        $('*[data-type="timeframe"][data-duedatetype="Before"]').each(function () {
-            const days = parseInt($(this).data('val'));
-            if (days < 7) { $(this).parent().hide(); }
-            else { $(this).parent().show(); }
-        });
-    } else if (supportActivity == 'VolunteerSupport' || supportActivity == 'VaccineSupport') {
+    } else if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSupport') {
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().hide(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
@@ -93,9 +91,6 @@ var updateOptionsForActivity = function (supportActivity) {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().hide(); // onbehalf of organisation
-
-        $('*[data-type="timeframe"]').each(function () { $(this).parent().show(); });
-        $('*[data-type="timeframe"][data-duedatetype="SpecificStartAndEndTimes"]').each(function () { $(this).parent().hide(); });
     }
 }
 

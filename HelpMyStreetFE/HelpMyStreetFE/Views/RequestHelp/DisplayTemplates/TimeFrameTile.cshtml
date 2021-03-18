@@ -9,7 +9,7 @@
     var stringDate = todaysDate.AddDays(7).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT);
 }
 
-<div class="sm4">
+<div class="sm4" hide-tile-when="@Model.HideTileWhenAttribute">
     <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-value="@Model.Value" data-id='@Model.ID' data-val="@Model.Days.ToString()" class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
         <div class="tiles__tile__content ">
             <div class="tiles__tile__content__header pt-xs">@Model.Description</div>

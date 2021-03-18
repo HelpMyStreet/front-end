@@ -135,4 +135,16 @@
     .lowercase {
         text-transform: lowercase;
     }
+
+    form[selected-activity="FaceMask"] {
+        *[hide-tile-when*="'activity':'FaceMask'"] {
+            display: none;
+        }
+    }
+
+    form[selected-repeat="true"] {
+        *[hide-tile-when*="'repeats':'true'"] {
+            display: none;
+        }
+    }
 }

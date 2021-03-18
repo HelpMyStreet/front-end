@@ -7,12 +7,16 @@ using HelpMyStreet.Utils.Extensions;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
-    public class RequestHelpTimeViewModel : IBasicTileViewModel
+    public class RequestHelpTimeViewModel : BasicTileViewModel
     {
-        public int ID { get; set; }
-        public string Description { get; set; }
+        public RequestHelpTimeViewModel()
+        {
+            DataType = "timeframe";
+        }
+
         public int Days { get; set; }
-        public bool IsSelected { get; set; }
+        public bool HideForRepeatRequests { set { if (value) HideTileWhen.Add("repeats", "true"); } }
+        public bool HideForFaceCoverings { set { if (value) HideTileWhen.Add("activity", "FaceMask"); } }
         public DueDateType DueDateType { get; set; }
         public DateTime Date { get; set; }
         public DateTime StartTime { get; set; }
@@ -40,14 +44,13 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             }
         }
 
-        public string Value
+        public override string Value
         {
             get
             {
                 return ID.ToString();
             }
+            set { }
         }
-
-        public string DataType { get { return "timeframe"; } }
     }
 }
