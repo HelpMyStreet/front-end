@@ -396,6 +396,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
                 RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
                 RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
+                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
 
                 RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
               
