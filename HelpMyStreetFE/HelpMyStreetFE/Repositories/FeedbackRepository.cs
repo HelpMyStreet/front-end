@@ -357,7 +357,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Sara, the  niece of an 80-year-old Cardiff client",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ageconnectscardiff",
-                }
+                },
                 new Testimonial()
                 {
                     Tagline = "Thank you",
