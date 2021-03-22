@@ -17,6 +17,18 @@
     var className = "";
     var dueDate = "";
 
+    var location = "";
+
+    if (admin)
+    {
+        location = Model.Item.PostCode;
+    } else if (Model.Item.JobStatus == JobStatuses.Open)
+    {
+        location = Model.Item.PostCode;
+    } else
+    {
+        location = $"{Model.Item.PostCode.Split(" ").First()}, ({Model.Item.DistanceInMiles} miles away)";
+
     if (Model.Item.JobStatus.Incomplete())
     {
         dueDate = Model.Item.DueDate.JobDueDate(Model.Item.DueDateType);
