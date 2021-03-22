@@ -16,6 +16,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public string OrganisationName { get; set; }
         public FrequencyViewModel FrequencyRequested { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
+        public int? OccurrencesRequested { get; set; }
         public List<RequestHelpQuestion> RequestStageQuestions { get; set; }
         public List<RequestHelpQuestion> DetailsStageQuestions { get; set; }
         public bool ShowRequestor { get; set; }

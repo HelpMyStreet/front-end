@@ -61,6 +61,19 @@ else
     <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "When is the help needed?", TileVMs = Model.Timeframes, FieldName = "currentStep.SelectedTimeFrame.Id", TileView = "TimeFrameTile" }' />
 </div>
 
+<div class="row occurrences-question" show-tile-when="'repeats':'true'">
+    <div class="sm12 input">
+        <label>
+            How many times is the help needed?
+            <span class="sub-text">Please tell us for how long the help is needed (up to a maximum of <span class="occurrences-max"></span>)</span>
+        </label>
+        <input type="number" min="2" class="question small-width" value="@Model.Occurrences" name="currentStep.Occurrences">
+        times
+        <span class="error"></span>
+    </div>
+</div>
+
+
 <hr class="input--separator" />
 
 <div class="row">

@@ -19,6 +19,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public string TemplateName { get; set; } = "RequestHelpRequestStageViewModel";
         public IEnumerable<RequestHelpTimeViewModel> Timeframes { get; set; }
         public IEnumerable<FrequencyViewModel> Frequencies { get; set; }
+        public int? Occurrences { get; set; }
         public bool AgreeToPrivacyAndTerms { get; set; }
     }
 }

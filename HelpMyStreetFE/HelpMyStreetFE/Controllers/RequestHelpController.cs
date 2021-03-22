@@ -133,6 +133,7 @@ namespace HelpMyStreetFE.Controllers
                         reviewStage.Task = requestStep.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.FrequencyRequested = requestStep.Frequencies.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.TimeRequested = requestStep.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
+                        reviewStage.OccurrencesRequested = requestStep.Occurrences;
                         reviewStage.RequestedFor = requestStep.Requestors.Where(x => x.IsSelected).FirstOrDefault();
                         reviewStage.RequestStageQuestions = requestStep.Questions.Questions;
                     }

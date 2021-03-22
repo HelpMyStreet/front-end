@@ -70,6 +70,13 @@ namespace HelpMyStreetFE.Services.Requests
 
             var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
             var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
+            var selectedFrequency = requestStage.Frequencies.Where(x => x.IsSelected).FirstOrDefault();
+
+            int numberOfOccurrences = 1;
+            if (requestStage.Occurrences.HasValue)
+            {
+                numberOfOccurrences = requestStage.Occurrences.Value;
+            }
 
             bool heathCritical = false;
             var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
@@ -115,6 +122,8 @@ namespace HelpMyStreetFE.Services.Requests
                             DueDays = selectedTime.DueDateType == DueDateType.On ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
                             StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime.ToUTCFromUKTime() : (DateTime?)null,
                             EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime.ToUTCFromUKTime() : (DateTime?)null,
+                            RepeatFrequency = selectedFrequency.Frequency,
+                            NumberOfRepeats = numberOfOccurrences,
                             HealthCritical = heathCritical,
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {

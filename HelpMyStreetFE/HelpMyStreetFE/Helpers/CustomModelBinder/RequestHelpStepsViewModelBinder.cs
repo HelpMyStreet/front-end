@@ -99,11 +99,13 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             RequestHelpRequestStageViewModel model = JsonConvert.DeserializeObject<RequestHelpRequestStageViewModel>(bindingContext.ValueProvider.GetValue("RequestStep").FirstValue);
 
             int selectedTimeId = -1;
+            int selectedOccurrences = -1;
 
             Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask").FirstValue, out SupportActivities selectedTask);
             Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor").FirstValue, out RequestorType selectedRequestor);
             Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedFrequency").FirstValue, out Frequency selectedFrequency);
             int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Id").FirstValue, out selectedTimeId);
+            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.Occurrences").FirstValue, out selectedOccurrences);
 
             model.Requestors.ForEach(x => x.IsSelected = false);
             var requestor = model.Requestors.Where(x => x.Type == selectedRequestor).FirstOrDefault();
@@ -148,6 +150,11 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                         }
                     }
                 }
+            }
+
+            if (selectedOccurrences > 0)
+            {
+                model.Occurrences = selectedOccurrences;
             }
 
             model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity, groupId) };

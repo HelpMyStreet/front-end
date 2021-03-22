@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
@@ -25,13 +26,15 @@ namespace HelpMyStreetFE.Models.Validation
                 var task = vm.Tasks.Where(x => x.IsSelected).FirstOrDefault();
                 if (task == null) errors.Add($"A Task must be selected");
 
+                RequestHelpTimeViewModel selectedTimeframe = null;
+
                 if (vm.Timeframes.Where(x => x.IsSelected).FirstOrDefault() == null)
                 {
                     errors.Add($"A Timeframe must be selected");
                 }
                 else
                 {
-                    var selectedTimeframe = vm.Timeframes.Where(x => x.IsSelected).First();
+                    selectedTimeframe = vm.Timeframes.Where(x => x.IsSelected).First();
 
                     if (selectedTimeframe.DueDateType.HasDate())
                     {
@@ -43,6 +46,23 @@ namespace HelpMyStreetFE.Models.Validation
                         if (selectedTimeframe.DueDateType.HasEndTime())
                         {
                             if (selectedTimeframe.EndTime.Equals(DateTime.MinValue)) errors.Add("An end time must be specified");
+                        }
+                    }
+                }
+
+                if (vm.Frequencies.Where(x => x.IsSelected).FirstOrDefault() == null)
+                {
+                    errors.Add("A frequency must be selected");
+                }
+                else
+                {
+                    var selectedFrequency = vm.Frequencies.Where(x => x.IsSelected).First();
+                    if (!selectedFrequency.Frequency.Equals(Frequency.Once))
+                    {
+                        var occurrences = vm.Occurrences;
+                        if (occurrences == null || occurrences > selectedFrequency.Frequency.MaxOccurrences())
+                        {
+                            errors.Add("Valid number of occurrences must be supplied");
                         }
                     }
                 }

@@ -142,9 +142,17 @@
         }
     }
 
+    *[show-tile-when*="'repeats':'true'"] {
+        display: none;
+    }
+
     form[selected-repeat="true"] {
         *[hide-tile-when*="'repeats':'true'"] {
             display: none;
+        }
+
+        *[show-tile-when*="'repeats':'true'"] {
+            display: block;
         }
     }
 }

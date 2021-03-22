@@ -64,9 +64,21 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
         if (value === '') {
             $('.request-help form').attr('selected-repeat', '');
         } else if (value === 'Once') {
-                $('.request-help form').attr('selected-repeat', 'false');
+            $('.request-help form').attr('selected-repeat', 'false');
+            $('.occurrences-question input').attr('data-required', 'False');
         } else {
             $('.request-help form').attr('selected-repeat', 'true');
+            let max = 0;
+            switch (value) {
+                case 'Daily': max = 14; break;
+                case 'Weekly': max = 12; break;
+                case 'Fortnightly': max = 6; break;
+                case 'EveryFourWeeks': max = 3; break;
+            }
+            $('.occurrences-question .occurrences-max').text(max);
+            $('.occurrences-question input').attr('max', max);
+            $('.occurrences-question input').attr('data-required', 'True');
+            $('.occurrences-question input').attr('data-val-message', `Please enter a number between 2 and ${max}`);
         }
     }
     refreshTileSelectors(onTileSelected);
