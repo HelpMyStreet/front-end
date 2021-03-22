@@ -26,9 +26,9 @@
     var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 
-    var userDetailsHidden = Model.JobDetail.JobSummary.Questions.Where(x => x.Id == (int)Questions.SuppressRecipientPersonalDetails).First().AddtitonalData.Where(x => x.Key == "Yes").Count() == 1;
+    var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail;
 
-    var userDetailsHiddenText = $"The organisation managing this request would like to provide this information to you directly. Please contact the requester quoting reference {jobSummary.JobID} to find out who needs the help.";
+    var userDetailsHiddenText = $"The organisation managing this request would like to provide this information to you directly. Please contact the requester quoting reference {jobSummary.HmsReference} to find out who needs the help.";
 }
 
 @if (Model.ToPrint)
