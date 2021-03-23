@@ -73,7 +73,5 @@
     <Folder Include="wwwroot\img\community\ageconnectscardiff\" />
     <Folder Include="wwwroot\img\community\ageconnectscardiff\carousel1\" />
     <Folder Include="wwwroot\pdf\ageconnectscardiff\" />
-    <Folder Include="wwwroot\docx\" />
-    <Folder Include="wwwroot\docx\ageconnectscardiff\" />
   </ItemGroup>
 </Project>
