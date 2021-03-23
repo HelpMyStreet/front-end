@@ -31,6 +31,8 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.BinDayAssistance => "bin-day-assistance.svg",
                 SupportActivities.Covid19Help => "covid-19-support.svg",
                 SupportActivities.DigitalSupport => "digital-support.svg",
+                SupportActivities.PracticalSupport => "practical.svg",
+                SupportActivities.InPersonBefriending => "befriending.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -55,6 +57,8 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.MealsToYourDoor => "blue",
                 SupportActivities.MealtimeCompanion => "light-purple",
                 SupportActivities.EmergencySupport => "dark-blue",
+                SupportActivities.PracticalSupport => "blue",
+                SupportActivities.InPersonBefriending => "light-purple",
                 _ => "dark-blue",
             };
         }
