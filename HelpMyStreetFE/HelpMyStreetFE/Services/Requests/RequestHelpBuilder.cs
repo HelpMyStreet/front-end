@@ -413,6 +413,31 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeConnectsCardiff_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.InPersonBefriending },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PracticalSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.InPersonBefriending },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
+                    new TasksViewModel { SupportActivity = SupportActivities.PracticalSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
