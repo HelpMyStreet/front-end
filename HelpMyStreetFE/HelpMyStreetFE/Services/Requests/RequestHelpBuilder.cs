@@ -138,6 +138,17 @@ namespace HelpMyStreetFE.Services.Requests
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
             }
 
+            if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter)
+            {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
+            }
+
+            if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_Public)
+            {
+                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
+            }
+
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKNorthWestKent_RequestSubmitter)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
