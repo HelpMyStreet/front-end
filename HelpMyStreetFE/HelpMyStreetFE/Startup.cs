@@ -370,7 +370,7 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                    name: "ageconnectscardiff",
                    pattern: "ageconnectscardiff",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "ageconnectscardiff" });
+                   defaults: new { controller = "Community", action = "Index", groupKey = "ageconnects-cardiff" });
 
                 endpoints.MapControllerRoute(
                    name: "face-coverings",
