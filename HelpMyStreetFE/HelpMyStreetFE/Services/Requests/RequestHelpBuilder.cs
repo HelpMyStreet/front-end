@@ -281,6 +281,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
+                    new TasksViewModel { SupportActivity = SupportActivities.DogWalking },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
@@ -292,6 +293,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly },
                     new TasksViewModel { SupportActivity = SupportActivities.Errands },
+                    new TasksViewModel { SupportActivity = SupportActivities.DogWalking },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
