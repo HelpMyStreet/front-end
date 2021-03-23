@@ -155,6 +155,13 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
+            if (requestHelpFormVariant == RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter)
+            {
+                var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+                requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
+                requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
+            }
+
             if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
@@ -194,6 +201,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => "SANDBOX request form",
                 RequestHelpFormVariant.MeadowsCommunityHelpers_Public => "Request Help from the Meadows Community Helpers",
                 RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter => "Request Help from the Meadows Community Helpers",
+                RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => "Request Help from Age Connects Cardiff and the Vale",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -214,6 +222,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => "Requests made through **this** form will be available within the Sandbox area of HelpMyStreet, for testing purposes, and will not trigger notifications to general users of HelpMyStreet.\r\n\r\nPlease ensure you can see this message whenever you wish to submit a Sandbox request.",
                 RequestHelpFormVariant.MeadowsCommunityHelpers_Public => "If you need help from a volunteer in the Meadows, fill in this short form to see if there is someone who can help!",
                 RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter => "If you need help from a volunteer in the Meadows, fill in this short form to see if there is someone who can help!",
+                RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => "If you need help from Age Connects Cardiff and the Vale, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
             };
         }
