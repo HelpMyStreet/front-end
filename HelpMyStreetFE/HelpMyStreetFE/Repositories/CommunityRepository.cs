@@ -102,12 +102,11 @@ namespace HelpMyStreetFE.Repositories
             {
                 new List<string>
                 {
-                    $"{carouselPath}/carousel-1.jpeg",
                     $"{carouselPath}/carousel-2.jpeg",
+                    $"{carouselPath}/carousel-1.jpeg",
                     $"{carouselPath}/carousel-3.jpeg",
-                    $"{carouselPath}/carousel-4.jpeg",
                     $"{carouselPath}/carousel-5.jpeg",
-                    $"{carouselPath}/carousel-6.jpeg",
+                    $"{carouselPath}/carousel-4.jpeg",
                 }
             };
 
