@@ -22,8 +22,7 @@
     var forFaceMask = jobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
 
-    var showSensitiveData = jobSummary.JobStatus == JobStatuses.InProgress || Model.UserActingAsAdmin;
-    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(showSensitiveData) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(Model.UserActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 
     var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail;

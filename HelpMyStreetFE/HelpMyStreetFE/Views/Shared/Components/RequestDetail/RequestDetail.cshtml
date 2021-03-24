@@ -11,7 +11,7 @@
     var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
     var role = Base64Utils.Base64Encode((int)RequestRoles.GroupAdmin);
 
-    var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 @if (requestSummary.RequestType == RequestType.Shift)
