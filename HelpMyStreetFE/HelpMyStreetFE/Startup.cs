@@ -368,8 +368,8 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuknwkent" });
 
                 endpoints.MapControllerRoute(
-                   name: "ageconnectscardiff",
-                   pattern: "ageconnectscardiff",
+                   name: "ageconnects-cardiff",
+                   pattern: "ageconnects-cardiff",
                    defaults: new { controller = "Community", action = "Index", groupKey = "ageconnects-cardiff" });
 
                 endpoints.MapControllerRoute(
