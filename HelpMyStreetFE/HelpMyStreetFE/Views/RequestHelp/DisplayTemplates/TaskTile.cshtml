@@ -32,6 +32,8 @@
                 new RequestActivityViewModel{ Activity = SupportActivities.BinDayAssistance, Description = "Help taking out and bringing in bins on collection day"},
                 new RequestActivityViewModel{ Activity = SupportActivities.Covid19Help, Description = "Help booking a COVID-19 test or vaccination appointment"},
                 new RequestActivityViewModel{ Activity = SupportActivities.DigitalSupport, Description = "Help with computers, phones and other technology for people finding it difficult to get online"},
+                new RequestActivityViewModel{ Activity = SupportActivities.InPersonBefriending, Description = "ace-to-face meetings to reduce loneliness"},
+                new RequestActivityViewModel{ Activity = SupportActivities.PracticalSupport, Description = "Help with everyday tasks (e.g. changing a lightbulb, filling in forms etc.)"},
         };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
