@@ -336,6 +336,30 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new Testimonial()
                 {
+                    Tagline = "Brightens up her week",
+                    Message = "Liz takes herself on her usual dog walk with Oscar the gorgeous Golden Retriever and walks to her client’s home where they have a socially distanced chat through the window. According to the client – the regular visits from Liz and Oscar really brighten her week!",
+                    Person = "A very grateful befriending client",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageconnects-cardiff",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Something special",
+                    Message = "One of the reasons it's so rewarding to help your community is that the results are so visible and significant. There's something special about knowing that your time and donation has made a difference that you can actually see.",
+                    Person = "Jeff Hawkins, CEO Age Connects Cardiff and the Vale",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageconnects-cardiff",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Absolute lifeline",
+                    Message = "Thank you – to Age Connects and, more specifically, to Jules for being an absolute lifeline to Ronnie over the past few weeks. I honestly dread to think what the outcome would have been if you had not come to the rescue. Jules has gone the extra mile and assisted with things such as taking out his rubbish as well as ensuring that he has all the basics to keep him going. She has been invaluable.",
+                    Person = "Sara, the  niece of an 80-year-old Cardiff client",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageconnects-cardiff",
+                },
+                new Testimonial()
+                {
                     Tagline = "Thank you",
                     Message = "I am touched and moved by this generosity. God bless the hands of those who have prepared the food boxes, provided the contents and organised and administered the distribution. Thank you.",
                     Person = "Shared on Facebook (Caroline Beaumont)",
