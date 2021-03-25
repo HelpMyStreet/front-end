@@ -24,6 +24,7 @@
         recipient.AlternatePhoneNumber = string.IsNullOrEmpty(recipient.AlternatePhoneNumber) ? "None Provided" : recipient.AlternatePhoneNumber;
     }
 
+    var repeatRequest = Model.FrequencyRequested.Frequency != Frequency.Once;
 }
 <input type="hidden" name="ReviewStep" class="model" value='@Json.Serialize(Model)' />
 @Html.Hidden("FormStage", RequestHelpFormStage.Review)
@@ -54,23 +55,11 @@
 
 
     <div class="row justify-center">
-        @if (Model.FrequencyRequested.Frequency != Frequency.Once)
-        {
-            <div class="sm4 pad-sm-md">
-                <div class="tiles__tile tiles__tile--large">
-                    <div class="tiles__tile__content ">
-                        <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
-                        <div class="tiles__tile__content__header">How often is the help needed?</div>
-                        <div class="tiles__tile__content__description">@Model.FrequencyRequested.Frequency.FriendlyName()</div>
-                    </div>
-                </div>
-            </div>
-        }
-        <div class="sm4 pad-sm-md">
+        <div class=" @(repeatRequest ? "sm4" : "sm8") pad-sm-md">
             <div class="tiles__tile tiles__tile--large">
                 <div class="tiles__tile__content ">
                     <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/calendar.svg" /> </div>
-                    <div class="tiles__tile__content__header">When is the help needed?</div>
+                    <div class="tiles__tile__content__header">When is the help @(repeatRequest ? "first" : "") needed?</div>
                     <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
                     @if (Model.TimeRequested.DueDateType.HasDate())
                     {
@@ -93,6 +82,19 @@
                 </div>
             </div>
         </div>
+        @if (repeatRequest)
+        {
+            <div class="sm4 pad-sm-md">
+                <div class="tiles__tile tiles__tile--large">
+                    <div class="tiles__tile__content ">
+                        <div class="tiles__tile__content__icon"><img class="" src="~/img/icons/repeat.svg" /> </div>
+                        <div class="tiles__tile__content__header">How often is the help needed?</div>
+                        <div class="tiles__tile__content__description">@Model.FrequencyRequested.Description</div>
+                        <div class="tiles__tile__content__description">@Model.OccurrencesRequested times in total</div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 
     @if (Model.RequestStageQuestions != null)
