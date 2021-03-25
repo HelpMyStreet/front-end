@@ -74,7 +74,7 @@
                     <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequestedReviewString)</div>
                     @if (Model.TimeRequested.DueDateType.HasDate())
                     {
-                        <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequested.Date.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
+                        <div class="tiles__tile__content__description">@Html.Raw(Model.TimeRequested.StartTime.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
                     }
                     @if (Model.TimeRequested.DueDateType.HasStartTime())
                     {
@@ -82,10 +82,11 @@
                     }
                     @if (Model.TimeRequested.DueDateType.HasEndTime())
                     {
-                        <div class="tiles__tile__content__description">Ending at @Model.TimeRequested.EndTime.FormatDate(DateTimeFormat.TimeFormat, false)</div>
-                        @if (Model.TimeRequested.EndTime.Date != Model.TimeRequested.StartTime.Date)
+                        var endTime = Model.TimeRequested.EndTime.Value;
+                        <div class="tiles__tile__content__description">Ending at @endTime.FormatDate(DateTimeFormat.TimeFormat, false)</div>
+                        @if (endTime != Model.TimeRequested.StartTime.Date)
                         {
-                            <div class="tiles__tile__content__description">on @Html.Raw(Model.TimeRequested.EndTime.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
+                            <div class="tiles__tile__content__description">on @Html.Raw(endTime.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
                         }
                         <div class="tiles__tile__content__description">(duration @Model.TimeRequested.DurationString)</div>
                     }

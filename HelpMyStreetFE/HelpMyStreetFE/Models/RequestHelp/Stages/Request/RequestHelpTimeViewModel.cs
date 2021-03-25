@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Extensions;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
@@ -14,16 +15,61 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             DataType = "timeframe";
         }
 
-        public int Days { get; set; }
+        public int Days
+        {
+            set
+            {
+                StartTime = DateTime.UtcNow.ToUKFromUTCTime().Date.AddDays(value).AddHours(6);
+            }
+        }
+
         public bool HideForRepeatRequests { set { if (value) HideTileWhen.Add("repeats", "true"); } }
         public bool HideForFaceCoverings { set { if (value) HideTileWhen.Add("activity", "FaceMask"); } }
         public DueDateType DueDateType { get; set; }
-        public DateTime Date { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+
+        private DateTime? startTime;
+        public DateTime StartTime
+        {
+            get
+            {
+                return (DueDateType, startTime) switch
+                {
+                    (DueDateType.ASAP, _) => DateTime.UtcNow.ToUKFromUTCTime(),
+                    (_, null) => DateTime.MinValue,
+                    (_, _) => startTime.Value
+                };
+            }
+            set
+            {
+                startTime = value;
+            }
+        }
+
+        public DateTime? EndTime { get; set; }
+
+        public DateTime NotBeforeTime
+        {
+            get
+            {
+                return DueDateType switch
+                {
+                    DueDateType.ASAP => DateTime.UtcNow.ToUKFromUTCTime(),
+                    DueDateType.Before => DateTime.UtcNow.ToUKFromUTCTime(),
+                    _ => StartTime
+                };
+            }
+        }
+
         public TimeSpan Duration
         {
-            get { return EndTime.ToUTCFromUKTime().Subtract(StartTime.ToUTCFromUKTime()); }
+            get
+            {
+                if (EndTime.HasValue)
+                {
+                    return EndTime.Value.ToUTCFromUKTime().Subtract(StartTime.ToUTCFromUKTime());
+                }
+                return TimeSpan.Zero;
+            }
         }
         public string DurationString
         {

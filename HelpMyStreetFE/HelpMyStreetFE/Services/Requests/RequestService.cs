@@ -119,9 +119,9 @@ namespace HelpMyStreetFE.Services.Requests
                         new Job
                         {
                             DueDateType = selectedTime.DueDateType,
-                            DueDays = selectedTime.DueDateType == DueDateType.On ? Convert.ToInt32((selectedTime.Date.Date - DateTime.Now.Date).TotalDays) : selectedTime.Days,
-                            StartDate = selectedTime.DueDateType.HasStartTime() ? selectedTime.StartTime.ToUTCFromUKTime() : (DateTime?)null,
-                            EndDate = selectedTime.DueDateType.HasEndTime() ? selectedTime.EndTime.ToUTCFromUKTime() : (DateTime?)null,
+                            StartDate = selectedTime.StartTime.ToUTCFromUKTime(),
+                            EndDate = selectedTime.EndTime.HasValue ? selectedTime.EndTime.Value.ToUTCFromUKTime() : (DateTime?)null,
+                            NotBeforeDate = selectedTime.NotBeforeTime.ToUTCFromUKTime(),
                             RepeatFrequency = selectedFrequency.Frequency,
                             NumberOfRepeats = numberOfOccurrences,
                             HealthCritical = heathCritical,

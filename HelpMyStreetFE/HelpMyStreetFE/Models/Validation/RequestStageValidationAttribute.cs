@@ -38,11 +38,7 @@ namespace HelpMyStreetFE.Models.Validation
 
                     if (selectedTimeframe.DueDateType.HasDate())
                     {
-                        if (selectedTimeframe.Date.Equals(DateTime.MinValue)) errors.Add("A date must be specified");
-                        if (selectedTimeframe.DueDateType.HasStartTime())
-                        {
-                            if (selectedTimeframe.StartTime.Equals(DateTime.MinValue)) errors.Add("A start time must be specified");
-                        }
+                        if (selectedTimeframe.StartTime.Equals(DateTime.MinValue)) errors.Add("A date must be specified");
                         if (selectedTimeframe.DueDateType.HasEndTime())
                         {
                             if (selectedTimeframe.EndTime.Equals(DateTime.MinValue)) errors.Add("An end time must be specified");

@@ -136,18 +136,15 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 if (time.DueDateType.HasDate())
                 {
                     DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime date);
-                    time.Date = date;
+                    time.StartTime = date;
                     if (time.DueDateType.HasStartTime())
                     {
-                        time.StartTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
+                        time.StartTime = ParseTime(date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
                     }
                     if (time.DueDateType.HasEndTime())
                     {
-                        time.EndTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
-                        if (time.StartTime >= time.EndTime)
-                        {
-                            time.EndTime = time.EndTime.AddDays(1);
-                        }
+                        var endDate = ParseTime(date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
+                        time.EndTime = time.StartTime < endDate ? endDate : endDate.AddDays(1);
                     }
                 }
             }
