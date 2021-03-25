@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Models
         {
             get
             {
-                return string.Join(",", HideTileWhen.Select(a => $"'{a.Key}':'{a.Value}'"));
+                return string.Join(",", HideTileWhen.Select(a => $"{a.Key}:{a.Value}"));
             }
         }
     }

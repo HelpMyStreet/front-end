@@ -137,22 +137,28 @@
     }
 
     form[selected-activity="FaceMask"] {
-        *[hide-tile-when*="'activity':'FaceMask'"] {
+        *[hide-tile-when*="activity:FaceMask"] {
             display: none;
         }
     }
 
-    *[show-tile-when*="'repeats':'true'"] {
+    *[show-tile-when*="repeats:true"] {
         display: none;
     }
 
     form[selected-repeat="true"] {
-        *[hide-tile-when*="'repeats':'true'"] {
+        *[hide-tile-when*="repeats:true"] {
             display: none;
         }
 
-        *[show-tile-when*="'repeats':'true'"] {
+        *[show-tile-when*="repeats:true"] {
             display: block;
+        }
+    }
+
+    form[selected-repeat="false"] {
+        *[hide-tile-when*="repeats:false"] {
+            display: none;
         }
     }
 }

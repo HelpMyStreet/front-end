@@ -58,10 +58,14 @@ else
 
 
 <div class="row">
-    <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "When is the help needed?", TileVMs = Model.Timeframes, FieldName = "currentStep.SelectedTimeFrame.Id", TileView = "TimeFrameTile" }' />
+    @{ 
+        var timeSelectorViewModel = new TileSelectorViewModel { TileVMs = Model.Timeframes, FieldName = "currentStep.SelectedTimeFrame.Id", TileView = "TimeFrameTile" };
+        timeSelectorViewModel.Label = "When is the help <span hide-tile-when='repeats:false'>first</span> needed?";
+    }
+    <partial name="_TileSelector" model='@timeSelectorViewModel' />
 </div>
 
-<div class="row occurrences-question" show-tile-when="'repeats':'true'">
+<div class="row occurrences-question" show-tile-when="repeats:true">
     <div class="sm12 input">
         <label>
             How many times is the help needed?
