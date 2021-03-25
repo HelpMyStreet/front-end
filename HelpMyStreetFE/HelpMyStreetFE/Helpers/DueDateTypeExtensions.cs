@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return dueDateType switch
             {
+                DueDateType.ASAP => false,
                 DueDateType.Before => false,
                 DueDateType.On => true,
                 DueDateType.SpecificStartTime => true,
@@ -24,6 +25,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return dueDateType switch
             {
+                DueDateType.ASAP => false,
                 DueDateType.Before => false,
                 DueDateType.On => false,
                 DueDateType.SpecificStartTime => true,
@@ -36,6 +38,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return dueDateType switch
             {
+                DueDateType.ASAP => false,
                 DueDateType.Before => false,
                 DueDateType.On => false,
                 DueDateType.SpecificStartTime => false,

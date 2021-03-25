@@ -46,20 +46,21 @@
                         @if (requestSummary.Shift.StartDate.ToUKFromUTCTime().Date.Equals(requestSummary.Shift.EndDate.ToUKFromUTCTime().Date))
                         {
                             <dd>
-                                This shift occurs on 
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between 
+                                This shift occurs on
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
                                 <strong>
-                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; 
-                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
+                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
+                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
+                                </strong>.
                             </dd>
                         }
                         else
                         {
                             <dd>
-                                This shift starts on 
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
-                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends 
-                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
+                                This shift starts on
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
+                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
+                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
                                 <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
                             </dd>
                         }
@@ -96,6 +97,10 @@
                                 <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
                             }
                         }
+                        else if (jobSummary.DueDateType == DueDateType.ASAP)
+                        {
+                            <dd>This request should be completed <strong>as soon as possible</strong>.</dd>
+                        }
                         else if (jobSummary.DueDateType == DueDateType.On)
                         {
                             <dd>This request should be completed on <strong>@Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>; the person who requested the help would prefer it on this date.</dd>
@@ -113,7 +118,15 @@
                         }
                         else
                         {
-                            <dd>You can complete this request <strong>any time on or before @Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>
+                            if (true)
+                            //if (jobSummary.NotBeforeDate < DateTime.UtcNow.ToUKFromUTCTime)
+                            {
+                                <dd>You can complete this request <strong>any time on or before @Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>
+                            }
+                            else
+                            {
+                                @*<dd>You can complete this request any time between <strong>@Html.Raw(jobSummary.NotBeforeDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> and <strong>@Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>*@
+                            }
                         }
                     }
                     @if (requestSummary.IncompleteJobs().Count() > 1)

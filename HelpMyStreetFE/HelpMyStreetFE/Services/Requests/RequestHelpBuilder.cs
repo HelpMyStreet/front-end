@@ -422,34 +422,34 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return variant switch
             {
-                RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
-                RequestHelpFormVariant.HLP_CommunityConnector => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, false),
-                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
-                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
-                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
-                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
-                RequestHelpFormVariant.AgeConnectsCardiff_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, false),
-                RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }),
+                RequestHelpFormVariant.HLP_CommunityConnector => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }),
+                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
+                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
+                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
+                RequestHelpFormVariant.AgeConnectsCardiff_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
+                RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
 
-                RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
-                RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
+                RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }),
+                RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }),
 
-                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
             };
         }
 
 
-        private List<RequestHelpTimeViewModel> GetRequestHelpTimeViewModels(List<DueDateType> dueDateTypes, bool includeToday)
+        private List<RequestHelpTimeViewModel> GetRequestHelpTimeViewModels(List<DueDateType> dueDateTypes)
         {
             var vms = new List<RequestHelpTimeViewModel>();
 
+            if (dueDateTypes.Contains(DueDateType.ASAP))
+            {
+                vms.Add(new RequestHelpTimeViewModel { ID = 10, DueDateType = DueDateType.ASAP, Description = "As soon as possible", HideForFaceCoverings = true });
+            }
+
             if (dueDateTypes.Contains(DueDateType.Before))
             {
-                if (includeToday)
-                {
-                    vms.Add(new RequestHelpTimeViewModel { ID = 1, DueDateType = DueDateType.Before, Description = "Today", Days = 0, HideForFaceCoverings = true, HideForRepeatRequests = true });
-                    vms.Add(new RequestHelpTimeViewModel { ID = 9, DueDateType = DueDateType.Before, Description = "Within 3 days", Days = 3, HideForFaceCoverings = true });
-                }
                 vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true });
                 vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true });
                 vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "When convenient", Days = 30, HideForRepeatRequests = true });
