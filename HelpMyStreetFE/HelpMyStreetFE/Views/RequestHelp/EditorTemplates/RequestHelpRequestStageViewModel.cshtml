@@ -59,8 +59,13 @@ else
 
 <div class="row">
     @{ 
-        var timeSelectorViewModel = new TileSelectorViewModel { TileVMs = Model.Timeframes, FieldName = "currentStep.SelectedTimeFrame.Id", TileView = "TimeFrameTile" };
-        timeSelectorViewModel.Label = "When is the help <span hide-tile-when='repeats:false'>first</span> needed?";
+        var timeSelectorViewModel = new TileSelectorViewModel
+        {
+            Label = "When is the help <span hide-tile-when='repeats:false'>first</span> needed?",
+            TileVMs = Model.Timeframes,
+            FieldName = "currentStep.SelectedTimeFrame.Id",
+            TileView = "TimeFrameTile"
+        };
     }
     <partial name="_TileSelector" model='@timeSelectorViewModel' />
 </div>
