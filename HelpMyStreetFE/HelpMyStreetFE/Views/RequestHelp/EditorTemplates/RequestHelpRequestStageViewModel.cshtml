@@ -71,8 +71,10 @@ else
             How many times is the help needed?
             <span class="sub-text">Please tell us for how long the help is needed (up to a maximum of <span class="occurrences-max"></span>)</span>
         </label>
-        <input type="number" min="2" class="small-width" value="@Model.Occurrences" name="currentStep.Occurrences">
-        times
+        <label>
+            <input type="number" min="2" class="small-width inline mr-sm" value="@Model.Occurrences" name="currentStep.Occurrences">
+            times
+        </label>
         <span class="error"></span>
     </div>
 </div>
