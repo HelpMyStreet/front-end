@@ -89,7 +89,18 @@
                 <span class="job__info__col1__urgency toggle-on-status-change">
                     <span class="" title="@nextTaskDue.DateRequested.FormatDate(DateTimeFormat.ShortDateFormat)">Requested @nextTaskDue.DateRequested.FriendlyPastDate()</span>
                     <span class="job__info__col1__urgency__dates due-date" title="@((nextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + nextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
-                        Due @nextTaskDue.DueDate.FriendlyFutureDate()
+                        @if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == 1)
+                        {
+                            <span>Due @nextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                        else if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == Model.Item.JobSummaries.Count())
+                        {
+                            <span>First due @nextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                        else
+                        {
+                            <span>Next due @nextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
                     </span>
                 </span>
             }
@@ -175,7 +186,7 @@
                     </button>
                 }
                 <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                    <span class="text">Cancel @(Model.Item.RequestType.Equals(RequestType.Shift) ? "shift" : "")</span>
+                    <span class="text">Cancel @(Model.Item.RequestType.Equals(RequestType.Shift) ? "shift" : "all")</span>
                 </button>
             }
         </div>

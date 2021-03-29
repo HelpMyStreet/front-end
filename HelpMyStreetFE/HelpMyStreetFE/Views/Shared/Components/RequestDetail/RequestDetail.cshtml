@@ -59,7 +59,7 @@
     <h4 class="no-click">Slots</h4>
 </div>
 
-@foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobSummary.JobStatus.Equals(JobStatuses.Cancelled)))
+@foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobSummary.JobStatus.Equals(JobStatuses.Cancelled)).ThenBy(j => j.JobSummary.DueDate))
 {
     var id = Base64Utils.Base64Encode(jobDetails.JobSummary.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
@@ -67,10 +67,9 @@
     <div class="job__expander job" id="@id" request-id="@requestId" data-role="@role">
         <h4>
             <img class="status-icon" src="~/img/icons/status/@jobDetails.JobSummary.JobStatus.Icon()" alt="@jobDetails.JobSummary.JobStatus.FriendlyName()" title="@jobDetails.JobSummary.JobStatus.FriendlyName()" />
-            @if (jobDetails.JobSummary.SupportActivity != SupportActivities.Other)
-            {
-                <img class="activity-icon" src="~/img/icons/@jobDetails.JobSummary.SupportActivity.Icon()" alt="@jobDetails.JobSummary.SupportActivity.FriendlyNameShort()" title="@jobDetails.JobSummary.SupportActivity.FriendlyNameShort()" />
-            }
+            <span title="@jobDetails.JobSummary.DueDate.FriendlyFutureDate()">
+                @jobDetails.JobSummary.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+            </span>
             <span class="toggle-on-status-change">
                 @jobDetails.JobSummary.JobStatus.SlotJobStatusWithVolunteerName(volunteerDetails)
             </span>
