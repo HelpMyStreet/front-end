@@ -42,7 +42,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return jobStatus switch
             {
-                JobStatuses.Open => "Vacant",
+                JobStatuses.Open => "Open",
                 JobStatuses.Accepted => $"Accepted by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.InProgress => $"In Progress with {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.Done => $"Completed by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
