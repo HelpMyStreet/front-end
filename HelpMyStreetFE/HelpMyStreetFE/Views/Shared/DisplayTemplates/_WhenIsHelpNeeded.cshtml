@@ -62,11 +62,11 @@ else
             <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
         }
     }
-    else if (dueDateType == DueDateType.ASAP)
+    else if (jobSummary.DueDateType == DueDateType.ASAP)
     {
         <dd>This request should be completed <strong>as soon as possible</strong>.</dd>
     }
-    else if (dueDateType == DueDateType.On)
+    else if (jobSummary.DueDateType == DueDateType.On)
     {
         <dd>This request should be completed on <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>; the person who requested the help would prefer it on this date.</dd>
     }
