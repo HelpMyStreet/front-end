@@ -2,9 +2,10 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.Account.Jobs;
 @using Westwind.AspNetCore.Markdown
 
-@model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
+@model JobDetailViewModel
 
 @{
     if (Model.ToPrint)
@@ -40,34 +41,10 @@
         <div class="row">
             <div class="sm12">
                 <dl>
+                    <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail" />
+
                     @if (jobSummary.RequestType == RequestType.Shift)
                     {
-                        <dt>When is the help needed?</dt>
-                        @if (requestSummary.Shift.StartDate.ToUKFromUTCTime().Date.Equals(requestSummary.Shift.EndDate.ToUKFromUTCTime().Date))
-                        {
-                            <dd>
-                                This shift occurs on
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
-                                <strong>
-                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
-                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
-                                </strong>.
-                            </dd>
-                        }
-                        else
-                        {
-                            <dd>
-                                This shift starts on
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
-                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
-                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
-                                <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
-                            </dd>
-                        }
-                        @if (jobSummary.JobStatus == JobStatuses.Accepted && requestSummary.Shift.StartDate.CompareTo(DateTime.Now) >= 0)
-                        {
-                            <dd>Download calendar event <a href="/account/get-shift-calendar?j=@encodedJobID">here</a>.</dd>
-                        }
                         <div class="location-details">
                             <dt>Where is the shift?</dt>
 
@@ -79,55 +56,6 @@
                                 <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.Location.LocationDetails.Latitude" data-lng="@Model.Location.LocationDetails.Longitude"></div>
                             </dd>
                         </div>
-                    }
-                    else
-                    {
-                        @if (!Model.ToPrint)
-                        {
-                            <dt>When is the help needed?</dt>
-                        }
-                        @if (jobSummary.DueDays < 0)
-                        {
-                            if (jobSummary.JobStatus == JobStatuses.Open)
-                            {
-                                <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
-                            }
-                            else
-                            {
-                                <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
-                            }
-                        }
-                        else if (jobSummary.DueDateType == DueDateType.ASAP)
-                        {
-                            <dd>This request should be completed <strong>as soon as possible</strong>.</dd>
-                        }
-                        else if (jobSummary.DueDateType == DueDateType.On)
-                        {
-                            <dd>This request should be completed on <strong>@Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>; the person who requested the help would prefer it on this date.</dd>
-                        }
-                        else if (jobSummary.DueDays == 0)
-                        {
-                            if (jobSummary.JobStatus == JobStatuses.Open)
-                            {
-                                <dd>This request is due <strong>today</strong>. If you accept the request please get in touch with the help recipient urgently to arrange the support they need.</dd>
-                            }
-                            else
-                            {
-                                <dd>This request is due <strong>today</strong>. Please get in touch with the help recipient urgently to arrange the support they need.</dd>
-                            }
-                        }
-                        else
-                        {
-                            if (true)
-                            //if (jobSummary.NotBeforeDate < DateTime.UtcNow.ToUKFromUTCTime)
-                            {
-                                <dd>You can complete this request <strong>any time on or before @Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>
-                            }
-                            else
-                            {
-                                @*<dd>You can complete this request any time between <strong>@Html.Raw(jobSummary.NotBeforeDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> and <strong>@Html.Raw(jobSummary.DueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>*@
-                            }
-                        }
                     }
                     @if (requestSummary.IncompleteJobs().Count() > 1)
                     {

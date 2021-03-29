@@ -78,6 +78,13 @@
         </h4>
         <div class="job__expander__content">
             <div class="row">
+                <div class="sm12">
+                    <dl class="add-line">
+                        <partial name="_WhenIsHelpNeeded" model="@jobDetails" />
+                    </dl>
+                </div>
+            </div>
+            <div class="row">
                 @if (volunteerDetails != null)
                 {
                     <div class="sm4 pr-md toggle-on-status-change">
