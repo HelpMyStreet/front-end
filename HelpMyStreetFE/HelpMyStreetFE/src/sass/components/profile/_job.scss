@@ -293,8 +293,10 @@
 
             @media (min-width: $sm-screen) {
                 flex-direction: row;
-                width: auto;
+            }
 
+            @media (min-width: $sm-med-screen) {
+                width: auto;
                 .btn {
                     width: 12rem;
                 }
@@ -752,3 +754,18 @@
 }
 
 
+.request-job {
+    &__content > .row {
+        flex-direction: column;
+
+        .job__info__actions {
+            flex-direction: row;
+        }
+    }
+
+    @media (min-width: $xl-screen) {
+        .request-job__content > .row {
+            flex-direction: row-reverse;
+        }
+    }
+}
