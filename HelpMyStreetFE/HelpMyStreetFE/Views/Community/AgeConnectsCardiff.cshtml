@@ -6,7 +6,7 @@
 @{
     ViewData["Title"] = Model.CommunityName;
     ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = "Age Connects Cardiff & the Vale", PrimaryMobileText = "Age Connects Cardiff", ShowSecondaryText = true };
-    ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
+    //ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
 }
 
 @section Scripts {
@@ -40,12 +40,12 @@
                     </ul>
 
 
-                    <div class="row sm6 text-center justify-center mb-sm">
+                    @*<div class="row sm6 text-center justify-center mb-sm">
                         <p class="mt-sm mb-sm pl-md pr-md">To request help, complete our quick and easy online form or call us on 029 2068 3600.</p>
                         <partial name="_RequestHelpButton" model="Model" />
-                    </div>
+                    </div>*@
 
-                    <div class="row sm6 text-center justify-center mb-sm">
+                    <div class="row sm12 text-center justify-center mb-sm">
                         <p class="mt-sm mb-sm pl-md pr-md">To volunteer and help older people in your area, sign up or log in today.</p>
                         <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
                     </div>
@@ -104,7 +104,7 @@
     <div class="outer-container">
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
-                <div class="flex sm6">
+                @*<div class="flex sm6">
                     <div class="card flex m-sm">
 
                         <h2>How can we help?</h2>
@@ -117,7 +117,7 @@
                         </div>
 
                     </div>
-                </div>
+                </div>*@
                 <div class="flex sm6">
                     <partial name="_VolunteerWithUsCard" model="Model" />
                 </div>
