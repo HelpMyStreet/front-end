@@ -11,7 +11,7 @@
     var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
     var role = Base64Utils.Base64Encode((int)RequestRoles.GroupAdmin);
 
-    var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 @if (requestSummary.RequestType == RequestType.Shift)
@@ -64,6 +64,8 @@
     var id = Base64Utils.Base64Encode(jobDetails.JobSummary.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
 
+    var questionsToDisplay = jobDetails.JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+
     <div class="job__expander job request-job" id="@id" request-id="@requestId" data-role="@role">
         <h4>
             <img class="status-icon" src="~/img/icons/status/@jobDetails.JobSummary.JobStatus.Icon()" alt="@jobDetails.JobSummary.JobStatus.FriendlyName()" title="@jobDetails.JobSummary.JobStatus.FriendlyName()" />
@@ -86,7 +88,7 @@
                 <div class="sm9 pr-md request-job__info-column">
                     <div class="row">
                         <div class="sm12">
-                            <dl class="add-line">
+                            <dl class="">
                                 <partial name="_WhenIsHelpNeeded" model="@jobDetails" />
                             </dl>
                         </div>
@@ -94,9 +96,9 @@
                     <div class="row">
                         @if (volunteerDetails != null)
                         {
-                            <div class="sm6 toggle-on-status-change">
-                                <h5>Current Volunteer</h5>
-                                <dl>
+                            <div class="sm7 toggle-on-status-change add-line-before">
+                                <h5 class="pr-md">Current Volunteer</h5>
+                                <dl class="pr-md">
                                     <dt>Name</dt>
                                     <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
                                     <dt>Email</dt>
@@ -110,7 +112,7 @@
                                 </dl>
                             </div>
                         }
-                        <div class="sm6 space-filler pad-md toggle-on-status-change">
+                        <div class="sm5 space-filler toggle-on-status-change add-line-before">
                             <h5>Slot Status History</h5>
                             <dl class="highlight-last">
                                 @foreach (var statusChange in jobDetails.JobStatusHistory)
@@ -136,12 +138,27 @@
                     </div>
                 </div>
             </div>
+            @if (questionsToDisplay.Count() > 0)
+            {
+                <div class="row">
+                    <div class="sm12 add-line-before">
+                        <h5>Request Details</h5>
+                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }
+                    </div>
+                </div>
+            }
         </div>
     </div>
 }
 
 
-@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)) || questionsToDisplay.Count() > 0)
+@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))// || questionsToDisplay.Count() > 0)
 {
     <div class="job__expander">
         <h4>Request Details<span></span></h4>
@@ -157,13 +174,13 @@
                         @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
                     }
 
-                    @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                    @*@foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
                     {
                         <dl>
                             <dt>@q.FriendlyName()</dt>
                             <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
                         </dl>
-                    }
+                    }*@
                 </div>
             </div>
         </div>

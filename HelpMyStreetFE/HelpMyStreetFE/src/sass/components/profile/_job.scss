@@ -291,12 +291,17 @@
             justify-content: center;
             width: 100%;
 
+            .feedback-container {
+                display: contents;
+            }
+
             @media (min-width: $sm-screen) {
                 flex-direction: row;
             }
 
             @media (min-width: $sm-med-screen) {
                 width: auto;
+
                 .btn {
                     width: 12rem;
                 }
@@ -489,6 +494,7 @@
         }
 
         .add-line:after,
+        .add-line-before:before,
         &:before {
             content: " ";
             position: relative;
