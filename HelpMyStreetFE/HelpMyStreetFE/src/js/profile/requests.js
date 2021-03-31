@@ -223,6 +223,10 @@ async function setJobStatus(job, targetState, targetUser) {
 async function loadJobDetails(job, forceRefresh) {
     const jobDetail = $(job).find('.job__detail');
 
+    if (jobDetail.length == 0) {
+        return;
+    }
+
     if (!forceRefresh && jobDetail.data('status') !== undefined) {
         return;
     }
