@@ -52,7 +52,7 @@ namespace HelpMyStreetFE.ViewComponents
                 {
                     (_, JobStatuses.Done, true) => View("Admin_MarkRequestAsDonePopup", vm),
                     (_, JobStatuses.Cancelled, true) => View("Admin_CancelRequestPopup", vm),
-                    _ => throw new Exception($"Unhandled status/admin combination for request: {request.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
+                    _ => throw new Exception($"Unhandled status/admin combination for request {requestId}, user {user.ID}: {request.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
                 };
             }
             else
@@ -73,7 +73,7 @@ namespace HelpMyStreetFE.ViewComponents
                     (JobStatuses.InProgress, JobStatuses.Open, true, false) => View("Admin_MarkAsOpenPopup", vm),
                     (_,                 JobStatuses.Cancelled, true, _    ) => View("Admin_CancelJobPopup", vm),
 
-                    _ => throw new Exception($"Unhandled status/admin combination: {job.JobStatus} -> {targetStatus} / admin:{userIsAdmin} / allocated to task:{userIsAllocatedToTask}")
+                    _ => throw new Exception($"Unhandled status/admin combination for job {jobId}, user {user.ID}: {job.JobStatus} -> {targetStatus} / admin:{userIsAdmin} / allocated to task:{userIsAllocatedToTask}")
                 };
             }
         }
