@@ -33,7 +33,7 @@
 <div class="tiles">
     <div class="row justify-center  ">
         <div class="sm8">
-            <label class="tiles__label--large"> Request For</label>
+            <label class="tiles__label--large"> Request for</label>
             <button class="edit-button" name="formAction" type="submit" value="EditRequest">Edit</button>
         </div>
     </div>
@@ -134,7 +134,7 @@
         <hr class="input--separator" />
         <div class="row mt-md justify-center">
             <div class="sm8">
-                <label class="tiles__label--large"> Personal Details</label> <button class="edit-button" type="submit" name="formAction" value="EditDetails">Edit</button>
+                <label class="tiles__label--large"> Personal details</label> <button class="edit-button" type="submit" name="formAction" value="EditDetails">Edit</button>
             </div>
         </div>
         <div class="row justify-center ">
@@ -144,13 +144,13 @@
                 <div class="sm4">
                     <div id="requestor" class="tiles__tile">
                         <div class="tiles__tile__content--top ">
-                            <div class="tiles__tile__content--top__header  pt-xs left">Your Details</div>
+                            <div class="tiles__tile__content--top__header  pt-xs left">Your details</div>
                             <div class="tiles__tile__content__description tiles__tile__content--top__description">
                                 <div><strong>Name:</strong> @requestor.Firstname @requestor.Lastname </div>
                                 <div><strong>Address:</strong> @requestor.Postcode </div>
                                 <div><strong>Email:</strong> @requestor.Email </div>
-                                <div><strong>Mobile Number:</strong> @requestor.MobileNumber </div>
-                                <div><strong>Alternate Number:</strong> @requestor.AlternatePhoneNumber </div>
+                                <div><strong>Mobile number:</strong> @requestor.MobileNumber </div>
+                                <div><strong>Alternate number:</strong> @requestor.AlternatePhoneNumber </div>
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@
             <div class="@(Model.ShowRequestor ? "sm4" : "sm8 pad-sm-md")">
                 <div id="recipient" class="tiles__tile">
                     <div class="tiles__tile__content--top">
-                        <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Recipient" : "Your") Details</div>
+                        <div class=" tiles__tile__content--top__header  pt-xs left">@(onBehalf || forOrg ? "Recipient" : "Your") details</div>
                         <div class="tiles__tile__content__description tiles__tile__content--top__description">
                             @if (forOrg)
                             {
@@ -176,8 +176,8 @@
                                 <div><strong>Address:</strong> @($"{recipient.AddressLine1}, {recipient.Town}, {recipient.Postcode}") </div>
                             }
                             <div><strong>Email:</strong> @recipient.Email </div>
-                            <div><strong>Mobile Number:</strong>  @recipient.MobileNumber </div>
-                            <div><strong>Alternate Number:</strong> @recipient.AlternatePhoneNumber </div>
+                            <div><strong>Mobile number:</strong>  @recipient.MobileNumber </div>
+                            <div><strong>Alternate number:</strong> @recipient.AlternatePhoneNumber </div>
                         </div>
                     </div>
                 </div>
