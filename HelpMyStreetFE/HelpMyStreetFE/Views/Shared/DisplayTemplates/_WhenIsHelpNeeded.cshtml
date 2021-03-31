@@ -12,16 +12,16 @@
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
-@if (jobSummary.RequestType == RequestType.Shift)
+@if (jobSummary.DueDateType == DueDateType.SpecificStartAndEndTimes)
 {
-    var startDate = requestSummary.Shift.StartDate;
-    var endDate = requestSummary.Shift.EndDate;
+    var startDate = requestSummary.Shift?.StartDate ?? jobSummary.DueDate;
+    var endDate = requestSummary.Shift.EndDate; // TODO: make this work for non-shifts
 
     <dt>When is the help needed?</dt>
     @if (startDate.ToUKFromUTCTime().Date.Equals(endDate.ToUKFromUTCTime().Date))
     {
         <dd>
-            This shift occurs on
+            This @(jobSummary.RequestType == RequestType.Shift ? "shift occurs" : "help is needed") on
             <strong title="@startDate.FriendlyFutureDate()">@Html.Raw(startDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
             <strong title="@startDate.FriendlyFutureDate()">
                 @startDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
@@ -32,9 +32,10 @@
     else
     {
         <dd>
-            This shift starts on
+            This @(jobSummary.RequestType == RequestType.Shift ? "shift starts" : "help is needed from") on
             <strong title="@startDate.FriendlyFutureDate()">@Html.Raw(startDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
-            <strong title="@startDate.FriendlyFutureDate()">@startDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
+            <strong title="@startDate.FriendlyFutureDate()">@startDate.FormatDate(DateTimeFormat.TimeFormat)</strong>
+            @(jobSummary.RequestType == RequestType.Shift ? "and ends" : "until")
             <strong title="@endDate.FriendlyFutureDate()">@Html.Raw(endDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
             <strong title="@endDate.FriendlyFutureDate()">@endDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
         </dd>
@@ -48,53 +49,110 @@ else
 {
     var dueDate = jobSummary.DueDate;
     var notBeforeDate = jobSummary.NotBeforeDate;
+    var today = DateTime.UtcNow.ToUKFromUTCTime().Date;
 
 
     <dt>When is the help needed?</dt>
-    @if (jobSummary.DueDays < 0)
+
+    @if (dueDate.Date < today)
     {
-        if (jobSummary.JobStatus == JobStatuses.Open)
+        if (jobSummary.JobStatus == JobStatuses.New || jobSummary.JobStatus == JobStatuses.Open)
         {
-            <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+            if (jobSummary.DueDateType == DueDateType.ASAP)
+            {
+                <dd>This help was requested <strong>as soon as possible</strong>, and is now overdue. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+            }
+            else
+            {
+                <dd>This request is now <strong>overdue</strong>. If you accept the request please get in touch with the help recipient urgently to see if they still need support.</dd>
+            }
         }
         else
         {
-            <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
+            if (jobSummary.DueDateType == DueDateType.ASAP)
+            {
+                <dd>This help was requested <strong>as soon as possible</strong>, and is now overdue. Please get in touch with the help recipient urgently to see if they still need support.</dd>
+            }
+            else
+            {
+                <dd>This request is now <strong>overdue</strong>. Please get in touch with the help recipient urgently to see if they still need support.</dd>
+            }
         }
     }
-    else if (jobSummary.DueDateType == DueDateType.ASAP)
+    else if (dueDate.Date == today)
     {
-        <dd>This request should be completed <strong>as soon as possible</strong>.</dd>
-    }
-    else if (jobSummary.DueDateType == DueDateType.On)
-    {
-        <dd>This request should be completed on <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>; the person who requested the help would prefer it on this date.</dd>
-    }
-    else if (jobSummary.DueDays == 0)
-    {
-        if (jobSummary.JobStatus == JobStatuses.Open)
+        if (jobSummary.JobStatus == JobStatuses.New || jobSummary.JobStatus == JobStatuses.Open)
         {
-            <dd>
-                This request is due <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">today</strong>. 
-                If you accept the request please get in touch with the help recipient urgently to arrange the support they need.
-            </dd>
+            if (jobSummary.DueDateType == DueDateType.ASAP)
+            {
+                <dd>
+                    This request should be completed <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">as soon as possible today</strong>.
+                    If you accept the request please get in touch with the help recipient urgently to arrange the support they need.
+                </dd>
+            }
+            else if (jobSummary.DueDateType == DueDateType.On)
+            {
+                <dd>
+                    This request should be completed <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">today</strong>.
+                    If you accept the request please get in touch with the help recipient urgently to arrange the support they need.
+                </dd>
+            }
+            else
+            {
+                <dd>
+                    This request is due <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">today</strong>.
+                    If you accept the request please get in touch with the help recipient urgently to arrange the support they need.
+                </dd>
+            }
         }
         else
         {
-            <dd>
-                This request is due <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">today</strong>.
-                Please get in touch with the help recipient urgently to arrange the support they need.
-            </dd>
+            if (jobSummary.DueDateType == DueDateType.ASAP)
+            {
+                <dd>
+                    This request should be completed <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">as soon as possible today</strong>.
+                    Please get in touch with the help recipient urgently to arrange the support they need.
+                </dd>
+            }
+            else if (jobSummary.DueDateType == DueDateType.On)
+            {
+                <dd>
+                    This request should be completed <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">today</strong>.
+                    Please get in touch with the help recipient urgently to arrange the support they need.
+                </dd>
+            }
+            else
+            {
+                <dd>
+                    This request is due <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">today</strong>.
+                    Please get in touch with the help recipient urgently to arrange the support they need.
+                </dd>
+            }
         }
     }
     else
     {
-        if (notBeforeDate.HasValue && notBeforeDate > DateTime.UtcNow.ToUKFromUTCTime())
+        if (jobSummary.DueDateType == DueDateType.ASAP)
         {
             <dd>
-                You can complete this request any time between 
-                <strong title="@notBeforeDate.Value.FriendlyFutureDate()">@Html.Raw(notBeforeDate.Value.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> 
-                and 
+                This request should be completed <strong>as soon as possible</strong>
+                (and <strong title="@dueDate.FriendlyFutureDate()">before @Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>).
+            </dd>
+        }
+        else if (jobSummary.DueDateType == DueDateType.On)
+        {
+            <dd>
+                This request should be completed on
+                <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>;
+                the person who requested the help would prefer it on this date.
+            </dd>
+        }
+        else if (notBeforeDate.HasValue && notBeforeDate.Value.Date > today)
+        {
+            <dd>
+                You can complete this request any time between
+                <strong title="@notBeforeDate.Value.FriendlyFutureDate()">@Html.Raw(notBeforeDate.Value.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
+                and
                 <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
             </dd>
         }
