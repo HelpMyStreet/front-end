@@ -56,7 +56,7 @@
 }
 
 <div class="job__expander">
-    <h4 class="no-click">Slots</h4>
+    <h4 class="no-click">@(requestSummary.RequestType.Equals(RequestType.Shift) ? "Slots" : "Requests")</h4>
 </div>
 
 @foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobSummary.JobStatus.Equals(JobStatuses.Cancelled)).ThenBy(j => j.JobSummary.DueDate))
