@@ -348,6 +348,17 @@ namespace HelpMyStreetFE.Services.Requests
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}-requests", refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
+        public async Task<IEnumerable<RequestSummary>> GetAllGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
+        {
+            RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
+            NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
+
+            return await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest() { ReferringGroupID = groupId, IncludeChildGroups = true });
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}-all-requests", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+        }
+
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
             var job = (await _requestHelpRepository.GetJobSummaryAsync(jobId)).JobSummary;
@@ -498,6 +509,11 @@ namespace HelpMyStreetFE.Services.Requests
                                 return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
                             }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-shifts-from-{dateFrom}-to-{dateTo}", cancellationToken);
                         }
+
+                        _ = _memDistCache_RequestSummaries.RefreshDataAsync(async (cancellationToken) =>
+                        {
+                            return await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest() { ReferringGroupID = g.GroupId, IncludeChildGroups = true });
+                        }, $"{CACHE_KEY_PREFIX}-group-{g.GroupId}-all-requests", cancellationToken);
                     });
                 }
             });
