@@ -46,7 +46,7 @@
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__header pt-xs">Ending at</div>
                 <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.EndTime" type="time" step="300" placeholder="e.g. 18:00" autocomplete="off" value="@(Model.EndTime != DateTime.MinValue ? Model.EndTime.Value.ToString(DatePickerHelpers.TIME_FIELD_FORMAT) : "")" />
+                    <input name="currentStep.SelectedTimeFrame.EndTime" type="time" step="300" placeholder="e.g. 18:00" autocomplete="off" value="@((Model.EndTime ?? DateTime.MinValue) != DateTime.MinValue ? Model.EndTime.Value.ToString(DatePickerHelpers.TIME_FIELD_FORMAT) : "")" />
                     <span id="endtimeselectionError" class="error"></span>
                 </div>
             </div>
