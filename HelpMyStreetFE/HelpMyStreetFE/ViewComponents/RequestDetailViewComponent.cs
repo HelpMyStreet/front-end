@@ -30,14 +30,30 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
         {
-            if (!jobSet.GroupAdminView())
-            {
-                throw new Exception($"Unexpected JobSet: {jobSet}");
-            }
+            //if (!jobSet.GroupAdminView())
+            //{
+            //    throw new Exception($"Unexpected JobSet: {jobSet}");
+            //}
 
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
-            var jobDetails = await Task.WhenAll(requestDetail.RequestSummary.JobBasics.Select(async j => await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken)));
+            var jobDetails = new List<JobDetail>();
+
+            foreach (var j in requestDetail.RequestSummary.JobBasics)
+            {
+                if (jobSet.GroupAdminView() || j.VolunteerUserID == user.ID)
+                {
+                    jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
+                }
+                else
+                {
+                    jobDetails.Add(new JobDetail
+                    {
+                        JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
+                        RequestSummary = requestDetail.RequestSummary,
+                    });
+                }
+            }
 
             var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.JobSummary.SupportActivity).Distinct(), cancellationToken);
  
