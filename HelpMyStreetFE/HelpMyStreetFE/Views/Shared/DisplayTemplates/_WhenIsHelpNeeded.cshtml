@@ -15,7 +15,7 @@
 @if (jobSummary.DueDateType == DueDateType.SpecificStartAndEndTimes)
 {
     var startDate = requestSummary.Shift?.StartDate ?? jobSummary.DueDate;
-    var endDate = requestSummary.Shift.EndDate; // TODO: make this work for non-shifts
+    var endDate = requestSummary.Shift?.EndDate ?? jobSummary.DueDate; // TODO: make this work for non-shifts
 
     <dt>When is the help needed?</dt>
     @if (startDate.ToUKFromUTCTime().Date.Equals(endDate.ToUKFromUTCTime().Date))
