@@ -1,0 +1,68 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using Westwind.AspNetCore.Markdown
+
+@model JobDetailViewModel
+
+@{
+
+    var jobDetails = Model.JobDetail.Item;
+    var jobSummary = jobDetails.JobSummary;
+
+    var userActingAsAdmin = Model.JobDetail.UserRole.Equals(RequestRoles.GroupAdmin);
+
+
+    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+}
+
+<div class="job__expander job request-job" id="@jobSummary.JobID" request-id="@jobSummary.RequestID" data-role="@Model.JobDetail.UserRole">
+    <h4>
+        <img class="status-icon" src="~/img/icons/status/@jobSummary.JobStatus.Icon()" alt="@jobSummary.JobStatus.FriendlyName()" title="@jobSummary.JobStatus.FriendlyName()" />
+        <span title="@jobSummary.DueDate.FriendlyFutureDate()">
+            @jobSummary.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+        </span>
+        <span class="toggle-on-status-change">
+            @jobSummary.JobStatus.SlotJobStatusWithVolunteerName(null)
+        </span>
+        <span class="job__status__new dnone toggle-on-status-change"></span>
+        <span></span>
+    </h4>
+    <div class="job__expander__content request-job__content">
+        <div class="row">
+            <div class="sm3 request-job__action-column mb-sm">
+                <div class="job__info__actions mt-sm">
+                    <partial name="_JobButtons_Volunteer" model="Model.JobDetail" />
+                </div>
+            </div>
+            <div class="sm9 pr-md request-job__info-column">
+                <div class="row">
+                    <div class="sm12">
+                        <dl class="">
+                            <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (questionsToDisplay.Count() > 0)
+        {
+            <div class="row">
+                <div class="sm12 add-line-before">
+                    <h5>Request Details</h5>
+                    @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                    {
+                        <dl>
+                            <dt>@q.FriendlyName()</dt>
+                            <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

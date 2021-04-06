@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.ViewComponents
             _groupMemberService = groupMemberService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
+        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false, string viewName = "JobDetail")
         {
             JobDetail jobDetails = jobSet.PrivilegedView() switch
             {
@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.ViewComponents
                 jobDetailViewModel.JobDetail.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
             }
 
-            return View("JobDetail", jobDetailViewModel);
+            return View(viewName, jobDetailViewModel);
         }
     }
 }

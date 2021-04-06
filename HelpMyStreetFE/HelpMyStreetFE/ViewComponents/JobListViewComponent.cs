@@ -59,8 +59,12 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 case (RequestType.Shift, JobSet.GroupShifts):
                 case (RequestType.Task, JobSet.GroupRequests):
-                case (RequestType.Task, JobSet.UserMyRequests):
                     viewName = "ShiftRequestList";
+                    viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    break;
+
+                case (RequestType.Task, JobSet.UserMyRequests):
+                    viewName = "MyRequestsList";
                     viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
@@ -220,6 +224,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a,
                 Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
+                User = user,
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = false,
