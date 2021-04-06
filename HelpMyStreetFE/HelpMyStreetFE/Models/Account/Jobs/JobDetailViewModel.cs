@@ -7,9 +7,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class JobDetailViewModel
     {
-        public bool UserActingAsAdmin { get; set; }
-        public LocationWithDistance Location { get; set; }
-        public JobDetail JobDetail { get; set; }
+        public JobViewModel<JobDetail> JobDetail { get; set; }
         public Instructions GroupSupportActivityInstructions { get; set; }
         public bool ToPrint { get; set; } = false;
     }

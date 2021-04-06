@@ -10,6 +10,7 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Services;
 using System.Linq;
+using HelpMyStreet.Utils.Enums;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -18,12 +19,14 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
         private readonly IAddressService _addressService;
+        private readonly IGroupMemberService _groupMemberService;
 
-        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService)
+        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService, IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
             _groupService = groupService;
             _addressService = addressService;
+            _groupMemberService = groupMemberService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
@@ -41,8 +44,12 @@ namespace HelpMyStreetFE.ViewComponents
 
             JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
             {
-                JobDetail = jobDetails,
-                UserActingAsAdmin = jobSet == JobSet.GroupRequests,
+                JobDetail = new JobViewModel<JobDetail>
+                {
+                    Item = jobDetails,
+                    UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                    UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, user.ID, user.ID, cancellationToken),
+                },
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
                 ToPrint = toPrint
             };
@@ -50,7 +57,7 @@ namespace HelpMyStreetFE.ViewComponents
             if (jobDetails.RequestSummary.Shift != null)
             {
                 var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
-                jobDetailViewModel.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
+                jobDetailViewModel.JobDetail.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
             }
 
             return View("JobDetail", jobDetailViewModel);

@@ -13,8 +13,14 @@
         Layout = "_LayoutPrint";
     }
 
-    var jobSummary = Model.JobDetail.JobSummary;
-    var requestSummary = Model.JobDetail.RequestSummary;
+    var jobSummary = Model.JobDetail.Item.JobSummary;
+    var requestSummary = Model.JobDetail.Item.RequestSummary;
+
+    var recipient = Model.JobDetail.Item.Recipient;
+    var requestor = Model.JobDetail.Item.Requestor;
+    var currentVolunteer = Model.JobDetail.Item.CurrentVolunteer;
+
+    var userActingAsAdmin = Model.JobDetail.UserRole.Equals(RequestRoles.GroupAdmin);
 
     var AgeUk = jobSummary.SupportActivity == SupportActivities.WellbeingPackage;
     var Hlp = jobSummary.SupportActivity == SupportActivities.CommunityConnector;
@@ -22,7 +28,7 @@
     var forFaceMask = jobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
 
-    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(Model.UserActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
@@ -41,7 +47,7 @@
         <div class="row">
             <div class="sm12">
                 <dl>
-                    <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail" />
+                    <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
 
                     @if (jobSummary.RequestType == RequestType.Shift)
                     {
@@ -50,10 +56,10 @@
 
                             <dd>
                                 <div>
-                                    @Html.DisplayFor(m => m.Location.LocationDetails.Address)
-                                    <span class="distance">(@Model.Location.Distance.ToString("0.0") miles away)</span>
+                                    @Html.DisplayFor(m => m.JobDetail.Location.LocationDetails.Address)
+                                    <span class="distance">(@Model.JobDetail.Location.Distance.ToString("0.0") miles away)</span>
                                 </div>
-                                <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.Location.LocationDetails.Latitude" data-lng="@Model.Location.LocationDetails.Longitude"></div>
+                                <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.JobDetail.Location.LocationDetails.Latitude" data-lng="@Model.JobDetail.Location.LocationDetails.Longitude"></div>
                             </dd>
                         </div>
                     }
@@ -89,7 +95,7 @@
     </div>
 }
 
-@if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress || jobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
+@if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress || jobSummary.JobStatus == JobStatuses.Done || userActingAsAdmin)
 {
     @if (!Model.ToPrint)
     {
@@ -110,9 +116,9 @@
                                 }
                             </dl>
                         </div>
-                        @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
+                        @if (userActingAsAdmin && currentVolunteer != null)
                         {
-                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+                            var volunteerDetails = currentVolunteer.UserPersonalDetails;
                             <div class="sm12">
                                 <h5>Volunteer</h5>
                                 <dl>
@@ -123,7 +129,7 @@
                     }
                     else
                     {
-                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
+                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || recipient != null)
                         {
                             <div class="sm6">
                                 <h5>Recipient</h5>
@@ -133,34 +139,34 @@
                                         <dt>Organisation</dt>
                                         <dd>@jobSummary.RecipientOrganisation</dd>
                                     }
-                                    @if (@Model.JobDetail.Recipient != null)
+                                    @if (recipient != null)
                                     {
                                         <dt>Name</dt>
-                                        <dd>@Model.JobDetail.Recipient.FirstName @Model.JobDetail.Recipient.LastName</dd>
+                                        <dd>@recipient.FirstName @recipient.LastName</dd>
                                         <dt>Email</dt>
-                                        <dd>@(string.IsNullOrEmpty(Model.JobDetail.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.JobDetail.Recipient.EmailAddress) </dd>
-                                        <dt>@(Model.JobDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                        <dd>@(string.IsNullOrEmpty(recipient.EmailAddress) ? userDetailsNotProvidedText : recipient.EmailAddress) </dd>
+                                        <dt>@(recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
                                         <dd>
-                                            @if (String.IsNullOrEmpty(Model.JobDetail.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.JobDetail.Recipient.OtherNumber))
+                                            @if (String.IsNullOrEmpty(recipient.MobileNumber) && String.IsNullOrEmpty(recipient.OtherNumber))
                                             {
                                                 @userDetailsNotProvidedText
                                             }
                                             else
                                             {
-                                                @string.Join(" / ", Model.JobDetail.Recipient.PhoneNumbers())
+                                                @string.Join(" / ", recipient.PhoneNumbers())
                                             }
                                         </dd>
                                         <dt>Address</dt>
                                         <dd>
-                                            @Html.DisplayFor(x => Model.JobDetail.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
+                                            @Html.DisplayFor(x => recipient.Address, new { MaskAddress = AgeUk || Hlp })
                                         </dd>
                                     }
                                 </dl>
                             </div>
                         }
-                        @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
+                        @if (userActingAsAdmin && currentVolunteer != null)
                         {
-                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+                            var volunteerDetails = currentVolunteer.UserPersonalDetails;
                             <div class="sm6">
                                 <h5>Volunteer</h5>
                                 <dl>
@@ -177,20 +183,20 @@
                                 </dl>
                             </div>
                         }
-                        @if (Model.JobDetail.Requestor != null && jobSummary.RequestorType != RequestorType.Myself)
+                        @if (requestor != null && jobSummary.RequestorType != RequestorType.Myself)
                         {
                             <div class="sm6">
                                 <h5>Requester</h5>
                                 <dl>
                                     <dt>Name</dt>
-                                    <dd>@Model.JobDetail.Requestor.FirstName @Model.JobDetail.Requestor.LastName</dd>
+                                    <dd>@requestor.FirstName @requestor.LastName</dd>
                                     <dt>Email</dt>
-                                    <dd>@Model.JobDetail.Requestor.EmailAddress</dd>
-                                    <dt>@(Model.JobDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>@string.Join(" / ", Model.JobDetail.Requestor.PhoneNumbers())</dd>
+                                    <dd>@requestor.EmailAddress</dd>
+                                    <dt>@(requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                                    <dd>@string.Join(" / ", requestor.PhoneNumbers())</dd>
                                     <dt>Address</dt>
                                     <dd>
-                                        @Model.JobDetail.Requestor.Address.Postcode
+                                        @requestor.Address.Postcode
                                     </dd>
                                 </dl>
                             </div>
@@ -234,7 +240,7 @@
             </div>
         </div>
     }
-    @if (!Model.UserActingAsAdmin && questionsToDisplay.Count() > 0 && jobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
+    @if (!userActingAsAdmin && questionsToDisplay.Count() > 0 && jobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
     {
         <div class="job__expander offline-details-container">
             <div class="row">
@@ -279,7 +285,7 @@ else if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToD
     </div>
 }
 
-@if (Model.UserActingAsAdmin && !Model.ToPrint)
+@if (userActingAsAdmin && !Model.ToPrint)
 {
     <div class="job__expander">
         <h4>Request Status History<span></span></h4>
@@ -287,7 +293,7 @@ else if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToD
             <div class="row">
                 <div class="sm12">
                     <dl class="highlight-last">
-                        @foreach (var statusChange in Model.JobDetail.JobStatusHistory)
+                        @foreach (var statusChange in Model.JobDetail.Item.JobStatusHistory)
                         {
                             <dt>
                                 @statusChange.JobStatusDescription
