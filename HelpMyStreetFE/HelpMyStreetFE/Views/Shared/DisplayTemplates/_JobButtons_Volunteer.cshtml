@@ -17,12 +17,15 @@
         </button>
         break;
     case JobStatuses.InProgress:
-        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
-            <span class="text">Mark as Done</span>
-        </button>
-        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-            <span class="text">Can't do</span>
-        </button>
+        if (Model.Item.VolunteerUserID.Equals(Model.User.ID))
+        {
+            <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                <span class="text">Mark as Done</span>
+            </button>
+            <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                <span class="text">Can't do</span>
+            </button>
+        }
         break;
     case JobStatuses.Done:
         if (Model.Item.RequestType.Equals(RequestType.Task))

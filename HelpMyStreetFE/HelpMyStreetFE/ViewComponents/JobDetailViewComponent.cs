@@ -31,11 +31,18 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false, string viewName = "JobDetail")
         {
-            JobDetail jobDetails = jobSet.PrivilegedView() switch
+            JobDetail jobDetails = await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken);
+
+            if (jobSet.PrivilegedView() && (jobSet.GroupAdminView() || jobDetails.VolunteerUserID.Equals(user.ID)))
             {
-                true => await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken),
-                false => await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken)
-            };
+                jobDetails = await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken);
+            }
+
+            //JobDetail jobDetails = jobSet.PrivilegedView() switch
+            //{
+            //    true => await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken),
+            //    false => await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken)
+            //};
 
             if (jobDetails == null)
             {
@@ -47,6 +54,7 @@ namespace HelpMyStreetFE.ViewComponents
                 JobDetail = new JobViewModel<JobDetail>
                 {
                     Item = jobDetails,
+                    User = user,
                     UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                     UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(jobDetails.ReferringGroupID, jobDetails.SupportActivity, user.ID, user.ID, cancellationToken),
                 },

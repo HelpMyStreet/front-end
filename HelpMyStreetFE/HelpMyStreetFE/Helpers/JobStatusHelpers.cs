@@ -50,6 +50,21 @@ namespace HelpMyStreetFE.Helpers
             };
         }
 
+        public static string SlotJobStatusWithYouOrAnother(this JobStatuses jobStatus, bool userAllocatedToTask)
+        {
+            return (jobStatus, userAllocatedToTask) switch
+            {
+                (JobStatuses.Open, _) => "Open",
+                (JobStatuses.Accepted, true) => $"Accepted",
+                (JobStatuses.Accepted, false) => $"Accepted by another volunteeer",
+                (JobStatuses.InProgress, true) => $"In Progress",
+                (JobStatuses.InProgress, false) => $"Accepted by another volunteeer",
+                (JobStatuses.Done, true) => $"Completed",
+                (JobStatuses.Done, false) => $"Completed by another volunteer",
+                (_, _) => jobStatus.FriendlyName()
+            };
+        }
+
         public static int UsualOrderOfProgression(this JobStatuses jobStatus)
         {
             return jobStatus switch

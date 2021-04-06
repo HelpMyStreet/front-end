@@ -186,12 +186,7 @@
     <div>
         @foreach (var job in Model.Item.JobBasics.OrderBy(j => j.JobStatus.Equals(JobStatuses.Cancelled)).ThenBy(j => j.DueDate))
         {
-
-            <p>@job.JobID</p>
-
             @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
-
-
         }
     </div>
     <div class="job__detail">
