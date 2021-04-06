@@ -280,6 +280,18 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync (List<int> requestIDs)
+        {
+            var request = new GetAllRequestsRequest { RequestIDs = requestIDs };
+            var response = await PostAsync<BaseRequestHelpResponse<GetAllRequestsResponse>>($"/api/GetAllRequests", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.RequestSummaries;
+            }
+            return null;
+        }
+
         public async Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId)
         {
             var request = new PutUpdateRequestStatusToDoneRequest()
