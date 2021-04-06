@@ -47,15 +47,20 @@ namespace HelpMyStreetFE.ViewComponents
                 }
                 else
                 {
-                    jobDetails.Add(new JobDetail
+                    //JobDetail jobDetail = (JobDetail)await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken);
+                    //jobDetail.RequestSummary = requestDetail.RequestSummary;
+
+                    //jobDetails.Add(jobDetail);
+
+                    jobDetails.Add(new JobDetail (await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
                     {
-                        JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
+                        //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
                         RequestSummary = requestDetail.RequestSummary,
                     });
                 }
             }
 
-            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.JobSummary.SupportActivity).Distinct(), cancellationToken);
+            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.SupportActivity).Distinct(), cancellationToken);
  
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {

@@ -224,11 +224,11 @@ namespace HelpMyStreetFE.Controllers
             int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
             User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
-            if (shiftDetails == null || shiftDetails.JobSummary.RequestType != RequestType.Shift)
+            if (shiftDetails == null || shiftDetails.RequestType != RequestType.Shift)
             {
                 throw new Exception("Job does not exist or Not a shift");
             }
-            if (shiftDetails.JobSummary.VolunteerUserID == null || shiftDetails.JobSummary.VolunteerUserID != user.ID)
+            if (shiftDetails.VolunteerUserID == null || shiftDetails.VolunteerUserID != user.ID)
             {
                 throw new Exception("User not assigned to shift");
             }
@@ -253,7 +253,7 @@ namespace HelpMyStreetFE.Controllers
                 $"ORGANIZER;CN={group.GroupName}MAILTO:no-reply@helpymstreet.org\n" +
                 $"DTSTART:{startDate}\n" +
                 $"DTEND:{stopDate}\n" +
-                $"SUMMARY:{shiftDetails.JobSummary.SupportActivity.FriendlyNameShort()} Shift\n" +
+                $"SUMMARY:{shiftDetails.SupportActivity.FriendlyNameShort()} Shift\n" +
                 $"LOCATION:{locationDetails.Address.AddressLine1}, {locationDetails.Address.Postcode}\n" +
                 $"GEO:{locationDetails.Latitude};{locationDetails.Longitude}\n" +
                 $"URL:https://www.helpmystreet.org/link/j/{j}\n" +

@@ -10,23 +10,22 @@
 @{
 
     var jobDetails = Model.JobDetail.Item;
-    var jobSummary = jobDetails.JobSummary;
 
     var userActingAsAdmin = Model.JobDetail.UserRole.Equals(RequestRoles.GroupAdmin);
 
 
-    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
-    var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+    var questionsToDisplay = jobDetails.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobDetails.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID);
 }
 
-<div class="job__expander job request-job" id="@jobSummary.JobID" request-id="@jobSummary.RequestID" data-role="@Model.JobDetail.UserRole">
+<div class="job__expander job request-job" id="@jobDetails.JobID" request-id="@jobDetails.RequestID" data-role="@Model.JobDetail.UserRole">
     <h4>
-        <img class="status-icon" src="~/img/icons/status/@jobSummary.JobStatus.Icon()" alt="@jobSummary.JobStatus.FriendlyName()" title="@jobSummary.JobStatus.FriendlyName()" />
-        <span title="@jobSummary.DueDate.FriendlyFutureDate()">
-            @jobSummary.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+        <img class="status-icon" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
+        <span title="@jobDetails.DueDate.FriendlyFutureDate()">
+            @jobDetails.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
         </span>
         <span class="toggle-on-status-change">
-            @jobSummary.JobStatus.SlotJobStatusWithVolunteerName(null)
+            @jobDetails.JobStatus.SlotJobStatusWithVolunteerName(null)
         </span>
         <span class="job__status__new dnone toggle-on-status-change"></span>
         <span></span>

@@ -48,9 +48,9 @@ namespace HelpMyStreetFE.ViewComponents
                 {
                     Item = jobDetails,
                     UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-                    UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, user.ID, user.ID, cancellationToken),
+                    UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(jobDetails.ReferringGroupID, jobDetails.SupportActivity, user.ID, user.ID, cancellationToken),
                 },
-                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
+                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.ReferringGroupID, jobDetails.SupportActivity, cancellationToken),
                 ToPrint = toPrint
             };
 

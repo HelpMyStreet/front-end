@@ -257,10 +257,15 @@ namespace HelpMyStreetFE.Services.Requests
             var getJobSummaryResponse = await _requestHelpRepository.GetJobSummaryAsync(jobId);
             var getRequestSummaryResponse = await _requestHelpRepository.GetRequestSummaryAsync(getJobSummaryResponse.RequestID);
 
-            return new JobDetail()
+            //JobDetail jobDetail = (JobDetail)getJobSummaryResponse.JobSummary;
+            //jobDetail.RequestSummary = getRequestSummaryResponse.RequestSummary;
+
+            //return jobDetail;
+
+            return new JobDetail(getJobSummaryResponse.JobSummary)
             {
                 RequestSummary = getRequestSummaryResponse.RequestSummary,
-                JobSummary = getJobSummaryResponse.JobSummary,
+                //JobSummary = getJobSummaryResponse.JobSummary,
             };
         }
 
@@ -277,10 +282,19 @@ namespace HelpMyStreetFE.Services.Requests
                     currentVolunteer = await _userService.GetUserAsync(jobDetails.JobSummary.VolunteerUserID.Value, cancellationToken);
                 }
 
-                return new JobDetail()
+                //JobDetail jobDetail = (JobDetail)jobDetails.JobSummary;
+                //jobDetail.RequestSummary = getRequestSummaryResponse.RequestSummary;
+                //jobDetail.Recipient = jobDetails.Recipient;
+                //jobDetail.Requestor = jobDetails.Requestor;
+                //jobDetail.JobStatusHistory = await EnrichStatusHistory(jobDetails.History, adminView, cancellationToken);
+                //jobDetail.CurrentVolunteer = currentVolunteer;
+
+                //return jobDetail;
+
+                return new JobDetail(jobDetails.JobSummary)
                 {
                     RequestSummary = getRequestSummaryResponse.RequestSummary,
-                    JobSummary = jobDetails.JobSummary,
+                   // JobSummary = jobDetails.JobSummary,
                     Recipient = jobDetails.Recipient,
                     Requestor = jobDetails.Requestor,
                     JobStatusHistory = await EnrichStatusHistory(jobDetails.History, adminView, cancellationToken),
