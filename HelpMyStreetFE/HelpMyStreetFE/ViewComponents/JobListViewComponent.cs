@@ -84,9 +84,9 @@ namespace HelpMyStreetFE.ViewComponents
             return View(viewName, viewModel);
         }
 
-        private async Task<ListViewModel<JobViewModel<JobSummary>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        private async Task<ListViewModel<JobViewModel<JobDetail>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            var jobListViewModel = new ListViewModel<JobViewModel<JobSummary>>();
+            var jobListViewModel = new ListViewModel<JobViewModel<JobDetail>>();
 
             IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
             {
@@ -112,9 +112,9 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobSummary>()
+            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobDetail>()
             {
-                Item = a,
+                Item = new JobDetail(a),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
