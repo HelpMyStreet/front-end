@@ -63,10 +63,10 @@
                             </dd>
                         </div>
                     }
-                    @if (requestSummary.IncompleteJobs().Count() > 1)
+                    @if (requestSummary.JobBasics.IncompleteJobs().Count() > 1)
                     {
-                        var total = requestSummary.IncompleteJobs().Count();
-                        var unfilled = requestSummary.UnfilledJobs().Count();
+                        var total = requestSummary.JobBasics.IncompleteJobs().Count();
+                        var unfilled = requestSummary.JobBasics.UnfilledJobs().Count();
                         var filled = total - unfilled;
                         <dt>How many volunteers are needed?</dt>
                         <dd>

@@ -7,7 +7,7 @@
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
-        @if (Model.RequestSummary.SingleJobStatus() == JobStatuses.Done)
+        @if (Model.RequestSummary.JobBasics.SingleJobStatus() == JobStatuses.Done)
         {
             <div class="popup__content__header">Mark as cancelled?</div>
         }

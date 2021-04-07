@@ -465,7 +465,7 @@ namespace HelpMyStreetFE.Services.Requests
                     GroupKey = parentGroup.GroupKey,
                 };
             }
-            else if (request.JobStatusDictionary().ContainsKey(JobStatuses.Open))
+            else if (request.JobBasics.JobStatusDictionary().ContainsKey(JobStatuses.Open))
             {
                 return new JobLocation { JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
             }

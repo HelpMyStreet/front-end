@@ -48,11 +48,11 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (job == null)
             {
-                return (request.SingleJobStatus(), targetStatus, userIsAdmin) switch
+                return (request.JobBasics.SingleJobStatus(), targetStatus, userIsAdmin) switch
                 {
                     (_, JobStatuses.Done, true) => View("Admin_MarkRequestAsDonePopup", vm),
                     (_, JobStatuses.Cancelled, true) => View("Admin_CancelRequestPopup", vm),
-                    _ => throw new Exception($"Unhandled status/admin combination for request {requestId}, user {user.ID}: {request.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
+                    _ => throw new Exception($"Unhandled status/admin combination for request {requestId}, user {user.ID}: {request.JobBasics.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
                 };
             }
             else

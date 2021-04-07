@@ -25,7 +25,7 @@
         myNextTaskDue = Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete() && (j.VolunteerUserID ?? Model.User.ID) == Model.User.ID).OrderBy(j => j.DueDate).First();
     }
 
-    if (Model.Item.UnfilledJobs().Count() > 0)
+    if (Model.Item.JobBasics.UnfilledJobs().Count() > 0)
     {
         if (Model.Item.Shift != null)
         {
@@ -164,7 +164,7 @@
     <div class="request-job__detail job__detail start-open job__expander" data-status="pre-loaded">
         <div class="request-job__list" show="user-jobs">
             <div class="request-job__list__items">
-                @foreach (var group in Model.Item.JobBasicsGroupdByDateAndActivity().OrderBy(j => j.Key))
+                @foreach (var group in Model.Item.JobBasics.GroupByDateAndActivity().OrderBy(j => j.Key))
                 {
                     var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
                     @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
@@ -172,7 +172,7 @@
             </div>
             <div class="request-job__list__summary">
                 <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.Item.JobBasics.Count requests">
-                    @foreach (var group in Model.Item.JobBasicsGroupdByDateAndActivity().OrderBy(j => j.Key))
+                    @foreach (var group in Model.Item.JobBasics.GroupByDateAndActivity().OrderBy(j => j.Key))
                     {
                         var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
                         @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });

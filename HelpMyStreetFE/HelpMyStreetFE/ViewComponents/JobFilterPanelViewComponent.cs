@@ -48,7 +48,7 @@ namespace HelpMyStreetFE.ViewComponents
                     var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
                     if (request != null)
                     {
-                        jobStatuses = request.JobStatusDictionary().Keys.ToList();
+                        jobStatuses = request.JobBasics.JobStatusDictionary().Keys.ToList();
                     }
                 }
 
