@@ -844,6 +844,13 @@
                     border-radius: 12px;
                     height: 2.4rem;
                 }
+
+                .feedback-container {
+                    .submitted {
+                        width: auto;
+                        margin-right: 0.5rem;
+                    }
+                }
             }
         }
     }
