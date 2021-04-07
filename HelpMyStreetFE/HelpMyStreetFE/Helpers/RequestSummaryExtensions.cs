@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 
@@ -74,6 +75,13 @@ namespace HelpMyStreetFE.Helpers
                 return requestSummary.JobSummaries.Where(j => j.JobStatus.Incomplete()).Min(j => j.DueDate);
             }
             return DateTime.MaxValue;
+        }
+
+        public static Dictionary<DateTime, IEnumerable<JobBasic>> JobBasicsGroupdByDateAndActivity(this RequestSummary requestSummary)
+        {
+            IEqualityComparer<JobBasic> _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
+
+            return requestSummary.JobBasics.GroupBy(j => j, _jobBasicEqualityComparer).ToDictionary(g => g.First().DueDate, g => g.AsEnumerable());
         }
     }
 }

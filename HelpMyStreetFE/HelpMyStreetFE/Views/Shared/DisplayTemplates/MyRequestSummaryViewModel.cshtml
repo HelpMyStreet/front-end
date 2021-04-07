@@ -164,16 +164,18 @@
     <div class="request-job__detail job__detail start-open job__expander" data-status="pre-loaded">
         <div class="request-job__list" show="user-jobs">
             <div class="request-job__list__items">
-                @foreach (var job in Model.Item.JobBasics.OrderBy(j => j.DueDate))
+                @foreach (var group in Model.Item.JobBasicsGroupdByDateAndActivity().OrderBy(j => j.Key))
                 {
-                    @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
+                    var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
+                    @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
                 }
             </div>
             <div class="request-job__list__summary">
                 <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.Item.JobBasics.Count requests">
-                    @foreach (var job in Model.Item.JobBasics.OrderBy(j => j.DueDate))
+                    @foreach (var group in Model.Item.JobBasicsGroupdByDateAndActivity().OrderBy(j => j.Key))
                     {
-                        @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });
+                        var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
+                        @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });
                     }
                     <span>Show all @Model.Item.JobBasics.Count requests</span>
                 </a>
