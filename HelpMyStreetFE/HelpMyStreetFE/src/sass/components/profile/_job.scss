@@ -468,7 +468,9 @@
 
 
     &__detail {
-        display: none;
+        &:not(.start-open){
+            display: none;
+        }
 
         h4 {
             color: $dark-blue;
