@@ -40,7 +40,8 @@ export async function initialiseRequests() {
         
     });
 
-    $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
+    $('.job-list').on('click', '.job button.trigger-status-update-popup', function (e) {
+        e.stopPropagation();
         showStatusUpdatePopup($(this));
     });
 
@@ -51,7 +52,9 @@ export async function initialiseRequests() {
         showFeedbackPopup(jobId, role, function () { loadFeedbackComponent(job); });
     });
 
-    $('.job-list').on('click', '.undo-request', async function (evt) {
+    $('.job-list').on('click', '.undo-request', async function (e) {
+        e.stopPropagation();
+
         const job = $(this).closest(".job");
         const targetState = $(this).data("target-state");
         const targetUser = $(this).data("target-user") ?? "";
@@ -121,8 +124,8 @@ export async function initialiseRequests() {
 
     });
 
-    $('.job-list').on('click', '.request-job__list .request-job__list__toggle', function (evt) {
-        evt.preventDefault();
+    $('.job-list').on('click', '.request-job__list .request-job__list__toggle', function (e) {
+        e.preventDefault();
         $(this).closest('.request-job__list').attr('show', $(this).attr('show'));
     });
 
