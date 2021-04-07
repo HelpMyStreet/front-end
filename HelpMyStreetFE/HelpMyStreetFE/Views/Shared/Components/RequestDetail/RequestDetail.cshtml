@@ -233,7 +233,7 @@
                     </dl>
                 </div>
             }
-            @if (Model.RequestDetail.Requestor != null)
+            @if (Model.RequestDetail.Requestor != null && Model.RequestDetail.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself)
             {
                 <div class="sm6">
                     <h5>Requester</h5>
