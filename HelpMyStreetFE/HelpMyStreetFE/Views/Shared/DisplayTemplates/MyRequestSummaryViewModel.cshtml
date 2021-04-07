@@ -64,10 +64,6 @@
 <div class="job @className open" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
-            <span class="job__info__col1__status toggle-on-status-change">
-                <partial name="_RequestStatus" model="@Model.Item" />
-            </span>
-
             @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
             {
                 <span class="job__info__col1__criticality">
@@ -109,35 +105,17 @@
             </span>
         </div>
         <div class="job__info__activity">
-            @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
-            {
-                <span class="job__info__activity__criticality">
-                    <span class="critical-icon">!</span>
-                    <span class="critical">Critical</span>
-                </span>
-            }
-
             @foreach (SupportActivities activity in Model.Item.JobBasics.Select(a => a.SupportActivity).Distinct())
             {
-                {
-                    <span class="job__info__activity__title @activity.Class()">
-                        @if (activity != SupportActivities.Other)
-                        {
-                            <img src="~/img/icons/@activity.Icon()" />
-                        }
-                        <span>
-                            @activity.FriendlyNameShort()
-                        </span>
-                    </span>
-
-                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity) && !string.IsNullOrWhiteSpace(j.Reference)).Select(j => j.Reference).Distinct();
-                    if (references.Count() > 0)
+                <span class="job__info__activity__title @activity.Class()">
+                    @if (activity != SupportActivities.Other)
                     {
-                        <span class="job__info__activity__title @activity.Class()">
-                            @($"({string.Join(", ", references)})")
-                        </span>
+                        <img src="~/img/icons/@activity.Icon()" />
                     }
-                }
+                    <span>
+                        @activity.FriendlyNameShort()
+                    </span>
+                </span>
             }
             <span class="job__info__activity__location">
                 @if (Model.Location != null)
@@ -183,7 +161,7 @@
         </div>
 
     </div>
-    <div class="request-job__detail job__detail start-open" data-status="pre-loaded">
+    <div class="request-job__detail job__detail start-open job__expander" data-status="pre-loaded">
         <div class="request-job__list" show="user-jobs">
             <div class="request-job__list__items">
                 @foreach (var job in Model.Item.JobBasics.OrderBy(j => j.DueDate))
