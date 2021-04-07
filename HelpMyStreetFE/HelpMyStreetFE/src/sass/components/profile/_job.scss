@@ -774,6 +774,54 @@
             flex-direction: row-reverse;
         }
     }
+
+    &__list {
+        &[show="user-jobs"] {
+            .request-job__list__items {
+                .job[data-user-allocated-to-job="False"] {
+                    display: none;
+                }
+            }
+
+            .request-job__list__summary {
+                .request-job__list__toggle[show="user-jobs"] {
+                    display: none;
+                }
+            }
+        }
+
+        &[show="all-jobs"] {
+            .request-job__list__summary {
+                .request-job__list__toggle[show="all-jobs"] {
+                    display: none;
+                }
+            }
+        }
+
+        &__summary {
+            margin-left: 1rem;
+
+            a {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+
+                > * {
+                    margin: 0 0.25rem;
+                }
+
+                .status-icon {
+                    width: 1.7rem;
+                    max-height: 1.7rem;
+                }
+
+                span {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
 }
 
 
@@ -798,3 +846,4 @@
         }
     }
 }
+

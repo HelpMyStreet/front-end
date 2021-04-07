@@ -1,0 +1,21 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using Westwind.AspNetCore.Markdown
+
+@model JobDetailViewModel
+
+@{
+
+    var jobDetails = Model.JobDetail.Item;
+
+    var userAllocatedToTask = jobDetails.VolunteerUserID.Equals(Model.JobDetail.User.ID);
+
+}
+
+
+
+<img class="status-icon" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash; @jobDetails.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToTask)" />
+

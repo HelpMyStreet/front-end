@@ -121,6 +121,11 @@ export async function initialiseRequests() {
 
     });
 
+    $('.job-list').on('click', '.request-job__list .request-job__list__toggle', function (evt) {
+        evt.preventDefault();
+        $(this).closest('.request-job__list').attr('show', $(this).attr('show'));
+    });
+
     mapsAreGo = await enableMaps();
     loadFeedbackComponents();
     

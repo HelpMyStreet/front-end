@@ -18,7 +18,7 @@
     var encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID);
 }
 
-<div class="job__expander job mini-job-detail" id="@jobDetails.JobID" request-id="@jobDetails.RequestID" data-role="@Model.JobDetail.UserRole">
+<div class="job__expander job mini-job-detail" id="@jobDetails.JobID" request-id="@jobDetails.RequestID" data-role="@Model.JobDetail.UserRole" data-user-allocated-to-job="@userAllocatedToTask">
     <h4>
         <img class="status-icon" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
         <span title="@jobDetails.DueDate.FriendlyFutureDate()">
