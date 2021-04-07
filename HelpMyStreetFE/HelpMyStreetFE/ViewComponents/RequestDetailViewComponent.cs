@@ -37,6 +37,16 @@ namespace HelpMyStreetFE.ViewComponents
 
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
+            // Temporary fix  TODO: Let users allocated to the task see RequestDetails
+            if (requestDetail == null)
+            {
+                requestDetail = new HelpMyStreet.Contracts.RequestService.Response.GetRequestDetailsResponse
+                {
+                    RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken)
+                };
+            }
+
+
             var jobDetails = new List<JobDetail>();
 
             foreach (var j in requestDetail.RequestSummary.JobBasics)
