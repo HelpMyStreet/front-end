@@ -57,11 +57,11 @@ namespace HelpMyStreetFE.Helpers
                 (JobStatuses.Open, _) => "Open",
                 (JobStatuses.Accepted, true) => $"Accepted",
                 (JobStatuses.Accepted, false) => $"Accepted by another volunteeer",
-                (JobStatuses.InProgress, true) => $"In Progress",
+                (JobStatuses.InProgress, true) => $"In progress",
                 (JobStatuses.InProgress, false) => $"Accepted by another volunteeer",
                 (JobStatuses.Done, true) => $"Completed",
                 (JobStatuses.Done, false) => $"Completed by another volunteer",
-                (_, _) => jobStatus.FriendlyName()
+                _ => jobStatus.FriendlyName()
             };
         }
 
