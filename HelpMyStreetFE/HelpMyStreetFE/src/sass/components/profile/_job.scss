@@ -526,11 +526,18 @@
                 margin-right: 0.5rem;
             }
 
-            >span:last-child {
-
-                @include arrow( 8px, 3px, $dark-blue, down, $white);
-                float: right;
-                margin-top: 10px;
+            &:not(.no-click) {
+                >span:last-child {
+                    @include arrow( 8px, 3px, $dark-blue, down, $white);
+                    float: right;
+                    margin-top: 10px;
+                }
+                &.open {
+                    >span:last-child {
+                        @include arrow( 8px, 3px, $dark-blue, up, $white);
+                        float: right;
+                    }
+                }
             }
 
             &:hover {
@@ -541,12 +548,6 @@
                 cursor: auto;
             }
 
-            &.open {
-                >span:last-child {
-                    @include arrow( 8px, 3px, $dark-blue, up, $white);
-                    float: right;
-                }
-            }
         }
 
         &.offline-details-container {

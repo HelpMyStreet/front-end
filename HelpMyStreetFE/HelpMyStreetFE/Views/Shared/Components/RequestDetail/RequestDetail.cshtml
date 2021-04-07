@@ -89,13 +89,16 @@
                     </div>
                 </div>
                 <div class="sm9 pr-md request-job__info-column">
-                    <div class="row">
-                        <div class="sm12">
-                            <dl class="">
-                                <partial name="_WhenIsHelpNeeded" model="@jobDetails" />
-                            </dl>
+                    @if (jobDetails.JobStatus.Incomplete())
+                    {
+                        <div class="row">
+                            <div class="sm12">
+                                <dl class="">
+                                    <partial name="_WhenIsHelpNeeded" model="@jobDetails" />
+                                </dl>
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div class="row">
                         @if (volunteerDetails != null)
                         {
