@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.ViewComponents
             _addressService = addressService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
+        public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false, bool showJobList = true)
         {
             //if (!jobSet.GroupAdminView())
             //{
@@ -52,20 +52,19 @@ namespace HelpMyStreetFE.ViewComponents
 
                     //jobDetails.Add(jobDetail);
 
-                    jobDetails.Add(new JobDetail (await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
+                    jobDetails.Add(new JobDetail(await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
                     {
                         //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
                         RequestSummary = requestDetail.RequestSummary,
                     });
                 }
             }
-
             var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.SupportActivity).Distinct(), cancellationToken);
  
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
                 RequestDetail = requestDetail,
-                JobDetails = jobDetails,
+                JobDetails = showJobList ? jobDetails : new List<JobDetail>(),
                 GroupSupportActivityInstructions = instructions,
             };
 

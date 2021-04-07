@@ -190,8 +190,8 @@
                 @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
             }
         </div>
-    <div class="job__detail">
-        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel() { Hide = false, ShowDarkSpinner = true }' />
+        <div class="request-job__list__summary">
+            <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.Item.JobBasics.Count requests">
                 @foreach (var job in Model.Item.JobBasics.OrderBy(j => j.DueDate))
                 {
                     @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });
@@ -203,5 +203,7 @@
             </a>
         </div>
     </div>
+    <div class="request-job__detail">
+        @await Component.InvokeAsync("RequestDetail", new { requestId = Model.Item.RequestID, user = Model.User, jobSet = JobSet.UserMyRequests, showJobList = false })
     </div>
 </div>

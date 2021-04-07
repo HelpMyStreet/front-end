@@ -55,9 +55,12 @@
     </div>
 }
 
-<div class="job__expander">
-    <h4 class="no-click">@(requestSummary.RequestType.Equals(RequestType.Shift) ? "Slots" : "Requests")</h4>
-</div>
+@if (Model.JobDetails.Count() > 0)
+{
+    <div class="job__expander">
+        <h4 class="no-click">@(requestSummary.RequestType.Equals(RequestType.Shift) ? "Slots" : "Requests")</h4>
+    </div>
+}
 
 @foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobStatus.Equals(JobStatuses.Cancelled)).ThenBy(j => j.DueDate))
 {
@@ -178,12 +181,12 @@
                     }
 
                     @*@foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                    {
-                        <dl>
-                            <dt>@q.FriendlyName()</dt>
-                            <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                        </dl>
-                    }*@
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }*@
                 </div>
             </div>
         </div>
@@ -209,7 +212,7 @@
 </div>
 
 <div class="job__expander">
-    <h4>Request Contact Details<span></span></h4>
+    <h4>Contact Details<span></span></h4>
     <div class="job__expander__content">
         <div class="row">
             @if (Model.RequestDetail.Recipient != null)
