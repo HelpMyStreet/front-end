@@ -1,5 +1,4 @@
-﻿using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Account.Jobs;
+﻿using HelpMyStreetFE.Models.Account.Jobs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +10,9 @@ using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Services;
 using System.Linq;
 using HelpMyStreet.Utils.Enums;
+using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.EqualityComparers;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -20,6 +22,7 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IGroupService _groupService;
         private readonly IAddressService _addressService;
         private readonly IGroupMemberService _groupMemberService;
+        private IEqualityComparer<JobBasic> _jobBasicEqualityComparer;
 
         public JobDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService, IGroupMemberService groupMemberService)
         {
@@ -27,6 +30,7 @@ namespace HelpMyStreetFE.ViewComponents
             _groupService = groupService;
             _addressService = addressService;
             _groupMemberService = groupMemberService;
+            _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false, string viewName = "JobDetail")
@@ -49,7 +53,9 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to retrieve job details for JobId {jobId}");
             }
 
-            JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
+            var duplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails));
+
+            var jobDetailViewModel = new JobDetailViewModel
             {
                 JobDetail = new JobViewModel<JobDetail>
                 {
@@ -58,8 +64,9 @@ namespace HelpMyStreetFE.ViewComponents
                     UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                     UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(jobDetails.ReferringGroupID, jobDetails.SupportActivity, user.ID, user.ID, cancellationToken),
                 },
+                DuplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails)),
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.ReferringGroupID, jobDetails.SupportActivity, cancellationToken),
-                ToPrint = toPrint
+                ToPrint = toPrint,
             };
 
             if (jobDetails.RequestSummary.Shift != null)

@@ -20,6 +20,7 @@
     var encodedRole = Base64Utils.Base64Encode((int)Model.JobDetail.UserRole);
 
     var showWhenIsHelpNeeded = jobDetails.JobStatus.Incomplete() && (userActingAsAdmin || userAllocatedToTask || jobDetails.VolunteerUserID == null);
+    var showDuplicateJobs = Model.DuplicateJobs.Count() > 1;
     var showQuestions = (userActingAsAdmin || userAllocatedToTask) && questionsToDisplay.Count() > 0;
 
 }
@@ -39,34 +40,38 @@
         </span>
         <span></span>
     </h4>
-    @if (showWhenIsHelpNeeded || showQuestions)
+    @if (showWhenIsHelpNeeded || showDuplicateJobs || showQuestions)
     {
         <div class="job__expander__content request-job__content">
-            @if (showWhenIsHelpNeeded)
-            {
-                <div class="row">
-                    <div class="sm12">
-                        <dl>
-                            <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
-                        </dl>
-                    </div>
-                </div>
-            }
-            @if (showQuestions)
-            {
-                <div class="row">
-                    <div class="sm12 @(showWhenIsHelpNeeded ? "add-line-before" : "")">
-                        <h5>Request Details</h5>
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+            <div class="row">
+                <div class="sm12">
+                    <dl>
+                        @if (showWhenIsHelpNeeded)
                         {
-                            <dl>
+                            <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
+                        }
+                        @if (showDuplicateJobs)
+                        {
+                            var filled = Model.DuplicateJobs.Count() - Model.DuplicateJobs.UnfilledJobs().Count();
+
+                            <dt>How many volunteers are needed?</dt>
+                            <dd>
+                                This help request requires <strong>@Model.DuplicateJobs.Count()</strong> volunteers.
+                                <strong>@filled</strong> @(filled == 1 ? "place has" : "places have") been filled
+                                (<strong>@Model.DuplicateJobs.UnfilledJobs().Count()</strong> remaining).
+                            </dd>
+                        }
+                        @if (showQuestions)
+                        {
+                            @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                            {
                                 <dt>@q.FriendlyName()</dt>
                                 <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
+                            }
                         }
-                    </div>
+                    </dl>
                 </div>
-            }
+            </div>
         </div>
     }
 </div>
