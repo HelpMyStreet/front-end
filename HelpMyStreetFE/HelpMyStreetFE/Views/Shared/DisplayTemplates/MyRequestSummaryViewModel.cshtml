@@ -61,7 +61,7 @@
     }
 }
 
-<div class="job @className open" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
+<div class="job @className mt-lg mb-lg" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
@@ -161,7 +161,7 @@
         </div>
 
     </div>
-    <div class="request-job__detail job__detail start-open" data-status="pre-loaded">
+    <div class="request-job__detail job__detail" data-status="pre-loaded">
         @await Component.InvokeAsync("RequestDetail", new { requestId = Model.Item.RequestID, user = Model.User, jobSet = JobSet.UserMyRequests, showJobList = false })
     </div>
     <div>
