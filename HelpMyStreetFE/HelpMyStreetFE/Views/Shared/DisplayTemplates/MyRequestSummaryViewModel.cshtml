@@ -184,7 +184,7 @@
             <div class="request-job__list__items">
                 @foreach (var group in Model.Item.JobBasics.GroupByDateAndActivity().OrderBy(j => j.Key))
                 {
-                    var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
+                    var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First().JobID;
                     @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
                 }
             </div>
