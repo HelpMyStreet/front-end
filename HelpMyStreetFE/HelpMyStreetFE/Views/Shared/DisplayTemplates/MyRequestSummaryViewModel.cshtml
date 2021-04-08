@@ -161,7 +161,10 @@
         </div>
 
     </div>
-    <div class="request-job__detail job__detail start-open job__expander" data-status="pre-loaded">
+    <div class="request-job__detail job__detail start-open" data-status="pre-loaded">
+        @await Component.InvokeAsync("RequestDetail", new { requestId = Model.Item.RequestID, user = Model.User, jobSet = JobSet.UserMyRequests, showJobList = false })
+    </div>
+    <div>
         <div class="request-job__list" show="user-jobs">
             <div class="request-job__list__items">
                 @foreach (var group in Model.Item.JobBasics.GroupByDateAndActivity().OrderBy(j => j.Key))
@@ -173,20 +176,19 @@
             @if (Model.Item.JobBasics.GroupByDateAndActivity().Any(g => !g.Value.Any(j => j.VolunteerUserID.Equals(Model.User.ID))))
             {
                 <div class="request-job__list__summary">
-                    <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.Item.JobBasics.Count requests">
+                    <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.Item.JobBasics.GroupByDateAndActivity().Count() dates">
                         @foreach (var group in Model.Item.JobBasics.GroupByDateAndActivity().OrderBy(j => j.Key))
                         {
                             var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
                             @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });
                         }
-                        <span>Show all @Model.Item.JobBasics.GroupByDateAndActivity().Count() requests</span>
+                        <span>Show all @Model.Item.JobBasics.GroupByDateAndActivity().Count() dates</span>
                     </a>
                     <a href="#" class="request-job__list__toggle" show="user-jobs">
-                        <span>Show only the requests I have accepted</span>
+                        <span>Show only the dates I have accepted</span>
                     </a>
                 </div>
             }
         </div>
-        @await Component.InvokeAsync("RequestDetail", new { requestId = Model.Item.RequestID, user = Model.User, jobSet = JobSet.UserMyRequests, showJobList = false })
     </div>
 </div>
