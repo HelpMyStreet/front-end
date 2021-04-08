@@ -21,7 +21,7 @@
 
     var showWhenIsHelpNeeded = jobDetails.JobStatus.Incomplete() && (userActingAsAdmin || userAllocatedToTask || jobDetails.VolunteerUserID == null);
     var showDuplicateJobs = Model.DuplicateJobs.Count() > 1;
-    var showQuestions = (userActingAsAdmin || userAllocatedToTask) && questionsToDisplay.Count() > 0;
+    var showQuestions = (userActingAsAdmin || userAllocatedToTask || jobDetails.JobStatus.Equals(JobStatuses.Open)) && questionsToDisplay.Count() > 0;
 
 }
 
