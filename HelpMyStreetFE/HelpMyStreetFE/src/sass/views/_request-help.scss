@@ -146,6 +146,18 @@
         }
     }
 
+    form[selected-activity="VolunteerSupport"] {
+        *[hide-tile-when*="activity:VolunteerSupport"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="VaccineSupport"] {
+        *[hide-tile-when*="activity:FaceMask"] {
+            display: none;
+        }
+    }
+
     *[show-tile-when*="repeats:true"] {
         display: none;
     }

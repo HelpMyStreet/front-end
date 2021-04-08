@@ -9,7 +9,7 @@ namespace HelpMyStreetFE.Models
     {
         public BasicTileViewModel()
         {
-            HideTileWhen = new Dictionary<string, string>();
+            HideTileWhen = new List<Tuple<string, string>>();
         }
 
         public int ID { get; set; }
@@ -17,13 +17,13 @@ namespace HelpMyStreetFE.Models
         public string Description { get; set; }
         public bool IsSelected { get; set; }
         public string DataType { get; protected set; }
-        public Dictionary<string, string> HideTileWhen { get; private set; }
+        public List<Tuple<string, string>> HideTileWhen { get; private set; }
 
         public string HideTileWhenAttribute
         {
             get
             {
-                return string.Join(",", HideTileWhen.Select(a => $"{a.Key}:{a.Value}"));
+                return string.Join(",", HideTileWhen.Select(a => $"{a.Item1}:{a.Item2}"));
             }
         }
     }

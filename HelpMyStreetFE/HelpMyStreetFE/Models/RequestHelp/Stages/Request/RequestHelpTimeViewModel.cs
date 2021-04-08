@@ -23,8 +23,20 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             }
         }
 
-        public bool HideForRepeatRequests { set { if (value) HideTileWhen.Add("repeats", "true"); } }
-        public bool HideForFaceCoverings { set { if (value) HideTileWhen.Add("activity", "FaceMask"); } }
+        public bool HideForRepeatRequests { set { if (value) HideTileWhen.Add(new Tuple<string, string>("repeats", "true")); } }
+        public bool HideForPostalActivities { set { if (value) HideTileWhen.Add(new Tuple<string, string>("activity", "FaceMask")); } }
+        public bool HideForAppointmentActivities
+        {
+            set
+            {
+                if (value)
+                {
+                    HideTileWhen.Add(new Tuple<string, string>("activity", "VolunteerSupport"));
+                    HideTileWhen.Add(new Tuple<string, string>("activity", "VaccineSupport"));
+                }
+            }
+        }
+
         public DueDateType DueDateType { get; set; }
 
         private DateTime? startTime;

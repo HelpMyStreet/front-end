@@ -93,9 +93,6 @@ var updateOptionsForActivity = function (supportActivity) {
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().hide(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
-
-        $('*[data-type="timeframe"]').each(function () { $(this).parent().hide(); });
-        $('*[data-type="timeframe"][data-duedatetype="SpecificStartAndEndTimes"]').each(function () { $(this).parent().show(); });
     } else {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
