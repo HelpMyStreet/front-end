@@ -61,7 +61,7 @@
     }
 }
 
-<div class="job @className mt-lg mb-lg" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
+<div class="job @className my-requests-view mt-lg mb-lg" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
@@ -84,7 +84,7 @@
             @if (myNextTaskDue != null)
             {
                 <span class="job__info__col1__urgency toggle-on-status-change">
-                    <span class="job__info__col1__urgency__dates due-date" title="@((myNextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + myNextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
+                    <span class="due-date" title="@((myNextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + myNextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
                         @if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == 1)
                         {
                             <span>Due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
@@ -149,14 +149,29 @@
                     <span class="critical">Critical</span>
                 </span>
             }
+            @if (myNextTaskDue != null)
+            {
+                <span class="job__info__col3__urgency toggle-on-status-change">
+                    <span class="due-date" title="@((myNextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + myNextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
+                        @if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == 1)
+                        {
+                            <span>Due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                        else if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == Model.Item.JobSummaries.Count())
+                        {
+                            <span>First due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                        else
+                        {
+                            <span>Next due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                    </span>
+                </span>
+            }
 
-            <div class="job__info__actions">
-
-
-            </div>
             <div class="job__info__footer">
-                <a href="#" class="open">View more info <span></span></a>
-                <a href="#" class="close">View less info <span></span></a>
+                <a href="#" class="open">View more info<span></span></a>
+                <a href="#" class="close">View less info<span></span></a>
             </div>
         </div>
 

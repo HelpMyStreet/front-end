@@ -26,15 +26,17 @@
 }
 
 <div class="job__expander job mini-job-detail" id="@encodedJobID" request-id="@encodedRequestID" data-role="@encodedRole" data-user-allocated-to-job="@userAllocatedToTask">
-    <h4 class="@((showWhenIsHelpNeeded || showQuestions) ? "" : "no-click")">
-        <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
-        <span title="@jobDetails.DueDate.FriendlyFutureDate()">
-            @jobDetails.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+    <h4 class="@((showWhenIsHelpNeeded || showDuplicateJobs || showQuestions) ? "" : "no-click")">
+        <span class="pt-xs pb-xs">
+            <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
+            <span title="@jobDetails.DueDate.FriendlyFutureDate()">
+                @jobDetails.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+            </span>
+            <span class="toggle-on-status-change">
+                @jobDetails.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToTask)
+            </span>
+            <span class="job__status__new dnone toggle-on-status-change"></span>
         </span>
-        <span class="toggle-on-status-change">
-            @jobDetails.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToTask)
-        </span>
-        <span class="job__status__new dnone toggle-on-status-change"></span>
         <span class="job__info__actions">
             <partial name="_JobButtons_Volunteer" model="Model.JobDetail" />
         </span>

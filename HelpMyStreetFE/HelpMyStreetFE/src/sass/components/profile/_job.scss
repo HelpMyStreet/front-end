@@ -45,7 +45,6 @@
     }
 
     &__info {
-        min-height: 100px;
         display: grid;
         grid-template-columns: 1fr;
 
@@ -62,7 +61,6 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            padding-top: 0.25rem;
             color: $dark-blue;
             text-align: center;
 
@@ -270,6 +268,9 @@
 
             @media (min-width: $med-screen) {
                 flex-direction: column;
+                align-items: flex-end;
+                margin-top: 1rem;
+                margin-right: 1rem;
 
                 &__criticality {
                     display: block;
@@ -329,13 +330,14 @@
             a {
                 span {
                     display: inline-block;
-                    margin-left: 3px;
+                    margin-right: 16px;
                 }
 
                 &.open {
                     span {
                         @include arrow( 8px, 3px, $dark-blue, down, $white);
                         height: 10px;
+                        margin-left: 8px;
                     }
                 }
 
@@ -345,7 +347,8 @@
                     span {
                         @include arrow( 8px, 3px, $dark-blue, up, $white);
                         height: 10px;
-                        margin: 0 0 3px 12px;
+                        margin-bottom: 3px;
+                        margin-left: 17px;
                     }
                 }
             }
@@ -467,7 +470,7 @@
 
 
     &__detail {
-        &:not(.start-open){
+        &:not(.start-open) {
             display: none;
         }
 
@@ -526,13 +529,14 @@
             }
 
             &:not(.no-click) {
-                >span:last-child {
+                > span:last-child {
                     @include arrow( 8px, 3px, $dark-blue, down, $white);
                     float: right;
                     margin-top: 10px;
                 }
+
                 &.open {
-                    >span:last-child {
+                    > span:last-child {
                         @include arrow( 8px, 3px, $dark-blue, up, $white);
                         float: right;
                     }
@@ -546,7 +550,6 @@
             &.no-click:hover {
                 cursor: auto;
             }
-
         }
 
         &.offline-details-container {
@@ -805,6 +808,7 @@
 
             a {
                 display: flex;
+                flex-wrap: wrap;
                 align-items: center;
                 justify-content: center;
                 text-decoration: none;
@@ -828,11 +832,27 @@
 
 
 .mini-job-detail {
-    @media (min-width: $sm-med-screen){
-        >h4 {
-            display: flex;
-            align-items: center;
+    > h4 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
 
+        .job__info__actions {
+            flex-grow: 1;
+
+            .btn {
+                border-radius: 12px;
+                height: 2.4rem;
+            }
+        }
+
+        > :last-child {
+            align-self: flex-end;
+        }
+    }
+
+    @media (min-width: $med-screen) {
+        > h4 {
             .job__info__actions {
                 flex-direction: row-reverse;
                 justify-content: end;
@@ -841,8 +861,6 @@
                 .btn {
                     margin-top: 0;
                     margin-bottom: 0;
-                    border-radius: 12px;
-                    height: 2.4rem;
                 }
 
                 .feedback-container {
@@ -856,3 +874,19 @@
     }
 }
 
+.job.my-requests-view {
+    .job__info__col3__urgency {
+        display: none;
+    }
+
+    @media (min-width: $med-screen) {
+        .job__info__col1__urgency {
+            display: none;
+        }
+
+        .job__info__col3__urgency {
+            display: block;
+            white-space: nowrap;
+        }
+    }
+}
