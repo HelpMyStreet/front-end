@@ -179,10 +179,10 @@
                             var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
                             @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });
                         }
-                        <span>Show all @Model.Item.JobBasics.Count requests</span>
+                        <span>Show all @Model.Item.JobBasics.GroupByDateAndActivity().Count() requests</span>
                     </a>
-                    <a href="#" class="request-job__list__toggle" show="user-jobs" title="Show the requests I have accepted">
-                        <span>Show the requests I have accepted</span>
+                    <a href="#" class="request-job__list__toggle" show="user-jobs">
+                        <span>Show only the requests I have accepted</span>
                     </a>
                 </div>
             }
