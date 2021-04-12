@@ -2,6 +2,7 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Models;
 @using Westwind.AspNetCore.Markdown
 
 @model HelpMyStreetFE.Models.Account.Jobs.JobDetailViewModel
@@ -23,6 +24,10 @@
 
     var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(Model.UserActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+
+    var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail;
+
+    var userDetailsHiddenText = $"The organisation managing this request would like to provide this information to you directly. Please contact the requester quoting reference {jobSummary.HmsReference} to find out who needs the help.";
 }
 
 @if (Model.ToPrint)
@@ -46,20 +51,21 @@
                         @if (requestSummary.Shift.StartDate.ToUKFromUTCTime().Date.Equals(requestSummary.Shift.EndDate.ToUKFromUTCTime().Date))
                         {
                             <dd>
-                                This shift occurs on 
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between 
+                                This shift occurs on
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
                                 <strong>
-                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; 
-                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
+                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
+                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
+                                </strong>.
                             </dd>
                         }
                         else
                         {
                             <dd>
-                                This shift starts on 
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
-                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends 
-                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
+                                This shift starts on
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
+                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
+                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
                                 <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
                             </dd>
                         }
@@ -171,88 +177,51 @@
                         </div>
                         @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
                         {
-                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
+
+                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails.DisplayName;
                             <div class="sm12">
                                 <h5>Volunteer</h5>
                                 <dl>
-                                    <dd>@volunteerDetails.DisplayName</dd>
+                                    <dd>@volunteerDetails</dd>
                                 </dl>
                             </div>
                         }
+                    }
+                    else if (userDetailsHidden.GetValueOrDefault(false))
+                    {
+                        <div class="sm12">
+                            <h5>Volunteer Details</h5>
+                            <dl>
+                                <dd>@userDetailsHiddenText</dd>
+                            </dl>
+                        </div>
                     }
                     else
                     {
                         @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || Model.JobDetail.Recipient != null)
                         {
-                            <div class="sm6">
-                                <h5>Recipient</h5>
-                                <dl>
-                                    @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
-                                    {
-                                        <dt>Organisation</dt>
-                                        <dd>@jobSummary.RecipientOrganisation</dd>
-                                    }
-                                    @if (@Model.JobDetail.Recipient != null)
-                                    {
-                                        <dt>Name</dt>
-                                        <dd>@Model.JobDetail.Recipient.FirstName @Model.JobDetail.Recipient.LastName</dd>
-                                        <dt>Email</dt>
-                                        <dd>@(string.IsNullOrEmpty(Model.JobDetail.Recipient.EmailAddress) ? userDetailsNotProvidedText : Model.JobDetail.Recipient.EmailAddress) </dd>
-                                        <dt>@(Model.JobDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                        <dd>
-                                            @if (String.IsNullOrEmpty(Model.JobDetail.Recipient.MobileNumber) && String.IsNullOrEmpty(Model.JobDetail.Recipient.OtherNumber))
-                                            {
-                                                @userDetailsNotProvidedText
-                                            }
-                                            else
-                                            {
-                                                @string.Join(" / ", Model.JobDetail.Recipient.PhoneNumbers())
-                                            }
-                                        </dd>
-                                        <dt>Address</dt>
-                                        <dd>
-                                            @Html.DisplayFor(x => Model.JobDetail.Recipient.Address, new { MaskAddress = AgeUk || Hlp })
-                                        </dd>
-                                    }
-                                </dl>
-                            </div>
+                            <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = Model.JobDetail.Recipient.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = jobSummary.RecipientOrganisation,
+                                     RequestRole = RequestRoles.Recipient
+                                      }" />
+
                         }
                         @if (Model.UserActingAsAdmin && Model.JobDetail.CurrentVolunteer != null)
                         {
-                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails;
-                            <div class="sm6">
-                                <h5>Volunteer</h5>
-                                <dl>
-                                    <dt>Name</dt>
-                                    <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
-                                    <dt>Email</dt>
-                                    <dd>@volunteerDetails.EmailAddress</dd>
-                                    <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
-                                    <dt>Address</dt>
-                                    <dd>
-                                        @volunteerDetails.LocationSummary()
-                                    </dd>
-                                </dl>
-                            </div>
+                            <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = (PersonalDetails) Model.JobDetail.CurrentVolunteer.UserPersonalDetails.GetDPSafeUserPersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Volunteer, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = null,
+                                     RequestRole = RequestRoles.Volunteer
+                                      }" />
                         }
                         @if (Model.JobDetail.Requestor != null && jobSummary.RequestorType != RequestorType.Myself)
                         {
-                            <div class="sm6">
-                                <h5>Requester</h5>
-                                <dl>
-                                    <dt>Name</dt>
-                                    <dd>@Model.JobDetail.Requestor.FirstName @Model.JobDetail.Requestor.LastName</dd>
-                                    <dt>Email</dt>
-                                    <dd>@Model.JobDetail.Requestor.EmailAddress</dd>
-                                    <dt>@(Model.JobDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>@string.Join(" / ", Model.JobDetail.Requestor.PhoneNumbers())</dd>
-                                    <dt>Address</dt>
-                                    <dd>
-                                        @Model.JobDetail.Requestor.Address.Postcode
-                                    </dd>
-                                </dl>
-                            </div>
+                            <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = Model.JobDetail.Requestor.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = null,
+                                     RequestRole = RequestRoles.Requestor
+                                      }" />
                         }
                     }
                 </div>
