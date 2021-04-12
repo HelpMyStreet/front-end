@@ -119,7 +119,7 @@
                         </span>
                     </span>
 
-                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity) && !string.IsNullOrWhiteSpace(j.Reference));
+                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity) && !string.IsNullOrWhiteSpace(j.Reference)).Select(j => j.Reference).Distinct();
                     if (references.Count() > 0)
                     {
                         <span class="job__info__activity__title @activity.Class()">
