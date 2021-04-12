@@ -22,11 +22,10 @@ var validateForm = function (validateRecipientAsRequestor) {
         }
 
         buttonLoad($("#btnNext"));
-        
         const valid = validateQuestions() && validateFormData($(this), {
             "currentStep.Recipient.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
             "currentStep.Recipient.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
-            "currentStep.Recipient.MobileNumber": (v) => v != "" && validateRecipientAsRequestor || "a phone number",
+            "currentStep.Recipient.MobileNumber": (v) => v != "" || "a phone number",
             "currentStep.Recipient.Email": (v) => {
               if (validateRecipientAsRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
                     return "Please enter a valid email address";
