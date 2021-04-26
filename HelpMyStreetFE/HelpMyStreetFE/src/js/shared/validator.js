@@ -35,7 +35,6 @@ export function validateFormData(form, validation) {
     if (validator) {
       if (!isRequired && hasGroupData.length != undefined){
         let otherGroupMembers = $.makeArray($(`[data-validationgroup='${hasGroupData}']`));
-        console.log(otherGroupMembers);
         let result = otherGroupMembers.reduce((acc, cur) => {
           acc = validator($(cur).val(), obj) !== true ? acc : acc + 1 ;
           return acc;

@@ -16,18 +16,17 @@
     bool singleJob = Model.Item.JobBasics.Count() == 1 && Model.Item.RequestType.Equals(RequestType.Task);
     var jobId = singleJob ? Base64Utils.Base64Encode(Model.Item.JobBasics.First().JobID) : "";
 
-    var hmsRef = Model.Item.JobSummaries.First().HmsReference.Split("-");
-    var requestHMSReference = String.Join("-", hmsRef.Take(hmsRef.Count() - 1));
-
     var className = "";
     JobSummary nextTaskDue = null;
     var location = "";
 
-    if (admin)
-    {
-        location = Model.Item.PostCode;
+
+    if (Model.Location != null ){
+
+        location = Model.Location.LocationDetails.Name;
+            
     }
-    else if (Model.Item.JobSummaries.Exists(j => j.JobStatus == JobStatuses.Open))
+    else if (admin)
     {
         location = Model.Item.PostCode;
     }
@@ -137,8 +136,8 @@
                         </span>
                     </span>
 
-                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity)).Select(x => x.Reference).Distinct();
-                    if (references.Count() > 0 && references.First() != null)
+                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity)).Select(x => x.Reference).Distinct().Where(rf => rf != null);
+                    if (references.Count() > 0)
                     {
                         <span class="job__info__activity__title @activity.Class()">
                             @($"({string.Join(", ", references)})")
@@ -147,7 +146,7 @@
                 }
             }
             <span class="job__info__activity__location">
-                [@requestHMSReference]
+                [@Model.Item.HMSReference]
             </span>
             <span class="job__info__activity__location">
                 @location
