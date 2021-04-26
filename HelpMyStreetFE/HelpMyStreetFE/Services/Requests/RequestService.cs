@@ -139,14 +139,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private string GetAnswerToQuestion(RequestHelpQuestion q)
         {
-            if (q.ID == (int)Questions.SuppressRecipientPersonalDetails)
-            {
-                return q.Model == "Yes" ? "True" : "False";
-            } else
-            {
-                return q.InputType == QuestionType.Radio ? q.AdditionalData.Where(a => a.Key == q.Model).FirstOrDefault()?.Value ?? "" : q.Model;
-            }
-
+             return q.InputType == QuestionType.Radio ? q.AdditionalData.Where(a => a.Key == q.Model).FirstOrDefault()?.Value ?? "" : q.Model;
         }
 
         public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
