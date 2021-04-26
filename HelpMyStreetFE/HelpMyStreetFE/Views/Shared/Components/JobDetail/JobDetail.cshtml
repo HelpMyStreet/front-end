@@ -25,7 +25,7 @@
     var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(Model.UserActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 
-    var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail;
+    var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail.GetValueOrDefault(false) && !Model.UserActingAsAdmin;
 
     var userDetailsHiddenText = $"The organisation managing this request would like to provide this information to you directly. Please contact the requester quoting reference {jobSummary.HmsReference} to find out who needs the help.";
 }
@@ -187,14 +187,19 @@
                             </div>
                         }
                     }
-                    else if (userDetailsHidden.GetValueOrDefault(false))
+                    else if (userDetailsHidden)
                     {
-                        <div class="sm12">
-                            <h5>Volunteer Details</h5>
-                            <dl>
-                                <dd>@userDetailsHiddenText</dd>
-                            </dl>
-                        </div>
+                <div class="sm12">
+                    <h5>Volunteer</h5>
+                    <dl>
+                        <dd>@userDetailsHiddenText</dd>
+                    </dl>
+                    <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = Model.JobDetail.Requestor.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = null,
+                                     RequestRole = RequestRoles.Requestor
+                                      }" />
+                </div>
                     }
                     else
                     {

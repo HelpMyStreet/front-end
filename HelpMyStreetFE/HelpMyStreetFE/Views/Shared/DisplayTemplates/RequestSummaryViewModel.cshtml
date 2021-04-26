@@ -16,8 +16,25 @@
     bool singleJob = Model.Item.JobBasics.Count() == 1 && Model.Item.RequestType.Equals(RequestType.Task);
     var jobId = singleJob ? Base64Utils.Base64Encode(Model.Item.JobBasics.First().JobID) : "";
 
+    var hmsRef = Model.Item.JobSummaries.First().HmsReference.Split("-");
+    var requestHMSReference = String.Join("-", hmsRef.Take(hmsRef.Count() - 1));
+
     var className = "";
     JobSummary nextTaskDue = null;
+    var location = "";
+
+    if (admin)
+    {
+        location = Model.Item.PostCode;
+    }
+    else if (Model.Item.JobSummaries.Exists(j => j.JobStatus == JobStatuses.Open))
+    {
+        location = Model.Item.PostCode;
+    }
+    else
+    {
+        location = $"{Model.Item.PostCode.Split(" ").First()}, ({Model.Item.DistanceInMiles} miles away)";
+    }
 
     if (Model.Item.JobSummaries.Exists(j => j.JobStatus.Incomplete()))
     {
@@ -61,6 +78,7 @@
 }
 
 <div class="job @className" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
+
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
@@ -119,8 +137,8 @@
                         </span>
                     </span>
 
-                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity) && !string.IsNullOrWhiteSpace(j.Reference)).Select(j => j.Reference).Distinct();
-                    if (references.Count() > 0)
+                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity)).Select(x => x.Reference).Distinct();
+                    if (references.Count() > 0 && references.First() != null)
                     {
                         <span class="job__info__activity__title @activity.Class()">
                             @($"({string.Join(", ", references)})")
@@ -129,15 +147,12 @@
                 }
             }
             <span class="job__info__activity__location">
-                @if (Model.Location != null)
-                {
-                    @Model.Location.LocationDetails.Name
-                }
-                else
-                {
-                    @Model.Item.PostCode
-                }
+                [@requestHMSReference]
             </span>
+            <span class="job__info__activity__location">
+                @location
+            </span>
+
             @if (Model.Item.Shift != null)
             {
                 if (Model.Item.Shift.StartDate.ToUKFromUTCTime().Date.Equals(Model.Item.Shift.EndDate.ToUKFromUTCTime().Date))
