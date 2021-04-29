@@ -130,7 +130,7 @@ namespace HelpMyStreetFE.Repositories
                 new CommunityVolunteer()
                 {
                     Name = "Nick Fairfax",
-                    Role = "Local Organiser",
+                    Role = "Local Volunteer",
                     Location = "",
                     ImageLocation = "/img/community/ageUK/notts/balderton/nick-fairfax.jpg"
                 },
