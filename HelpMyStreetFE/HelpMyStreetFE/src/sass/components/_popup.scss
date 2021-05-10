@@ -3,157 +3,159 @@
 @import "../mixins//effects";
 
 .popup {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-  display: none;
-  top: 0;
-
-  &__content {
-
-    .btn--close {
-      margin: 0 0 0 auto;
-    }
-
-    .error {
-      font-weight: bold;
-      color: red;
-    }
-
-    max-width: 90%;
-    width: 35rem;
-    background: white;
-    z-index: 4;
-    border: 8px solid $green;
-    text-align: center;
-    @include shadow-md;
-    padding: 20px;
-    margin: 0 auto;
-
-    &.wide {
-      width: 65rem;
-    }
-
-    &.warning {
-      border-color: $orange
-    }
-
-    &__wrapper {
-      margin-bottom: 1.0rem;
-    }
-
-    &__header {
-      color: $dark-blue;
-      @include title-sz-3;
-      margin: 1rem 0 2rem 0;
-    }
-
-    &__text {
-      p, p *, ol, ol *, ul, ul * {
-        @include copy-sz-md;
-      }
-
-      p {
-        margin-bottom: 2rem;
-      }
-
-      > .loading-spinner {
-        margin-bottom: 3rem;
-      }
-    }
-
-    &__buttons {
-
-      &__button {
-        display: inline-block;
-        margin: 0.5rem;
-
-        @media screen and (max-width: $sm-med-screen) {
-          display: block;
-
-          .btn.wide.fill {
-            min-width: auto;
-            width: 100%;
-          }
-        }
-      }
-    }
-
-    form {
-      .input {
-
-        @extend .mt-md;
-
-        label {
-          position: relative;
-          top: initial;
-          @extend .mb-sm;
-        }
-
-        .tiles {
-          margin: 0 auto;
-        }
-
-        input, textarea, .tiles__tile {
-          background-color: $background-main;
-        }
-
-        .tiles__tile {
-          border-color: $background-main;
-
-          &.selected {
-            border: 2px solid $light-orange;
-            background: $light-orange-opaque;
-          }
-        }
-      }
-    }
-
-    .volunteer-instructions {
-      border: 1px solid $gray-8;
-      background-color: $green-transparent;
-      text-align: left;
-      margin: 0.5rem 0.5rem 2rem 0.5rem;
-      padding: 1rem;
-      border-radius: 0.5rem;
-
-      h5 {
-        margin-bottom: 1.5rem;
-      }
-
-      ol {
-        font-weight: bold;
-        color: $black;
-        margin-bottom: 1.5rem;
-
-        p {
-          font-weight: normal;
-          margin-top: 0;
-          margin-bottom: 1rem;
-        }
-      }
-      
-      >p:last-child, >ul:last-child, >ol:last-child {
-        margin-bottom: 0;
-      }
-
-      @media screen and (min-width: $sm-med-screen) {
-        margin: 1rem 1rem 2rem 1rem;
-      }
-
-      @media screen and (min-width: $med-screen) {
-        margin: 2rem;
-        padding: 2rem;
-      }
-    }
-  }
-
-
-  &__backdrop {
-    position: fixed;
-    background: $popup-backdrop;
+    position: absolute;
     width: 100%;
     height: 100%;
-  }
+    z-index: 3;
+    display: none;
+    top: 0;
+
+    &__content {
+
+        .btn--close {
+            margin: 0 0 0 auto;
+        }
+
+        .error {
+            font-weight: bold;
+            color: red;
+        }
+
+        max-width: 90%;
+        width: 35rem;
+        background: white;
+        z-index: 4;
+        border: 8px solid $green;
+        text-align: center;
+        @include shadow-md;
+        padding: 20px;
+        margin: 0 auto;
+
+        &.wide {
+            width: 65rem;
+        }
+
+        &.warning {
+            border-color: $orange
+        }
+
+        &__wrapper {
+            margin-bottom: 1.0rem;
+        }
+
+        &__header {
+            color: $dark-blue;
+            @include title-sz-3;
+            margin: 1rem 0 2rem 0;
+        }
+
+        &__text {
+            p, p *, ol, ol *, ul, ul *, label, textarea {
+                @include copy-sz-md;
+            }
+
+            p {
+                margin-bottom: 2rem;
+            }
+
+            > .loading-spinner {
+                margin-bottom: 3rem;
+            }
+        }
+
+        &__buttons {
+
+            &__button {
+                display: inline-block;
+                margin: 0.5rem;
+
+                @media screen and (max-width: $sm-med-screen) {
+                    display: block;
+
+                    .btn.wide.fill {
+                        min-width: auto;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        form {
+            .input {
+
+                @extend .mt-md;
+
+                label {
+                    position: relative;
+                    top: initial;
+                    @extend .mb-sm;
+                    @include copy-sz-md;
+                }
+
+                .tiles {
+                    margin: 0 auto;
+                }
+
+                input, textarea, .tiles__tile {
+                    background-color: $background-main;
+                    @include copy-sz-md;
+                }
+
+                .tiles__tile {
+                    border-color: $background-main;
+
+                    &.selected {
+                        border: 2px solid $light-orange;
+                        background: $light-orange-opaque;
+                    }
+                }
+            }
+        }
+
+        .volunteer-instructions {
+            border: 1px solid $gray-8;
+            background-color: $green-transparent;
+            text-align: left;
+            margin: 0.5rem 0.5rem 2rem 0.5rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+
+            h5 {
+                margin-bottom: 1.5rem;
+            }
+
+            ol {
+                font-weight: bold;
+                color: $black;
+                margin-bottom: 1.5rem;
+
+                p {
+                    font-weight: normal;
+                    margin-top: 0;
+                    margin-bottom: 1rem;
+                }
+            }
+
+            > p:last-child, > ul:last-child, > ol:last-child {
+                margin-bottom: 0;
+            }
+
+            @media screen and (min-width: $sm-med-screen) {
+                margin: 1rem 1rem 2rem 1rem;
+            }
+
+            @media screen and (min-width: $med-screen) {
+                margin: 2rem;
+                padding: 2rem;
+            }
+        }
+    }
+
+
+    &__backdrop {
+        position: fixed;
+        background: $popup-backdrop;
+        width: 100%;
+        height: 100%;
+    }
 }
