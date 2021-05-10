@@ -33,7 +33,7 @@ export function validateFormData(form, validation) {
 
     const validator = validation[name];
     if (validator) {
-      if (!isRequired && hasGroupData.length != undefined){
+      if (!isRequired && hasGroupData != undefined){
         let otherGroupMembers = $.makeArray($(`[data-validationgroup='${hasGroupData}']`));
         let result = otherGroupMembers.reduce((acc, cur) => {
           acc = validator($(cur).val(), obj) !== true ? acc : acc + 1 ;

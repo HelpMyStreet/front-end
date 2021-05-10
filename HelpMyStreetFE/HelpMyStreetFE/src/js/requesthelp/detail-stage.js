@@ -55,9 +55,9 @@ var validateForm = function (validateRecipientAsRequestor) {
             },                                            
             "currentStep.Requestor.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
             "currentStep.Requestor.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
-            "currentStep.Requestor.MobileNumber": (v) => v !== "" || "Please enter a mobile number or an alternative phone number",
-            "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "Please enter a valid email address",
-            "currentStep.Requestor.Postcode": (v) => (v != "") || "Please enter a postcode",
+            "currentStep.Requestor.MobileNumber": (v) => v !== "" || "a mobile number or an alternative phone number",
+            "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "a valid email address",
+            "currentStep.Requestor.Postcode": (v) => (v != "") || "a postcode",
           
         });   
         
