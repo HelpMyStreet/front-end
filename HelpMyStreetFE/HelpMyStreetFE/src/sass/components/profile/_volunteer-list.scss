@@ -138,7 +138,7 @@
     @media screen and (min-width: $med-screen) {
       display: grid;
       grid-auto-columns: auto;
-      grid-template-columns: 20rem auto auto repeat(var(--numberOfCredentials), auto);
+      grid-template-columns: 20rem auto auto auto repeat(var(--numberOfCredentials), auto);
       column-gap: 1rem;
 
       .header {
@@ -162,12 +162,17 @@
         grid-column-start: 1;
       }
 
-      .location {
+
+      .date-joined {
         grid-column-start: 2;
       }
 
-      .completed-requests {
+      .location {
         grid-column-start: 3;
+      }
+
+      .completed-requests {
+        grid-column-start: 4;
         text-align: center;
       }
 
