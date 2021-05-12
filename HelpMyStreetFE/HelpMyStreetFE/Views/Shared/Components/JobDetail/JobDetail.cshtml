@@ -46,20 +46,21 @@
                         @if (requestSummary.Shift.StartDate.ToUKFromUTCTime().Date.Equals(requestSummary.Shift.EndDate.ToUKFromUTCTime().Date))
                         {
                             <dd>
-                                This shift occurs on 
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between 
+                                This shift occurs on
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
                                 <strong>
-                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; 
-                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
+                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
+                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
+                                </strong>.
                             </dd>
                         }
                         else
                         {
                             <dd>
-                                This shift starts on 
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
-                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends 
-                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at 
+                                This shift starts on
+                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
+                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
+                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
                                 <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
                             </dd>
                         }
@@ -134,19 +135,36 @@
     </div>
 }
 
-@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails))
+@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || questionsToDisplay.Count() > 0)
 {
     <div class="job__expander">
         <h4>Request Details<span></span></h4>
         <div class="job__expander__content">
+            @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails)) { 
             <div class="row">
                 <div class="sm12">
                     @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.ActivityDetails)
                 </div>
             </div>
+            }
+            @if (questionsToDisplay.Count() > 0)
+            {
+                <div class="row">
+                    <div class="sm12">
+                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }
+                    </div>
+                </div>
+            }
         </div>
     </div>
 }
+
 
 @if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress || jobSummary.JobStatus == JobStatuses.Done || Model.UserActingAsAdmin)
 {
@@ -260,25 +278,7 @@
         </div>
     }
 
-    @if (questionsToDisplay.Count() > 0)
-    {
-        <div class="job__expander">
-            <h4>Request Details<span></span></h4>
-            <div class="job__expander__content">
-                <div class="row">
-                    <div class="sm12">
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                        {
-                            <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+
 
     @if (jobSummary.JobStatus == JobStatuses.Accepted || jobSummary.JobStatus == JobStatuses.InProgress)
     {
