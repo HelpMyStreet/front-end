@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 return new VolunteerViewModel()
                 {
-                    DateJoined = userInGroup.UserRoleAudit.Where(ur => ur.Action == GroupAction.AddMember && ur.Role == GroupRoles.Member && ur.Success).Last().DateRequested,
+                    DateJoined = userInGroup.UserRoleAudit.Where(ur => ur.Action == GroupAction.AddMember && ur.Role == GroupRoles.Member && ur.Success).LastOrDefault()?.DateRequested ?? DateTime.MinValue,
                     Roles = userInGroup.GroupRoles,
                     User = await _userService.GetUserAsync(userInGroup.UserId, cancellationToken),
                     CompletedRequests = groupCompletedJobs.Count(j => j.VolunteerUserID.Equals(userInGroup.UserId)),
