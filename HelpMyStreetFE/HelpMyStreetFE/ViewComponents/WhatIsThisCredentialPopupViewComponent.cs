@@ -60,6 +60,16 @@ namespace HelpMyStreetFE.ViewComponents
                     WhatIsThis = $"This is the number of requests completed by the user for **{group.GroupName}**."
                 };
             }
+            else if (item == "date-joined")
+            {
+                var group = await _groupService.GetGroupById(groupId, cancellationToken);
+
+                return new GroupCredential
+                {
+                    Name = "Date Joined",
+                    WhatIsThis = $"This is the date the volunteer most recently joined **{group.GroupName}** on HelpMyStreet; if they left and re-joined it will show the most recent date."
+                };
+            }
             throw new ArgumentException($"Unexpected item {item}", item);
         }
     }
