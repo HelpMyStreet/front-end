@@ -135,7 +135,7 @@
     </div>
 }
 
-@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || questionsToDisplay.Count() > 0)
+@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || !string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
 {
     <div class="job__expander">
         <h4>Request Details<span></span></h4>
@@ -147,10 +147,18 @@
                 </div>
             </div>
             }
-            @if (questionsToDisplay.Count() > 0)
+            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
             {
                 <div class="row">
                     <div class="sm12">
+                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                        {
+                            <dl>
+                                <dt>Organisation</dt>
+                                <dd>@jobSummary.RecipientOrganisation</dd>
+                            </dl>
+                        }
+
                         @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
                         {
                             <dl>
@@ -312,30 +320,6 @@
             </div>
         </div>
     }
-}
-else if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
-{
-    <div class="job__expander">
-        <div class="row">
-            <div class="sm12">
-                @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
-                {
-                    <dl>
-                        <dt>Organisation</dt>
-                        <dd>@jobSummary.RecipientOrganisation</dd>
-                    </dl>
-                }
-
-                @foreach (var q in questionsToDisplay)
-                {
-                    <dl>
-                        <dt>@q.FriendlyName()</dt>
-                        <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                    </dl>
-                }
-            </div>
-        </div>
-    </div>
 }
 
 @if (Model.UserActingAsAdmin && !Model.ToPrint)
