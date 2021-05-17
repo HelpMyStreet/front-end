@@ -1,4 +1,4 @@
-﻿@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Utils;
 @using HelpMyStreet.Utils.Extensions;
 
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
@@ -11,8 +11,15 @@
     document.documentElement.style.setProperty("--numberOfCredentials", @Model.GroupCredentials.Count());
 </script>
 
-<div class="volunteer-list generic-expander pt-sm">
+<p>Showing all @Model.Volunteers.Count() volunteers</p>
 
+<div class="volunteer-list generic-expander pt-sm">
+    <div class="date-joined header">
+        Date Joined
+        <a href="#" class="what-is-this" data-item="date-joined" data-target-group="@Base64Utils.Base64Encode(Model.GroupId)">
+            What is this?
+        </a>
+    </div>
     <div class="location header">Location</div>
     <div class="completed-requests header">
         Completed Requests
@@ -50,6 +57,15 @@
                 <a href="#" class="open">View volunteer details</a>
                 <a href="#" class="close">Hide volunteer details</a>
             </div>
+        </div>
+        <div class="date-joined">
+            <span class="small-screen-only">Date Joined: </span>
+            @volunteer.DateJoined.FormatDate(HelpMyStreet.Utils.Enums.DateTimeFormat.ShortDateFormat)
+            <span class="small-screen-only">
+                <a href="#" class="what-is-this" data-item="date-joined" data-target-group="@Base64Utils.Base64Encode(Model.GroupId)">
+                    (What is this?)
+                </a>
+            </span>
         </div>
         <div class="location">
             <span class="small-screen-only">Location: </span>
@@ -129,3 +145,4 @@
         </div>
     }
 </div>
+

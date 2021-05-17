@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,7 @@ namespace HelpMyStreetFE.Models.Account.Volunteers
         public int CompletedRequests { get; set; }
         public List<AnnotatedGroupCredential> Credentials { get; set; }
         public IEnumerable<GroupRoles> Roles { get; set; }
+        public DateTime DateJoined { get; set; }
         public string RolesSummary
         {
             get
