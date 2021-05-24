@@ -398,6 +398,16 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
 
                 endpoints.MapControllerRoute(
+                    name: "meadows",
+                    pattern: "meadows",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
+
+                endpoints.MapControllerRoute(
+                    name: "southwell",
+                    pattern: "southwell",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });
+
+                endpoints.MapControllerRoute(
                    name: "registration",
                    pattern: "registration",
                    defaults: new { controller = "Registration", action = "StepOne" });

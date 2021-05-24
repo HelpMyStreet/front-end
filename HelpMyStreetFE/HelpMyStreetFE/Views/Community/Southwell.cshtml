@@ -1,0 +1,158 @@
+@using HelpMyStreetFE.Models.Community; 
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = "Southwell Torpedos", PrimaryMobileText = "Southwell Torpedos", ShowSecondaryText = true };
+    //ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+        <div class="community-banner">
+            <img src="~/img/community/southwell/banner.png" alt="Southwell Torpedos" />
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page pad-md">
+                    <header class="mw1000 text-center">
+                        <h2 class="mb0 mt-md">Welcome to Southwell Torpedos</h2>
+                    </header>
+
+                    <p class='mt-sm mb-s'>
+                        In our community there's always somebody here to help. We cover Southwell (Nottinghamshire) and the surrounding area and are here to help with:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Prescription delivery</li>
+                        <li>Food and essentials</li>
+                        <li>Cabs for jabs</li>
+                        <li>Library book delivery</li>
+                        <li>Access to FoodBank</li>
+                        
+                    </ul>
+
+                    <p class='mt-sm mb-s'>Or if there's anything else, just ask!</p>
+
+                    <div class="row sm12 text-center justify-center mb-sm">
+                        <p class="mt-sm mb-sm pl-md pr-md">To register your interest as a community volunteer, sign up or log in today.</p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+
+                    <div class="row sm12 text-center justify-center mb-sm">
+                        <p class="mt-sm mb-sm pl-md pr-md">If you need help, complete our quick and easy online form or give Southwell Town Council a call on 01636 330005.</p>
+                        <partial name="_RequestHelpButton" model=Model }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md card">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row justify-center align-center">
+                <div class="sm11">
+                    <h2 class="mb15 mt-lg text-center">Welcome from the Southwell Torpedos!</h2>
+
+                    <div>
+                        <p>
+                            Southwell Torpedos was founded in March 2020 in response to the Covid-19 crisis. Torpedos is an anagram of "doorstep" which is where we provide help. Our local volunteers have made hundreds and hundreds of deliveries since then.
+                        </p>
+                        <p>
+                            We are now established as a community support group with an appropriate constitution, managing committee and bank account.
+                        </p>
+                        <p>
+                            We're working with Southwell Town Council, who take telephone calls at their central hub.
+                        </p>
+                        <p>
+                            At some point, hopefully soon, the Covid crisis will end. However,  we're planning to continue with Torpedos into the future - backed by the amazing volunteers who've joined the group.
+                        </p>
+                        <p>
+                            If you know of anyone who you think needs help, please let them have our number: 01636 330005. Phones are staffed daily 9am to 5pm, with 24 hour answerphone. Calls are answered via the Southwell Town Council Hub who will direct you to a volunteer.
+                        </p>
+                        <p>
+                            You can also visit our website: <a href="www.thetorpedos.org">www.thetorpedos.org</a>
+                        </p>
+                        <p>
+                            Email us at <a href="mailto:info@thetorpedos.org">info@thetorpedos.org</a>
+                        </p>
+                        <p>
+                            Or find us on <a href="https://www.facebook.com/southwelltorpedos/">Facebook @@southwelltorpedos</a>
+                        </p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+                <div class="flex sm6">
+                    <partial name="_HowCanWeHelpCard" model="Model" />
+                </div>
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Useful Links</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div class="sm12 community-useful-links mb-lg">
+                    <p>
+                        <a href="http://thetorpedos.org">thetorpedos.org</a> - Visit our website to find more information and useful links covering local and national phone numbers
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other  })
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+                <div class="flex sm6">
+                    <partial name="_HowCanWeHelpCard" model="Model" />
+                </div>
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container outer-container--darker mb-md">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
+
+
+</div>
