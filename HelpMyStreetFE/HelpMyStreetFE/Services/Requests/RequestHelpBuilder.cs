@@ -210,6 +210,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter => "Request Help from the Meadows Community Helpers",
                 RequestHelpFormVariant.AgeConnectsCardiff_Public => "Request Help from Age Connects Cardiff and the Vale",
                 RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => "Request Help from Age Connects Cardiff and the Vale",
+                RequestHelpFormVariant.Soutwell_Public => "Request Help from Southwell Torpedos",
                 _ => "What type of help are you looking for?"
             };
         }
