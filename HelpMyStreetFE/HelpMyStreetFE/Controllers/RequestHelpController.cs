@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Helpers.CustomModelBinder;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -88,6 +89,7 @@ namespace HelpMyStreetFE.Controllers
                         {
                             detailStage.Type = requestStep.Requestors.Where(x => x.IsSelected).First().Type;
                             detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity(), requestHelp.ReferringGroupID);
+                            detailStage.NeedBothNames = requestStep.Tasks.Where(x => x.IsSelected).Any(x => x.SupportActivity == SupportActivities.CollectingPrescriptions);
 
                             var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
                             if (loggedInUser != null)
