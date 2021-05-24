@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             _requestHelpRepository = requestHelpRepository;
         }
-
+        
         public async Task<RequestHelpViewModel> GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
             RequestHelpFormVariant requestHelpFormVariant = requestHelpJourney.RequestHelpFormVariant;
@@ -168,7 +168,7 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
-            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
+            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers || requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
@@ -185,6 +185,7 @@ namespace HelpMyStreetFE.Services.Requests
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Timeframes.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes });
             }
+
 
             return model;
         }
@@ -454,6 +455,22 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PracticalSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel {SupportActivity = SupportActivities.VaccineSupport, IsSelected = true}
+                });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.Soutwell_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }

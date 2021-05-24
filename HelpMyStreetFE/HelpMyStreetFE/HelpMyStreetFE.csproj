@@ -17,6 +17,7 @@
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Views\Shared\Components\Feedback\**" />
+    <Content Remove="appsettings.Development.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,9 +30,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.734" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.734" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.734" />  
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.745" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.745" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.745" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
@@ -74,5 +75,7 @@
     <Folder Include="wwwroot\pdf\ageconnectscardiff\" />
     <Folder Include="wwwroot\img\community\vacc\mansfield-cvs\" />
     <Folder Include="wwwroot\pdf\mansfield-cvs\" />
+    <Folder Include="wwwroot\img\community\southwell\" />
+    <Folder Include="wwwroot\img\community\southwell\carousel\" />
   </ItemGroup>
 </Project>
