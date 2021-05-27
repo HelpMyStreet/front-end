@@ -5,29 +5,30 @@
 @{ 
     var prefix = ViewData["Prefix"] is string ? (string)ViewData["Prefix"] : "";
     var fullAddressRequired = ViewData["FullAddressRequired"] is bool ? (bool)ViewData["FullAddressRequired"] : true;
+    var bothNamesRequired = ViewData["BothNamesRequired"] is bool ? (bool)ViewData["BothNamesRequired"] : true;
 }
     <div class="user-detail">
         <div class="row">
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_Firstname">@prefix first name</label>
-                @Html.TextBoxFor(x => x.Firstname)
+                @Html.TextBoxFor(x => x.Firstname, new { data_required = bothNamesRequired, data_validationgroup = "recipient-name"})
                 <span class="error"></span>
             </div>
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_Lastname">@prefix last name</label>
-                @Html.TextBoxFor(x => x.Lastname)
+                @Html.TextBoxFor(x => x.Lastname, new { data_required = bothNamesRequired, data_validationgroup = "recipient-name"})
                 <span class="error"></span>
             </div>
         </div>
         <div class="row">
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_MobileNumber">@prefix mobile number</label>
-                @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
+                @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_validationgroup = "recipient-phone", data_required = "False" })
                 <span class="error"></span>
             </div>
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_AlternatePhoneNumber">@prefix  alternative phone number</label>
-                @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
+                @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_validationgroup = "recipient-phone", data_required = "False" })
                 <span class="error"></span>
             </div>
         </div>

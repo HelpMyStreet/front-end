@@ -14,9 +14,12 @@
 }
 
 <div class="community" data-group-id="@Model.EncodedGroupId">
-    <div class="container">
-        <div class="community-banner">
-            <img src="~/img/community/southwell/banner.png" alt="Southwell Torpedos" />
+    <div class="container row southwell-banner mb-xl">
+        <div class="sm3 text-center">
+            <img src="/img/community/southwell/logo-large.png" alt="SOUTHWELL TORPEDOS" />
+        </div>
+        <div class="row sm9 right-column">
+            <h2>Essential help on your doorstep</h2>
         </div>
     </div>
     <div class="outer-container">
@@ -82,13 +85,13 @@
                             If you know of anyone who you think needs help, please let them have our number: 01636 330005. Phones are staffed daily 9am to 5pm, with 24 hour answerphone. Calls are answered via the Southwell Town Council Hub who will direct you to a volunteer.
                         </p>
                         <p>
-                            You can also visit our website: <a href="www.thetorpedos.org">www.thetorpedos.org</a>
+                            You can also visit our website: <a href="https://www.thetorpedos.org">www.thetorpedos.org</a>
                         </p>
                         <p>
                             Email us at <a href="mailto:info@thetorpedos.org">info@thetorpedos.org</a>
                         </p>
                         <p>
-                            Or find us on <a href="https://www.facebook.com/southwelltorpedos/">Facebook @@southwelltorpedos</a>
+                            Or find us on Facebook <a href="https://www.facebook.com/southwelltorpedos/"> @@southwelltorpedos</a>
                         </p>
                     </div>
                     <div class="mb-md"></div>
@@ -129,7 +132,7 @@
     </div>
 
     <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other  })
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey })
     </div>
 
     <div class="outer-container outer-container--darker">

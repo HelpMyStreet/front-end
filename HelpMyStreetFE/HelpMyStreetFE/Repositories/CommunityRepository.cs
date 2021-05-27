@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.Repositories
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
             {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
             {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
-            {"southwell", new CommunityModel() {FriendlyName = "Southwell Torpedos", Pin_Latitude = 53.0779128, Pin_Longitude = -0.973649, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/southwell/banner.png", GeographicName = "Southwell", GroupType = "Local Group", LinkURL = "/southwell"} }
+            {"southwell", new CommunityModel() {FriendlyName = "Southwell Torpedos", Pin_Latitude = 53.0779128, Pin_Longitude = -0.973649, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/southwell/banner.png", GeographicName = "Southwell or surrounding areas", GroupType = "Local Group", LinkURL = "/southwell"} }
         };
 
         public CommunityRepository(IGroupService groupService)
