@@ -4,6 +4,7 @@
     li {
         font-size: 16px;
     }
+
     .community-banner {
         max-height: 300px;
         overflow: hidden;
@@ -29,8 +30,10 @@
 
         .right-column {
             align-content: center;
+
             h2 {
                 color: $black;
+
                 &.proud {
                     font-weight: normal;
                     margin-top: 0.75rem;
@@ -46,6 +49,27 @@
                     text-align: right;
                     margin: 0;
                 }
+            }
+        }
+    }
+
+    .southwell-banner {
+        background-color: #ff4b4f;
+
+        img {
+            max-width: 12rem;
+            margin: 2rem;
+        }
+
+        .right-column {
+            align-self: center;
+            justify-content: center;
+
+            h2 {
+                color: white;
+                font-size: 2.2rem;
+                padding: 1rem;
+                text-align: center;
             }
         }
     }
@@ -77,7 +101,7 @@
         justify-content: center;
         overflow: hidden;
 
-        .volunteer {        
+        .volunteer {
             margin: 15px;
 
             .volunteer-image {
@@ -93,12 +117,12 @@
     }
 
     .yt-video-placeholder {
-      cursor: pointer;
+        cursor: pointer;
     }
 
-    .help-examples{
-        .card{
-            min-height:260px;
+    .help-examples {
+        .card {
+            min-height: 260px;
         }
     }
 
