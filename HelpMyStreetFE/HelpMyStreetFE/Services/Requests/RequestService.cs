@@ -119,7 +119,7 @@ namespace HelpMyStreetFE.Services.Requests
                             SupportActivity = selectedTask.SupportActivity,
                             Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
                                 Id = x.ID,
-                                Answer = x.InputType == QuestionType.Radio ? x.AdditionalData.Where(a => a.Key == x.Model).FirstOrDefault()?.Value ?? "" : x.Model,
+                                Answer = GetAnswerToQuestion(x),
                                 Name = x.Label,
                                 Required = x.Required,
                                 AddtitonalData = x.AdditionalData,
@@ -135,6 +135,11 @@ namespace HelpMyStreetFE.Services.Requests
                 TriggerCacheRefresh(userId, cancellationToken);
 
             return response;
+        }
+
+        private string GetAnswerToQuestion(RequestHelpQuestion q)
+        {
+             return q.InputType == QuestionType.Radio ? q.AdditionalData.Where(a => a.Key == q.Model).FirstOrDefault()?.Value ?? "" : q.Model;
         }
 
         public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)

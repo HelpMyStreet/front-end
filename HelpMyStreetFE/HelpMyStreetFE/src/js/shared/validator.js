@@ -25,15 +25,34 @@ export function validateFormData(form, validation) {
 
     const errDisplay = $(`input[name="${name}"] ~ .error, textarea[name="${name}"] ~ .error`);
 
+    const isRequired = $(`input[name="${name}"]`).data("required") != "False";
+    const hasGroupData = $(`input[name="${name}"]`).data("validationgroup");
+    const minimumGroupValidations = $(`input[name="${name}"]`).data("minimumvalidations") ?? 1;
+
     errDisplay && errDisplay.text("").hide();
 
     const validator = validation[name];
     if (validator) {
+      if (!isRequired && hasGroupData != undefined){
+        let otherGroupMembers = $.makeArray($(`[data-validationgroup='${hasGroupData}']`));
+        let result = otherGroupMembers.reduce((acc, cur) => {
+          acc = validator($(cur).val(), obj) !== true ? acc : acc + 1 ;
+          return acc;
+        }, 0);
+        if (result < minimumGroupValidations)
+        {
+          otherGroupMembers.forEach(field => {
+            $(field).closest(".input").find('.error').text(`Please complete at least ${minimumGroupValidations} field${minimumGroupValidations > 1 ? "s" : ""} using ${validator($(field).val())}`).show();
+          });
+          acc = false;
+        }
+      } else {
       const valid = validator(value, obj);
       if (valid !== true) {
         acc = false;
-        errDisplay.text(valid).show();
+        errDisplay.text(`Please enter ${valid}`).show();
       }
+    }
     }
 
     return acc;

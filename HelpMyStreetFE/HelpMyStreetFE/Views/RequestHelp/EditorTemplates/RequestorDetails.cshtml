@@ -1,27 +1,31 @@
 ﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RequestorDetails
 
+@{
+    var bothNamesRequired = ViewData["BothNamesRequired"] is bool ? (bool)ViewData["BothNamesRequired"] : true;
+}
+
 <div class="user-detail">
     <div class="row">
         <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_Firstname">Your first name</label>
-            @Html.TextBoxFor(x => x.Firstname)
+            @Html.TextBoxFor(x => x.Firstname, new { data_required = bothNamesRequired, data_partialdatagroup = "requestor-name" })
             <span class="error"></span>
         </div>
         <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_Lastname">Your last name</label>
-            @Html.TextBoxFor(x => x.Lastname)
+            @Html.TextBoxFor(x => x.Lastname, new { data_required = bothNamesRequired, data_partialdatagroup = "requestor-name" })
             <span class="error"></span>
         </div>
     </div>
     <div class="row">
         <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_MobileNumber">Your mobile number</label>
-            @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
+            @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_required = "False", data_partialdatagroup = "requestor-number" })
             <span class="error"></span>
         </div>
         <div class="input sm6 pad-md">
             <label for="currentStep_Requestor_AlternatePhoneNumber">Your alternative phone number</label>
-            @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*" })
+            @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_required = "False", data_partialdatagroup = "requestor-number" })
             <span class="error"></span>
         </div>
     </div>
@@ -33,7 +37,7 @@
         </div>
         <div class="input sm6 pad-md">
             <label id="currentStep_Requestor_Postcode">Your postcode</label>
-            @Html.TextBoxFor(x => x.Postcode, new { @class= "postcode-input"})
+            @Html.TextBoxFor(x => x.Postcode, new { @class = "postcode-input" })
             <span class="error"></span>
         </div>
     </div>
