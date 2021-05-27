@@ -28,6 +28,7 @@ namespace HelpMyStreetFE.Repositories
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
             {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
             {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
+            {"southwell", new CommunityModel() {FriendlyName = "Southwell Torpedos", Pin_Latitude = 53.0779128, Pin_Longitude = -0.973649, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/southwell/banner.png", GeographicName = "Southwell or surrounding areas", GroupType = "Local Group", LinkURL = "/southwell"} }
         };
 
         public CommunityRepository(IGroupService groupService)
@@ -55,7 +56,8 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
                 Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
                 Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
-                Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),             
+                Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),
+                Groups.Southwell => GetSouthwell(),
                 _ => null,
             };
 
@@ -107,6 +109,39 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/carousel-3.jpeg",
                     $"{carouselPath}/carousel-5.jpeg",
                     $"{carouselPath}/carousel-4.jpeg",
+                }
+            };
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetSouthwell()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Southwell" };
+            CommunityModel communityModel = GetCommunityDetailByKey("southwell");
+
+            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
+            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
+            communityViewModel.Map_ZoomLevel = 13.5;
+
+            communityViewModel.CommunityName = communityModel.FriendlyName;
+            communityViewModel.ShowRequestHelpPopup = true;
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+
+            };
+
+            var carouselPath = "/img/community/southwell/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/southwell-image-1.png",
+                    $"{carouselPath}/southwell-image-2.png",
+                    $"{carouselPath}/southwell-image-3.png",
+                    $"{carouselPath}/southwell-image-4.png",
+                    $"{carouselPath}/southwell-image-5.png",
                 }
             };
 
