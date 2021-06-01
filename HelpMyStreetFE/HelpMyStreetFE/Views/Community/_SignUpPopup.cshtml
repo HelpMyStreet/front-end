@@ -5,17 +5,17 @@
     <div class="popup__content__wrapper">
         <div class="popup__content__header">Sign-Up To HelpMyStreet With @Model.FriendlyName</div>
         <div>
-            <p>Before you sign up to HelpMyStreet with @Model.FriendlyName, please read their conditions below.</p>
             @if (!String.IsNullOrEmpty(Model.JoinGroupPopUpDetail))
             {
                 @Html.Raw(Model.JoinGroupPopUpDetail);
             }
-            <p>If you agree, click the green button below, or if you'd rather sign up to HelpMyStreet without being in a group, use the blue button to get started.</p>
+            <p>By clicking proceed you can log-in (or sign-up, as applicable) to HelpMyStreet and join @Model.FriendlyName</p>
+            <p>If you'd rather just log-in or sign-up with HelpMyStreet without @Model.FriendlyName click the blue button</p>
         </div>
         <div class="popup__content__buttons mt-md">
             <p class="error dnone"></p>
-            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = $"Sign Up With {Model.FriendlyName}"  }' />
-            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = $"Sign Up To HelpMystreet" }' />
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = $"Proceed With {Model.FriendlyName}"  }' />
+            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = $"Login/Sign Up To HelpMystreet Only" }' />
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using System.Linq;
 using HelpMyStreetFE.Services.Groups;
 
@@ -36,11 +37,8 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        public async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
         {
-
-            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-
             CommunityViewModel vm = ((Groups)group.GroupId) switch
             {
                 Groups.Tankersley => GetTankersley(),
@@ -64,6 +62,23 @@ namespace HelpMyStreetFE.Repositories
             vm.Group = group;
 
             return vm;
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(int groupId, CancellationToken cancellationToken)
+        {
+
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
+
+            return await GetCommunity(group, cancellationToken);
+
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        {
+
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
+
+            return await GetCommunity(group, cancellationToken);
 
         }
 
