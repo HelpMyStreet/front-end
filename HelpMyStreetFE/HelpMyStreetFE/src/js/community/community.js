@@ -76,6 +76,19 @@ $(document).ready(function () {
         });
     });
 
+    $('.btn--sign-up-popup').on('click', function (event) {
+        event.preventDefault();
+        showServerSidePopup('/api/community/get-sign-up-popup?g=' + groupId, {
+            acceptCallbackAsync: () => {
+                window.location.href = '/login/' + groupId;
+                return true;
+            },
+            rejectCallbackAsync: () => {
+                window.location.href = '/login/'
+            }
+        });
+    });
+
     $('.btn--leave-group').on('click', function (event) {
         event.preventDefault();
         showServerSidePopup('/api/community/get-leave-group-popup?g=' + groupId, {

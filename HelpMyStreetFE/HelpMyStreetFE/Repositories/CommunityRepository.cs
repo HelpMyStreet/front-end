@@ -93,6 +93,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
+            communityViewModel.ShowPopupOnSignUp = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
