@@ -390,6 +390,7 @@ namespace HelpMyStreetFE.Services.Requests
             else if (requestHelpFormVariant == RequestHelpFormVariant.ApexBankStaff_RequestSubmitter)
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.BankStaffVaccinator, IsSelected = true });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Other });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_Public)
             {
