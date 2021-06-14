@@ -37,7 +37,7 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
+        private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
         {
             CommunityViewModel vm = ((Groups)group.GroupId) switch
             {

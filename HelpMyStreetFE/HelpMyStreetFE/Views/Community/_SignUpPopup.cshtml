@@ -9,13 +9,13 @@
             {
                 @Html.Raw(Model.JoinGroupPopUpDetail);
             }
-            <p>By clicking proceed you can log-in (or sign-up, as applicable) to HelpMyStreet and join @Model.FriendlyName</p>
-            <p>If you'd rather just log-in or sign-up with HelpMyStreet without @Model.FriendlyName click the blue button</p>
+            <p>By clicking proceed you can log in (or sign-up, as applicable) to HelpMyStreet and join @Model.FriendlyName</p>
+            <p>If you'd rather just log in or sign up with HelpMyStreet without @Model.FriendlyName click the blue button</p>
         </div>
         <div class="popup__content__buttons mt-md">
             <p class="error dnone"></p>
             <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = $"Proceed With {Model.FriendlyName}"  }' />
-            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = $"Login/Sign Up To HelpMystreet Only" }' />
+            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = $"Log In/Sign Up To HelpMystreet Only" }' />
         </div>
     </div>
 </div>

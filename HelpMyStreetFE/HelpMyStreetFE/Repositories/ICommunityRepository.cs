@@ -10,7 +10,6 @@ namespace HelpMyStreetFE.Repositories
     {
         Task<CommunityViewModel> GetCommunity(string communityName, CancellationToken cancellationToken);
         Task<CommunityViewModel> GetCommunity(int groupId, CancellationToken cancellationToken);
-        Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken);
         Task<List<CommunityModel>> GetCommunities();
         CommunityModel GetCommunityDetailByKey(string key);
  }

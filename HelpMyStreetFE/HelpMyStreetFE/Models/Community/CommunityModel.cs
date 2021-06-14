@@ -13,6 +13,5 @@ namespace HelpMyStreetFE.Models.Community
         public string BannerLocation { get; set; }
         public double Pin_VisibilityZoomLevel { get; set; }
         public string JoinGroupPopUpDetail { get; set; }
-        public string RequestHelpPopUpDetail { get; set; }
     }
 }
