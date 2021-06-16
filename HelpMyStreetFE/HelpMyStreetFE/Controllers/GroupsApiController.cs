@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.Controllers
             _authService = authService;
             _groupMemberService = groupMemberService;
         }
-
+        
         [AuthorizeAttributeNoRedirect]
         [HttpGet("join-group")]
         public async Task<IActionResult> JoinGroup(string g, CancellationToken cancellationToken)
