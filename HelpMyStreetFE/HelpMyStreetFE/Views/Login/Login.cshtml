@@ -7,12 +7,7 @@
     const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) };
 
 </script>
-@if (!String.IsNullOrEmpty(Model.LoginURL))
-{
-<script>
-    const loginURL = "@Model.LoginURL";
-</script>   
-}
+
 <div class="container login">
     <div class="row  justify-center ">
         <div class="sm6">

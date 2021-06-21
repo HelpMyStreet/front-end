@@ -10,7 +10,6 @@ namespace HelpMyStreetFE.Models
     {        
         public string FirebaseConfiguration { get; set; }
         public string SignUpURL { get; set; }
-        public string LoginURL { get; set; }
         public string Email { get; set; }
         public string LoginError { get; set; }
         public string EmailError { get; set; }

@@ -80,7 +80,7 @@ $(document).ready(function () {
         event.preventDefault();
         showServerSidePopup('/api/community/get-sign-up-popup?g=' + groupId, {
             acceptCallbackAsync: () => {
-                window.location.href = '/login/' + groupId;
+                window.location.href = '/login?ReturnUrl=/community/joinandgo/' + groupId;
                 return true;
             },
             rejectCallbackAsync: () => {

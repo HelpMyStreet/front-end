@@ -54,7 +54,6 @@ namespace HelpMyStreetFE.Controllers
                 EmailError = er == "email" ? errorMessage : "",
                 LoginError = er != "email" ? errorMessage : "",
                 FirebaseConfiguration = _configuration["Firebase:Configuration"],
-                LoginURL = String.IsNullOrEmpty(referringGroup) ? "" : $"/community/joinandgo/{referringGroup}",
                 SignUpURL = BuildSignUpUrl(referringGroup, source),
             };
             return View(model);
