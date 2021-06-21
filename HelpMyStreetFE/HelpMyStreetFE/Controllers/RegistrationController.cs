@@ -204,9 +204,9 @@ namespace HelpMyStreetFE.Controllers
 
                 await _groupMemberService.AddUserToDefaultGroups(user.ID);
 
-                if (user.ReferringGroupId.HasValue)
+                if (user.ReferringGroupId.HasValue && user.ReferringGroupId != -1)
                 {
-                    return Redirect($"/community/joinandgo/{user.ReferringGroupId.Value}");
+                    return Redirect($"/community/joinandgo/{Base64Utils.Base64Encode(user.ReferringGroupId.Value)}");
                 }
                 else
                 {
