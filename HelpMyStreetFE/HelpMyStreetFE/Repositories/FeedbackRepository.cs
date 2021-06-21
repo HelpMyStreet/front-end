@@ -386,7 +386,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Many thanks",
                     Message = "Many thanks Torpedos for your support, especially Sarah whose smile and cheery greeting was so welcome at my lowest ebb.",
-                    Person = "Margaret Beckett",
+                    Person = "Margaret, local resident",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "southwell",
                 },
