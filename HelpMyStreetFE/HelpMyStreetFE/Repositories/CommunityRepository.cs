@@ -485,7 +485,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Clinical Director",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/dr-smith.png"
                 },
                 new CommunityVolunteer()
                 {
@@ -501,7 +501,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "PCN Manager",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/gary-burrows.png"
                 },
                 new CommunityVolunteer()
                 {
