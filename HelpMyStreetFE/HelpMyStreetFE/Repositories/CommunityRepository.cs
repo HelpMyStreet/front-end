@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using System.Linq;
 using HelpMyStreetFE.Services.Groups;
 
@@ -27,7 +28,7 @@ namespace HelpMyStreetFE.Repositories
             {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
             {"apex-pcn-bank-staff", new CommunityModel() {FriendlyName = "Apex PCN Bank Staff", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/vacc/apex-pcn-bank-staff/banner.png", LinkURL = "/apexpcnbankstaff", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
-            {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
+            {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", JoinGroupPopUpDetail = "<p>Age Connects Cardiff & the Vale require two references and attendance at an Induction Session before you can start volunteering. Roles which involve direct contact with clients also require a DBS check.</p><p>They also ask that volunteers are prepared to make a minimum commitment of six months. </p>", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
             {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
             {"southwell", new CommunityModel() {FriendlyName = "Southwell Torpedos", Pin_Latitude = 53.0779128, Pin_Longitude = -0.973649, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/southwell/banner.png", GeographicName = "Southwell or surrounding areas", GroupType = "Local Group", LinkURL = "/southwell"} }
         };
@@ -37,12 +38,8 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
         {
-
-            
-            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-
             CommunityViewModel vm = ((Groups)group.GroupId) switch
             {
                 Groups.Tankersley => GetTankersley(),
@@ -67,6 +64,23 @@ namespace HelpMyStreetFE.Repositories
             vm.Group = group;
 
             return vm;
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(int groupId, CancellationToken cancellationToken)
+        {
+
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
+
+            return await GetCommunity(group, cancellationToken);
+
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        {
+
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
+
+            return await GetCommunity(group, cancellationToken);
 
         }
 
@@ -96,6 +110,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
+            communityViewModel.ShowPopupOnSignUp = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {

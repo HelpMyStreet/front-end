@@ -43,7 +43,29 @@ namespace HelpMyStreetFE.Controllers
             _groupMemberService = groupMemberService;
         }
 
-        public async Task<IActionResult> Index(string groupKey, CancellationToken cancellationToken)
+        [AuthorizeAttributeNoRedirect]
+        [Route("community/joinandgo/{groupIdEnc}")]
+        public async Task<IActionResult> JoinAndGo(string groupIdEnc, CancellationToken cancellationToken)
+        {
+            var groupId = Int32.Parse(Base64Utils.Base64Decode(groupIdEnc));
+            var group = (Groups)groupId;
+
+            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(groupId, cancellationToken);
+
+            if (communityViewModel == null)
+            {
+                return RedirectToAction("Error404", "Errors");
+            }
+
+            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var outcome = await _groupMemberService.PostAssignRole(user.ID, groupId, GroupRoles.Member, -1, cancellationToken);
+            communityViewModel.IsLoggedIn = true;
+            communityViewModel.IsGroupMember = outcome == GroupPermissionOutcome.Success;
+
+            return View(communityViewModel.View, communityViewModel);
+        }
+
+        public async Task<IActionResult> Index(string groupKey, CancellationToken cancellationToken, bool suag = false)
         {
             if (String.IsNullOrWhiteSpace(groupKey))
             {
