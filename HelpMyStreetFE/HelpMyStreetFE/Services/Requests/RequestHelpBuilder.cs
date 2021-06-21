@@ -168,7 +168,7 @@ namespace HelpMyStreetFE.Services.Requests
                 requestStep.Timeframes.Insert(0, new RequestHelpTimeViewModel() { ID = 6, TimeDescription = "On a Specific Date", DueDateType = DueDateType.On });
             }
 
-            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers || requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS)
+            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers || requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS || requestHelpFormVariant == RequestHelpFormVariant.ApexBankStaff_RequestSubmitter)
             {
                 var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
                 requestStep.Requestors.RemoveAll(x => x.Type == RequestorType.Myself);
@@ -386,6 +386,11 @@ namespace HelpMyStreetFE.Services.Requests
             else if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.VaccineSupport, IsSelected = true });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.ApexBankStaff_RequestSubmitter)
+            {
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.BankStaffVaccinator, IsSelected = true });
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Other });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_Public)
             {
