@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Repositories
     {
         Task<GetGroupByKeyResponse> GetGroupByKey(string groupKey);
         Task<GetGroupResponse> GetGroup(int groupId);
+        Task<GetGroupsWithMapDetailsResponse> GetGroupsWithMapDetails(MapLocation mapLocation);
         Task<GetChildGroupsResponse> GetChildGroups(int groupId);
         Task<GetRegistrationFormVariantResponse> GetRegistrationFormVariant(int groupId, string source = "");
         Task<GetRequestHelpFormVariantResponse> GetRequestHelpFormVariant(int groupId, string source = "");
