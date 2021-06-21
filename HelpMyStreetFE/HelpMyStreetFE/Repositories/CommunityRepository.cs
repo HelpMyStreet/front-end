@@ -6,29 +6,16 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using System.Linq;
 using HelpMyStreetFE.Services.Groups;
+using HelpMyStreet.Utils.Models;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Google.Apis.Util;
+using HelpMyStreet.Utils.Extensions;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
         private readonly IGroupService _groupService;
-        private Dictionary<string, CommunityModel> Communities = new Dictionary<string, CommunityModel>()
-        {
-            {"hlp", new CommunityModel(){FriendlyName = "Healthy London Partnership", Pin_Latitude = 51.507602, Pin_Longitude = -0.127816, LinkURL = "/healthylondonpartnership", Pin_VisibilityZoomLevel = 10, DisplayOnMap = false, BannerLocation = "/img/community/hlp/hlp-banner.png"} },
-            {"tankersley", new CommunityModel(){FriendlyName = "Tankersley & Pilley Community Helpers", Pin_Latitude = 53.498113, Pin_Longitude = -1.488587, LinkURL = "/tankersley", Pin_VisibilityZoomLevel = 14, BannerLocation = "/img/community/tankersley/tankersley-st-peters-church.jpeg", GroupType = "Local Group" } },
-            {"ruddington", new CommunityModel(){FriendlyName = "Ruddington Community Response Team", Pin_Latitude = 52.8925, Pin_Longitude = -1.150, LinkURL = "/ruddington", Pin_VisibilityZoomLevel = 14.6, BannerLocation = "/img/community/ruddington/banner.jpg", GeographicName = "Ruddington", GroupType = "Local Group" } },
-            {"ageuklsl", new CommunityModel() {FriendlyName = "Age UK Lincoln & South Lincolnshire", Pin_Latitude = 53.2304334, Pin_Longitude = -0.5435425, LinkURL = "/ageuklsl", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/lsl/age-uk-lincoln-cathedral-banner.png", GroupType = "Local Group"} },
-            {"ageukwirral", new CommunityModel() {FriendlyName = "Age UK Wirral", Pin_Latitude = 53.37, Pin_Longitude = -3.05, LinkURL = "/ageukwirral", Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/wirral/age-uk-wirral-banner-narrow.png", GroupType = "Local Group"} },
-            {"balderton", new CommunityModel() {FriendlyName = "Balderton Community Support", Pin_Latitude = 53.0561082, Pin_Longitude = -0.8, LinkURL = "/balderton", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/balderton/banner-narrow.jpg", GeographicName="Balderton", GroupType = "Local Group" } },
-            {"north-muskham", new CommunityModel() {FriendlyName = "North Muskham Community Support", Pin_Latitude = 53.120254, Pin_Longitude = -0.811079, LinkURL = "/north-muskham", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/notts/north-muskham/north-muskham-banner.png", GeographicName="North Muskham", GroupType = "Local Group" } },
-            {"ageuk-southkentcoast", new CommunityModel() {FriendlyName = "Age UK South Kent Coast", Pin_Latitude = 51.15670694376801, Pin_Longitude = 1.2906096124741184, LinkURL = "/southkentcoast", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/southkentcoast/banner.jpg", GeographicName="Deal or Folkestone", GroupType = "Local Group" } },
-            {"ageuk-favershamandsittingbourne", new CommunityModel() {FriendlyName = "Age UK Faversham & Sittingbourne", Pin_Latitude = 51.32681418199929, Pin_Longitude = 0.8065864663737088, LinkURL = "/favershamandsittingbourne", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/favershamandsittingbourne/banner.jpg", GeographicName="Faversham or Sittingbourne", GroupType = "Local Group" } },
-            {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/northwest/nwkent-banner.png", GeographicName="North West Kent (Dartford, Swanley or Gravesend)", GroupType = "Local Group" } },
-            {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
-            {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
-            {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
-            {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
-        };
 
         public CommunityRepository(IGroupService groupService)
         {
@@ -36,8 +23,7 @@ namespace HelpMyStreetFE.Repositories
         }
 
         public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
-        {
-
+        {   
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
 
             CommunityViewModel vm = ((Groups)group.GroupId) switch
@@ -55,7 +41,9 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
                 Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
                 Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
-                Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),             
+                Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),
+                Groups.Southwell => GetSouthwell(),
+                Groups.ApexBankStaff => GetApexBankStaff(),
                 _ => null,
             };
 
@@ -68,35 +56,83 @@ namespace HelpMyStreetFE.Repositories
         public async Task<List<CommunityModel>> GetCommunities()
         {
             List<CommunityModel> returnCommunities = new List<CommunityModel>();
-            foreach (var item in Communities){
-                returnCommunities.Add(item.Value);
+            var groups = await _groupService.GetGroupsWithMapDetails(MapLocation.HomePage, CancellationToken.None);
+
+            if(groups!=null)
+            {
+                groups
+                    .ToList()
+                    .ForEach(group =>
+                        returnCommunities.Add(GetCommunityModel(group, MapLocation.HomePage))
+                    );
             }
             return returnCommunities;
 
         }
 
+        private CommunityModel GetCommunityModel(Group group, MapLocation mapLocation)
+        {
+            return new CommunityModel()
+            {
+                FriendlyName = group.FriendlyName,
+                GeographicName = group.GeographicName,
+                GroupType = group.GroupType.GetString(),
+                LinkURL = group.LinkURL,
+                Pin_Latitude = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).Latitude,
+                Pin_Longitude = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).Longitude,
+                Pin_VisibilityZoomLevel = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).ZoomLevel,
+                DisplayOnMap = true,
+                BannerLocation = $"/img/homepagemapbanner/{group.GroupKey}-banner.jpg"
+            };
+        }
+
+        private CommunityViewModel GetCommunityViewModel(Group group, string viewName, bool showRequestHelpPopup)
+        {
+            var communityViewModel = new CommunityViewModel() { CommunityName = group.FriendlyName, View = viewName , CommunityShortName = group.ShortName, ShowRequestHelpPopup = showRequestHelpPopup};
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>(){};
+
+            var maps = group.Maps.FirstOrDefault(x => x.MapLocation == MapLocation.Landing);
+
+            if(maps!=null)
+            {
+                communityViewModel.Map_CentreLatitude = maps.Latitude;
+                communityViewModel.Map_CentreLongitude = maps.Longitude;
+                communityViewModel.Map_ZoomLevel = maps.ZoomLevel;
+            }
+            return communityViewModel;
+        }
+
         public CommunityModel GetCommunityDetailByKey(string key)
         {
-            return Communities[key];
+            var group = _groupService.GetGroupByKey(key, CancellationToken.None).Result;
+
+            if(group!=null)
+            {
+                return GetCommunityModel(group, MapLocation.Landing);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private CommunityViewModel GetCommunityViewModelByKey(string key, string viewName, bool showRequestHelpPopup)
+        {
+            var group = _groupService.GetGroupByKey(key, CancellationToken.None).Result;
+
+            if (group != null)
+            {
+                return GetCommunityViewModel(group, viewName, showRequestHelpPopup);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private CommunityViewModel GetAgeConnectsCardiff()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeConnectsCardiff" };
-            CommunityModel communityModel = GetCommunityDetailByKey("ageconnects-cardiff");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 11;
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-            communityViewModel.ShowRequestHelpPopup = true;
-
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
-            {
-                
-            };
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageconnects-cardiff", "AgeConnectsCardiff", true);
             var carouselPath = "/img/community/ageconnectscardiff/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
             {
@@ -113,18 +149,29 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
+        private CommunityViewModel GetSouthwell()
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("southwell", "Southwell", true);
+
+            var carouselPath = "/img/community/southwell/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/southwell-image-1.png",
+                    $"{carouselPath}/southwell-image-2.png",
+                    $"{carouselPath}/southwell-image-3.png",
+                    $"{carouselPath}/southwell-image-4.png",
+                    $"{carouselPath}/southwell-image-5.png",
+                }
+            };
+
+            return communityViewModel;
+        }
+
         private CommunityViewModel GetBalderton()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Balderton" };
-            CommunityModel communityModel = GetCommunityDetailByKey("balderton");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 13.5;
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-            communityViewModel.ShowRequestHelpPopup = true;
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("balderton", "Balderton", true);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -207,20 +254,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetNorthMuskham()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel
-            {
-                View = "NorthMuskham",
-            };
-
-            CommunityModel communityModel = GetCommunityDetailByKey("north-muskham");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 14;
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-            communityViewModel.ShowRequestHelpPopup = true;
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("north-muskham", "NorthMuskham", true);
             var carouselPath = "/img/community/ageUK/notts/north-muskham/carousel";
             communityViewModel.CarouselImages = new List<List<string>>
             {
@@ -235,20 +269,8 @@ namespace HelpMyStreetFE.Repositories
         }
 
         private CommunityViewModel GetSouthKentCoast()
-        {                       
-            CommunityViewModel communityViewModel = new CommunityViewModel
-            {
-                View = "SouthKentCoast",
-            };
-
-            CommunityModel communityModel = GetCommunityDetailByKey("ageuk-southkentcoast");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 11;
-
-            communityViewModel.CommunityName = "Age UK South Kent Coast";
-            communityViewModel.ShowRequestHelpPopup = true;
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuk-southkentcoast", "SouthKentCoast", true);
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -285,19 +307,7 @@ namespace HelpMyStreetFE.Repositories
         
         private CommunityViewModel GetMeadowsCommunityHelpers()                    
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel
-            {
-                View = "MeadowsComunityHelpers",
-            };
-
-            communityViewModel.Map_CentreLatitude = 52.94107706186348;
-            communityViewModel.Map_CentreLongitude = -1.1435562260432748;
-            communityViewModel.Map_ZoomLevel = 14;
-
-            communityViewModel.CommunityName = "Meadows Community Helpers";
-            communityViewModel.CommunityShortName = "Meadows";
-            communityViewModel.ShowRequestHelpPopup = true;
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("meadows-community-helpers", "MeadowsComunityHelpers", true);
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -344,21 +354,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetLincolnshireVolunteers()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel
-            {
-                View = "LincolnshireVolunteers",
-            };
-
-            CommunityModel communityModel = GetCommunityDetailByKey("lincs-volunteers");
-
-            communityViewModel.Map_CentreLatitude = 52.95;
-            communityViewModel.Map_CentreLongitude = -0.2;
-            communityViewModel.Map_ZoomLevel = 9;
-
-            communityViewModel.CommunityName = "Lincolnshire Volunteers";
-            communityViewModel.ShowRequestHelpPopup = true;
-
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("lincs-volunteers", "LincolnshireVolunteers", true);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -422,21 +418,51 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetFavershameAndSittingBourne()
+        private CommunityViewModel GetApexBankStaff()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("apex-pcn-bank-staff", "ApexPCNBankStaff", true);
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
-                View = "FavershamAndSittingBourne",
+                new CommunityVolunteer()
+                {
+                    Name = "Dr Nick Smith",
+                    Role = "Clinical Director",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Dr Rama Mark",
+                    Role = "Clinical Director",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/rama.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Gary Burroughs",
+                    Role = "PCN Manager",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Fiona Roche",
+                    Role = "Locality Lead",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                }
             };
 
-            CommunityModel communityModel = GetCommunityDetailByKey("ageuk-favershamandsittingbourne");
+            return communityViewModel;
+        }
 
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 12;
-
-            communityViewModel.CommunityName = "Age UK Faversham and Sittingbourne";
-            communityViewModel.ShowRequestHelpPopup = true;
+        private CommunityViewModel GetFavershameAndSittingBourne()
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuk-favershamandsittingbourne", "FavershamAndSittingBourne", true);
 
             var carouselPath = "/img/community/ageUK/kent/favershamandsittingbourne/carousel";
             communityViewModel.CarouselImages = new List<List<string>>
@@ -456,20 +482,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetNorthWestKent()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel
-            {
-                View = "NorthWestKent",
-            };
-
-            CommunityModel communityModel = GetCommunityDetailByKey("ageuknwkent");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = 12;
-
-            communityViewModel.CommunityName = "Age UK North West Kent";
-            communityViewModel.ShowRequestHelpPopup = true;
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuknwkent", "NorthWestKent", true);
             var carouselPath = "/img/community/ageUK/kent/northwest/carousel";
 
             communityViewModel.CarouselImages = new List<List<string>>
@@ -513,17 +526,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetHLP()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "HLP" };
-            CommunityModel communityModel = GetCommunityDetailByKey("hlp");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-            communityViewModel.CommunityShortName = "Healthy London";
-
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("hlp", "HLP", false);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -568,17 +571,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetTankersley()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Tankersley" };
-            CommunityModel communityModel = GetCommunityDetailByKey("tankersley");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
-
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("tankersley", "Tankersley", false);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -611,16 +604,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetRuddington()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "Ruddington" };
-            CommunityModel communityModel = GetCommunityDetailByKey("ruddington");
-
-            communityViewModel.Map_CentreLatitude = communityModel.Pin_Latitude;
-            communityViewModel.Map_CentreLongitude = communityModel.Pin_Longitude;
-            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-            communityViewModel.ShowRequestHelpPopup = true;
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ruddington", "Ruddington", true);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -692,18 +676,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetAgeUKLSL()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeUKLSL" };
-            CommunityModel communityModel = GetCommunityDetailByKey("ageuklsl");
-
-            communityViewModel.Map_CentreLatitude = 52.95;
-            communityViewModel.Map_CentreLongitude = -0.2;
-            communityViewModel.Map_ZoomLevel = communityModel.Pin_VisibilityZoomLevel;
-
-            communityViewModel.CommunityName = communityModel.FriendlyName;
-            communityViewModel.CommunityShortName = "Age UK LSL";
-
-
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuklsl", "AgeUKLSL", false);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -739,16 +712,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetAgeUKWirral()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "AgeUKWirral" };
-
-            communityViewModel.Map_CentreLatitude = 53.37;
-            communityViewModel.Map_CentreLongitude = -3.05;
-            communityViewModel.Map_ZoomLevel = 11.15;
-
-            communityViewModel.CommunityName = "Age UK Wirral";
-            communityViewModel.CommunityShortName = "Age UK Wirral";
-
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageukwirral", "AgeUKWirral", false);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -777,10 +741,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetFtLOS()
         {
-            CommunityViewModel communityViewModel = new CommunityViewModel { View = "ForTheLoveOfScrubs" };
-
-            communityViewModel.CommunityName = "For the Love of Scrubs";
-
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ftlos", "ForTheLoveOfScrubs", false);
             var carouselPath = "/img/community/fortheloveofscrubs";
             communityViewModel.CarouselImages = new List<List<string>>
             {

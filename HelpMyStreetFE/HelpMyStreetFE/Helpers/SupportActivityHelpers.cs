@@ -33,6 +33,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.DigitalSupport => "digital-support.svg",
                 SupportActivities.PracticalSupport => "practical.svg",
                 SupportActivities.InPersonBefriending => "befriending.svg",
+                SupportActivities.BankStaffVaccinator => "vaccination.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -59,6 +60,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.EmergencySupport => "dark-blue",
                 SupportActivities.PracticalSupport => "blue",
                 SupportActivities.InPersonBefriending => "light-purple",
+                SupportActivities.BankStaffVaccinator => "dark-blue",
                 _ => "dark-blue",
             };
         }

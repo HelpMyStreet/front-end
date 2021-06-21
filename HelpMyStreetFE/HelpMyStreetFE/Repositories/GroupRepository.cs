@@ -287,5 +287,27 @@ namespace HelpMyStreetFE.Repositories
             }
             
         }
+
+        public async Task<GetGroupsWithMapDetailsResponse> GetGroupsWithMapDetails(MapLocation mapLocation)
+        {
+            var request = new GetGroupsWithMapDetailsRequest()
+            {
+                MapLocation = new MapLocationRequest() { MapLocation = mapLocation }
+            };
+
+            var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await Client.PostAsync("/api/GetGroupsWithMapDetails", requestContent);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var deserializeContent = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupsWithMapDetailsResponse, GroupServiceErrorCode>>(responseString);
+            if (deserializeContent.HasContent && deserializeContent.IsSuccessful)
+            {
+                return deserializeContent.Content;
+            }
+            else
+            {
+                throw new Exception($"Bad response from GetGroupsWithMapDetailsResponse for MapLocation {mapLocation}");
+            }
+        }
     }
 }

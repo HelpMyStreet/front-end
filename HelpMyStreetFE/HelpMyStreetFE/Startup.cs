@@ -188,6 +188,7 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Group>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<Group>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<List<GroupCredential>>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<UserInGroup>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Instructions>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
@@ -393,9 +394,24 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });
 
                 endpoints.MapControllerRoute(
+                    name: "apexpcnbankstaff",
+                    pattern: "apexpcnbankstaff",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "apex-pcn-bank-staff" });
+
+                endpoints.MapControllerRoute(
                     name: "meadows-community-helpers",
                     pattern: "meadows-community-helpers",
                     defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
+
+                endpoints.MapControllerRoute(
+                    name: "meadows",
+                    pattern: "meadows",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
+
+                endpoints.MapControllerRoute(
+                    name: "southwell",
+                    pattern: "southwell",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",
