@@ -2,7 +2,7 @@
 
 @if (!Model.CommunityViewModel.IsLoggedIn)
 {
-    <a href="/login/@Model.CommunityViewModel.EncodedGroupId" class="btn cta small btn--sign-up@(Model.CommunityViewModel.ShowPopupOnSignUp ? "-popup" : "") fill ">Sign Up or Log In</a>
+    <a href="/login/@Model.CommunityViewModel.EncodedGroupId?ReturnUrl=/community/joinandgo/@Model.CommunityViewModel.EncodedGroupId" class="btn cta small btn--sign-up@(Model.CommunityViewModel.ShowPopupOnSignUp ? "-popup" : "") fill ">Sign Up or Log In</a>
 }
 else
 {
