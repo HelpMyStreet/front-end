@@ -153,7 +153,7 @@
     }
 
     form[selected-activity="VaccineSupport"] {
-        *[hide-tile-when*="activity:FaceMask"] {
+        *[hide-tile-when*="activity:VaccineSupport"] {
             display: none;
         }
     }
@@ -168,7 +168,7 @@
         }
 
         *[show-tile-when*="repeats:true"] {
-            display: block;
+            display: initial;
         }
     }
 
