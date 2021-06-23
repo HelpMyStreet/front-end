@@ -82,20 +82,27 @@ namespace HelpMyStreetFE.Repositories
         }
 
         private CommunityModel GetCommunityModel(Group group, MapLocation mapLocation)
-        {         
-            return new CommunityModel()
+        {
+            var communityModel = new CommunityModel()
             {
                 FriendlyName = group.FriendlyName,
                 GeographicName = group.GeographicName,
                 GroupType = group.GroupType.GetString(),
                 LinkURL = group.LinkURL,
-                Pin_Latitude = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).Latitude,
-                Pin_Longitude = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).Longitude,
-                Pin_VisibilityZoomLevel = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).ZoomLevel,
-                DisplayOnMap = true,
                 BannerLocation = $"/img/homepagemapbanner/{group.GroupKey}-banner.jpg",
                 JoinGroupPopUpDetail = group.JoinGroupPopUpDetail
             };
+            
+            var maps = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation);
+
+            if (maps != null)
+            {
+                communityModel.Pin_Latitude = maps.Latitude;
+                communityModel.Pin_Longitude = maps.Longitude;
+                communityModel.Pin_VisibilityZoomLevel = maps.ZoomLevel;
+                communityModel.DisplayOnMap = true;
+            }
+            return communityModel;
         }
 
         private CommunityViewModel GetCommunityViewModel(Group group, string viewName, bool showRequestHelpPopup, bool showPopupOnSignUp)
@@ -103,8 +110,8 @@ namespace HelpMyStreetFE.Repositories
             var communityViewModel = new CommunityViewModel() 
             { 
                 CommunityName = group.FriendlyName, 
-                View = viewName, CommunityShortName = 
-                group.ShortName, 
+                View = viewName, 
+                CommunityShortName = group.ShortName, 
                 ShowRequestHelpPopup = showRequestHelpPopup,
                 ShowPopupOnSignUp = showPopupOnSignUp
             };
