@@ -4,8 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script>
-    const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) }
+    const configuration = { firebase: @Html.Raw(Json.Serialize(@Model.FirebaseConfiguration)) };
+
 </script>
+
 <div class="container login">
     <div class="row  justify-center ">
         <div class="sm6">
@@ -14,7 +16,7 @@
                 <form id="login-form" class="login-form">
                     <div class="input">
                         <label for="email">Email</label>
-                        <input name="email" type="text" id="email" value = "@Model.Email" placeholder="Email" />
+                        <input name="email" type="text" id="email" value="@Model.Email" placeholder="Email" />
                         <span class="login__fail-message-main">@Model.EmailError</span>
                     </div>
                     <div class="input">
@@ -51,6 +53,6 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 

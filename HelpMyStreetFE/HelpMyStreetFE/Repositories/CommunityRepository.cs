@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Repositories
         }
 
         public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
-        {   
+        {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
 
             CommunityViewModel vm = ((Groups)group.GroupId) switch
@@ -58,7 +58,7 @@ namespace HelpMyStreetFE.Repositories
             List<CommunityModel> returnCommunities = new List<CommunityModel>();
             var groups = await _groupService.GetGroupsWithMapDetails(MapLocation.HomePage, CancellationToken.None);
 
-            if(groups!=null)
+            if (groups != null)
             {
                 groups
                     .ToList()
@@ -88,12 +88,12 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetCommunityViewModel(Group group, string viewName, bool showRequestHelpPopup)
         {
-            var communityViewModel = new CommunityViewModel() { CommunityName = group.FriendlyName, View = viewName , CommunityShortName = group.ShortName, ShowRequestHelpPopup = showRequestHelpPopup};
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>(){};
+            var communityViewModel = new CommunityViewModel() { CommunityName = group.FriendlyName, View = viewName, CommunityShortName = group.ShortName, ShowRequestHelpPopup = showRequestHelpPopup };
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>() { };
 
             var maps = group.Maps.FirstOrDefault(x => x.MapLocation == MapLocation.Landing);
 
-            if(maps!=null)
+            if (maps != null)
             {
                 communityViewModel.Map_CentreLatitude = maps.Latitude;
                 communityViewModel.Map_CentreLongitude = maps.Longitude;
@@ -106,7 +106,7 @@ namespace HelpMyStreetFE.Repositories
         {
             var group = _groupService.GetGroupByKey(key, CancellationToken.None).Result;
 
-            if(group!=null)
+            if (group != null)
             {
                 return GetCommunityModel(group, MapLocation.Landing);
             }
@@ -304,8 +304,8 @@ namespace HelpMyStreetFE.Repositories
 
             return communityViewModel;
         }
-        
-        private CommunityViewModel GetMeadowsCommunityHelpers()                    
+
+        private CommunityViewModel GetMeadowsCommunityHelpers()
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("meadows-community-helpers", "MeadowsComunityHelpers", true);
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
@@ -694,7 +694,7 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
                 },
             };
-         
+
             var carouselPath = "/img/community/ageUK/lsl/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
             {
