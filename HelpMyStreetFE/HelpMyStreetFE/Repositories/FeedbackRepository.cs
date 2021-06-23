@@ -374,6 +374,22 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "meadows-community-helpers",
                 },
+                new Testimonial()
+                {
+                    Tagline = "An absolute lifeline",
+                    Message = "My husband and I would like to thank you all so much for all the help you arranged for vulnerable people during the lockdown. We had to make use of the service provided for medication several times and it was an absolute lifeline. We are a long way away from our family and at times things were quite difficult, but it felt so good to know that there was a backup there if we needed it. Thank you very much.",
+                    Person = "Local residents",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "southwell",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Many thanks",
+                    Message = "Many thanks Torpedos for your support, especially Sarah whose smile and cheery greeting was so welcome at my lowest ebb.",
+                    Person = "Margaret, local resident",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "southwell",
+                },
             };
 
             return messageList;

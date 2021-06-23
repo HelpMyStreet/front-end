@@ -393,9 +393,24 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });
 
                 endpoints.MapControllerRoute(
+                    name: "apexpcnbankstaff",
+                    pattern: "apexpcnbankstaff",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "apex-pcn-bank-staff" });
+
+                endpoints.MapControllerRoute(
                     name: "meadows-community-helpers",
                     pattern: "meadows-community-helpers",
                     defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
+
+                endpoints.MapControllerRoute(
+                    name: "meadows",
+                    pattern: "meadows",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
+
+                endpoints.MapControllerRoute(
+                    name: "southwell",
+                    pattern: "southwell",
+                    defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",

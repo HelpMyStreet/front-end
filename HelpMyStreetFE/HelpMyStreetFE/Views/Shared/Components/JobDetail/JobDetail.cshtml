@@ -3,6 +3,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Models;
 @using Westwind.AspNetCore.Markdown
 
 @model JobDetailViewModel
@@ -30,6 +31,10 @@
 
     var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+
+    var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail.GetValueOrDefault(false) && !Model.UserActingAsAdmin;
+
+    var userDetailsHiddenText = $"The organisation managing this request would like to provide this information to you directly. Please contact the requester quoting reference {jobSummary.HmsReference} to find out who needs the help.";
 }
 
 @if (Model.ToPrint)
@@ -142,88 +147,54 @@
                         </div>
                         @if (userActingAsAdmin && currentVolunteer != null)
                         {
-                            var volunteerDetails = currentVolunteer.UserPersonalDetails;
+                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails.DisplayName;
                             <div class="sm12">
                                 <h5>Volunteer</h5>
                                 <dl>
-                                    <dd>@volunteerDetails.DisplayName</dd>
+                                    <dd>@volunteerDetails</dd>
                                 </dl>
                             </div>
                         }
+                    }
+                    else if (userDetailsHidden)
+                    {
+                <div class="sm12">
+                    <h5>Recipient</h5>
+                    <dl>
+                        <dd>@userDetailsHiddenText</dd>
+                    </dl>
+                    <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = Model.JobDetail.Requestor.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = null,
+                                     RequestRole = RequestRoles.Requestor
+                                      }" />
+                </div>
                     }
                     else
                     {
                         @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || recipient != null)
                         {
-                            <div class="sm6">
-                                <h5>Recipient</h5>
-                                <dl>
-                                    @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
-                                    {
-                                        <dt>Organisation</dt>
-                                        <dd>@jobSummary.RecipientOrganisation</dd>
-                                    }
-                                    @if (recipient != null)
-                                    {
-                                        <dt>Name</dt>
-                                        <dd>@recipient.FirstName @recipient.LastName</dd>
-                                        <dt>Email</dt>
-                                        <dd>@(string.IsNullOrEmpty(recipient.EmailAddress) ? userDetailsNotProvidedText : recipient.EmailAddress) </dd>
-                                        <dt>@(recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                        <dd>
-                                            @if (String.IsNullOrEmpty(recipient.MobileNumber) && String.IsNullOrEmpty(recipient.OtherNumber))
-                                            {
-                                                @userDetailsNotProvidedText
-                                            }
-                                            else
-                                            {
-                                                @string.Join(" / ", recipient.PhoneNumbers())
-                                            }
-                                        </dd>
-                                        <dt>Address</dt>
-                                        <dd>
-                                            @Html.DisplayFor(x => recipient.Address, new { MaskAddress = AgeUk || Hlp })
-                                        </dd>
-                                    }
-                                </dl>
-                            </div>
+                            <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = Model.JobDetail.Recipient.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = jobSummary.RecipientOrganisation,
+                                     RequestRole = RequestRoles.Recipient
+                                      }" />
                         }
                         @if (userActingAsAdmin && currentVolunteer != null)
                         {
-                            var volunteerDetails = currentVolunteer.UserPersonalDetails;
-                            <div class="sm6">
-                                <h5>Volunteer</h5>
-                                <dl>
-                                    <dt>Name</dt>
-                                    <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
-                                    <dt>Email</dt>
-                                    <dd>@volunteerDetails.EmailAddress</dd>
-                                    <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
-                                    <dt>Address</dt>
-                                    <dd>
-                                        @volunteerDetails.LocationSummary()
-                                    </dd>
-                                </dl>
-                            </div>
+                            <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = (PersonalDetails) Model.JobDetail.CurrentVolunteer.UserPersonalDetails.GetDPSafeUserPersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Volunteer, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = null,
+                                     RequestRole = RequestRoles.Volunteer
+                                      }" />
                         }
                         @if (requestor != null && jobSummary.RequestorType != RequestorType.Myself)
                         {
-                            <div class="sm6">
-                                <h5>Requester</h5>
-                                <dl>
-                                    <dt>Name</dt>
-                                    <dd>@requestor.FirstName @requestor.LastName</dd>
-                                    <dt>Email</dt>
-                                    <dd>@requestor.EmailAddress</dd>
-                                    <dt>@(requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>@string.Join(" / ", requestor.PhoneNumbers())</dd>
-                                    <dt>Address</dt>
-                                    <dd>
-                                        @requestor.Address.Postcode
-                                    </dd>
-                                </dl>
-                            </div>
+                            <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                     PersonalDetails = Model.JobDetail.Requestor.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, Model.UserActingAsAdmin)),
+                                     RecipientOrganisation = null,
+                                     RequestRole = RequestRoles.Requestor
+                                      }" />
                         }
                     }
                 </div>

@@ -6,6 +6,10 @@
         <div class="popup__content__header">Join Group</div>
         <div>
             <p>Would you like to join <b>@Model.FriendlyName</b>?</p>
+            @if (!String.IsNullOrEmpty(Model.JoinGroupPopUpDetail))
+            {
+                @Html.Raw(Model.JoinGroupPopUpDetail);
+            }
         </div>
         <div class="popup__content__buttons mt-md">
             <p class="error dnone"></p>

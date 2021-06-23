@@ -34,7 +34,8 @@
                 new RequestActivityViewModel{ Activity = SupportActivities.DigitalSupport, Description = "Help with computers, phones and other technology for people finding it difficult to get online"},
                 new RequestActivityViewModel{ Activity = SupportActivities.InPersonBefriending, Description = "Face-to-face meetings to reduce loneliness"},
                 new RequestActivityViewModel{ Activity = SupportActivities.PracticalSupport, Description = "Help with everyday tasks (e.g. changing a lightbulb, filling in forms etc.)"},
-        };
+                new RequestActivityViewModel{ Activity = SupportActivities.BankStaffVaccinator, Description = "Finding registered vaccinators", MultiVolunteer = true }
+    };
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
 

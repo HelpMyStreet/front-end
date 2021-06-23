@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             _requestHelpRepository = requestHelpRepository;
         }
-
+        
         public async Task<RequestHelpViewModel> GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
             RequestHelpFormVariant requestHelpFormVariant = requestHelpJourney.RequestHelpFormVariant;
@@ -53,10 +53,16 @@ namespace HelpMyStreetFE.Services.Requests
                 }
             };
 
-            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers)
+            if (requestHelpFormVariant == RequestHelpFormVariant.LincolnshireVolunteers || requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS || requestHelpFormVariant == RequestHelpFormVariant.ApexBankStaff_RequestSubmitter)
             {
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
             }
+
+            //if (requestHelpFormVariant == RequestHelpFormVariant.Sandbox_RequestSubmitter)
+            //{
+            //    var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
+            //    requestStep.Timeframes.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes });
+            //}
 
             return model;
         }
@@ -81,6 +87,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.MeadowsCommunityHelpers_RequestSubmitter => "Request Help from the Meadows Community Helpers",
                 RequestHelpFormVariant.AgeConnectsCardiff_Public => "Request Help from Age Connects Cardiff and the Vale",
                 RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => "Request Help from Age Connects Cardiff and the Vale",
+                RequestHelpFormVariant.Soutwell_Public => "Request Help from Southwell Torpedos",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -257,6 +264,10 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.VaccineSupport, IsSelected = true });
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.ApexBankStaff_RequestSubmitter)
+            {
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.BankStaffVaccinator, IsSelected = true });
+            }
             else if (requestHelpFormVariant == RequestHelpFormVariant.MeadowsCommunityHelpers_Public)
             {
                 tasks.AddRange(new List<TasksViewModel>
@@ -326,6 +337,22 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.PracticalSupport },
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport },
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel {SupportActivity = SupportActivities.VaccineSupport, IsSelected = true}
+                });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.Soutwell_Public)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping },
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
