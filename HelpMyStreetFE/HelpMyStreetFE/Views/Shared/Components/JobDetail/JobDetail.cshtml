@@ -32,7 +32,7 @@
     var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 
-    var userDetailsHidden = Model.JobDetail.JobSummary.SuppressRecipientPersonalDetail.GetValueOrDefault(false) && !Model.UserActingAsAdmin;
+    var userDetailsHidden = Model.JobDetail.Item.SuppressRecipientPersonalDetail.GetValueOrDefault(false) && !userActingAsAdmin;
 
     var userDetailsHiddenText = $"The organisation managing this request would like to provide this information to you directly. Please contact the requester quoting reference {jobSummary.HmsReference} to find out who needs the help.";
 }
@@ -147,7 +147,7 @@
                         </div>
                         @if (userActingAsAdmin && currentVolunteer != null)
                         {
-                            var volunteerDetails = Model.JobDetail.CurrentVolunteer.UserPersonalDetails.DisplayName;
+                            var volunteerDetails = Model.JobDetail.Item.CurrentVolunteer.UserPersonalDetails.DisplayName;
                             <div class="sm12">
                                 <h5>Volunteer</h5>
                                 <dl>
@@ -164,7 +164,7 @@
                         <dd>@userDetailsHiddenText</dd>
                     </dl>
                     <partial name="_PersonalDetails" model="new PersonalDetailsView {
-                                     PersonalDetails = Model.JobDetail.Requestor.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, Model.UserActingAsAdmin)),
+                                     PersonalDetails = Model.JobDetail.Item.Requestor.GetDPSafePersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, userActingAsAdmin)),
                                      RecipientOrganisation = null,
                                      RequestRole = RequestRoles.Requestor
                                       }" />
@@ -175,7 +175,7 @@
                         @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || recipient != null)
                         {
                             <partial name="_PersonalDetails" model="new PersonalDetailsView {
-                                     PersonalDetails = Model.JobDetail.Recipient.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient, Model.UserActingAsAdmin)),
+                                     PersonalDetails = Model.JobDetail.Item.Recipient.GetDPSafePersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient, userActingAsAdmin)),
                                      RecipientOrganisation = jobSummary.RecipientOrganisation,
                                      RequestRole = RequestRoles.Recipient
                                       }" />
@@ -183,7 +183,7 @@
                         @if (userActingAsAdmin && currentVolunteer != null)
                         {
                             <partial name="_PersonalDetails" model="new PersonalDetailsView {
-                                     PersonalDetails = (PersonalDetails) Model.JobDetail.CurrentVolunteer.UserPersonalDetails.GetDPSafeUserPersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Volunteer, Model.UserActingAsAdmin)),
+                                     PersonalDetails = (PersonalDetails) Model.JobDetail.Item.CurrentVolunteer.UserPersonalDetails.GetDPSafeUserPersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Volunteer, userActingAsAdmin)),
                                      RecipientOrganisation = null,
                                      RequestRole = RequestRoles.Volunteer
                                       }" />
@@ -191,7 +191,7 @@
                         @if (requestor != null && jobSummary.RequestorType != RequestorType.Myself)
                         {
                             <partial name="_PersonalDetails" model="new PersonalDetailsView {
-                                     PersonalDetails = Model.JobDetail.Requestor.GetDPSafePersonalDetails(Model.JobDetail.JobSummary.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, Model.UserActingAsAdmin)),
+                                     PersonalDetails = Model.JobDetail.Item.Requestor.GetDPSafePersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, userActingAsAdmin)),
                                      RecipientOrganisation = null,
                                      RequestRole = RequestRoles.Requestor
                                       }" />
