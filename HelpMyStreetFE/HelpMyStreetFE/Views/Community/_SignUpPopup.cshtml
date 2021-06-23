@@ -1,0 +1,29 @@
+﻿@model HelpMyStreetFE.Models.Community.CommunityModel
+
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Join @Model.FriendlyName</div>
+        <div>
+            @if (!String.IsNullOrEmpty(Model.JoinGroupPopUpDetail))
+            {
+                @Html.Raw(Model.JoinGroupPopUpDetail);
+            }
+            <p class="mt-md"><strong>Would you like to continue?</strong></p>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone"></p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = $"Yes, continue registration"  }' />
+        </div>
+        <div>
+            @if (!String.IsNullOrEmpty(Model.JoinGroupPopUpDetail))
+            {
+                <p>If that isn’t for you, why not join up the wider HelpMyStreet team? You’ll be able to help as much or as little as you like, but you my not get access to all Age Connects Cardiff & the Vale opportunities.</p>
+            }
+        </div>
+        <div class="popup__content__buttons mt-md">
+            <p class="error dnone"></p>
+            <partial name="_PopupRejectButton" model='new PopupButtonModel { ButtonText = $"Join HelpMystreet" }' />
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using System.Linq;
 using HelpMyStreetFE.Services.Groups;
 
@@ -25,8 +26,9 @@ namespace HelpMyStreetFE.Repositories
             {"ageuk-favershamandsittingbourne", new CommunityModel() {FriendlyName = "Age UK Faversham & Sittingbourne", Pin_Latitude = 51.32681418199929, Pin_Longitude = 0.8065864663737088, LinkURL = "/favershamandsittingbourne", Pin_VisibilityZoomLevel = 12, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/favershamandsittingbourne/banner.jpg", GeographicName="Faversham or Sittingbourne", GroupType = "Local Group" } },
             {"ageuknwkent", new CommunityModel() {FriendlyName = "Age UK North West Kent", Pin_Latitude = 51.40020276537333, Pin_Longitude = 0.2950217005371014, LinkURL = "/northwestkent", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageUK/kent/northwest/nwkent-banner.png", GeographicName="North West Kent (Dartford, Swanley or Gravesend)", GroupType = "Local Group" } },
             {"lincs-volunteers", new CommunityModel() {FriendlyName = "Lincolnshire Volunteers", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/vacc/lincolnshirevolunteers/banner-narrow.png", LinkURL = "/lincolnshirevolunteers", GroupType = "Regional Group"} },
+            {"apex-pcn-bank-staff", new CommunityModel() {FriendlyName = "Apex PCN Bank Staff", Pin_Latitude = 53.196498, Pin_Longitude = -0.574294, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/vacc/apex-pcn-bank-staff/banner.png", LinkURL = "/apexpcnbankstaff", GroupType = "Regional Group"} },
             {"ftlos", new CommunityModel{FriendlyName="For the Love of Scrubs", DisplayOnMap = false } },
-            {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
+            {"ageconnects-cardiff", new CommunityModel() {FriendlyName = "Age Connects Cardiff & the Vale", JoinGroupPopUpDetail = "<p>Age Connects Cardiff & the Vale require two references, an Induction Session and (in most cases) a DBS check before you can start volunteering.</p><p>You will also be expected to make a minimum commitment of six months.</p>", Pin_Latitude = 51.5022198, Pin_Longitude = -3.2752615, LinkURL = "/ageconnects-cardiff", Pin_VisibilityZoomLevel = 11, DisplayOnMap = true, BannerLocation = "/img/community/ageconnectscardiff/banner.png", GeographicName="Cardiff & the Vale", GroupType = "Regional Group" } },
             {"meadows-community-helpers", new CommunityModel() {FriendlyName = "Meadows Community Helpers", Pin_Latitude = 52.94107706186348, Pin_Longitude = -1.1435562260432748, Pin_VisibilityZoomLevel = 9, DisplayOnMap = true, BannerLocation = "/img/community/meadows/murial_full.jpg", LinkURL = "/meadows-community-helpers", GroupType = "Local Group", GeographicName="The Meadows"} },
             {"southwell", new CommunityModel() {FriendlyName = "Southwell Torpedos", Pin_Latitude = 53.0779128, Pin_Longitude = -0.973649, Pin_VisibilityZoomLevel = 9, DisplayOnMap = false, BannerLocation = "/img/community/southwell/banner.png", GeographicName = "Southwell or surrounding areas", GroupType = "Local Group", LinkURL = "/southwell"} }
         };
@@ -36,11 +38,8 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
         {
-
-            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-
             CommunityViewModel vm = ((Groups)group.GroupId) switch
             {
                 Groups.Tankersley => GetTankersley(),
@@ -58,12 +57,30 @@ namespace HelpMyStreetFE.Repositories
                 Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
                 Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),
                 Groups.Southwell => GetSouthwell(),
+                Groups.ApexBankStaff => GetApexBankStaff(),
                 _ => null,
             };
 
             vm.Group = group;
 
             return vm;
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(int groupId, CancellationToken cancellationToken)
+        {
+
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
+
+            return await GetCommunity(group, cancellationToken);
+
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        {
+
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
+
+            return await GetCommunity(group, cancellationToken);
 
         }
 
@@ -93,6 +110,7 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.CommunityName = communityModel.FriendlyName;
             communityViewModel.ShowRequestHelpPopup = true;
+            communityViewModel.ShowPopupOnSignUp = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
@@ -452,6 +470,62 @@ namespace HelpMyStreetFE.Repositories
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png"
                 },
+            };
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetApexBankStaff()
+        {
+            CommunityViewModel communityViewModel = new CommunityViewModel
+            {
+                View = "ApexPCNBankStaff",
+            };
+
+            CommunityModel communityModel = GetCommunityDetailByKey("apex-pcn-bank-staff");
+
+            communityViewModel.Map_CentreLatitude = 52.95;
+            communityViewModel.Map_CentreLongitude = -0.2;
+            communityViewModel.Map_ZoomLevel = 9;
+
+            communityViewModel.CommunityName = "Apex Bank PCN Staff";
+            communityViewModel.ShowRequestHelpPopup = true;
+
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Dr Nick Smith",
+                    Role = "Clinical Director",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/dr-smith.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Dr Rama Mark",
+                    Role = "Clinical Director",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/rama.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Gary Burroughs",
+                    Role = "PCN Manager",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/gary-burrows.jpg"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Fiona Roche",
+                    Role = "Locality Lead",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                }
             };
 
             return communityViewModel;

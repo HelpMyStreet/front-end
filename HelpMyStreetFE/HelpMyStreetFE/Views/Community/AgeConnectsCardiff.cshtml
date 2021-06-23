@@ -39,16 +39,11 @@
                         <li>Practical help</li>
                     </ul>
 
-                    <p>To request help, call us on 029 2068 3600.</p>
+                    <p class="mt-sm"><strong>To request help, call us on 029 2068 3600.</strong></p>
 
-
-                    @*<div class="row sm6 text-center justify-center mb-sm">
-                        <p class="mt-sm mb-sm pl-md pr-md">To request help, complete our quick and easy online form or call us on 029 2068 3600.</p>
-                        <partial name="_RequestHelpButton" model="Model" />
-                    </div>*@
+                    <p class="mt-sm">If you are able to make a minimum commitment of six months and would like to join us as a volunteer, sign up or log in below. We’ll then get in touch with everything you need to know to get started.</p>
 
                     <div class="row sm12 text-center justify-center mb-sm">
-                        <p class="mt-sm mb-sm pl-md pr-md">To volunteer and help older people in your area, sign up or log in today.</p>
                         <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
                     </div>
                 </div>
@@ -111,20 +106,27 @@
 
                         <h2>How can we help?</h2>
                         <p class="mt-sm mb-md">
-                            If there’s something you think we could help, please get in touch. We have a team of friendly ID-checked volunteers ready and waiting to help you!
+                            If there’s something you think we could help with, please get in touch. We have a team of friendly ID-checked volunteers ready and waiting to help you!
                         </p>
                         <p class="mt-sm mb-md">
                             To request help, call us on 029 2068 3600.
                         </p>
-
-                        @*<div class="text-center">
-                            <partial name="_RequestHelpButton" model="Model" />
-                        </div>*@
-
                     </div>
                 </div>
                 <div class="flex sm6">
-                    <partial name="_VolunteerWithUsCard" model="Model" />
+                    <div class="card flex m-sm">
+                        <h2>Volunteer with us!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            If you are able to make a minimum commitment of six months and would like to join us as a volunteer, sign up or log in below. We’ll then get in touch with everything you need to know to get started.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Thanks for being part of @(Model.CommunityName)  Click below to view help requests.
+                        </p>
+
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -167,22 +169,28 @@
 
                         <h2>How can we help?</h2>
                         <p class="mt-sm mb-md">
-                            If there’s something you think we could help, please get in touch. We have a team of friendly ID-checked volunteers ready and waiting to help you!
+                            If there’s something you think we could help with, please get in touch. We have a team of friendly ID-checked volunteers ready and waiting to help you!
                         </p>
                         <p class="mt-sm mb-md">
                             To request help, call us on 029 2068 3600.
                         </p>
-
-                        @*<div class="text-center">
-                            <partial name="_RequestHelpButton" model="Model" />
-                        </div>*@
-
                     </div>
                 </div>
                 <div class="flex sm6">
-                    <partial name="_VolunteerWithUsCard" model="Model" />
-                </div>
+                    <div class="card flex m-sm">
+                        <h2>Volunteer with us!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            If you are able to make a minimum commitment of six months and would like to join us as a volunteer, sign up or log in below. We’ll then get in touch with everything you need to know to get started.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Thanks for being part of @(Model.CommunityName)  Click below to view help requests.
+                        </p>
 
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
