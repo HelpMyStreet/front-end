@@ -589,7 +589,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetTankersley()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("tankersley", "Tankersley");
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("tankersley", "Tankersley",true);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
