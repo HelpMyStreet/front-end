@@ -43,6 +43,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
         private IEqualityComparer<JobSummary> _jobSummaryJobDedupe_EqualityComparer;
+        private IEqualityComparer<JobSummary> _jobSummaryJobDedupeWithDate_EqualityComparer;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
@@ -62,6 +63,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             _shiftJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
             _jobSummaryJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
+            _jobSummaryJobDedupeWithDate_EqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -591,7 +593,7 @@ namespace HelpMyStreetFE.Services.Requests
             var allJobs = (await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
             var dedupedJobs = allJobs.Distinct(_jobSummaryJobDedupe_EqualityComparer);
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
-            var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupe_EqualityComparer));
+            var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
 
             return notMyJobs;
         }
