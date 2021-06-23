@@ -15,5 +15,6 @@ namespace HelpMyStreetFE.Services.Requests
         IEnumerable<JobSummary> SortAndFilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jobFilterRequest);
         IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jobFilterRequest);
         IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jobFilterRequest);
+        IEnumerable<IEnumerable<JobSummary>> SortAndFilterJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr);
     }
 }

@@ -11,12 +11,13 @@
     var encodedJobID = Base64Utils.Base64Encode(Model.JobID);
 }
 
+<dt>When is the help needed?</dt>
+
 @if (Model.DueDateType == DueDateType.SpecificStartAndEndTimes)
 {
     var startDate = requestSummary.Shift?.StartDate ?? Model.DueDate;
     var endDate = requestSummary.Shift?.EndDate ?? Model.DueDate; // TODO: make this work for non-shifts
 
-    <dt>When is the help needed?</dt>
     @if (startDate.ToUKFromUTCTime().Date.Equals(endDate.ToUKFromUTCTime().Date))
     {
         <dd>
@@ -50,8 +51,6 @@ else
     var notBeforeDate = Model.NotBeforeDate;
     var today = DateTime.UtcNow.ToUKFromUTCTime().Date;
 
-
-    <dt>When is the help needed?</dt>
 
     @if (dueDate.Date < today)
     {

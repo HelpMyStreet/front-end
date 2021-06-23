@@ -166,19 +166,19 @@ namespace HelpMyStreetFE.Services.Requests
             return jobs;
         }
 
-        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<JobSummary> jobs)
+        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<IEnumerable<JobSummary>> jobs)
         {
             if (jobs == null)
             {
                 return null;
             }
 
-            var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.SupportActivity) && x.DistanceInMiles <= user.SupportRadiusMiles);
+            var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.First().SupportActivity) && x.First().DistanceInMiles <= user.SupportRadiusMiles);
 
             return new OpenJobsViewModel
             {
-                CriteriaJobs = criteriaJobs.OrderOpenJobsForDisplay(),
-                OtherJobs = otherJobs.OrderOpenJobsForDisplay()
+                CriteriaJobs = criteriaJobs,//.OrderOpenJobsForDisplay(),
+                OtherJobs = otherJobs//.OrderOpenJobsForDisplay()
             };
         }
 
@@ -596,6 +596,37 @@ namespace HelpMyStreetFE.Services.Requests
             var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
 
             return notMyJobs;
+        }
+
+        public async Task<IEnumerable<IEnumerable<JobSummary>>> GetGroupedOpenJobsForUserFromRepo(User user, CancellationToken cancellationToken)
+        {
+            if (user.PostalCode == null)
+            {
+                throw new Exception("Cannot get open jobs for user without postcode");
+            }
+
+            var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities
+                .Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
+            var jobsByFilterRequest = new GetAllJobsByFilterRequest()
+            {
+                Postcode = user.PostalCode,
+                DistanceInMiles = Math.Max(_requestSettings.Value.OpenRequestsRadius, user.SupportRadiusMiles ?? 0),
+                ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
+                JobStatuses = new JobStatusRequest()
+                {
+                    JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
+                },
+                Groups = new GroupRequest() { Groups = await _groupMemberService.GetUserGroups(user.ID) },
+                RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Task } },
+            };
+
+            var allJobs = (await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
+            var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
+            var notMyJobs = allJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
+
+            var groupedJobs = notMyJobs.GroupBy(j => j, _jobSummaryJobDedupe_EqualityComparer).Select(g => g.AsEnumerable());
+
+            return groupedJobs;
         }
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)

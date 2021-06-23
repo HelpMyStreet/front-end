@@ -4,6 +4,7 @@ using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Models.Account;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
@@ -22,6 +23,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         {
             return Item switch
             {
+                IEnumerable<JobDetail> jss => $"{jss.First().PostCode.Split(" ")[0]}, {Math.Round(jss.First().DistanceInMiles, 1)} miles away",
                 JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{js.PostCode.Split(" ")[0]}, {Math.Round(js.DistanceInMiles, 1)} miles away",
                 JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{js.PostCode}",
                 JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{js.PostCode.Split(" ")[0]}",

@@ -68,7 +68,7 @@
                             </dd>
                         </div>
                     }
-                    @if (requestSummary.JobBasics.IncompleteJobs().Count() > 1)
+                    @if (requestSummary.JobBasics.UnfilledJobs().Count() > 1)
                     {
                         var total = requestSummary.JobBasics.IncompleteJobs().Count();
                         var unfilled = requestSummary.JobBasics.UnfilledJobs().Count();

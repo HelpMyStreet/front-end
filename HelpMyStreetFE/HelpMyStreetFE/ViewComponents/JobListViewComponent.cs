@@ -68,8 +68,9 @@ namespace HelpMyStreetFE.ViewComponents
                     viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
-                case (RequestType.Task, _):
-                    viewName = "JobList";
+                case (RequestType.Task, JobSet.UserOpenRequests_MatchingCriteria):
+                case (RequestType.Task, JobSet.UserOpenRequests_NotMatchingCriteria):
+                    viewName = "OpenJobList";
                     viewModel = await InvokeAsync_Jobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
@@ -84,14 +85,14 @@ namespace HelpMyStreetFE.ViewComponents
             return View(viewName, viewModel);
         }
 
-        private async Task<ListViewModel<JobViewModel<JobDetail>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        private async Task<ListViewModel<JobViewModel<IEnumerable<JobDetail>>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            var jobListViewModel = new ListViewModel<JobViewModel<JobDetail>>();
+            var jobListViewModel = new ListViewModel<JobViewModel<IEnumerable<JobDetail>>>();
 
-            IEnumerable<JobSummary> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<IEnumerable<JobSummary>> jobs = jobFilterRequest.JobSet switch
             {
-                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs,
-                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.OtherJobs,
+                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetGroupedOpenJobsForUserFromRepo(user, cancellationToken))?.CriteriaJobs,
+                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetGroupedOpenJobsForUserFromRepo(user, cancellationToken))?.OtherJobs,
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
@@ -112,13 +113,13 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<JobDetail>()
+            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<IEnumerable<JobDetail>>()
             {
-                Item = new JobDetail(a),
+                Item = a.Select(j => new JobDetail(j)),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
-                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
-                HighlightJob = a.JobID.Equals(jobFilterRequest.HighlightJobId) || a.RequestID.Equals(jobFilterRequest.HighlightRequestId),
+                UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.First().ReferringGroupID, a.First().SupportActivity, user.ID, user.ID, cancellationToken),
+                HighlightJob = a.Any(j => j.JobID.Equals(jobFilterRequest.HighlightJobId)) || a.First().RequestID.Equals(jobFilterRequest.HighlightRequestId),
             }));
 
             if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
