@@ -10,6 +10,7 @@ using HelpMyStreet.Utils.Models;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Google.Apis.Util;
 using HelpMyStreet.Utils.Extensions;
+using System;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -22,10 +23,8 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
-        {   
-            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-
+        private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
+        {
             CommunityViewModel vm = ((Groups)group.GroupId) switch
             {
                 Groups.Tankersley => GetTankersley(),
@@ -53,12 +52,24 @@ namespace HelpMyStreetFE.Repositories
 
         }
 
+        public async Task<CommunityViewModel> GetCommunity(int groupId, CancellationToken cancellationToken)
+        {
+            var group = await _groupService.GetGroupById(groupId, cancellationToken);
+            return await GetCommunity(group, cancellationToken);
+        }
+
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        {
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
+            return await GetCommunity(group, cancellationToken);
+        }
+
         public async Task<List<CommunityModel>> GetCommunities()
         {
             List<CommunityModel> returnCommunities = new List<CommunityModel>();
             var groups = await _groupService.GetGroupsWithMapDetails(MapLocation.HomePage, CancellationToken.None);
 
-            if(groups!=null)
+            if (groups != null)
             {
                 groups
                     .ToList()
@@ -71,7 +82,7 @@ namespace HelpMyStreetFE.Repositories
         }
 
         private CommunityModel GetCommunityModel(Group group, MapLocation mapLocation)
-        {
+        {         
             return new CommunityModel()
             {
                 FriendlyName = group.FriendlyName,
@@ -82,18 +93,26 @@ namespace HelpMyStreetFE.Repositories
                 Pin_Longitude = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).Longitude,
                 Pin_VisibilityZoomLevel = group.Maps.FirstOrDefault(x => x.MapLocation == mapLocation).ZoomLevel,
                 DisplayOnMap = true,
-                BannerLocation = $"/img/homepagemapbanner/{group.GroupKey}-banner.jpg"
+                BannerLocation = $"/img/homepagemapbanner/{group.GroupKey}-banner.jpg",
+                JoinGroupPopUpDetail = group.JoinGroupPopUpDetail
             };
         }
 
-        private CommunityViewModel GetCommunityViewModel(Group group, string viewName, bool showRequestHelpPopup)
+        private CommunityViewModel GetCommunityViewModel(Group group, string viewName, bool showRequestHelpPopup, bool showPopupOnSignUp)
         {
-            var communityViewModel = new CommunityViewModel() { CommunityName = group.FriendlyName, View = viewName , CommunityShortName = group.ShortName, ShowRequestHelpPopup = showRequestHelpPopup};
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>(){};
+            var communityViewModel = new CommunityViewModel() 
+            { 
+                CommunityName = group.FriendlyName, 
+                View = viewName, CommunityShortName = 
+                group.ShortName, 
+                ShowRequestHelpPopup = showRequestHelpPopup,
+                ShowPopupOnSignUp = showPopupOnSignUp
+            };
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>() { };
 
             var maps = group.Maps.FirstOrDefault(x => x.MapLocation == MapLocation.Landing);
 
-            if(maps!=null)
+            if (maps != null)
             {
                 communityViewModel.Map_CentreLatitude = maps.Latitude;
                 communityViewModel.Map_CentreLongitude = maps.Longitude;
@@ -106,7 +125,7 @@ namespace HelpMyStreetFE.Repositories
         {
             var group = _groupService.GetGroupByKey(key, CancellationToken.None).Result;
 
-            if(group!=null)
+            if (group != null)
             {
                 return GetCommunityModel(group, MapLocation.Landing);
             }
@@ -116,13 +135,13 @@ namespace HelpMyStreetFE.Repositories
             }
         }
 
-        private CommunityViewModel GetCommunityViewModelByKey(string key, string viewName, bool showRequestHelpPopup)
+        private CommunityViewModel GetCommunityViewModelByKey(string key, string viewName, bool showRequestHelpPopup = false, bool showPopupOnSignUp= false)
         {
             var group = _groupService.GetGroupByKey(key, CancellationToken.None).Result;
 
             if (group != null)
             {
-                return GetCommunityViewModel(group, viewName, showRequestHelpPopup);
+                return GetCommunityViewModel(group, viewName, showRequestHelpPopup, showPopupOnSignUp);
             }
             else
             {
@@ -132,7 +151,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetAgeConnectsCardiff()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageconnects-cardiff", "AgeConnectsCardiff", true);
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageconnects-cardiff", "AgeConnectsCardiff", true, true);
             var carouselPath = "/img/community/ageconnectscardiff/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
             {
@@ -251,7 +270,6 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-
         private CommunityViewModel GetNorthMuskham()
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("north-muskham", "NorthMuskham", true);
@@ -304,8 +322,8 @@ namespace HelpMyStreetFE.Repositories
 
             return communityViewModel;
         }
-        
-        private CommunityViewModel GetMeadowsCommunityHelpers()                    
+
+        private CommunityViewModel GetMeadowsCommunityHelpers()
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("meadows-community-helpers", "MeadowsComunityHelpers", true);
             communityViewModel.HelpExampleCards = new Models.HelpExampleCardsViewModel();
@@ -429,7 +447,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Clinical Director",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/dr-smith.jpg"
                 },
                 new CommunityVolunteer()
                 {
@@ -445,7 +463,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "PCN Manager",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/gary-burrows.jpg"
                 },
                 new CommunityVolunteer()
                 {
@@ -526,7 +544,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetHLP()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("hlp", "HLP", false);
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("hlp", "HLP");
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -571,7 +589,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetTankersley()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("tankersley", "Tankersley", false);
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("tankersley", "Tankersley");
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -676,7 +694,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetAgeUKLSL()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuklsl", "AgeUKLSL", false);
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuklsl", "AgeUKLSL");
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -694,7 +712,7 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
                 },
             };
-         
+
             var carouselPath = "/img/community/ageUK/lsl/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
             {
@@ -712,7 +730,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetAgeUKWirral()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageukwirral", "AgeUKWirral", false);
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageukwirral", "AgeUKWirral");
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
@@ -741,7 +759,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetFtLOS()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ftlos", "ForTheLoveOfScrubs", false);
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ftlos", "ForTheLoveOfScrubs");
             var carouselPath = "/img/community/fortheloveofscrubs";
             communityViewModel.CarouselImages = new List<List<string>>
             {
