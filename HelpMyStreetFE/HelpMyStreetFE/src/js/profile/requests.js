@@ -240,14 +240,64 @@ export function showSeriesStatusUpdatePopup(btn) {
             let popup2Source = `/api/request-help/get-accept-job-series-popup?rq=${requestId}&stg=2`;
 
             let popup2Settings = {
+                noFade: true,
                 acceptCallbackAsync: async () => {
-                    $(job).find('.job__status__new').html(payload.newStatus);
+                    $(job).find('.job__status__new').html('In Progress');
                     $(job).find('button').toggle();
                     $(job).find('.toggle-on-status-change').toggle();
+                    return true;
                 }
             };
 
-            showServerSidePopup(popup2Source, popup2Settings);
+            let popup = await showServerSidePopup(popup2Source, popup2Settings);
+
+            const updatePrimaryButtonStyling = function () {
+                if ($(popup).find('.job[data-job-status="Open"]').length > 0) {
+                    $(popup.find('button.accept-all-jobs-now').removeClass('cta--green-border'));
+                } else {
+                    $(popup.find('button.accept-all-jobs-now').addClass('cta--green-border'));
+                }
+                if ($(popup).find('.job[data-job-status="InProgress"]').length > 0) {
+                    $(popup.find('button#popup-accept').removeClass('cta--green-border'));
+                } else {
+                    $(popup.find('button#popup-accept').addClass('cta--green-border'));
+                }
+            };
+
+            $(popup).find('button.accept-all-jobs-now').on('click', function (e) {
+                $(popup).find('button.accept-job-now:visible').click();
+                updatePrimaryButtonStyling();
+            });
+            
+            $(popup).find('button.accept-job-now').on('click', async function (e) {
+                e.stopPropagation();
+                buttonLoad($(this));
+                const job = $(this).closest(".job");
+                const response = await setJobStatus(job, 'InProgress');
+                if (response.fetchResponse == fetchResponses.SUCCESS) {
+                    $(job).attr('data-job-status', 'InProgress');
+                    $(job).find('button.accept-job-now').hide();
+                    $(job).find('button.undo-request').show();
+                }
+                buttonUnload($(this));
+                updatePrimaryButtonStyling();
+            });
+
+            $(popup).find('button.undo-request').on('click', async function (e) {
+                e.stopPropagation();
+                buttonLoad($(this));
+                const job = $(this).closest(".job");
+                const response = await setJobStatus(job, 'Open');
+                if (response.fetchResponse == fetchResponses.SUCCESS) {
+                    $(job).attr('data-job-status', 'Open');
+                    $(job).find('button.undo-request').hide();
+                    $(job).find('button.accept-job-now').show();
+                }
+                buttonUnload($(this));
+                updatePrimaryButtonStyling();
+            });
+
+            return true;
         }
     };
 

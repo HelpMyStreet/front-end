@@ -53,14 +53,7 @@ else
 
     @if (dueDate.Date < today)
     {
-        if (Model.DueDateType == DueDateType.ASAP)
-        {
-            <div><strong>As soon as possible</strong> (This request is now overdue. If you accept the request please get in touch with the help recipient urgently to see if they still need support.)</div>
-        }
-        else
-        {
-            <div><strong>Overdue</strong> (If you accept the request please get in touch with the help recipient urgently to see if they still need support.)</div>
-        }
+        <div><strong>As soon as possible</strong> (This request is now overdue.)</div>
     }
     else if (dueDate.Date == today)
     {
@@ -68,21 +61,18 @@ else
         {
             <div>
                 <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">As soon as possible today</strong>
-                (If you accept the request please get in touch with the help recipient urgently to arrange the support they need.)
             </div>
         }
         else if (Model.DueDateType == DueDateType.On)
         {
             <div>
                 <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">Today</strong>
-                (If you accept the request please get in touch with the help recipient urgently to arrange the support they need.)
             </div>
         }
         else
         {
             <div>
                 <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">Today</strong>
-                (If you accept the request please get in touch with the help recipient urgently to arrange the support they need.)
             </div>
         }
     }
@@ -98,7 +88,6 @@ else
         else if (Model.DueDateType == DueDateType.On)
         {
             <div>
-                On
                 <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
             </div>
         }
