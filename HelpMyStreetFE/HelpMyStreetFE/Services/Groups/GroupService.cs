@@ -17,6 +17,7 @@ namespace HelpMyStreetFE.Services.Groups
         private readonly IGroupRepository _groupRepository;
         private readonly IMemDistCache<int> _memDistCache_int;
         private readonly IMemDistCache<Group> _memDistCache_group;
+        private readonly IMemDistCache<List<Group>> _memDistCache_groups;
         private readonly IMemDistCache<List<List<GroupCredential>>> _memDistCache_listListGroupCred;
         private readonly IMemDistCache<Instructions> _memDistCache_instructions;
 
@@ -25,12 +26,14 @@ namespace HelpMyStreetFE.Services.Groups
         public GroupService(IGroupRepository groupRepository,
             IMemDistCache<int> memDistCache_int,
             IMemDistCache<Group> memDistCache_group,
+            IMemDistCache<List<Group>> memDistCache_groups,
             IMemDistCache<List<List<GroupCredential>>> memDistCache_listListGroupCred,
             IMemDistCache<Instructions> memDistCache_instructions)
         {
             _groupRepository = groupRepository;
             _memDistCache_int = memDistCache_int;
             _memDistCache_group = memDistCache_group;
+            _memDistCache_groups = memDistCache_groups;
             _memDistCache_listListGroupCred = memDistCache_listListGroupCred;
             _memDistCache_instructions = memDistCache_instructions;
         }
@@ -164,6 +167,15 @@ namespace HelpMyStreetFE.Services.Groups
                 throw new Exception($"No support activies for registration form: {registrationFormVariant}");
             }
             return response.SupportActivityDetails;
+        }
+
+
+        public async Task<List<Group>> GetGroupsWithMapDetails(MapLocation mapLocation, CancellationToken cancellationToken)
+        {
+            return await _memDistCache_groups.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                return (await _groupRepository.GetGroupsWithMapDetails(mapLocation)).Groups;
+            }, $"{CACHE_KEY_PREFIX}-group-maps-{(int)mapLocation}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
     }
 }
