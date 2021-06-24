@@ -1,4 +1,6 @@
-﻿@model HelpMyStreetFE.Models.Community.CommunityModel
+﻿@using Westwind.AspNetCore.Markdown;
+
+@model HelpMyStreetFE.Models.Community.CommunityModel
 
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
@@ -8,7 +10,7 @@
             <p>Would you like to join <b>@Model.FriendlyName</b>?</p>
             @if (!String.IsNullOrEmpty(Model.JoinGroupPopUpDetail))
             {
-                @Html.Raw(Model.JoinGroupPopUpDetail);
+                @Markdown.ParseHtmlString(Model.JoinGroupPopUpDetail);
             }
         </div>
         <div class="popup__content__buttons mt-md">
