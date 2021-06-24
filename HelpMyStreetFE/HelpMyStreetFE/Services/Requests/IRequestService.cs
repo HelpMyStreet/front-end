@@ -19,7 +19,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<IEnumerable<JobSummary>>> GetGroupedOpenJobsForUserFromRepo(User user, CancellationToken cancellationToken);
-
+        Task<IEnumerable<JobSummary>> FilterAndDedupeOpenJobsForUser(IEnumerable<JobSummary> allJobs, User user, CancellationToken cancellationToken);
 
         Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken);

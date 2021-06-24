@@ -45,6 +45,11 @@ export async function initialiseRequests() {
         showStatusUpdatePopup($(this));
     });
 
+    $('.job-list').on('click', '.job button.trigger-series-status-update-popup', function (e) {
+        e.stopPropagation();
+        showSeriesStatusUpdatePopup($(this));
+    });
+
     $('.job-list').on('click', '.job button.trigger-feedback-popup', function () {
         const job = $(this).closest('.job');
         let jobId = job.attr("id");
@@ -196,7 +201,7 @@ export function showStatusUpdatePopup(btn) {
                 if (payload.requestFeedback === true) {
                     showFeedbackPopup(jobId, role);
                 }
-        updateAwards();
+                updateAwards();
                 return true;
             } else {
                 switch (response.fetchResponse) {
@@ -218,6 +223,36 @@ export function showStatusUpdatePopup(btn) {
     showServerSidePopup(popupSource, popupSettings);
 }
 
+export function showSeriesStatusUpdatePopup(btn) {
+    const job = btn.closest(".job");
+    const targetState = $(btn).data("target-state");
+
+    const requestId = $(job).attr("request-id");
+
+    if (targetState != 'InProgress') {
+        return false;
+    }
+
+    let popupSource = `/api/request-help/get-accept-job-series-popup?rq=${requestId}&stg=1`;
+
+    let popupSettings = {
+        acceptCallbackAsync: async () => {
+            let popup2Source = `/api/request-help/get-accept-job-series-popup?rq=${requestId}&stg=2`;
+
+            let popup2Settings = {
+                acceptCallbackAsync: async () => {
+                    $(job).find('.job__status__new').html(payload.newStatus);
+                    $(job).find('button').toggle();
+                    $(job).find('.toggle-on-status-change').toggle();
+                }
+            };
+
+            showServerSidePopup(popup2Source, popup2Settings);
+        }
+    };
+
+    showServerSidePopup(popupSource, popupSettings);
+}
 
 async function setJobStatus(job, targetState, targetUser) {
     const jobId = job.attr("id");

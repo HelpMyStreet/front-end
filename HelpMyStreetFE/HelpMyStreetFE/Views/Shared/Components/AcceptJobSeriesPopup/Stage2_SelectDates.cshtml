@@ -1,0 +1,42 @@
+﻿@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+
+@model HelpMyStreetFE.Models.Account.Jobs.AcceptJobSeriesPopupViewModel
+
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+    var pageType = isShift ? "Shifts" : "Requests";
+
+
+
+    var userHasRequiredCredentials = true; // for now
+}
+
+<div class="popup__content wide">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Accept one or more @(isShift ? "shifts" : "requests for help")?</div>
+        <div class="popup__content__text">
+            <p>If you click to accept this request it will appear on your “My @pageType” page and you’ll be able to view more information to help you complete it.</p>
+        </div>
+        <div>
+            @foreach (var job in Model.OpenJobsForUser)
+            {
+                <div class="job">
+                    <partial name="_WhenIsHelpNeeded_ShortFormat" model="@job" />
+
+                    <button class="btn cta @(userHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+                        <span class="text">Accept</span>
+                    </button>
+                </div>
+                <hr class="input--separator" />
+            }
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t accept this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Accept" }' />
+        </div>
+    </div>
+</div>
+

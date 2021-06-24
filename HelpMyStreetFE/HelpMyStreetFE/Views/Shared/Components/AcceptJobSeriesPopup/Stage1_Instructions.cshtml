@@ -1,0 +1,32 @@
+﻿@using HelpMyStreet.Utils.Extensions;
+
+@model HelpMyStreetFE.Models.Account.Jobs.AcceptJobSeriesPopupViewModel
+
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+    var pageType = isShift ? "Shifts" : "Requests";
+}
+
+<div class="popup__content wide">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Accept one or more @(isShift ? "shifts" : "requests for help")?</div>
+        <div class="popup__content__text">
+            <p>
+                This <strong>@Model.OpenJobsForUser.First().SupportActivity.FriendlyNameShort()</strong> @requestType series is managed by <strong>@Model.ReferringGroup</strong>. 
+                When you accept a @requestType in this series your details will become visible to their administrator(s), who may use these details to contact you about this @requestType.
+            </p>
+
+            <div class="volunteer-instructions">
+                <h5>Volunteer Instructions</h5>
+                <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
+            </div>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t accept this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Next, Select dates" }' />
+        </div>
+    </div>
+</div>
+

@@ -598,6 +598,15 @@ namespace HelpMyStreetFE.Services.Requests
             return notMyJobs;
         }
 
+        public async Task<IEnumerable<JobSummary>> FilterAndDedupeOpenJobsForUser(IEnumerable<JobSummary> allJobs, User user, CancellationToken cancellationToken)
+        {
+            var dedupedJobs = allJobs.Distinct(_jobSummaryJobDedupeWithDate_EqualityComparer);
+            var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
+            var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
+
+            return notMyJobs;
+        }
+
         public async Task<IEnumerable<IEnumerable<JobSummary>>> GetGroupedOpenJobsForUserFromRepo(User user, CancellationToken cancellationToken)
         {
             if (user.PostalCode == null)

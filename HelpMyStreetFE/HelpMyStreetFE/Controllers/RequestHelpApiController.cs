@@ -143,6 +143,14 @@ namespace HelpMyStreetFE.Controllers {
         }
 
         [AuthorizeAttributeNoRedirect]
+        [Route("get-accept-job-series-popup")]
+        public IActionResult GetStatusChangePopup(string rq, int stg)
+        {
+            int requestId = Base64Utils.Base64DecodeToInt(rq);
+            return ViewComponent("AcceptJobSeriesPopup", new { requestId, stage = stg });
+        }
+
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("get-feedback-component")]
         public async Task<IActionResult> GetFeedbackComponent(string j, string r, CancellationToken cancellationToken)
         {
