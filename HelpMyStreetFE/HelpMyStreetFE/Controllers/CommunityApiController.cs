@@ -30,7 +30,6 @@ namespace HelpMyStreetFE.Controllers
             int groupId = Base64Utils.Base64DecodeToInt(g);
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
             var community = _communityRepository.GetCommunityDetailByKey(group.GroupKey);
-
             return PartialView("_RequestHelpCommunityPopup", community);
         }
 
@@ -40,7 +39,6 @@ namespace HelpMyStreetFE.Controllers
             int groupId = Base64Utils.Base64DecodeToInt(g);
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
             var community = _communityRepository.GetCommunityDetailByKey(group.GroupKey);
-
             return PartialView("_RequestHelpElsewherePopup", community);
         }
 

@@ -5,8 +5,7 @@
 
 @{
     ViewData["Title"] = Model.CommunityName;
-    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = "Southwell Torpedos", PrimaryMobileText = "Southwell Torpedos", ShowSecondaryText = true };
-    //ViewData["RequestHelpGroupId"] = Model.EncodedGroupId;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
 }
 
 @section Scripts {
