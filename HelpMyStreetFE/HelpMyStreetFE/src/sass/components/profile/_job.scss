@@ -890,3 +890,23 @@
         }
     }
 }
+
+.accept-series-popup-stage-2 {
+    .job > .row {
+        > * {
+            padding: 0.25em;
+
+            button {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: $med-screen) {
+            > * {
+                padding: 0 0.25rem;
+            }
+
+            align-items: center;
+        }
+    }
+}

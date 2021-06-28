@@ -16,7 +16,7 @@
     var userHasRequiredCredentials = true; // for now
 }
 
-<div class="popup__content wide">
+<div class="popup__content wide accept-series-popup-stage-2">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
         <div class="popup__content__header">Accept one or more @(isShift ? "shifts" : "requests for help")?</div>
@@ -38,7 +38,7 @@
 
                     <div class="job mb-sm" id="@id" data-role="@role" data-job-status="@job.JobStatus">
                         <div class="row">
-                            <div class="sm2">
+                            <div class="sm3">
                                 <span class="job__info__activity__title @job.SupportActivity.Class()">
                                     @if (job.SupportActivity != SupportActivities.Other)
                                     {
@@ -49,17 +49,17 @@
                                     </span>
                                 </span>
                             </div>
-                            <div class="sm7">
+                            <div class="sm6">
                                 <partial name="_WhenIsHelpNeeded_ShortFormat" model="@job" />
                             </div>
-                            <div class="sm3 job__info__actions">
-                                <button class="btn cta less-rounded @(userHasRequiredCredentials ? "" : "cta--green-border") accept-job-now" data-target-state="@JobStatuses.InProgress">
+                            <div class="sm3">
+                                <button class="btn cta less-rounded @(userHasRequiredCredentials ? "" : "cta--green-border") accept-job-now fill" data-target-state="@JobStatuses.InProgress">
                                     <span class="text">Accept</span>
                                     <div class="loader dnone">
                                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Accepting..." }' />
                                     </div>
                                 </button>
-                                <button class="btn cta--dark-blue-border less-rounded undo-request dnone" data-target-state="@JobStatuses.Open" data-target-user="" )">
+                                <button class="btn cta--dark-blue-border less-rounded undo-request dnone fill" data-target-state="@JobStatuses.Open" data-target-user="" )">
                                     <span class="text">Can't do</span>
                                     <div class="loader dnone">
                                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner = true }' />
