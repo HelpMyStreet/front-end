@@ -242,9 +242,11 @@ export function showSeriesStatusUpdatePopup(btn) {
             let popup2Settings = {
                 noFade: true,
                 acceptCallbackAsync: async () => {
-                    $(job).find('.job__status__new').html('In Progress');
-                    $(job).find('button').toggle();
-                    $(job).find('.toggle-on-status-change').toggle();
+                    if ($(popup).find('.job[data-job-status="InProgress"]').length > 0) {
+                        $(job).find('.job__status__new').html('In Progress');
+                        $(job).find('button').toggle();
+                        $(job).find('.toggle-on-status-change').toggle();
+                    }
                     return true;
                 }
             };
