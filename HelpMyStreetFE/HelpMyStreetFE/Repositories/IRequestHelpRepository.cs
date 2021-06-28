@@ -11,9 +11,9 @@ namespace HelpMyStreetFE.Repositories
     {
         Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
         Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(List<int> RequestIDs);
-        Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId);
+        Task<RequestSummary> GetRequestSummaryAsync(int requestId);
         Task<GetRequestDetailsResponse> GetRequestDetailsAsync(int requestId, int userId);
-        Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId);
+        Task<JobSummary> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
         Task<GetAllJobsByFilterResponse> GetJobsByFilterAsync(GetAllJobsByFilterRequest request);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToNewAsync(int jobId, int createdByUserId);

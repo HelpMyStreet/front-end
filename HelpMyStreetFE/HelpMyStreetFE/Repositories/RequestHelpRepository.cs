@@ -47,13 +47,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId)
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.JobSummary;
             }
             return null;
         }
@@ -269,13 +269,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId)
+        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetRequestSummaryResponse>>($"/api/GetRequestSummary?requestId={requestId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.RequestSummary;
             }
             return null;
         }
