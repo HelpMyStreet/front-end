@@ -195,7 +195,10 @@
                         @foreach (var group in Model.Item.JobBasics.GroupByDateAndActivity().OrderBy(j => j.Key))
                         {
                             var jobIdToShow = group.Value.OrderByDescending(j => j.VolunteerUserID.Equals(Model.User.ID)).First().JobID;
-                            @await Component.InvokeAsync("JobDetail", new { jobId = jobIdToShow, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MicroJobDetail" });
+                            var job = Model.Item.JobBasics.FirstOrDefault(j => j.JobID.Equals(jobIdToShow));
+                            var userAllocatedToJob = job.VolunteerUserID.Equals(Model.User.ID);
+
+                            <img class="status-icon" src="~/img/icons/status/@job.JobStatus.Icon()" alt="@job.JobStatus.FriendlyName()" title="@job.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash; @job.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToJob)" />
                         }
                         <span>Show all @Model.Item.JobBasics.GroupByDateAndActivity().Count() dates</span>
                     </a>
