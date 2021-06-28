@@ -30,6 +30,7 @@ namespace HelpMyStreetFE.Services.Requests
     public class RequestService : IRequestService
     {
         private readonly IRequestCachingService _requestCachingService;
+        private readonly IJobCachingService _jobCachingService;
         private readonly IRequestHelpRepository _requestHelpRepository;
         private readonly ILogger<RequestService> _logger;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
@@ -48,9 +49,10 @@ namespace HelpMyStreetFE.Services.Requests
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, IRequestCachingService requestCachingService)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, IRequestCachingService requestCachingService, IJobCachingService jobCachingService)
         {
             _requestCachingService = requestCachingService;
+            _jobCachingService = jobCachingService;
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
             _requestHelpBuilder = requestHelpBuilder;
@@ -259,12 +261,12 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            return await _requestCachingService.GetJobSummaryAsync(jobId, cancellationToken);
+            return await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
         }
 
         public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            var jobSummary = await _requestCachingService.GetJobSummaryAsync(jobId, cancellationToken);
+            var jobSummary = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
             var requestSummary = await _requestCachingService.GetRequestSummaryAsync(jobSummary.RequestID, cancellationToken);
 
             return new JobDetail(jobSummary)
@@ -333,7 +335,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
                 TriggerCacheRefresh(createdByUserId, cancellationToken);
-                _requestCachingService.TriggerJobCacheRefresh(jobID, cancellationToken);
+                _ = _jobCachingService.TriggerCacheRefresh(jobID, cancellationToken);
             }
 
             return outcome;
@@ -351,7 +353,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
 
             TriggerCacheRefresh(createdByUserId, cancellationToken);
-            _requestCachingService.TriggerJobCacheRefresh(jobID, cancellationToken);
+            _ = _jobCachingService.TriggerCacheRefresh(jobID, cancellationToken);
 
             return outcome;
         }
@@ -393,7 +395,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
-            var job = await _requestCachingService.GetJobSummaryAsync(jobId, cancellationToken);
+            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
 
             if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
             {

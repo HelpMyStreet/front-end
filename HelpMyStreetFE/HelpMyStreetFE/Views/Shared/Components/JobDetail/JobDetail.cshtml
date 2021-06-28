@@ -29,7 +29,7 @@
     var forFaceMask = jobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
 
-    var questionsToDisplay = jobSummary.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 
     var userDetailsHidden = Model.JobDetail.Item.SuppressRecipientPersonalDetail.GetValueOrDefault(false) && !userActingAsAdmin;
@@ -86,7 +86,7 @@
     </div>
 }
 
-@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || !string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
+@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || !string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
 {
     <div class="job__expander">
         <h4>Request Details<span></span></h4>

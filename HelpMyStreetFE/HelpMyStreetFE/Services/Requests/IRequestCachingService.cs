@@ -11,9 +11,6 @@ namespace HelpMyStreetFE.Services.Requests
     {
         Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken);
         Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken);
-        Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken);
-
         void TriggerRequestCacheRefresh(int requestId, CancellationToken cancellationToken);
-        void TriggerJobCacheRefresh(int jobId, CancellationToken cancellationToken);
     }
 }

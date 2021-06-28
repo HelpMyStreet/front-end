@@ -49,32 +49,36 @@ namespace HelpMyStreetFE.ViewComponents
 
             var jobDetails = new List<JobDetail>();
 
-            foreach (var j in requestDetail.RequestSummary.JobBasics)
+            if (showJobList)
             {
-                if (jobSet.GroupAdminView() || j.VolunteerUserID == user.ID)
+                foreach (var j in requestDetail.RequestSummary.JobBasics)
                 {
-                    jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
-                }
-                else
-                {
-                    //JobDetail jobDetail = (JobDetail)await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken);
-                    //jobDetail.RequestSummary = requestDetail.RequestSummary;
-
-                    //jobDetails.Add(jobDetail);
-
-                    jobDetails.Add(new JobDetail(await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
+                    if (jobSet.GroupAdminView() || j.VolunteerUserID == user.ID)
                     {
-                        //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
-                        RequestSummary = requestDetail.RequestSummary,
-                    });
+                        jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
+                    }
+                    else
+                    {
+                        //JobDetail jobDetail = (JobDetail)await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken);
+                        //jobDetail.RequestSummary = requestDetail.RequestSummary;
+
+                        //jobDetails.Add(jobDetail);
+
+                        jobDetails.Add(new JobDetail(await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
+                        {
+                            //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
+                            RequestSummary = requestDetail.RequestSummary,
+                        });
+                    }
                 }
             }
-            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, jobDetails.Select(j => j.SupportActivity).Distinct(), cancellationToken);
+
+            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
  
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
                 RequestDetail = requestDetail,
-                JobDetails = showJobList ? jobDetails : new List<JobDetail>(),
+                JobDetails = jobDetails,
                 GroupSupportActivityInstructions = instructions,
             };
 

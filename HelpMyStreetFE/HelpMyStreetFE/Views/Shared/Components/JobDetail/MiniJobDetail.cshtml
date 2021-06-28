@@ -14,14 +14,14 @@
     var userActingAsAdmin = Model.JobDetail.UserRole.Equals(RequestRoles.GroupAdmin);
     var userAllocatedToTask = jobDetails.VolunteerUserID.Equals(Model.JobDetail.User.ID);
 
-    var questionsToDisplay = jobDetails.Questions.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, userAllocatedToTask) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(userActingAsAdmin, userAllocatedToTask) && !string.IsNullOrEmpty(q.Answer));
     var encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID);
     var encodedRequestID = Base64Utils.Base64Encode(jobDetails.RequestID);
     var encodedRole = Base64Utils.Base64Encode((int)Model.JobDetail.UserRole);
 
     var showWhenIsHelpNeeded = jobDetails.JobStatus.Incomplete() && (userActingAsAdmin || userAllocatedToTask || jobDetails.VolunteerUserID == null);
     var showDuplicateJobs = Model.DuplicateJobs.Count() > 1;
-    var showQuestions = (userActingAsAdmin || userAllocatedToTask || jobDetails.JobStatus.Equals(JobStatuses.Open)) && questionsToDisplay.Count() > 0;
+    var showQuestions = (userActingAsAdmin || userAllocatedToTask || jobDetails.JobStatus.Equals(JobStatuses.Open)) && questionsToDisplay?.Count() > 0;
 
 }
 

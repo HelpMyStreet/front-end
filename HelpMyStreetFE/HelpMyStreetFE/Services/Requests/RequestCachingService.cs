@@ -14,7 +14,6 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IRequestHelpRepository _requestHelpRepository;
 
         private readonly IMemDistCache<RequestSummary> _memDistCache_RequestSummary;
-        private readonly IMemDistCache<JobSummary> _memDistCache_JobSummary;
 
         private const string CACHE_KEY_PREFIX = "request-caching-service";
 
@@ -22,7 +21,6 @@ namespace HelpMyStreetFE.Services.Requests
         {
             _requestHelpRepository = requestHelpRepository;
             _memDistCache_RequestSummary = memDistCache_RequestSummary;
-            _memDistCache_JobSummary = memDistCache_JobSummary;
         }
 
         public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
@@ -45,8 +43,17 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (missingIds.Count > 0)
             {
-                // To Do: Add these to the cache
-                results.AddRange(await _requestHelpRepository.GetRequestSummariesAsync(missingIds));
+                var missingRequestSummaries = await _requestHelpRepository.GetRequestSummariesAsync(missingIds);
+
+                results.AddRange(missingRequestSummaries);
+
+                foreach (var requestSummary in missingRequestSummaries)
+                {
+                    _ = _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
+                    {
+                        return requestSummary;
+                    }, GetRequestCacheKey(requestSummary.RequestID), cancellationToken);
+                }
             }
 
             return results;
@@ -57,27 +64,6 @@ namespace HelpMyStreetFE.Services.Requests
             return await GetRequestSummaryAsync(requestId, RefreshBehaviour.WaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
         }
 
-        public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
-        {
-            return await GetJobSummaryAsync(jobId, RefreshBehaviour.WaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
-        }
-
-        private async Task<RequestSummary> GetRequestSummaryAsync(int requestId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
-        {
-            return await _memDistCache_RequestSummary.GetCachedDataAsync(async (cancellationToken) =>
-            {
-                return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
-            }, $"{CACHE_KEY_PREFIX}-request-{requestId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
-        }
-
-        private async Task<JobSummary> GetJobSummaryAsync(int jobId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
-        {
-            return await _memDistCache_JobSummary.GetCachedDataAsync(async (cancellationToken) =>
-            {
-                return await _requestHelpRepository.GetJobSummaryAsync(jobId);
-            }, $"{CACHE_KEY_PREFIX}-job-{jobId}", refreshBehaviour, cancellationToken, notInCacheBehaviour);
-        }
-
         public void TriggerRequestCacheRefresh(int requestId, CancellationToken cancellationToken)
         {
             Task.Factory.StartNew(async () =>
@@ -85,32 +71,21 @@ namespace HelpMyStreetFE.Services.Requests
                 var requestSummary = await _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
                 {
                     return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
-                }, $"{CACHE_KEY_PREFIX}-request-{requestId}", cancellationToken);
-
-                foreach(var job in requestSummary.JobSummaries)
-                {
-                    _ = _memDistCache_JobSummary.RefreshDataAsync(async (cancellationToken) =>
-                    {
-                        return await _requestHelpRepository.GetJobSummaryAsync(job.JobID);
-                    }, $"{CACHE_KEY_PREFIX}-job-{job.JobID}", cancellationToken);
-                }
+                }, GetRequestCacheKey(requestId), cancellationToken);
             });
         }
 
-        public void TriggerJobCacheRefresh(int jobId, CancellationToken cancellationToken)
+        private async Task<RequestSummary> GetRequestSummaryAsync(int requestId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
         {
-            Task.Factory.StartNew(async () =>
+            return await _memDistCache_RequestSummary.GetCachedDataAsync(async (cancellationToken) =>
             {
-                var jobSummary = await _memDistCache_JobSummary.RefreshDataAsync(async (cancellationToken) =>
-                {
-                    return await _requestHelpRepository.GetJobSummaryAsync(jobId);
-                }, $"{CACHE_KEY_PREFIX}-job-{jobId}", cancellationToken);
+                return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
+            }, GetRequestCacheKey(requestId), refreshBehaviour, cancellationToken, notInCacheBehaviour);
+        }
 
-                _ = _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
-                {
-                    return await _requestHelpRepository.GetRequestSummaryAsync(jobSummary.RequestID);
-                }, $"{CACHE_KEY_PREFIX}-request-{jobSummary.RequestID}", cancellationToken);
-            });
+        private string GetRequestCacheKey(int requestId)
+        {
+            return $"{CACHE_KEY_PREFIX}-request-{requestId}";
         }
     }
 }
