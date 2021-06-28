@@ -30,11 +30,12 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<RequestHelpController> _logger;
         private readonly IRequestService _requestService;
+        private readonly IRequestUpdatingService _requestUpdatingService;
         private readonly IGroupService _groupService;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
-        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder, IAuthService authService, IGroupMemberService groupMemberService)
+        public RequestHelpController(ILogger<RequestHelpController> logger, IRequestService requestService, IGroupService groupService, IRequestHelpBuilder requestHelpBuilder, IAuthService authService, IGroupMemberService groupMemberService, IRequestUpdatingService requestUpdatingService)
         {
             _logger = logger;
             _requestService = requestService;
@@ -42,6 +43,7 @@ namespace HelpMyStreetFE.Controllers
             _requestHelpBuilder = requestHelpBuilder;
             _authService = authService;
             _groupMemberService = groupMemberService;
+            _requestUpdatingService = requestUpdatingService;
         }
 
         [ValidateAntiForgeryToken]
@@ -157,7 +159,7 @@ namespace HelpMyStreetFE.Controllers
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-                    var response = await _requestService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
+                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
                     if (response != null && response.Fulfillable.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new

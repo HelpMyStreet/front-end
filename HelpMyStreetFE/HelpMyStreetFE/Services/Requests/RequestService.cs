@@ -12,8 +12,6 @@ using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Contracts.RequestService.Extensions;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
-using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreetFE.Models.Account;
@@ -32,7 +30,6 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IRequestCachingService _requestCachingService;
         private readonly IJobCachingService _jobCachingService;
         private readonly IRequestHelpRepository _requestHelpRepository;
-        private readonly ILogger<RequestService> _logger;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
@@ -54,7 +51,7 @@ namespace HelpMyStreetFE.Services.Requests
             _requestCachingService = requestCachingService;
             _jobCachingService = jobCachingService;
             _requestHelpRepository = requestHelpRepository;
-            _logger = logger;
+            //_logger = logger;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
             _userService = userService;
@@ -70,95 +67,6 @@ namespace HelpMyStreetFE.Services.Requests
             _jobSummaryJobDedupeWithDate_EqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
         }
 
-        public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Logging Request");
-
-            var selectedTask = requestStage.Tasks.Where(x => x.IsSelected).First();
-            var selectedTime = requestStage.Timeframes.Where(x => x.IsSelected).FirstOrDefault();
-            var selectedFrequency = requestStage.Frequencies.Where(x => x.IsSelected).FirstOrDefault();
-
-            int numberOfOccurrences = 1;
-            if (requestStage.Occurrences.HasValue)
-            {
-                numberOfOccurrences = requestStage.Occurrences.Value;
-            }
-
-            bool heathCritical = false;
-            var healthCriticalQuestion = requestStage.Questions.Questions.Where(a => a.ID == (int)Questions.IsHealthCritical).FirstOrDefault();
-            if (healthCriticalQuestion != null && healthCriticalQuestion.Model == "true") { heathCritical = true; }
-
-            RequestPersonalDetails recipient = null;
-            RequestPersonalDetails requestor = null;
-            IEnumerable<RequestHelpQuestion> questions = requestStage.Questions.Questions;
-
-            if (detailStage != null)
-            {
-                recipient = _requestHelpBuilder.MapRecipient(detailStage);
-                if (detailStage.ShowRequestorFields)
-                {
-                    requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);
-                }
-                questions = questions.Union(detailStage.Questions.Questions);
-            }
-
-            var request = new PostNewRequestForHelpRequest
-            {
-                HelpRequest = new HelpRequest
-                {
-                    Guid = requestStage.RequestGuid,
-                    AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
-                    ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
-                    OrganisationName = detailStage?.Organisation ?? "",
-                    RequestorType = detailStage?.Type ?? RequestorType.Organisation,
-                    ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
-                    CreatedByUserId = userId,
-                    Recipient = recipient,
-                    Requestor = requestor,
-                    ReferringGroupId = referringGroupID,
-                    Source = source
-                },
-                NewJobsRequest = new NewJobsRequest
-                {
-                    Jobs = new List<Job>
-                    {
-                        new Job
-                        {
-                            DueDateType = selectedTime.DueDateType,
-                            StartDate = selectedTime.StartTime.ToUTCFromUKTime(),
-                            EndDate = selectedTime.EndTime.HasValue ? selectedTime.EndTime.Value.ToUTCFromUKTime() : (DateTime?)null,
-                            NotBeforeDate = selectedTime.NotBeforeTime.ToUTCFromUKTime(),
-                            RepeatFrequency = selectedFrequency.Frequency,
-                            NumberOfRepeats = numberOfOccurrences,
-                            HealthCritical = heathCritical,
-                            SupportActivity = selectedTask.SupportActivity,
-                            Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
-                                Id = x.ID,
-                                Answer = GetAnswerToQuestion(x),
-                                Name = x.Label,
-                                Required = x.Required,
-                                AddtitonalData = x.AdditionalData,
-                                Type  = x.InputType}).ToList()
-                        }
-                    }
-                }
-            };
-
-
-            var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
-            if (response != null && userId != 0)
-            {
-                TriggerCacheRefresh(userId, cancellationToken);
-                _requestCachingService.TriggerRequestCacheRefresh(response.RequestID, cancellationToken);
-            }
-
-            return response;
-        }
-
-        private string GetAnswerToQuestion(RequestHelpQuestion q)
-        {
-             return q.InputType == QuestionType.Radio ? q.AdditionalData.Where(a => a.Key == q.Model).FirstOrDefault()?.Value ?? "" : q.Model;
-        }
 
         public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
@@ -301,64 +209,6 @@ namespace HelpMyStreetFE.Services.Requests
             throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
         }
 
-        public async Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken)
-        {
-            UpdateJobStatusOutcome? outcome = status switch
-            {
-                JobStatuses.Done => await _requestHelpRepository.PutUpdateRequestStatusToDone(requestId, createdByUserId),
-                JobStatuses.Cancelled => await _requestHelpRepository.PutUpdateRequestStatusToCancelled(requestId, createdByUserId),
-                _ => throw new ArgumentException(message: $"Invalid JobStatuses value for Request: {status}", paramName: nameof(status)),
-            };
-
-            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
-            {
-                TriggerCacheRefresh(createdByUserId, cancellationToken);
-                _requestCachingService.TriggerRequestCacheRefresh(requestId, cancellationToken);
-            }
-
-            return outcome;
-        }
-
-        public async Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken)
-        {
-            UpdateJobStatusOutcome? outcome = status switch
-            {
-                JobStatuses.Accepted => await _requestHelpRepository.UpdateJobStatusToAcceptedAsync(jobID, createdByUserId, volunteerUserId.Value),
-                JobStatuses.InProgress => await UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value, cancellationToken),
-                JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
-                JobStatuses.Cancelled => await _requestHelpRepository.UpdateJobStatusToCancelledAsync(jobID, createdByUserId),
-                JobStatuses.Open => await _requestHelpRepository.UpdateJobStatusToOpenAsync(jobID, createdByUserId),
-                JobStatuses.New => await _requestHelpRepository.UpdateJobStatusToNewAsync(jobID, createdByUserId),
-                _ => throw new ArgumentException(message: $"Invalid JobStatuses value: {status}", paramName: nameof(status)),
-            };
-
-            if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
-            {
-                TriggerCacheRefresh(createdByUserId, cancellationToken);
-                _ = _jobCachingService.TriggerCacheRefresh(jobID, cancellationToken);
-            }
-
-            return outcome;
-        }
-
-        private async Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobID, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken)
-        {
-            var job = await GetJobSummaryAsync(jobID, cancellationToken);
-
-            UpdateJobStatusOutcome? outcome = job.RequestType switch
-            {
-                RequestType.Shift => await _requestHelpRepository.PutUpdateShiftStatusToAccepted(job.RequestID, job.SupportActivity, createdByUserId, volunteerUserId),
-                RequestType.Task => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId),
-                _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
-            };
-
-            TriggerCacheRefresh(createdByUserId, cancellationToken);
-            _ = _jobCachingService.TriggerCacheRefresh(jobID, cancellationToken);
-
-            return outcome;
-        }
-
-
         public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
             return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
@@ -477,7 +327,7 @@ namespace HelpMyStreetFE.Services.Requests
             return null;
         }
 
-        private void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)
+        public void TriggerCacheRefresh(int userId, CancellationToken cancellationToken)
         {
             Task.Factory.StartNew(async () =>
             {

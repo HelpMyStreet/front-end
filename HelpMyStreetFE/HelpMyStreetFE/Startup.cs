@@ -172,6 +172,7 @@ namespace HelpMyStreetFE
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IRequestCachingService, RequestCachingService>();
+            services.AddSingleton<IRequestUpdatingService, RequestUpdatingService>();
             services.AddSingleton<IJobCachingService, JobCachingService>();
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
