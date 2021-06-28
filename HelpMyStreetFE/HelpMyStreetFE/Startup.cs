@@ -332,12 +332,6 @@ namespace HelpMyStreetFE
                     pattern: "ruddington",
                     defaults: new { controller = "Community", action = "Index", groupKey = "ruddington" });
 
-
-                endpoints.MapControllerRoute(
-                    name: "healthylondonpartnership",
-                    pattern: "healthylondonpartnership",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "hlp" });
-
                 endpoints.MapControllerRoute(
                     name: "ageuklsl",
                     pattern: "ageuklsl",
