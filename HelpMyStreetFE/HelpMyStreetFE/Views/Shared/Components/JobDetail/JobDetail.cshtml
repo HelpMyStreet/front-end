@@ -17,7 +17,6 @@
     var requestSummary = Model.JobDetail.RequestSummary;
 
     var AgeUk = jobSummary.SupportActivity == SupportActivities.WellbeingPackage;
-    var Hlp = jobSummary.SupportActivity == SupportActivities.CommunityConnector;
 
     var forFaceMask = jobSummary.SupportActivity == SupportActivities.FaceMask;
     var userDetailsNotProvidedText = AgeUk ? "None provided - contact Age UK using Requester Details" : "None Provided";
