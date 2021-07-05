@@ -14,6 +14,17 @@ let defaultOptions = {
   singlePin: false,
 };
 
+export const defaultMarkerIcons = {
+  vaccination: {
+    url: "/img/logos/markers/vaccination-marker.svg",
+    scaledSize: {x: 50, y: 70},
+},
+  task: {
+    url: "/img/logos/markers/hms5.png",
+    scaledSize: {x:50, y: 55},
+}
+}
+
 var visiMaps = [];
 
 const largeAreaZoomNumber = 10; // zoom level when min distance between volunteers is populated in call to User Service
