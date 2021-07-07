@@ -105,10 +105,10 @@ namespace HelpMyStreetFE.Services
                     //check if user is member of ApexBankStaff if yes set to 2000d else 20d 
                     //this problem will go away when combining requests and shifts
                     int defaultShiftRadius = 20;
-                var userIsMemberOfApexBankStaff = await _groupMemberService.GetUserHasRole_Any(
+                var userIsMemberOfApexBankStaff = await _groupMemberService.GetUserHasRole(
                     user.ID,
                     (int)HelpMyStreet.Utils.Enums.Groups.ApexBankStaff,
-                    new List<GroupRoles>() { GroupRoles.Member },
+                    GroupRoles.Member,
                     true,
                     cancellationToken);
 
