@@ -15,8 +15,6 @@ using HelpMyStreet.Contracts.RequestService.Extensions;
 using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreetFE.Models.Account;
-using Microsoft.Extensions.Options;
-using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Enums.Account;
@@ -36,9 +34,7 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IMemDistCache<IEnumerable<JobSummary>> _memDistCache;
         private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
         private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly IGroupMemberService _groupMemberService;
-        private readonly IAddressService _addressService;
 
         private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
         private IEqualityComparer<JobSummary> _jobSummaryJobDedupe_EqualityComparer;
@@ -46,7 +42,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, IRequestCachingService requestCachingService, IJobCachingService jobCachingService)
+        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IGroupMemberService groupMemberService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries)
         {
             _requestCachingService = requestCachingService;
             _jobCachingService = jobCachingService;
@@ -56,9 +52,7 @@ namespace HelpMyStreetFE.Services.Requests
             _groupService = groupService;
             _userService = userService;
             _memDistCache = memDistCache;
-            _requestSettings = requestSettings;
             _groupMemberService = groupMemberService;
-            _addressService = addressService;
             _memDistCache_ShiftJobs = memDistCache_ShiftJobs;
             _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
 
@@ -104,7 +98,7 @@ namespace HelpMyStreetFE.Services.Requests
             var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 var request = new GetAllJobsByFilterRequest { AllocatedToUserId = userId };
-                var response = await _requestHelpRepository.GetJobsByFilterAsync(request);
+                var response = await _requestHelpRepository.GetAllJobsByFilterAsync(request);
                 return response.JobSummaries;
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
 
@@ -334,7 +328,7 @@ namespace HelpMyStreetFE.Services.Requests
                 _ = _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
                     var request = new GetAllJobsByFilterRequest { AllocatedToUserId = userId };
-                    var response = await _requestHelpRepository.GetJobsByFilterAsync(request);
+                    var response = await _requestHelpRepository.GetAllJobsByFilterAsync(request);
                     return response.JobSummaries;
                 }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs", cancellationToken);
 
@@ -421,14 +415,9 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 throw new Exception("Cannot get open jobs for user without postcode");
             }
-
-            var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities
-                .Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
             var jobsByFilterRequest = new GetAllJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,
-                DistanceInMiles = Math.Max(_requestSettings.Value.OpenRequestsRadius, user.SupportRadiusMiles ?? 0),
-                ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
                 JobStatuses = new JobStatusRequest()
                 {
                     JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
@@ -437,7 +426,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Task } },
             };
 
-            var allJobs = (await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
+            var allJobs = (await _requestHelpRepository.GetAllJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
             var dedupedJobs = allJobs.Distinct(_jobSummaryJobDedupe_EqualityComparer);
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
             var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
@@ -487,18 +476,20 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken canellationToken)
         {
-            var locations = (await _addressService.GetLocationDetailsForUser(user, canellationToken)).Select(l => l.Location).ToList();
-
-            var getOpenShiftJobsByFilterRequest = new GetOpenShiftJobsByFilterRequest
+            var jobsByFilterRequest = new GetAllJobsByFilterRequest()
             {
+                Postcode = user.PostalCode,
                 ExcludeSiblingsOfJobsAllocatedToUserID = user.ID,
                 DateFrom = dateFrom,
                 DateTo = dateTo,
-                Groups = new GroupRequest { Groups = await _groupMemberService.GetUserGroups(user.ID) },
-                Locations = new LocationsRequest { Locations = locations },
-                SupportActivities = new SupportActivityRequest { SupportActivities = new List<SupportActivities>() }
+                JobStatuses = new JobStatusRequest()
+                {
+                    JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
+                },
+                Groups = new GroupRequest() { Groups = await _groupMemberService.GetUserGroups(user.ID) },
+                RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Shift } },
             };
-            var allShifts = await _requestHelpRepository.GetOpenShiftJobsByFilter(getOpenShiftJobsByFilterRequest);
+            var allShifts = (await _requestHelpRepository.GetAllJobsByFilterAsync(jobsByFilterRequest)).ShiftJobs;
             var dedupedShifts = allShifts.Distinct(_shiftJobDedupe_EqualityComparer);
 
             var userShifts = await GetShiftsForUserAsync(user.ID, null, null, true, canellationToken);

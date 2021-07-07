@@ -55,8 +55,6 @@ namespace HelpMyStreetFE
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("EmailConfig"));
-            services.Configure<RequestSettings>(Configuration.GetSection("RequestSettings"));
-
 
             PollyHttpPolicies pollyHttpPolicies = new PollyHttpPolicies(new PollyHttpPoliciesConfig());
 
