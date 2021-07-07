@@ -101,10 +101,10 @@ namespace HelpMyStreetFE.Services
         {
             if (user.PostalCode != null)
             {
-                return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {    
-                //check if user is member of groupid =-32 if yes set to 2000d else 20d 
-                //this problem will go away when combining requests and shifts
-                int defaultShiftRadius = 20;
+                return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {
+                    //check if user is member of ApexBankStaff if yes set to 2000d else 20d 
+                    //this problem will go away when combining requests and shifts
+                    int defaultShiftRadius = 20;
                 var userIsMemberOfApexBankStaff = await _groupMemberService.GetUserHasRole_Any(
                     user.ID,
                     (int)HelpMyStreet.Utils.Enums.Groups.ApexBankStaff,
