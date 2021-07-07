@@ -7,8 +7,6 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Models.Email;
-using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -18,15 +16,11 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {
-        private readonly IOptions<RequestSettings> _requestSettings;
         private IAddressService _addressService;
-        private IGroupService _groupService;
 
-        public FilterService(IOptions<RequestSettings> requestSettings, IAddressService addressService, IGroupService groupService)
+        public FilterService(IAddressService addressService)
         {
-            _requestSettings = requestSettings;
             _addressService = addressService;
-            _groupService = groupService;
         }
 
         public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, List<JobStatuses> jobStatuses, User user, CancellationToken cancellationToken)
@@ -271,29 +265,15 @@ namespace HelpMyStreetFE.Services.Requests
                     .Insert(0, new FilterField<SupportActivities>() { Value = SupportActivities.CommunityConnector, IsSelected = true });
             }
 
-            if (user.SupportActivities.Intersect(_requestSettings.Value.NationalSupportActivities).Count() > 0)
+            filterSet.MaxDistanceInMiles = new List<FilterField<int>>
             {
-                filterSet.MaxDistanceInMiles = new List<FilterField<int>>
-                    {
-                        new FilterField<int> { Value = 0, Label = "My street only" },
-                        new FilterField<int> { Value = 1, Label = "Within 1 mile" },
-                        new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                        new FilterField<int> { Value = 10, Label = "Within 10 miles" },
-                        new FilterField<int> { Value = 20, Label = "Within 20 miles" },
-                        new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true },
-                    };
-            }
-            else
-            {
-                filterSet.MaxDistanceInMiles = new List<FilterField<int>>
-                    {
-                        new FilterField<int> { Value = 0, Label = "My street only" },
-                        new FilterField<int> { Value = 1, Label = "Within 1 mile" },
-                        new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                        new FilterField<int> { Value = 10, Label = "Within 10 miles" },
-                        new FilterField<int> { Value = 20, Label = "Within 20 miles", IsSelected = true },
-                    };
-            }
+                new FilterField<int> { Value = 0, Label = "My street only" },
+                new FilterField<int> { Value = 1, Label = "Within 1 mile" },
+                new FilterField<int> { Value = 5, Label = "Within 5 miles" },
+                new FilterField<int> { Value = 10, Label = "Within 10 miles" },
+                new FilterField<int> { Value = 20, Label = "Within 20 miles" },
+                new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true },
+            };
 
             return filterSet;
         }

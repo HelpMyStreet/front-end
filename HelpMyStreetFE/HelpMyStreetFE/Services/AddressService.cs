@@ -27,7 +27,6 @@ namespace HelpMyStreetFE.Services
 {
     public class AddressService : BaseHttpService, IAddressService
     {
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IMemDistCache<LocationDetails> _memDistCache;
@@ -43,7 +42,6 @@ namespace HelpMyStreetFE.Services
             IConfiguration configuration,
             IAddressRepository addressRepository,
             IUserRepository userRepository,
-            IOptions<RequestSettings> requestSettings,
             IMemDistCache<LocationDetails> memDistCache,
             IMemDistCache<IEnumerable<LocationDetails>> memDistCache_LocationDetailsList,
             IMemDistCache<IEnumerable<LocationWithDistance>> memDistCache_LocationDistanceList,
@@ -54,7 +52,6 @@ namespace HelpMyStreetFE.Services
             _addressRepository = addressRepository;
             _userRepository = userRepository;
             _groupRepository = groupRepository;
-            _requestSettings = requestSettings;
             _memDistCache = memDistCache;
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
@@ -100,9 +97,23 @@ namespace HelpMyStreetFE.Services
         {
             if (user.PostalCode != null)
             {
-                return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {
+                return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {    
+                //check if user is member of groupid =-32 if yes set to 2000d else 20d 
+                //this problem will go away when combining requests and shifts
+                int defaultShiftRadius = 20;
+                var groups = await _groupRepository.GetUserGroups(user.ID);
+                if (groups !=null)
+                {
+                    var count = groups.Groups.Count(x => x.Equals((int) HelpMyStreet.Utils.Enums.Groups.ApexBankStaff));
 
-                var locationsWithDistance = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
+                    if(count == 1)
+                    {
+                        //user is member of apex bank staff
+                        defaultShiftRadius = 2000;
+                    }
+                }
+                    
+                var locationsWithDistance = await _addressRepository.GetLocationsByDistance(defaultShiftRadius, user.PostalCode);
                 if (locationsWithDistance.Count() == 0)
                 {
                     return new List<LocationWithDistance>();
