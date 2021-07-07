@@ -42,7 +42,18 @@ namespace HelpMyStreetFE.Services.Requests
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestService(IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IGroupMemberService groupMemberService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries)
+        public RequestService(
+            IRequestHelpRepository requestHelpRepository,
+            //ILogger<RequestService> logger, 
+            IRequestHelpBuilder requestHelpBuilder, 
+            IGroupService groupService, 
+            IUserService userService, 
+            IMemDistCache<IEnumerable<JobSummary>> memDistCache, 
+            IGroupMemberService groupMemberService, 
+            IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, 
+            IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, 
+            IRequestCachingService requestCachingService, 
+            IJobCachingService jobCachingService)
         {
             _requestCachingService = requestCachingService;
             _jobCachingService = jobCachingService;
@@ -450,13 +461,9 @@ namespace HelpMyStreetFE.Services.Requests
                 throw new Exception("Cannot get open jobs for user without postcode");
             }
 
-            var activitySpecificSupportDistancesInMiles = _requestSettings.Value.NationalSupportActivities
-                .Where(a => user.SupportActivities.Contains(a)).ToDictionary(a => a, a => (double?)null);
             var jobsByFilterRequest = new GetAllJobsByFilterRequest()
             {
                 Postcode = user.PostalCode,
-                DistanceInMiles = Math.Max(_requestSettings.Value.OpenRequestsRadius, user.SupportRadiusMiles ?? 0),
-                ActivitySpecificSupportDistancesInMiles = activitySpecificSupportDistancesInMiles,
                 JobStatuses = new JobStatusRequest()
                 {
                     JobStatuses = new List<JobStatuses>() { JobStatuses.Open }
@@ -465,7 +472,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Task } },
             };
 
-            var allJobs = (await _requestHelpRepository.GetJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
+            var allJobs = (await _requestHelpRepository.GetAllJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
             var notMyJobs = allJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
 

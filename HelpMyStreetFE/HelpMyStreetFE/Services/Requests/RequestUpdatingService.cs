@@ -39,9 +39,22 @@ namespace HelpMyStreetFE.Services.Requests
         //private readonly IAddressService _addressService;
 
 
-        private const string CACHE_KEY_PREFIX = "request-service-jobs";
+        //private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
-        public RequestUpdatingService(IRequestService requestService, IRequestHelpRepository requestHelpRepository, ILogger<RequestService> logger, IRequestHelpBuilder requestHelpBuilder, IGroupService groupService, IUserService userService, IMemDistCache<IEnumerable<JobSummary>> memDistCache, IOptions<RequestSettings> requestSettings, IGroupMemberService groupMemberService, IAddressService addressService, IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, IRequestCachingService requestCachingService, IJobCachingService jobCachingService)
+        public RequestUpdatingService(
+            IRequestService requestService,
+            IRequestHelpRepository requestHelpRepository, 
+            ILogger<RequestService> logger, 
+            IRequestHelpBuilder requestHelpBuilder, 
+            //IGroupService groupService, 
+            //IUserService userService, 
+            //IMemDistCache<IEnumerable<JobSummary>> memDistCache, 
+            //IGroupMemberService groupMemberService, 
+            //IAddressService addressService, 
+            //IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, 
+            //IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, 
+            IRequestCachingService requestCachingService, 
+            IJobCachingService jobCachingService)
         {
             _requestService = requestService;
             _requestCachingService = requestCachingService;
