@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Cache;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Email;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Repositories;
-using HelpMyStreetFE.Services.Groups;
-using HelpMyStreetFE.Services.Users;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -29,30 +24,12 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IRequestHelpRepository _requestHelpRepository;
         private readonly ILogger<RequestService> _logger;
         private readonly IRequestHelpBuilder _requestHelpBuilder;
-        //private readonly IGroupService _groupService;
-        //private readonly IUserService _userService;
-        //private readonly IMemDistCache<IEnumerable<JobSummary>> _memDistCache;
-        //private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
-        //private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
-        //private readonly IOptions<RequestSettings> _requestSettings;
-        //private readonly IGroupMemberService _groupMemberService;
-        //private readonly IAddressService _addressService;
-
-
-        //private const string CACHE_KEY_PREFIX = "request-service-jobs";
 
         public RequestUpdatingService(
             IRequestService requestService,
             IRequestHelpRepository requestHelpRepository, 
             ILogger<RequestService> logger, 
             IRequestHelpBuilder requestHelpBuilder, 
-            //IGroupService groupService, 
-            //IUserService userService, 
-            //IMemDistCache<IEnumerable<JobSummary>> memDistCache, 
-            //IGroupMemberService groupMemberService, 
-            //IAddressService addressService, 
-            //IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, 
-            //IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, 
             IRequestCachingService requestCachingService, 
             IJobCachingService jobCachingService)
         {
@@ -62,14 +39,6 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpRepository = requestHelpRepository;
             _logger = logger;
             _requestHelpBuilder = requestHelpBuilder;
-            //_groupService = groupService;
-            //_userService = userService;
-            //_memDistCache = memDistCache;
-            //_requestSettings = requestSettings;
-            //_groupMemberService = groupMemberService;
-            //_addressService = addressService;
-            //_memDistCache_ShiftJobs = memDistCache_ShiftJobs;
-            //_memDistCache_RequestSummaries = memDistCache_RequestSummaries;
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)

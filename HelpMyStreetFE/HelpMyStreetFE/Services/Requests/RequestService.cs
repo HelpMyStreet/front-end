@@ -44,7 +44,6 @@ namespace HelpMyStreetFE.Services.Requests
 
         public RequestService(
             IRequestHelpRepository requestHelpRepository,
-            //ILogger<RequestService> logger, 
             IRequestHelpBuilder requestHelpBuilder, 
             IGroupService groupService, 
             IUserService userService, 
@@ -58,7 +57,6 @@ namespace HelpMyStreetFE.Services.Requests
             _requestCachingService = requestCachingService;
             _jobCachingService = jobCachingService;
             _requestHelpRepository = requestHelpRepository;
-            //_logger = logger;
             _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
             _userService = userService;
