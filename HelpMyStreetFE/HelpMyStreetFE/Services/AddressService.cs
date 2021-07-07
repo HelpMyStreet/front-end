@@ -22,6 +22,7 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Services
 {
@@ -34,6 +35,7 @@ namespace HelpMyStreetFE.Services
         private readonly IMemDistCache<IEnumerable<LocationWithDistance>> _memDistCache_LocationDistanceList;
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IGroupMemberService _groupMemberService;
 
         private const string CACHE_KEY_PREFIX = "address-service-";
 
@@ -46,12 +48,14 @@ namespace HelpMyStreetFE.Services
             IMemDistCache<IEnumerable<LocationDetails>> memDistCache_LocationDetailsList,
             IMemDistCache<IEnumerable<LocationWithDistance>> memDistCache_LocationDistanceList,
             IGroupRepository groupRepository,
+            IGroupMemberService groupMemberService,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _groupMemberService = groupMemberService;
             _memDistCache = memDistCache;
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
@@ -101,18 +105,19 @@ namespace HelpMyStreetFE.Services
                 //check if user is member of groupid =-32 if yes set to 2000d else 20d 
                 //this problem will go away when combining requests and shifts
                 int defaultShiftRadius = 20;
-                var groups = await _groupRepository.GetUserGroups(user.ID);
-                if (groups !=null)
-                {
-                    var count = groups.Groups.Count(x => x.Equals((int) HelpMyStreet.Utils.Enums.Groups.ApexBankStaff));
+                var userIsMemberOfApexBankStaff = await _groupMemberService.GetUserHasRole_Any(
+                    user.ID,
+                    (int)HelpMyStreet.Utils.Enums.Groups.ApexBankStaff,
+                    new List<GroupRoles>() { GroupRoles.Member },
+                    true,
+                    cancellationToken);
 
-                    if(count == 1)
-                    {
-                        //user is member of apex bank staff
-                        defaultShiftRadius = 2000;
-                    }
+                if(userIsMemberOfApexBankStaff)
+                {
+                    //user is member of apex bank staff
+                    defaultShiftRadius = 2000;
                 }
-                    
+    
                 var locationsWithDistance = await _addressRepository.GetLocationsByDistance(defaultShiftRadius, user.PostalCode);
                 if (locationsWithDistance.Count() == 0)
                 {
