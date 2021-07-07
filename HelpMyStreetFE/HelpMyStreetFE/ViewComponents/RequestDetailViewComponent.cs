@@ -35,6 +35,15 @@ namespace HelpMyStreetFE.ViewComponents
             //    throw new Exception($"Unexpected JobSet: {jobSet}");
             //}
 
+
+            switch (jobSet)
+            {
+                case JobSet.UserOpenRequests_MatchingCriteria:
+                case JobSet.UserOpenRequests_NotMatchingCriteria:
+                    return await InvokeAsync_OpenRequests(requestId, user, cancellationToken);
+            }
+
+
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
             // Temporary fix  TODO: Let users allocated to the task see RequestDetails
@@ -79,6 +88,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 RequestDetail = requestDetail,
                 JobDetails = jobDetails,
+                UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 GroupSupportActivityInstructions = instructions,
             };
 
@@ -88,6 +98,22 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
             return View("RequestDetail", requestDetailViewModel);
+        }
+
+        private async Task<IViewComponentResult> InvokeAsync_OpenRequests(int requestId, User user, CancellationToken cancellationToken)
+        {
+            var requestDetail = new HelpMyStreet.Contracts.RequestService.Response.GetRequestDetailsResponse
+            {
+                RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken)
+            };
+
+            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
+            {
+                RequestDetail = requestDetail,
+                UserRole = RequestRoles.Volunteer,
+            };
+
+            return View("RequestDetail_OpenRequests", requestDetailViewModel);
         }
     }
 }

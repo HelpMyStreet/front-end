@@ -7,6 +7,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class RequestDetailViewModel
     {
+        public RequestRoles UserRole { get; set; }
         public GetRequestDetailsResponse RequestDetail { get; set; }
         public LocationDetails LocationDetails { get; set; }
         public IEnumerable<JobDetail> JobDetails { get; set; }

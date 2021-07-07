@@ -3,7 +3,6 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreetFE.Repositories;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,9 +35,9 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
         private readonly IGroupMemberService _groupMemberService;
 
-        private IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
-        private IEqualityComparer<JobSummary> _jobSummaryJobDedupe_EqualityComparer;
-        private IEqualityComparer<JobSummary> _jobSummaryJobDedupeWithDate_EqualityComparer;
+        private readonly IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
+        private readonly IEqualityComparer<JobSummary> _jobSummaryJobDedupe_EqualityComparer;
+        private readonly IEqualityComparer<JobSummary> _jobSummaryJobDedupeWithDate_EqualityComparer;
 
         private const string CACHE_KEY_PREFIX = "request-service-jobs";
 

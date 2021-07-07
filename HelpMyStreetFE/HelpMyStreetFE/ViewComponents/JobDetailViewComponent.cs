@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new Exception($"Failed to retrieve job details for JobId {jobId}");
             }
 
-            var duplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails));
+            //var duplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails));
 
             var jobDetailViewModel = new JobDetailViewModel
             {

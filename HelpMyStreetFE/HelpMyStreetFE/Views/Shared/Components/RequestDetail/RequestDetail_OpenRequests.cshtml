@@ -1,0 +1,38 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
+
+@model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
+
+@{
+    var requestSummary = Model.RequestDetail.RequestSummary;
+    var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+
+    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+}
+
+<div class="job__expander">
+    <div class="row">
+        <div class="sm12">
+            <dl>
+                <dt>When is the help needed?</dt>
+
+                <dd>
+                    <ul>
+                        @foreach (var jobSummary in Model.RequestDetail.RequestSummary.JobSummaries)
+                        {
+                            <li>
+                                <partial name="_WhenIsHelpNeeded_ShortFormat" model="jobSummary" />
+                            </li>
+                        }
+                    </ul>
+                </dd>
+            </dl>
+
+            <p class="mb-0">When you click &lsquo;Accept&rsquo; above, you can choose which dates to accept.</p>
+        </div>
+    </div>
+</div>
