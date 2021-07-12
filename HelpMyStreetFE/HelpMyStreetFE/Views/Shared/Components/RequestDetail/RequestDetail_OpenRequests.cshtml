@@ -20,19 +20,28 @@
             <dl>
                 <dt>When is the help needed?</dt>
 
-                <dd>
-                    <ul>
-                        @foreach (var jobSummary in Model.RequestDetail.RequestSummary.JobSummaries)
-                        {
-                            <li>
-                                <partial name="_WhenIsHelpNeeded_ShortFormat" model="jobSummary" />
-                            </li>
-                        }
-                    </ul>
-                </dd>
+                @if (Model.OpenJobsForUser.Count() == 1)
+                {
+                    <dd>
+                        <partial name="_WhenIsHelpNeeded_ShortFormat" model="Model.OpenJobsForUser.First()" />
+                    </dd>
+                }
+                else
+                {
+                    <dd>
+                        <p class="mt-0 mb-0">This help is needed on @Model.OpenJobsForUser.Count() separate occasions:</p>
+                        <ul>
+                            @foreach (var jobSummary in Model.OpenJobsForUser)
+                            {
+                                <li>
+                                    <partial name="_WhenIsHelpNeeded_ShortFormat" model="jobSummary" />
+                                </li>
+                            }
+                        </ul>
+                        <p class="mb-0">When you click &lsquo;Accept&rsquo; above, you can choose which dates to accept.</p>
+                    </dd>
+                }
             </dl>
-
-            <p class="mb-0">When you click &lsquo;Accept&rsquo; above, you can choose which dates to accept.</p>
         </div>
     </div>
 </div>

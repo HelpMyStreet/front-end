@@ -109,6 +109,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
+                OpenJobsForUser = await _requestService.FilterAndDedupeOpenJobsForUser(requestDetail.RequestSummary.JobSummaries, user, cancellationToken),
                 RequestDetail = requestDetail,
                 UserRole = RequestRoles.Volunteer,
             };
