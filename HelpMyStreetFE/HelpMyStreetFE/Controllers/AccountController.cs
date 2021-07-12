@@ -206,15 +206,23 @@ namespace HelpMyStreetFE.Controllers
         {
             int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
+            var locationPostcode = "";
 
-            var location = shiftDetails.RequestSummary.Shift.Location;
-            LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
+            if (shiftDetails.JobSummary.RequestType == RequestType.Task)
+            {
+                locationPostcode = WebUtility.UrlEncode(shiftDetails.JobSummary.PostCode);
+            }
+            else
+            {
+                var location = shiftDetails.RequestSummary.Shift.Location;
+                LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
 
-            var locationPostcode = WebUtility.UrlEncode(locationDetails.Address.Postcode);
+                locationPostcode = WebUtility.UrlEncode(locationDetails.Address.Postcode);
+            }
+        var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
 
-            var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
+        return new OkObjectResult(directionsLink);
 
-            return new OkObjectResult(directionsLink);
         }
 
         [Route("get-shift-calendar")]

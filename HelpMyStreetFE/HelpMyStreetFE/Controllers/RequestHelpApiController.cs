@@ -169,6 +169,14 @@ namespace HelpMyStreetFE.Controllers {
             return StatusCode((int)HttpStatusCode.OK);
         }
 
+        [AuthorizeAttributeNoRedirect]
+        [Route("get-view-location-popup")]
+        public IActionResult GetViewLocationPopup(string j)
+        {
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+            return ViewComponent("ViewLocationPopup", new { jobId });
+        }
+
         private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)
         {
             var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
@@ -211,4 +219,6 @@ namespace HelpMyStreetFE.Controllers {
         public bool FeedbackDue { get; set; }
         public bool FeedbackSubmitted { get; set; }
     }
+
+
 }

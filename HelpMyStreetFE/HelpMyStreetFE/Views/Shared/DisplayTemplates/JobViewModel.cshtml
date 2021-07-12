@@ -137,9 +137,18 @@
                 </span>
             }
             <span class="job__info__activity__location">
-                @Model.ListLocalityDescription
-            </span>
-        </div>
+                @if (Model.UserHasRequiredCredentials)
+                {
+                    <a href="#" class="view-location">@Model.ListLocalityDescription</a>
+            }
+            else
+            {
+
+            @Model.ListLocalityDescription
+                        }
+                    </span>
+
+            </div>
         <div class="job__info__col3 flex-end">
             @if (admin)
             {
