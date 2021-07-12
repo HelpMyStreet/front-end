@@ -42,7 +42,6 @@ export async function initialiseRequests() {
 
     $('.job-list').on('click', '.job a.view-location', function (e) {
         e.preventDefault();
-        console.log('clicked');
         showViewLocationPopup($(this).closest('.job'));
         
     });

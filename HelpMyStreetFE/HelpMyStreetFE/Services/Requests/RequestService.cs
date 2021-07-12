@@ -66,32 +66,27 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<bool> LogViewLocationEvent(int userId, int requestId, int jobId)
         {
-            // Awaiting implementation in Request Service
-            // ------------------------------------------
-            //
-            //var logRequest = new LogRequestEventRequest()
-            //{
-            //    JobID = jobId,
-            //    RequestID = requestId,
-            //    UserID = userId,
-            //    RequestEventRequest = new RequestEventRequest()
-            //    {
-            //        RequestEvent = RequestEvent.ShowFullPostCode
-            //    }
-            //};
+            var logRequest = new LogRequestEventRequest()
+            {
+                JobID = jobId,
+                RequestID = requestId,
+                UserID = userId,
+                RequestEventRequest = new RequestEventRequest()
+                {
+                    RequestEvent = RequestEvent.ShowFullPostCode
+                }
+            };
 
-            //var result = await _requestHelpRepository.LogEventRequest(logRequest);
+            var result = await _requestHelpRepository.LogEventRequest(logRequest);
 
-            //if (result != null)
-            //{
-            //    return result.Success;
-            //}
-            //else
-            //{
-            //    throw new Exception("Error when logging new event.");
-            //}
-
-            return true;
+            if (result != null)
+            {
+                return result.Success;
+            }
+            else
+            {
+                throw new Exception("Error when logging new event.");
+            }
         }
 
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
@@ -273,6 +268,8 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSummary = getJobSummaryResponse.JobSummary,
             };
         }
+
+
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {

@@ -46,46 +46,26 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            ViewLocationViewModel viewLocationViewModel;
-
-            //Awaiting better implementation of this in the backend
-
-            JobSummary jobDetails;
-            var jobSet = (await _requestService.LocateJob(jobId, user.ID, cancellationToken)).JobSet;
-            if (jobSet == Enums.Account.JobSet.UserOpenRequests_MatchingCriteria || jobSet == Enums.Account.JobSet.UserOpenRequests_NotMatchingCriteria)
-            {
-                jobDetails = (await _requestService.GetOpenJobsAsync(user, true, cancellationToken)).Where(x => x.JobID == jobId).First();
-            }
-            else
-            {
-                jobDetails = (await _requestService.GetJobsForUserAsync(user.ID, true, cancellationToken)).Where(x => x.JobID == jobId).First();
-            }
-
+            var jobDetails = (await _requestService.GetJobSummaryAsync(jobId, cancellationToken));
             var canView = await _requestService.LogViewLocationEvent(user.ID, jobDetails.RequestID, jobId);
-            if (canView)
-            {
-                var postCodeCordinateResponse = await _addressService.GetPostcodeCoordinate(jobDetails.PostCode);
-                var locationCoordinates = postCodeCordinateResponse.IsSuccessful ? postCodeCordinateResponse.Content.PostcodeCoordinates.First() : null;
 
-                viewLocationViewModel = new ViewLocationViewModel()
-                {
-                    IsAllowed = true,
-                    Coordinates = locationCoordinates,
-                    Distance = jobDetails.DistanceInMiles,
-                    PostCode = jobDetails.PostCode,
-                    encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID)
-                };
-            } else
+            if (!canView)
             {
-                viewLocationViewModel = new ViewLocationViewModel()
-                {
-                    IsAllowed = false,
-                    Coordinates = null,
-                    Distance = null,
-                    PostCode = "",
-                    encodedJobID = ""
-                };
+                throw new UnauthorizedAccessException("Not able to record view event");
             }
+
+            var postCodeCoordinates = (await _addressService.GetPostcodeCoordinates(jobDetails.PostCode)).First();
+
+            var distanceInMiles = await _addressService.GetDistanceBetweenPostcodes(jobDetails.PostCode, user.PostalCode, cancellationToken);
+
+            var viewLocationViewModel = new ViewLocationViewModel()
+            {
+                IsAllowed = true,
+                Coordinates = postCodeCoordinates,
+                Distance = distanceInMiles,
+                PostCode = jobDetails.PostCode,
+                encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID)
+            };
 
             return View("ViewLocationPopup", viewLocationViewModel);
         }

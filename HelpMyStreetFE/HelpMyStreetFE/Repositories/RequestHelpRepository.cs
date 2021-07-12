@@ -38,7 +38,7 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request)
         {
-            var response = await PostAsync<BaseRequestHelpResponse<LogRequestEventResponse>>("/api/LogEventRequest", request);
+            var response = await PostAsync<BaseRequestHelpResponse<LogRequestEventResponse>>("/api/LogRequestEvent", request);
 
             if (response.HasContent && response.IsSuccessful)
             {

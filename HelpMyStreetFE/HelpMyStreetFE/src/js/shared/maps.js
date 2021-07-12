@@ -20,7 +20,7 @@ export const defaultMarkerIcons = {
     scaledSize: {x: 50, y: 70},
 },
   task: {
-    url: "/img/logos/markers/hms5.png",
+    url: "/img/logos/markers/hms6.svg",
     scaledSize: {x:50, y: 55},
 }
 }
