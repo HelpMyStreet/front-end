@@ -60,6 +60,13 @@ namespace HelpMyStreetFE.Helpers
             return jobBasics.GroupBy(j => j, _jobBasicEqualityComparer).ToDictionary(g => g.First().DueDate, g => g.AsEnumerable());
         }
 
+        public static Dictionary<DateTime, IEnumerable<JobSummary>> GroupByDateAndActivity(this IEnumerable<JobSummary> jobBasics)
+        {
+            IEqualityComparer<JobBasic> _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
+
+            return jobBasics.GroupBy(j => j, _jobBasicEqualityComparer).ToDictionary(g => g.First().DueDate, g => g.AsEnumerable());
+        }
+
         public static JobBasic FirstOpenJob(this IEnumerable<JobBasic> jobBasics)
         {
             return jobBasics.Where(j => j.JobStatus.Equals(JobStatuses.Open)).OrderBy(j => j.DueDate).FirstOrDefault();

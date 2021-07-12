@@ -7,11 +7,7 @@
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
 @{
-    var requestSummary = Model.RequestDetail.RequestSummary;
-    var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
-    var role = Base64Utils.Base64Encode((int)Model.UserRole);
-
-    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = Model.JobsToShow.FirstOrDefault()?.Questions.Where(q => q.ShowOnTaskManagement(Model.UserRole.Equals(RequestRoles.GroupAdmin), false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 <div class="job__expander">
@@ -20,18 +16,18 @@
             <dl>
                 <dt>When is the help needed?</dt>
 
-                @if (Model.OpenJobsForUser.Count() == 1)
+                @if (Model.JobsToShow.Count() == 1)
                 {
                     <dd>
-                        <partial name="_WhenIsHelpNeeded_ShortFormat" model="Model.OpenJobsForUser.First()" />
+                        <partial name="_WhenIsHelpNeeded_ShortFormat" model="Model.JobsToShow.First()" />
                     </dd>
                 }
                 else
                 {
                     <dd>
-                        <p class="mt-0 mb-0">This help is needed on @Model.OpenJobsForUser.Count() separate occasions:</p>
+                        <p class="mt-0 mb-0">This help is needed on @Model.JobsToShow.Count() separate occasions:</p>
                         <ul>
-                            @foreach (var jobSummary in Model.OpenJobsForUser)
+                            @foreach (var jobSummary in Model.JobsToShow)
                             {
                                 <li>
                                     <partial name="_WhenIsHelpNeeded_ShortFormat" model="jobSummary" />
@@ -45,3 +41,32 @@
         </div>
     </div>
 </div>
+
+@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)) || questionsToDisplay.Count() > 0)
+{
+    <div class="job__expander">
+        <h4>Request Details<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                <div class="sm12">
+                    @foreach (var activity in Model.GroupSupportActivityInstructions.Where(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
+                    {
+                        if (Model.GroupSupportActivityInstructions.Count() > 1)
+                        {
+                            <h5>@activity.Key.FriendlyNameShort()</h5>
+                        }
+                        @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                    }
+
+                    @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                    {
+                        <dl>
+                            <dt>@q.FriendlyName()</dt>
+                            <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

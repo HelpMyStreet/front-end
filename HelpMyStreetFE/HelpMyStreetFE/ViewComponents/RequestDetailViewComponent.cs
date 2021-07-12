@@ -41,6 +41,8 @@ namespace HelpMyStreetFE.ViewComponents
                 case JobSet.UserOpenRequests_MatchingCriteria:
                 case JobSet.UserOpenRequests_NotMatchingCriteria:
                     return await InvokeAsync_OpenRequests(requestId, user, cancellationToken);
+                case JobSet.UserMyRequests:
+                    return await InvokeAsync_MyRequests(requestId, user, cancellationToken);
             }
 
 
@@ -102,19 +104,40 @@ namespace HelpMyStreetFE.ViewComponents
 
         private async Task<IViewComponentResult> InvokeAsync_OpenRequests(int requestId, User user, CancellationToken cancellationToken)
         {
-            var requestDetail = new HelpMyStreet.Contracts.RequestService.Response.GetRequestDetailsResponse
-            {
-                RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken)
-            };
+            var requestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+
+            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestSummary.ReferringGroupID,
+                requestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
 
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
-                OpenJobsForUser = await _requestService.FilterAndDedupeOpenJobsForUser(requestDetail.RequestSummary.JobSummaries, user, cancellationToken),
-                RequestDetail = requestDetail,
+                JobsToShow = await _requestService.FilterAndDedupeOpenJobsForUser(requestSummary.JobSummaries, user, cancellationToken),
                 UserRole = RequestRoles.Volunteer,
+                GroupSupportActivityInstructions = instructions,
             };
 
             return View("RequestDetail_OpenRequests", requestDetailViewModel);
+        }
+
+        private async Task<IViewComponentResult> InvokeAsync_MyRequests(int requestId, User user, CancellationToken cancellationToken)
+        {
+            var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
+            //var requestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+
+            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID,
+                requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
+
+            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
+            {
+                RequestDetail = requestDetail,
+                User = user,
+                JobsToShow = requestDetail.RequestSummary.JobSummaries.GroupByDateAndActivity().OrderBy(j => j.Key)
+                    .Select(g => g.Value.OrderByDescending(j => j.VolunteerUserID.Equals(user.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First()),
+                UserRole = RequestRoles.Volunteer,
+                GroupSupportActivityInstructions = instructions,
+            };
+
+            return View("RequestDetail_MyRequests", requestDetailViewModel);
         }
     }
 }

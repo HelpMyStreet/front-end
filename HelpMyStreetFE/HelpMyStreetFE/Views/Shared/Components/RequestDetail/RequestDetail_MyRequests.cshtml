@@ -1,0 +1,129 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Enums.Account;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
+
+@model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
+
+@{
+    //var requestSummary = Model.RequestDetail.RequestSummary;
+    //var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+
+    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+}
+
+
+<div class="request-job__detail job__detail" data-status="pre-loaded">
+
+    @if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
+    {
+        <div class="job__expander">
+            <h4>Request Details<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    <div class="sm12">
+                        @foreach (var activity in Model.GroupSupportActivityInstructions)
+                        {
+                            @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                            {
+                                <h5>@activity.Key.FriendlyNameShort()</h5>
+                            }
+                            @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="job__expander">
+        <h4>Volunteer Instructions<span></span></h4>
+        <div class="job__expander__content">
+            @foreach (var activity in Model.GroupSupportActivityInstructions)
+            {
+                <div class="row">
+                    @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                    {
+                        <h5>@activity.Key.FriendlyNameShort()</h5>
+                    }
+                    <div class="sm12 volunteer-instructions">
+                        <partial name="_GroupSupportActivityInstructions" model="activity.Value" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="job__expander">
+        <h4>Contact Details<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                @if (Model.RequestDetail.Recipient != null)
+                {
+                    <div class="sm6">
+                        <h5>Recipient</h5>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>@Model.RequestDetail.Recipient.FirstName @Model.RequestDetail.Recipient.LastName</dd>
+                            <dt>Email</dt>
+                            <dd>@Model.RequestDetail.Recipient.EmailAddress</dd>
+                            <dt>@(Model.RequestDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                            <dd>@string.Join(" / ", Model.RequestDetail.Recipient.PhoneNumbers())</dd>
+                            <dt>Address</dt>
+                            <dd>
+                                @Html.DisplayFor(x => Model.RequestDetail.Recipient.Address, new { MaskAddress = false })
+                            </dd>
+                        </dl>
+                    </div>
+                }
+                @if (Model.RequestDetail.Requestor != null && Model.RequestDetail.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself)
+                {
+                    <div class="sm6">
+                        <h5>Requester</h5>
+                        <dl>
+                            <dt>Name</dt>
+                            <dd>@Model.RequestDetail.Requestor.FirstName @Model.RequestDetail.Requestor.LastName</dd>
+                            <dt>Email</dt>
+                            <dd>@Model.RequestDetail.Requestor.EmailAddress</dd>
+                            <dt>@(Model.RequestDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                            <dd>@string.Join(" / ", Model.RequestDetail.Requestor.PhoneNumbers())</dd>
+                            <dt>Address</dt>
+                            <dd>
+                                @Model.RequestDetail.Requestor.Address.Postcode
+                            </dd>
+                        </dl>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="request-job__list" show="user-jobs">
+    <div class="request-job__list__items">
+        @foreach (var job in Model.JobsToShow)
+        {
+            @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
+        }
+    </div>
+    @if (Model.JobsToShow.Any(j => !j.VolunteerUserID.Equals(Model.User.ID)))
+    {
+        <div class="request-job__list__summary">
+            <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.JobsToShow.Count() dates">
+                @foreach (var job in Model.JobsToShow)
+                {
+                    var userAllocatedToJob = job.VolunteerUserID.Equals(Model.User.ID);
+
+                    <img class="status-icon" src="~/img/icons/status/@job.JobStatus.Icon()" alt="@job.JobStatus.FriendlyName()" title="@job.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash; @job.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToJob)" />
+                }
+                <span>Show all @Model.JobsToShow.Count() dates</span>
+            </a>
+            <a href="#" class="request-job__list__toggle" show="user-jobs">
+                <span>Show only the dates I have accepted</span>
+            </a>
+        </div>
+    }
+</div>
