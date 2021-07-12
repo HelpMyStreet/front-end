@@ -264,6 +264,18 @@ namespace HelpMyStreetFE.Repositories
             throw new Exception($"Bad response from GetGroup for GroupId {groupId}");
         }
 
+        public async Task<List<Location>> GetUserLocations(int userId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetUserLocations?userID={userId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetUserLocationsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.Locations;
+            }
+            throw new Exception($"Bad response from GetUserLocations for userId {userId}");
+        }
+
         public async Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant)
         {
             var rfvRequest = new RegistrationFormVariantRequest();

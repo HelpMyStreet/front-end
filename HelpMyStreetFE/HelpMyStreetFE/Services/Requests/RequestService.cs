@@ -509,7 +509,6 @@ namespace HelpMyStreetFE.Services.Requests
                 Groups = new GroupRequest() { Groups = await _groupMemberService.GetUserGroups(user.ID) },
                 RequestType = new RequestTypeRequest { RequestTypes = new List<RequestType> { RequestType.Task } },
             };
-
             var allJobs = (await _requestHelpRepository.GetAllJobsByFilterAsync(jobsByFilterRequest)).JobSummaries;
             var dedupedJobs = allJobs.Distinct(_jobSummaryJobDedupe_EqualityComparer);
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);

@@ -85,7 +85,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new RequestHelpDetailStageViewModel()
                     {
                         ShowRequestorFields = !requestHelpJourney.RequestorDefinedByGroup,
-                        FullRecipientAddressRequired = GetFullRecipientAddressRequired(requestHelpFormVariant),
+                        FullRecipientAddressRequired = true,
                     },
                     new RequestHelpReviewStageViewModel(),
                 }
@@ -94,13 +94,6 @@ namespace HelpMyStreetFE.Services.Requests
             if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(0, 2);
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Timeframes.RemoveRange(2, 1);
-
-                ((RequestHelpRequestStageViewModel)model.Steps.First()).Requestors.RemoveAll(x => x.Type == RequestorType.Organisation);
             }
 
             if (requestHelpFormVariant == RequestHelpFormVariant.AgeUKWirral || requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
@@ -195,7 +188,6 @@ namespace HelpMyStreetFE.Services.Requests
             return requestHelpFormVariant switch
             {
                 RequestHelpFormVariant.FtLOS => "How can For the Love of Scrubs help?",
-                RequestHelpFormVariant.HLP_CommunityConnector => "Get in touch with a Community Connector",
                 RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
                 RequestHelpFormVariant.AgeUKNottsBalderton => "Request help from Balderton Community Support",
                 RequestHelpFormVariant.AgeUKNottsNorthMuskham => "Request help from North Muskham Community Support",
@@ -219,8 +211,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return requestHelpFormVariant switch
             {
-                RequestHelpFormVariant.FtLOS => "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.",
-                RequestHelpFormVariant.HLP_CommunityConnector => "If you’re feeling down, anxious or just ‘stuck’ and wanting someone to help you take action to improve your wellbeing, we can put you in touch with a trained volunteer Community Connector. Calls are free, confidential and focused on an issue that you want to make progress on.",
+                RequestHelpFormVariant.FtLOS => "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.", 
                 RequestHelpFormVariant.AgeUKWirral => string.Empty,
                 RequestHelpFormVariant.AgeUKSouthKentCoast_Public => "If you need help from Age UK South Kent Coast, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter => "If you need help from Age UK South Kent Coast, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
@@ -234,15 +225,6 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeConnectsCardiff_Public => "If you need help from Age Connects Cardiff and the Vale, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => "If you need help from Age Connects Cardiff and the Vale, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
-            };
-        }
-
-        private bool GetFullRecipientAddressRequired(RequestHelpFormVariant requestHelpFormVariant)
-        {
-            return requestHelpFormVariant switch
-            {
-                RequestHelpFormVariant.HLP_CommunityConnector => false,
-                _ => true
             };
         }
 
@@ -261,10 +243,6 @@ namespace HelpMyStreetFE.Services.Requests
             else if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
             {
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = true });
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.HLP_CommunityConnector)
-            {
-                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.CommunityConnector, IsSelected = true });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.Ruddington)
             {
