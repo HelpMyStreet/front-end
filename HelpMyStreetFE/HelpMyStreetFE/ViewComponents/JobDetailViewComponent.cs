@@ -37,7 +37,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             JobDetail jobDetails = await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken);
 
-            if (jobSet.GroupAdminView())
+            if (jobSet.GroupAdminView() || jobSet.Equals(JobSet.UserMyShifts))
             {
                 jobDetails = await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken);
             }
