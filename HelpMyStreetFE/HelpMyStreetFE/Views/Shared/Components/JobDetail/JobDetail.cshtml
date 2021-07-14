@@ -98,7 +98,7 @@
                 </div>
             </div>
             }
-            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay.Count() > 0)
+            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
             {
                 <div class="row">
                     <div class="sm12">
@@ -217,7 +217,7 @@
             </div>
         </div>
     }
-    @if (!userActingAsAdmin && questionsToDisplay.Count() > 0 && jobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
+    @if (!userActingAsAdmin && questionsToDisplay?.Count() > 0 && jobSummary.JobStatus == JobStatuses.InProgress && !Model.ToPrint)
     {
         <div class="job__expander offline-details-container">
             <div class="row">
