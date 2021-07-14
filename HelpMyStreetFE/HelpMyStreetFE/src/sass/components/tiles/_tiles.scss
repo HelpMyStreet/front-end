@@ -73,9 +73,19 @@
 
 
         &__content {
-            display: table-cell;
-            vertical-align: middle;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            flex-grow: 1;
 
+            &.sm4:first-child {
+                padding-left: 0;
+            }
+
+            &.sm4:last-child {
+                padding-right: 0;
+            }
 
             &--top {
                 display: block;
@@ -193,8 +203,8 @@
 
             &__description {
                 color: $black;
-                width: 95%;
-                margin: auto;
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
 
                 &.left {
                     text-align: left;

@@ -7,11 +7,14 @@
     var todaysDate = DateTime.Now;
     todaysDate = todaysDate.ToLocalTime();
     var stringDate = todaysDate.AddDays(7).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT);
+
+    var widthClass = "sm" + (1 + (Model.DueDateType.HasStartTime() ? 1 : 0) + (Model.DueDateType.HasEndTime() ? 1 : 0)) * 4;
 }
 
-<div class="sm4" hide-tile-when="@Model.HideTileWhenAttribute">
-    <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-value="@Model.Value" data-id='@Model.ID' class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
-        <div class="tiles__tile__content ">
+<div class="@widthClass" hide-tile-when="@Model.HideTileWhenAttribute">
+    <div id="time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-value="@Model.Value" data-id='@Model.ID' class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" ) row">
+
+        <div class="tiles__tile__content sm4">
             <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
             @if (Model.DueDateType.HasDate())
             {
@@ -21,35 +24,29 @@
                 </div>
             }
         </div>
-    </div>
-</div>
 
-@if (Model.DueDateType.HasStartTime())
-{
-    <div class="sm4">
-        <div id="start_time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
-            <div class="tiles__tile__content ">
+        @if (Model.DueDateType.HasStartTime())
+        {
+            <div class="tiles__tile__content sm4">
                 <div class="tiles__tile__content__header pt-xs">Starting at</div>
-                <div class="on-selected">
+                <div class="on-selected mt-xs">
                     <input name="currentStep.SelectedTimeFrame.StartTime" type="time" step="300" placeholder="e.g. 15:00" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.TIME_FIELD_FORMAT) : "")" />
                     <span id="starttimeselectionError" class="error"></span>
                 </div>
             </div>
-        </div>
-    </div>
-}
+        }
 
-@if (Model.DueDateType.HasEndTime())
-{
-    <div class="sm4">
-        <div id="end_time_@Model.ID" data-type="timeframe" data-duedatetype="@Model.DueDateType" data-id='@Model.ID' class="tiles__tile tile-selector__tile @(Model.IsSelected ? "selected" : "" )">
-            <div class="tiles__tile__content ">
+        @if (Model.DueDateType.HasEndTime())
+        {
+            <div class="tiles__tile__content sm4">
                 <div class="tiles__tile__content__header pt-xs">Ending at</div>
                 <div class="on-selected">
                     <input name="currentStep.SelectedTimeFrame.EndTime" type="time" step="300" placeholder="e.g. 18:00" autocomplete="off" value="@((Model.EndTime ?? DateTime.MinValue) != DateTime.MinValue ? Model.EndTime.Value.ToString(DatePickerHelpers.TIME_FIELD_FORMAT) : "")" />
                     <span id="endtimeselectionError" class="error"></span>
                 </div>
             </div>
-        </div>
+        }
+
     </div>
-}
+</div>
+
