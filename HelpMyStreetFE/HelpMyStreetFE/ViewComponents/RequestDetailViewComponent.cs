@@ -68,13 +68,12 @@ namespace HelpMyStreetFE.ViewComponents
                     viewName = "RequestDetail_MyRequests";
                     break;
                 case JobSet.GroupRequests:
+                    vm.JobDetails = await GetJobDetails(vm.RequestSummary.JobBasics, user, jobSet, cancellationToken); ;
+                    //viewName = "RequestDetail";
+                    break;
                 case JobSet.GroupShifts:
-                    var jobDetails = new List<JobDetail>();
-                    foreach (var j in vm.RequestSummary.JobBasics)
-                    {
-                        jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
-                    }
-                    vm.JobDetails = jobDetails;
+                    vm.JobDetails = await GetJobDetails(vm.RequestSummary.JobBasics, user, jobSet, cancellationToken);
+                    viewName = "RequestDetail_GroupShifts";
                     break;
             }
 
@@ -84,6 +83,16 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
             return View(viewName, vm);
+        }
+
+        private async Task<IEnumerable<JobDetail>> GetJobDetails(IEnumerable<JobBasic> jobBasics, User user, JobSet jobSet, CancellationToken cancellationToken)
+        {
+            var jobDetails = new List<JobDetail>();
+            foreach (var j in jobBasics)
+            {
+                jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
+            }
+            return jobDetails;
         }
     }
 }
