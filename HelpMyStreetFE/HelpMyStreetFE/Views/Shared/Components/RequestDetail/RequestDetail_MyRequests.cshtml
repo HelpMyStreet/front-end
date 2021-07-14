@@ -16,7 +16,7 @@
 }
 
 
-<div class="request-job__detail job__detail" data-status="pre-loaded">
+<div class="request-job__detail job__detail start-open" data-status="pre-loaded">
 
     @if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
     {
@@ -61,38 +61,38 @@
         <h4>Contact Details<span></span></h4>
         <div class="job__expander__content">
             <div class="row">
-                @if (Model.RequestDetail.Recipient != null)
+                @if (Model.Recipient != null)
                 {
                     <div class="sm6">
                         <h5>Recipient</h5>
                         <dl>
                             <dt>Name</dt>
-                            <dd>@Model.RequestDetail.Recipient.FirstName @Model.RequestDetail.Recipient.LastName</dd>
+                            <dd>@Model.Recipient.FirstName @Model.Recipient.LastName</dd>
                             <dt>Email</dt>
-                            <dd>@Model.RequestDetail.Recipient.EmailAddress</dd>
-                            <dt>@(Model.RequestDetail.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                            <dd>@string.Join(" / ", Model.RequestDetail.Recipient.PhoneNumbers())</dd>
+                            <dd>@Model.Recipient.EmailAddress</dd>
+                            <dt>@(Model.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                            <dd>@string.Join(" / ", Model.Recipient.PhoneNumbers())</dd>
                             <dt>Address</dt>
                             <dd>
-                                @Html.DisplayFor(x => Model.RequestDetail.Recipient.Address, new { MaskAddress = false })
+                                @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = false })
                             </dd>
                         </dl>
                     </div>
                 }
-                @if (Model.RequestDetail.Requestor != null && Model.RequestDetail.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself)
+                @if (Model.Requestor != null && Model.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself)
                 {
                     <div class="sm6">
                         <h5>Requester</h5>
                         <dl>
                             <dt>Name</dt>
-                            <dd>@Model.RequestDetail.Requestor.FirstName @Model.RequestDetail.Requestor.LastName</dd>
+                            <dd>@Model.Requestor.FirstName @Model.Requestor.LastName</dd>
                             <dt>Email</dt>
-                            <dd>@Model.RequestDetail.Requestor.EmailAddress</dd>
-                            <dt>@(Model.RequestDetail.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                            <dd>@string.Join(" / ", Model.RequestDetail.Requestor.PhoneNumbers())</dd>
+                            <dd>@Model.Requestor.EmailAddress</dd>
+                            <dt>@(Model.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+                            <dd>@string.Join(" / ", Model.Requestor.PhoneNumbers())</dd>
                             <dt>Address</dt>
                             <dd>
-                                @Model.RequestDetail.Requestor.Address.Postcode
+                                @Model.Requestor.Address.Postcode
                             </dd>
                         </dl>
                     </div>
@@ -106,7 +106,7 @@
     <div class="request-job__list__items">
         @foreach (var job in Model.JobsToShow)
         {
-            @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "MiniJobDetail" });
+            @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "JobDetail_MyRequests" });
         }
     </div>
     @if (Model.JobsToShow.Any(j => !j.VolunteerUserID.Equals(Model.User.ID)))

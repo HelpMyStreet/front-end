@@ -19,14 +19,13 @@
     var encodedRequestID = Base64Utils.Base64Encode(jobDetails.RequestID);
     var encodedRole = Base64Utils.Base64Encode((int)Model.JobDetail.UserRole);
 
-    var showWhenIsHelpNeeded = jobDetails.JobStatus.Incomplete() && (userActingAsAdmin || userAllocatedToTask || jobDetails.VolunteerUserID == null);
-    var showDuplicateJobs = Model.DuplicateJobs.Count() > 1;
-    var showQuestions = (userActingAsAdmin || userAllocatedToTask || jobDetails.JobStatus.Equals(JobStatuses.Open)) && questionsToDisplay?.Count() > 0;
+    var showDuplicateJobs = jobDetails.JobStatus.Incomplete() && Model.DuplicateJobs.Count() > 1;
+    var showQuestions = jobDetails.JobStatus.Incomplete() && questionsToDisplay?.Count() > 0;
 
 }
 
 <div class="job__expander job mini-job-detail" id="@encodedJobID" request-id="@encodedRequestID" data-role="@encodedRole" data-user-allocated-to-job="@userAllocatedToTask">
-    <h4 class="@((showWhenIsHelpNeeded || showDuplicateJobs || showQuestions) ? "" : "no-click")">
+    <h4 class="@((showDuplicateJobs || showQuestions) ? "" : "no-click")">
         <span class="pt-xs pb-xs">
             <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
             <span title="@jobDetails.DueDate.FriendlyFutureDate()">
@@ -42,16 +41,13 @@
         </span>
         <span></span>
     </h4>
-    @if (showWhenIsHelpNeeded || showDuplicateJobs || showQuestions)
+    @if (showDuplicateJobs || showQuestions)
     {
         <div class="job__expander__content request-job__content">
             <div class="row">
                 <div class="sm12">
                     <dl>
-                        @if (showWhenIsHelpNeeded)
-                        {
-                            <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
-                        }
+                        <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
                         @if (showDuplicateJobs)
                         {
                             var filled = Model.DuplicateJobs.Count() - Model.DuplicateJobs.UnfilledJobs().Count();

@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.ViewComponents
             _addressService = addressService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false, bool showJobList = true)
+        public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken)
         {
             //if (!jobSet.GroupAdminView())
             //{
@@ -46,23 +46,34 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
 
+            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel
+            {
+                User = user,
+                UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+            };
+
+
+
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
             // Temporary fix  TODO: Let users allocated to the task see RequestDetails
-            if (requestDetail == null)
+            if (requestDetail != null)
             {
-                requestDetail = new HelpMyStreet.Contracts.RequestService.Response.GetRequestDetailsResponse
-                {
-                    RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken)
-                };
+                requestDetailViewModel.RequestSummary = requestDetail.RequestSummary;
+                requestDetailViewModel.Requestor = requestDetail.Requestor;
+                requestDetailViewModel.Recipient = requestDetail.Recipient;
+            }
+            else
+            {
+                requestDetailViewModel.RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
             }
 
 
             var jobDetails = new List<JobDetail>();
 
-            if (showJobList)
+            if (jobSet == JobSet.GroupRequests)
             {
-                foreach (var j in requestDetail.RequestSummary.JobBasics)
+                foreach (var j in requestDetailViewModel.RequestSummary.JobBasics)
                 {
                     if (jobSet.GroupAdminView() || j.VolunteerUserID == user.ID)
                     {
@@ -78,25 +89,20 @@ namespace HelpMyStreetFE.ViewComponents
                         jobDetails.Add(new JobDetail(await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
                         {
                             //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
-                            RequestSummary = requestDetail.RequestSummary,
+                            RequestSummary = requestDetailViewModel.RequestSummary,
                         });
                     }
                 }
             }
 
-            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID, requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
- 
-            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
-            {
-                RequestDetail = requestDetail,
-                JobDetails = jobDetails,
-                UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-                GroupSupportActivityInstructions = instructions,
-            };
+            requestDetailViewModel.JobDetails = jobDetails;
 
-            if (requestDetail.RequestSummary.Shift != null)
+            requestDetailViewModel.GroupSupportActivityInstructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetailViewModel.RequestSummary.ReferringGroupID, requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
+
+
+            if (requestDetailViewModel.RequestSummary.Shift != null)
             {
-                requestDetailViewModel.LocationDetails = await _addressService.GetLocationDetails(requestDetail.RequestSummary.Shift.Location, cancellationToken);
+                requestDetailViewModel.LocationDetails = await _addressService.GetLocationDetails(requestDetailViewModel.RequestSummary.Shift.Location, cancellationToken);
             }
 
             return View("RequestDetail", requestDetailViewModel);
@@ -129,7 +135,9 @@ namespace HelpMyStreetFE.ViewComponents
 
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
             {
-                RequestDetail = requestDetail,
+                RequestSummary = requestDetail.RequestSummary,
+                Recipient = requestDetail.Recipient,
+                Requestor = requestDetail.Requestor,
                 User = user,
                 JobsToShow = requestDetail.RequestSummary.JobSummaries.GroupByDateAndActivity().OrderBy(j => j.Key)
                     .Select(g => g.Value.OrderByDescending(j => j.VolunteerUserID.Equals(user.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First()),
