@@ -168,7 +168,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken)
         {
-            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
+            var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
 
             UpdateJobStatusOutcome? outcome = job.RequestType switch
             {

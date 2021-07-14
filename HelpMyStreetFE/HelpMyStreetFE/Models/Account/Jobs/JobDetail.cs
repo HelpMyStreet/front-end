@@ -36,6 +36,25 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             this.VolunteerUserID = jobSummary.VolunteerUserID;
         }
 
+        public JobDetail(JobBasic jobBasic)
+        {
+            this.Archive = jobBasic.Archive;
+            this.DateRequested = jobBasic.DateRequested;
+            this.DateStatusLastChanged = jobBasic.DateStatusLastChanged;
+            this.DistanceInMiles = jobBasic.DistanceInMiles;
+            this.DueDate = jobBasic.DueDate;
+            this.DueDateType = jobBasic.DueDateType;
+            this.JobID = jobBasic.JobID;
+            this.JobStatus = jobBasic.JobStatus;
+            this.NotBeforeDate = jobBasic.NotBeforeDate;
+            this.ReferringGroupID = jobBasic.ReferringGroupID;
+            this.RequestID = jobBasic.RequestID;
+            this.RequestType = jobBasic.RequestType;
+            this.SupportActivity = jobBasic.SupportActivity;
+            this.SuppressRecipientPersonalDetail = jobBasic.SuppressRecipientPersonalDetail;
+            this.VolunteerUserID = jobBasic.VolunteerUserID;
+        }
+
         public RequestSummary RequestSummary { get; set; }
         public RequestPersonalDetails Requestor { get; set; }
         public RequestPersonalDetails Recipient { get; set; }

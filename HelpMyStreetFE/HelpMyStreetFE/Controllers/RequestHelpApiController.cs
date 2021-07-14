@@ -67,7 +67,7 @@ namespace HelpMyStreetFE.Controllers {
                     int jobId = Base64Utils.Base64DecodeToInt(j);
                     outcome = await _requestUpdatingService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
 
-                    var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                    var job = await _requestService.GetJobBasicAsync(jobId, cancellationToken);
                     if (job.RequestType.Equals(RequestType.Task))
                     {
                         requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;

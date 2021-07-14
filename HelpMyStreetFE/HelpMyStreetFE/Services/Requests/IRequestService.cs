@@ -24,7 +24,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken);
         Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken);
- 
+
+        Task<JobBasic> GetJobBasicAsync(int jobId, CancellationToken cancellationToken);
         Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken);

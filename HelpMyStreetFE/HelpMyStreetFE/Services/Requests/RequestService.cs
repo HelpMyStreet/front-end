@@ -174,15 +174,32 @@ namespace HelpMyStreetFE.Services.Requests
             return await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
         }
 
+        public async Task<JobBasic> GetJobBasicAsync(int jobId, CancellationToken cancellationToken)
+        {
+            return await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
+        }
+
         public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
-            var jobSummary = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
-            var requestSummary = await _requestCachingService.GetRequestSummaryAsync(jobSummary.RequestID, cancellationToken);
-
-            return new JobDetail(jobSummary)
+            var jobBasic = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
+            var requestSummary = await _requestCachingService.GetRequestSummaryAsync(jobBasic.RequestID, cancellationToken);
+            
+            if (jobBasic.RequestType.Equals(RequestType.Task))
             {
-                RequestSummary = requestSummary
-            };
+                var jobSummary = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
+
+                return new JobDetail(jobSummary)
+                {
+                    RequestSummary = requestSummary
+                };
+            }
+            else
+            {
+                return new JobDetail(jobBasic)
+                {
+                    RequestSummary = requestSummary
+                };
+            }
         }
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)

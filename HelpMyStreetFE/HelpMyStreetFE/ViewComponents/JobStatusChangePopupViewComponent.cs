@@ -33,10 +33,10 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, int requestId, JobStatuses targetStatus, CancellationToken cancellationToken)
         {
-            JobSummary job = null;
+            JobBasic job = null;
             if (jobId > 0)
             {
-                job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                job = await _requestService.GetJobBasicAsync(jobId, cancellationToken);
                 requestId = job.RequestID;
             }
             var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
@@ -80,7 +80,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         private async Task<IViewComponentResult> AcceptRequestIfCredentialsSatisfied(JobStatusChangePopupViewModel vm, User user, CancellationToken cancellationToken)
         {
-            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobSummary.ReferringGroupID, vm.JobSummary.SupportActivity, user.ID, user.ID, cancellationToken);
+            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobBasic.ReferringGroupID, vm.JobBasic.SupportActivity, user.ID, user.ID, cancellationToken);
 
             if (credentials.AreSatisfied)
             {
@@ -93,13 +93,13 @@ namespace HelpMyStreetFE.ViewComponents
             }
         }
 
-        private async Task<JobStatusChangePopupViewModel> BuildVm(RequestSummary request, JobSummary job, JobStatuses targetStatus, CancellationToken cancellationToken)
+        private async Task<JobStatusChangePopupViewModel> BuildVm(RequestSummary request, JobBasic job, JobStatuses targetStatus, CancellationToken cancellationToken)
         {
             JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel()
             {
                 RequestSummary = request,
                 RequestType = request.RequestType,
-                JobSummary = job,
+                JobBasic = job,
                 TargetStatus = targetStatus,
             };
 
