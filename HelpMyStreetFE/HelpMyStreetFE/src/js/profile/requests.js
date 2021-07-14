@@ -357,13 +357,15 @@ async function loadFeedbackComponent(job) {
     const jobId = job.attr("id");
     const role = $(job).data("role");
 
-    const response = await hmsFetch('/api/request-help/get-feedback-component?j=' + jobId + '&r=' + role);
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-        const feedback = await response.fetchPayload;
-        if (feedback) {
-            job.find('.feedback-container').html(feedback);
+    if (jobId != "") {
+        const response = await hmsFetch('/api/request-help/get-feedback-component?j=' + jobId + '&r=' + role);
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            const feedback = await response.fetchPayload;
+            if (feedback) {
+                job.find('.feedback-container').html(feedback);
+            }
         }
-    } else {
-        return false;
     }
+
+    return false;
 }
