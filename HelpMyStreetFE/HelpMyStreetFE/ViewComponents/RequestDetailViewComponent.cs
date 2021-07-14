@@ -30,13 +30,29 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken)
         {
-            string viewName = "RequestDetail";
+            //if (!jobSet.GroupAdminView())
+            //{
+            //    throw new Exception($"Unexpected JobSet: {jobSet}");
+            //}
+
+
+            switch (jobSet)
+            {
+                case JobSet.UserOpenRequests_MatchingCriteria:
+                case JobSet.UserOpenRequests_NotMatchingCriteria:
+                    return await InvokeAsync_OpenRequests(requestId, user, cancellationToken);
+                case JobSet.UserMyRequests:
+                    return await InvokeAsync_MyRequests(requestId, user, cancellationToken);
+            }
+
 
             RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel
             {
                 User = user,
                 UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
             };
+
+
 
             var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
 
@@ -52,39 +68,84 @@ namespace HelpMyStreetFE.ViewComponents
                 requestDetailViewModel.RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
             }
 
-            requestDetailViewModel.GroupSupportActivityInstructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetailViewModel.RequestSummary.ReferringGroupID, requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
 
+            var jobDetails = new List<JobDetail>();
 
-            switch (jobSet)
+            if (jobSet == JobSet.GroupRequests)
             {
-                case JobSet.UserOpenRequests_MatchingCriteria:
-                case JobSet.UserOpenRequests_NotMatchingCriteria:
-                    requestDetailViewModel.JobsToShow = 
-                        await _requestService.FilterAndDedupeOpenJobsForUser(requestDetailViewModel.RequestSummary.JobSummaries, user, cancellationToken);
-                    viewName = "RequestDetail_OpenRequests";
-                    break;
-                case JobSet.UserMyRequests:
-                    requestDetailViewModel.JobsToShow = requestDetail.RequestSummary.JobSummaries.GroupByDateAndActivity().OrderBy(j => j.Key)
-                        .Select(g => g.Value.OrderByDescending(j => j.VolunteerUserID.Equals(user.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First());
-                    viewName = "RequestDetail_MyRequests";
-                    break;
-                case JobSet.GroupRequests:
-                case JobSet.GroupShifts:
-                    var jobDetails = new List<JobDetail>();
-                    foreach (var j in requestDetailViewModel.RequestSummary.JobBasics)
+                foreach (var j in requestDetailViewModel.RequestSummary.JobBasics)
+                {
+                    if (jobSet.GroupAdminView() || j.VolunteerUserID == user.ID)
                     {
                         jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
                     }
-                    requestDetailViewModel.JobDetails = jobDetails;
-                    break;
+                    else
+                    {
+                        //JobDetail jobDetail = (JobDetail)await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken);
+                        //jobDetail.RequestSummary = requestDetail.RequestSummary;
+
+                        //jobDetails.Add(jobDetail);
+
+                        jobDetails.Add(new JobDetail(await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
+                        {
+                            //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
+                            RequestSummary = requestDetailViewModel.RequestSummary,
+                        });
+                    }
+                }
             }
+
+            requestDetailViewModel.JobDetails = jobDetails;
+
+            requestDetailViewModel.GroupSupportActivityInstructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetailViewModel.RequestSummary.ReferringGroupID, requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
+
 
             if (requestDetailViewModel.RequestSummary.Shift != null)
             {
                 requestDetailViewModel.LocationDetails = await _addressService.GetLocationDetails(requestDetailViewModel.RequestSummary.Shift.Location, cancellationToken);
             }
 
-            return View(viewName, requestDetailViewModel);
+            return View("RequestDetail", requestDetailViewModel);
+        }
+
+        private async Task<IViewComponentResult> InvokeAsync_OpenRequests(int requestId, User user, CancellationToken cancellationToken)
+        {
+            var requestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+
+            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestSummary.ReferringGroupID,
+                requestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
+
+            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
+            {
+                JobsToShow = await _requestService.FilterAndDedupeOpenJobsForUser(requestSummary.JobSummaries, user, cancellationToken),
+                UserRole = RequestRoles.Volunteer,
+                GroupSupportActivityInstructions = instructions,
+            };
+
+            return View("RequestDetail_OpenRequests", requestDetailViewModel);
+        }
+
+        private async Task<IViewComponentResult> InvokeAsync_MyRequests(int requestId, User user, CancellationToken cancellationToken)
+        {
+            var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
+            //var requestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+
+            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID,
+                requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
+
+            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
+            {
+                RequestSummary = requestDetail.RequestSummary,
+                Recipient = requestDetail.Recipient,
+                Requestor = requestDetail.Requestor,
+                User = user,
+                JobsToShow = requestDetail.RequestSummary.JobSummaries.GroupByDateAndActivity().OrderBy(j => j.Key)
+                    .Select(g => g.Value.OrderByDescending(j => j.VolunteerUserID.Equals(user.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First()),
+                UserRole = RequestRoles.Volunteer,
+                GroupSupportActivityInstructions = instructions,
+            };
+
+            return View("RequestDetail_MyRequests", requestDetailViewModel);
         }
     }
 }
