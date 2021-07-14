@@ -30,122 +30,60 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken)
         {
-            //if (!jobSet.GroupAdminView())
-            //{
-            //    throw new Exception($"Unexpected JobSet: {jobSet}");
-            //}
+            string viewName = "RequestDetail";
+
+            RequestDetailViewModel vm = new RequestDetailViewModel
+            {
+                User = user,
+                UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+            };
+
+            if (jobSet.PrivilegedView())
+            {
+                var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
+
+                vm.RequestSummary = requestDetail.RequestSummary;
+                vm.Requestor = requestDetail.Requestor;
+                vm.Recipient = requestDetail.Recipient;
+            }
+            else
+            {
+                vm.RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+            }
+
+            vm.GroupSupportActivityInstructions = await _groupService.GetAllGroupSupportActivityInstructions(vm.RequestSummary.ReferringGroupID, vm.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
 
 
             switch (jobSet)
             {
                 case JobSet.UserOpenRequests_MatchingCriteria:
                 case JobSet.UserOpenRequests_NotMatchingCriteria:
-                    return await InvokeAsync_OpenRequests(requestId, user, cancellationToken);
+                    vm.JobsToShow = 
+                        await _requestService.FilterAndDedupeOpenJobsForUser(vm.RequestSummary.JobSummaries, user, cancellationToken);
+                    viewName = "RequestDetail_OpenRequests";
+                    break;
                 case JobSet.UserMyRequests:
-                    return await InvokeAsync_MyRequests(requestId, user, cancellationToken);
-            }
-
-
-            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel
-            {
-                User = user,
-                UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-            };
-
-
-
-            var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
-
-            // Temporary fix  TODO: Let users allocated to the task see RequestDetails
-            if (requestDetail != null)
-            {
-                requestDetailViewModel.RequestSummary = requestDetail.RequestSummary;
-                requestDetailViewModel.Requestor = requestDetail.Requestor;
-                requestDetailViewModel.Recipient = requestDetail.Recipient;
-            }
-            else
-            {
-                requestDetailViewModel.RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
-            }
-
-
-            var jobDetails = new List<JobDetail>();
-
-            if (jobSet == JobSet.GroupRequests)
-            {
-                foreach (var j in requestDetailViewModel.RequestSummary.JobBasics)
-                {
-                    if (jobSet.GroupAdminView() || j.VolunteerUserID == user.ID)
+                    vm.JobsToShow = vm.RequestSummary.JobSummaries.GroupByDateAndActivity().OrderBy(j => j.Key)
+                        .Select(g => g.Value.OrderByDescending(j => j.VolunteerUserID.Equals(user.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First());
+                    viewName = "RequestDetail_MyRequests";
+                    break;
+                case JobSet.GroupRequests:
+                case JobSet.GroupShifts:
+                    var jobDetails = new List<JobDetail>();
+                    foreach (var j in vm.RequestSummary.JobBasics)
                     {
                         jobDetails.Add(await _requestService.GetJobDetailsAsync(j.JobID, user.ID, jobSet.GroupAdminView(), cancellationToken));
                     }
-                    else
-                    {
-                        //JobDetail jobDetail = (JobDetail)await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken);
-                        //jobDetail.RequestSummary = requestDetail.RequestSummary;
-
-                        //jobDetails.Add(jobDetail);
-
-                        jobDetails.Add(new JobDetail(await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken))
-                        {
-                            //JobSummary = await _requestService.GetJobSummaryAsync(j.JobID, cancellationToken),
-                            RequestSummary = requestDetailViewModel.RequestSummary,
-                        });
-                    }
-                }
+                    vm.JobDetails = jobDetails;
+                    break;
             }
 
-            requestDetailViewModel.JobDetails = jobDetails;
-
-            requestDetailViewModel.GroupSupportActivityInstructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetailViewModel.RequestSummary.ReferringGroupID, requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
-
-
-            if (requestDetailViewModel.RequestSummary.Shift != null)
+            if (vm.RequestSummary.Shift != null)
             {
-                requestDetailViewModel.LocationDetails = await _addressService.GetLocationDetails(requestDetailViewModel.RequestSummary.Shift.Location, cancellationToken);
+                vm.LocationDetails = await _addressService.GetLocationDetails(vm.RequestSummary.Shift.Location, cancellationToken);
             }
 
-            return View("RequestDetail", requestDetailViewModel);
-        }
-
-        private async Task<IViewComponentResult> InvokeAsync_OpenRequests(int requestId, User user, CancellationToken cancellationToken)
-        {
-            var requestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
-
-            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestSummary.ReferringGroupID,
-                requestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
-
-            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
-            {
-                JobsToShow = await _requestService.FilterAndDedupeOpenJobsForUser(requestSummary.JobSummaries, user, cancellationToken),
-                UserRole = RequestRoles.Volunteer,
-                GroupSupportActivityInstructions = instructions,
-            };
-
-            return View("RequestDetail_OpenRequests", requestDetailViewModel);
-        }
-
-        private async Task<IViewComponentResult> InvokeAsync_MyRequests(int requestId, User user, CancellationToken cancellationToken)
-        {
-            var requestDetail = await _requestService.GetRequestDetailAsync(requestId, user.ID, cancellationToken);
-            //var requestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
-
-            var instructions = await _groupService.GetAllGroupSupportActivityInstructions(requestDetail.RequestSummary.ReferringGroupID,
-                requestDetail.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);
-
-            RequestDetailViewModel requestDetailViewModel = new RequestDetailViewModel()
-            {
-                RequestSummary = requestDetail.RequestSummary,
-                Recipient = requestDetail.Recipient,
-                Requestor = requestDetail.Requestor,
-                User = user,
-                JobsToShow = requestDetail.RequestSummary.JobSummaries.GroupByDateAndActivity().OrderBy(j => j.Key)
-                    .Select(g => g.Value.OrderByDescending(j => j.VolunteerUserID.Equals(user.ID)).ThenBy(j => j.JobStatus.UsualOrderOfProgression()).First()),
-                UserRole = RequestRoles.Volunteer,
-                GroupSupportActivityInstructions = instructions,
-            };
-
-            return View("RequestDetail_MyRequests", requestDetailViewModel);
+            return View(viewName, vm);
         }
     }
 }
