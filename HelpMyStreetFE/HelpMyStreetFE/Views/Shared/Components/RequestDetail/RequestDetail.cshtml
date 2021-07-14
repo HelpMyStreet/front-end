@@ -20,31 +20,7 @@
         <div class="row">
             <div class="sm12">
                 <dl>
-                    <dt>When is the help needed?</dt>
-                    @if (requestSummary.Shift.StartDate.ToUKFromUTCTime().Date.Equals(requestSummary.Shift.EndDate.ToUKFromUTCTime().Date))
-                    {
-                        if (requestSummary.Shift.StartDate.Date.Equals(requestSummary.Shift.EndDate.Date))
-                        {
-                            <dd>
-                                This shift occurs on
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
-                                <strong>
-                                    @requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
-                                    @requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)
-                                </strong>.
-                            </dd>
-                        }
-                        else
-                        {
-                            <dd>
-                                This shift starts on
-                                <strong>@Html.Raw(requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
-                                <strong>@requestSummary.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
-                                <strong>@Html.Raw(requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
-                                <strong>@requestSummary.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
-                            </dd>
-                        }
-                    }
+                    <partial name="_WhenIsHelpNeeded_Shift" model="Model.RequestSummary.Shift" />
                     <dt>Where is the shift?</dt>
                     <dd>
                         @Html.DisplayFor(m => m.LocationDetails.Address)
@@ -236,7 +212,7 @@
                     </dl>
                 </div>
             }
-            @if (Model.Requestor != null && Model.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself)
+            @if (Model.Requestor != null && (Model.RequestSummary.RequestType == RequestType.Shift || Model.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself))
             {
                 <div class="sm6">
                     <h5>Requester</h5>
