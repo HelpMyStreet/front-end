@@ -270,8 +270,8 @@ namespace HelpMyStreetFE.Services.Requests
                 new FilterField<int> { Value = 0, Label = "My street only" },
                 new FilterField<int> { Value = 1, Label = "Within 1 mile" },
                 new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                new FilterField<int> { Value = 10, Label = "Within 10 miles" },
-                new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true },
+                new FilterField<int> { Value = 10, Label = "Within 10 miles", IsSelected = true },
+                new FilterField<int> { Value = 999, Label = "Show all"},
             };
 
             return filterSet;

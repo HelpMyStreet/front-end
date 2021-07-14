@@ -102,36 +102,31 @@ namespace HelpMyStreetFE.Services
             if (user.PostalCode != null)
             {
                 return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {
-                    //check if user is member of ApexBankStaff if yes set to 2000d else 20d 
-                    //this problem will go away when combining requests and shifts
-                    int defaultShiftRadius = 20;
-                var userIsMemberOfApexBankStaff = await _groupMemberService.GetUserHasRole(
-                    user.ID,
-                    (int)HelpMyStreet.Utils.Enums.Groups.ApexBankStaff,
-                    GroupRoles.Member,
-                    true,
-                    cancellationToken);
 
-                if(userIsMemberOfApexBankStaff)
-                {
-                    //user is member of apex bank staff
-                    defaultShiftRadius = 2000;
-                }
-    
-                var locationsWithDistance = await _addressRepository.GetLocationsByDistance(defaultShiftRadius, user.PostalCode);
-                if (locationsWithDistance.Count() == 0)
-                {
-                    return new List<LocationWithDistance>();
-                }
-                var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+                    var userLocations = await _groupRepository.GetUserLocations(user.ID);    
+                    var locationsWithDistance = await _addressRepository.GetLocationsByDistance(2000, user.PostalCode);
+                    if (locationsWithDistance.Count() == 0)
+                    {
+                        return new List<LocationWithDistance>();
+                    }
+                    if(userLocations!=null)
+                    {
+                        locationsWithDistance = locationsWithDistance.Where(x => userLocations.Contains(x.Location)).ToList();
+                        if (locationsWithDistance.Count() == 0)
+                        {
+                            return new List<LocationWithDistance>();
+                        }
+                    }
 
-                return locationsWithDistance.Select(l => new LocationWithDistance
-                {
-                    Location = l.Location,
-                    Distance = l.DistanceFromPostCode,
-                    LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
-                });
-                }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+                    var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+
+                    return locationsWithDistance.Select(l => new LocationWithDistance
+                    {
+                        Location = l.Location,
+                        Distance = l.DistanceFromPostCode,
+                        LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
+                    });
+                    }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
             }
             else
             {
