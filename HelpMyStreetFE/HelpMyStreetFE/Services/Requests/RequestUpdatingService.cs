@@ -120,7 +120,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (response != null && userId != 0)
             {
                 _requestService.TriggerCacheRefresh(userId, cancellationToken);
-                _requestCachingService.TriggerRequestCacheRefresh(response.RequestID, cancellationToken);
+                _ = _requestCachingService.RefreshCacheAsync(response.RequestID, cancellationToken);
             }
 
             return response;
@@ -138,7 +138,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
                 _requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
-                _requestCachingService.TriggerRequestCacheRefresh(requestId, cancellationToken);
+                await _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
             }
 
             return outcome;
@@ -160,7 +160,7 @@ namespace HelpMyStreetFE.Services.Requests
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
                 _requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
-                _ = _jobCachingService.TriggerCacheRefresh(jobID, cancellationToken);
+                await _jobCachingService.RefreshCacheAsync(jobID, cancellationToken);
             }
 
             return outcome;
@@ -178,7 +178,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
 
             _requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
-            _ = _jobCachingService.TriggerCacheRefresh(jobId, cancellationToken);
+            await _jobCachingService.RefreshCacheAsync(jobId, cancellationToken);
 
             return outcome;
         }

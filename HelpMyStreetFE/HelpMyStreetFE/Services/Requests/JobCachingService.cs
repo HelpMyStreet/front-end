@@ -53,11 +53,11 @@ namespace HelpMyStreetFE.Services.Requests
             return requestSummary.JobBasics.FirstOrDefault(j => j.JobID.Equals(jobId));
         }
 
-        public async Task TriggerCacheRefresh(int jobId, CancellationToken cancellationToken)
+        public async Task RefreshCacheAsync(int jobId, CancellationToken cancellationToken)
         {
             var requestId = await GetRequestId(jobId, cancellationToken);
 
-            _requestCachingService.TriggerRequestCacheRefresh(requestId, cancellationToken);
+            await _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
         }
 
         private string GetJobCacheKey(int jobId)

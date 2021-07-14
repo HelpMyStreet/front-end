@@ -64,15 +64,12 @@ namespace HelpMyStreetFE.Services.Requests
             return await GetRequestSummaryAsync(requestId, RefreshBehaviour.WaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
         }
 
-        public void TriggerRequestCacheRefresh(int requestId, CancellationToken cancellationToken)
+        public async Task RefreshCacheAsync(int requestId, CancellationToken cancellationToken)
         {
-            Task.Factory.StartNew(async () =>
+            await _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
             {
-                var requestSummary = await _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
-                {
-                    return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
-                }, GetRequestCacheKey(requestId), cancellationToken);
-            });
+                return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
+            }, GetRequestCacheKey(requestId), cancellationToken);
         }
 
         private async Task<RequestSummary> GetRequestSummaryAsync(int requestId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
