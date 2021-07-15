@@ -10,8 +10,6 @@
     var requestSummary = Model.RequestSummary;
     var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
-
-    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 <div class="job__expander">
@@ -108,7 +106,7 @@
 }
 
 
-@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))// || questionsToDisplay.Count() > 0)
+@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
 {
     <div class="job__expander">
         <h4>Request Details<span></span></h4>
@@ -123,14 +121,6 @@
                         }
                         @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
                     }
-
-                    @*@foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                        {
-                            <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
-                        }*@
                 </div>
             </div>
         </div>
