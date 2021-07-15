@@ -9,6 +9,21 @@
 
 @{
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
+
+    var userDetailsHidden = Model.RequestSummary.JobBasics.First().SuppressRecipientPersonalDetail.GetValueOrDefault(false);
+
+    var requestorDetails = new PersonalDetailsView
+    {
+        PersonalDetails = Model.Requestor.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor)),
+        RequestRole = RequestRoles.Requestor
+    };
+
+    var recipientDetails = new PersonalDetailsView
+    {
+        PersonalDetails = Model.Recipient.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient)),
+        RecipientOrganisation = Model.JobsToShow.First().RecipientOrganisation,
+        RequestRole = RequestRoles.Recipient
+    };
 }
 
 
@@ -57,31 +72,29 @@
         <h4>Contact Details<span></span></h4>
         <div class="job__expander__content">
             <div class="row">
-                @if (Model.Recipient != null)
+                @if (userDetailsHidden)
                 {
-                    <div class="sm6">
+                    <div class="sm12">
                         <h5>Recipient</h5>
                         <dl>
-                            <partial name="_ContactDetails" model="Model.Recipient" />
-                            <dt>Address</dt>
                             <dd>
-                                @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = false })
+                                The organisation managing this request would like to provide this information to you directly. 
+                                Please contact the requester quoting reference <strong>@Model.RequestSummary.HMSReference</strong> to find out who needs the help.
                             </dd>
                         </dl>
+                        <partial name="_PersonalDetails" model="@requestorDetails" />
                     </div>
                 }
-                @if (Model.Requestor != null && Model.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself)
+                else
                 {
-                    <div class="sm6">
-                        <h5>Requester</h5>
-                        <dl>
-                            <partial name="_ContactDetails" model="Model.Requestor" />
-                            <dt>Address</dt>
-                            <dd>
-                                @Model.Requestor.Address.Postcode
-                            </dd>
-                        </dl>
-                    </div>
+                    @if (!string.IsNullOrEmpty(Model.JobsToShow.First().RecipientOrganisation) || Model.Recipient != null)
+                    {
+                        <partial name="_PersonalDetails" model="@recipientDetails" />
+                    }
+                    @if (Model.Requestor != null && Model.JobsToShow.First().RequestorType != RequestorType.Myself)
+                    {
+                        <partial name="_PersonalDetails" model="@requestorDetails" />
+                    }
                 }
             </div>
         </div>
