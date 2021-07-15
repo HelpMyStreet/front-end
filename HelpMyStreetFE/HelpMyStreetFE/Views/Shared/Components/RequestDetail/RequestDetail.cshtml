@@ -81,12 +81,7 @@
                             <div class="sm7 toggle-on-status-change add-line-before">
                                 <h5 class="pr-md">Current Volunteer</h5>
                                 <dl class="pr-md">
-                                    <dt>Name</dt>
-                                    <dd>@volunteerDetails.DisplayName (@volunteerDetails.FirstName @volunteerDetails.LastName)</dd>
-                                    <dt>Email</dt>
-                                    <dd>@volunteerDetails.EmailAddress</dd>
-                                    <dt>@(volunteerDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                                    <dd>@string.Join(" / ", volunteerDetails.PhoneNumbers())</dd>
+                                    <partial name="_ContactDetails" model="volunteerDetails" />
                                     <dt>Address</dt>
                                     <dd>
                                         @volunteerDetails.LocationSummary()
@@ -199,12 +194,7 @@
                 <div class="sm6">
                     <h5>Recipient</h5>
                     <dl>
-                        <dt>Name</dt>
-                        <dd>@Model.Recipient.FirstName @Model.Recipient.LastName</dd>
-                        <dt>Email</dt>
-                        <dd>@Model.Recipient.EmailAddress</dd>
-                        <dt>@(Model.Recipient.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                        <dd>@string.Join(" / ", Model.Recipient.PhoneNumbers())</dd>
+                        <partial name="_ContactDetails" model="Model.Recipient" />
                         <dt>Address</dt>
                         <dd>
                             @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = false })
@@ -217,12 +207,7 @@
                 <div class="sm6">
                     <h5>Requester</h5>
                     <dl>
-                        <dt>Name</dt>
-                        <dd>@Model.Requestor.FirstName @Model.Requestor.LastName</dd>
-                        <dt>Email</dt>
-                        <dd>@Model.Requestor.EmailAddress</dd>
-                        <dt>@(Model.Requestor.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                        <dd>@string.Join(" / ", Model.Requestor.PhoneNumbers())</dd>
+                        <partial name="_ContactDetails" model="Model.Requestor" />
                         <dt>Address</dt>
                         <dd>
                             @Model.Requestor.Address.Postcode
