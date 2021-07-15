@@ -8,11 +8,7 @@
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
 @{
-    //var requestSummary = Model.RequestDetail.RequestSummary;
-    //var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
-
-    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 
