@@ -40,7 +40,7 @@
         </span>
         <span></span>
     </h4>
-    @if (showDuplicateJobs || showQuestions)
+    @if (showDuplicateJobs || showQuestions || jobDetails.JobStatus == JobStatuses.InProgress)
     {
         <div class="job__expander__content request-job__content">
             <div class="row">
@@ -68,27 +68,23 @@
                         }
                     </dl>
                 </div>
+                @if (jobDetails.JobStatus == JobStatuses.InProgress)
+                {
+                    <div class="sm12 offline-details">
+                        <dl>
+                            <dt>Do you need to take these details offline?</dt>
+                            <dd>
+                                For data protection reasons, you'll only be able to view non-personal information.
+                                <span class="link-icons">
+                                    <a href="#" title="" class="email-details"><img src="/img/icons/email.svg" /><span>Email </span></a>
+                                    <a href="/account/print-job-details?j=@encodedJobID" target="_blank"><img src="/img/icons/printer.svg" /> Print </a>
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                }
             </div>
         </div>
     }
 </div>
 
-@if (jobDetails.JobStatus == JobStatuses.InProgress)
-{
-    <div class="job__expander offline-details-container">
-        <div class="row">
-            <div class="sm12 offline-details">
-                <dl>
-                    <dt>Do you need to take these details offline?</dt>
-                    <dd>
-                        For data protection reasons, you'll only be able to view non-personal information.
-                        <span class="link-icons">
-                            <a href="#" title="" class="email-details"><img src="/img/icons/email.svg" /><span>Email </span></a>
-                            <a href="/account/print-job-details?j=@encodedJobID" target="_blank"><img src="/img/icons/printer.svg" /> Print </a>
-                        </span>
-                    </dd>
-                </dl>
-            </div>
-        </div>
-    </div>
-}

@@ -72,6 +72,8 @@ namespace HelpMyStreetFE.ViewComponents
                 (JobSet.UserOpenRequests_NotMatchingCriteria, false) => "JobDetail_OpenRequests",
                 (JobSet.UserMyRequests, false) => "JobDetail_MyRequests",
                 (JobSet.UserMyRequests, true) => "JobDetail_Print",
+                (JobSet.UserOpenShifts, false) => "JobDetail_OpenShifts",
+                (JobSet.UserMyShifts, false) => "JobDetail_MyShifts",
                 (JobSet.GroupRequests, false) => "JobDetail_GroupRequests",
                 (_, _) => throw new ArgumentException($"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet))
             };
