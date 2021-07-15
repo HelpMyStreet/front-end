@@ -220,7 +220,7 @@ namespace HelpMyStreetFE.Controllers
                 return await ChildGroupSelector(referringGroupId, cancellationToken);
             }
 
-            var model = await _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
+            var model = _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;

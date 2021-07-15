@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpRepository = requestHelpRepository;
         }
         
-        public async Task<RequestHelpViewModel> GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
+        public RequestHelpViewModel GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
             RequestHelpFormVariant requestHelpFormVariant = requestHelpJourney.RequestHelpFormVariant;
 
@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
                         IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
-                        Tasks = await GetRequestHelpTasks(requestHelpFormVariant),
+                        Tasks = GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = GetRequestorViewModels(requestHelpFormVariant),
                         Frequencies = GetFrequencies(requestHelpFormVariant),
                         Timeframes = GetRequestHelpTimeViewModels(requestHelpFormVariant),
@@ -112,7 +112,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        private async Task<List<TasksViewModel>> GetRequestHelpTasks(RequestHelpFormVariant requestHelpFormVariant)
+        private List<TasksViewModel> GetRequestHelpTasks(RequestHelpFormVariant requestHelpFormVariant)
         {
             var tasks = new List<TasksViewModel>();
             if (requestHelpFormVariant == RequestHelpFormVariant.VitalsForVeterans)
@@ -133,7 +133,7 @@ namespace HelpMyStreetFE.Services.Requests
                 tasks.AddRange(new List<TasksViewModel>
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.Shopping },
-                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = (requestHelpFormVariant == RequestHelpFormVariant.FaceMasks) },
+                    new TasksViewModel { SupportActivity = SupportActivities.FaceMask, },
                     new TasksViewModel { SupportActivity = SupportActivities.CheckingIn },
                     new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions },
                     new TasksViewModel { SupportActivity = SupportActivities.Errands },
@@ -475,11 +475,6 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForPostalActivities = true });
             }
-
-            //if (vms.Count == 1)
-            //{
-            //    vms.First().IsSelected = true;
-            //}
 
             return vms;
         }

@@ -228,9 +228,9 @@ namespace HelpMyStreetFE.Services.Requests
             throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
         }
 
-        public async Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
+        public RequestHelpViewModel GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
         {
-            return await _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
+            return _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
         }
 
         public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)

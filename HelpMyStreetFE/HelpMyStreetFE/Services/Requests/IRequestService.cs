@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.Services.Requests
         Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken);
-        Task<RequestHelpViewModel> GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source);
+        RequestHelpViewModel GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<IEnumerable<JobSummary>> jobs);
         Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken);
         Task<JobLocation> LocateRequest(int requestId, int userId, CancellationToken cancellationToken);
