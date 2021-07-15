@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Utils.Extensions;
@@ -54,13 +53,6 @@ namespace HelpMyStreetFE.Helpers
         }
 
         public static Dictionary<DateTime, IEnumerable<JobBasic>> GroupByDateAndActivity(this IEnumerable<JobBasic> jobBasics)
-        {
-            IEqualityComparer<JobBasic> _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
-
-            return jobBasics.GroupBy(j => j, _jobBasicEqualityComparer).ToDictionary(g => g.First().DueDate, g => g.AsEnumerable());
-        }
-
-        public static Dictionary<DateTime, IEnumerable<JobSummary>> GroupByDateAndActivity(this IEnumerable<JobSummary> jobBasics)
         {
             IEqualityComparer<JobBasic> _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
 
