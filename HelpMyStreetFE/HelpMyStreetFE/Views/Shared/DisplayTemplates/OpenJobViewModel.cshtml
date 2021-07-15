@@ -21,6 +21,11 @@
     var className = "";
     var dueDate = firstOpenJob.DueDate.JobDueDate(firstOpenJob.DueDateType);
 
+    if (!singleDate)
+    {
+        dueDate = "First " + dueDate.ToLower();
+    }
+
     if (dueDate.Contains("urgent"))
     {
         className += " job--urgent";
