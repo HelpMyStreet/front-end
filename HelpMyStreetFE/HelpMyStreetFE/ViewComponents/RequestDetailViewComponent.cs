@@ -30,7 +30,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken)
         {
-            string viewName = "RequestDetail";
+            string viewName;
 
             RequestDetailViewModel vm = new RequestDetailViewModel
             {
@@ -69,12 +69,14 @@ namespace HelpMyStreetFE.ViewComponents
                     break;
                 case JobSet.GroupRequests:
                     vm.JobDetails = await GetJobDetails(vm.RequestSummary.JobBasics, user, jobSet, cancellationToken); ;
-                    //viewName = "RequestDetail";
+                    viewName = "RequestDetail_GroupRequests";
                     break;
                 case JobSet.GroupShifts:
                     vm.JobDetails = await GetJobDetails(vm.RequestSummary.JobBasics, user, jobSet, cancellationToken);
                     viewName = "RequestDetail_GroupShifts";
                     break;
+                default:
+                    throw new ArgumentException($"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet));
             }
 
             if (vm.RequestSummary.Shift != null)
