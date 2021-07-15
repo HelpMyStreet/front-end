@@ -1,0 +1,11 @@
+﻿@using HelpMyStreetFE.Models;
+
+@model BasicTileViewModel;
+
+<div class="sm4" hide-tile-when="@Model.HideTileWhenAttribute">
+    <div data-type="@Model.DataType" data-id="@Model.ID" data-value="@Model.Value" class="tile-selector__tile tiles__tile @(Model.IsSelected ? "selected" : "" )">
+        <div class="tiles__tile__content ">
+            <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
+        </div>
+    </div>
+</div>

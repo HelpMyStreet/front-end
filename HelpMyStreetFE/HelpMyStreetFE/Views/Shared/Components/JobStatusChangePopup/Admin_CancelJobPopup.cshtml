@@ -5,7 +5,7 @@
 <div class="popup__content">
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
-        @if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
+        @if (Model.JobBasic.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
         {
             <div class="popup__content__header">Mark as cancelled?</div>
         }
@@ -16,15 +16,15 @@
         <div class="popup__content__text">
             <p>Is there a problem with this request (e.g. you have become aware that it was entered in error or that the help is no longer needed)?</p>
 
-            @if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Open)
+            @if (Model.JobBasic.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Open)
             {
                 <p>We can mark is as Cancelled and remove it from the “@(isShift ? "Open Shifts" : "Open Requests")” list.</p>
             }
-            else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.InProgress)
+            else if (Model.JobBasic.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.InProgress)
             {
                 <p>We can mark is as Cancelled and remove it from the relevant volunteer’s “My @(isShift ? "Shifts" : "Requests")” page.</p>
             }
-            else if (Model.JobSummary.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
+            else if (Model.JobBasic.JobStatus == HelpMyStreet.Utils.Enums.JobStatuses.Done)
             {
                 <p>We can mark is as Cancelled for your records.</p>
             }

@@ -1,0 +1,220 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
+
+@model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
+
+@{
+    var requestSummary = Model.RequestSummary;
+    var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+
+    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+}
+
+@if (requestSummary.RequestType == RequestType.Shift)
+{
+    <div class="job__expander">
+        <div class="row">
+            <div class="sm12">
+                <dl>
+                    <partial name="_WhenIsHelpNeeded_Shift" model="Model.RequestSummary.Shift" />
+                    <dt>Where is the shift?</dt>
+                    <dd>
+                        @Html.DisplayFor(m => m.LocationDetails.Address)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.JobDetails.Count() > 0)
+{
+    <div class="job__expander">
+        <h4 class="no-click">@(requestSummary.RequestType.Equals(RequestType.Shift) ? "Slots" : "Requests")</h4>
+    </div>
+}
+
+@foreach (var jobDetails in Model.JobDetails.OrderBy(j => j.JobStatus.Equals(JobStatuses.Cancelled)).ThenBy(j => j.DueDate))
+{
+    var id = Base64Utils.Base64Encode(jobDetails.JobID);
+    var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
+
+    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+
+    <div class="job__expander job request-job" id="@id" request-id="@requestId" data-role="@role">
+        <h4>
+            <img class="status-icon" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
+            <span title="@jobDetails.DueDate.FriendlyFutureDate()">
+                @jobDetails.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+            </span>
+            <span class="toggle-on-status-change">
+                @jobDetails.JobStatus.SlotJobStatusWithVolunteerName(volunteerDetails)
+            </span>
+            <span class="job__status__new dnone toggle-on-status-change"></span>
+            <span></span>
+        </h4>
+        <div class="job__expander__content request-job__content">
+            <div class="row">
+                <div class="sm3 request-job__action-column mb-sm">
+                    <div class="job__info__actions mt-sm">
+                        <partial name="_JobButtons_Admin" model="jobDetails" />
+                    </div>
+                </div>
+                <div class="sm9 pr-md request-job__info-column">
+                    @if (jobDetails.JobStatus.Incomplete())
+                    {
+                        <div class="row">
+                            <div class="sm12">
+                                <dl class="">
+                                    <partial name="_WhenIsHelpNeeded" model="@jobDetails" />
+                                </dl>
+                            </div>
+                        </div>
+                    }
+                    <div class="row">
+                        @if (volunteerDetails != null)
+                        {
+                            <div class="sm7 toggle-on-status-change add-line-before">
+                                <h5 class="pr-md">Current Volunteer</h5>
+                                <dl class="pr-md">
+                                    <partial name="_ContactDetails" model="volunteerDetails" />
+                                    <dt>Address</dt>
+                                    <dd>
+                                        @volunteerDetails.LocationSummary()
+                                    </dd>
+                                </dl>
+                            </div>
+                        }
+                        @if (jobDetails.JobStatusHistory != null)
+                        {
+                            <div class="sm5 space-filler toggle-on-status-change add-line-before">
+                                <h5>Status History</h5>
+                                <dl class="highlight-last">
+                                    @foreach (var statusChange in jobDetails.JobStatusHistory)
+                                    {
+                                        <dt>
+                                            @statusChange.JobStatusDescription
+                                        </dt>
+                                        <dd>
+                                            <span>
+                                                @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
+                                            </span>
+                                            @if (statusChange.VolunteerUser != null)
+                                            {
+                                                <span>
+                                                    @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
+                                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                                </span>
+                                            }
+                                        </dd>
+                                    }
+                                </dl>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            @if (questionsToDisplay?.Count() > 0)
+            {
+                <div class="row">
+                    <div class="sm12 add-line-before">
+                        <h5>Request Details</h5>
+                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+
+@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))// || questionsToDisplay.Count() > 0)
+{
+    <div class="job__expander">
+        <h4>Request Details<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                <div class="sm12">
+                    @foreach (var activity in Model.GroupSupportActivityInstructions)
+                    {
+                        @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                        {
+                            <h5>@activity.Key.FriendlyNameShort()</h5>
+                        }
+                        @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                    }
+
+                    @*@foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="job__expander">
+    <h4>Volunteer Instructions<span></span></h4>
+    <div class="job__expander__content">
+        @foreach (var activity in Model.GroupSupportActivityInstructions)
+        {
+            <div class="row">
+                @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                {
+                    <h5>@activity.Key.FriendlyNameShort()</h5>
+                }
+                <div class="sm12 volunteer-instructions">
+                    <partial name="_GroupSupportActivityInstructions" model="activity.Value" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="job__expander">
+    <h4>Contact Details<span></span></h4>
+    <div class="job__expander__content">
+        <div class="row">
+            @if (Model.Recipient != null)
+            {
+                <div class="sm6">
+                    <h5>Recipient</h5>
+                    <dl>
+                        <partial name="_ContactDetails" model="Model.Recipient" />
+                        <dt>Address</dt>
+                        <dd>
+                            @Html.DisplayFor(x => Model.Recipient.Address, new { MaskAddress = false })
+                        </dd>
+                    </dl>
+                </div>
+            }
+            @if (Model.Requestor != null && (Model.RequestSummary.RequestType == RequestType.Shift || Model.RequestSummary.JobSummaries.FirstOrDefault().RequestorType != RequestorType.Myself))
+            {
+                <div class="sm6">
+                    <h5>Requester</h5>
+                    <dl>
+                        <partial name="_ContactDetails" model="Model.Requestor" />
+                        <dt>Address</dt>
+                        <dd>
+                            @Model.Requestor.Address.Postcode
+                        </dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    </div>
+</div>

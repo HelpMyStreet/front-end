@@ -5,7 +5,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreetFE.Helpers;
 
-@model JobViewModel<JobSummary>;
+@model JobViewModel<JobDetail>;
 
 @switch (Model.Item.JobStatus)
 {
@@ -17,21 +17,27 @@
         </button>
         break;
     case JobStatuses.InProgress:
-        <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
-            <span class="text">Mark as Done</span>
-        </button>
-        <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
-            <span class="text">Can't do</span>
-        </button>
+        if (Model.Item.VolunteerUserID.Equals(Model.User.ID))
+        {
+            if (Model.Item.NotBeforeDate == null || Model.Item.NotBeforeDate.Value < DateTime.UtcNow.ToUKFromUTCTime())
+            {
+                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                    <span class="text">Mark as Done</span>
+                </button>
+            }
+            <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+                <span class="text">Can't do</span>
+            </button>
+        }
         break;
     case JobStatuses.Done:
         if (Model.Item.RequestType.Equals(RequestType.Task))
         {
             <div class="feedback-container">
-                <span class="job__info__col3__status toggle-on-status-change">
-                    <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
-                    <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
-                </span>
+                @*<span class="job__info__col3__status toggle-on-status-change">
+                        <img class="status-icon" src="~/img/icons/status/@Model.Item.JobStatus.Icon()" alt="@Model.Item.JobStatus.FriendlyName()" />
+                        <span class="job__status">@Model.Item.JobStatus.FriendlyName()</span>
+                    </span>*@
             </div>
         }
         break;

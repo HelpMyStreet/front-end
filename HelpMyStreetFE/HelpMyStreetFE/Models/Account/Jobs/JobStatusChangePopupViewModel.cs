@@ -11,7 +11,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public AnnotatedGroupActivityCredentialSets AnnotatedGroupActivityCredentialSets { get; set; }
         public RequestSummary RequestSummary { get; set; }
-        public JobSummary JobSummary { get; set; }
+        public JobBasic JobBasic { get; set; }
         public string ReferringGroup { get; set; }
         public JobStatuses TargetStatus { get; set; }
         public Instructions GroupSupportActivityInstructions { get; set; }

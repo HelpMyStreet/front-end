@@ -169,6 +169,9 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
+            services.AddSingleton<IRequestCachingService, RequestCachingService>();
+            services.AddSingleton<IRequestUpdatingService, RequestUpdatingService>();
+            services.AddSingleton<IJobCachingService, JobCachingService>();
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
@@ -182,6 +185,8 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<ShiftJob>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<RequestSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<RequestSummary>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<JobSummary>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));

@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.ViewComponents
             int authorisingUserId = parameters.RequestRole == RequestRoles.Volunteer || parameters.RequestRole == RequestRoles.GroupAdmin ? user.ID : -1;
             var jobDetails = await _requestService.GetJobDetailsAsync(parameters.JobId, authorisingUserId, parameters.RequestRole == RequestRoles.GroupAdmin, cancellationToken);
 
-            await EnsureFeedbackCanBeGiven(jobDetails.JobSummary, parameters.RequestRole, user?.ID);
+            await EnsureFeedbackCanBeGiven(jobDetails, parameters.RequestRole, user?.ID);
 
             FeedbackCaptureEditModel viewModel = new FeedbackCaptureEditModel
             {
@@ -47,23 +47,23 @@ namespace HelpMyStreetFE.ViewComponents
                 FeedbackRating = parameters.FeedbackRating,
 
                 VolunteerName = jobDetails.CurrentVolunteer?.UserPersonalDetails.DisplayName,
-                RecipientName = string.IsNullOrEmpty(jobDetails.JobSummary.RecipientOrganisation) ? jobDetails.Recipient?.FirstName : jobDetails.JobSummary.RecipientOrganisation,
+                RecipientName = string.IsNullOrEmpty(jobDetails.RecipientOrganisation) ? jobDetails.Recipient?.FirstName : jobDetails.RecipientOrganisation,
                 RequestorName = jobDetails.Requestor?.FirstName,
                 
                 ShowVolunteerMessage = parameters.RequestRole != RequestRoles.Volunteer && jobDetails.CurrentVolunteer != null,
                 ShowRecipientMessage = parameters.RequestRole != RequestRoles.Recipient && !string.IsNullOrEmpty(jobDetails.Recipient?.EmailAddress),
-                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && !string.IsNullOrEmpty(jobDetails.Requestor?.EmailAddress) && jobDetails.JobSummary.RequestorType != RequestorType.Myself,
+                ShowRequestorMessage = parameters.RequestRole != RequestRoles.Requestor && !string.IsNullOrEmpty(jobDetails.Requestor?.EmailAddress) && jobDetails.RequestorType != RequestorType.Myself,
                 ShowHMSMessage = true
             };
             
-            if (jobDetails.JobSummary.ReferringGroupID != (int)Groups.Generic)
+            if (jobDetails.ReferringGroupID != (int)Groups.Generic)
             {
-                var groupDetails = await _groupService.GetGroupById(jobDetails.JobSummary.ReferringGroupID, cancellationToken);
+                var groupDetails = await _groupService.GetGroupById(jobDetails.ReferringGroupID, cancellationToken);
                 viewModel.GroupName = groupDetails.GroupName;
                 viewModel.ShowGroupMessage = (parameters.RequestRole != RequestRoles.GroupAdmin);
 
                 // TODO: Replace with RequestorDefinedByGroup
-                if (jobDetails.JobSummary.ReferringGroupID == (int)Groups.AgeUKWirral)
+                if (jobDetails.ReferringGroupID == (int)Groups.AgeUKWirral)
                 {
                     viewModel.ShowRequestorMessage = false;
                 }

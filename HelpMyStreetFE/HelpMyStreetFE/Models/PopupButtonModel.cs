@@ -8,5 +8,6 @@ namespace HelpMyStreetFE.Models
     public class PopupButtonModel
     {
         public string ButtonText { get; set; }
+        public string CssClass { get; set; }
     }
 }

@@ -1,0 +1,72 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
+
+@model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
+
+@{
+    var questionsToDisplay = Model.JobsToShow.FirstOrDefault()?.Questions.Where(q => q.ShowOnTaskManagement(Model.UserRole.Equals(RequestRoles.GroupAdmin), false) && !string.IsNullOrEmpty(q.Answer));
+}
+
+<div class="job__expander">
+    <div class="row">
+        <div class="sm12">
+            <dl>
+                <dt>When is the help needed?</dt>
+
+                @if (Model.JobsToShow.Count() == 1)
+                {
+                    <dd>
+                        <partial name="_WhenIsHelpNeeded_ShortFormat" model="Model.JobsToShow.First()" />
+                    </dd>
+                }
+                else
+                {
+                    <dd>
+                        <p class="mt-0 mb-0">This help is needed on @Model.JobsToShow.Count() separate occasions:</p>
+                        <ul>
+                            @foreach (var jobSummary in Model.JobsToShow)
+                            {
+                                <li>
+                                    <partial name="_WhenIsHelpNeeded_ShortFormat" model="jobSummary" />
+                                </li>
+                            }
+                        </ul>
+                        <p class="mb-0">When you click &lsquo;Accept&rsquo; above, you can choose which dates to accept.</p>
+                    </dd>
+                }
+            </dl>
+        </div>
+    </div>
+</div>
+
+@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)) || questionsToDisplay.Count() > 0)
+{
+    <div class="job__expander">
+        <h4>Request Details<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                <div class="sm12">
+                    @foreach (var activity in Model.GroupSupportActivityInstructions.Where(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
+                    {
+                        if (Model.GroupSupportActivityInstructions.Count() > 1)
+                        {
+                            <h5>@activity.Key.FriendlyNameShort()</h5>
+                        }
+                        @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                    }
+
+                    @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                    {
+                        <dl>
+                            <dt>@q.FriendlyName()</dt>
+                            <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                        </dl>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

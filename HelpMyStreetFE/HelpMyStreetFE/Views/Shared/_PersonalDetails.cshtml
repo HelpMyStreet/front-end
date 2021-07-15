@@ -9,25 +9,10 @@
             <dt>Organisation</dt>
             <dd>@Model.RecipientOrganisation</dd>
         }
-        @if (@Model.PersonalDetails != null)
+        @if (Model.PersonalDetails != null)
         {
-            @if (!String.IsNullOrEmpty(Model.PersonalDetails.FullName()))
-            {
-                <dt>Name</dt>
-                <dd>@Model.PersonalDetails.FullName()</dd>
-            }
-            @if (!String.IsNullOrEmpty(Model.PersonalDetails.EmailAddress))
-            {
-                <dt>Email</dt>
-                <dd>@Model.PersonalDetails.EmailAddress</dd>
-            }
-            @if (Model.PersonalDetails.PhoneNumbers().Count() > 0)
-            {
-                <dt>@(Model.PersonalDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                <dd>
-                    @string.Join(" / ", Model.PersonalDetails.PhoneNumbers())
-                </dd>
-            }
+            <partial name="_ContactDetails" model="Model.PersonalDetails" />
+
             @if (Model.PersonalDetails.Address != null)
             {
                 <dt>Address</dt>

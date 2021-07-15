@@ -40,7 +40,7 @@
         nextTaskDue = Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).OrderBy(j => j.DueDate).First();
     }
 
-    if (Model.Item.UnfilledJobs().Count() > 0)
+    if (Model.Item.JobBasics.UnfilledJobs().Count() > 0)
     {
         if (Model.Item.Shift != null)
         {
@@ -76,12 +76,11 @@
     }
 }
 
-<div class="job @className" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
-
+<div class="job @className mb-sm-md" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
     <div class="job__info @(admin ? "admin-view" : "")">
         <div class="job__info__col1">
             <span class="job__info__col1__status toggle-on-status-change">
-                <partial name="_RequestStatus" model="@Model.Item" />
+                <partial name="_RequestStatus" model="@Model.Item.JobBasics" />
             </span>
 
             @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
@@ -106,7 +105,18 @@
                 <span class="job__info__col1__urgency toggle-on-status-change">
                     <span class="" title="@nextTaskDue.DateRequested.FormatDate(DateTimeFormat.ShortDateFormat)">Requested @nextTaskDue.DateRequested.FriendlyPastDate()</span>
                     <span class="job__info__col1__urgency__dates due-date" title="@((nextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + nextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
-                        Due @nextTaskDue.DueDate.FriendlyFutureDate()
+                        @if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == 1)
+                        {
+                            <span>Due @nextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                        else if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == Model.Item.JobSummaries.Count())
+                        {
+                            <span>First due @nextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
+                        else
+                        {
+                            <span>Next due @nextTaskDue.DueDate.FriendlyFutureDate()</span>
+                        }
                     </span>
                 </span>
             }
@@ -180,22 +190,22 @@
             {
                 <partial name="_JobButtons_Admin" model="Model.Item.JobBasics.First()" />
             }
-            else if (Model.Item.SingleJobStatus() != JobStatuses.Cancelled)
+            else if (Model.Item.JobBasics.SingleJobStatus() != JobStatuses.Cancelled)
             {
-                if (Model.Item.AcceptedAndInProgressJobs().Count() > 0)
+                if (Model.Item.JobBasics.AcceptedAndInProgressJobs().Count() > 0)
                 {
                     <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
                         <span class="text">Mark all as Done</span>
                     </button>
                 }
                 <button class="btn cta--orange-border trigger-status-update-popup" data-target-state="@JobStatuses.Cancelled">
-                    <span class="text">Cancel @(Model.Item.RequestType.Equals(RequestType.Shift) ? "shift" : "")</span>
+                    <span class="text">Cancel @(Model.Item.RequestType.Equals(RequestType.Shift) ? "shift" : "all")</span>
                 </button>
             }
         </div>
             <div class="job__info__footer">
-                <a href="#" class="open">View more info <span></span></a>
-                <a href="#" class="close">View less info <span></span></a>
+                <a href="#" class="open">View more info<span></span></a>
+                <a href="#" class="close">View less info<span></span></a>
             </div>
         </div>
 

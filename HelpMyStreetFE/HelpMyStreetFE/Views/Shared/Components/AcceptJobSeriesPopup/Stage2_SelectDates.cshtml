@@ -1,0 +1,80 @@
+﻿@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Utils;
+
+@model HelpMyStreetFE.Models.Account.Jobs.AcceptJobSeriesPopupViewModel
+
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+    var pageType = isShift ? "Shifts" : "Requests";
+    var role = Base64Utils.Base64Encode((int)RequestRoles.Volunteer);
+
+
+
+    var userHasRequiredCredentials = true; // for now
+}
+
+<div class="popup__content wide accept-series-popup-stage-2">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Accept one or more @(isShift ? "shifts" : "requests for help")?</div>
+        <div class="popup__content__text">
+            <p>If you click to accept one or more of these requests it will appear on your “My @pageType” page and you’ll be able to view more information to help you complete it.</p>
+        </div>
+        <div class="row mb-md">
+            <div class="sm12 text-right mb-md pad-md">
+                <div class="popup__content__buttons__button">
+                    <button class="btn cta @(userHasRequiredCredentials ? "" : "cta--green-border") wide fill accept-all-jobs-now" data-target-state="@JobStatuses.InProgress">
+                        <span class="text">Accept all @Model.OpenJobsForUser.Count() requests in this series</span>
+                    </button>
+                </div>
+            </div>
+            <div class="sm12 pad-md">
+                @foreach (var job in Model.OpenJobsForUser)
+                {
+                    var id = Base64Utils.Base64Encode(job.JobID);
+
+                    <div class="job mb-sm" id="@id" data-role="@role" data-job-status="@job.JobStatus">
+                        <div class="row">
+                            <div class="sm3">
+                                <span class="job__info__activity__title @job.SupportActivity.Class()">
+                                    @if (job.SupportActivity != SupportActivities.Other)
+                                    {
+                                        <img src="~/img/icons/@job.SupportActivity.Icon()" />
+                                    }
+                                    <span>
+                                        @job.SupportActivity.FriendlyNameShort()
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="sm6">
+                                <partial name="_WhenIsHelpNeeded_ShortFormat" model="@job" />
+                            </div>
+                            <div class="sm3">
+                                <button class="btn cta less-rounded @(userHasRequiredCredentials ? "" : "cta--green-border") accept-job-now fill" data-target-state="@JobStatuses.InProgress">
+                                    <span class="text">Accept</span>
+                                    <div class="loader dnone">
+                                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Accepting..." }' />
+                                    </div>
+                                </button>
+                                <button class="btn cta--dark-blue-border less-rounded undo-request dnone fill" data-target-state="@JobStatuses.Open" data-target-user="" )">
+                                    <span class="text">Can't do</span>
+                                    <div class="loader dnone">
+                                        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner = true }' />
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t accept this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Done", CssClass = "cta--green-border" }' />
+        </div>
+    </div>
+</div>
+

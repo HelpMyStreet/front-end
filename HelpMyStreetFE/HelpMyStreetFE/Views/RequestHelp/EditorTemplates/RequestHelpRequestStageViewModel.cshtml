@@ -2,11 +2,6 @@
 @using HelpMyStreet.Utils.Enums;
 @using Westwind.AspNetCore.Markdown;
 
-@{
-
-    var selectedCustomTime = @Model.Timeframes.Where(x => x.IsSelected && x.AllowCustom).FirstOrDefault();
-
-}
 <input type="hidden" name="RequestStep" class="model" value='@Json.Serialize(Model)' />
 @Html.Hidden("FormStage", RequestHelpFormStage.Request)
 @Html.HiddenFor(m => m.RequestGuid)
@@ -18,22 +13,9 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row activity-selector-container">
     <div class="sm12 input">
-        <label for="selectedTask">What's the main thing you need help with? </label>
-        <div class="tiles">
-            <div class="input">
-                <input id="selectedTask" type="hidden" name="currentStep.SelectedTask.Id" value="@((int?)Model.Tasks.Where(x => x.IsSelected).FirstOrDefault()?.SupportActivity)" />
-                <div class="row">
-                    @foreach (var task in Model.Tasks)
-                    {
-                        @Html.DisplayFor(x => task, "TaskTile")
-                    }
-                </div>
-                <span class="error"></span>
-            </div>
-        </div>
-
+        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "What’s the main thing you need help with?", TileVMs = Model.Tasks, FieldName = "currentStep.SelectedTask", TileView = "TaskTile" }' />
     </div>
 </div>
 
@@ -47,7 +29,7 @@
 
 <hr class="input--separator mt-lg" />
 
-<h2>Help Description</h2>
+<h2>Help description</h2>
 
 <div class="row">
     <div class="sm12">
@@ -57,77 +39,51 @@
     </div>
 </div>
 
-@if (Model.Requestors.Count == 1)
+@if (Model.Requestors.Count() == 1)
 {
-    <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.First().ID" />
+    <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor" value="@Model.Requestors.First().Value" />
 }
 else
 {
     <div class="row">
-        <div class="sm12 input">
-            <label for="selectedRequestor">Who is the help for?</label>
-            <div class="tiles">
-                <div class="input">
-                    <input type="hidden" id="selectedRequestor" name="currentStep.SelectedRequestor.Id" value="@Model.Requestors.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
-
-                    <div class="row">
-                        @foreach (var requestor in Model.Requestors)
-                        {
-                            @Html.DisplayFor(x => requestor, "RequestForTile")
-                        }
-
-                    </div>
-                    <span class="error"></span>
-                </div>
-            </div>
-
-        </div>
+        <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "Who is the help for?", TileVMs = Model.Requestors, FieldName = "currentStep.SelectedRequestor", TileView = "RequestForTile" }' />
     </div>
 
     <hr class="input--separator" />
 }
 
 <div class="row">
-    <div class="sm12 input">
-        <label for="selectedTimeFrame">When is the help needed?</label>
-
-        <div class="tiles">
-            <div class="input">
-                <input type="hidden" id="selectedTimeFrame" name="currentStep.SelectedTimeFrame.Id" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.ID" />
-
-                <div class="row">
-                    @foreach (var time in Model.Timeframes)
-                    {
-                        @Html.DisplayFor(x => time, "TimeFrameTile")
-                    }
-                </div>
-                <span class="error"></span>
-            </div>
-        </div>
-    </div>
+    <partial name="_TileSelector" model='new TileSelectorViewModel { Label = "How often is the help needed?", TileVMs = Model.Frequencies, FieldName = "currentStep.SelectedFrequency" }' />
 </div>
+
 
 <div class="row">
-    <input type="hidden" name="currentStep.SelectedTimeFrame.CustomDays" value="@Model.Timeframes.Where(x => x.IsSelected).FirstOrDefault()?.Days" />
-    <div class="sm6 input @(selectedCustomTime == null ? "dnone": "")" id="CustomTime">
-        <span>Within</span>
-        <select>
-            <option value="" disabled selected="@(selectedCustomTime == null)">Please select</option>
-            @for (int i = 1; i <= 30; ++i)
-            {
-                if (i == 1)
-                {
-                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Day</option>
-                }
-                else
-                {
-                    <option value="@i.ToString()" selected="@(selectedCustomTime?.Days == i)">@i Days</option>
-                }
-            }
-        </select>
+    @{ 
+        var timeSelectorViewModel = new TileSelectorViewModel
+        {
+            Label = "When is the help <span hide-tile-when='repeats:false'>first</span> needed?",
+            TileVMs = Model.Timeframes,
+            FieldName = "currentStep.SelectedTimeFrame.Id",
+            TileView = "TimeFrameTile"
+        };
+    }
+    <partial name="_TileSelector" model='@timeSelectorViewModel' />
+</div>
 
+<div class="row occurrences-question" show-tile-when="repeats:true">
+    <div class="sm12 input">
+        <label>
+            How many times is the help needed?
+            <span class="sub-text">Please tell us for how long the help is needed (up to a maximum of <span class="occurrences-max"></span>)</span>
+        </label>
+        <label>
+            <input type="number" min="2" class="small-width inline mr-sm" value="@Model.Occurrences" name="currentStep.Occurrences">
+            times
+        </label>
+        <span class="error"></span>
     </div>
 </div>
+
 
 <hr class="input--separator" />
 

@@ -43,6 +43,10 @@
             display: block;
         }
 
+        .inline {
+            display: inline;
+        }
+
         select {
             font-size: 1.2rem;
             padding-left: 10px;
@@ -134,5 +138,43 @@
 
     .lowercase {
         text-transform: lowercase;
+    }
+
+    form[selected-activity="FaceMask"] {
+        *[hide-tile-when*="activity:FaceMask"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="VolunteerSupport"] {
+        *[hide-tile-when*="activity:VolunteerSupport"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="VaccineSupport"] {
+        *[hide-tile-when*="activity:VaccineSupport"] {
+            display: none;
+        }
+    }
+
+    *[show-tile-when*="repeats:true"] {
+        display: none;
+    }
+
+    form[selected-repeat="true"] {
+        *[hide-tile-when*="repeats:true"] {
+            display: none;
+        }
+
+        *[show-tile-when*="repeats:true"] {
+            display: initial;
+        }
+    }
+
+    form[selected-repeat="false"] {
+        *[hide-tile-when*="repeats:false"] {
+            display: none;
+        }
     }
 }

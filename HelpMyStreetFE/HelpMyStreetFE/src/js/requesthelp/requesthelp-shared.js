@@ -2,7 +2,7 @@
     $('button#btnNext').addClass('disabled prevent-submit');
 
     var qRequest = {
-        SupportActivity: supportActivity,
+        supportActivity: supportActivity,
         formVariant: $('input#FormVariant').val(),
         formStage: $('input#currentStep_FormStage').val(),
         groupId: parseInt($('input#ReferringGroupId').val()),

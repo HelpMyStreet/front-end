@@ -36,24 +36,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request)
-        {
-            var response = await PostAsync<BaseRequestHelpResponse<LogRequestResponse>>("/api/PostNewShifts", request);
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content;
-            }
-            return null;
-        }
-
-        public async Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId)
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.JobSummary;
             }
             return null;
         }
@@ -258,13 +247,25 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId)
+        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetRequestSummaryResponse>>($"/api/GetRequestSummary?requestId={requestId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.RequestSummary;
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync (List<int> requestIDs)
+        {
+            var request = new GetAllRequestsRequest { RequestIDs = requestIDs };
+            var response = await PostAsync<BaseRequestHelpResponse<GetAllRequestsResponse>>($"/api/GetAllRequests", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.RequestSummaries;
             }
             return null;
         }

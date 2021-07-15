@@ -1,0 +1,29 @@
+﻿@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Models;
+
+@model Shift
+
+<dt>When is the help needed?</dt>
+
+@if (Model.StartDate.ToUKFromUTCTime().Date.Equals(Model.EndDate.ToUKFromUTCTime().Date))
+{
+    <dd>
+        This shift occurs on
+        <strong>@Html.Raw(Model.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> between
+        <strong>
+            @Model.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash;
+            @Model.EndDate.FormatDate(DateTimeFormat.TimeFormat)
+        </strong>.
+    </dd>
+}
+else
+{
+    <dd>
+        This shift starts on
+        <strong>@Html.Raw(Model.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
+        <strong>@Model.StartDate.FormatDate(DateTimeFormat.TimeFormat)</strong> and ends
+        <strong>@Html.Raw(Model.EndDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong> at
+        <strong>@Model.EndDate.FormatDate(DateTimeFormat.TimeFormat)</strong>.
+    </dd>
+}

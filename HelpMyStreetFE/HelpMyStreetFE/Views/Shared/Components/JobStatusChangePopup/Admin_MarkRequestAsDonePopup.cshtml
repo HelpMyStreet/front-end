@@ -4,8 +4,8 @@
 @model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
 
 @{ 
-    var openJobs = Model.RequestSummary.UnfilledJobs().Count();
-    var acceptedJobs = Model.RequestSummary.AcceptedAndInProgressJobs().Count();
+    var openJobs = Model.RequestSummary.JobBasics.UnfilledJobs().Count();
+    var acceptedJobs = Model.RequestSummary.JobBasics.AcceptedAndInProgressJobs().Count();
 
     var slotNounSingular = Model.RequestType.Equals(RequestType.Shift) ? "slot" : "task";
     var slotNounPlural = Model.RequestType.Equals(RequestType.Shift) ? "slots" : "tasks";
