@@ -9,7 +9,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public JobViewModel<JobDetail> JobDetail { get; set; }
         public Instructions GroupSupportActivityInstructions { get; set; }
-        public bool ToPrint { get; set; } = false;
         public IEnumerable<JobBasic> DuplicateJobs { get; set; }
     }
 }

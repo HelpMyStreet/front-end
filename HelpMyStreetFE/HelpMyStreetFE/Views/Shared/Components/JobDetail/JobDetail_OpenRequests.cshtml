@@ -1,0 +1,95 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using Westwind.AspNetCore.Markdown
+
+@model JobDetailViewModel
+
+@{
+    var jobSummary = Model.JobDetail.Item;
+    var requestSummary = Model.JobDetail.Item.RequestSummary;
+
+    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(false, false) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+}
+
+@if (jobSummary.JobStatus.Incomplete())
+{
+    <div class="job__expander">
+        <div class="row">
+            <div class="sm12">
+                <dl>
+                    Where am I?
+                    <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
+
+                    @if (jobSummary.RequestType == RequestType.Shift)
+                    {
+                        <div class="location-details">
+                            <dt>Where is the shift?</dt>
+
+                            <dd>
+                                <div>
+                                    @Html.DisplayFor(m => m.JobDetail.Location.LocationDetails.Address)
+                                    <span class="distance">(@Model.JobDetail.Location.Distance.ToString("0.0") miles away)</span>
+                                </div>
+                                <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.JobDetail.Location.LocationDetails.Latitude" data-lng="@Model.JobDetail.Location.LocationDetails.Longitude"></div>
+                            </dd>
+                        </div>
+                    }
+                    @if (requestSummary.JobBasics.UnfilledJobs().Count() > 1)
+                    {
+                        var total = requestSummary.JobBasics.IncompleteJobs().Count();
+                        var unfilled = requestSummary.JobBasics.UnfilledJobs().Count();
+                        var filled = total - unfilled;
+                        <dt>How many volunteers are needed?</dt>
+                        <dd>
+                            This help request requires <strong>@total</strong> volunteers.
+                            <strong>@filled</strong> @(filled == 1 ? "place has" : "places have") been filled
+                            (<strong>@unfilled</strong> remaining).
+                        </dd>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || !string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
+{
+    <div class="job__expander">
+        <h4>Request Details<span></span></h4>
+        <div class="job__expander__content">
+            @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails)) { 
+            <div class="row">
+                <div class="sm12">
+                    @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.ActivityDetails)
+                </div>
+            </div>
+            }
+            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
+            {
+                <div class="row">
+                    <div class="sm12">
+                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                        {
+                            <dl>
+                                <dt>Organisation</dt>
+                                <dd>@jobSummary.RecipientOrganisation</dd>
+                            </dl>
+                        }
+
+                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

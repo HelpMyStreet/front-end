@@ -105,7 +105,7 @@
     <div class="request-job__list__items">
         @foreach (var job in Model.JobsToShow)
         {
-            @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests, viewName = "JobDetail_MyRequests" });
+            @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests });
         }
     </div>
     @if (Model.JobsToShow.Any(j => !j.VolunteerUserID.Equals(Model.User.ID)))

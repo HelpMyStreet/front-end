@@ -33,7 +33,7 @@ namespace HelpMyStreetFE.ViewComponents
             _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false, string viewName = "JobDetail")
+        public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
         {
             JobDetail jobDetails = await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken);
 
@@ -42,18 +42,10 @@ namespace HelpMyStreetFE.ViewComponents
                 jobDetails = await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken);
             }
 
-            //JobDetail jobDetails = jobSet.PrivilegedView() switch
-            //{
-            //    true => await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken),
-            //    false => await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken)
-            //};
-
             if (jobDetails == null)
             {
                 throw new Exception($"Failed to retrieve job details for JobId {jobId}");
             }
-
-            //var duplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails));
 
             var jobDetailViewModel = new JobDetailViewModel
             {
@@ -66,7 +58,6 @@ namespace HelpMyStreetFE.ViewComponents
                 },
                 DuplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails)),
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.ReferringGroupID, jobDetails.SupportActivity, cancellationToken),
-                ToPrint = toPrint,
             };
 
             if (jobDetails.RequestSummary.Shift != null)
@@ -74,6 +65,16 @@ namespace HelpMyStreetFE.ViewComponents
                 var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
                 jobDetailViewModel.JobDetail.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
             }
+
+            string viewName = (jobSet, toPrint) switch
+            {
+                (JobSet.UserOpenRequests_MatchingCriteria, false) => "JobDetail_OpenRequests",
+                (JobSet.UserOpenRequests_NotMatchingCriteria, false) => "JobDetail_OpenRequests",
+                (JobSet.UserMyRequests, false) => "JobDetail_MyRequests",
+                (JobSet.UserMyRequests, true) => "JobDetail_Print",
+                (JobSet.GroupRequests, false) => "JobDetail_GroupRequests",
+                (_, _) => throw new ArgumentException($"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet))
+            };
 
             return View(viewName, jobDetailViewModel);
         }
