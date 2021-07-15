@@ -297,7 +297,7 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        public IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
+        public IEnumerable<ShiftJob> SortAndFilterShiftJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
         {
             var jobsToDisplay = jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
@@ -319,7 +319,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
+        public IEnumerable<RequestSummary> SortAndFilterRequests(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
         {
             var jobsToDisplay = jobs.Where(
                 j => (jfr.SupportActivities == null || j.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
