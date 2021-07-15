@@ -71,7 +71,7 @@ namespace HelpMyStreetFE.ViewComponents
                 case (RequestType.Task, JobSet.UserOpenRequests_MatchingCriteria):
                 case (RequestType.Task, JobSet.UserOpenRequests_NotMatchingCriteria):
                     viewName = "OpenJobList";
-                    viewModel = await InvokeAsync_Jobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    viewModel = await InvokeAsync_OpenJobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
                 case (RequestType.Shift, _):
@@ -85,7 +85,7 @@ namespace HelpMyStreetFE.ViewComponents
             return View(viewName, viewModel);
         }
 
-        private async Task<ListViewModel<JobViewModel<IEnumerable<JobDetail>>>> InvokeAsync_Jobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        private async Task<ListViewModel<JobViewModel<IEnumerable<JobDetail>>>> InvokeAsync_OpenJobs(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
             var jobListViewModel = new ListViewModel<JobViewModel<IEnumerable<JobDetail>>>();
 
@@ -103,7 +103,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.UnfilteredItems = jobs.Count();
 
-            jobs = _filterService.SortAndFilterJobs(jobs, jobFilterRequest);
+            jobs = _filterService.SortAndFilterOpenJobs(jobs, jobFilterRequest);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
