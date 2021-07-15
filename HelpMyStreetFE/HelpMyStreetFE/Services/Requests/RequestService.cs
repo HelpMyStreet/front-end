@@ -94,8 +94,8 @@ namespace HelpMyStreetFE.Services.Requests
 
             return new OpenJobsViewModel
             {
-                CriteriaJobs = criteriaJobs,//.OrderOpenJobsForDisplay(),
-                OtherJobs = otherJobs//.OrderOpenJobsForDisplay()
+                CriteriaJobs = criteriaJobs,
+                OtherJobs = otherJobs,
             };
         }
 

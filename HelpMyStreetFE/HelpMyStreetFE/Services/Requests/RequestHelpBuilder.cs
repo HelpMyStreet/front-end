@@ -58,12 +58,6 @@ namespace HelpMyStreetFE.Services.Requests
                 model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
             }
 
-            //if (requestHelpFormVariant == RequestHelpFormVariant.Sandbox_RequestSubmitter)
-            //{
-            //    var requestStep = ((RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First());
-            //    requestStep.Timeframes.Add(new RequestHelpTimeViewModel() { ID = 7, TimeDescription = "On a Specific Date", DueDateType = DueDateType.SpecificStartAndEndTimes });
-            //}
-
             return model;
         }
 
