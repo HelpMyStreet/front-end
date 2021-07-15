@@ -2,9 +2,18 @@
 
 @model PersonalDetails;
 
-<dt>Name</dt>
-<dd>@Model.FirstName @Model.LastName</dd>
-<dt>Email</dt>
-<dd>@Model.EmailAddress</dd>
-<dt>@(Model.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-<dd>@string.Join(" / ", Model.PhoneNumbers())</dd>
+@if (!String.IsNullOrEmpty(Model.FullName()))
+{
+    <dt>Name</dt>
+    <dd>@Model.FullName()</dd>
+}
+@if (!String.IsNullOrEmpty(Model.EmailAddress))
+{
+    <dt>Email</dt>
+    <dd>@Model.EmailAddress</dd>
+}
+@if (Model.PhoneNumbers().Count() > 0)
+{
+    <dt>@(Model.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+    <dd>@string.Join(" / ", Model.PhoneNumbers())</dd>
+}
