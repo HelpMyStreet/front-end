@@ -82,14 +82,14 @@ namespace HelpMyStreetFE.ViewComponents
         {
             var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobBasic.ReferringGroupID, vm.JobBasic.SupportActivity, user.ID, user.ID, cancellationToken);
 
-            if (credentials.AreSatisfied)
-            {
-                return View("AcceptRequestPopup", vm);
-            }
-            else
+            if (!credentials.AreSatisfied)
             {
                 vm.AnnotatedGroupActivityCredentialSets = credentials;
                 return View("CredentialsRequiredPopup", vm);
+            }
+            else
+            {
+                return View("AcceptRequestPopup", vm);
             }
         }
 

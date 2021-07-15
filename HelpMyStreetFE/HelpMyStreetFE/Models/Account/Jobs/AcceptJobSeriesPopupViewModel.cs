@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 {
     public class AcceptJobSeriesPopupViewModel
     {
+        public AnnotatedGroupActivityCredentialSets AnnotatedGroupActivityCredentialSets { get; set; }
         public RequestSummary RequestSummary { get; set; }
         public IEnumerable<JobSummary> OpenJobsForUser { get; set; }
         public string ReferringGroup { get; set; }

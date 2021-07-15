@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Helpers;
-using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
@@ -36,30 +33,25 @@ namespace HelpMyStreetFE.ViewComponents
             var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
+            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(request.ReferringGroupID, request.JobBasics.First().SupportActivity, user.ID, user.ID, cancellationToken);
+
             AcceptJobSeriesPopupViewModel vm = await BuildVm(request, user, cancellationToken);
 
-            return stage switch
+            if (!credentials.AreSatisfied)
             {
-                1 => View("Stage1_Instructions", vm),
-                2 => View("Stage2_SelectDates", vm),
-                _ => throw new Exception($"Unexpected stage: {stage}")
-            };
+                vm.AnnotatedGroupActivityCredentialSets = credentials;
+                return View("Stage0_CredentialsRequired", vm);
+            }
+            else
+            {
+                return stage switch
+                {
+                    1 => View("Stage1_Instructions", vm),
+                    2 => View("Stage2_SelectDates", vm),
+                    _ => throw new Exception($"Unexpected stage: {stage}")
+                };
+            }
         }
-
-        //private async Task<IViewComponentResult> AcceptRequestIfCredentialsSatisfied(JobStatusChangePopupViewModel vm, User user, CancellationToken cancellationToken)
-        //{
-        //    var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobSummary.ReferringGroupID, vm.JobSummary.SupportActivity, user.ID, user.ID, cancellationToken);
-
-        //    if (credentials.AreSatisfied)
-        //    {
-        //        return View("AcceptRequestPopup", vm);
-        //    }
-        //    else
-        //    {
-        //        vm.AnnotatedGroupActivityCredentialSets = credentials;
-        //        return View("CredentialsRequiredPopup", vm);
-        //    }
-        //}
 
         private async Task<AcceptJobSeriesPopupViewModel> BuildVm(RequestSummary request, User user, CancellationToken cancellationToken)
         {
