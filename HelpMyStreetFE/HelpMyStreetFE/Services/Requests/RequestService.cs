@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -256,10 +256,17 @@ namespace HelpMyStreetFE.Services.Requests
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            return await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
+            var requestSummaries = await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest() { ReferringGroupID = groupId, IncludeChildGroups = true });
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}-all-requests", refreshBehaviour, cancellationToken, notInCacheBehaviour);
+
+            if (requestSummaries == null)
+            {
+                throw new Exception($"Unable to get all group request summaries for group {groupId}");
+            }
+
+            return requestSummaries;
         }
 
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)

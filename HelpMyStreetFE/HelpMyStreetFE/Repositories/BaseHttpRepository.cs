@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Repositories
             var resp = await Client.PostAsync(url, new StringContent(data, Encoding.UTF8, "application/json"));
             Logger.LogInformation($"Request code: {resp.StatusCode}");
 
-            return await HandleResponseAsync<TResponse>(resp);
+            return await HandleResponseAsync<TResponse>(url, resp);
         }
 
         protected async Task<TResponse> PutAsync<TResponse>(string url, object obj)
@@ -44,7 +44,7 @@ namespace HelpMyStreetFE.Repositories
             var resp = await Client.PutAsync(url, new StringContent(data, Encoding.UTF8, "application/json"));
             Logger.LogInformation($"Request code: {resp.StatusCode}");
 
-            return await HandleResponseAsync<TResponse>(resp);
+            return await HandleResponseAsync<TResponse>(url, resp);
         }
 
         protected async Task<HttpResponseMessage> GetAsync(string url)
@@ -60,10 +60,10 @@ namespace HelpMyStreetFE.Repositories
             Logger.LogInformation($"Get request to {url}");
             var resp = await Client.GetAsync(url);
             Logger.LogInformation($"Request code: {resp.StatusCode}");
-            return await HandleResponseAsync<TResponse>(resp);
+            return await HandleResponseAsync<TResponse>(url, resp);
         }
 
-        private async Task<TResponse> HandleResponseAsync<TResponse>(HttpResponseMessage resp)
+        private async Task<TResponse> HandleResponseAsync<TResponse>(string url, HttpResponseMessage resp)
         {
             if (resp.IsSuccessStatusCode)
             {
@@ -72,7 +72,7 @@ namespace HelpMyStreetFE.Repositories
             }
             else
             {
-                Logger.LogError($"Request failed with code {resp.StatusCode}\n{resp}");
+                Logger.LogError($"Request to {url} failed with code {resp.StatusCode}\n{resp}");
                 throw new HttpRequestException($"Request failed with code {resp.StatusCode}");
             }
         }
