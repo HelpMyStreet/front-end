@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.Services.Requests
             var results = new List<RequestSummary>();
             var missingIds = new List<int>();
 
-            foreach (int requestId in requestIds)
+            foreach (int requestId in requestIds.Distinct())
             {
                 var requestSummary = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.DontGetData, cancellationToken);
                 if (requestSummary == null)

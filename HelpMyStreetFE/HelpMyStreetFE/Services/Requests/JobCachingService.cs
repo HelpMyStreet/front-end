@@ -35,6 +35,15 @@ namespace HelpMyStreetFE.Services.Requests
             }, GetJobCacheKey(jobId), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
+        public async Task<IEnumerable<JobSummary>> GetJobSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
+        {
+            var requests = await GetRequestSummariesAsync(jobIds, cancellationToken);
+
+            var allJobs = requests.SelectMany(r => r.JobSummaries);
+
+            return allJobs.Where(j => jobIds.Contains(j.JobID));
+        }
+
         public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
         {
             var requestId = await GetRequestId(jobId, cancellationToken);
@@ -42,6 +51,15 @@ namespace HelpMyStreetFE.Services.Requests
             var requestSummary = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
 
             return requestSummary.JobSummaries.FirstOrDefault(j => j.JobID.Equals(jobId));
+        }
+
+        public async Task<IEnumerable<JobBasic>> GetJobBasicsAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
+        {
+            var requests = await GetRequestSummariesAsync(jobIds, cancellationToken);
+
+            var allJobs = requests.SelectMany(r => r.JobBasics);
+
+            return allJobs.Where(j => jobIds.Contains(j.JobID));
         }
 
         public async Task<JobBasic> GetJobBasicAsync(int jobId, CancellationToken cancellationToken)
@@ -58,6 +76,13 @@ namespace HelpMyStreetFE.Services.Requests
             var requestId = await GetRequestId(jobId, cancellationToken);
 
             await _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
+        }
+
+        private async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
+        {
+            var requestIds = jobIds.Select(async (j) => await GetRequestId(j, cancellationToken)).Select(t => t.Result);
+
+            return await _requestCachingService.GetRequestSummariesAsync(requestIds, cancellationToken);
         }
 
         private string GetJobCacheKey(int jobId)

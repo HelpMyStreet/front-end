@@ -1,4 +1,4 @@
-using HelpMyStreet.Contracts.RequestService.Response;
+﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -27,13 +27,19 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IRequestCachingService _requestCachingService;
         private readonly IJobCachingService _jobCachingService;
         private readonly IRequestHelpRepository _requestHelpRepository;
-        private readonly IRequestHelpBuilder _requestHelpBuilder;
         private readonly IGroupService _groupService;
         private readonly IUserService _userService;
+
+
+
+        //*
         private readonly IMemDistCache<IEnumerable<JobSummary>> _memDistCache;
         private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
         private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
+        //*/
         private readonly IMemDistCache<IEnumerable<int>> _memDist_Ints;
+        
+        
         private readonly IGroupMemberService _groupMemberService;
 
         private readonly IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
@@ -44,28 +50,41 @@ namespace HelpMyStreetFE.Services.Requests
 
         public RequestService(
             IRequestHelpRepository requestHelpRepository,
-            IRequestHelpBuilder requestHelpBuilder, 
             IGroupService groupService, 
             IUserService userService, 
+            IGroupMemberService groupMemberService,
+
+
+
+
             IMemDistCache<IEnumerable<JobSummary>> memDistCache, 
-            IGroupMemberService groupMemberService, 
             IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, 
-            IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, 
+            IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries,
+
             IMemDistCache<IEnumerable<int>> memDist_Ints,
+
+
+
             IRequestCachingService requestCachingService, 
             IJobCachingService jobCachingService)
         {
             _requestCachingService = requestCachingService;
             _jobCachingService = jobCachingService;
             _requestHelpRepository = requestHelpRepository;
-            _requestHelpBuilder = requestHelpBuilder;
             _groupService = groupService;
             _userService = userService;
-            _memDistCache = memDistCache;
             _groupMemberService = groupMemberService;
+
+
+            //*
+            _memDistCache = memDistCache;
             _memDistCache_ShiftJobs = memDistCache_ShiftJobs;
             _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
-            _memDist_Ints = memDist_Ints,
+            //*/
+
+            _memDist_Ints = memDist_Ints;
+
+
 
             _shiftJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
             _jobSummaryJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
@@ -73,7 +92,7 @@ namespace HelpMyStreetFE.Services.Requests
         }
 
 
-        public async Task<IEnumerable<JobSummary>> GetOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<int>> GetOpenJobIdsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
@@ -121,20 +140,24 @@ namespace HelpMyStreetFE.Services.Requests
             throw new Exception($"Unable to get jobs for user {userId}");
         }
 
+        // My Requests tab
         public async Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            var jobs = await _memDistCache_RequestSummaries.GetCachedDataAsync(async (cancellationToken) =>
+            var requestIds = await _memDist_Ints.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetUserRequestsFromRepo(userId, cancellationToken);
-            }, $"{CACHE_KEY_PREFIX}-user-{userId}-accepted-jobs-requests", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
+                var requests = await GetUserRequestsFromRepo(userId, cancellationToken);
+                return requests.Select(r => r.RequestID);
+            }, $"{CACHE_KEY_PREFIX}-user-{userId}-my-requests", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
 
-            if (jobs != null)
+            var requests = await _requestCachingService.GetRequestSummariesAsync(requestIds, cancellationToken);
+
+            if (requests != null)
             {
-                return jobs;
+                return requests;
             }
-            throw new Exception($"Unable to get jobs for user {userId}");
+            throw new Exception($"Unable to get requests for user {userId}");
         }
 
         public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
