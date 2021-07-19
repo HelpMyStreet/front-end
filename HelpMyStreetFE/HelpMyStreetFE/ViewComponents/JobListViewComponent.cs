@@ -60,12 +60,12 @@ namespace HelpMyStreetFE.ViewComponents
                 case (RequestType.Shift, JobSet.GroupShifts):
                 case (RequestType.Task, JobSet.GroupRequests):
                     viewName = "ShiftRequestList";
-                    viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    viewModel = await InvokeAsync_Requests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
                 case (RequestType.Task, JobSet.UserMyRequests):
                     viewName = "MyRequestsList";
-                    viewModel = await InvokeAsync_ShiftRequests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
+                    viewModel = await InvokeAsync_Requests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
                 case (RequestType.Task, JobSet.UserOpenRequests_MatchingCriteria):
@@ -190,7 +190,7 @@ namespace HelpMyStreetFE.ViewComponents
             return jobListViewModel;
         }
 
-        private async Task<ListViewModel<JobViewModel<RequestSummary>>> InvokeAsync_ShiftRequests(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
+        private async Task<ListViewModel<JobViewModel<RequestSummary>>> InvokeAsync_Requests(User user, JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
             var jobListViewModel = new ListViewModel<JobViewModel<RequestSummary>>();
 
