@@ -85,7 +85,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new RequestHelpDetailStageViewModel()
                     {
                         ShowRequestorFields = !requestHelpJourney.RequestorDefinedByGroup,
-                        FullRecipientAddressRequired = GetFullRecipientAddressRequired(requestHelpFormVariant),
+                        FullRecipientAddressRequired = true,
                     },
                     new RequestHelpReviewStageViewModel(),
                 }
@@ -225,14 +225,6 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeConnectsCardiff_Public => "If you need help from Age Connects Cardiff and the Vale, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => "If you need help from Age Connects Cardiff and the Vale, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
-            };
-        }
-
-        private bool GetFullRecipientAddressRequired(RequestHelpFormVariant requestHelpFormVariant)
-        {
-            return requestHelpFormVariant switch
-            {
-                _ => true
             };
         }
 

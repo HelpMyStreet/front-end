@@ -80,7 +80,7 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetAllJobsByFilterResponse> GetJobsByFilterAsync(GetAllJobsByFilterRequest request)
+        public async Task<GetAllJobsByFilterResponse> GetAllJobsByFilterAsync(GetAllJobsByFilterRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetAllJobsByFilterResponse>>($"/api/GetAllJobsByFilter", request);
 
@@ -228,17 +228,6 @@ namespace HelpMyStreetFE.Repositories
         public async Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request)
         {
             var response = await PostAsync<BaseRequestHelpResponse<GetUserShiftJobsByFilterResponse>>($"/api/GetUserShiftJobsByFilter", request);
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content.ShiftJobs;
-            }
-            return null;
-        }
-
-        public async Task<IEnumerable<ShiftJob>> GetOpenShiftJobsByFilter(GetOpenShiftJobsByFilterRequest request)
-        {
-            var response = await PostAsync<BaseRequestHelpResponse<GetOpenShiftJobsByFilterResponse>>($"/api/GetOpenShiftJobsByFilter", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
