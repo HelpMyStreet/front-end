@@ -28,28 +28,28 @@ var validateForm = function (validateRecipientAsRequestor) {
             "currentStep.Recipient.MobileNumber": (v) => v != "" || "Please enter a phone number",
             "currentStep.Recipient.Email": (v) => {
               if (validateRecipientAsRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
-                    return "Please enter a valid email address";
+                    return "a valid email address";
                 }
                 return true;
             },
             "currentStep.Recipient.Town": (v) => {
                 if (v.length <= 2) {
                     $('.expander').slideDown();
-                    return "Please enter a valid town / city";
+                    return "a valid town / city";
                 }
                 return true;
             },
             "currentStep.Recipient.AddressLine1": (v) => {
                 if (v.length <= 2) {
                     $('.expander').slideDown();
-                    return "Please enter a valid first line of your address";
+                    return "a valid first line of your address";
                 }
                 return true;
             },
             "currentStep.Recipient.Postcode": (v) => {
                 if (v == "") {
                     $('.expander').slideDown();
-                    return "Please enter a postcode";
+                    return "a postcode";
                 }
                 return true;
             },                                            

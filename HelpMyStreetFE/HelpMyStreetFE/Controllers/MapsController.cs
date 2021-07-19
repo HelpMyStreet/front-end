@@ -47,13 +47,6 @@ namespace HelpMyStreetFE.Controllers
             return volunteerCoordinatesResponse;
         }
 
-        [HttpGet("postcodeCoordinate")]
-        public async Task<ActionResult<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>>> GetVolunteerCoordinates([FromQuery]string postcode)
-        {
-            ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode> volunteerCoordinatesResponse = await _addressService.GetPostcodeCoordinate(postcode);
-            return volunteerCoordinatesResponse;
-        }
-
         [HttpGet("getCommunities")]
         public async Task<ActionResult<GetCommunitiesResponse>> GetCommunities()
         {

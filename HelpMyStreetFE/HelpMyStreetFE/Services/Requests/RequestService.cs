@@ -58,6 +58,31 @@ namespace HelpMyStreetFE.Services.Requests
             _jobSummaryJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
         }
 
+        public async Task<bool> LogViewLocationEvent(int userId, int requestId, int jobId)
+        {
+            var logRequest = new LogRequestEventRequest()
+            {
+                JobID = jobId,
+                RequestID = requestId,
+                UserID = userId,
+                RequestEventRequest = new RequestEventRequest()
+                {
+                    RequestEvent = RequestEvent.ShowFullPostCode
+                }
+            };
+
+            var result = await _requestHelpRepository.LogEventRequest(logRequest);
+
+            if (result != null)
+            {
+                return result.Success;
+            }
+            else
+            {
+                throw new Exception("Error when logging new event.");
+            }
+        }
+
         public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Logging Request");
@@ -237,6 +262,8 @@ namespace HelpMyStreetFE.Services.Requests
                 JobSummary = getJobSummaryResponse.JobSummary,
             };
         }
+
+
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {
