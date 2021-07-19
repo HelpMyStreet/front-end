@@ -34,7 +34,6 @@ export const login = async (email, password) => {
             if (authResp.fetchResponse != fetchResponses.SUCCESS) {
                 throw ({ code: "server" });
             }
-
             if (returnUrl && returnUrl.startsWith("/")) {
                 window.location.href = returnUrl;
             } else {

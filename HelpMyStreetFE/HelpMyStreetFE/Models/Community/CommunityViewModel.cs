@@ -35,5 +35,6 @@ namespace HelpMyStreetFE.Models.Community
         }
 
         public bool ShowRequestHelpPopup { get; set; }
+        public bool ShowPopupOnSignUp { get; set; } = false;
     }
 }

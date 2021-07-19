@@ -264,6 +264,18 @@ namespace HelpMyStreetFE.Repositories
             throw new Exception($"Bad response from GetGroup for GroupId {groupId}");
         }
 
+        public async Task<List<Location>> GetUserLocations(int userId)
+        {
+            HttpResponseMessage response = await Client.GetAsync($"/api/GetUserLocations?userID={userId}");
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetUserLocationsResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.Locations;
+            }
+            throw new Exception($"Bad response from GetUserLocations for userId {userId}");
+        }
+
         public async Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant)
         {
             var rfvRequest = new RegistrationFormVariantRequest();
@@ -286,6 +298,28 @@ namespace HelpMyStreetFE.Repositories
                 throw new Exception("Unable to fetch Support Activities For Form Varient");
             }
             
+        }
+
+        public async Task<GetGroupsWithMapDetailsResponse> GetGroupsWithMapDetails(MapLocation mapLocation)
+        {
+            var request = new GetGroupsWithMapDetailsRequest()
+            {
+                MapLocation = new MapLocationRequest() { MapLocation = mapLocation }
+            };
+
+            var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await Client.PostAsync("/api/GetGroupsWithMapDetails", requestContent);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var deserializeContent = JsonConvert.DeserializeObject<ResponseWrapper<GetGroupsWithMapDetailsResponse, GroupServiceErrorCode>>(responseString);
+            if (deserializeContent.HasContent && deserializeContent.IsSuccessful)
+            {
+                return deserializeContent.Content;
+            }
+            else
+            {
+                throw new Exception($"Bad response from GetGroupsWithMapDetailsResponse for MapLocation {mapLocation}");
+            }
         }
     }
 }

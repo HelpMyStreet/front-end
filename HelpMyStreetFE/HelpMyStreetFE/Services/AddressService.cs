@@ -22,12 +22,12 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Services
 {
     public class AddressService : BaseHttpService, IAddressService
     {
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IMemDistCache<LocationDetails> _memDistCache;
@@ -35,6 +35,7 @@ namespace HelpMyStreetFE.Services
         private readonly IMemDistCache<IEnumerable<LocationWithDistance>> _memDistCache_LocationDistanceList;
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IGroupMemberService _groupMemberService;
 
         private const string CACHE_KEY_PREFIX = "address-service-";
 
@@ -43,18 +44,18 @@ namespace HelpMyStreetFE.Services
             IConfiguration configuration,
             IAddressRepository addressRepository,
             IUserRepository userRepository,
-            IOptions<RequestSettings> requestSettings,
             IMemDistCache<LocationDetails> memDistCache,
             IMemDistCache<IEnumerable<LocationDetails>> memDistCache_LocationDetailsList,
             IMemDistCache<IEnumerable<LocationWithDistance>> memDistCache_LocationDistanceList,
             IGroupRepository groupRepository,
+            IGroupMemberService groupMemberService,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
             _userRepository = userRepository;
             _groupRepository = groupRepository;
-            _requestSettings = requestSettings;
+            _groupMemberService = groupMemberService;
             _memDistCache = memDistCache;
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
@@ -102,20 +103,30 @@ namespace HelpMyStreetFE.Services
             {
                 return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {
 
-                var locationsWithDistance = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
-                if (locationsWithDistance.Count() == 0)
-                {
-                    return new List<LocationWithDistance>();
-                }
-                var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+                    var userLocations = await _groupRepository.GetUserLocations(user.ID);    
+                    var locationsWithDistance = await _addressRepository.GetLocationsByDistance(2000, user.PostalCode);
+                    if (locationsWithDistance.Count() == 0)
+                    {
+                        return new List<LocationWithDistance>();
+                    }
+                    if(userLocations!=null)
+                    {
+                        locationsWithDistance = locationsWithDistance.Where(x => userLocations.Contains(x.Location)).ToList();
+                        if (locationsWithDistance.Count() == 0)
+                        {
+                            return new List<LocationWithDistance>();
+                        }
+                    }
 
-                return locationsWithDistance.Select(l => new LocationWithDistance
-                {
-                    Location = l.Location,
-                    Distance = l.DistanceFromPostCode,
-                    LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
-                });
-                }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+                    var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+
+                    return locationsWithDistance.Select(l => new LocationWithDistance
+                    {
+                        Location = l.Location,
+                        Distance = l.DistanceFromPostCode,
+                        LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
+                    });
+                    }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
             }
             else
             {
