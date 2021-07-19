@@ -49,23 +49,34 @@ namespace HelpMyStreetFE.ViewComponents
             var jobDetails = (await _requestService.GetJobSummaryAsync(jobId, cancellationToken));
             var canView = await _requestService.LogViewLocationEvent(user.ID, jobDetails.RequestID, jobId);
 
-            if (!canView)
+            ViewLocationViewModel viewLocationViewModel;
+
+            if (canView)
             {
-                throw new UnauthorizedAccessException("Not able to record view event");
+
+                var postCodeCoordinates = (await _addressService.GetPostcodeCoordinates(jobDetails.PostCode)).First();
+
+                var distanceInMiles = await _addressService.GetDistanceBetweenPostcodes(jobDetails.PostCode, user.PostalCode, cancellationToken);
+
+                viewLocationViewModel = new ViewLocationViewModel()
+                {
+                    IsAllowed = canView,
+                    Coordinates = postCodeCoordinates,
+                    Distance = distanceInMiles,
+                    PostCode = jobDetails.PostCode,
+                    encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID)
+                };
+            } else
+            {
+                viewLocationViewModel = new ViewLocationViewModel()
+                {
+                    IsAllowed = canView,
+                    Coordinates = null,
+                    Distance = null,
+                    PostCode = null,
+                    encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID)
+                };
             }
-
-            var postCodeCoordinates = (await _addressService.GetPostcodeCoordinates(jobDetails.PostCode)).First();
-
-            var distanceInMiles = await _addressService.GetDistanceBetweenPostcodes(jobDetails.PostCode, user.PostalCode, cancellationToken);
-
-            var viewLocationViewModel = new ViewLocationViewModel()
-            {
-                IsAllowed = true,
-                Coordinates = postCodeCoordinates,
-                Distance = distanceInMiles,
-                PostCode = jobDetails.PostCode,
-                encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID)
-            };
 
             return View("ViewLocationPopup", viewLocationViewModel);
         }
