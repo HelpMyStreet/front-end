@@ -33,6 +33,7 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IMemDistCache<IEnumerable<JobSummary>> _memDistCache;
         private readonly IMemDistCache<IEnumerable<ShiftJob>> _memDistCache_ShiftJobs;
         private readonly IMemDistCache<IEnumerable<RequestSummary>> _memDistCache_RequestSummaries;
+        private readonly IMemDistCache<IEnumerable<int>> _memDist_Ints;
         private readonly IGroupMemberService _groupMemberService;
 
         private readonly IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
@@ -50,6 +51,7 @@ namespace HelpMyStreetFE.Services.Requests
             IGroupMemberService groupMemberService, 
             IMemDistCache<IEnumerable<ShiftJob>> memDistCache_ShiftJobs, 
             IMemDistCache<IEnumerable<RequestSummary>> memDistCache_RequestSummaries, 
+            IMemDistCache<IEnumerable<int>> memDist_Ints,
             IRequestCachingService requestCachingService, 
             IJobCachingService jobCachingService)
         {
@@ -63,6 +65,7 @@ namespace HelpMyStreetFE.Services.Requests
             _groupMemberService = groupMemberService;
             _memDistCache_ShiftJobs = memDistCache_ShiftJobs;
             _memDistCache_RequestSummaries = memDistCache_RequestSummaries;
+            _memDist_Ints = memDist_Ints,
 
             _shiftJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
             _jobSummaryJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
@@ -75,12 +78,13 @@ namespace HelpMyStreetFE.Services.Requests
             RefreshBehaviour refreshBehaviour = waitForData ? RefreshBehaviour.WaitForFreshData : RefreshBehaviour.DontWaitForFreshData;
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            var jobs = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            var jobIds = await _memDist_Ints.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetOpenJobsForUserFromRepo(user, cancellationToken);
+                var jobs = await GetOpenJobsForUserFromRepo(user, cancellationToken);
+                return jobs.Select(j => j.JobID);
             }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-jobs", refreshBehaviour, cancellationToken, notInCacheBehaviour);
 
-            return jobs;
+            return jobIds;
         }
 
         public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<IEnumerable<JobSummary>> jobs)
