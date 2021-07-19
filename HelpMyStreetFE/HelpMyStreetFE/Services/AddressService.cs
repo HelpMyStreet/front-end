@@ -33,6 +33,7 @@ namespace HelpMyStreetFE.Services
         private readonly IMemDistCache<LocationDetails> _memDistCache;
         private readonly IMemDistCache<IEnumerable<LocationDetails>> _memDistCache_LocationDetailsList;
         private readonly IMemDistCache<IEnumerable<LocationWithDistance>> _memDistCache_LocationDistanceList;
+        private readonly IMemDistCache<double> _memDistCache_PostcodeDistances;
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
 
@@ -47,6 +48,7 @@ namespace HelpMyStreetFE.Services
             IMemDistCache<LocationDetails> memDistCache,
             IMemDistCache<IEnumerable<LocationDetails>> memDistCache_LocationDetailsList,
             IMemDistCache<IEnumerable<LocationWithDistance>> memDistCache_LocationDistanceList,
+            IMemDistCache<double> memDistCache_PostcodeDistances,
             IGroupRepository groupRepository,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
@@ -58,6 +60,7 @@ namespace HelpMyStreetFE.Services
             _memDistCache = memDistCache;
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
+            _memDistCache_PostcodeDistances = memDistCache_PostcodeDistances;
         }
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
@@ -139,25 +142,36 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-location-{(int)location}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest)
-        {
-            string json = JsonConvert.SerializeObject(getPostcodeCoordinatesRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/GetPostcodeCoordinates", data);
-            string str = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>>(str);
-        }
 
-        public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode)
+
+        public async Task<List<PostcodeCoordinate>> GetPostcodeCoordinates(string postcode)
         {
             postcode = PostcodeFormatter.FormatPostcode(postcode);
+
             GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest = new GetPostcodeCoordinatesRequest()
             {
                 Postcodes = new List<string>() { postcode }
             };
-            ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode> getPostcodeCoordinatesResponse = await GetPostcodeCoordinates(getPostcodeCoordinatesRequest);
 
-            return getPostcodeCoordinatesResponse;
+            var response = await _addressRepository.GetPostcodeCoordinates(getPostcodeCoordinatesRequest);
+            return response.PostcodeCoordinates.ToList();
+        }
+
+        public async Task<double> GetDistanceBetweenPostcodes(string postCode1, string postCode2, CancellationToken cancellationToken)
+        {
+
+            return await _memDistCache_PostcodeDistances.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var response = await _addressRepository.GetDistanceBetweenPostcodes(postCode1, postCode2);
+                if (response != null)
+                {
+                    return response.DistanceInMiles;
+                }
+                else
+                {
+                    throw new HttpRequestException("Unable to fetch location details");
+                }
+            }, $"{CACHE_KEY_PREFIX}-postcode-distances-{postCode1}-{postCode2}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
     }
 }
