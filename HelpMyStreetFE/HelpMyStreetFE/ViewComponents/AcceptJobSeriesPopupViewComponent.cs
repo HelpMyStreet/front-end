@@ -18,19 +18,26 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IGroupMemberService _groupMemberService;
         private readonly IAuthService _authService;
         private readonly IRequestService _requestService;
+        private readonly IRequestCachingService _requestCachingService;
         private readonly IGroupService _groupService;
 
-        public AcceptJobSeriesPopupViewComponent(IGroupMemberService groupMemberService, IAuthService authService, IRequestService requestService, IGroupService groupService)
+        public AcceptJobSeriesPopupViewComponent(
+            IGroupMemberService groupMemberService,
+            IAuthService authService,
+            IRequestService requestService,
+            IRequestCachingService requestCachingService,
+            IGroupService groupService)
         {
             _groupMemberService = groupMemberService;
             _authService = authService;
             _requestService = requestService;
+            _requestCachingService = requestCachingService;
             _groupService = groupService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, int stage, CancellationToken cancellationToken)
         {
-            var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+            var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(request.ReferringGroupID, request.JobBasics.First().SupportActivity, user.ID, user.ID, cancellationToken);

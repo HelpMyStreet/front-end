@@ -25,14 +25,22 @@ namespace HelpMyStreetFE.Controllers {
     {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
         private readonly IRequestUpdatingService _requestUpdatingService;
         private readonly IAuthService _authService;
         private readonly IFeedbackService _feedbackService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IFeedbackService feedbackService, IRequestUpdatingService requestUpdatingService)
+        public RequestHelpAPIController(
+            ILogger<RequestHelpAPIController> logger, 
+            IRequestService requestService,
+            IJobCachingService jobCachingService,
+            IAuthService authService, 
+            IFeedbackService feedbackService, 
+            IRequestUpdatingService requestUpdatingService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _jobCachingService = jobCachingService ?? throw new ArgumentNullException(nameof(jobCachingService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _feedbackService = feedbackService ?? throw new ArgumentNullException(nameof(feedbackService));
             _requestUpdatingService = requestUpdatingService ?? throw new ArgumentNullException(nameof(requestUpdatingService));
@@ -67,7 +75,7 @@ namespace HelpMyStreetFE.Controllers {
                     int jobId = Base64Utils.Base64DecodeToInt(j);
                     outcome = await _requestUpdatingService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
 
-                    var job = await _requestService.GetJobBasicAsync(jobId, cancellationToken);
+                    var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
                     if (job.RequestType.Equals(RequestType.Task))
                     {
                         requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
@@ -181,7 +189,7 @@ namespace HelpMyStreetFE.Controllers {
 
         private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)
         {
-            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
 
             if (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)
             {

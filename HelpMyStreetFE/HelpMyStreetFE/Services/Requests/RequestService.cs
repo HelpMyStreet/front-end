@@ -163,24 +163,9 @@ namespace HelpMyStreetFE.Services.Requests
             }, $"{CACHE_KEY_PREFIX}-user-{userId}-user-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
         }
 
-        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken)
-        {
-            return await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
-        }
-
         public async Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
         {
             return await _requestHelpRepository.GetRequestDetailsAsync(requestId, userId);
-        }
-
-        public async Task<JobSummary> GetJobSummaryAsync(int jobId, CancellationToken cancellationToken)
-        {
-            return await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
-        }
-
-        public async Task<JobBasic> GetJobBasicAsync(int jobId, CancellationToken cancellationToken)
-        {
-            return await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
         }
 
         public async Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken)
@@ -230,18 +215,6 @@ namespace HelpMyStreetFE.Services.Requests
                 };
             }
             throw new Exception($"Failed to get job details for job {jobId} (user {userId})");
-        }
-
-        public RequestHelpViewModel GetRequestHelpSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
-        {
-            return _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupID, source);
-        }
-
-        public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(string groupKey, bool waitForData, CancellationToken cancellationToken)
-        {
-            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
-
-            return await GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
         }
 
         public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
