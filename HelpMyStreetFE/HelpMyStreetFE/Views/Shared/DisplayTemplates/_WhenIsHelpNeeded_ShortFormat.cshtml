@@ -1,0 +1,78 @@
+﻿@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreetFE.Models.Account.Jobs;
+
+@model JobSummary
+
+@{
+    var encodedJobID = Base64Utils.Base64Encode(Model.JobID);
+}
+
+@if (Model.DueDateType == DueDateType.SpecificStartAndEndTimes)
+{
+    throw new Exception("DueDateType.SpecificStartAndEndTimes not yet handled.");
+}
+else
+{
+    var dueDate = Model.DueDate;
+    var notBeforeDate = Model.NotBeforeDate;
+    var today = DateTime.UtcNow.ToUKFromUTCTime().Date;
+
+
+    @if (dueDate.Date < today)
+    {
+        <div><strong>As soon as possible</strong> (This request is now overdue.)</div>
+    }
+    else if (dueDate.Date == today)
+    {
+        if (Model.DueDateType == DueDateType.ASAP)
+        {
+            <div>
+                <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">As soon as possible today</strong>
+            </div>
+        }
+        else if (Model.DueDateType == DueDateType.On)
+        {
+            <div>
+                <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">Today</strong>
+            </div>
+        }
+        else
+        {
+            <div>
+                <strong title="@dueDate.FormatDate(DateTimeFormat.LongDateFormat)">Today</strong>
+            </div>
+        }
+    }
+    else
+    {
+        if (Model.DueDateType == DueDateType.ASAP)
+        {
+            <div>
+                <strong>As soon as possible</strong>
+                (and <strong title="@dueDate.FriendlyFutureDate()">before @Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>).
+            </div>
+        }
+        else if (Model.DueDateType == DueDateType.On)
+        {
+            <div>
+                <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
+            </div>
+        }
+        else if (notBeforeDate.HasValue && notBeforeDate.Value.Date > today)
+        {
+            <div>
+                Between
+                <strong title="@notBeforeDate.Value.FriendlyFutureDate()">@Html.Raw(notBeforeDate.Value.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
+                and
+                <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
+            </div>
+        }
+        else
+        {
+            <div><strong title="@dueDate.FriendlyFutureDate()">On or before @Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></div>
+        }
+    }
+}

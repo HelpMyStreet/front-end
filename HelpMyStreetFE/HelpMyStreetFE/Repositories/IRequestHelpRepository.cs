@@ -10,9 +10,10 @@ namespace HelpMyStreetFE.Repositories
     public interface IRequestHelpRepository
     {
         Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request);
-        Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId);
+        Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(List<int> RequestIDs);
+        Task<RequestSummary> GetRequestSummaryAsync(int requestId);
         Task<GetRequestDetailsResponse> GetRequestDetailsAsync(int requestId, int userId);
-        Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId);
+        Task<JobSummary> GetJobSummaryAsync(int jobId);
         Task<GetJobDetailsResponse> GetJobDetailsAsync(int jobId, int userId);
         Task<GetAllJobsByFilterResponse> GetAllJobsByFilterAsync(GetAllJobsByFilterRequest request);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToNewAsync(int jobId, int createdByUserId);
@@ -26,7 +27,6 @@ namespace HelpMyStreetFE.Repositories
         Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request);
         Task<IEnumerable<RequestSummary>> GetRequestsByFilter(GetRequestsByFilterRequest request);
         Task<IEnumerable<RequestSummary>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request);
-        Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
     }

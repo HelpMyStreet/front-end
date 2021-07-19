@@ -1,6 +1,6 @@
 ﻿import { validateFormData, scrollToFirstError } from '../shared/validator'
 import { initialiseGrowOnFocus } from '../ui/grow-on-focus'
-import { initialiseTileSelector } from '../ui/tile-selector'
+import { initialiseTileSelectors } from '../ui/tile-selector'
 import { buttonLoad, buttonUnload } from '../shared/btn'
 import { showServerSidePopup } from "../shared/popup";
 import { hmsSubmit, fetchResponses } from "../shared/hmsFetch";
@@ -9,7 +9,7 @@ export function initialiseFeedbackCaptureForm() {
 
   initialiseGrowOnFocus();
 
-  initialiseTileSelector();
+  initialiseTileSelectors();
 
   $("form").on("submit", function (event) {
 
