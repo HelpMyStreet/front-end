@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
@@ -542,13 +542,6 @@ namespace HelpMyStreetFE.Services.Requests
 
                 return await _requestHelpRepository.GetShiftRequestsByFilter(getShiftRequestsByFilterRequest);
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
-        }
-
-        public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(string groupKey, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
-        {
-            int groupId = (await _groupService.GetGroupIdByKey(groupKey, cancellationToken));
-
-            return await GetGroupShiftRequestsAsync(groupId, dateFrom, dateTo, waitForData, cancellationToken);
         }
 
         private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)

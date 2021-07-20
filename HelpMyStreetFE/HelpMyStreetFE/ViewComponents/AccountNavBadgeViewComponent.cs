@@ -80,7 +80,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyShifts
                         => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(s => s.JobStatus.Incomplete()),
                     MenuPage.GroupShifts
-                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(r => !r.JobBasics.AllComplete()),
+                        => (await _requestService.GetGroupShiftRequestsAsync(groupId, null, null, false, cancellationToken))?.Count(r => !r.JobBasics.AllComplete()),
                     _ => null
                 };
 
