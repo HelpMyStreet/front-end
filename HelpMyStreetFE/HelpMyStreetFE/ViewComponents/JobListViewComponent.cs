@@ -20,14 +20,22 @@ namespace HelpMyStreetFE.ViewComponents
     public class JobListViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IFilterService _filterService;
         private readonly IAddressService _addressService;
 
-        public JobListViewComponent(IRequestService requestService, IAuthService authService, IGroupMemberService groupMemberService, IFilterService filterService, IAddressService addressService)
+        public JobListViewComponent(
+            IRequestService requestService, 
+            IJobCachingService jobCachingService,
+            IAuthService authService, 
+            IGroupMemberService groupMemberService, 
+            IFilterService filterService, 
+            IAddressService addressService)
         {
             _requestService = requestService;
+            _jobCachingService = jobCachingService;
             _authService = authService;
             _groupMemberService = groupMemberService;
             _filterService = filterService;
@@ -141,7 +149,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             IEnumerable<ShiftJob> jobs = jobFilterRequest.JobSet switch
             {
-                JobSet.UserOpenShifts => await _requestService.GetOpenShiftsForUserAsync(user, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
+                JobSet.UserOpenShifts => await GetOpenShiftsForUserAsync(user, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, cancellationToken),
                 JobSet.UserMyShifts => await _requestService.GetShiftsForUserAsync(user.ID, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
@@ -243,6 +251,13 @@ namespace HelpMyStreetFE.ViewComponents
             }
 
             return jobListViewModel;
+        }
+  
+        private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken cancellationToken)
+        {
+            var ids = await _requestService.GetOpenShiftIdsForUserAsync(user, dateFrom, dateTo, true, cancellationToken);
+            var jobs = await _jobCachingService.GetShiftJobsAsync(ids, cancellationToken);
+            return jobs;
         }
     }
 }

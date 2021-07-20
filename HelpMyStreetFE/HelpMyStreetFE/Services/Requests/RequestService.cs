@@ -160,13 +160,14 @@ namespace HelpMyStreetFE.Services.Requests
             throw new Exception($"Unable to get requests for user {userId}");
         }
 
-        public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
+        public async Task<IEnumerable<int>> GetOpenShiftIdsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
             NotInCacheBehaviour notInCacheBehaviour = waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
 
-            return await _memDistCache_ShiftJobs.GetCachedDataAsync(async (cancellationToken) =>
+            return await _memDist_Ints.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
+                var shifts = await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
+                return shifts.Select(s => s.JobID);
             }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-open-shifts-from-{dateFrom}-to-{dateTo}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, notInCacheBehaviour);
         }
 

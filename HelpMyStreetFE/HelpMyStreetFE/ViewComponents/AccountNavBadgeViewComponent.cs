@@ -76,7 +76,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.OpenRequests
                         => (await _requestService.GetOpenJobIdsAsync(user, false, cancellationToken))?.Count(),
                     MenuPage.OpenShifts
-                        => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
+                        => (await _requestService.GetOpenShiftIdsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
                         => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(s => s.JobStatus.Incomplete()),
                     MenuPage.GroupShifts
