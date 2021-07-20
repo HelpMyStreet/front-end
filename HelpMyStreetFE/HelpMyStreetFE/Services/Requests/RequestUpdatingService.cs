@@ -119,7 +119,7 @@ namespace HelpMyStreetFE.Services.Requests
             var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
             if (response != null && userId != 0)
             {
-                _requestService.TriggerCacheRefresh(userId, cancellationToken);
+                //_requestService.TriggerCacheRefresh(userId, cancellationToken);
                 _ = _requestCachingService.RefreshCacheAsync(response.RequestID, cancellationToken);
             }
 
@@ -137,7 +137,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
-                _requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
+                //_requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
                 await _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
             }
 
@@ -159,7 +159,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
-                _requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
+                //_requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
                 await _jobCachingService.RefreshCacheAsync(jobID, cancellationToken);
             }
 
@@ -177,7 +177,7 @@ namespace HelpMyStreetFE.Services.Requests
                 _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
             };
 
-            _requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
+            //_requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
             await _jobCachingService.RefreshCacheAsync(jobId, cancellationToken);
 
             return outcome;

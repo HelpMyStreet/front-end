@@ -150,7 +150,7 @@ namespace HelpMyStreetFE.ViewComponents
             IEnumerable<ShiftJob> jobs = jobFilterRequest.JobSet switch
             {
                 JobSet.UserOpenShifts => await GetOpenShiftsForUserAsync(user, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, cancellationToken),
-                JobSet.UserMyShifts => await _requestService.GetShiftsForUserAsync(user.ID, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
+                JobSet.UserMyShifts => await GetShiftsForUserAsync(user, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
@@ -252,11 +252,16 @@ namespace HelpMyStreetFE.ViewComponents
 
             return jobListViewModel;
         }
-  
+
         private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken cancellationToken)
         {
-            var ids = await _requestService.GetOpenShiftIdsForUserAsync(user, dateFrom, dateTo, true, cancellationToken);
-            var jobs = await _jobCachingService.GetShiftJobsAsync(ids, cancellationToken);
+            var jobs = await _requestService.GetOpenShiftsForUserAsync(user, dateFrom, dateTo, true, cancellationToken);
+            return jobs;
+        }
+
+        private async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken cancellationToken)
+        {
+            var jobs = await _requestService.GetShiftsForUserAsync(user.ID, dateFrom, dateTo, true, cancellationToken);
             return jobs;
         }
     }

@@ -53,6 +53,24 @@ namespace HelpMyStreetFE.Services.Requests
             return requestSummary.JobSummaries.FirstOrDefault(j => j.JobID.Equals(jobId));
         }
 
+        public async Task<IEnumerable<ShiftJob>> GetShiftJobsAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
+        {
+            var requests = await GetRequestSummariesAsync(jobIds, cancellationToken);
+
+            var allJobs = requests.SelectMany(r => r.ShiftJobs);
+
+            return allJobs.Where(j => jobIds.Contains(j.JobID));
+        }
+
+        public async Task<ShiftJob> GetShiftJobAsync(int jobId, CancellationToken cancellationToken)
+        {
+            var requestId = await GetRequestId(jobId, cancellationToken);
+
+            var requestSummary = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
+
+            return requestSummary.ShiftJobs.FirstOrDefault(j => j.JobID.Equals(jobId));
+        }
+
         public async Task<IEnumerable<JobBasic>> GetJobBasicsAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
         {
             var requests = await GetRequestSummariesAsync(jobIds, cancellationToken);
