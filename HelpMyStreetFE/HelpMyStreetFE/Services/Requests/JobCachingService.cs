@@ -26,15 +26,6 @@ namespace HelpMyStreetFE.Services.Requests
             _memDistCache_int = memDistCache_int;
         }
 
-        public async Task<int> GetRequestId(int jobId, CancellationToken cancellationToken)
-        {
-            return await _memDistCache_int.GetCachedDataAsync(async (cancellationToken) =>
-            {
-                var jobSummary = await _requestHelpRepository.GetJobSummaryAsync(jobId);
-                return jobSummary.RequestID;
-            }, GetJobCacheKey(jobId), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
-        }
-
         public async Task<IEnumerable<JobSummary>> GetJobSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
         {
             var requests = await GetRequestSummariesAsync(jobIds, cancellationToken);
@@ -94,6 +85,15 @@ namespace HelpMyStreetFE.Services.Requests
             var requestId = await GetRequestId(jobId, cancellationToken);
 
             await _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
+        }
+
+        private async Task<int> GetRequestId(int jobId, CancellationToken cancellationToken)
+        {
+            return await _memDistCache_int.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var jobSummary = await _requestHelpRepository.GetJobSummaryAsync(jobId);
+                return jobSummary.RequestID;
+            }, GetJobCacheKey(jobId), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
         private async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)

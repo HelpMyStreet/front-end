@@ -18,8 +18,6 @@ namespace HelpMyStreetFE.Services.Requests
         Task<IEnumerable<JobBasic>> GetJobBasicsAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken);
         Task<JobBasic> GetJobBasicAsync(int jobId, CancellationToken cancellationToken);
 
-        Task<int> GetRequestId(int jobId, CancellationToken cancellationToken);
-
         Task RefreshCacheAsync(int jobId, CancellationToken cancellationToken);
     }
 }
