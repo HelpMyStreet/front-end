@@ -14,13 +14,13 @@
 
     var requestorDetails = new PersonalDetailsView
     {
-        PersonalDetails = Model.Requestor.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor)),
+        PersonalDetails = Model.Requestor?.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor)),
         RequestRole = RequestRoles.Requestor
     };
 
     var recipientDetails = new PersonalDetailsView
     {
-        PersonalDetails = Model.Recipient.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient)),
+        PersonalDetails = Model.Recipient?.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient)),
         RecipientOrganisation = Model.JobsToShow.First().RecipientOrganisation,
         RequestRole = RequestRoles.Recipient
     };
