@@ -71,8 +71,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
-            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, cancellationToken);
+            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
+            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
             if (userRequests != null)
             {
@@ -85,8 +85,8 @@ namespace HelpMyStreetFE.Services.Requests
         // My Requests tab
         public async Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
-            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, cancellationToken);
+            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
+            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
             if (userRequests != null)
             {
@@ -99,13 +99,13 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, cancellationToken);
+            return await GetOpenShiftsForUserFromRepo(user, dateFrom, dateTo, waitForData, cancellationToken);
         }
 
         public async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, cancellationToken);
+            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
+            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
             if (userRequests != null)
             {
@@ -171,7 +171,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
-            var groupRequestIDs = await _requestListCachingService.GetGroupRequestsAsync(groupId, cancellationToken);
+            var groupRequestIDs = await _requestListCachingService.GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
             var groupRequests = await GetAllGroupRequestsAsync(groupId, waitForData, cancellationToken);
             var groupTaskRequests = groupRequests.Where(r => r.RequestType.Equals(RequestType.Task));
 
@@ -180,8 +180,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<RequestSummary>> GetAllGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
-            var groupRequestIDs = await _requestListCachingService.GetGroupRequestsAsync(groupId, cancellationToken);
-            var groupRequests = await _requestCachingService.GetRequestSummariesAsync(groupRequestIDs, cancellationToken);
+            var groupRequestIDs = await _requestListCachingService.GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
+            var groupRequests = await _requestCachingService.GetRequestSummariesAsync(groupRequestIDs, waitForData, cancellationToken);
 
             return groupRequests;
         }
@@ -270,12 +270,12 @@ namespace HelpMyStreetFE.Services.Requests
             return null;
         }
 
-        private async Task<IEnumerable<RequestSummary>> GetUserRequestsFromRepo(int userId, CancellationToken cancellationToken)
-        {
-            var userJobs = await GetJobsForUserAsync(userId, true, cancellationToken);
-            var requestIDs = userJobs.Select(j => j.RequestID).Distinct().ToList();
-            return await _requestCachingService.GetRequestSummariesAsync(requestIDs, cancellationToken);
-        }
+        //private async Task<IEnumerable<RequestSummary>> GetUserRequestsFromRepo(int userId, bool waitForData, CancellationToken cancellationToken)
+        //{
+        //    var userJobs = await GetJobsForUserAsync(userId, true, cancellationToken);
+        //    var requestIDs = userJobs.Select(j => j.RequestID).Distinct().ToList();
+        //    return await _requestCachingService.GetRequestSummariesAsync(requestIDs, waitForData, cancellationToken);
+        //}
 
         public async Task<IEnumerable<JobSummary>> FilterAndDedupeOpenJobsForUser(IEnumerable<JobSummary> allJobs, User user, CancellationToken cancellationToken)
         {
@@ -286,9 +286,9 @@ namespace HelpMyStreetFE.Services.Requests
             return notMyJobs;
         }
 
-        public async Task<IEnumerable<IEnumerable<JobSummary>>> GetGroupedOpenJobsForUserFromRepo(User user, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IEnumerable<JobSummary>>> GetGroupedOpenJobsForUserFromRepo(User user, bool waitForData, CancellationToken cancellationToken)
         {
-            var openJobIDs = await _requestListCachingService.GetUserOpenJobsAsync(user, cancellationToken);
+            var openJobIDs = await _requestListCachingService.GetUserOpenJobsAsync(user, waitForData, cancellationToken);
             var openJobs = await _jobCachingService.GetJobSummariesAsync(openJobIDs, cancellationToken);
 
             // Check jobs are all still open
@@ -303,9 +303,9 @@ namespace HelpMyStreetFE.Services.Requests
             return groupedJobs;
         }
 
-        private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, CancellationToken cancellationToken)
+        private async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserFromRepo(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
-            var openJobIDs = await _requestListCachingService.GetUserOpenJobsAsync(user, cancellationToken);
+            var openJobIDs = await _requestListCachingService.GetUserOpenJobsAsync(user, waitForData, cancellationToken);
             var openJobs = await _jobCachingService.GetShiftJobsAsync(openJobIDs, cancellationToken);
 
             // Check jobs are all still open
@@ -385,8 +385,8 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<JobBasic>> GetUserCompletedJobs(int userId, bool waitForData, CancellationToken cancellationToken)
         {
-            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, cancellationToken);
+            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
+            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
             if (userRequests != null)
             {

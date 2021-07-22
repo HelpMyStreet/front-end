@@ -99,8 +99,8 @@ namespace HelpMyStreetFE.ViewComponents
 
             IEnumerable<IEnumerable<JobSummary>> jobs = jobFilterRequest.JobSet switch
             {
-                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetGroupedOpenJobsForUserFromRepo(user, cancellationToken))?.CriteriaJobs,
-                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetGroupedOpenJobsForUserFromRepo(user, cancellationToken))?.OtherJobs,
+                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetGroupedOpenJobsForUserFromRepo(user, true, cancellationToken))?.CriteriaJobs,
+                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetGroupedOpenJobsForUserFromRepo(user, true, cancellationToken))?.OtherJobs,
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 

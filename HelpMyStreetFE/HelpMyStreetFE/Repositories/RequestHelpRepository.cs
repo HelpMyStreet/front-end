@@ -258,9 +258,9 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync (List<int> requestIDs)
+        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync (IEnumerable<int> requestIDs)
         {
-            var request = new GetAllRequestsRequest { RequestIDs = requestIDs };
+            var request = new GetAllRequestsRequest { RequestIDs = requestIDs.ToList() };
             var response = await PostAsync<BaseRequestHelpResponse<GetAllRequestsResponse>>($"/api/GetAllRequests", request);
 
             if (response.HasContent && response.IsSuccessful)

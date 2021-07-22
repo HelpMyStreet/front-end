@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Services.Requests
             _memDistCache_RequestSummary = memDistCache_RequestSummary;
         }
 
-        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, bool waitForData, CancellationToken cancellationToken)
         {
             var results = new List<RequestSummary>();
             var missingIds = new List<int>();
@@ -43,16 +43,17 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (missingIds.Count > 0)
             {
-                var missingRequestSummaries = await _requestHelpRepository.GetRequestSummariesAsync(missingIds);
-
-                results.AddRange(missingRequestSummaries);
-
-                foreach (var requestSummary in missingRequestSummaries)
+                if (waitForData)
                 {
-                    _ = _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
-                    {
-                        return requestSummary;
-                    }, GetRequestCacheKey(requestSummary.RequestID), cancellationToken);
+                    results.AddRange(await AddRequestSummariesToCache(missingIds, cancellationToken));
+                }
+                else
+                {
+#pragma warning disable CS4014
+                    Task.Factory.StartNew(async () => await AddRequestSummariesToCache(missingIds, cancellationToken));
+#pragma warning restore CS4014
+                    
+                    return new List<RequestSummary>();
                 }
             }
 
@@ -70,6 +71,21 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
             }, GetRequestCacheKey(requestId), cancellationToken);
+        }
+
+        private async Task<IEnumerable<RequestSummary>> AddRequestSummariesToCache(IEnumerable<int> requestIds, CancellationToken cancellationToken)
+        {
+            var requestSummaries = await _requestHelpRepository.GetRequestSummariesAsync(requestIds);
+
+            foreach (var requestSummary in requestSummaries)
+            {
+                _ = _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return requestSummary;
+                }, GetRequestCacheKey(requestSummary.RequestID), cancellationToken);
+            }
+
+            return requestSummaries;
         }
 
         private async Task<RequestSummary> GetRequestSummaryAsync(int requestId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)

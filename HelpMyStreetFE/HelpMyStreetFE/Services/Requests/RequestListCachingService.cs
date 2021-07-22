@@ -34,28 +34,28 @@ namespace HelpMyStreetFE.Services.Requests
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<IEnumerable<int>> GetGroupRequestsAsync(int groupId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<int>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await GetGroupRequestsFromRepo(groupId, cancellationToken);
-            }, GetGroupRequestsCacheKey(groupId), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, GetGroupRequestsCacheKey(groupId), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
         }
 
-        public async Task<IEnumerable<int>> GetUserOpenJobsAsync(User user, CancellationToken cancellationToken)
+        public async Task<IEnumerable<int>> GetUserOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await GetUserOpenJobsFromRepo(user, cancellationToken);
-            }, GetUserOpenJobsCacheKey(user.ID), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, GetUserOpenJobsCacheKey(user.ID), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
         }
 
-        public async Task<IEnumerable<int>> GetUserRequestsAsync(int userId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<int>> GetUserRequestsAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await GetUserRequestsFromRepo(userId, cancellationToken);
-            }, GetUserRequestsCacheKey(userId), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, GetUserRequestsCacheKey(userId), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
         }
 
         public async Task RefreshGroupRequestsCacheAsync(int groupId, CancellationToken cancellationToken)
@@ -135,6 +135,11 @@ namespace HelpMyStreetFE.Services.Requests
         private string GetUserRequestsCacheKey(int userId)
         {
             return $"{CACHE_KEY_PREFIX}-user-{userId}-requests";
+        }
+
+        private NotInCacheBehaviour GetNotInCacheBehaviour(bool waitForData)
+        {
+            return waitForData ? NotInCacheBehaviour.WaitForData : NotInCacheBehaviour.DontWaitForData;
         }
     }
 }

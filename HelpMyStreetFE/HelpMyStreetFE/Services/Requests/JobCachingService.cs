@@ -98,9 +98,11 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
         {
+            //TODO: Check in cache with (RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.DontGetData), then fetch remainder from new Request Service endpoint
+
             var requestIds = jobIds.Select(async (j) => await GetRequestId(j, cancellationToken)).Select(t => t.Result);
 
-            return await _requestCachingService.GetRequestSummariesAsync(requestIds, cancellationToken);
+            return await _requestCachingService.GetRequestSummariesAsync(requestIds, true, cancellationToken);
         }
 
         private string GetJobCacheKey(int jobId)

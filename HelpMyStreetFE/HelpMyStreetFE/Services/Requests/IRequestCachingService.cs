@@ -9,7 +9,7 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestCachingService
     {
-        Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken);
+        Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, bool waitForData, CancellationToken cancellationToken);
         Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken);
         Task RefreshCacheAsync(int requestId, CancellationToken cancellationToken);
     }
