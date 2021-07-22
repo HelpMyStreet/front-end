@@ -17,7 +17,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         private const string CACHE_KEY_PREFIX = "request-caching-service";
 
-        public RequestCachingService(IRequestHelpRepository requestHelpRepository, IMemDistCache<RequestSummary> memDistCache_RequestSummary, IMemDistCache<JobSummary> memDistCache_JobSummary)
+        public RequestCachingService(IRequestHelpRepository requestHelpRepository, IMemDistCache<RequestSummary> memDistCache_RequestSummary)
         {
             _requestHelpRepository = requestHelpRepository;
             _memDistCache_RequestSummary = memDistCache_RequestSummary;
