@@ -11,6 +11,6 @@ namespace HelpMyStreetFE.Services.Requests
     {
         Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, bool waitForData, CancellationToken cancellationToken);
         Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken);
-        Task RefreshCacheAsync(int requestId, CancellationToken cancellationToken);
+        Task<RequestSummary> RefreshCacheAsync(int requestId, CancellationToken cancellationToken);
     }
 }
