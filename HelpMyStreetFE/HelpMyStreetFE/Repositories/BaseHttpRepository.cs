@@ -73,7 +73,7 @@ namespace HelpMyStreetFE.Repositories
             else
             {
                 Logger.LogError($"Request to {url} failed with code {resp.StatusCode}\n{resp}");
-                throw new HttpRequestException($"Request failed with code {resp.StatusCode}");
+                throw new HttpRequestException($"Request to {url} failed with code {resp.StatusCode}");
             }
         }
     }
