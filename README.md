@@ -35,4 +35,3 @@ The frontend uses Webpack to build static sources in to minified version and pla
 
 - [ ] Run `npm run build` when building the main project for release
 - [ ] Split CSS out of Webpack bundle and include as separate file
-
