@@ -44,7 +44,7 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpBuilder = requestHelpBuilder ?? throw new ArgumentNullException(nameof(requestHelpBuilder));
         }
 
-        public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, User user, CancellationToken cancellationToken)
+        public async Task<Fulfillable> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, User user, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Logging Request");
 
@@ -76,53 +76,59 @@ namespace HelpMyStreetFE.Services.Requests
                 questions = questions.Union(detailStage.Questions.Questions);
             }
 
-            var request = new PostNewRequestForHelpRequest
+            var request = new PostRequestForHelpRequest
             {
-                HelpRequest = new HelpRequest
+                HelpRequestDetails = new List<HelpRequestDetail>()
                 {
-                    Guid = requestStage.RequestGuid,
-                    AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
-                    ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
-                    OrganisationName = detailStage?.Organisation ?? "",
-                    RequestorType = detailStage?.Type ?? RequestorType.Organisation,
-                    ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
-                    CreatedByUserId = user?.ID ?? 0,
-                    Recipient = recipient,
-                    Requestor = requestor,
-                    ReferringGroupId = referringGroupID,
-                    Source = source
-                },
-                NewJobsRequest = new NewJobsRequest
-                {
-                    Jobs = new List<Job>
-                    {
-                        new Job
+                   new HelpRequestDetail()
+                   {
+                        HelpRequest = new HelpRequest
                         {
-                            DueDateType = selectedTime.DueDateType,
-                            StartDate = selectedTime.StartTime.ToUTCFromUKTime(),
-                            EndDate = selectedTime.EndTime.HasValue ? selectedTime.EndTime.Value.ToUTCFromUKTime() : (DateTime?)null,
-                            NotBeforeDate = selectedTime.NotBeforeTime.ToUTCFromUKTime(),
-                            RepeatFrequency = selectedFrequency.Frequency,
-                            NumberOfRepeats = numberOfOccurrences,
-                            HealthCritical = heathCritical,
-                            SupportActivity = selectedTask.SupportActivity,
-                            Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
-                                Id = x.ID,
-                                Answer = GetAnswerToQuestion(x),
-                                Name = x.Label,
-                                Required = x.Required,
-                                AddtitonalData = x.AdditionalData,
-                                Type  = x.InputType}).ToList()
+                            Guid = requestStage.RequestGuid,
+                            AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
+                            ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
+                            OrganisationName = detailStage?.Organisation ?? "",
+                            RequestorType = detailStage?.Type ?? RequestorType.Organisation,
+                            ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
+                            CreatedByUserId = user?.ID ?? 0,
+                            Recipient = recipient,
+                            Requestor = requestor,
+                            ReferringGroupId = referringGroupID,
+                            Source = source
+                        },
+                        NewJobsRequest = new NewJobsRequest
+                        {
+                            Jobs = new List<Job>
+                            {
+                                new Job
+                                {
+                                    DueDateType = selectedTime.DueDateType,
+                                    StartDate = selectedTime.StartTime.ToUTCFromUKTime(),
+                                    EndDate = selectedTime.EndTime.HasValue ? selectedTime.EndTime.Value.ToUTCFromUKTime() : (DateTime?)null,
+                                    NotBeforeDate = selectedTime.NotBeforeTime.ToUTCFromUKTime(),
+                                    RepeatFrequency = selectedFrequency.Frequency,
+                                    NumberOfRepeats = numberOfOccurrences,
+                                    HealthCritical = heathCritical,
+                                    SupportActivity = selectedTask.SupportActivity,
+                                    Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
+                                        Id = x.ID,
+                                        Answer = GetAnswerToQuestion(x),
+                                        Name = x.Label,
+                                        Required = x.Required,
+                                        AddtitonalData = x.AdditionalData,
+                                        Type  = x.InputType}).ToList()
+                                }
+                            }
                         }
-                    }
+                   }
                 }
             };
 
 
-            var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
+            var response = await _requestHelpRepository.PostRequestForHelpAsync(request);
             if (response != null)
             {
-                _ = _requestCachingService.RefreshCacheAsync(response.RequestID, cancellationToken);
+                _ = _requestCachingService.RefreshCacheForAllRequestIdsAsync(response.RequestIDs, cancellationToken);
                 _ = _requestListCachingService.RefreshGroupRequestsCacheAsync(referringGroupID, cancellationToken);
 
                 if (user != null)
@@ -131,7 +137,7 @@ namespace HelpMyStreetFE.Services.Requests
                 }
             }
 
-            return response;
+            return response.Fulfillable;
         }
 
         public async Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken)
