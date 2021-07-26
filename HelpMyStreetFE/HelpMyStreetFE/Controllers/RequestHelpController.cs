@@ -172,7 +172,7 @@ namespace HelpMyStreetFE.Controllers
                     }
                     else
                     {
-                        throw new Exception($"Bad response from PostNewRequestForHelpRequest: {response?.Fulfillable}");
+                        throw new Exception($"Bad response from PostRequestForHelpRequest: {response?.Fulfillable}");
                     }
                 }
             }

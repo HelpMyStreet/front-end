@@ -73,7 +73,56 @@ namespace HelpMyStreetFE.Services.Requests
                 questions = questions.Union(detailStage.Questions.Questions);
             }
 
-            var request = new PostNewRequestForHelpRequest
+            var request = new PostRequestForHelpRequest
+            {
+                HelpRequestDetails = new List<HelpRequestDetail>()
+                {
+                   new HelpRequestDetail()
+                   {
+                        HelpRequest = new HelpRequest
+                        {
+                            Guid = requestStage.RequestGuid,
+                            AcceptedTerms = requestStage.AgreeToPrivacyAndTerms,
+                            ConsentForContact = requestStage.AgreeToPrivacyAndTerms,
+                            OrganisationName = detailStage?.Organisation ?? "",
+                            RequestorType = detailStage?.Type ?? RequestorType.Organisation,
+                            ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
+                            CreatedByUserId = userId,
+                            Recipient = recipient,
+                            Requestor = requestor,
+                            ReferringGroupId = referringGroupID,
+                            Source = source
+                        },
+                        NewJobsRequest = new NewJobsRequest
+                        {
+                            Jobs = new List<Job>
+                            {
+                                new Job
+                                {
+                                    DueDateType = selectedTime.DueDateType,
+                                    StartDate = selectedTime.StartTime.ToUTCFromUKTime(),
+                                    EndDate = selectedTime.EndTime.HasValue ? selectedTime.EndTime.Value.ToUTCFromUKTime() : (DateTime?)null,
+                                    NotBeforeDate = selectedTime.NotBeforeTime.ToUTCFromUKTime(),
+                                    RepeatFrequency = selectedFrequency.Frequency,
+                                    NumberOfRepeats = numberOfOccurrences,
+                                    HealthCritical = heathCritical,
+                                    SupportActivity = selectedTask.SupportActivity,
+                                    Questions = questions.Where(x => x.InputType != QuestionType.LabelOnly).Select(x => new Question {
+                                        Id = x.ID,
+                                        Answer = GetAnswerToQuestion(x),
+                                        Name = x.Label,
+                                        Required = x.Required,
+                                        AddtitonalData = x.AdditionalData,
+                                        Type  = x.InputType}).ToList()
+                                }
+                            }
+                        }
+                   }
+                }
+            };
+
+            /*
+            var request2 = new PostNewRequestForHelpRequest
             {
                 HelpRequest = new HelpRequest
                 {
@@ -114,13 +163,13 @@ namespace HelpMyStreetFE.Services.Requests
                     }
                 }
             };
+            */
 
-
-            var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
+            var response = await _requestHelpRepository.PostRequestForHelpAsync(request);
             if (response != null && userId != 0)
             {
                 //_requestService.TriggerCacheRefresh(userId, cancellationToken);
-                _ = _requestCachingService.RefreshCacheAsync(response.RequestID, cancellationToken);
+                _ = _requestCachingService.RefreshCacheAsync(response., cancellationToken);
             }
 
             return response;
