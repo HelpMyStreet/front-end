@@ -25,8 +25,6 @@ namespace HelpMyStreetFE.Services.Requests
         Task<JobDetail> GetJobAndRequestSummaryAsync(int jobId, CancellationToken cancellationToken);
         Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken);
         OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<IEnumerable<JobSummary>> jobs);
-        Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken);
-        Task<JobLocation> LocateRequest(int requestId, int userId, CancellationToken cancellationToken);
 
         Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken);

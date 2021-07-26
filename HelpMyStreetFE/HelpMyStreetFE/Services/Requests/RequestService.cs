@@ -23,9 +23,7 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IRequestCachingService _requestCachingService;
         private readonly IJobCachingService _jobCachingService;
         private readonly IRequestHelpRepository _requestHelpRepository;
-        private readonly IGroupService _groupService;
         private readonly IUserService _userService;
-        private readonly IGroupMemberService _groupMemberService;
 
         private readonly IEqualityComparer<ShiftJob> _shiftJobDedupe_EqualityComparer;
         private readonly IEqualityComparer<JobSummary> _jobSummaryJobDedupe_EqualityComparer;
@@ -33,9 +31,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public RequestService(
             IRequestHelpRepository requestHelpRepository,
-            IGroupService groupService,
             IUserService userService,
-            IGroupMemberService groupMemberService,
             IRequestCachingService requestCachingService,
             IJobCachingService jobCachingService, 
             IRequestListCachingService requestListCachingService)
@@ -43,9 +39,7 @@ namespace HelpMyStreetFE.Services.Requests
             _requestCachingService = requestCachingService;
             _jobCachingService = jobCachingService;
             _requestHelpRepository = requestHelpRepository;
-            _groupService = groupService;
             _userService = userService;
-            _groupMemberService = groupMemberService;
             _shiftJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
             _jobSummaryJobDedupe_EqualityComparer = new JobBasicDedupe_EqualityComparer();
             _jobSummaryJobDedupeWithDate_EqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
@@ -185,97 +179,6 @@ namespace HelpMyStreetFE.Services.Requests
 
             return groupRequests;
         }
-
-        public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
-        {
-            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
-
-            if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
-            {
-                return new JobLocation
-                {
-                    JobSet = job.RequestType switch
-                    {
-                        RequestType.Task => JobSet.UserMyRequests,
-                        RequestType.Shift => JobSet.UserMyShifts,
-                        _ => throw new ArgumentException($"Unexpected RequestType: {job.RequestType}", nameof(job.RequestType)),
-                    }
-                };
-            }
-            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, false, cancellationToken))
-            {
-                return new JobLocation
-                {
-                    JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
-                    GroupKey = (await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken)).GroupKey,
-                };
-            }
-            else if (await _groupMemberService.GetUserHasRole(userId, job.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
-            {
-                var group = await _groupService.GetGroupById(job.ReferringGroupID, cancellationToken);
-                var parentGroup = await _groupService.GetGroupById(group.ParentGroupId.Value, cancellationToken);
-                return new JobLocation
-                {
-                    JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
-                    GroupKey = parentGroup.GroupKey,
-                };
-            }
-            else if (job.JobStatus == JobStatuses.Open)
-            {
-                return new JobLocation { JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
-            }
-
-            return null;
-        }
-
-        public async Task<JobLocation> LocateRequest(int requestId, int userId, CancellationToken cancellationToken)
-        {
-            var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
-
-            if (request.JobBasics.Count(j => j.VolunteerUserID == userId && j.JobStatus != JobStatuses.Open) > 0)
-            {
-                return new JobLocation
-                {
-                    JobSet = request.RequestType switch
-                    {
-                        RequestType.Task => JobSet.UserMyRequests,
-                        RequestType.Shift => JobSet.UserMyShifts,
-                        _ => throw new ArgumentException($"Unexpected RequestType: {request.RequestType}", nameof(request.RequestType)),
-                    }
-                };
-            }
-            else if (await _groupMemberService.GetUserHasRole(userId, request.ReferringGroupID, GroupRoles.TaskAdmin, false, cancellationToken))
-            {
-                return new JobLocation
-                {
-                    JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
-                    GroupKey = (await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken)).GroupKey,
-                };
-            }
-            else if (await _groupMemberService.GetUserHasRole(userId, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken))
-            {
-                var group = await _groupService.GetGroupById(request.ReferringGroupID, cancellationToken);
-                var parentGroup = await _groupService.GetGroupById(group.ParentGroupId.Value, cancellationToken);
-                return new JobLocation
-                {
-                    JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.GroupRequests : JobSet.GroupShifts),
-                    GroupKey = parentGroup.GroupKey,
-                };
-            }
-            else if (request.JobBasics.JobStatusDictionary().ContainsKey(JobStatuses.Open))
-            {
-                return new JobLocation { JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
-            }
-
-            return null;
-        }
-
-        //private async Task<IEnumerable<RequestSummary>> GetUserRequestsFromRepo(int userId, bool waitForData, CancellationToken cancellationToken)
-        //{
-        //    var userJobs = await GetJobsForUserAsync(userId, true, cancellationToken);
-        //    var requestIDs = userJobs.Select(j => j.RequestID).Distinct().ToList();
-        //    return await _requestCachingService.GetRequestSummariesAsync(requestIDs, waitForData, cancellationToken);
-        //}
 
         public async Task<IEnumerable<JobSummary>> FilterAndDedupeOpenJobsForUser(IEnumerable<JobSummary> allJobs, User user, CancellationToken cancellationToken)
         {

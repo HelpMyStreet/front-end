@@ -169,6 +169,7 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
+            services.AddSingleton<IRequestLocationService, RequestLocationService>();
             services.AddSingleton<IRequestCachingService, RequestCachingService>();
             services.AddSingleton<IRequestUpdatingService, RequestUpdatingService>();
             services.AddSingleton<IRequestListCachingService, RequestListCachingService>();
