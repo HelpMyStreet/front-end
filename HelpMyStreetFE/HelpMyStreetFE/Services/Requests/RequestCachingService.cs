@@ -125,5 +125,13 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return $"{CACHE_KEY_PREFIX}-request-{requestId}";
         }
+
+        public async Task RefreshCacheForAllRequestIdsAsync(List<int> requestIds, CancellationToken cancellationToken)
+        {
+            foreach(int requestId in requestIds)
+            {
+                await RefreshCacheAsync(requestId, cancellationToken);
+            }
+        }
     }
 }
