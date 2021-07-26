@@ -12,7 +12,7 @@
             <div class="popup__content__header">Where is the help needed?</div>
             <div class="text-left">
                 <p class="mb-sm">Help is needed in <strong>@Model.PostCode</strong>.</p>
-                <p class="mt-sm">This is @Model.Distance miles away from your registered address; for directions, click on the map icon below.</p>
+                <p class="mt-sm">This is @(Math.Round(Model.Distance.Value, 1)) miles away from your registered address. To view directions in Google Maps click the orange location pin on the map below.</p>
             </div>
             <div id="map-@Model.encodedJobID" style="width:100%; height:150px" class="location-map" data-lat="@Model.Coordinates.Latitude" data-lng="@Model.Coordinates.Longitude">
             </div>
