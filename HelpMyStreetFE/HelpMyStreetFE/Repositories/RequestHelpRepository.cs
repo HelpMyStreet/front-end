@@ -25,7 +25,7 @@ namespace HelpMyStreetFE.Repositories
 
 	
 
-		public async Task<PostRequestForHelpResponse> PostNewRequestForHelpAsync(PostRequestForHelpRequest request)
+		public async Task<PostRequestForHelpResponse> PostRequestForHelpAsync(PostRequestForHelpRequest request)
 		{
 			var response = await PostAsync<BaseRequestHelpResponse<PostRequestForHelpResponse>>("/api/PostRequestForHelp", request);
          
