@@ -19,6 +19,7 @@ namespace HelpMyStreetFE.Services.Requests
     public class RequestUpdatingService : IRequestUpdatingService
     {
         private readonly IRequestService _requestService;
+        private readonly IRequestListCachingService _requestListCachingService;
         private readonly IRequestCachingService _requestCachingService;
         private readonly IJobCachingService _jobCachingService;
         private readonly IRequestHelpRepository _requestHelpRepository;
@@ -27,21 +28,23 @@ namespace HelpMyStreetFE.Services.Requests
 
         public RequestUpdatingService(
             IRequestService requestService,
-            IRequestHelpRepository requestHelpRepository, 
-            ILogger<RequestService> logger, 
-            IRequestHelpBuilder requestHelpBuilder, 
-            IRequestCachingService requestCachingService, 
-            IJobCachingService jobCachingService)
+            IRequestListCachingService requestListCachingService,
+            IRequestCachingService requestCachingService,
+            IJobCachingService jobCachingService,
+            IRequestHelpRepository requestHelpRepository,
+            ILogger<RequestService> logger,
+            IRequestHelpBuilder requestHelpBuilder)
         {
-            _requestService = requestService;
-            _requestCachingService = requestCachingService;
-            _jobCachingService = jobCachingService;
-            _requestHelpRepository = requestHelpRepository;
-            _logger = logger;
-            _requestHelpBuilder = requestHelpBuilder;
+            _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _requestListCachingService = requestListCachingService ?? throw new ArgumentNullException(nameof(requestListCachingService));
+            _requestCachingService = requestCachingService ?? throw new ArgumentNullException(nameof(requestCachingService));
+            _jobCachingService = jobCachingService ?? throw new ArgumentNullException(nameof(jobCachingService));
+            _requestHelpRepository = requestHelpRepository ?? throw new ArgumentNullException(nameof(requestHelpRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _requestHelpBuilder = requestHelpBuilder ?? throw new ArgumentNullException(nameof(requestHelpBuilder));
         }
 
-        public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, int userId, CancellationToken cancellationToken)
+        public async Task<LogRequestResponse> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, User user, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Logging Request");
 
@@ -83,7 +86,7 @@ namespace HelpMyStreetFE.Services.Requests
                     OrganisationName = detailStage?.Organisation ?? "",
                     RequestorType = detailStage?.Type ?? RequestorType.Organisation,
                     ReadPrivacyNotice = requestStage.AgreeToPrivacyAndTerms,
-                    CreatedByUserId = userId,
+                    CreatedByUserId = user?.ID ?? 0,
                     Recipient = recipient,
                     Requestor = requestor,
                     ReferringGroupId = referringGroupID,
@@ -117,10 +120,15 @@ namespace HelpMyStreetFE.Services.Requests
 
 
             var response = await _requestHelpRepository.PostNewRequestForHelpAsync(request);
-            if (response != null && userId != 0)
+            if (response != null)
             {
-                //_requestService.TriggerCacheRefresh(userId, cancellationToken);
                 _ = _requestCachingService.RefreshCacheAsync(response.RequestID, cancellationToken);
+                _ = _requestListCachingService.RefreshGroupRequestsCacheAsync(referringGroupID, cancellationToken);
+
+                if (user != null)
+                {
+                    _ = _requestListCachingService.RefreshUserOpenJobsCacheAsync(user, cancellationToken);
+                }
             }
 
             return response;
@@ -137,8 +145,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
-                //_requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
-                await _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
+                _ = _requestCachingService.RefreshCacheAsync(requestId, cancellationToken);
             }
 
             return outcome;
@@ -159,8 +166,12 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (outcome == UpdateJobStatusOutcome.Success || outcome == UpdateJobStatusOutcome.AlreadyInThisStatus)
             {
-                //_requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
-                await _jobCachingService.RefreshCacheAsync(jobID, cancellationToken);
+                _ = _jobCachingService.RefreshCacheAsync(jobID, cancellationToken);
+
+                if (status == JobStatuses.Accepted || status == JobStatuses.InProgress)
+                {
+                    _ = _requestListCachingService.RefreshUserRequestsCacheAsync(volunteerUserId.Value, cancellationToken);
+                }
             }
 
             return outcome;
@@ -176,9 +187,6 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestType.Task => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobId, createdByUserId, volunteerUserId),
                 _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
             };
-
-            //_requestService.TriggerCacheRefresh(createdByUserId, cancellationToken);
-            await _jobCachingService.RefreshCacheAsync(jobId, cancellationToken);
 
             return outcome;
         }
