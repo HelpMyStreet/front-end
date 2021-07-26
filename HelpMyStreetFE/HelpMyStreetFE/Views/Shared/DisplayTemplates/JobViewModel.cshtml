@@ -137,7 +137,7 @@
                 </span>
             }
             <span class="job__info__activity__location">
-                @if (Model.UserHasRequiredCredentials)
+                @if (Model.UserHasRequiredCredentials && Model.CanViewAddressPopup)
                 {
                     <a href="#" class="view-location">@Model.ListLocalityDescription</a>
             }
