@@ -98,7 +98,7 @@ namespace HelpMyStreetFE.Services.Requests
         /// <param name="requestIds">Requests to fetch</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        private async Task<IEnumerable<RequestSummary>> RefreshCacheAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RequestSummary>> RefreshCacheAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
         {
             var requestSummaries = await _requestHelpRepository.GetRequestSummariesAsync(requestIds);
 
@@ -124,14 +124,6 @@ namespace HelpMyStreetFE.Services.Requests
         private string GetRequestCacheKey(int requestId)
         {
             return $"{CACHE_KEY_PREFIX}-request-{requestId}";
-        }
-
-        public async Task RefreshCacheForAllRequestIdsAsync(List<int> requestIds, CancellationToken cancellationToken)
-        {
-            foreach(int requestId in requestIds)
-            {
-                await RefreshCacheAsync(requestId, cancellationToken);
-            }
         }
     }
 }

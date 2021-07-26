@@ -128,7 +128,7 @@ namespace HelpMyStreetFE.Services.Requests
             var response = await _requestHelpRepository.PostRequestForHelpAsync(request);
             if (response != null)
             {
-                _ = _requestCachingService.RefreshCacheForAllRequestIdsAsync(response.RequestIDs, cancellationToken);
+                _ = _requestCachingService.RefreshCacheAsync(response.RequestIDs, cancellationToken);
                 _ = _requestListCachingService.RefreshGroupRequestsCacheAsync(referringGroupID, cancellationToken);
 
                 if (user != null)
