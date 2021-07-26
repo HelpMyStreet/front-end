@@ -127,5 +127,16 @@ namespace HelpMyStreetFE.UnitTests.Services
 
             _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-1", _cancellationToken), Times.Once);
         }
+
+        [Test]
+        public async Task RefreshCacheAsync_IEnumerable_WhenInvoked_RefreshesCache()
+        {
+            var ids = new List<int> { 7, 8, 9 };
+
+            await _classUnderTest.RefreshCacheAsync(ids, _cancellationToken);
+
+            _repo.Verify(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), _cancellationToken), Times.Exactly(3));
+        }
     }
 }
