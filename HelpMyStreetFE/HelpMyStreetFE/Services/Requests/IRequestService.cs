@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Services.Requests
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
 
-        Task<IEnumerable<IEnumerable<JobSummary>>> GetGroupedOpenJobsForUserFromRepo(User user, bool waitForData, CancellationToken cancellationToken);
+        Task<IEnumerable<IEnumerable<JobSummary>>> GetDedupedOpenJobsForUserFromRepo(User user, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<JobSummary>> FilterAndDedupeOpenJobsForUser(IEnumerable<JobSummary> allJobs, User user, CancellationToken cancellationToken);
 
         Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken);

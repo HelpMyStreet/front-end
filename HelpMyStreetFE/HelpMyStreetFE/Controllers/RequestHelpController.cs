@@ -159,7 +159,7 @@ namespace HelpMyStreetFE.Controllers
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
+                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user, cancellationToken);
                     if (response != null && response.Fulfillable.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new
