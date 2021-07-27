@@ -20,14 +20,21 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IGroupMemberService _groupMemberService;
         private readonly IAuthService _authService;
-        private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
+            private readonly IRequestCachingService _requestCachingService;
         private readonly IGroupService _groupService;
 
-        public JobStatusChangePopupViewComponent(IGroupMemberService groupMemberService, IAuthService authService, IRequestService requestService, IGroupService groupService)
+        public JobStatusChangePopupViewComponent(
+            IGroupMemberService groupMemberService,
+            IAuthService authService,
+            IRequestCachingService requestCachingService,
+            IJobCachingService jobCachingService,
+            IGroupService groupService)
         {
             _groupMemberService = groupMemberService;
             _authService = authService;
-            _requestService = requestService;
+            _jobCachingService = jobCachingService;
+            _requestCachingService = requestCachingService;
             _groupService = groupService;
         }
 
@@ -36,10 +43,10 @@ namespace HelpMyStreetFE.ViewComponents
             JobBasic job = null;
             if (jobId > 0)
             {
-                job = await _requestService.GetJobBasicAsync(jobId, cancellationToken);
+                job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
                 requestId = job.RequestID;
             }
-            var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+            var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
             bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);

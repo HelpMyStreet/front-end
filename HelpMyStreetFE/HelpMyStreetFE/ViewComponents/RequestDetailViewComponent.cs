@@ -20,11 +20,14 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
         private readonly IAddressService _addressService;
-        public RequestDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService)
+        private readonly IRequestCachingService _requestCachingService;
+
+        public RequestDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService, IRequestCachingService requestCachingService)
         {
             _requestService = requestService;
             _groupService = groupService;
             _addressService = addressService;
+            _requestCachingService = requestCachingService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int requestId, User user, JobSet jobSet, CancellationToken cancellationToken)
@@ -47,7 +50,7 @@ namespace HelpMyStreetFE.ViewComponents
             }
             else
             {
-                vm.RequestSummary = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+                vm.RequestSummary = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
             }
 
             vm.GroupSupportActivityInstructions = await _groupService.GetAllGroupSupportActivityInstructions(vm.RequestSummary.ReferringGroupID, vm.RequestSummary.JobBasics.Select(j => j.SupportActivity).Distinct(), cancellationToken);

@@ -159,12 +159,12 @@ namespace HelpMyStreetFE.Controllers
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
                     var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
-                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user?.ID ?? 0, cancellationToken);
-                    if (response != null && response.Fulfillable.Equals(Fulfillable.Accepted_ManualReferral))
+                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user, cancellationToken);
+                    if (response.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new
                         {
-                            fulfillable = response.Fulfillable,
+                            fulfillable = response,
                             requestHelpFormVariant = requestHelp.RequestHelpFormVariant,
                             referringGroup = Base64Utils.Base64Encode(requestHelp.ReferringGroupID),
                             source = requestHelp.Source
@@ -172,7 +172,7 @@ namespace HelpMyStreetFE.Controllers
                     }
                     else
                     {
-                        throw new Exception($"Bad response from PostNewRequestForHelpRequest: {response?.Fulfillable}");
+                        throw new Exception($"Bad response from PostRequestForHelpRequest: {response}");
                     }
                 }
             }
@@ -220,7 +220,7 @@ namespace HelpMyStreetFE.Controllers
                 return await ChildGroupSelector(referringGroupId, cancellationToken);
             }
 
-            var model = _requestService.GetRequestHelpSteps(requestHelpJourney, referringGroupId, source);
+            var model = _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupId, source);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;

@@ -19,14 +19,21 @@ namespace HelpMyStreetFE.ViewComponents
     public class JobDetailViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
         private readonly IGroupService _groupService;
         private readonly IAddressService _addressService;
         private readonly IGroupMemberService _groupMemberService;
         private IEqualityComparer<JobBasic> _jobBasicEqualityComparer;
 
-        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService, IGroupMemberService groupMemberService)
+        public JobDetailViewComponent(
+            IRequestService requestService,
+            IJobCachingService jobCachingService,
+            IGroupService groupService,
+            IAddressService addressService,
+            IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
+            _jobCachingService = jobCachingService;
             _groupService = groupService;
             _addressService = addressService;
             _groupMemberService = groupMemberService;

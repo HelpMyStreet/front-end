@@ -113,7 +113,14 @@ namespace HelpMyStreetFE.Services.Groups
 
         public async Task<List<GroupCredential>> GetGroupCredentials(int groupId)
         {
-            return await _groupRepository.GetGroupCredentials(groupId);
+            var groupCredentials = await _groupRepository.GetGroupCredentials(groupId);
+
+            if (groupCredentials == null)
+            {
+                throw new Exception($"Unable to get group credentials for group {groupId}");
+            }
+
+            return groupCredentials;
         }
 
         public async Task<GroupCredential> GetGroupCredential(int groupId, int credentialId)
