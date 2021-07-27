@@ -303,5 +303,17 @@ namespace HelpMyStreetFE.Repositories
             }
             return null;
         }
+
+        public async Task<Dictionary<int, int>> GetRequestIDs(IEnumerable<int> jobIDs)
+        {
+            var request = new GetRequestIDsRequest { JobIDs = jobIDs.ToList() };
+            var response = await PostAsync<BaseRequestHelpResponse<GetRequestIDsResponse>>($"/api/GetRequestIDs", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.JobIDsToRequestIDs;
+            }
+            return null;
+        }
     }
 }
