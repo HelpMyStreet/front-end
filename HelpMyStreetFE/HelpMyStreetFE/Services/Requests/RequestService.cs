@@ -63,57 +63,64 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
             var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
-            if (userRequests != null)
+            if (userRequestIDs != null)
             {
-                var userJobs = userRequests.SelectMany(r => r.JobSummaries).Where(j => j.VolunteerUserID.Equals(userId));
+                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
+
+                var userJobs = userRequests?.SelectMany(r => r.JobSummaries).Where(j => j.VolunteerUserID.Equals(userId));
                 return userJobs;
             }
-            throw new Exception($"Unable to get jobs for user {userId}");
+            return null;
         }
 
         // My Requests tab
         public async Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
             var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
-            if (userRequests != null)
+            if (userRequestIDs != null)
             {
+                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
+
                 // Check all request still include a job allocated to the user, and filter out shifts
-                var userTaskRequests = userRequests.Where(r => r.RequestType.Equals(RequestType.Task) && r.JobBasics.Exists(j => j.VolunteerUserID.Equals(userId)));
+                var userTaskRequests = userRequests?.Where(r => r.RequestType.Equals(RequestType.Task) && r.JobBasics.Exists(j => j.VolunteerUserID.Equals(userId)));
                 return userTaskRequests;
             }
-            throw new Exception($"Unable to get requests for user {userId}");
+            return null;
         }
 
         public async Task<IEnumerable<ShiftJob>> GetOpenShiftsForUserAsync(User user, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
             var openJobIDs = await _requestListCachingService.GetUserOpenJobsAsync(user, waitForData, cancellationToken);
-            var openJobs = await _jobCachingService.GetShiftJobsAsync(openJobIDs, cancellationToken);
 
-            // Check jobs are all still open
-            var stillOpenJobs = openJobs.Where(j => j.JobStatus.Equals(JobStatuses.Open));
+            if (openJobIDs != null)
+            {
+                var openJobs = await _jobCachingService.GetShiftJobsAsync(openJobIDs, cancellationToken);
 
-            // Exclude duplicates of jobs the user has accepted
-            var userJobs = await GetShiftsForUserAsync(user.ID, null, null, true, cancellationToken);
-            var notMyJobs = stillOpenJobs.Where(j => !userJobs.Contains(j, _shiftJobDedupe_EqualityComparer));
+                // Check jobs are all still open
+                var stillOpenJobs = openJobs?.Where(j => j.JobStatus.Equals(JobStatuses.Open));
 
-            return notMyJobs;
+                // Exclude duplicates of jobs the user has accepted
+                var userJobs = await GetShiftsForUserAsync(user.ID, null, null, true, cancellationToken);
+                var notMyJobs = stillOpenJobs?.Where(j => !userJobs.Contains(j, _shiftJobDedupe_EqualityComparer));
+
+                return notMyJobs;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<ShiftJob>> GetShiftsForUserAsync(int userId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
             var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
-            if (userRequests != null)
+            if (userRequestIDs != null)
             {
-                var userJobs = userRequests.SelectMany(r => r.ShiftJobs).Where(j => j.VolunteerUserID.Equals(userId));
+                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
+                var userJobs = userRequests?.SelectMany(r => r.ShiftJobs).Where(j => j.VolunteerUserID.Equals(userId));
                 return userJobs;
             }
-            throw new Exception($"Unable to get shifts for user {userId}");
+            return null;
         }
 
         public async Task<GetRequestDetailsResponse> GetRequestDetailAsync(int requestId, int userId, CancellationToken cancellationToken)
@@ -173,8 +180,15 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<IEnumerable<RequestSummary>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
             var groupRequestIDs = await _requestListCachingService.GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
+
+            if (groupRequestIDs == null)
+            {
+                if (waitForData) throw new Exception($"Unable to get list of group requests for group {groupId}");
+                return null;
+            }
+
             var groupRequests = await GetAllGroupRequestsAsync(groupId, waitForData, cancellationToken);
-            var groupTaskRequests = groupRequests.Where(r => r.RequestType.Equals(RequestType.Task));
+            var groupTaskRequests = groupRequests?.Where(r => r.RequestType.Equals(RequestType.Task));
 
             return groupTaskRequests;
         }
@@ -182,13 +196,22 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<IEnumerable<RequestSummary>> GetAllGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
             var groupRequestIDs = await _requestListCachingService.GetGroupRequestsAsync(groupId, waitForData, cancellationToken);
-            var groupRequests = await _requestCachingService.GetRequestSummariesAsync(groupRequestIDs, waitForData, cancellationToken);
 
-            return groupRequests;
+            if (groupRequestIDs != null)
+            {
+                var groupRequests = await _requestCachingService.GetRequestSummariesAsync(groupRequestIDs, waitForData, cancellationToken);
+                return groupRequests;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<JobSummary>> FilterAndDedupeOpenJobsForUser(IEnumerable<JobSummary> allJobs, User user, CancellationToken cancellationToken)
         {
+            if (allJobs == null)
+            {
+                return null;
+            }
+
             var dedupedJobs = allJobs.Distinct(_jobSummaryJobDedupeWithDate_EqualityComparer);
             var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
             var notMyJobs = dedupedJobs.Where(s => !userJobs.Contains(s, _jobSummaryJobDedupeWithDate_EqualityComparer));
@@ -199,33 +222,39 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<IEnumerable<IEnumerable<JobSummary>>> GetDedupedOpenJobsForUserFromRepo(User user, bool waitForData, CancellationToken cancellationToken)
         {
             var openJobIDs = await _requestListCachingService.GetUserOpenJobsAsync(user, waitForData, cancellationToken);
-            var openJobs = await _jobCachingService.GetJobSummariesAsync(openJobIDs, cancellationToken);
 
-            // Check jobs are all still open
-            var stillOpenJobs = openJobs.Where(j => j.JobStatus.Equals(JobStatuses.Open));
+            if (openJobIDs != null)
+            {
+                var openJobs = await _jobCachingService.GetJobSummariesAsync(openJobIDs, cancellationToken);
 
-            // Exclude duplicates of jobs the user has accepted
-            var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
-            var notMyJobs = stillOpenJobs.Where(j => !userJobs.Contains(j, _jobSummaryJobDedupeWithDate_EqualityComparer));
+                // Check jobs are all still open
+                var stillOpenJobs = openJobs?.Where(j => j.JobStatus.Equals(JobStatuses.Open));
 
-            var groupedJobs = notMyJobs.GroupBy(j => j, _jobSummaryJobDedupe_EqualityComparer).Select(g => g.AsEnumerable());
+                // Exclude duplicates of jobs the user has accepted
+                var userJobs = await GetJobsForUserAsync(user.ID, true, cancellationToken);
+                var notMyJobs = stillOpenJobs?.Where(j => !userJobs.Contains(j, _jobSummaryJobDedupeWithDate_EqualityComparer));
 
-            return groupedJobs;
+                var groupedJobs = notMyJobs?.GroupBy(j => j, _jobSummaryJobDedupe_EqualityComparer).Select(g => g.AsEnumerable());
+
+                return groupedJobs;
+            }
+            return null;
         }
 
         public async Task<IEnumerable<RequestSummary>> GetGroupShiftRequestsAsync(int groupId, DateTime? dateFrom, DateTime? dateTo, bool waitForData, CancellationToken cancellationToken)
         {
             var groupRequests = await GetAllGroupRequestsAsync(groupId, waitForData, cancellationToken);
-            var groupShiftRequests = groupRequests.Where(r => r.RequestType.Equals(RequestType.Shift));
+
+            var groupShiftRequests = groupRequests?.Where(r => r.RequestType.Equals(RequestType.Shift));
 
             if (dateFrom != null)
             {
-                groupShiftRequests = groupShiftRequests.Where(r => r.Shift.EndDate >= dateFrom);
+                groupShiftRequests = groupShiftRequests?.Where(r => r.Shift.EndDate >= dateFrom);
             }
 
             if (dateTo != null)
             {
-                groupShiftRequests = groupShiftRequests.Where(r => r.Shift.StartDate <= dateTo);
+                groupShiftRequests = groupShiftRequests?.Where(r => r.Shift.StartDate <= dateTo);
             }
 
             return groupShiftRequests;
@@ -281,14 +310,15 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<IEnumerable<JobBasic>> GetUserCompletedJobs(int userId, bool waitForData, CancellationToken cancellationToken)
         {
             var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
-            var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
 
-            if (userRequests != null)
+            if (userRequestIDs != null)
             {
-                var userJobs = userRequests.SelectMany(r => r.JobBasics).Where(j => j.VolunteerUserID.Equals(userId));
+                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
+
+                var userJobs = userRequests?.SelectMany(r => r.JobBasics).Where(j => j.VolunteerUserID.Equals(userId));
                 return userJobs;
             }
-            throw new Exception($"Unable to get completed jobs for user {userId}");
+            return null;
         }
     }
 }

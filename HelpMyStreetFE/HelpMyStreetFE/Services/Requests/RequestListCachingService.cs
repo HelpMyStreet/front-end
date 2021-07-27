@@ -36,33 +36,51 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<int>> GetGroupRequestsAsync(int groupId, bool waitForData, CancellationToken cancellationToken)
         {
-            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            var result = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetGroupRequestsFromRepo(groupId, cancellationToken);
+                return await GetGroupRequestsFromRepo(groupId);
             }, GetGroupRequestsCacheKey(groupId), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
+
+            if (result == default && waitForData)
+            {
+                throw new Exception($"Unable to get group requests for group {groupId}");
+            }
+            return result;
         }
 
         public async Task<IEnumerable<int>> GetUserOpenJobsAsync(User user, bool waitForData, CancellationToken cancellationToken)
         {
-            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            var result = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetUserOpenJobsFromRepo(user, cancellationToken);
+                return await GetUserOpenJobsFromRepo(user);
             }, GetUserOpenJobsCacheKey(user.ID), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
+
+            if (result == default && waitForData)
+            {
+                throw new Exception($"Unable to get user open jobs for user {user.ID}");
+            }
+            return result;
         }
 
         public async Task<IEnumerable<int>> GetUserRequestsAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
-            return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            var result = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
-                return await GetUserRequestsFromRepo(userId, cancellationToken);
+                return await GetUserRequestsFromRepo(userId);
             }, GetUserRequestsCacheKey(userId), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
+
+            if (result == default && waitForData)
+            {
+                throw new Exception($"Unable to get user requests for user {userId}");
+            }
+            return result;
         }
 
         public async Task RefreshGroupRequestsCacheAsync(int groupId, CancellationToken cancellationToken)
         {
             await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
             {
-                return await GetGroupRequestsFromRepo(groupId, cancellationToken);
+                return await GetGroupRequestsFromRepo(groupId);
             }, GetGroupRequestsCacheKey(groupId), cancellationToken);
         }
 
@@ -70,7 +88,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
             {
-                return await GetUserOpenJobsFromRepo(user, cancellationToken);
+                return await GetUserOpenJobsFromRepo(user);
             }, GetUserOpenJobsCacheKey(user.ID), cancellationToken);
         }
 
@@ -79,12 +97,12 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
                 {
-                    return await GetUserRequestsFromRepo(userId, cancellationToken);
+                    return await GetUserRequestsFromRepo(userId);
                 }, GetUserRequestsCacheKey(userId), cancellationToken);
             }
         }
 
-        private async Task<IEnumerable<int>> GetGroupRequestsFromRepo(int groupId, CancellationToken cancellationToken)
+        private async Task<IEnumerable<int>> GetGroupRequestsFromRepo(int groupId)
         {
             var requests = await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest()
             {
@@ -94,7 +112,7 @@ namespace HelpMyStreetFE.Services.Requests
             return requests.Select(r => r.RequestID);
         }
 
-        private async Task<IEnumerable<int>> GetUserOpenJobsFromRepo(User user, CancellationToken cancellationToken)
+        private async Task<IEnumerable<int>> GetUserOpenJobsFromRepo(User user)
         {
             if (user.PostalCode == null)
             {
@@ -114,7 +132,7 @@ namespace HelpMyStreetFE.Services.Requests
             return jobIDs;
         }
 
-        private async Task<IEnumerable<int>> GetUserRequestsFromRepo(int userId, CancellationToken cancellationToken)
+        private async Task<IEnumerable<int>> GetUserRequestsFromRepo(int userId)
         {
             var request = new GetAllJobsByFilterRequest { AllocatedToUserId = userId };
             var jobs = await _requestHelpRepository.GetAllJobsByFilterAsync(request);
