@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Services.Requests
         private readonly IRequestHelpRepository _requestHelpRepository;
         private readonly IRequestCachingService _requestCachingService;
 
-        private readonly IMemDistCache<int> _memDistCache_int;
+        private readonly IMemDistCache<int> _memDistCache_RequestIdLookup;
 
         private const string CACHE_KEY_PREFIX = "job-caching-service";
 
@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpRepository = requestHelpRepository;
             _requestCachingService = requestCachingService;
 
-            _memDistCache_int = memDistCache_int;
+            _memDistCache_RequestIdLookup = memDistCache_int;
         }
 
         public async Task<IEnumerable<JobSummary>> GetJobSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
@@ -89,20 +89,66 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<int> GetRequestId(int jobId, CancellationToken cancellationToken)
         {
-            return await _memDistCache_int.GetCachedDataAsync(async (cancellationToken) =>
+            var requestId = await GetRequestId(jobId, RefreshBehaviour.DontWaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
+
+            if (requestId == default)
+            {
+                throw new Exception($"Failed to get RequestId for job {jobId}");
+            }
+
+            return requestId;
+        }
+
+        private async Task<int> GetRequestId(int jobId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
+        {
+            return await _memDistCache_RequestIdLookup.GetCachedDataAsync(async (cancellationToken) =>
             {
                 var jobSummary = await _requestHelpRepository.GetJobSummaryAsync(jobId);
                 return jobSummary.RequestID;
-            }, GetJobCacheKey(jobId), RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+            }, GetJobCacheKey(jobId), refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
         private async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
         {
-            //TODO: Check in cache with (RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.DontGetData), then fetch remainder from new Request Service endpoint
+            var requestIds = new List<int>();
+            var missingJobIds = new List<int>();
 
-            var requestIds = jobIds.Select(async (j) => await GetRequestId(j, cancellationToken)).Select(t => t.Result);
+            foreach (int jobId in jobIds)
+            {
+                var requestId = await GetRequestId(jobId, RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.DontGetData, cancellationToken);
+
+                if (requestId == default)
+                {
+                    missingJobIds.Add(jobId);
+                }
+                else
+                {
+                    requestIds.Add(requestId);
+                }
+            }
+
+            if (missingJobIds.Count > 0)
+            {
+                var missingRequestIdDictionary = await RefreshRequestIdLookupCacheAsync(missingJobIds, cancellationToken);
+                requestIds.AddRange(missingRequestIdDictionary.Select(a => a.Value));
+            }
 
             return await _requestCachingService.GetRequestSummariesAsync(requestIds, true, cancellationToken);
+        }
+
+        private async Task<Dictionary<int, int>> RefreshRequestIdLookupCacheAsync(IEnumerable<int> jobIds, CancellationToken cancellationToken)
+        {
+            var missingIds = await _requestHelpRepository.GetRequestIDs(jobIds);
+
+            foreach (var item in missingIds)
+            {
+                _ = _memDistCache_RequestIdLookup.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return item.Value;
+                }, GetJobCacheKey(item.Key), cancellationToken);
+            }
+
+            return missingIds;
         }
 
         private string GetJobCacheKey(int jobId)
