@@ -9,6 +9,7 @@ namespace HelpMyStreetFE.Repositories
 {
     public interface IRequestHelpRepository
     {
+        Task<Dictionary<int, int>> GetRequestIDs(IEnumerable<int> jobIDs);
         Task<PostRequestForHelpResponse> PostRequestForHelpAsync(PostRequestForHelpRequest request);
         Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> RequestIDs);
         Task<RequestSummary> GetRequestSummaryAsync(int requestId);
