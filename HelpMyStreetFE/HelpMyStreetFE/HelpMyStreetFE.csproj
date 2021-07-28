@@ -77,7 +77,6 @@
     <Folder Include="wwwroot\pdf\mansfield-cvs\" />
     <Folder Include="wwwroot\img\community\southwell\carousel\" />
     <Folder Include="Views\Shared\Components\ViewLocationPopup\" />
-    <Folder Include="wwwroot\img\community\ageUK\midmersey\" />
     <Folder Include="wwwroot\img\community\ageUK\midmersey\carousel1\" />
   </ItemGroup>
 </Project>
