@@ -10,8 +10,15 @@
             @foreach (Testimonial testimonial in Model.Testimonials)
             {
                 <div class="card-feedback mr-sm ml-sm mb-sm">
-                    <div class="card-feedback-inner">
+                    <div class="card-feedback-inner">                        
+                        @if (!string.IsNullOrEmpty(testimonial.Tagline))
+                        {
                         <h3>&ldquo;@testimonial.Tagline&bdquo;</h3>
+                        }
+                        else
+                        {
+                            <h3></h3>
+                        }
                         <p>@testimonial.Message</p>
                         <p class="person">@testimonial.Person</p>
                     </div>
