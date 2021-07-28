@@ -29,5 +29,6 @@ namespace HelpMyStreetFE.Repositories
         Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
+        Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request);
     }
 }

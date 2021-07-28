@@ -192,6 +192,8 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<Instructions>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<LocationDetails>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<LocationDetails>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<LocationWithDistance>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<double>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<LocationWithDistance>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMinute));
 
             services.AddControllers();
@@ -329,12 +331,6 @@ namespace HelpMyStreetFE
                     name: "Ruddington",
                     pattern: "ruddington",
                     defaults: new { controller = "Community", action = "Index", groupKey = "ruddington" });
-
-
-                endpoints.MapControllerRoute(
-                    name: "healthylondonpartnership",
-                    pattern: "healthylondonpartnership",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "hlp" });
 
                 endpoints.MapControllerRoute(
                     name: "ageuklsl",
