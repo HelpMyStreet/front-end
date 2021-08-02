@@ -42,7 +42,7 @@ export function validateFormData(form, validation) {
         if (result < minimumGroupValidations)
         {
           otherGroupMembers.forEach(field => {
-            $(field).closest(".input").find('.error').text(`Please complete at least ${minimumGroupValidations} field${minimumGroupValidations > 1 ? "s" : ""} using ${validator($(field).val())}`).show();
+            $(field).closest(".input").find('.error').text(`Please complete at least ${minimumGroupValidations} field${minimumGroupValidations > 1 ? "s" : ""} using ${validator($(field).val()).split("Please enter ").pop()}`).show();
           });
           acc = false;
         }
@@ -50,7 +50,7 @@ export function validateFormData(form, validation) {
       const valid = validator(value, obj);
       if (valid !== true) {
         acc = false;
-        errDisplay.text(`Please enter ${valid}`).show();
+        errDisplay.text(`${valid}`).show();
       }
     }
     }

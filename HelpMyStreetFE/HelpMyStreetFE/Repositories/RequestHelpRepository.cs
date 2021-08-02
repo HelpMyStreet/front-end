@@ -36,6 +36,17 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<LogRequestEventResponse>>("/api/LogRequestEvent", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            return null;
+        }
+
         public async Task<JobSummary> GetJobSummaryAsync(int jobId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
