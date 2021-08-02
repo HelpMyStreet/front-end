@@ -122,9 +122,12 @@
                 {
                     @Model.Location.LocationDetails.Name
                 }
-                else
+                else if (Model.CanViewAddressPopup)
                 {
-                    @Model.Item.PostCode
+                <a href="#" class="view-location">@Model.Item.PostCode</a>
+                } else
+                {
+                    @Model.ListLocalityDescription
                 }
             </span>
             @if (Model.Item.Shift != null)

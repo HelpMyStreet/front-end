@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.ViewComponents
             _jobCachingService = jobCachingService ?? throw new ArgumentNullException(nameof(jobCachingService));
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int jobId, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(int? jobId, int? requestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
@@ -40,8 +40,8 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var jobSummary = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
-            var canView = await _requestService.LogViewLocationEvent(user.ID, jobSummary.RequestID, jobId);
+            var jobSummary = jobId.HasValue ? await _jobCachingService.GetJobSummaryAsync(jobId.Value, cancellationToken) : (await _requestService.GetRequestDetailAsync(requestId.Value, user.ID, cancellationToken)).RequestSummary.JobSummaries.First(); ;
+            var canView = await _requestService.LogViewLocationEvent(user.ID, jobSummary.RequestID, jobSummary.JobID);
 
             ViewLocationViewModel viewLocationViewModel;
 
@@ -58,7 +58,7 @@ namespace HelpMyStreetFE.ViewComponents
                     Coordinates = postCodeCoordinates,
                     Distance = distanceInMiles,
                     PostCode = jobSummary.PostCode,
-                    encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
+                    encodedJobID = Base64Utils.Base64Encode(jobId.HasValue ? jobId.Value : requestId.Value)
                 };
             } else
             {

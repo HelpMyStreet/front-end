@@ -181,12 +181,15 @@ async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.v
 
 export function showViewLocationPopup(job) {
     const jobId = job.attr("id");
-    let popupSource = `/api/request-help/get-view-location-popup?j=${jobId}`
+    const requestId = job.attr("request-id")
+    let popupSource = `/api/request-help/get-view-location-popup?j=${jobId}&r=${requestId}`
     showServerSidePopup(popupSource).then(async () => {
         await mapsAreGo;
         if (mapsAreGo)
             {
-                createMap($("#location-popup"), jobId, defaultMarkerIcons.task);
+                var thisId = jobId != "" ? jobId : requestId;
+                console.log(thisId);
+                createMap($("#location-popup"), thisId, defaultMarkerIcons.task);
             }
         });
     
