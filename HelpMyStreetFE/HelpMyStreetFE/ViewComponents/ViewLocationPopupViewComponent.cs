@@ -18,17 +18,20 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IAddressService _addressService;
         private readonly IJobCachingService _jobCachingService;
+        private readonly IRequestCachingService _requestCachingService;
 
         public ViewLocationPopupViewComponent(
             IAuthService authService,
             IRequestService requestService,
             IAddressService addressService,
+            IRequestCachingService requestCachingService,
             IJobCachingService jobCachingService)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
             _addressService = addressService ?? throw new ArgumentNullException(nameof(addressService));
             _jobCachingService = jobCachingService ?? throw new ArgumentNullException(nameof(jobCachingService));
+            _requestCachingService = requestCachingService ?? throw new ArgumentNullException(nameof(requestCachingService));
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int? jobId, int? requestId, CancellationToken cancellationToken)
@@ -40,7 +43,8 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var jobSummary = jobId.HasValue ? await _jobCachingService.GetJobSummaryAsync(jobId.Value, cancellationToken) : (await _requestService.GetRequestDetailAsync(requestId.Value, user.ID, cancellationToken)).RequestSummary.JobSummaries.First(); ;
+            var jobSummary = jobId.HasValue ? (await _jobCachingService.GetJobSummaryAsync(jobId.Value, cancellationToken)) : (await _requestCachingService.GetRequestSummaryAsync(requestId.Value, cancellationToken)).JobSummaries.First();
+            var postCode = jobSummary.PostCode;
             var canView = await _requestService.LogViewLocationEvent(user.ID, jobSummary.RequestID, jobSummary.JobID);
 
             ViewLocationViewModel viewLocationViewModel;
@@ -48,16 +52,16 @@ namespace HelpMyStreetFE.ViewComponents
             if (canView)
             {
 
-                var postCodeCoordinates = (await _addressService.GetPostcodeCoordinates(jobSummary.PostCode)).First();
+                var postCodeCoordinates = (await _addressService.GetPostcodeCoordinates(postCode)).First();
 
-                var distanceInMiles = await _addressService.GetDistanceBetweenPostcodes(jobSummary.PostCode, user.PostalCode, cancellationToken);
+                var distanceInMiles = await _addressService.GetDistanceBetweenPostcodes(postCode, user.PostalCode, cancellationToken);
 
                 viewLocationViewModel = new ViewLocationViewModel()
                 {
                     IsAllowed = canView,
                     Coordinates = postCodeCoordinates,
                     Distance = distanceInMiles,
-                    PostCode = jobSummary.PostCode,
+                    PostCode = postCode,
                     encodedJobID = Base64Utils.Base64Encode(jobId.HasValue ? jobId.Value : requestId.Value)
                 };
             } else
@@ -68,7 +72,7 @@ namespace HelpMyStreetFE.ViewComponents
                     Coordinates = null,
                     Distance = null,
                     PostCode = null,
-                    encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
+                    encodedJobID = Base64Utils.Base64Encode(jobId.HasValue ? jobId.Value : requestId.Value)
                 };
             }
 

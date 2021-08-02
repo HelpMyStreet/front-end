@@ -188,7 +188,6 @@ export function showViewLocationPopup(job) {
         if (mapsAreGo)
             {
                 var thisId = jobId != "" ? jobId : requestId;
-                console.log(thisId);
                 createMap($("#location-popup"), thisId, defaultMarkerIcons.task);
             }
         });
