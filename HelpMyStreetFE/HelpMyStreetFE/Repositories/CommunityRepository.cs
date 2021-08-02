@@ -31,7 +31,6 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Ruddington => GetRuddington(),
                 Groups.AgeUKLSL => GetAgeUKLSL(),
                 Groups.AgeUKWirral => GetAgeUKWirral(),
-                Groups.HLP => GetHLP(),
                 Groups.FTLOS => GetFtLOS(),
                 Groups.AgeUKNottsBalderton => GetBalderton(),
                 Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
@@ -546,51 +545,6 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/ageUK/kent/northwest/kirsty-groves.jpg"
                 }
             };
-            return communityViewModel;
-        }
-
-        private CommunityViewModel GetHLP()
-        {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("hlp", "HLP");
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
-            {
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Volunteer Name",
-                    Role = "Role",
-                    Location = "Location",
-                    ImageLocation = "/img/icons/anonymous-user.png"
-                },
-            };
-
             return communityViewModel;
         }
 

@@ -3,7 +3,7 @@ import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
-import { enableMaps, drawMap } from "../shared/maps";
+import { enableMaps, drawMap, defaultMarkers, defaultMarkerIcons } from "../shared/maps";
 
 let mapsAreGo;
 
@@ -21,7 +21,7 @@ export async function initialiseRequests() {
         loadJobDetails(job).then(async () => {
             var canMap = await mapsAreGo;
             if (canMap){
-                createMap(job);
+                createMap(job, job.attr("id"));
             }
         });
     });
@@ -37,6 +37,12 @@ export async function initialiseRequests() {
         e.preventDefault();
         $(this).toggleClass('open');
         $(this).next().slideToggle();
+        
+    });
+
+    $('.job-list').on('click', '.job a.view-location', function (e) {
+        e.preventDefault();
+        showViewLocationPopup($(this).closest('.job'));
         
     });
 
@@ -139,44 +145,51 @@ export async function initialiseRequests() {
     
 }
 
-async function createMap(job){
-    if ($(`#map-${job.attr("id")}`).length != 0){
-        var linkResponse = await hmsFetch('/account/get-directions-link?j=' + job.attr("id"))
+async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.vaccination){
+    if ($(`#map-${jobId}`).length != 0){
+        var linkResponse = await hmsFetch('/account/get-directions-link?j=' + jobId)
         var marker;
-
-        if (linkResponse.fetchResponse == fetchResponses.SUCCESS){
-            var link = await linkResponse.fetchPayload;
-            marker = {
-                clickable: true,
-                position: {lat: Number(job.find(".location-map").data("lat")), lng: Number(job.find(".location-map").data("lng"))},
-                title: "Click for directions",
-                origin: new google.maps.Point(0, 35),
-                icon: {
-                    url: "/img/logos/markers/vaccination-marker.svg",
-                    scaledSize: new google.maps.Size(50, 70),
-                },
-                
-                clickListener: () => {window.open(link , "_blank")}
-            }
-        } else {
+        if (linkResponse.fetchResponse == fetchResponses.SUCCESS) {
+        var link = await linkResponse.fetchPayload;
+        marker = {clickable: true,
+            position: {lat: Number(parentElement.find(".location-map").data("lat")), lng: Number(parentElement.find(".location-map").data("lng"))},
+            title: "Click for directions",
+            origin: new google.maps.Point(0, 35),
+            icon: {url: markerIcon.url, scaledSize: new google.maps.Size(markerIcon.scaledSize.x, markerIcon.scaledSize.y)},
+            clickListener: () => {window.open(link , "_blank")}
+        }}
+        else {
             marker = true;
         }
-        
+
         var thisMap = {
                     displayVolunteers: false,
                     displayGroups: false,
                     allowNavigation: false,
                     allowSearch: false,
                     consoleCoordinates: false,
-                    initialLat: Number(job.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
-                    initialLng: Number(job.find(".location-map").data("lng")),
+                    initialLat: Number(parentElement.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
+                    initialLng: Number(parentElement.find(".location-map").data("lng")),
                     initialZoom: 14,
-                    divID: "map-" + job.attr("id"),
+                    divID: "map-" + jobId,
                     singlePin: marker
                 };
 
         drawMap(thisMap);
     }
+}
+
+export function showViewLocationPopup(job) {
+    const jobId = job.attr("id");
+    let popupSource = `/api/request-help/get-view-location-popup?j=${jobId}`
+    showServerSidePopup(popupSource).then(async () => {
+        await mapsAreGo;
+        if (mapsAreGo)
+            {
+                createMap($("#location-popup"), jobId, defaultMarkerIcons.task);
+            }
+        });
+    
 }
 
 export function showStatusUpdatePopup(btn) {
