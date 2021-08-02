@@ -206,11 +206,11 @@ namespace HelpMyStreetFE.Controllers
         {
             int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
-            var locationPostcode = "";
+            string locationPostcode;
 
-            if (shiftDetails.JobSummary.RequestType == RequestType.Task)
+            if (shiftDetails.RequestType == RequestType.Task)
             {
-                locationPostcode = WebUtility.UrlEncode(shiftDetails.JobSummary.PostCode);
+                locationPostcode = WebUtility.UrlEncode(shiftDetails.PostCode);
             }
             else
             {
