@@ -315,6 +315,18 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<int> GetRequestId(int jobId)
+        {
+            var d = await GetRequestIDs(new List<int> { jobId });
+
+            if (d == null || d.Count == 0)
+            {
+                throw new Exception($"Could not find RequestId for jobid {jobId}");
+            }
+
+            return d.First().Value;
+        }
+
         public async Task<Dictionary<int, int>> GetRequestIDs(IEnumerable<int> jobIDs)
         {
             var request = new GetRequestIDsRequest { JobIDs = jobIDs.ToList() };
