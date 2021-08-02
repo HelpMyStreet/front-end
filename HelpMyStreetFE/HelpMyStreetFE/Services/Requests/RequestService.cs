@@ -11,6 +11,7 @@ using HelpMyStreet.Utils.Extensions;
 using System.Threading;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.EqualityComparers;
+using HelpMyStreet.Contracts.RequestService.Request;
 
 namespace HelpMyStreetFE.Services.Requests
 {
