@@ -9,6 +9,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +21,15 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IGroupService _groupService;
+        private readonly IFilterService _filterService;
 
-        public AccountNavBadgeViewComponent(IRequestService requestService, IGroupMemberService groupMemberService, IGroupService groupService)
+        public AccountNavBadgeViewComponent(IRequestService requestService, IFilterService filterService, IGroupMemberService groupMemberService, IGroupService groupService)
         {
             _requestService = requestService;
             _groupMemberService = groupMemberService;
             _groupService = groupService;
+            _filterService = filterService;
+
         }
 
         public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, string cssClass, CancellationToken cancellationToken)
@@ -60,6 +64,9 @@ namespace HelpMyStreetFE.ViewComponents
                 }
             }
 
+            //this is the same filter request defined in _OpenRequests.cshtml - I'm not sure it actually does anything!
+            var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
+
             try
             {
                 int? count = menuPage switch
@@ -71,7 +78,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
-                        => (_requestService.SplitOpenJobs(user, await _requestService.GetOpenJobsAsync(user, true, cancellationToken))?.CriteriaJobs).Count(),
+                        => _filterService.SortAndFilterJobs(await _requestService.GetOpenJobsAsync(user, true, cancellationToken), filterRequest).Count(),
                     MenuPage.OpenShifts
                         => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
