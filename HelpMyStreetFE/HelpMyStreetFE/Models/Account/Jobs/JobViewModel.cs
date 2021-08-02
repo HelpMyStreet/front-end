@@ -38,6 +38,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         {
             return Item switch
             {
+                IEnumerable<JobDetail> jss when jss.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => true,
                 JobSummary js when js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => true,
                 ShiftJob sj => true,
                 RequestSummary rs => true,
