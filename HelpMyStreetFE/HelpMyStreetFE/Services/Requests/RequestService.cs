@@ -43,6 +43,31 @@ namespace HelpMyStreetFE.Services.Requests
             _requestListCachingService = requestListCachingService;
         }
 
+        public async Task<bool> LogViewLocationEvent(int userId, int requestId, int jobId)
+        {
+            var logRequest = new LogRequestEventRequest()
+            {
+                JobID = jobId,
+                RequestID = requestId,
+                UserID = userId,
+                RequestEventRequest = new RequestEventRequest()
+                {
+                    RequestEvent = RequestEvent.ShowFullPostCode
+                }
+            };
+
+            var result = await _requestHelpRepository.LogEventRequest(logRequest);
+
+            if (result != null)
+            {
+                return result.Success;
+            }
+            else
+            {
+                throw new Exception("Error when logging new event.");
+            }
+        }
+
 
         public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<IEnumerable<JobSummary>> jobs)
         {
@@ -150,6 +175,8 @@ namespace HelpMyStreetFE.Services.Requests
                 };
             }
         }
+
+
 
         public async Task<JobDetail> GetJobDetailsAsync(int jobId, int userId, bool adminView, CancellationToken cancellationToken)
         {

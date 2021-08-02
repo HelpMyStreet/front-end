@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public LocationWithDistance Location { get; set; }
         public int? JobListGroupId { get; set; }
         public string ListLocalityDescription { get => GetLocalityInformation(); }
+        public bool CanViewAddressPopup { get => GetPopupVisibility(); }
 
         private string GetLocalityInformation()
         {
@@ -30,6 +31,17 @@ namespace HelpMyStreetFE.Models.Account.Jobs
                 ShiftJob sj => $"{Location.LocationDetails.Name}",
                 RequestSummary rs => rs.PostCode,
                 _ => "",
+            };
+        }
+
+        private bool GetPopupVisibility()
+        {
+            return Item switch
+            {
+                JobSummary js when js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => true,
+                ShiftJob sj => true,
+                RequestSummary rs => true,
+                _ => false,
             };
         }
     }

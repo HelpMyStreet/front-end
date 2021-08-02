@@ -17,7 +17,8 @@
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Views\Shared\Components\Feedback\**" />
-    <Content Remove="appsettings.Development.json" />
+    <Content Remove="wwwroot\img\community\ageconnectscardiff\banner.png" />
+    <None Remove="Views\Shared\Components\ViewLocationPopup\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,5 +74,6 @@
     <Folder Include="wwwroot\img\community\vacc\mansfield-cvs\" />
     <Folder Include="wwwroot\pdf\mansfield-cvs\" />
     <Folder Include="wwwroot\img\community\southwell\carousel\" />
+    <Folder Include="Views\Shared\Components\ViewLocationPopup\" />
   </ItemGroup>
 </Project>

@@ -93,5 +93,43 @@ namespace HelpMyStreetFE.Repositories
             }
             throw new System.Exception($"Bad response from GetLocations");
         }
+
+        public async Task<GetPostcodeCoordinatesResponse> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest)
+        {
+            string json = JsonConvert.SerializeObject(getPostcodeCoordinatesRequest);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetPostcodeCoordinates", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var objResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>>(str);
+
+            if (objResponse.HasContent && objResponse.IsSuccessful)
+            {
+                return objResponse.Content;
+
+            }
+            throw new System.Exception("Unable to fetch postcode coordinate response");
+        }
+
+        public async Task<GetDistanceBetweenPostcodesResponse> GetDistanceBetweenPostcodes(string postCode1, string postCode2)
+        {
+            var request = new GetDistanceBetweenPostcodesRequest
+            {
+                Postcode1 = postCode1,
+                Postcode2 = postCode2
+            };
+
+            string json = JsonConvert.SerializeObject(request);
+            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await Client.PostAsync("/api/GetDistanceBetweenPostcodes", data);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<GetDistanceBetweenPostcodesResponse, AddressServiceErrorCode>>(str);
+
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content;
+            }
+
+            throw new System.Exception($"Unable to get distance between {postCode1} & {postCode2}");
+        }
     }
 }
