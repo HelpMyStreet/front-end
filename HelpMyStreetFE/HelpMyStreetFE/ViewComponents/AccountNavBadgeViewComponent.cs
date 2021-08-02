@@ -66,12 +66,10 @@ namespace HelpMyStreetFE.ViewComponents
                 groupId = group.GroupId;
             }
 
-            //this is the same filter request defined in _OpenRequests.cshtml - I'm not sure it actually does anything!
             var filterSet = await _filterService.GetDefaultSortAndFilterSet(JobSet.UserOpenRequests_NotMatchingCriteria, groupId, new List<JobStatuses> { JobStatuses.Open }, user, cancellationToken);
             var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
             filterRequest.UpdateFromFilterSet(filterSet);
-            var test = _filterService.SortAndFilterJobs(await _requestService.GetOpenJobsAsync(user, true, cancellationToken), filterRequest).Count();
-
+            
             try
             {
                 int? count = menuPage switch
