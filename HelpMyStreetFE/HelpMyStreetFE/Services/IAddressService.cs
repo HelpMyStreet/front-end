@@ -16,10 +16,10 @@ namespace HelpMyStreetFE.Services
     {
         Task<GetPostCodeResponse> CheckPostCode(string postCode);
         Task<GetPostCodeCoverageResponse> GetPostcodeCoverage(string postcode);
-        Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest);
-        Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode);
         Task<IEnumerable<LocationWithDistance>> GetLocationDetailsForUser(User user, CancellationToken cancellationToken);
         Task<IEnumerable<LocationDetails>> GetLocationDetailsForGroup(int groupId, bool includeChildGroups, CancellationToken cancellationToken);
         Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken);
+        Task<double> GetDistanceBetweenPostcodes(string postCode1, string postCode2, CancellationToken cancellationToken);
+        Task<List<PostcodeCoordinate>> GetPostcodeCoordinates(string postcode);
     }
 }

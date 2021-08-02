@@ -42,10 +42,25 @@ namespace HelpMyStreetFE.Helpers
         {
             return jobStatus switch
             {
-                JobStatuses.Open => "Vacant",
+                JobStatuses.Open => "Open",
                 JobStatuses.Accepted => $"Accepted by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.InProgress => $"In Progress with {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.Done => $"Completed by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                _ => jobStatus.FriendlyName()
+            };
+        }
+
+        public static string SlotJobStatusWithYouOrAnother(this JobStatuses jobStatus, bool userAllocatedToTask)
+        {
+            return (jobStatus, userAllocatedToTask) switch
+            {
+                (JobStatuses.Open, _) => "Open",
+                (JobStatuses.Accepted, true) => $"Accepted",
+                (JobStatuses.Accepted, false) => $"Accepted by another volunteeer",
+                (JobStatuses.InProgress, true) => $"In progress",
+                (JobStatuses.InProgress, false) => $"Accepted by another volunteeer",
+                (JobStatuses.Done, true) => $"Completed",
+                (JobStatuses.Done, false) => $"Completed by another volunteer",
                 _ => jobStatus.FriendlyName()
             };
         }

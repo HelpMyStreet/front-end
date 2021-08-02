@@ -55,8 +55,6 @@ namespace HelpMyStreetFE
             services.AddControllersWithViews();
             services.Configure<YotiOptions>(Configuration.GetSection("Yoti"));
             services.Configure<EmailConfig>(Configuration.GetSection("EmailConfig"));
-            services.Configure<RequestSettings>(Configuration.GetSection("RequestSettings"));
-
 
             PollyHttpPolicies pollyHttpPolicies = new PollyHttpPolicies(new PollyHttpPoliciesConfig());
 
@@ -171,6 +169,11 @@ namespace HelpMyStreetFE
             services.AddSession();
 
             services.AddSingleton<IRequestService, RequestService>();
+            services.AddSingleton<IRequestLocationService, RequestLocationService>();
+            services.AddSingleton<IRequestCachingService, RequestCachingService>();
+            services.AddSingleton<IRequestUpdatingService, RequestUpdatingService>();
+            services.AddSingleton<IRequestListCachingService, RequestListCachingService>();
+            services.AddSingleton<IJobCachingService, JobCachingService>();
             services.AddSingleton<IGroupService, GroupService>();
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
@@ -181,9 +184,8 @@ namespace HelpMyStreetFE
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
             services.AddMemCache();
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<JobSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<ShiftJob>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<RequestSummary>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<int>>>().GetCache(new TimeSpan(2, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<RequestSummary>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<int>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<User>>().GetCache(new TimeSpan(2, 0, 0), ResetTimeFactory.OnHour));
@@ -195,6 +197,8 @@ namespace HelpMyStreetFE
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<LocationDetails>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<LocationDetails>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<LocationWithDistance>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<double>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMidday));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<LocationWithDistance>>>().GetCache(new TimeSpan(30, 0, 0, 0), ResetTimeFactory.OnMinute));
 
             services.AddControllers();
             services.AddRazorPages()
@@ -331,12 +335,6 @@ namespace HelpMyStreetFE
                     name: "Ruddington",
                     pattern: "ruddington",
                     defaults: new { controller = "Community", action = "Index", groupKey = "ruddington" });
-
-
-                endpoints.MapControllerRoute(
-                    name: "healthylondonpartnership",
-                    pattern: "healthylondonpartnership",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "hlp" });
 
                 endpoints.MapControllerRoute(
                     name: "ageuklsl",

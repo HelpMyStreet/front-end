@@ -98,24 +98,34 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
         {
             RequestHelpRequestStageViewModel model = JsonConvert.DeserializeObject<RequestHelpRequestStageViewModel>(bindingContext.ValueProvider.GetValue("RequestStep").FirstValue);
 
-            int selectedTaskId, selectedRequestorId, selectedTimeId = -1;
+            int selectedTimeId = -1;
+            int selectedOccurrences = -1;
 
-            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask.Id").FirstValue, out selectedTaskId);
-            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor.Id").FirstValue, out selectedRequestorId);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTask").FirstValue, out SupportActivities selectedTask);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedRequestor").FirstValue, out RequestorType selectedRequestor);
+            Enum.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedFrequency").FirstValue, out Frequency selectedFrequency);
             int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Id").FirstValue, out selectedTimeId);
+            int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.Occurrences").FirstValue, out selectedOccurrences);
 
             model.Requestors.ForEach(x => x.IsSelected = false);
-            var requestor = model.Requestors.Where(x => x.ID == selectedRequestorId).FirstOrDefault();
+            var requestor = model.Requestors.Where(x => x.Type == selectedRequestor).FirstOrDefault();
             if (requestor != null)
             {
                 requestor.IsSelected = true;
             }
 
             model.Tasks.ForEach(x => x.IsSelected = false);
-            var task = model.Tasks.Where(x => (int)x.SupportActivity == selectedTaskId).FirstOrDefault();
+            var task = model.Tasks.Where(x => x.SupportActivity == selectedTask).FirstOrDefault();
             if (task != null)
             {
                 task.IsSelected = true;
+            }
+
+            model.Frequencies.ForEach(x => x.IsSelected = false);
+            var frequency = model.Frequencies.Where(x => x.Frequency == selectedFrequency).FirstOrDefault();
+            if (frequency != null)
+            {
+                frequency.IsSelected = true;
             }
 
             model.Timeframes.ForEach(x => x.IsSelected = false);
@@ -123,29 +133,25 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
             if (time != null)
             {
                 time.IsSelected = true;
-                if (time.AllowCustom)
-                {
-                    int selectedDays = -1;
-                    int.TryParse(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.CustomDays").FirstValue, out selectedDays);
-                    time.Days = selectedDays;
-                }
                 if (time.DueDateType.HasDate())
                 {
                     DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime date);
-                    time.Date = date;
+                    time.StartTime = date;
                     if (time.DueDateType.HasStartTime())
                     {
-                        time.StartTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
+                        time.StartTime = ParseTime(date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.StartTime").ToString());
                     }
                     if (time.DueDateType.HasEndTime())
                     {
-                        time.EndTime = ParseTime(time.Date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
-                        if (time.StartTime >= time.EndTime)
-                        {
-                            time.EndTime = time.EndTime.AddDays(1);
-                        }
+                        var endDate = ParseTime(date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
+                        time.EndTime = time.StartTime < endDate ? endDate : endDate.AddDays(1);
                     }
                 }
+            }
+
+            if (selectedOccurrences > 0)
+            {
+                model.Occurrences = selectedOccurrences;
             }
 
             model.Questions = new QuestionsViewModel() { Questions = await _requestHelpBuilder.GetQuestionsForTask(requestHelpFormVariant, RequestHelpFormStage.Request, task.SupportActivity, groupId) };

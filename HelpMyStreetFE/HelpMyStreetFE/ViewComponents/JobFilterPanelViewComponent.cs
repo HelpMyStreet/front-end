@@ -14,14 +14,19 @@ namespace HelpMyStreetFE.ViewComponents
     public class JobFilterPanelViewComponent : ViewComponent
     {
         private readonly IFilterService _filterService;
-        private readonly IRequestService _requestService;
+        private readonly IRequestCachingService _requestCachingService;
+        private readonly IJobCachingService _jobCachingService;
         private readonly IAuthService _authService;
 
-        public JobFilterPanelViewComponent(IFilterService filterService, IAuthService authService, IRequestService requestService)
+        public JobFilterPanelViewComponent(IFilterService filterService,
+            IAuthService authService,
+            IRequestCachingService requestCachingService,
+            IJobCachingService jobCachingService)
         {
             _filterService = filterService;
-            _requestService = requestService;
             _authService = authService;
+            _requestCachingService = requestCachingService;
+            _jobCachingService = jobCachingService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterViewModel jobFilterViewModel, CancellationToken cancellationToken)
@@ -35,7 +40,7 @@ namespace HelpMyStreetFE.ViewComponents
                 if (jobFilterViewModel.JobFilterRequest.HighlightJobId.HasValue)
                 {
                     int jobId = jobFilterViewModel.JobFilterRequest.HighlightJobId.Value;
-                    var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                    var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
                     if (job != null)
                     {
                         jobStatuses.Add(job.JobStatus);
@@ -45,10 +50,10 @@ namespace HelpMyStreetFE.ViewComponents
                 if (jobFilterViewModel.JobFilterRequest.HighlightRequestId.HasValue)
                 {
                     int requestId = jobFilterViewModel.JobFilterRequest.HighlightRequestId.Value;
-                    var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
+                    var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
                     if (request != null)
                     {
-                        jobStatuses = request.JobStatusDictionary().Keys.ToList();
+                        jobStatuses = request.JobBasics.JobStatusDictionary().Keys.ToList();
                     }
                 }
 

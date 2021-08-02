@@ -23,41 +23,41 @@ var validateForm = function (validateRecipientAsRequestor) {
 
         buttonLoad($("#btnNext"));
         const valid = validateQuestions() && validateFormData($(this), {
-            "currentStep.Recipient.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
-            "currentStep.Recipient.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
-            "currentStep.Recipient.MobileNumber": (v) => v != "" || "a phone number",
+            "currentStep.Recipient.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "Please enter a name with at least 2 letters and no numbers",
+            "currentStep.Recipient.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "Please enter a name with at least 2 letters and no numbers",
+            "currentStep.Recipient.MobileNumber": (v) => v != "" || "Please enter a phone number",
             "currentStep.Recipient.Email": (v) => {
               if (validateRecipientAsRequestor && !validateEmail(v) || (v !== "" && !validateEmail(v))) {
-                    return "Please enter a valid email address";
+                    return "a valid email address";
                 }
                 return true;
             },
             "currentStep.Recipient.Town": (v) => {
                 if (v.length <= 2) {
                     $('.expander').slideDown();
-                    return "Please enter a valid town / city";
+                    return "a valid town / city";
                 }
                 return true;
             },
             "currentStep.Recipient.AddressLine1": (v) => {
                 if (v.length <= 2) {
                     $('.expander').slideDown();
-                    return "Please enter a valid first line of your address";
+                    return "a valid first line of your address";
                 }
                 return true;
             },
             "currentStep.Recipient.Postcode": (v) => {
                 if (v == "") {
                     $('.expander').slideDown();
-                    return "Please enter a postcode";
+                    return "a postcode";
                 }
                 return true;
             },                                            
-            "currentStep.Requestor.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
-            "currentStep.Requestor.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "a name with at least 2 letters and no numbers",
-            "currentStep.Requestor.MobileNumber": (v) => v !== "" || "a mobile number or an alternative phone number",
-            "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "a valid email address",
-            "currentStep.Requestor.Postcode": (v) => (v != "") || "a postcode",
+            "currentStep.Requestor.Firstname": (v) => v.length >= 2 && !hasNumber(v) || "Please enter a name with at least 2 letters and no numbers",
+            "currentStep.Requestor.Lastname": (v) => v.length >= 2 && !hasNumber(v) || "Please enter a name with at least 2 letters and no numbers",
+            "currentStep.Requestor.MobileNumber": (v) => v !== "" || "Please enter a mobile number or an alternative phone number",
+            "currentStep.Requestor.Email": (v) => (validateEmail(v)) ||  "Please enter a valid email address",
+            "currentStep.Requestor.Postcode": (v) => (v != "") || "Please enter a postcode",
           
         });   
         

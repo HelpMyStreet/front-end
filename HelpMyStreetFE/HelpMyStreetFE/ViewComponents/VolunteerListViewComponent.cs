@@ -45,7 +45,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             var group = await _groupService.GetGroupById(groupId, cancellationToken);
             var groupMembers = await _groupMemberService.GetAllGroupMembers(groupId, user.ID);
-            var groupCompletedJobs = (await _requestService.GetGroupRequestsAsync(groupId, true, cancellationToken))
+            var groupCompletedJobs = (await _requestService.GetAllGroupRequestsAsync(groupId, true, cancellationToken))
                     .SelectMany(r => r.JobBasics).Where(j => j.JobStatus.Equals(JobStatuses.Done));
             var groupCredentials = await _groupService.GetGroupCredentials(groupId);
 

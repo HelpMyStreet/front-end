@@ -33,7 +33,6 @@
     border: 1px solid $gray-8;
     border-radius: 5px;
     transition: margin 0.5s;
-    margin: 10px 0;
     padding: 6px;
     overflow: hidden;
 
@@ -46,7 +45,6 @@
     }
 
     &__info {
-        min-height: 100px;
         display: grid;
         grid-template-columns: 1fr;
 
@@ -63,7 +61,6 @@
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            padding-top: 0.25rem;
             color: $dark-blue;
             text-align: center;
 
@@ -271,6 +268,9 @@
 
             @media (min-width: $med-screen) {
                 flex-direction: column;
+                align-items: flex-end;
+                margin-top: 1rem;
+                margin-right: 1rem;
 
                 &__criticality {
                     display: block;
@@ -291,8 +291,15 @@
             justify-content: center;
             width: 100%;
 
+            .feedback-container {
+                display: contents;
+            }
+
             @media (min-width: $sm-screen) {
                 flex-direction: row;
+            }
+
+            @media (min-width: $sm-med-screen) {
                 width: auto;
 
                 .btn {
@@ -323,13 +330,14 @@
             a {
                 span {
                     display: inline-block;
-                    margin-left: 3px;
+                    margin-right: 16px;
                 }
 
                 &.open {
                     span {
                         @include arrow( 8px, 3px, $dark-blue, down, $white);
                         height: 10px;
+                        margin-left: 8px;
                     }
                 }
 
@@ -339,7 +347,8 @@
                     span {
                         @include arrow( 8px, 3px, $dark-blue, up, $white);
                         height: 10px;
-                        margin: 0 0 3px 12px;
+                        margin-bottom: 3px;
+                        margin-left: 17px;
                     }
                 }
             }
@@ -461,7 +470,9 @@
 
 
     &__detail {
-        display: none;
+        &:not(.start-open) {
+            display: none;
+        }
 
         h4 {
             color: $dark-blue;
@@ -486,7 +497,8 @@
             padding-right: 0.5rem;
         }
 
-        &.add-line:after,
+        .add-line:after,
+        .add-line-before:before,
         &:before {
             content: " ";
             position: relative;
@@ -516,11 +528,19 @@
                 margin-right: 0.5rem;
             }
 
-            span:last-child {
+            &:not(.no-click) {
+                > span:last-child {
+                    @include arrow( 8px, 3px, $dark-blue, down, $white);
+                    float: right;
+                    margin-top: 10px;
+                }
 
-                @include arrow( 8px, 3px, $dark-blue, down, $white);
-                float: right;
-                margin-top: 10px;
+                &.open {
+                    > span:last-child {
+                        @include arrow( 8px, 3px, $dark-blue, up, $white);
+                        float: right;
+                    }
+                }
             }
 
             &:hover {
@@ -529,13 +549,6 @@
 
             &.no-click:hover {
                 cursor: auto;
-            }
-
-            &.open {
-                span:last-child {
-                    @include arrow( 8px, 3px, $dark-blue, up, $white);
-                    float: right;
-                }
             }
         }
 
@@ -688,6 +701,10 @@
             }
         }
     }
+
+    p {
+        font-size: inherit;
+    }
 }
 
 @mixin circleHover {
@@ -752,3 +769,148 @@
 }
 
 
+.request-job {
+    &__content > .row {
+        flex-direction: column;
+
+        .job__info__actions {
+            flex-direction: row;
+        }
+    }
+
+    @media (min-width: $xl-screen) {
+        .request-job__content > .row {
+            flex-direction: row-reverse;
+        }
+    }
+
+    &__list {
+        &[show="user-jobs"] {
+            .request-job__list__items {
+                .job[data-user-allocated-to-job="False"] {
+                    display: none;
+                }
+            }
+
+            .request-job__list__summary {
+                .request-job__list__toggle[show="user-jobs"] {
+                    display: none;
+                }
+            }
+        }
+
+        &[show="all-jobs"] {
+            .request-job__list__summary {
+                .request-job__list__toggle[show="all-jobs"] {
+                    display: none;
+                }
+            }
+        }
+
+        &__summary {
+            margin-left: 1rem;
+
+            a {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+
+                > * {
+                    margin: 0 0.25rem;
+                }
+
+                .status-icon {
+                    width: 1.7rem;
+                    max-height: 1.7rem;
+                }
+
+                span {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+
+.mini-job-detail {
+    > h4 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .job__info__actions {
+            flex-grow: 1;
+
+            .btn {
+                border-radius: 12px;
+                height: 2.4rem;
+            }
+        }
+
+        > :last-child {
+            align-self: flex-end;
+        }
+    }
+
+    @media (min-width: $med-screen) {
+        > h4 {
+            .job__info__actions {
+                flex-direction: row-reverse;
+                justify-content: end;
+                margin-right: 0.5rem;
+
+                .btn {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+
+                .feedback-container {
+                    .submitted {
+                        width: auto;
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.job.my-requests-view {
+    .job__info__col3__urgency {
+        display: none;
+    }
+
+    @media (min-width: $med-screen) {
+        .job__info__col1__urgency {
+            display: none;
+        }
+
+        .job__info__col3__urgency {
+            display: block;
+            white-space: nowrap;
+        }
+    }
+}
+
+.accept-series-popup-stage-2 {
+    .job > .row {
+        > * {
+            padding: 0.25em;
+
+            button {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: $med-screen) {
+            > * {
+                padding: 0 0.25rem;
+            }
+
+            align-items: center;
+        }
+    }
+}

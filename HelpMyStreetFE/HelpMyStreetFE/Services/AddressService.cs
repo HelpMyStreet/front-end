@@ -22,19 +22,21 @@ using HelpMyStreetFE.Models.Email;
 using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.Services
 {
     public class AddressService : BaseHttpService, IAddressService
     {
-        private readonly IOptions<RequestSettings> _requestSettings;
         private readonly ILogger<AddressService> _logger;
         private readonly IAddressRepository _addressRepository;
         private readonly IMemDistCache<LocationDetails> _memDistCache;
         private readonly IMemDistCache<IEnumerable<LocationDetails>> _memDistCache_LocationDetailsList;
         private readonly IMemDistCache<IEnumerable<LocationWithDistance>> _memDistCache_LocationDistanceList;
+        private readonly IMemDistCache<double> _memDistCache_PostcodeDistances;
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IGroupMemberService _groupMemberService;
 
         private const string CACHE_KEY_PREFIX = "address-service-";
 
@@ -43,21 +45,23 @@ namespace HelpMyStreetFE.Services
             IConfiguration configuration,
             IAddressRepository addressRepository,
             IUserRepository userRepository,
-            IOptions<RequestSettings> requestSettings,
             IMemDistCache<LocationDetails> memDistCache,
             IMemDistCache<IEnumerable<LocationDetails>> memDistCache_LocationDetailsList,
             IMemDistCache<IEnumerable<LocationWithDistance>> memDistCache_LocationDistanceList,
+            IMemDistCache<double> memDistCache_PostcodeDistances,
             IGroupRepository groupRepository,
+            IGroupMemberService groupMemberService,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _addressRepository = addressRepository;
             _userRepository = userRepository;
             _groupRepository = groupRepository;
-            _requestSettings = requestSettings;
+            _groupMemberService = groupMemberService;
             _memDistCache = memDistCache;
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
+            _memDistCache_PostcodeDistances = memDistCache_PostcodeDistances;
         }
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
@@ -102,20 +106,30 @@ namespace HelpMyStreetFE.Services
             {
                 return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {
 
-                var locationsWithDistance = await _addressRepository.GetLocationsByDistance(_requestSettings.Value.ShiftRadius, user.PostalCode);
-                if (locationsWithDistance.Count() == 0)
-                {
-                    return new List<LocationWithDistance>();
-                }
-                var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+                    var userLocations = await _groupRepository.GetUserLocations(user.ID);    
+                    var locationsWithDistance = await _addressRepository.GetLocationsByDistance(2000, user.PostalCode);
+                    if (locationsWithDistance.Count() == 0)
+                    {
+                        return new List<LocationWithDistance>();
+                    }
+                    if(userLocations!=null)
+                    {
+                        locationsWithDistance = locationsWithDistance.Where(x => userLocations.Contains(x.Location)).ToList();
+                        if (locationsWithDistance.Count() == 0)
+                        {
+                            return new List<LocationWithDistance>();
+                        }
+                    }
 
-                return locationsWithDistance.Select(l => new LocationWithDistance
-                {
-                    Location = l.Location,
-                    Distance = l.DistanceFromPostCode,
-                    LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
-                });
-                }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+                    var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
+
+                    return locationsWithDistance.Select(l => new LocationWithDistance
+                    {
+                        Location = l.Location,
+                        Distance = l.DistanceFromPostCode,
+                        LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
+                    });
+                    }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
             }
             else
             {
@@ -139,25 +153,36 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-location-{(int)location}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinates(GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest)
-        {
-            string json = JsonConvert.SerializeObject(getPostcodeCoordinatesRequest);
-            StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await Client.PostAsync("/api/GetPostcodeCoordinates", data);
-            string str = await response.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>>(str);
-        }
 
-        public async Task<ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode>> GetPostcodeCoordinate(string postcode)
+
+        public async Task<List<PostcodeCoordinate>> GetPostcodeCoordinates(string postcode)
         {
             postcode = PostcodeFormatter.FormatPostcode(postcode);
+
             GetPostcodeCoordinatesRequest getPostcodeCoordinatesRequest = new GetPostcodeCoordinatesRequest()
             {
                 Postcodes = new List<string>() { postcode }
             };
-            ResponseWrapper<GetPostcodeCoordinatesResponse, AddressServiceErrorCode> getPostcodeCoordinatesResponse = await GetPostcodeCoordinates(getPostcodeCoordinatesRequest);
 
-            return getPostcodeCoordinatesResponse;
+            var response = await _addressRepository.GetPostcodeCoordinates(getPostcodeCoordinatesRequest);
+            return response.PostcodeCoordinates.ToList();
+        }
+
+        public async Task<double> GetDistanceBetweenPostcodes(string postCode1, string postCode2, CancellationToken cancellationToken)
+        {
+
+            return await _memDistCache_PostcodeDistances.GetCachedDataAsync(async (cancellationToken) =>
+            {
+                var response = await _addressRepository.GetDistanceBetweenPostcodes(postCode1, postCode2);
+                if (response != null)
+                {
+                    return response.DistanceInMiles;
+                }
+                else
+                {
+                    throw new HttpRequestException("Unable to fetch location details");
+                }
+            }, $"{CACHE_KEY_PREFIX}-postcode-distances-{postCode1}-{postCode2}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
     }
 }

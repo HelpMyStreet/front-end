@@ -1,7 +1,7 @@
 ﻿@model HelpMyStreetFE.Models.PopupButtonModel
 
 <div class="popup__content__buttons__button">
-    <button id="popup-accept" class="btn cta wide fill ">
+    <button id="popup-accept" class="btn cta wide fill @Model.CssClass">
         <span class="text">@Model.ButtonText</span>
         <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Submitting..."}' /></div>
     </button>

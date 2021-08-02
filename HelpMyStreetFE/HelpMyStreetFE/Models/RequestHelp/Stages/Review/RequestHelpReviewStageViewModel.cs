@@ -14,7 +14,9 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
         public RecipientDetails Recipient  { get; set; }
         public RequestorDetails Requestor { get; set; }
         public string OrganisationName { get; set; }
+        public FrequencyViewModel FrequencyRequested { get; set; }
         public RequestHelpTimeViewModel TimeRequested { get; set; }
+        public int? OccurrencesRequested { get; set; }
         public List<RequestHelpQuestion> RequestStageQuestions { get; set; }
         public List<RequestHelpQuestion> DetailsStageQuestions { get; set; }
         public bool ShowRequestor { get; set; }
@@ -24,15 +26,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Review
             get
             {
                 if (TimeRequested == null) return "";
-                if (TimeRequested.AllowCustom)
-                {
-                    if (TimeRequested.Days == 1) return $"Within {TimeRequested.Days} Day";
-                    return $"Within {TimeRequested.Days} Days";
-                }
-                else
-                {
-                    return TimeRequested.TimeDescription;
-                }
+                return TimeRequested.Description;
             }
         }
         public string FriendlyName { get; set; } = "Review";

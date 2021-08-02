@@ -43,9 +43,12 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<int> GetCount(User user, MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
+            int groupId = 0;
+
             if (menuPage == MenuPage.GroupRequests || menuPage == MenuPage.GroupShifts)
             {
                 var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
+                groupId = group.GroupId;
                 if (!await _groupMemberService.GetUserHasRole(user.ID, group.GroupId, GroupRoles.TaskAdmin, true, cancellationToken))
                 {
                     return 0;
@@ -67,17 +70,17 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.Group
                         => await GetCount(user, MenuPage.GroupRequests, groupKey, cancellationToken) + await GetCount(user, MenuPage.GroupShifts, groupKey, cancellationToken),
                     MenuPage.GroupRequests
-                        => (await _requestService.GetGroupRequestsAsync(groupKey, false, cancellationToken))?.Count(r => !r.RequestComplete()),
+                        => (await _requestService.GetGroupRequestsAsync(groupId, false, cancellationToken))?.Count(r => !r.JobBasics.AllComplete()),
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
-                        => (await _requestService.GetOpenJobsAsync(user, false, cancellationToken))?.Count(),
+                        => (await _requestService.GetDedupedOpenJobsForUserFromRepo(user, false, cancellationToken))?.Count(),
                     MenuPage.OpenShifts
                         => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
                         => (await _requestService.GetShiftsForUserAsync(user.ID, null, null, false, cancellationToken))?.Count(s => s.JobStatus.Incomplete()),
                     MenuPage.GroupShifts
-                        => (await _requestService.GetGroupShiftRequestsAsync(groupKey, null, null, false, cancellationToken))?.Count(r => !r.RequestComplete()),
+                        => (await _requestService.GetGroupShiftRequestsAsync(groupId, null, null, false, cancellationToken))?.Count(r => !r.JobBasics.AllComplete()),
                     _ => null
                 };
 

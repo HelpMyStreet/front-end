@@ -7,8 +7,6 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Jobs;
-using HelpMyStreetFE.Models.Email;
-using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
@@ -18,15 +16,11 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {
-        private readonly IOptions<RequestSettings> _requestSettings;
         private IAddressService _addressService;
-        private IGroupService _groupService;
 
-        public FilterService(IOptions<RequestSettings> requestSettings, IAddressService addressService, IGroupService groupService)
+        public FilterService(IAddressService addressService)
         {
-            _requestSettings = requestSettings;
             _addressService = addressService;
-            _groupService = groupService;
         }
 
         public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, List<JobStatuses> jobStatuses, User user, CancellationToken cancellationToken)
@@ -271,29 +265,14 @@ namespace HelpMyStreetFE.Services.Requests
                     .Insert(0, new FilterField<SupportActivities>() { Value = SupportActivities.CommunityConnector, IsSelected = true });
             }
 
-            if (user.SupportActivities.Intersect(_requestSettings.Value.NationalSupportActivities).Count() > 0)
+            filterSet.MaxDistanceInMiles = new List<FilterField<int>>
             {
-                filterSet.MaxDistanceInMiles = new List<FilterField<int>>
-                    {
-                        new FilterField<int> { Value = 0, Label = "My street only" },
-                        new FilterField<int> { Value = 1, Label = "Within 1 mile" },
-                        new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                        new FilterField<int> { Value = 10, Label = "Within 10 miles" },
-                        new FilterField<int> { Value = 20, Label = "Within 20 miles" },
-                        new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true },
-                    };
-            }
-            else
-            {
-                filterSet.MaxDistanceInMiles = new List<FilterField<int>>
-                    {
-                        new FilterField<int> { Value = 0, Label = "My street only" },
-                        new FilterField<int> { Value = 1, Label = "Within 1 mile" },
-                        new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                        new FilterField<int> { Value = 10, Label = "Within 10 miles" },
-                        new FilterField<int> { Value = 20, Label = "Within 20 miles", IsSelected = true },
-                    };
-            }
+                new FilterField<int> { Value = 0, Label = "My street only" },
+                new FilterField<int> { Value = 1, Label = "Within 1 mile" },
+                new FilterField<int> { Value = 5, Label = "Within 5 miles" },
+                new FilterField<int> { Value = 10, Label = "Within 10 miles", IsSelected = true },
+                new FilterField<int> { Value = 999, Label = "Show all"},
+            };
 
             return filterSet;
         }
@@ -318,7 +297,7 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        public IEnumerable<ShiftJob> SortAndFilterJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
+        public IEnumerable<ShiftJob> SortAndFilterShiftJobs(IEnumerable<ShiftJob> jobs, JobFilterRequest jfr)
         {
             var jobsToDisplay = jobs.Where(
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
@@ -340,7 +319,7 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<RequestSummary> SortAndFilterJobs(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
+        public IEnumerable<RequestSummary> SortAndFilterRequests(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
         {
             var jobsToDisplay = jobs.Where(
                 j => (jfr.SupportActivities == null || j.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
@@ -375,36 +354,22 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<JobSummary> SortAndFilterJobs(IEnumerable<JobSummary> jobs, JobFilterRequest jfr)
+        public IEnumerable<IEnumerable<JobSummary>> SortAndFilterOpenJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr)
         {
             var jobsToDisplay = jobs.Where(
-                j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
-                    && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
-                    && (jfr.MaxDistanceInMiles == null || j.DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    && (jfr.DueInNextXDays == null || j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.DueAfter == null || j.DueDate.Date >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || j.DueDate.Date <= jfr.DueBefore?.Date)
-                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+                js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
+                    && (jfr.SupportActivities == null || js.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
+                    && (jfr.MaxDistanceInMiles == null || js.First().DistanceInMiles <= jfr.MaxDistanceInMiles)
+                    && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
+                    && (jfr.RequestedAfter == null || js.First().DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || js.First().DateRequested.Date <= jfr.RequestedBefore?.Date);
 
             return jfr.OrderBy switch
             {
-                OrderBy.RequiringAdminAttention =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenByDescending(j => j.RequiringAdminAttentionScore()).ThenBy(j => j.DueDate),
                 OrderBy.DateDue_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenBy(j => j.DueDate),
-                OrderBy.DateDue_Descending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenByDescending(j => j.DueDate),
-                OrderBy.DateRequested_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenBy(j => j.DateRequested),
-                OrderBy.DateRequested_Descending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenByDescending(j => j.DateRequested),
-                OrderBy.DateStatusLastChanged_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenBy(j => j.DateStatusLastChanged),
-                OrderBy.DateStatusLastChanged_Descending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenByDescending(j => j.DateStatusLastChanged),
+                    jobsToDisplay.OrderByDescending(js => Highlight(js, jfr)).ThenBy(js => js.Where(j => j.JobStatus.Equals(JobStatuses.Open)).Min(j => j.DueDate)),
                 OrderBy.Distance_Ascending =>
-                    jobsToDisplay.OrderByDescending(j => Highlight(j, jfr)).ThenBy(j => j.DistanceInMiles),
+                    jobsToDisplay.OrderByDescending(js => Highlight(js, jfr)).ThenBy(js => js.First().DistanceInMiles),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
@@ -417,6 +382,11 @@ namespace HelpMyStreetFE.Services.Requests
         private bool Highlight(RequestSummary requestSummary, JobFilterRequest jfr)
         {
             return requestSummary.JobBasics.Exists(j => j.JobID.Equals(jfr.HighlightJobId)) || requestSummary.RequestID.Equals(jfr.HighlightRequestId);
+        }
+
+        private bool Highlight(IEnumerable<JobBasic> jobs, JobFilterRequest jfr)
+        {
+            return jobs.Where(j => j.JobID.Equals(jfr.HighlightJobId) || j.RequestID.Equals(jfr.HighlightRequestId)).Count() > 0;
         }
     }
 }

@@ -1,0 +1,90 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using Westwind.AspNetCore.Markdown
+
+@model JobDetailViewModel
+
+@{
+
+    var jobDetails = Model.JobDetail.Item;
+
+    var userAllocatedToTask = jobDetails.VolunteerUserID.Equals(Model.JobDetail.User.ID);
+
+    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(false, userAllocatedToTask) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID);
+    var encodedRequestID = Base64Utils.Base64Encode(jobDetails.RequestID);
+    var encodedRole = Base64Utils.Base64Encode((int)Model.JobDetail.UserRole);
+
+    var showDuplicateJobs = jobDetails.JobStatus.Incomplete() && Model.DuplicateJobs.Count() > 1;
+    var showQuestions = jobDetails.JobStatus.Incomplete() && questionsToDisplay?.Count() > 0;
+
+}
+
+<div class="job__expander job mini-job-detail" id="@encodedJobID" request-id="@encodedRequestID" data-role="@encodedRole" data-user-allocated-to-job="@userAllocatedToTask">
+    <h4 class="@((showDuplicateJobs || showQuestions) ? "" : "no-click")">
+        <span class="pt-xs pb-xs">
+            <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
+            <span title="@jobDetails.DueDate.FriendlyFutureDate()">
+                @jobDetails.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash;
+            </span>
+            <span class="toggle-on-status-change">
+                @jobDetails.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToTask)
+            </span>
+            <span class="job__status__new dnone toggle-on-status-change"></span>
+        </span>
+        <span class="job__info__actions">
+            <partial name="_JobButtons_Volunteer" model="Model.JobDetail" />
+        </span>
+        <span></span>
+    </h4>
+    @if (showDuplicateJobs || showQuestions || jobDetails.JobStatus == JobStatuses.InProgress)
+    {
+        <div class="job__expander__content request-job__content">
+            <div class="row">
+                <div class="sm12">
+                    <dl>
+                        <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
+                        @if (showDuplicateJobs)
+                        {
+                            var filled = Model.DuplicateJobs.Count() - Model.DuplicateJobs.UnfilledJobs().Count();
+
+                            <dt>How many volunteers are needed?</dt>
+                            <dd>
+                                This help request requires <strong>@Model.DuplicateJobs.Count()</strong> volunteers.
+                                <strong>@filled</strong> @(filled == 1 ? "place has" : "places have") been filled
+                                (<strong>@Model.DuplicateJobs.UnfilledJobs().Count()</strong> remaining).
+                            </dd>
+                        }
+                        @if (showQuestions)
+                        {
+                            @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                            {
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            }
+                        }
+                    </dl>
+                </div>
+                @if (jobDetails.JobStatus == JobStatuses.InProgress)
+                {
+                    <div class="sm12 offline-details">
+                        <dl>
+                            <dt>Do you need to take these details offline?</dt>
+                            <dd>
+                                For data protection reasons, you'll only be able to view non-personal information.
+                                <span class="link-icons">
+                                    <a href="#" title="" class="email-details"><img src="/img/icons/email.svg" /><span>Email </span></a>
+                                    <a href="/account/print-job-details?j=@encodedJobID" target="_blank"><img src="/img/icons/printer.svg" /> Print </a>
+                                </span>
+                            </dd>
+                        </dl>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
