@@ -75,7 +75,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
-                        => (await GetOpenJobsForUser(user, cancellationToken))?.Count(),
+                        => (await GetFilteredOpenJobsForUser(user, cancellationToken))?.Count(),
                     MenuPage.OpenShifts
                         => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.ViewComponents
             }
         }
 
-        private async Task<IEnumerable<JobSummary>> GetOpenJobsForUser(User user, CancellationToken cancellationToken)
+        private async Task<IEnumerable<JobSummary>> GetFilteredOpenJobsForUser(User user, CancellationToken cancellationToken)
         {
             var openRequests = await _requestService.GetOpenJobsAsync(user, false, cancellationToken);
             
