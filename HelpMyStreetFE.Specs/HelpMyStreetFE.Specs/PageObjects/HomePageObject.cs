@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentAssertions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace HelpMyStreetFE.Specs.PageObjects
 {
     public class HomePageObject
-    {  
-        //The URL of the calculator to be opened in the browser
+    {
         private const string HomePageUrl = "https://localhost:5001/";
 
-        //The Selenium web driver to automate the browser
         private readonly IWebDriver _webDriver;
 
-        //The default wait time in seconds for wait.Until
         public const int DefaultWaitInSeconds = 5;
 
         public HomePageObject(IWebDriver webDriver)
@@ -29,24 +27,94 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public void EnterEmailAddress(string value)
         {
-            //Clear text box
             HeaderLoginForm_Email.Clear();
-            //Enter text
             HeaderLoginForm_Email.SendKeys(value);
         }
 
         public void EnterPassword(string value)
         {
-            //Clear text box
             HeaderLoginForm_Password.Clear();
-            //Enter text
             HeaderLoginForm_Password.SendKeys(value);
+        }
+
+        public string GetValue(string elementId)
+        {
+            IWebElement el = _webDriver.FindElement(By.Id(elementId));
+            return el.GetAttribute("value");
+        }
+
+        public string GetText(string selector)
+        {
+            IWebElement el = _webDriver.FindElement(By.CssSelector(selector));
+            return el.Text;
         }
 
         public void ClickLogin()
         {
-            //Click the add button
             HeaderLoginForm_LogIn.Click();
+        }
+
+        public void Click(string elementId)
+        {
+            IWebElement el = _webDriver.FindElement(By.Id(elementId));
+            el.Click();
+        }
+
+        public bool IsClickable(string elementId)
+        {
+            bool clickable = true;
+            try
+            {
+                IWebElement el = _webDriver.FindElement(By.Id(elementId));
+                el.Click();
+            }
+            catch (ElementClickInterceptedException)
+            {
+                clickable = false;
+            }
+            return clickable;
+        }
+
+        public bool IsVisible(string selector)
+        {
+            IWebElement el = _webDriver.FindElement(By.CssSelector(selector));
+            return el.Displayed;
+        }
+
+        public void WaitForDisplayedFalse(string elementId, string selector)
+        {
+            IWebElement el;
+
+            if (elementId != null)
+            {
+                el = _webDriver.FindElement(By.Id(elementId));
+            }
+            else
+            {
+                el = _webDriver.FindElement(By.CssSelector(selector));
+            }
+
+            try
+            {
+                WaitUntilBool(() => el.Displayed, false);
+            }
+            catch (StaleElementReferenceException)
+            {
+                // Element has been removed from page
+            }
+        }
+
+        public string WaitForUrlChange()
+        {
+            var initialUrl = _webDriver.Url;
+            try
+            {
+                return WaitUntil(() => _webDriver.Url, result => !result.Equals(initialUrl));
+            }
+            catch (WebDriverTimeoutException)
+            {
+                return initialUrl;
+            }
         }
 
         public void EnsureHomePageIsOpenAndReset()
@@ -78,11 +146,10 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public string WaitForEmptyResult()
         {
-            return "";
             //Wait for the result to be empty
-            /*return WaitUntil(
-                () => ResultElement.GetAttribute("value"),
-                result => result == string.Empty);*/
+            return WaitUntil(
+                () => HeaderLoginForm_Email.GetAttribute("value"),
+                result => result == string.Empty);
         }
 
         /// <summary>
@@ -104,5 +171,17 @@ namespace HelpMyStreetFE.Specs.PageObjects
                 return result;
             });
         }
+
+
+        private void WaitUntilBool(Func<bool> getResult, bool expectedResult)
+        {
+            var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
+            wait.Until(driver =>
+            {
+                var result = getResult();
+                return result == expectedResult;
+            });
+        }
+
     }
 }

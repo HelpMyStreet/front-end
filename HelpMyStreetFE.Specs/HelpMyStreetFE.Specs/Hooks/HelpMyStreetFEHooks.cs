@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Specs.Hooks
         ///<summary>
         ///  Reset the calculator before each scenario tagged with "Calculator"
         /// </summary>
-        [BeforeScenario("Calculator")]
+        [BeforeScenario("StartAtHomePage")]
         public static void BeforeScenario(BrowserDriver browserDriver)
         {
             var calculatorPageObject = new HomePageObject(browserDriver.Current);

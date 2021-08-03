@@ -30,10 +30,5 @@
     <Folder Include="bin\Debug\netcoreapp3.1\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Tools\chromedriver.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 
 </Project>
