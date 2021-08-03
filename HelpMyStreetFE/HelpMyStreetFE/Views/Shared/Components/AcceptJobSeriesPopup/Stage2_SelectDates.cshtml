@@ -53,13 +53,13 @@
                                 <partial name="_WhenIsHelpNeeded_ShortFormat" model="@job" />
                             </div>
                             <div class="sm3">
-                                <button class="btn cta less-rounded @(userHasRequiredCredentials ? "" : "cta--green-border") accept-job-now fill" data-target-state="@JobStatuses.InProgress">
+                                <button class="btn cta @(userHasRequiredCredentials ? "" : "cta--green-border") accept-job-now fill" data-target-state="@JobStatuses.InProgress">
                                     <span class="text">Accept</span>
                                     <div class="loader dnone">
                                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Accepting..." }' />
                                     </div>
                                 </button>
-                                <button class="btn cta--dark-blue-border less-rounded undo-request dnone fill" data-target-state="@JobStatuses.Open" data-target-user="" )">
+                                <button class="btn cta--dark-blue-border undo-request dnone fill" data-target-state="@JobStatuses.Open" data-target-user="" )">
                                     <span class="text">Can't do</span>
                                     <div class="loader dnone">
                                         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner = true }' />
