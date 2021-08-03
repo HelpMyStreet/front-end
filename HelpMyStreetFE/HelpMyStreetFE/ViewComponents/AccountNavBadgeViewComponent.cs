@@ -66,10 +66,6 @@ namespace HelpMyStreetFE.ViewComponents
                 groupId = group.GroupId;
             }
 
-            var filterSet = await _filterService.GetDefaultSortAndFilterSet(JobSet.UserOpenRequests_NotMatchingCriteria, groupId, new List<JobStatuses> { JobStatuses.Open }, user, cancellationToken);
-            var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
-            filterRequest.UpdateFromFilterSet(filterSet);
-            
             try
             {
                 int? count = menuPage switch
@@ -81,7 +77,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
-                        => _filterService.SortAndFilterJobs(await _requestService.GetOpenJobsAsync(user, true, cancellationToken), filterRequest).Count(),
+                        => (await GetOpenJobsForUser(user, cancellationToken))?.Count(),
                     MenuPage.OpenShifts
                         => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
@@ -98,6 +94,22 @@ namespace HelpMyStreetFE.ViewComponents
                 // Skip badge if request service has been too slow to respond
                 return 0;
             }
+        }
+
+        private async Task<IEnumerable<JobSummary>> GetOpenJobsForUser(User user, CancellationToken cancellationToken)
+        {
+            var openRequests = await _requestService.GetOpenJobsAsync(user, false, cancellationToken);
+            
+            if (openRequests == null)
+            {
+                return null;
+            }
+            
+            var filterSet = await _filterService.GetDefaultSortAndFilterSet(JobSet.UserOpenRequests_NotMatchingCriteria, null, new List<JobStatuses> { JobStatuses.Open }, user, cancellationToken);
+            var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
+            filterRequest.UpdateFromFilterSet(filterSet);
+
+            return _filterService.SortAndFilterJobs(openRequests, filterRequest);
         }
     }
 }
