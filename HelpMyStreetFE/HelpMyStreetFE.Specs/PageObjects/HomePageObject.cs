@@ -49,7 +49,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
             HeaderLoginForm_LogIn.Click();
         }
 
-        public void EnsureCalculatorIsOpenAndReset()
+        public void EnsureHomePageIsOpenAndReset()
         {
             //Open the calculator page in the browser if not opened yet
             if (_webDriver.Url != HomePageUrl)
@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
             else
             {
                 //Click the rest button
-                ResetButtonElement.Click();
+                //ResetButtonElement.Click();
 
                 //Wait until the result is empty again
                 WaitForEmptyResult();
@@ -69,18 +69,20 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public string WaitForNonEmptyResult()
         {
+            return "";
             //Wait for the result to be not empty
-            return WaitUntil(
+            /*return WaitUntil(
                 () => ResultElement.GetAttribute("value"),
-                result => !string.IsNullOrEmpty(result));
+                result => !string.IsNullOrEmpty(result));*/
         }
 
         public string WaitForEmptyResult()
         {
+            return "";
             //Wait for the result to be empty
-            return WaitUntil(
+            /*return WaitUntil(
                 () => ResultElement.GetAttribute("value"),
-                result => result == string.Empty);
+                result => result == string.Empty);*/
         }
 
         /// <summary>

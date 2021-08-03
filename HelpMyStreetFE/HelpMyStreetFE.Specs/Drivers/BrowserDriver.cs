@@ -6,7 +6,7 @@ using OpenQA.Selenium.Chrome;
 
 namespace HelpMyStreetFE.Specs.Drivers
 {
-    class BrowserDriver : IDisposable
+    public class BrowserDriver : IDisposable
     {
         private readonly Lazy<IWebDriver> _currentWebDriverLazy;
         private bool _isDisposed;
@@ -28,11 +28,11 @@ namespace HelpMyStreetFE.Specs.Drivers
         private IWebDriver CreateWebDriver()
         {
             //We use the Chrome browser
-            var chromeDriverService = ChromeDriverService.CreateDefaultService();
+           // var chromeDriverService = ChromeDriverService.CreateDefaultService();
 
             var chromeOptions = new ChromeOptions();
 
-            var chromeDriver = new ChromeDriver(chromeDriverService, chromeOptions);
+            var chromeDriver = new ChromeDriver("C:\\code\\HelpMyStreet\\front-end\\HelpMyStreetFE\\HelpMyStreetFE.Specs\\bin\\Debug\\netcoreapp3.1\\");
 
             return chromeDriver;
         }

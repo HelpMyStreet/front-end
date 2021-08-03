@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Selenium.Chrome.WebDriver" Version="85.0.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="91.0.4472.10100" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.5" />
 
     
@@ -26,11 +26,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Hooks\" />
+    <ProjectReference Include="..\HelpMyStreetFE\HelpMyStreetFE.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HelpMyStreetFE\HelpMyStreetFE.csproj" />
+    <Folder Include="bin\Debug\netcoreapp3.1\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Tools\chromedriver.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

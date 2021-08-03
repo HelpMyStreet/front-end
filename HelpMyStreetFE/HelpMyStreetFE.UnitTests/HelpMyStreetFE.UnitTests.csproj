@@ -12,6 +12,8 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
 	<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="5.0.1" />
+	<PackageReference Include="Selenium.Chrome.WebDriver" Version="85.0.0" />
+	<PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="92.0.4515.10700" />
   </ItemGroup>
 
   <ItemGroup>
