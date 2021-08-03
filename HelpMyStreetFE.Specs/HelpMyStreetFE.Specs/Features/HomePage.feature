@@ -36,7 +36,6 @@ Scenario: Header login blank email
 	And the element #login-fail-message should not be visible
 	And the element selected by input[name="email"]~.login__fail-message-main should be visible
 	And the element selected by input[name="email"]~.login__fail-message-main should have text Please enter a valid email address
-
 		
 @StartAtHomePage
 @AcceptAllCookies
