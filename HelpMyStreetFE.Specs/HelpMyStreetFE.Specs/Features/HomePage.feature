@@ -11,6 +11,10 @@ Scenario: All cookies accepted
 	Then the element #gdpr-cookie-message-outer should not be visible
 
 @StartAtHomePage
+Scenario: Home page title
+	Then the page title should be Home Page - Help My Street
+
+@StartAtHomePage
 @AcceptAllCookies
 Scenario: Header login failure
 	Given the element #email has value incorrect@nowhere.com

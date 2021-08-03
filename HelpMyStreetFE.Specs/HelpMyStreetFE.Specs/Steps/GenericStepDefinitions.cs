@@ -117,5 +117,11 @@ namespace HelpMyStreetFE.Specs.Steps
         {
             _pageObject.WaitForUrlChange().Should().Be(GenericPageObject.HomePageUrl + url);
         }
+
+        [Then("the page title should be (.*)")]
+        public void ThenThePageTitleShouldBe(string expectedTitle)
+        {
+            _pageObject.GetTitle().Should().Be(expectedTitle);
+        }
     }
 }

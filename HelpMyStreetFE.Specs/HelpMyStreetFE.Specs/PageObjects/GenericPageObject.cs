@@ -99,6 +99,11 @@ namespace HelpMyStreetFE.Specs.PageObjects
             }
         }
 
+        public string GetTitle()
+        {
+            return _webDriver.Title;
+        }
+
         public void EnsureHomePageIsOpenAndReset()
         {
             //Open the home page in the browser if not opened yet
