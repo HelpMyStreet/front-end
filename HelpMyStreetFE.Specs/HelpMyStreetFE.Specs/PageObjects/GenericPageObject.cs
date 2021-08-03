@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
@@ -8,7 +8,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
 {
     public class GenericPageObject
     {
-        private const string HomePageUrl = "https://localhost:5001/";
+        public const string HomePageUrl = "https://localhost:5001/";
 
         private readonly IWebDriver _webDriver;
 

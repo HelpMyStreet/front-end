@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using HelpMyStreetFE.Specs.Drivers;
 using HelpMyStreetFE.Specs.PageObjects;
 using TechTalk.SpecFlow;
@@ -115,7 +115,7 @@ namespace HelpMyStreetFE.Specs.Steps
         [Then("the url should be (.*)")]
         public void ThenTheUrlShouldBe(string url)
         {
-            _pageObject.WaitForUrlChange().Should().Be(url);
+            _pageObject.WaitForUrlChange().Should().Be(GenericPageObject.HomePageUrl + url);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿Feature: HomePage
+Feature: HomePage
 
 @StartAtHomePage
 Scenario: Cookie banner displayed
@@ -15,7 +15,7 @@ Scenario: Header login failure
 	Given the element #email has value incorrect@nowhere.com
 	And the element #password has value abcd1234
 	When the element #login-submit is clicked
-	Then the url should be https://localhost:5001/login?email=incorrect@nowhere.com&er=login&ReturnUrl=null
+	Then the url should be login?email=incorrect@nowhere.com&er=login&ReturnUrl=null
 	And the element #email should have value incorrect@nowhere.com
 	And the element #password should be blank
 	And the element #login-fail-message should be visible
@@ -25,7 +25,7 @@ Scenario: Header login failure
 @StartAtHomePage
 Scenario: Header blank login
 	When the element #login-submit is clicked
-	Then the url should be https://localhost:5001/login?email=&er=email&ReturnUrl=null
+	Then the url should be login?email=&er=email&ReturnUrl=null
 	And the element #email should be blank
 	And the element #password should be blank
 	And the element #login-fail-message should not be visible
