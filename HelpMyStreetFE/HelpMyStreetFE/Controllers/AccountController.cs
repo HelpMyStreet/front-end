@@ -42,6 +42,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IGroupService _groupService;
         private readonly ICommunicationService _communicationService;
         private readonly IAddressService _addressService;
+        private readonly IFilterService _filterService;
 
         private static readonly string REGISTRATION_URL = "/registration/step-two";
         private static readonly string PROFILE_URL = "/account/open-requests";
@@ -55,7 +56,8 @@ namespace HelpMyStreetFE.Controllers
             IOptions<YotiOptions> yotiOptions,
             IRequestService requestService,
             IAuthService authService,
-            IGroupMemberService groupMemberService
+            IGroupMemberService groupMemberService,
+            IFilterService filterService
             )
         {
             _logger = logger;
@@ -67,6 +69,7 @@ namespace HelpMyStreetFE.Controllers
             _groupMemberService = groupMemberService;
             _communicationService = communicationService;
             _addressService = addressService;
+            _filterService = filterService;
         }
 
         [HttpGet]
@@ -400,7 +403,7 @@ namespace HelpMyStreetFE.Controllers
                 return 0;
             }
 
-            int count = await new AccountNavBadgeViewComponent(_requestService, _groupMemberService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
+            int count = await new AccountNavBadgeViewComponent(_requestService, _filterService, _groupMemberService, _groupService).GetCount(user, menuPage, groupKey, cancellationToken);
 
             return count;
         }
