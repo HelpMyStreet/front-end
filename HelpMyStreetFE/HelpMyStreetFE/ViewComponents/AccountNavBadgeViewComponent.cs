@@ -47,7 +47,6 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<int> GetCount(User user, MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            int? groupId = null;
             if (menuPage == MenuPage.GroupRequests || menuPage == MenuPage.GroupShifts)
             {
                 var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
@@ -63,7 +62,6 @@ namespace HelpMyStreetFE.ViewComponents
                 {
                     return 0;
                 }
-                groupId = group.GroupId;
             }
 
             try
