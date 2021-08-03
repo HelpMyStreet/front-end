@@ -219,10 +219,9 @@ namespace HelpMyStreetFE.Controllers
 
                 locationPostcode = WebUtility.UrlEncode(locationDetails.Address.Postcode);
             }
-        var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
+            var directionsLink = $"https://www.google.com/maps/dir/?api=1&destination={locationPostcode}";
 
-        return new OkObjectResult(directionsLink);
-
+            return new OkObjectResult(directionsLink);
         }
 
         [Route("get-shift-calendar")]
