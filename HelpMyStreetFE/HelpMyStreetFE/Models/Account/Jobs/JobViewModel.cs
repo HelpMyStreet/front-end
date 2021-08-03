@@ -3,6 +3,7 @@ using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Models.Account;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
@@ -37,7 +38,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             {
                 JobSummary js when js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => true,
                 ShiftJob sj => true,
-                RequestSummary rs => true,
+                RequestSummary rs when rs.JobBasics.Select(jb => jb.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode)).Any(pdc => pdc) => true,
                 _ => false,
             };
         }
