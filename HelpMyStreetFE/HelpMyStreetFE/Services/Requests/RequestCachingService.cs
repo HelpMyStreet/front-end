@@ -6,21 +6,24 @@ using System.Threading.Tasks;
 using HelpMyStreet.Cache;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace HelpMyStreetFE.Services.Requests
 {
     public class RequestCachingService : IRequestCachingService
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
+        private readonly ILogger<RequestCachingService> _logger;
 
         private readonly IMemDistCache<RequestSummary> _memDistCache_RequestSummary;
 
         private const string CACHE_KEY_PREFIX = "request-caching-service";
 
-        public RequestCachingService(IRequestHelpRepository requestHelpRepository, IMemDistCache<RequestSummary> memDistCache_RequestSummary)
+        public RequestCachingService(IRequestHelpRepository requestHelpRepository, ILogger<RequestCachingService> logger, IMemDistCache<RequestSummary> memDistCache_RequestSummary)
         {
-            _requestHelpRepository = requestHelpRepository;
-            _memDistCache_RequestSummary = memDistCache_RequestSummary;
+            _requestHelpRepository = requestHelpRepository ?? throw new ArgumentNullException(nameof(requestHelpRepository));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _memDistCache_RequestSummary = memDistCache_RequestSummary ?? throw new ArgumentNullException(nameof(memDistCache_RequestSummary));
         }
 
         /// <summary>
@@ -100,6 +103,8 @@ namespace HelpMyStreetFE.Services.Requests
         /// <returns></returns>
         public async Task<IEnumerable<RequestSummary>> RefreshCacheAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
         {
+            _logger.LogInformation($"Refreshing cache for RequestIDs {string.Join(',', requestIds)}");
+
             var requestSummaries = await _requestHelpRepository.GetRequestSummariesAsync(requestIds);
 
             foreach (var requestSummary in requestSummaries)

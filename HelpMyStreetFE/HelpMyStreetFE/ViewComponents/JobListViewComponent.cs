@@ -20,7 +20,6 @@ namespace HelpMyStreetFE.ViewComponents
     public class JobListViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IJobCachingService _jobCachingService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IFilterService _filterService;
@@ -28,14 +27,12 @@ namespace HelpMyStreetFE.ViewComponents
 
         public JobListViewComponent(
             IRequestService requestService, 
-            IJobCachingService jobCachingService,
             IAuthService authService, 
             IGroupMemberService groupMemberService, 
             IFilterService filterService, 
             IAddressService addressService)
         {
             _requestService = requestService;
-            _jobCachingService = jobCachingService;
             _authService = authService;
             _groupMemberService = groupMemberService;
             _filterService = filterService;
@@ -206,7 +203,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
-                JobSet.UserMyRequests => (await _requestService.GetRequestsForUserAsync(user.ID, true, cancellationToken)),
+                JobSet.UserMyRequests => await _requestService.GetRequestsForUserAsync(user.ID, true, cancellationToken),
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
