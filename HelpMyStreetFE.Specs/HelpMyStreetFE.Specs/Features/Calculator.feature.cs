@@ -79,11 +79,11 @@ Link to a feature: [Calculator](HelpMyStreetFE.Specs/Features/Calculator.feature
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Login failure", new string[] {
-                "mytag"}, SourceLine=8)]
+                "Calculator"}, SourceLine=8)]
         public virtual void LoginFailure()
         {
             string[] tagsOfScenario = new string[] {
-                    "mytag"};
+                    "Calculator"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Login failure", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 9

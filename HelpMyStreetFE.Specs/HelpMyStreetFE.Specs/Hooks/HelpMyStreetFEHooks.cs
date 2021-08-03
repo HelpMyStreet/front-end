@@ -17,7 +17,7 @@ namespace HelpMyStreetFE.Specs.Hooks
         public static void BeforeScenario(BrowserDriver browserDriver)
         {
             var calculatorPageObject = new HomePageObject(browserDriver.Current);
-            //calculatorPageObject.EnsureCalculatorIsOpenAndReset();
+            calculatorPageObject.EnsureHomePageIsOpenAndReset();
         }
     }
 }
