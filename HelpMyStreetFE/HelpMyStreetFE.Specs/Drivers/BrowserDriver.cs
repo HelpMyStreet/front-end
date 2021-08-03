@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Reflection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
@@ -28,11 +29,7 @@ namespace HelpMyStreetFE.Specs.Drivers
         private IWebDriver CreateWebDriver()
         {
             //We use the Chrome browser
-           // var chromeDriverService = ChromeDriverService.CreateDefaultService();
-
-            var chromeOptions = new ChromeOptions();
-
-            var chromeDriver = new ChromeDriver("C:\\code\\HelpMyStreet\\front-end\\HelpMyStreetFE\\HelpMyStreetFE.Specs\\bin\\Debug\\netcoreapp3.1\\");
+            var chromeDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
             return chromeDriver;
         }
