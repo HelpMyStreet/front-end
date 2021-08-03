@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using OpenQA.Selenium;
@@ -61,8 +61,15 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public bool IsVisible(string elementId, string selector)
         {
-            var el = GetElementByIdOrSelector(elementId, selector);
-            return el.Displayed;
+            try
+            {
+                var el = GetElementByIdOrSelector(elementId, selector);
+                return el.Displayed;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
 
         public void WaitForDisplayedFalse(string elementId, string selector)

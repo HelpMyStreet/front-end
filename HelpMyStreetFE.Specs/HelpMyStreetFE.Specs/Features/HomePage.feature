@@ -1,4 +1,4 @@
-Feature: HomePage
+﻿Feature: HomePage
 
 @StartAtHomePage
 Scenario: Cookie banner displayed
@@ -11,6 +11,7 @@ Scenario: All cookies accepted
 	Then the element #gdpr-cookie-message-outer should not be visible
 
 @StartAtHomePage
+@AcceptAllCookies
 Scenario: Header login failure
 	Given the element #email has value incorrect@nowhere.com
 	And the element #password has value abcd1234
@@ -23,6 +24,7 @@ Scenario: Header login failure
 
 	
 @StartAtHomePage
+@AcceptAllCookies
 Scenario: Header blank login
 	When the element #login-submit is clicked
 	Then the url should be login?email=&er=email&ReturnUrl=null
