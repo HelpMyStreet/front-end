@@ -64,7 +64,8 @@ namespace HelpMyStreetFE.ViewComponents
                     PostCode = postCode,
                     encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
                 };
-            } else
+            }
+            else
             {
                 viewLocationViewModel = new ViewLocationViewModel()
                 {
@@ -72,12 +73,11 @@ namespace HelpMyStreetFE.ViewComponents
                     Coordinates = null,
                     Distance = null,
                     PostCode = null,
-                    encodedJobID = Base64Utils.Base64Encode(jobId.HasValue ? jobId.Value : requestId.Value)
+                    encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
                 };
             }
 
             return View("ViewLocationPopup", viewLocationViewModel);
         }
-
     }
 }
