@@ -12,8 +12,8 @@ Scenario: All cookies accepted
 
 @StartAtHomePage
 Scenario: Header login failure
-	Given the username is incorrect@nowhere.com
-	And the password is abcd1234
+	Given the element #email has value incorrect@nowhere.com
+	And the element #password has value abcd1234
 	When the element #login-submit is clicked
 	Then the url should be https://localhost:5001/login?email=incorrect@nowhere.com&er=login&ReturnUrl=null
 	And the element #email should have value incorrect@nowhere.com
@@ -29,5 +29,5 @@ Scenario: Header blank login
 	And the element #email should be blank
 	And the element #password should be blank
 	And the element #login-fail-message should not be visible
-	And the element input[name="email"]~.login__fail-message-main should be visible
-	And the element input[name="email"]~.login__fail-message-main should have text Please enter a valid email address
+	And the element selected by input[name="email"]~.login__fail-message-main should be visible
+	And the element selected by input[name="email"]~.login__fail-message-main should have text Please enter a valid email address

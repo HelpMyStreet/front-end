@@ -16,7 +16,7 @@ namespace HelpMyStreetFE.Specs.Hooks
         [BeforeScenario("StartAtHomePage")]
         public static void BeforeScenario(BrowserDriver browserDriver)
         {
-            var calculatorPageObject = new HomePageObject(browserDriver.Current);
+            var calculatorPageObject = new GenericPageObject(browserDriver.Current);
             calculatorPageObject.EnsureHomePageIsOpenAndReset();
         }
     }

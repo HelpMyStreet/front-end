@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using FluentAssertions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace HelpMyStreetFE.Specs.PageObjects
 {
-    public class HomePageObject
+    public class GenericPageObject
     {
         private const string HomePageUrl = "https://localhost:5001/";
 
@@ -15,57 +14,42 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public const int DefaultWaitInSeconds = 5;
 
-        public HomePageObject(IWebDriver webDriver)
+        public GenericPageObject(IWebDriver webDriver)
         {
             _webDriver = webDriver;
         }
 
-        //Finding elements by ID
-        private IWebElement HeaderLoginForm_Email => _webDriver.FindElement(By.Id("email"));
-        private IWebElement HeaderLoginForm_Password => _webDriver.FindElement(By.Id("password"));
-        private IWebElement HeaderLoginForm_LogIn => _webDriver.FindElement(By.Id("login-submit"));
-
-        public void EnterEmailAddress(string value)
+        public string GetValue(string elementId, string selector)
         {
-            HeaderLoginForm_Email.Clear();
-            HeaderLoginForm_Email.SendKeys(value);
-        }
-
-        public void EnterPassword(string value)
-        {
-            HeaderLoginForm_Password.Clear();
-            HeaderLoginForm_Password.SendKeys(value);
-        }
-
-        public string GetValue(string elementId)
-        {
-            IWebElement el = _webDriver.FindElement(By.Id(elementId));
+            var el = GetElementByIdOrSelector(elementId, selector);
             return el.GetAttribute("value");
         }
 
-        public string GetText(string selector)
+        public void SetValue(string elementId, string selector, string value)
         {
-            IWebElement el = _webDriver.FindElement(By.CssSelector(selector));
+            var el = GetElementByIdOrSelector(elementId, selector);
+            el.Clear();
+            el.SendKeys(value);
+        }
+
+        public string GetText(string elementId, string selector)
+        {
+            var el = GetElementByIdOrSelector(elementId, selector);
             return el.Text;
         }
 
-        public void ClickLogin()
+        public void Click(string elementId, string selector)
         {
-            HeaderLoginForm_LogIn.Click();
-        }
-
-        public void Click(string elementId)
-        {
-            IWebElement el = _webDriver.FindElement(By.Id(elementId));
+            var el = GetElementByIdOrSelector(elementId, selector);
             el.Click();
         }
 
-        public bool IsClickable(string elementId)
+        public bool IsClickable(string elementId, string selector)
         {
             bool clickable = true;
             try
             {
-                IWebElement el = _webDriver.FindElement(By.Id(elementId));
+                var el = GetElementByIdOrSelector(elementId, selector);
                 el.Click();
             }
             catch (ElementClickInterceptedException)
@@ -75,24 +59,15 @@ namespace HelpMyStreetFE.Specs.PageObjects
             return clickable;
         }
 
-        public bool IsVisible(string selector)
+        public bool IsVisible(string elementId, string selector)
         {
-            IWebElement el = _webDriver.FindElement(By.CssSelector(selector));
+            var el = GetElementByIdOrSelector(elementId, selector);
             return el.Displayed;
         }
 
         public void WaitForDisplayedFalse(string elementId, string selector)
         {
-            IWebElement el;
-
-            if (elementId != null)
-            {
-                el = _webDriver.FindElement(By.Id(elementId));
-            }
-            else
-            {
-                el = _webDriver.FindElement(By.CssSelector(selector));
-            }
+            var el = GetElementByIdOrSelector(elementId, selector);
 
             try
             {
@@ -119,7 +94,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public void EnsureHomePageIsOpenAndReset()
         {
-            //Open the calculator page in the browser if not opened yet
+            //Open the home page in the browser if not opened yet
             if (_webDriver.Url != HomePageUrl)
             {
                 _webDriver.Url = HomePageUrl;
@@ -127,30 +102,9 @@ namespace HelpMyStreetFE.Specs.PageObjects
             //Otherwise reset the calculator by clicking the reset button
             else
             {
-                //Click the rest button
-                //ResetButtonElement.Click();
-
-                //Wait until the result is empty again
-                WaitForEmptyResult();
             }
         }
 
-        public string WaitForNonEmptyResult()
-        {
-            return "";
-            //Wait for the result to be not empty
-            /*return WaitUntil(
-                () => ResultElement.GetAttribute("value"),
-                result => !string.IsNullOrEmpty(result));*/
-        }
-
-        public string WaitForEmptyResult()
-        {
-            //Wait for the result to be empty
-            return WaitUntil(
-                () => HeaderLoginForm_Email.GetAttribute("value"),
-                result => result == string.Empty);
-        }
 
         /// <summary>
         /// Helper method to wait until the expected result is available on the UI
@@ -172,7 +126,6 @@ namespace HelpMyStreetFE.Specs.PageObjects
             });
         }
 
-
         private void WaitUntilBool(Func<bool> getResult, bool expectedResult)
         {
             var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
@@ -183,5 +136,16 @@ namespace HelpMyStreetFE.Specs.PageObjects
             });
         }
 
+        private IWebElement GetElementByIdOrSelector(string id, string selector)
+        {
+            if (id != null)
+            {
+                return _webDriver.FindElement(By.Id(id));
+            }
+            else
+            {
+                return _webDriver.FindElement(By.CssSelector(selector));
+            }
+        }
     }
 }
