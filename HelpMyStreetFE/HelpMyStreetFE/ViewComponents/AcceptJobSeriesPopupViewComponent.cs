@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.ViewComponents
             var vm = new AcceptJobSeriesPopupViewModel()
             {
                 RequestSummary = request,
-                OpenJobsForUser = await _requestService.FilterAndDedupeOpenJobsForUser(request.JobSummaries, user, cancellationToken),
+                OpenJobsForUser = await _requestService.FilterAndDedupeOpenJobsForUser(request.JobSummaries.Where(j => j.JobStatus.Equals(JobStatuses.Open)), user, cancellationToken),
                 GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(request.ReferringGroupID, request.JobSummaries.First().SupportActivity, cancellationToken),
                 RequestType = request.RequestType,
             };
