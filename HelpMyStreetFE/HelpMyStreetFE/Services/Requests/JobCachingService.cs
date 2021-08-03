@@ -103,8 +103,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return await _memDistCache_RequestIdLookup.GetCachedDataAsync(async (cancellationToken) =>
             {
-                var jobSummary = await _requestHelpRepository.GetJobSummaryAsync(jobId);
-                return jobSummary.RequestID;
+                return await _requestHelpRepository.GetRequestId(jobId);
             }, GetJobCacheKey(jobId), refreshBehaviour, cancellationToken, notInCacheBehaviour);
         }
 
