@@ -9,6 +9,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account;
+using HelpMyStreetFE.Models.Account.Jobs;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +21,15 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IRequestService _requestService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IGroupService _groupService;
+        private readonly IFilterService _filterService;
 
-        public AccountNavBadgeViewComponent(IRequestService requestService, IGroupMemberService groupMemberService, IGroupService groupService)
+        public AccountNavBadgeViewComponent(IRequestService requestService, IFilterService filterService, IGroupMemberService groupMemberService, IGroupService groupService)
         {
             _requestService = requestService;
             _groupMemberService = groupMemberService;
             _groupService = groupService;
+            _filterService = filterService;
+
         }
 
         public async Task<IViewComponentResult> InvokeAsync(User user, MenuPage menuPage, string groupKey, string cssClass, CancellationToken cancellationToken)
@@ -74,7 +78,7 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
-                        => (await _requestService.GetDedupedOpenJobsForUserFromRepo(user, false, cancellationToken))?.Count(),
+                        => (await GetFilteredOpenJobsForUser(user, cancellationToken))?.Count(),
                     MenuPage.OpenShifts
                         => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
@@ -91,6 +95,22 @@ namespace HelpMyStreetFE.ViewComponents
                 // Skip badge if request service has been too slow to respond
                 return 0;
             }
+        }
+
+        private async Task<IEnumerable<IEnumerable<JobSummary>>> GetFilteredOpenJobsForUser(User user, CancellationToken cancellationToken)
+        {
+            var openRequests = await _requestService.GetDedupedOpenJobsForUserFromRepo(user, false, cancellationToken);
+            
+            if (openRequests == null)
+            {
+                return null;
+            }
+            
+            var filterSet = await _filterService.GetDefaultSortAndFilterSet(JobSet.UserOpenRequests_NotMatchingCriteria, null, new List<JobStatuses> { JobStatuses.Open }, user, cancellationToken);
+            var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
+            filterRequest.UpdateFromFilterSet(filterSet);
+
+            return _filterService.SortAndFilterOpenJobs(openRequests, filterRequest);
         }
     }
 }
