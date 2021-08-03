@@ -97,7 +97,7 @@ namespace HelpMyStreetFE.ViewComponents
             }
         }
 
-        private async Task<IEnumerable<JobSummary>> GetFilteredOpenJobsForUser(User user, CancellationToken cancellationToken)
+        private async Task<IEnumerable<IEnumerable<JobSummary>>> GetFilteredOpenJobsForUser(User user, CancellationToken cancellationToken)
         {
             var openRequests = await _requestService.GetDedupedOpenJobsForUserFromRepo(user, false, cancellationToken);
             
@@ -110,7 +110,7 @@ namespace HelpMyStreetFE.ViewComponents
             var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
             filterRequest.UpdateFromFilterSet(filterSet);
 
-            return _filterService.SortAndFilterJobs(openRequests, filterRequest);
+            return _filterService.SortAndFilterOpenJobs(openRequests, filterRequest);
         }
     }
 }
