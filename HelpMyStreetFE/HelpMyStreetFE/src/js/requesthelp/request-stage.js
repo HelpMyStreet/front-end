@@ -127,6 +127,10 @@ var updateOptionsForActivity = function (taskId) {
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().hide(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
+    } else if (taskId == 33) { // Skill share
+        $('#requestorFor_1').parent().hide(); // myself
+        $('#requestorFor_2').parent().show(); // someone else
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
     } else {
         if (requestHelpFormVariant == 11 || requestHelpFormVariant == 14 || requestHelpFormVariant == 16) { // Age UK Kent Admin Pages
             $('#requestorFor_1').parent().hide(); // myself
