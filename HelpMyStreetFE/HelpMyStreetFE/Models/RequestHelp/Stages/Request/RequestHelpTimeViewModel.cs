@@ -31,7 +31,6 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
             {
                 if (value)
                 {
-                    HideTileWhen.Add(new Tuple<string, string>("activity", "VolunteerSupport"));
                     HideTileWhen.Add(new Tuple<string, string>("activity", "VaccineSupport"));
                 }
             }

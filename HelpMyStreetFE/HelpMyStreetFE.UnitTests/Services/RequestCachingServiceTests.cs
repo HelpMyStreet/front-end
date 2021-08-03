@@ -8,6 +8,7 @@ using HelpMyStreet.Cache;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Repositories;
 using HelpMyStreetFE.Services.Requests;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -17,6 +18,7 @@ namespace HelpMyStreetFE.UnitTests.Services
     {
         private Mock<IRequestHelpRepository> _repo;
         private Mock<IMemDistCache<RequestSummary>> _cache;
+        private Mock<ILogger<RequestCachingService>> _logger;
 
         private RequestCachingService _classUnderTest;
 
@@ -30,6 +32,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         {
             _repo = new Mock<IRequestHelpRepository>();
             _cache = new Mock<IMemDistCache<RequestSummary>>();
+            _logger = new Mock<ILogger<RequestCachingService>>();
 
             _requestSummaries = new Dictionary<string, RequestSummary> {
                 { "request-caching-service-request-1", new RequestSummary{ RequestID = 1} },
@@ -54,7 +57,7 @@ namespace HelpMyStreetFE.UnitTests.Services
             _repo.Setup(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()))
                                     .ReturnsAsync((IEnumerable<int> requestIDs) => requestIDs.Select(r => new RequestSummary { RequestID = r }));
 
-            _classUnderTest = new RequestCachingService(_repo.Object, _cache.Object);
+            _classUnderTest = new RequestCachingService(_repo.Object, _logger.Object, _cache.Object);
         }
 
         [Test]
