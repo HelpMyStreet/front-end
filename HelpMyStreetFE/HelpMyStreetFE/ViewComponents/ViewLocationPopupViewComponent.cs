@@ -62,7 +62,7 @@ namespace HelpMyStreetFE.ViewComponents
                     Coordinates = postCodeCoordinates,
                     Distance = distanceInMiles,
                     PostCode = postCode,
-                    encodedJobID = Base64Utils.Base64Encode(jobId.HasValue ? jobId.Value : requestId.Value)
+                    encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
                 };
             } else
             {
