@@ -46,6 +46,11 @@ steps:
     projects: 'HelpMyStreetFE\HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
+- task: SpecFlowPlus@0
+  inputs:
+    generatorSource: 'FeatureFolder'
+    projectFilePath:  'HelpMyStreetFE.Specs/HelpMyStreetFE.Specs/HelpMyStreetFE.Specs.csproj'
+
 - task: Npm@1
   displayName: npm install
   inputs:
