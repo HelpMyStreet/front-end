@@ -19,7 +19,7 @@ namespace HelpMyStreetFE.Specs.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("SiteNavigation", Description="\tSimple calculator for adding two numbers", SourceFile="Features\\SiteNavigation.feature", SourceLine=0)]
+    [TechTalk.SpecRun.FeatureAttribute("SiteNavigation", Description="\tNavigation using top menu bar on home page", SourceFile="Features\\SiteNavigation.feature", SourceLine=0)]
     public partial class SiteNavigationFeature
     {
         
@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Specs.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "SiteNavigation", "\tSimple calculator for adding two numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "SiteNavigation", "\tNavigation using top menu bar on home page", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
