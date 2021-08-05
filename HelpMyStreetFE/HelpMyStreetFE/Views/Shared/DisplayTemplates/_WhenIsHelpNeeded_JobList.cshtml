@@ -1,0 +1,26 @@
+﻿@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Models;
+
+@model IEnumerable<JobSummary>
+
+@{ 
+    var allDates = Model.Select(j => j.DueDate).Distinct();
+    var nextJobDue = Model.Where(j => j.JobStatus.Incomplete()).OrderBy(j => j.DueDate).First();
+    var nextJobDueIsFirst = nextJobDue.DueDate.Equals(allDates.Min());
+}
+
+<span class="due-date" title="@((nextJobDue.DueDateType == DueDateType.On ? "On " : "On or before ") + nextJobDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
+    @if (allDates.Count() == 1)
+    {
+        <span>Due @nextJobDue.DueDate.FriendlyFutureDate()</span>
+    }
+    else if (nextJobDueIsFirst)
+    {
+        <span>First due @nextJobDue.DueDate.FriendlyFutureDate()</span>
+    }
+    else
+    {
+        <span>Next due @nextJobDue.DueDate.FriendlyFutureDate()</span>
+    }
+</span>
