@@ -131,7 +131,9 @@ namespace HelpMyStreetFE.Services.Requests
                 var userJobs = await GetShiftsForUserAsync(user.ID, null, null, true, cancellationToken);
                 var notMyJobs = stillOpenJobs?.Where(j => !userJobs.Contains(j, _shiftJobDedupe_EqualityComparer));
 
-                return notMyJobs;
+                var dedupedJobs = notMyJobs?.GroupBy(j => j, _shiftJobDedupe_EqualityComparer).Select(g => g.First());
+
+                return dedupedJobs;
             }
             return null;
         }
