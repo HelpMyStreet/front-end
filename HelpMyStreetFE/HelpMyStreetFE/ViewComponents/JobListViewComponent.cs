@@ -199,7 +199,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             var jobListViewModel = new ListViewModel<JobViewModel<RequestSummary>>();
 
-            IEnumerable<RequestSummary> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<RequestSummary> requests = jobFilterRequest.JobSet switch
             {
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
@@ -207,7 +207,7 @@ namespace HelpMyStreetFE.ViewComponents
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
-            if (jobs == null)
+            if (requests == null)
             {
                 throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
             }
@@ -216,17 +216,17 @@ namespace HelpMyStreetFE.ViewComponents
             //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
             jobListViewModel.UnfilteredItems = int.MaxValue;
 
-            jobs = _filterService.SortAndFilterRequests(jobs, jobFilterRequest);
+            requests = _filterService.SortAndFilterRequests(requests, jobFilterRequest);
 
-            jobListViewModel.FilteredItems = jobs.Count();
+            jobListViewModel.FilteredItems = requests.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
 
             if (jobFilterRequest.ResultsToShow > 0)
             {
-                jobs = jobs.Take(jobFilterRequest.ResultsToShow);
+                requests = requests.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<RequestSummary>
+            jobListViewModel.Items = await Task.WhenAll(requests.Select(async a => new JobViewModel<RequestSummary>
             {
                 Item = a,
                 Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
