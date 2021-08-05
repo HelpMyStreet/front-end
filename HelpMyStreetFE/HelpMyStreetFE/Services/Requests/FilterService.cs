@@ -319,18 +319,18 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<RequestSummary> SortAndFilterRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr)
+        public IEnumerable<RequestSummary> SortAndFilterGroupRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr)
         {
             var requestsToDisplay = requests.Where(
-                j => (jfr.SupportActivities == null || j.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
-                    && (jfr.JobStatuses == null || j.JobBasics.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
-                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Shift.Location))
-                    && (jfr.DueInNextXDays == null || j.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.Shift.StartDate)).Count() > 0)
-                    && (jfr.DueAfter == null || j.NextDueDate() >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || j.NextDueDate() <= jfr.DueBefore?.Date)
-                    && (jfr.RequestedAfter == null || j.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || j.DateRequested.Date <= jfr.RequestedBefore?.Date);
+                r => (jfr.SupportActivities == null || r.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
+                    && (jfr.JobStatuses == null || r.JobBasics.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
+                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(r.Shift.Location))
+                    && (jfr.DueInNextXDays == null || r.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(r.Shift.StartDate)).Count() > 0)
+                    && (jfr.DueAfter == null || r.NextDueDate() >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || r.NextDueDate() <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || r.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || r.DateRequested.Date <= jfr.RequestedBefore?.Date);
 
             return jfr.OrderBy switch
             {
@@ -350,6 +350,39 @@ namespace HelpMyStreetFE.Services.Requests
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Min(j => j.DateStatusLastChanged)),
                 OrderBy.DateStatusLastChanged_Descending =>
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Max(j => j.DateStatusLastChanged)),
+                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
+            };
+        }
+
+        public IEnumerable<RequestSummary> SortAndFilterMyRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr, int userId)
+        {
+            var requestsToDisplay = requests.Where(
+                r => (jfr.SupportActivities == null || r.JobBasics.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
+                    && (jfr.JobStatuses == null || r.JobBasics.Where(j => j.VolunteerUserID.Equals(userId) && jfr.JobStatuses.Contains(j.JobStatus)).Count() > 0)
+                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(r.Shift.Location))
+                    && (jfr.DueInNextXDays == null || r.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(r.Shift.StartDate)).Count() > 0)
+                    && (jfr.DueAfter == null || r.NextDueDate(userId) >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || r.NextDueDate(userId) <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || r.DateRequested.Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || r.DateRequested.Date <= jfr.RequestedBefore?.Date);
+
+            return jfr.OrderBy switch
+            {
+                OrderBy.DateDue_Ascending =>
+                   requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate(userId)),
+                OrderBy.DateDue_Descending =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate(userId)),
+                OrderBy.DateRequested_Ascending =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.DateRequested),
+                OrderBy.DateRequested_Descending =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.DateRequested),
+                OrderBy.RequiringAdminAttention =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.RequiringAdminAttentionScore()).ThenBy(r => r.NextDueDate(userId)),
+                OrderBy.DateStatusLastChanged_Ascending =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Where(j => j.VolunteerUserID.Equals(userId)).Min(j => j.DateStatusLastChanged)),
+                OrderBy.DateStatusLastChanged_Descending =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Where(j => j.VolunteerUserID.Equals(userId)).Max(j => j.DateStatusLastChanged)),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }

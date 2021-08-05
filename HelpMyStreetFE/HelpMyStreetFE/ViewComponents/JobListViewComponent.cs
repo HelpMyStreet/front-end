@@ -216,7 +216,11 @@ namespace HelpMyStreetFE.ViewComponents
             //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
             jobListViewModel.UnfilteredItems = int.MaxValue;
 
-            requests = _filterService.SortAndFilterRequests(requests, jobFilterRequest);
+            requests = jobFilterRequest.JobSet switch
+            {
+                JobSet.UserMyRequests => _filterService.SortAndFilterMyRequests(requests, jobFilterRequest, user.ID),
+                _ => _filterService.SortAndFilterGroupRequests(requests, jobFilterRequest)
+            };
 
             jobListViewModel.FilteredItems = requests.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
