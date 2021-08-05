@@ -8,7 +8,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
 {
     public class GenericPageObject
     {
-        public const string HomePageUrl = "https://localhost:5001/";
+        public const string HomePageUrl = "https://helpmystreet-uat.azurewebsites.net/";
 
         private readonly IWebDriver _webDriver;
 
