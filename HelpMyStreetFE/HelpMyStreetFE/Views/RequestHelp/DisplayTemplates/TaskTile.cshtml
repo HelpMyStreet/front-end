@@ -9,7 +9,7 @@
 @{
     var activities = new List<RequestActivityViewModel>
 {
-                new RequestActivityViewModel{ Activity = SupportActivities.WellbeingPackage, Description = "Collection and delivery of an Age UK \"Vitals for Veterans\" wellbeing package"},
+                new RequestActivityViewModel{ Activity = SupportActivities.WellbeingPackage, Description = "Collection and delivery of a ready-made wellbeing package"},
                 new RequestActivityViewModel{ Activity = SupportActivities.Shopping, Description = "Picking up groceries and other essentials (e.g. food, toiletries, household products)"},
                 new RequestActivityViewModel{ Activity = SupportActivities.FaceMask ,Description = "Finding someone to provide washable fabric face coverings"},
                 new RequestActivityViewModel{ Activity = SupportActivities.CheckingIn,  Description = "Checking that someone is OK"},
@@ -34,8 +34,10 @@
                 new RequestActivityViewModel{ Activity = SupportActivities.DigitalSupport, Description = "Help with computers, phones and other technology for people finding it difficult to get online"},
                 new RequestActivityViewModel{ Activity = SupportActivities.InPersonBefriending, Description = "Face-to-face meetings to reduce loneliness"},
                 new RequestActivityViewModel{ Activity = SupportActivities.PracticalSupport, Description = "Help with everyday tasks (e.g. changing a lightbulb, filling in forms etc.)"},
-                new RequestActivityViewModel{ Activity = SupportActivities.BankStaffVaccinator, Description = "Finding registered vaccinators", MultiVolunteer = true }
-    };
+                new RequestActivityViewModel{ Activity = SupportActivities.BankStaffVaccinator, Description = "Finding registered vaccinators", MultiVolunteer = true },
+                new RequestActivityViewModel{ Activity = SupportActivities.SkillShare, Description = "Finding volunteers to share their skills and interests"}
+       };
+
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();
 
