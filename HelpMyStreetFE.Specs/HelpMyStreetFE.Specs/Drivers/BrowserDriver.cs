@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -12,12 +12,14 @@ namespace HelpMyStreetFE.Specs.Drivers
     public class BrowserDriver : IDisposable
     {
         private readonly Lazy<IWebDriver> _currentWebDriverLazy;
+        private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private bool _isDisposed;
 
-        public BrowserDriver(ScenarioContext scenarioContext)
+        public BrowserDriver(FeatureContext featureContext, ScenarioContext scenarioContext)
         {
             _currentWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
+            _featureContext = featureContext;
             _scenarioContext = scenarioContext;
         }
 
@@ -39,13 +41,15 @@ namespace HelpMyStreetFE.Specs.Drivers
             chromeCapability.AddAdditionalCapability("browser", "Chrome", true);
             chromeCapability.AddAdditionalCapability("browser_version", "latest", true);
             chromeCapability.AddAdditionalCapability("os", "Windows", true);
-            chromeCapability.AddAdditionalCapability("name", _scenarioContext.ScenarioInfo.Title, true);
-            chromeCapability.AddAdditionalCapability("build", $"Local test build {version} run {_scenarioContext["test-run-id"]}", true);
+            chromeCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
+            chromeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
+            chromeCapability.AddAdditionalCapability("build", $"Local test build {version}", true);
+            chromeCapability.AddAdditionalCapability("browserstack.user", "", true);
+            chromeCapability.AddAdditionalCapability("browserstack.key", "", true);
 
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), chromeCapability);
 
             return driver;
-
 
             //We use the Chrome browser
             //var chromeDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
@@ -55,7 +59,8 @@ namespace HelpMyStreetFE.Specs.Drivers
 
         public void MarkResult(bool success, string reason)
         {
-            var jsScript = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"" + (success ? "passed" : "failed") + "\", \"reason\": \"" + reason + "\"}}";
+            var excapedReason = "";// reason?.Replace("\"", "'");
+            var jsScript = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"" + (success ? "passed" : "failed") + "\", \"reason\": \"" + excapedReason + "\"}}";
 
             ((IJavaScriptExecutor)Current).ExecuteScript(jsScript);
         }

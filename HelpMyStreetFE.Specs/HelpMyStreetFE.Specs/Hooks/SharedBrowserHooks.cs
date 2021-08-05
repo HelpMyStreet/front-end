@@ -18,25 +18,24 @@ namespace HelpMyStreetFE.Specs.Hooks
     [Binding]
     public class SharedBrowserHooks
     {
+        private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private readonly BrowserDriver _browserDriver;
 
-        public SharedBrowserHooks(ScenarioContext scenarioContext, BrowserDriver browserDriver)
+        public SharedBrowserHooks(FeatureContext featureContext, ScenarioContext scenarioContext, BrowserDriver browserDriver)
         {
+            _featureContext = featureContext;
             _scenarioContext = scenarioContext;
             _browserDriver = browserDriver;
         }
 
-        [BeforeTestRun]
-        public static void BeforeTestRun(ScenarioContext scenarioContext)
+        [BeforeFeature]
+        public static void BeforeFeature()
         {
-           // scenarioContext.Add("test-run-id", Guid.NewGuid());
-            //Initialize a shared BrowserDriver in the global container
-            //testThreadContainer.BaseContainer.Resolve<BrowserDriver>();
         }
 
         [AfterScenario]
-        public void AfterTestRun()
+        public void AfterScenario()
         {
             ScenarioExecutionStatus status = _scenarioContext.ScenarioExecutionStatus;
 
@@ -46,7 +45,7 @@ namespace HelpMyStreetFE.Specs.Hooks
                     _browserDriver.MarkResult(true, null);
                     break;
                 default:
-                    _browserDriver.MarkResult(false, _scenarioContext.TestError.Message);
+                    _browserDriver.MarkResult(false, _scenarioContext.TestError?.Message);
                     break;
             }
         }
