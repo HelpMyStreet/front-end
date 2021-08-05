@@ -239,6 +239,7 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<SupportActivities>() { Value = SupportActivities.DigitalSupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.InPersonBefriending, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.PracticalSupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.SkillShare, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
 
                         // The following are not currently on any request help form
