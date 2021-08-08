@@ -54,7 +54,7 @@ export async function showFeedbackPopup(jobId, role, successCallback) {
 
     initialiseGrowOnFocus();
 
-    initialiseTileSelector();
+    initialiseTileSelectors();
 }
 
 function validateFeedbackForm(form) {

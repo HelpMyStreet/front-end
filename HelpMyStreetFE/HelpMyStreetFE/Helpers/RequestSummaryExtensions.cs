@@ -31,5 +31,18 @@ namespace HelpMyStreetFE.Helpers
             }
             return DateTime.MaxValue;
         }
+
+        public static DateTime NextDueDate(this RequestSummary requestSummary, int userId)
+        {
+            if (requestSummary.Shift != null)
+            {
+                return requestSummary.Shift.StartDate;
+            }
+            else if (requestSummary.JobSummaries.Exists(j => j.JobStatus.Incomplete() && j.VolunteerUserID.Equals(userId)))
+            {
+                return requestSummary.JobSummaries.Where(j => j.JobStatus.Incomplete() && j.VolunteerUserID.Equals(userId)).Min(j => j.DueDate);
+            }
+            return DateTime.MaxValue;
+        }
     }
 }
