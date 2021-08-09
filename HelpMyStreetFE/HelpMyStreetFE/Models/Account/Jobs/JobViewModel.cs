@@ -24,17 +24,17 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         {
             var postCode = Location?.LocationDetails?.Address?.Postcode ?? "";
             var distance = Location?.Distance ?? 0.0;
-            return "";
-        //    return Item switch
-        //    {
-        //        IEnumerable<JobDetail> jd => $"{postCode.Split(" ")[0]}, {distance} miles away",
-        //        JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{postCode.Split(" ")[0]}, {distance} miles away",
-        //        JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode}",
-        //        JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode.Split(" ")[0]}",
-        //        ShiftJob sj => $"{Location.LocationDetails.Name}",
-        //        RequestSummary rs => postCode,
-        //        _ => "",
-        //    };
+
+            return Item switch
+            {
+                IEnumerable<JobDetail> jd => $"{postCode.Split(" ")[0]}, {distance} miles away",
+                JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{postCode.Split(" ")[0]}, {distance} miles away",
+                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode}",
+                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode.Split(" ")[0]}",
+                ShiftJob sj => $"{Location.LocationDetails.Name}",
+                RequestSummary rs => postCode,
+                _ => "",
+            };
         }
 
         private bool GetPopupVisibility()

@@ -25,6 +25,7 @@ using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Services.Groups;
 using Microsoft.AspNetCore.Http;
 using HelpMyStreetFE.Services.Users;
+using System.Security.Claims;
 
 namespace HelpMyStreetFE.Services
 {
@@ -39,8 +40,7 @@ namespace HelpMyStreetFE.Services
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly IGroupMemberService _groupMemberService;
-        //private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IAuthService _authService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private const string CACHE_KEY_PREFIX = "address-service-";
 
@@ -55,8 +55,7 @@ namespace HelpMyStreetFE.Services
             IMemDistCache<double> memDistCache_PostcodeDistances,
             IGroupRepository groupRepository,
             IGroupMemberService groupMemberService,
-            //IHttpContextAccessor httpContextAccessor,
-            IAuthService authService,
+            IHttpContextAccessor httpContextAccessor,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -68,8 +67,7 @@ namespace HelpMyStreetFE.Services
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
             _memDistCache_PostcodeDistances = memDistCache_PostcodeDistances;
-            _authService = authService;
-            //_httpContextAccessor = httpContextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
@@ -193,13 +191,19 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-postcode-distances-{postCode1}-{postCode2}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<double> GetDistanceFromPostcodeForCurrentUser(string postcode, CancellationToken cancellationToken)
+        public async Task<double> GetDistanceFromPostcodeForCurrentUser(string postCode, CancellationToken cancellationToken)
         {
-            //var user = await _authService.GetCurrentUser(_httpContextAccessor.HttpContext, cancellationToken);
-            //if (user != null)
-            //{
-             //   return await GetDistanceBetweenPostcodes(user.PostalCode, postcode, cancellationToken);
-            //}
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
+            {
+                var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var user =  await _userRepository.GetUser(id);
+                if (user != null && !String.IsNullOrEmpty("postCode"))
+                {
+                    return await GetDistanceBetweenPostcodes(user.PostalCode, postCode, cancellationToken);
+                }
+            }
+
             return 0.0;
         }
 
