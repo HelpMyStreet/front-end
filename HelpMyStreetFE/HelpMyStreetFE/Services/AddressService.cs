@@ -23,6 +23,8 @@ using HelpMyStreet.Cache;
 using System.Threading;
 using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Services.Groups;
+using Microsoft.AspNetCore.Http;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services
 {
@@ -37,6 +39,8 @@ namespace HelpMyStreetFE.Services
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly IGroupMemberService _groupMemberService;
+        //private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAuthService _authService;
 
         private const string CACHE_KEY_PREFIX = "address-service-";
 
@@ -51,6 +55,8 @@ namespace HelpMyStreetFE.Services
             IMemDistCache<double> memDistCache_PostcodeDistances,
             IGroupRepository groupRepository,
             IGroupMemberService groupMemberService,
+            //IHttpContextAccessor httpContextAccessor,
+            IAuthService authService,
             HttpClient client) : base(client, configuration, "Services:Address")
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -62,6 +68,8 @@ namespace HelpMyStreetFE.Services
             _memDistCache_LocationDetailsList = memDistCache_LocationDetailsList;
             _memDistCache_LocationDistanceList = memDistCache_LocationDistanceList;
             _memDistCache_PostcodeDistances = memDistCache_PostcodeDistances;
+            _authService = authService;
+            //_httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<GetPostCodeResponse> CheckPostCode(string postcode)
@@ -183,6 +191,40 @@ namespace HelpMyStreetFE.Services
                     throw new HttpRequestException("Unable to fetch location details");
                 }
             }, $"{CACHE_KEY_PREFIX}-postcode-distances-{postCode1}-{postCode2}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+        }
+
+        public async Task<double> GetDistanceFromPostcodeForCurrentUser(string postcode, CancellationToken cancellationToken)
+        {
+            //var user = await _authService.GetCurrentUser(_httpContextAccessor.HttpContext, cancellationToken);
+            //if (user != null)
+            //{
+             //   return await GetDistanceBetweenPostcodes(user.PostalCode, postcode, cancellationToken);
+            //}
+            return 0.0;
+        }
+
+        public async Task<LocationWithDistance> GetLocationWithDistance(IEnumerable<IContainsLocation> locationItem, CancellationToken cancellationToken)
+        {
+            return await GetLocationWithDistance(locationItem.First(), cancellationToken);
+        }
+
+        public async Task<LocationWithDistance> GetLocationWithDistance(IContainsLocation locationItem, CancellationToken cancellationToken)
+        {
+            var locationDetails = locationItem.GetLocationDetails();
+
+            if ((int)locationDetails.Location != 0)
+            {
+                locationDetails = await GetLocationDetails(locationDetails.Location, cancellationToken);
+            }
+
+            var lwd = new LocationWithDistance()
+            {
+                Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken),
+                Location = locationDetails.Location,
+                LocationDetails = locationDetails
+            };
+
+            return lwd;
         }
     }
 }

@@ -5,7 +5,6 @@ using HelpMyStreetFE.Models.Account;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using System.Linq;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
@@ -23,16 +22,19 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 
         private string GetLocalityInformation()
         {
-            return Item switch
-            {
-                IEnumerable<JobDetail> jss => $"{jss.First().PostCode.Split(" ")[0]}, {Math.Round(jss.First().DistanceInMiles, 1)} miles away",
-                JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{js.PostCode.Split(" ")[0]}, {Math.Round(js.DistanceInMiles, 1)} miles away",
-                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{js.PostCode}",
-                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{js.PostCode.Split(" ")[0]}",
-                ShiftJob sj => $"{Location.LocationDetails.Name}",
-                RequestSummary rs => rs.PostCode,
-                _ => "",
-            };
+            var postCode = Location?.LocationDetails?.Address?.Postcode ?? "";
+            var distance = Location?.Distance ?? 0.0;
+            return "";
+        //    return Item switch
+        //    {
+        //        IEnumerable<JobDetail> jd => $"{postCode.Split(" ")[0]}, {distance} miles away",
+        //        JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{postCode.Split(" ")[0]}, {distance} miles away",
+        //        JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode}",
+        //        JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode.Split(" ")[0]}",
+        //        ShiftJob sj => $"{Location.LocationDetails.Name}",
+        //        RequestSummary rs => postCode,
+        //        _ => "",
+        //    };
         }
 
         private bool GetPopupVisibility()

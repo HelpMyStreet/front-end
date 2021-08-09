@@ -21,5 +21,8 @@ namespace HelpMyStreetFE.Services
         Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken);
         Task<double> GetDistanceBetweenPostcodes(string postCode1, string postCode2, CancellationToken cancellationToken);
         Task<List<PostcodeCoordinate>> GetPostcodeCoordinates(string postcode);
+        Task<double> GetDistanceFromPostcodeForCurrentUser(string postCode, CancellationToken cancellationToken);
+        Task<LocationWithDistance> GetLocationWithDistance(IContainsLocation locationItem, CancellationToken cancellationToken);
+        Task<LocationWithDistance> GetLocationWithDistance(IEnumerable<IContainsLocation> locationItem, CancellationToken cancellationToken);
     }
 }

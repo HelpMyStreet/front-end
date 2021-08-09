@@ -78,7 +78,8 @@ namespace HelpMyStreetFE.ViewComponents
                     MenuPage.MyRequests
                         => (await _requestService.GetJobsForUserAsync(user.ID, false, cancellationToken))?.Where(j => j.JobStatus.Incomplete())?.Count(),
                     MenuPage.OpenRequests
-                        => (await GetFilteredOpenJobsForUser(user, cancellationToken))?.Count(),
+                        //=> (await GetFilteredOpenJobsForUser(user, cancellationToken))?.Count(),
+                        => 0,
                     MenuPage.OpenShifts
                         => (await _requestService.GetOpenShiftsForUserAsync(user, null, null, false, cancellationToken))?.Count(),
                     MenuPage.MyShifts
@@ -110,7 +111,7 @@ namespace HelpMyStreetFE.ViewComponents
             var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
             filterRequest.UpdateFromFilterSet(filterSet);
 
-            return _filterService.SortAndFilterOpenJobs(openRequests, filterRequest);
+            return await _filterService.SortAndFilterOpenJobs(openRequests, filterRequest, cancellationToken);
         }
     }
 }

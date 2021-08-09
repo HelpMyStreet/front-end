@@ -319,8 +319,9 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<RequestSummary> SortAndFilterRequests(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr)
+        public async Task<IEnumerable<RequestSummary>> SortAndFilterRequests(IEnumerable<RequestSummary> jobs, JobFilterRequest jfr, CancellationToken cancellationToken)
         {
+            //var jobsWithDistance = await Task.WhenAll(jobs.Select(async j => { j.DistanceInMiles = await _addressService.GetDistanceFromPostcodeForCurrentUser(j.PostCode, cancellationToken); return j; }));
             var jobsToDisplay = jobs.Where(
                 j => (jfr.SupportActivities == null || j.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
                     && (jfr.JobStatuses == null || j.JobBasics.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
@@ -354,8 +355,10 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<IEnumerable<JobSummary>> SortAndFilterOpenJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr)
+        public async Task<IEnumerable<IEnumerable<JobSummary>>> SortAndFilterOpenJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr, CancellationToken cancellationToken)
         {
+            //var jobswithDistances = await Task.WhenAll(jobs.Select(async j => await Task.WhenAll(j.Select(async jd => { jd.DistanceInMiles = await _addressService.GetDistanceFromPostcodeForCurrentUser(jd.PostCode, cancellationToken); return jd; }))));
+
             var jobsToDisplay = jobs.Where(
                 js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.SupportActivities == null || js.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
@@ -363,6 +366,7 @@ namespace HelpMyStreetFE.Services.Requests
                     && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
                     && (jfr.RequestedAfter == null || js.First().DateRequested.Date >= jfr.RequestedAfter?.Date)
                     && (jfr.RequestedBefore == null) || js.First().DateRequested.Date <= jfr.RequestedBefore?.Date);
+
 
             return jfr.OrderBy switch
             {
