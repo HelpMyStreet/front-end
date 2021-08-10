@@ -61,7 +61,7 @@ namespace HelpMyStreetFE.ViewComponents
                 case JobSet.UserOpenRequests_MatchingCriteria:
                 case JobSet.UserOpenRequests_NotMatchingCriteria:
                     vm.JobsToShow = 
-                        await _requestService.FilterAndDedupeOpenJobsForUser(vm.RequestSummary.JobSummaries, user, cancellationToken);
+                        await _requestService.FilterAndDedupeOpenJobsForUser(vm.RequestSummary.JobSummaries.Where(x=> x.JobStatus== JobStatuses.Open), user, cancellationToken);
                     viewName = "RequestDetail_OpenRequests";
                     break;
                 case JobSet.UserMyRequests:
