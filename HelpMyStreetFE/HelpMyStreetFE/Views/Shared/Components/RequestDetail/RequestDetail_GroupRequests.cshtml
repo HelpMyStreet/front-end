@@ -41,7 +41,7 @@
     var id = Base64Utils.Base64Encode(jobDetails.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
 
-    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(true, false));
+    var questionsToDisplay = jobDetails.QuestionsToDisplay(true, false);
 
     <div class="job__expander job request-job" id="@id" request-id="@requestId" data-role="@role">
         <h4>

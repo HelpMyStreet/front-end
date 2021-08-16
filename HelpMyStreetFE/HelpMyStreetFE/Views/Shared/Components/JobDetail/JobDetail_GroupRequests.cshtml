@@ -16,7 +16,7 @@
     var requestor = Model.JobDetail.Item.Requestor;
     var currentVolunteer = Model.JobDetail.Item.CurrentVolunteer;
 
-    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(true, false));
+    var questionsToDisplay = jobSummary.QuestionsToDisplay(true, false);
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 

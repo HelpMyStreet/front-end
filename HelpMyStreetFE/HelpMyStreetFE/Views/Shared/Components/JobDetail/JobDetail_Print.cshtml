@@ -13,7 +13,7 @@
     var jobSummary = Model.JobDetail.Item;
     var requestSummary = Model.JobDetail.Item.RequestSummary;
 
-    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(false, jobSummary.JobStatus == JobStatuses.InProgress));
+    var questionsToDisplay = jobSummary.QuestionsToDisplay(false, jobSummary.JobStatus == JobStatuses.InProgress);
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
