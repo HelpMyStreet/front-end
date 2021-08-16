@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Services.Requests
             var result = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
             {
                 return await GetUserOpenJobsFromRepo(user);
-            }, GetUserOpenJobsCacheKey(user.ID), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData));
+            }, GetUserOpenJobsCacheKey(user.ID), RefreshBehaviour.DontWaitForFreshData, cancellationToken, GetNotInCacheBehaviour(waitForData), ResetTimeFactory.OnMinute);
 
             if (result == default && waitForData)
             {
@@ -89,7 +89,7 @@ namespace HelpMyStreetFE.Services.Requests
             await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
             {
                 return await GetUserOpenJobsFromRepo(user);
-            }, GetUserOpenJobsCacheKey(user.ID), cancellationToken);
+            }, GetUserOpenJobsCacheKey(user.ID), cancellationToken, ResetTimeFactory.OnMinute);
         }
 
         public async Task RefreshUserRequestsCacheAsync(int userId, CancellationToken cancellationToken)
