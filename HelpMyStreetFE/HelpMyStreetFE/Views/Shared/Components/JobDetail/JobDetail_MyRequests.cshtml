@@ -13,7 +13,7 @@
 
     var userAllocatedToTask = jobDetails.VolunteerUserID.Equals(Model.JobDetail.User.ID);
 
-    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(false, userAllocatedToTask) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(false, userAllocatedToTask));
     var encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID);
     var encodedRequestID = Base64Utils.Base64Encode(jobDetails.RequestID);
     var encodedRole = Base64Utils.Base64Encode((int)Model.JobDetail.UserRole);
