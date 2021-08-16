@@ -78,7 +78,7 @@ namespace HelpMyStreetFE.Controllers {
                     var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
                     if (job.RequestType.Equals(RequestType.Task))
                     {
-                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
+                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken, s)).FeedbackDue;
                     }
                 }
 
@@ -174,7 +174,7 @@ namespace HelpMyStreetFE.Controllers {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken);
+            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken, null);
 
             if (feedbackStatus.FeedbackDue)
             {
@@ -210,11 +210,11 @@ namespace HelpMyStreetFE.Controllers {
             return ViewComponent("ViewLocationPopup", new { jobId, requestId });
         }
 
-        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)
+        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken, JobStatuses? newJobStatus)
         {
             var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
 
-            if (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)
+            if ((newJobStatus == JobStatuses.Done || newJobStatus == JobStatuses.Cancelled) || (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled))
             {
                 bool feedbackSubmitted = await _feedbackService.GetFeedbackExists(jobId, role, userId);
 
