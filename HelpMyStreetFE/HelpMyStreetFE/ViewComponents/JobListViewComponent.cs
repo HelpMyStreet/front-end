@@ -219,8 +219,8 @@ namespace HelpMyStreetFE.ViewComponents
 
             requests = jobFilterRequest.JobSet switch
             {
-                JobSet.UserMyRequests => _filterService.SortAndFilterMyRequests(requests, jobFilterRequest, user.ID),
-                _ => _filterService.SortAndFilterGroupRequests(requests, jobFilterRequest)
+                JobSet.UserMyRequests => await _filterService.SortAndFilterRequests(requests, jobFilterRequest, user.ID, cancellationToken),
+                _ => await _filterService.SortAndFilterRequests(requests, jobFilterRequest, null, cancellationToken)
             };
 
             jobListViewModel.FilteredItems = requests.Count();
