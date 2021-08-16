@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> PostTaskFeedbackCapture(string j, string r, string f, CancellationToken cancellationToken)
         {
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return Redirect("/Error/401");
             }
@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return Redirect("/Error/401");
             }

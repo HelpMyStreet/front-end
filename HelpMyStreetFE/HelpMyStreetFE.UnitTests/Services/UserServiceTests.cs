@@ -9,6 +9,7 @@ using HelpMyStreet.Cache;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Services;
 using HelpMyStreetFE.Services.Users;
+using HelpMyStreetFE.Services.Groups;
 
 namespace HelpMyStreetFE.UnitTests.Services
 {
@@ -17,7 +18,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         private Mock<IUserRepository> _userRepository;
         private Mock<ILogger<HelpMyStreetFE.Services.Users.UserService>> _logger;
         private Mock<IMemDistCache<User>> _memDistCache;
-        private Mock<IUserLocationService> _userLocationService;
+        private Mock<IGroupService> _groupService;
 
         [SetUp]
         public void Setup()
@@ -25,13 +26,13 @@ namespace HelpMyStreetFE.UnitTests.Services
             _userRepository = new Mock<IUserRepository>();
             _logger = new Mock<ILogger<HelpMyStreetFE.Services.Users.UserService>>();
             _memDistCache = new Mock<IMemDistCache<User>>();
-            _userLocationService = new Mock<IUserLocationService>();
+            _groupService = new Mock<IGroupService>();
         }
 
         [Test]
         public void FormatName_EmptyString()
         {
-            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _userLocationService.Object);
+            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object,  _logger.Object, _memDistCache.Object, _groupService.Object);
 
             Assert.AreEqual("", userService.FormatName(""));
         }
@@ -39,7 +40,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         [Test]
         public void FormatName_ShortName()
         {
-            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _userLocationService.Object);
+            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _groupService.Object);
 
             Assert.AreEqual("A B C O'd", userService.FormatName(" a b C o'd"));
         }
@@ -47,7 +48,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         [Test]
         public void FormatName_MultiWordName()
         {
-            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _userLocationService.Object);
+            HelpMyStreetFE.Services.Users.UserService userService = new HelpMyStreetFE.Services.Users.UserService(_userRepository.Object, _logger.Object, _memDistCache.Object, _groupService.Object);
 
             Assert.AreEqual("Martin Seamus MARTY McFly", userService.FormatName("    martin seamus   MARTY mcFly "));
         }

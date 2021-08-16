@@ -23,7 +23,6 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IFilterService _filterService;
-        private readonly IAddressService _addressService;
         private readonly IUserLocationService _userLocationService;
 
         public JobListViewComponent(
@@ -31,15 +30,13 @@ namespace HelpMyStreetFE.ViewComponents
             IAuthService authService, 
             IGroupMemberService groupMemberService, 
             IFilterService filterService,
-            IUserLocationService userLocationService,
-            IAddressService addressService)
+            IUserLocationService userLocationService)
         {
             _userLocationService = userLocationService;
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
             _filterService = filterService;
-            _addressService = addressService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)

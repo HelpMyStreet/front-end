@@ -220,8 +220,8 @@ namespace HelpMyStreetFE.Controllers {
                 }
                 else if (!job.Archive && (role.Equals(RequestRoles.GroupAdmin) || job.VolunteerUserID.Equals(userId)))
                 {
-                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
-                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl($"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl($"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
                     
                     return new JobFeedbackStatus
                     {

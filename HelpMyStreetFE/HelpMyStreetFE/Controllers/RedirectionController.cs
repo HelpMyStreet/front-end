@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(LINK_EXPIRED_URL);
             }
 
-            _authService.PutSessionAuthorisedUrl(HttpContext, destination);
+            _authService.PutSessionAuthorisedUrl(destination);
 
             return Redirect(destination);
         }

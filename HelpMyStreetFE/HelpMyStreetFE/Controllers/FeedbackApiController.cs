@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Controllers
         [AuthorizeAttributeNoRedirect]
         public IActionResult PostTaskFeedbackCapturePopup(string j, string r)
         {
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return StatusCode((int)HttpStatusCode.Unauthorized);
             }
@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return StatusCode((int)HttpStatusCode.Unauthorized);
             }

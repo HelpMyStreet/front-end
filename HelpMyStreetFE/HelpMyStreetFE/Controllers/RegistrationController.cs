@@ -89,7 +89,7 @@ namespace HelpMyStreetFE.Controllers
                 _logger.LogInformation("Posting new user");
                 var uid = await _authService.VerifyIdTokenAsync(userData.Token);
                 await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), userData.Source);
-                await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
+                await _authService.LoginWithTokenAsync(userData.Token);
 
                 return Ok();
             }

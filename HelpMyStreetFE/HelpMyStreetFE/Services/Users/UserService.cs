@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Services.Users
 
         private const string CACHE_KEY_PREFIX = "user-service-";
 
-        public UserService(IUserRepository userRepository, IGroupService groupService, ILogger<UserService> logger, IMemDistCache<User> memDistCache)
+        public UserService(IUserRepository userRepository, ILogger<UserService> logger, IMemDistCache<User> memDistCache, IGroupService groupService)
         {
             _userRepository = userRepository;
             _logger = logger;

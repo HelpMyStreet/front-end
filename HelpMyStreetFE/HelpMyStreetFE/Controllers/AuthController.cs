@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                await _authService.LoginWithTokenAsync(loginRequest.token, HttpContext);
+                await _authService.LoginWithTokenAsync(loginRequest.token);
                 return Ok();
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await _authService.Logout(HttpContext);
+            await _authService.Logout();
             return RedirectToAction("Index", "Home");            
         }
     }

@@ -63,7 +63,7 @@ namespace HelpMyStreetFE.Controllers
                     if (user == null)
                     {
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
-                        await _authService.LoginWithUserId(validUserId.Value, HttpContext, cancellationToken);
+                        await _authService.LoginWithUserId(validUserId.Value, cancellationToken);
                     }
                 }
                 return handleValidationTokenResponse(response);
