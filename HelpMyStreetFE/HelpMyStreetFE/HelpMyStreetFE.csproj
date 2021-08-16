@@ -17,6 +17,7 @@
     <None Remove="Models\Requests\**" />
     <None Remove="src\sass\components\NewFolder1\**" />
     <None Remove="Views\Shared\Components\Feedback\**" />
+    <Content Remove="wwwroot\img\community\ageconnectscardiff\banner.png" />
     <None Remove="Views\Shared\Components\ViewLocationPopup\" />
     <Content Remove="wwwroot\img\community\ageUK\midmersey\" />
     <Content Remove="wwwroot\img\community\ageUK\midmersey\carousel1\" />
@@ -69,6 +70,7 @@
     <Folder Include="wwwroot\img\community\ageUK\notts\" />
     <Folder Include="wwwroot\img\community\ageUK\notts\balderton\" />
     <Folder Include="wwwroot\img\community\ageUK\notts\balderton\carousel1\" />
+    <Folder Include="wwwroot\img\community\ageconnectscardiff\" />
     <Folder Include="wwwroot\img\community\ageconnectscardiff\carousel1\" />
     <Folder Include="wwwroot\pdf\ageconnectscardiff\" />
     <Folder Include="wwwroot\img\community\vacc\mansfield-cvs\" />
@@ -77,6 +79,4 @@
     <Folder Include="Views\Shared\Components\ViewLocationPopup\" />
     <Folder Include="wwwroot\img\community\ageUK\midmersey\carousel1\" />
   </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>
