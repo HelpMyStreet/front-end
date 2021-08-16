@@ -322,7 +322,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<RequestSummary>> SortAndFilterRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr, int? userId, CancellationToken cancellationToken)
         {
-           var requestsWithDistances = await Task.WhenAll(requests.Select(async r => { r.DistanceInMiles = (await _addressService.GetLocationWithDistance(r, cancellationToken)).Distance; return r; }));
+           var requestsWithDistances = await Task.WhenAll(requests.Select(async r => { r.DistanceInMiles = (await _addressService.GetLocationWithDistanceForCurrentUser(r, cancellationToken)).Distance; return r; }));
 
             var requestsToDisplay = requestsWithDistances.Where(
                 r => (jfr.SupportActivities == null || r.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)

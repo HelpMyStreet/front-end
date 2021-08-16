@@ -122,11 +122,11 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a.Select(j => new JobDetail(j)),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-                Location = await _addressService.GetLocationWithDistance(a, cancellationToken),
+                Location = await _addressService.GetLocationWithDistanceForCurrentUser(a.First(), cancellationToken),
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.First().ReferringGroupID, a.First().SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.Any(j => j.JobID.Equals(jobFilterRequest.HighlightJobId)) || a.First().RequestID.Equals(jobFilterRequest.HighlightRequestId),
-            })); ;
+            }));
 
             if (jobListViewModel.UnfilteredItems == jobListViewModel.FilteredItems && jobListViewModel.UnfilteredItems <= 5)
             {
@@ -176,7 +176,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<ShiftJob>()
             {
                 Item = a,
-                Location = await _addressService.GetLocationWithDistance(a, cancellationToken),
+                Location = await _addressService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
@@ -234,7 +234,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobListViewModel.Items = await Task.WhenAll(requests.Select(async a => new JobViewModel<RequestSummary>
             {
                 Item = a,
-                Location = await _addressService.GetLocationWithDistance(a, cancellationToken),
+                Location = await _addressService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
                 User = user,
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,

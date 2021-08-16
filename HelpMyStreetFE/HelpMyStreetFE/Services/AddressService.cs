@@ -207,29 +207,21 @@ namespace HelpMyStreetFE.Services
             return 0.0;
         }
 
-        public async Task<LocationWithDistance> GetLocationWithDistance(IEnumerable<IContainsLocation> locationItem, CancellationToken cancellationToken)
-        {
-            return await GetLocationWithDistance(locationItem.First(), cancellationToken);
-        }
-
-        public async Task<LocationWithDistance> GetLocationWithDistance(IContainsLocation locationItem, CancellationToken cancellationToken)
+        public async Task<LocationWithDistance> GetLocationWithDistanceForCurrentUser(IContainsLocation locationItem, CancellationToken cancellationToken)
         {
             var locationDetails = locationItem.GetLocationDetails();
 
-            if ((int)locationDetails.Location != 0)
+            if (locationDetails.Location != 0)
             {
                 locationDetails = await GetLocationDetails(locationDetails.Location, cancellationToken);
             }
 
             var lwd = new LocationWithDistance()
             {
-                Distance = 0.0,
+                Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken),
                 Location = locationDetails.Location,
                 LocationDetails = locationDetails
             };
-
-            
-            lwd.Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken);
 
             return lwd;
         }

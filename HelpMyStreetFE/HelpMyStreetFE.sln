@@ -1,11 +1,11 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpMyStreetFE.UnitTests", "HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj", "{AF5BA1F6-3877-4CF5-BFDC-5DCEFDD8805F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpMyStreetFE", "HelpMyStreetFE\HelpMyStreetFE.csproj", "{4D1221D4-65B6-4B11-AA9E-4697CCF9B036}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpMyStreetFE", "HelpMyStreetFE\HelpMyStreetFE.csproj", "{08214EB0-48F0-4F31-858A-17134575138E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{AF5BA1F6-3877-4CF5-BFDC-5DCEFDD8805F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF5BA1F6-3877-4CF5-BFDC-5DCEFDD8805F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF5BA1F6-3877-4CF5-BFDC-5DCEFDD8805F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4D1221D4-65B6-4B11-AA9E-4697CCF9B036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D1221D4-65B6-4B11-AA9E-4697CCF9B036}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4D1221D4-65B6-4B11-AA9E-4697CCF9B036}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D1221D4-65B6-4B11-AA9E-4697CCF9B036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08214EB0-48F0-4F31-858A-17134575138E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08214EB0-48F0-4F31-858A-17134575138E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08214EB0-48F0-4F31-858A-17134575138E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08214EB0-48F0-4F31-858A-17134575138E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
