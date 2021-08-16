@@ -46,12 +46,14 @@ namespace HelpMyStreetFE.UnitTests.Services
                                                    It.IsAny<string>(),
                                                    It.IsAny<RefreshBehaviour>(),
                                                    It.IsAny<CancellationToken>(),
-                                                   It.IsAny<NotInCacheBehaviour>()))
+                                                   It.IsAny<NotInCacheBehaviour>(), 
+                                                   null))
                                     .ReturnsAsync((Func<CancellationToken, Task<RequestSummary>> dataGetter,
                                                    string key,
                                                    RefreshBehaviour refreshBehaviour,
                                                    CancellationToken cancellationToken,
-                                                   NotInCacheBehaviour notInCacheBehaviour)
+                                                   NotInCacheBehaviour notInCacheBehaviour, 
+                                                   Func<DateTimeOffset, DateTimeOffset> whenDataIsStaleDelegate)
                                                         => _requestSummaries.ContainsKey(key) ? _requestSummaries[key] : null);
 
             _repo.Setup(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()))
@@ -67,9 +69,9 @@ namespace HelpMyStreetFE.UnitTests.Services
 
             var result = await _classUnderTest.GetRequestSummariesAsync(ids, false, _cancellationToken);
 
-            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData), Times.Exactly(3));
+            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData, null), Times.Exactly(3));
             _repo.Verify(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()), Times.Never);
-            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<Func<DateTimeOffset, DateTimeOffset>>()), Times.Never);
             Assert.AreEqual(3, result.Count());
         }
 
@@ -80,9 +82,9 @@ namespace HelpMyStreetFE.UnitTests.Services
 
             var result = await _classUnderTest.GetRequestSummariesAsync(ids, true, _cancellationToken);
 
-            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData), Times.Exactly(3));
+            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData, null), Times.Exactly(3));
             _repo.Verify(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()), Times.Never);
-            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<Func<DateTimeOffset, DateTimeOffset>>()), Times.Never);
             Assert.AreEqual(3, result.Count());
         }
 
@@ -95,9 +97,9 @@ namespace HelpMyStreetFE.UnitTests.Services
 
             await Task.Delay(_waitForBackgroundThreadToCompleteMs); // wait for background thread
 
-            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData), Times.Exactly(6));
+            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData, null), Times.Exactly(6));
             _repo.Verify(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
-            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<Func<DateTimeOffset, DateTimeOffset>>()), Times.Exactly(3));
             Assert.AreEqual(0, result.Count());
         }
 
@@ -108,9 +110,9 @@ namespace HelpMyStreetFE.UnitTests.Services
 
             var result = await _classUnderTest.GetRequestSummariesAsync(ids, true, _cancellationToken);
 
-            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData), Times.Exactly(6));
+            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.DontGetData, null), Times.Exactly(6));
             _repo.Verify(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
-            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<Func<DateTimeOffset, DateTimeOffset>>()), Times.Exactly(3));
             Assert.AreEqual(6, result.Count());
         }
 
@@ -119,7 +121,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         {
             var result = await _classUnderTest.GetRequestSummaryAsync(2, _cancellationToken);
 
-            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-2", RefreshBehaviour.DontWaitForFreshData, _cancellationToken, NotInCacheBehaviour.WaitForData), Times.Once);
+            _cache.Verify(x => x.GetCachedDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-2", RefreshBehaviour.DontWaitForFreshData, _cancellationToken, NotInCacheBehaviour.WaitForData, null), Times.Once);
             Assert.AreEqual(2, result.RequestID);
         }
 
@@ -128,7 +130,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         {
             await _classUnderTest.RefreshCacheAsync(1, _cancellationToken);
 
-            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-1", _cancellationToken), Times.Once);
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-1", _cancellationToken, null), Times.Once);
         }
 
         [Test]
@@ -139,7 +141,7 @@ namespace HelpMyStreetFE.UnitTests.Services
             await _classUnderTest.RefreshCacheAsync(ids, _cancellationToken);
 
             _repo.Verify(x => x.GetRequestSummariesAsync(It.IsAny<IEnumerable<int>>()), Times.Once);
-            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), _cancellationToken), Times.Exactly(3));
+            _cache.Verify(x => x.RefreshDataAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), It.IsAny<string>(), _cancellationToken, It.IsAny<Func<DateTimeOffset, DateTimeOffset>>()), Times.Exactly(3));
         }
     }
 }
