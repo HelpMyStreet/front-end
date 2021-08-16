@@ -223,10 +223,13 @@ namespace HelpMyStreetFE.Services
 
             var lwd = new LocationWithDistance()
             {
-                Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken),
+                Distance = 0.0,
                 Location = locationDetails.Location,
                 LocationDetails = locationDetails
             };
+
+            
+            lwd.Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken);
 
             return lwd;
         }
