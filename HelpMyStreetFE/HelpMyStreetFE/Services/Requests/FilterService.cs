@@ -239,6 +239,7 @@ namespace HelpMyStreetFE.Services.Requests
                         new FilterField<SupportActivities>() { Value = SupportActivities.DigitalSupport, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.InPersonBefriending, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.PracticalSupport, IsSelected = true },
+                        new FilterField<SupportActivities>() { Value = SupportActivities.SkillShare, IsSelected = true },
                         new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
 
                         // The following are not currently on any request help form
@@ -337,21 +338,21 @@ namespace HelpMyStreetFE.Services.Requests
             return jfr.OrderBy switch
             {
                 OrderBy.DateDue_Ascending =>
-                   jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate()),
+                   requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate()),
                 OrderBy.DateDue_Descending =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate()),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate()),
                 OrderBy.Emptiest =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobBasics.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(r => r.NextDueDate()),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobBasics.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(r => r.NextDueDate()),
                 OrderBy.DateRequested_Ascending =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.DateRequested),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.DateRequested),
                 OrderBy.DateRequested_Descending =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.DateRequested),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.DateRequested),
                 OrderBy.RequiringAdminAttention =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.RequiringAdminAttentionScore()).ThenBy(r => r.NextDueDate()),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.RequiringAdminAttentionScore()).ThenBy(r => r.NextDueDate()),
                 OrderBy.DateStatusLastChanged_Ascending =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Min(j => j.DateStatusLastChanged)),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Min(j => j.DateStatusLastChanged)),
                 OrderBy.DateStatusLastChanged_Descending =>
-                    jobsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Max(j => j.DateStatusLastChanged)),
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Max(j => j.DateStatusLastChanged)),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }

@@ -93,6 +93,10 @@ var updateOptionsForActivity = function (supportActivity) {
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().hide(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
+    } else if (supportActivity === 'SkillShare') {
+        $('#requestorFor_1').parent().hide(); // myself
+        $('#requestorFor_2').parent().show(); // someone else
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
     } else {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else

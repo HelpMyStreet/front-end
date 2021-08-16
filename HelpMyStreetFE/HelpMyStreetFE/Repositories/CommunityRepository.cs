@@ -42,6 +42,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),
                 Groups.Southwell => GetSouthwell(),
                 Groups.ApexBankStaff => GetApexBankStaff(),
+                Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
                 _ => null,
             };
 
@@ -477,7 +478,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Locality Lead",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/apex-pcn-bank-staff/person-placeholder.png"
+                    ImageLocation = "/img/icons/person-placeholder.png"
                 }
             };
 
@@ -712,6 +713,41 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/photo-1483385573908-0a2108937c4a.jpg",
                     $"{carouselPath}/photo-1516862523118-a3724eb136d7.jpg",
                     $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
+                },
+            };
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetAgeUKMidMersey()
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuk-midmersey", "AgeUKMidMersey");
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Shelley Brown",
+                    Role = "Chief Executive Officer",
+                    ImageLocation = "/img/community/ageuk/midmersey/SB.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Judy Bebbington",
+                    Role = "Volunteer Coordinator",
+                    ImageLocation = "/img/icons/person-placeholder.png"
+                },
+            };
+
+            var carouselPath = "/img/community/ageUK/midmersey/carousel1";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/carousel-1.png",
+                    $"{carouselPath}/carousel-2.png",
+                    $"{carouselPath}/carousel-3.png",
+                    $"{carouselPath}/carousel-4.png",
+                    $"{carouselPath}/carousel-5.jpg",
                 },
             };
 

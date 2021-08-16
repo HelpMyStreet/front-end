@@ -84,20 +84,7 @@
             @if (myNextTaskDue != null)
             {
                 <span class="job__info__col1__urgency toggle-on-status-change">
-                    <span class="due-date" title="@((myNextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + myNextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
-                        @if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == 1)
-                        {
-                            <span>Due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
-                        }
-                        else if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == Model.Item.JobSummaries.Count())
-                        {
-                            <span>First due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
-                        }
-                        else
-                        {
-                            <span>Next due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
-                        }
-                    </span>
+                    <partial name="_WhenIsHelpNeeded_JobList" model="Model.Item.JobSummaries.Where(j => j.VolunteerUserID.Equals(Model.User.ID))" />
                 </span>
             }
 
@@ -155,20 +142,7 @@
             @if (myNextTaskDue != null)
             {
                 <span class="job__info__col3__urgency toggle-on-status-change">
-                    <span class="due-date" title="@((myNextTaskDue.DueDateType == DueDateType.On ? "On " : "On or before ") + myNextTaskDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
-                        @if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == 1)
-                        {
-                            <span>Due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
-                        }
-                        else if (Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete()).Count() == Model.Item.JobSummaries.Count())
-                        {
-                            <span>First due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
-                        }
-                        else
-                        {
-                            <span>Next due @myNextTaskDue.DueDate.FriendlyFutureDate()</span>
-                        }
-                    </span>
+                    <partial name="_WhenIsHelpNeeded_JobList" model="Model.Item.JobSummaries.Where(j => j.VolunteerUserID.Equals(Model.User.ID))" />
                 </span>
             }
         </div>
