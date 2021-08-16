@@ -60,10 +60,9 @@
                         }
                         @if (showQuestions)
                         {
-                            @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
                             {
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                                <partial name="_Question" model="q" />
                             }
                         }
                     </dl>

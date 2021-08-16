@@ -1,0 +1,14 @@
+﻿@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreetFE.Helpers;
+
+@model QuestionViewModel;
+
+<dt>@Model.Question.FriendlyName()</dt>
+<dd>
+    @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
+    @if (Model.IsEditable)
+    {
+        <span>(edit)</span>
+    } 
+</dd>

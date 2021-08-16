@@ -3,6 +3,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
 @using Westwind.AspNetCore.Markdown
+@using HelpMyStreetFE.Models.Account.Jobs;
 
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
@@ -121,11 +122,10 @@
                 <div class="row">
                     <div class="sm12 add-line-before">
                         <h5>Request Details</h5>
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q, true)))
                         {
                             <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks()) (edit 2)</dd>
+                                <partial name="_Question" model="q" />
                             </dl>
                         }
                     </div>

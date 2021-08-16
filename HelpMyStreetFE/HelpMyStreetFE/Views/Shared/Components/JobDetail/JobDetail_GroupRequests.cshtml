@@ -1,5 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
-@using HelpMyStreet.Utils.Enums;
+﻿@using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreetFE.Models.Account.Jobs;
@@ -71,11 +70,10 @@
                             </dl>
                         }
 
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q, true)))
                         {
                             <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks()) (edit)</dd>
+                                <partial name="_Question" model="q" />
                             </dl>
                         }
                     </div>
