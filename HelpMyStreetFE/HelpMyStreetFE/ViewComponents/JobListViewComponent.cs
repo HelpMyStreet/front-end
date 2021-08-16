@@ -24,14 +24,17 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IGroupMemberService _groupMemberService;
         private readonly IFilterService _filterService;
         private readonly IAddressService _addressService;
+        private readonly IUserLocationService _userLocationService;
 
         public JobListViewComponent(
             IRequestService requestService, 
             IAuthService authService, 
             IGroupMemberService groupMemberService, 
-            IFilterService filterService, 
+            IFilterService filterService,
+            IUserLocationService userLocationService,
             IAddressService addressService)
         {
+            _userLocationService = userLocationService;
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
@@ -41,7 +44,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -122,7 +125,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a.Select(j => new JobDetail(j)),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
-                Location = await _addressService.GetLocationWithDistanceForCurrentUser(a.First(), cancellationToken),
+                Location = await _userLocationService.GetLocationWithDistanceForCurrentUser(a.First(), cancellationToken),
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.First().ReferringGroupID, a.First().SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.Any(j => j.JobID.Equals(jobFilterRequest.HighlightJobId)) || a.First().RequestID.Equals(jobFilterRequest.HighlightRequestId),
@@ -171,12 +174,12 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+            var userLocationDetails = await _userLocationService.GetLocationDetailsForUser(user, cancellationToken);
 
             jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<ShiftJob>()
             {
                 Item = a,
-                Location = await _addressService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
+                Location = await _userLocationService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
@@ -234,7 +237,7 @@ namespace HelpMyStreetFE.ViewComponents
             jobListViewModel.Items = await Task.WhenAll(requests.Select(async a => new JobViewModel<RequestSummary>
             {
                 Item = a,
-                Location = await _addressService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
+                Location = await _userLocationService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
                 User = user,
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,

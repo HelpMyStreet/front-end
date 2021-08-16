@@ -59,7 +59,7 @@ namespace HelpMyStreetFE.Controllers
                 var response = await _verificationService.ValidateUserAsync(new ValidationRequest { Token = token, UserId = validUserId.Value }, cancellationToken);
                 if (response.Status == ValidationStatus.Success || response.Status == ValidationStatus.Unauthorized)
                 {
-                    var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                    var user = await _authService.GetCurrentUser(cancellationToken);
                     if (user == null)
                     {
                         // User has switched browser during mobile Yoti app flow; they're now Yoti authenticated; log them in
@@ -97,7 +97,7 @@ namespace HelpMyStreetFE.Controllers
             {
                 var queryStringUserId = Base64Utils.Base64DecodeToInt(encodedQueryStringUserId);
 
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
 
                 if (tokenSupplied || user != null && user.ID == queryStringUserId)
                 {

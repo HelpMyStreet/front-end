@@ -11,16 +11,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {
         private IAddressService _addressService;
+        private IUserLocationService _userLocationService;
+        
 
-        public FilterService(IAddressService addressService)
+        public FilterService(IAddressService addressService, IUserLocationService userLocationService)
         {
             _addressService = addressService;
+            _userLocationService = userLocationService;
         }
 
         public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, List<JobStatuses> jobStatuses, User user, CancellationToken cancellationToken)
@@ -63,7 +67,7 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var userLocations = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+            var userLocations = await _userLocationService.GetLocationDetailsForUser(user, cancellationToken);
             filterSet.Locations = userLocations.Select(l => new FilterField<Location>
             {
                 Value = l.Location,
@@ -322,7 +326,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<RequestSummary>> SortAndFilterRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr, int? userId, CancellationToken cancellationToken)
         {
-           var requestsWithDistances = await Task.WhenAll(requests.Select(async r => { r.DistanceInMiles = (await _addressService.GetLocationWithDistanceForCurrentUser(r, cancellationToken)).Distance; return r; }));
+           var requestsWithDistances = await Task.WhenAll(requests.Select(async r => { r.DistanceInMiles = (await _userLocationService.GetLocationWithDistanceForCurrentUser(r, cancellationToken)).Distance; return r; }));
 
             var requestsToDisplay = requestsWithDistances.Where(
                 r => (jfr.SupportActivities == null || r.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
@@ -367,7 +371,7 @@ namespace HelpMyStreetFE.Services.Requests
 
         public async Task<IEnumerable<IEnumerable<JobSummary>>> SortAndFilterOpenJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr, CancellationToken cancellationToken)
         {
-            var jobswithDistances = await Task.WhenAll(jobs.Select(async j => await Task.WhenAll(j.Select(async jd => { jd.DistanceInMiles = await _addressService.GetDistanceFromPostcodeForCurrentUser(jd.PostCode, cancellationToken); return jd; }))));
+            var jobswithDistances = await Task.WhenAll(jobs.Select(async j => await Task.WhenAll(j.Select(async jd => { jd.DistanceInMiles = await _userLocationService.GetDistanceFromPostcodeForCurrentUser(jd.PostCode, cancellationToken); return jd; }))));
 
             var jobsToDisplay = jobswithDistances.Where(
                 js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)

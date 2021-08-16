@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
                 int groupId = Base64Utils.Base64DecodeToInt(g);
 
                 var result = await _groupMemberService.PostAssignRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);
@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Controllers
         {
             try
             {
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
                 int groupId = Base64Utils.Base64DecodeToInt(g);
 
                 var result = await _groupMemberService.PostRevokeRole(user.ID, groupId, GroupRoles.Member, user.ID, cancellationToken);

@@ -62,7 +62,7 @@ namespace HelpMyStreetFE.Controllers
             model.JobId = jobId;
             model.RoleSubmittingFeedback = requestRole;
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
             if (result == Result.Success || result == Result.Failure_FeedbackAlreadyRecorded)

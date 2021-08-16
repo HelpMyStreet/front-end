@@ -91,6 +91,11 @@ namespace HelpMyStreetFE.Services
             return response;
         }
 
+        public async Task<List<LocationDistance>> GetLocationsByDistance(int distance, string postCode)
+        {
+            return await _addressRepository.GetLocationsByDistance(distance, postCode);
+        }
+
         public async Task<IEnumerable<LocationDetails>> GetLocationDetailsForGroup(int groupId, bool includeChildGroups, CancellationToken cancellationToken)
         {
             return await _memDistCache_LocationDetailsList.GetCachedDataAsync(async (cancellationToken) =>
@@ -106,43 +111,7 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}-{includeChildGroups}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<IEnumerable<LocationWithDistance>> GetLocationDetailsForUser(User user, CancellationToken cancellationToken)
-        {
-            if (user.PostalCode != null)
-            {
-                return await _memDistCache_LocationDistanceList.GetCachedDataAsync(async (cancellationToken) => {
-
-                    var userLocations = await _groupRepository.GetUserLocations(user.ID);    
-                    var locationsWithDistance = await _addressRepository.GetLocationsByDistance(2000, user.PostalCode);
-                    if (locationsWithDistance.Count() == 0)
-                    {
-                        return new List<LocationWithDistance>();
-                    }
-                    if(userLocations!=null)
-                    {
-                        locationsWithDistance = locationsWithDistance.Where(x => userLocations.Contains(x.Location)).ToList();
-                        if (locationsWithDistance.Count() == 0)
-                        {
-                            return new List<LocationWithDistance>();
-                        }
-                    }
-
-                    var locationDetails = await _addressRepository.GetLocationDetails(locationsWithDistance.Select(l => l.Location));
-
-                    return locationsWithDistance.Select(l => new LocationWithDistance
-                    {
-                        Location = l.Location,
-                        Distance = l.DistanceFromPostCode,
-                        LocationDetails = locationDetails.FirstOrDefault(d => d.Location.Equals(l.Location))
-                    });
-                    }, $"{CACHE_KEY_PREFIX}-user-{user.ID}-locations", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
-            }
-            else
-            {
-                return new List<LocationWithDistance>();
-            }
-        }
-
+        
         public async Task<LocationDetails> GetLocationDetails(Location location, CancellationToken cancellationToken)
         {
             return await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
@@ -191,39 +160,6 @@ namespace HelpMyStreetFE.Services
             }, $"{CACHE_KEY_PREFIX}-postcode-distances-{postCode1}-{postCode2}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<double> GetDistanceFromPostcodeForCurrentUser(string postCode, CancellationToken cancellationToken)
-        {
-            var httpContext = _httpContextAccessor.HttpContext;
-            if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
-            {
-                var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                var user =  await _userRepository.GetUser(id);
-                if (user != null && !String.IsNullOrEmpty("postCode"))
-                {
-                    return await GetDistanceBetweenPostcodes(user.PostalCode, postCode, cancellationToken);
-                }
-            }
-
-            return 0.0;
-        }
-
-        public async Task<LocationWithDistance> GetLocationWithDistanceForCurrentUser(IContainsLocation locationItem, CancellationToken cancellationToken)
-        {
-            var locationDetails = locationItem.GetLocationDetails();
-
-            if (locationDetails.Location != 0)
-            {
-                locationDetails = await GetLocationDetails(locationDetails.Location, cancellationToken);
-            }
-
-            var lwd = new LocationWithDistance()
-            {
-                Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken),
-                Location = locationDetails.Location,
-                LocationDetails = locationDetails
-            };
-
-            return lwd;
-        }
+        
     }
 }

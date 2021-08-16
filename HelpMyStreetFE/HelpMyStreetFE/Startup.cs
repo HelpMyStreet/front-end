@@ -180,6 +180,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
             services.AddSingleton<IFeedbackService, FeedbackService>();
+            services.AddSingleton<IUserLocationService, UserLocationService>();
             services.AddHttpContextAccessor();
 
             // cache

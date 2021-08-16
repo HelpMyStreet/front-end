@@ -47,7 +47,7 @@ namespace HelpMyStreetFE.ViewComponents
                 requestId = job.RequestID;
             }
             var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
             

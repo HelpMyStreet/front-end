@@ -62,6 +62,11 @@ namespace HelpMyStreetFE.Services.Groups
             return (RegistrationFormVariant)registrationFormVariant;
         }
 
+        public async Task<List<Location>> GetUserLocations(int userId)
+        {
+            return await _groupRepository.GetUserLocations(userId);
+        }
+
         public async Task<RequestHelpJourney> GetRequestHelpFormVariant(int groupId, string source)
         {
             var groupServiceResponse = await _groupRepository.GetRequestHelpFormVariant(groupId, source);

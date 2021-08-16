@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
 
                 UpdateJobStatusOutcome? outcome;
                 bool requestFeedback = false;
@@ -110,7 +110,7 @@ namespace HelpMyStreetFE.Controllers {
         [HttpGet("get-job-details")]
         public async Task<IActionResult> GetJobDetails(string j, string rq, JobSet js, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -167,7 +167,7 @@ namespace HelpMyStreetFE.Controllers {
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {

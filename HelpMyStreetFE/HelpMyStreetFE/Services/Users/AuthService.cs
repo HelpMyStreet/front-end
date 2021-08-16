@@ -20,16 +20,18 @@ namespace HelpMyStreetFE.Services.Users
     {
         private readonly FirebaseAuth _firebase;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly ILogger<AuthService> _logger;
 
         private static readonly string AUTHORISED_URLS_SESSION_KEY = "authorised-urls";
 
-        public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger)
+        public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
-            _userService = userService;
             _logger = logger;
+            _userService = userService;
 
             var firebaseCredentials = _configuration["Firebase:Credentials"];
 
@@ -104,8 +106,10 @@ namespace HelpMyStreetFE.Services.Users
                 });
         }
 
-        public async Task<User> GetCurrentUser(HttpContext httpContext, CancellationToken cancellationToken)
+        public async Task<User> GetCurrentUser(CancellationToken cancellationToken)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
+
             if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
             {
                 var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);

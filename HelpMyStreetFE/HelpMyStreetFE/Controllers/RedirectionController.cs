@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Controllers
         {
 
             int jobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -81,7 +81,7 @@ namespace HelpMyStreetFE.Controllers
         {
 
             int requestId = Base64Utils.Base64DecodeToInt(encodedRequestId);
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
