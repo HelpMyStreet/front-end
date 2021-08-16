@@ -214,7 +214,8 @@ namespace HelpMyStreetFE.Controllers {
         {
             var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
 
-            if ((newJobStatus == JobStatuses.Done || newJobStatus == JobStatuses.Cancelled) || (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled))
+            if ((newJobStatus == JobStatuses.Done || newJobStatus == JobStatuses.Cancelled) || 
+                (newJobStatus == null && (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)))
             {
                 bool feedbackSubmitted = await _feedbackService.GetFeedbackExists(jobId, role, userId);
 
