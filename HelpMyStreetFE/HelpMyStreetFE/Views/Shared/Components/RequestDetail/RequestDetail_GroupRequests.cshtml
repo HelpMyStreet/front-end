@@ -122,12 +122,12 @@
                 <div class="row">
                     <div class="sm12 add-line-before">
                         <h5>Request Details</h5>
-                        @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q, true)))
-                        {
-                            <dl>
+                        <dl>
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q, true)))
+                            {
                                 <partial name="_Question" model="q" />
-                            </dl>
-                        }
+                            }
+                        </dl>
                     </div>
                 </div>
             }

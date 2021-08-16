@@ -56,12 +56,12 @@
                         @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
                     }
 
-                    @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
-                    {
-                        <dl>
+                    <dl>
+                        @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
+                        {
                             <partial name="_Question" model="q" />
-                        </dl>
-                    }
+                        }
+                    </dl>
                 </div>
             </div>
         </div>

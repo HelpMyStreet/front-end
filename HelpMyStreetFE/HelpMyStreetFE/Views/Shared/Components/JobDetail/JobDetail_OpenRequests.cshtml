@@ -71,20 +71,18 @@
             {
                 <div class="row">
                     <div class="sm12">
-                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
-                        {
-                            <dl>
+                        <dl>
+                            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                            {
                                 <dt>Organisation</dt>
                                 <dd>@jobSummary.RecipientOrganisation</dd>
-                            </dl>
-                        }
+                            }
 
-                        @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
-                        {
-                            <dl>
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
+                            {
                                 <partial name="_Question" model="q" />
-                            </dl>
-                        }
+                            }
+                        </dl>
                     </div>
                 </div>
             }
