@@ -37,6 +37,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IUserService _userService;
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IRequestService _requestService;
+        private readonly IRequestCachingService _requestCachingService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IGroupService _groupService;
@@ -57,7 +58,8 @@ namespace HelpMyStreetFE.Controllers
             IRequestService requestService,
             IAuthService authService,
             IGroupMemberService groupMemberService,
-            IFilterService filterService
+            IFilterService filterService,
+            IRequestCachingService requestCachingService
             )
         {
             _logger = logger;
@@ -70,6 +72,7 @@ namespace HelpMyStreetFE.Controllers
             _communicationService = communicationService;
             _addressService = addressService;
             _filterService = filterService;
+            _requestCachingService = requestCachingService;
         }
 
         [HttpGet]
@@ -205,10 +208,10 @@ namespace HelpMyStreetFE.Controllers
 
         [Route("get-directions-link")]
         [HttpGet]
-        public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetDirectionsLink(string r, CancellationToken cancellationToken)
         {
-            int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
-            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
+            int.TryParse(Base64Utils.Base64Decode(r), out int requestId);
+            var shiftDetails = (await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken));
             string locationPostcode;
 
             if (shiftDetails.RequestType == RequestType.Task)
@@ -217,7 +220,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                var location = shiftDetails.RequestSummary.Shift.Location;
+                var location = shiftDetails.Shift.Location;
                 LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
 
                 locationPostcode = WebUtility.UrlEncode(locationDetails.Address.Postcode);

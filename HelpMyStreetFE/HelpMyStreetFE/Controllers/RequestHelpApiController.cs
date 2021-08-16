@@ -189,25 +189,16 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-view-location-popup")]
-        public IActionResult GetViewLocationPopup(string j, string r)
+        public IActionResult GetViewLocationPopup(string r)
         {
-            int? jobId = null;
             int? requestId = null;
-
-            if (!String.IsNullOrEmpty(j))
-            {
-                jobId = Base64Utils.Base64DecodeToInt(j);
-            }
-            else if (!String.IsNullOrEmpty(r))
+            try
             {
                 requestId = Base64Utils.Base64DecodeToInt(r);
+                return ViewComponent("ViewLocationPopup", new { requestId });
+            } catch (Exception e) {
+                throw new Exception("Unable to generate location popup", e);
             }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.BadRequest);
-            }
-
-            return ViewComponent("ViewLocationPopup", new { jobId, requestId });
         }
 
         private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)

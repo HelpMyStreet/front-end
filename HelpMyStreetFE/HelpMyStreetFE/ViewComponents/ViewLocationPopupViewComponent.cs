@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.ViewComponents
             _requestCachingService = requestCachingService ?? throw new ArgumentNullException(nameof(requestCachingService));
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(int? jobId, int? requestId, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(int? requestId, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
 
@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.ViewComponents
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var jobSummary = jobId.HasValue ? (await _jobCachingService.GetJobSummaryAsync(jobId.Value, cancellationToken)) : (await _requestCachingService.GetRequestSummaryAsync(requestId.Value, cancellationToken)).JobSummaries.First();
+            var jobSummary = (await _requestCachingService.GetRequestSummaryAsync(requestId.Value, cancellationToken)).JobSummaries.First();
             var postCode = jobSummary.PostCode;
             var canView = await _requestService.LogViewLocationEvent(user.ID, jobSummary.RequestID, jobSummary.JobID);
 
@@ -62,7 +62,7 @@ namespace HelpMyStreetFE.ViewComponents
                     Coordinates = postCodeCoordinates,
                     Distance = distanceInMiles,
                     PostCode = postCode,
-                    encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
+                    encodedJobID = Base64Utils.Base64Encode(jobSummary.RequestID)
                 };
             }
             else
@@ -73,7 +73,7 @@ namespace HelpMyStreetFE.ViewComponents
                     Coordinates = null,
                     Distance = null,
                     PostCode = null,
-                    encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID)
+                    encodedJobID = ""
                 };
             }
 
