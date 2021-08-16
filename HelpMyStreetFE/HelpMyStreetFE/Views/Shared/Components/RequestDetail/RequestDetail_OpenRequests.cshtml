@@ -7,7 +7,7 @@
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
 @{
-    var questionsToDisplay = Model.JobsToShow.FirstOrDefault()?.Questions.Where(q => q.ShowOnTaskManagement(Model.UserRole.Equals(RequestRoles.GroupAdmin), false) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = Model.JobsToShow.FirstOrDefault()?.Questions.Where(q => q.ShowOnTaskManagement(false, false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 <div class="job__expander">
