@@ -57,7 +57,7 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction("Error404", "Errors");
             }
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             var outcome = await _groupMemberService.PostAssignRole(user.ID, groupId, GroupRoles.Member, -1, cancellationToken);
             communityViewModel.IsLoggedIn = true;
             communityViewModel.IsGroupMember = outcome == GroupPermissionOutcome.Success;
@@ -80,7 +80,7 @@ namespace HelpMyStreetFE.Controllers
                 return RedirectToAction("Error404", "Errors");
             }
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (user != null)
             {
                 communityViewModel.IsLoggedIn = true;

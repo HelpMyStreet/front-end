@@ -390,6 +390,54 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "southwell",
                 },
+                new Testimonial()
+                {
+                    Tagline = "",
+                    Message = "I love coming to Positive Living… it stops me from being lazy!",
+                    Person = "Ada, a Positive Living Day Care regular",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuk-midmersey",
+                },
+                new Testimonial()
+                {
+                    Tagline = "",
+                    Message = "I can’t thank Age UK Mid Mersey enough for matching me with a volunteer. It’s good to know people care.",
+                    Person = "Mrs W, a user of our befriending service",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuk-midmersey",
+                },
+                new Testimonial()
+                {
+                    Tagline = "",
+                    Message = "When my volunteer visits, it gives me a reason to get out of bed and sit up, I enjoy our chats.",
+                    Person = "Mrs F, a user of our befriending service",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuk-midmersey",
+                },
+                new Testimonial()
+                {
+                    Tagline = "",
+                    Message = "I look forward to my weekly visits. It gives my life a purpose now and stops me getting bored.",
+                    Person = "Mrs T, a user of our befriending service",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuk-midmersey",
+                },
+                new Testimonial()
+                {
+                    Tagline = "",
+                    Message = "Me and my volunteer get on great. It’s so good to talk to someone who gives back a good conversation.",
+                    Person = "Mr B, a user of our befriending service",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuk-midmersey",
+                },
+                new Testimonial()
+                {
+                    Tagline = "Great service I can rely on",
+                    Message = "Paul, the volunteer from Age UK Mid Mersey, is great. I trust him to support with the little jobs I can't get to. He's done a few jobs for me this year helping to put up shelves, pictures and my curtain pole. Thanks Age UK Mid Mersey - A great service I can always rely on.",
+                    Person = "Mrs R, a happy customer of our Helping Hands service",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "ageuk-midmersey",
+                },
             };
 
             return messageList;

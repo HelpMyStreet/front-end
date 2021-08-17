@@ -159,6 +159,8 @@ namespace HelpMyStreetFE
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
+            services.AddSession();
+
             services.AddSingleton<ICommunityRepository, CommunityRepository>();
             services.AddSingleton<IAwardsRepository, AwardsRepository>();
             services.AddSingleton<IUserService, HelpMyStreetFE.Services.Users.UserService>();
@@ -166,7 +168,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IAuthService, AuthService>();
             services.AddSingleton<IRequestHelpBuilder, RequestHelpBuilder>();
             services.AddDistributedMemoryCache(); // Adds a default in-memory implementation of IDistributedCache
-            services.AddSession();
+            
 
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IRequestLocationService, RequestLocationService>();
@@ -178,6 +180,8 @@ namespace HelpMyStreetFE
             services.AddSingleton<IGroupMemberService, GroupMemberService>();
             services.AddSingleton<IFilterService, FilterService>();
             services.AddSingleton<IFeedbackService, FeedbackService>();
+            services.AddSingleton<IUserLocationService, UserLocationService>();
+            services.AddHttpContextAccessor();
 
             // cache
             services.AddSingleton<IPollyMemoryCacheProvider, PollyMemoryCacheProvider>();
@@ -359,6 +363,11 @@ namespace HelpMyStreetFE
                    name: "favershamandsittingbourne",
                    pattern: "favershamandsittingbourne",
                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-favershamandsittingbourne" });
+
+                endpoints.MapControllerRoute(
+                   name: "ageukmidmersey",
+                   pattern: "ageukmidmersey",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-midmersey" });
 
                 endpoints.MapControllerRoute(
                    name: "northwestkent",

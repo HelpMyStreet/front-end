@@ -21,7 +21,7 @@ export async function initialiseRequests() {
         loadJobDetails(job).then(async () => {
             var canMap = await mapsAreGo;
             if (canMap){
-                createMap(job, job.attr("id"));
+                createMap(job, job.attr("request-id"));
             }
         });
     });
@@ -145,9 +145,9 @@ export async function initialiseRequests() {
     
 }
 
-async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.vaccination){
-    if ($(`#map-${jobId}`).length != 0){
-        var linkResponse = await hmsFetch('/account/get-directions-link?j=' + jobId)
+async function createMap(parentElement, requestId, markerIcon = defaultMarkerIcons.vaccination){
+    if ($(`#map-${requestId}`).length != 0){
+        var linkResponse = await hmsFetch(`/account/get-directions-link?r=${requestId}`)
         var marker;
         if (linkResponse.fetchResponse == fetchResponses.SUCCESS) {
         var link = await linkResponse.fetchPayload;
@@ -171,7 +171,7 @@ async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.v
                     initialLat: Number(parentElement.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
                     initialLng: Number(parentElement.find(".location-map").data("lng")),
                     initialZoom: 14,
-                    divID: "map-" + jobId,
+                    divID: "map-" + requestId,
                     singlePin: marker
                 };
 
@@ -180,15 +180,13 @@ async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.v
 }
 
 export function showViewLocationPopup(job) {
-    const jobId = job.attr("id");
     const requestId = job.attr("request-id")
-    let popupSource = `/api/request-help/get-view-location-popup?j=${jobId}&r=${requestId}`
+    let popupSource = `/api/request-help/get-view-location-popup?r=${requestId}`
     showServerSidePopup(popupSource).then(async () => {
         await mapsAreGo;
         if (mapsAreGo)
             {
-                var thisId = jobId != "" ? jobId : requestId;
-                createMap($("#location-popup"), thisId, defaultMarkerIcons.task);
+                createMap($("#location-popup"), requestId, defaultMarkerIcons.task);
             }
         });
     

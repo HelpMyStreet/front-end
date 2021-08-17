@@ -260,11 +260,11 @@ namespace HelpMyStreetFE.Repositories
 
         public async Task<RequestSummary> GetRequestSummaryAsync(int requestId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetRequestSummaryResponse>>($"/api/GetRequestSummary?requestId={requestId}");
+            var response = await GetRequestSummariesAsync(new List<int>(requestId));
 
-            if (response.HasContent && response.IsSuccessful)
+            if (response != null && response.Count() == 1)
             {
-                return response.Content.RequestSummary;
+                return response.First();
             }
             return null;
         }

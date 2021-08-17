@@ -23,25 +23,25 @@ namespace HelpMyStreetFE.ViewComponents
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IFilterService _filterService;
-        private readonly IAddressService _addressService;
+        private readonly IUserLocationService _userLocationService;
 
         public JobListViewComponent(
             IRequestService requestService, 
             IAuthService authService, 
             IGroupMemberService groupMemberService, 
-            IFilterService filterService, 
-            IAddressService addressService)
+            IFilterService filterService,
+            IUserLocationService userLocationService)
         {
+            _userLocationService = userLocationService;
             _requestService = requestService;
             _authService = authService;
             _groupMemberService = groupMemberService;
             _filterService = filterService;
-            _addressService = addressService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(JobFilterRequest jobFilterRequest, Action hideFilterPanelCallback, Action noJobsCallback, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -108,7 +108,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             jobListViewModel.UnfilteredItems = jobs.Count();
 
-            jobs = _filterService.SortAndFilterOpenJobs(jobs, jobFilterRequest);
+            jobs = await _filterService.SortAndFilterOpenJobs(jobs, jobFilterRequest, cancellationToken);
 
             jobListViewModel.FilteredItems = jobs.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
@@ -122,6 +122,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 Item = a.Select(j => new JobDetail(j)),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                Location = await _userLocationService.GetLocationWithDistanceForCurrentUser(a.First(), cancellationToken),
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.First().ReferringGroupID, a.First().SupportActivity, user.ID, user.ID, cancellationToken),
                 HighlightJob = a.Any(j => j.JobID.Equals(jobFilterRequest.HighlightJobId)) || a.First().RequestID.Equals(jobFilterRequest.HighlightRequestId),
@@ -170,12 +171,12 @@ namespace HelpMyStreetFE.ViewComponents
                 jobs = jobs.Take(jobFilterRequest.ResultsToShow);
             }
 
-            var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+            var userLocationDetails = await _userLocationService.GetLocationDetailsForUser(user, cancellationToken);
 
             jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<ShiftJob>()
             {
                 Item = a,
-                Location = userLocationDetails.FirstOrDefault(l => l.Location == a.Location),
+                Location = await _userLocationService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,
                 UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(a.ReferringGroupID, a.SupportActivity, user.ID, user.ID, cancellationToken),
@@ -199,7 +200,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             var jobListViewModel = new ListViewModel<JobViewModel<RequestSummary>>();
 
-            IEnumerable<RequestSummary> jobs = jobFilterRequest.JobSet switch
+            IEnumerable<RequestSummary> requests = jobFilterRequest.JobSet switch
             {
                 JobSet.GroupRequests => await _requestService.GetGroupRequestsAsync(jobFilterRequest.GroupId.Value, true, cancellationToken),
                 JobSet.GroupShifts => await _requestService.GetGroupShiftRequestsAsync(jobFilterRequest.GroupId.Value, jobFilterRequest.DueAfter, jobFilterRequest.DueBefore, true, cancellationToken),
@@ -207,7 +208,7 @@ namespace HelpMyStreetFE.ViewComponents
                 _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
             };
 
-            if (jobs == null)
+            if (requests == null)
             {
                 throw new Exception($"Failed to get jobs for user {user.ID}.  JobSet: {jobFilterRequest.JobSet}");
             }
@@ -216,20 +217,24 @@ namespace HelpMyStreetFE.ViewComponents
             //  being passed through.  We probably therefore won't want to display the total number of Unfiltered items.
             jobListViewModel.UnfilteredItems = int.MaxValue;
 
-            jobs = _filterService.SortAndFilterRequests(jobs, jobFilterRequest);
+            requests = jobFilterRequest.JobSet switch
+            {
+                JobSet.UserMyRequests => await _filterService.SortAndFilterRequests(requests, jobFilterRequest, user.ID, cancellationToken),
+                _ => await _filterService.SortAndFilterRequests(requests, jobFilterRequest, null, cancellationToken)
+            };
 
-            jobListViewModel.FilteredItems = jobs.Count();
+            jobListViewModel.FilteredItems = requests.Count();
             jobListViewModel.ResultsToShowIncrement = jobFilterRequest.ResultsToShowIncrement;
 
             if (jobFilterRequest.ResultsToShow > 0)
             {
-                jobs = jobs.Take(jobFilterRequest.ResultsToShow);
+                requests = requests.Take(jobFilterRequest.ResultsToShow);
             }
 
-            jobListViewModel.Items = await Task.WhenAll(jobs.Select(async a => new JobViewModel<RequestSummary>
+            jobListViewModel.Items = await Task.WhenAll(requests.Select(async a => new JobViewModel<RequestSummary>
             {
                 Item = a,
-                Location = (a.Shift != null ? new LocationWithDistance { LocationDetails = await _addressService.GetLocationDetails(a.Shift.Location, cancellationToken) } : null),
+                Location = await _userLocationService.GetLocationWithDistanceForCurrentUser(a, cancellationToken),
                 User = user,
                 UserRole = jobFilterRequest.JobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
                 JobListGroupId = jobFilterRequest.GroupId,

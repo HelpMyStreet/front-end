@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
 
                 UpdateJobStatusOutcome? outcome;
                 bool requestFeedback = false;
@@ -78,7 +78,7 @@ namespace HelpMyStreetFE.Controllers {
                     var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
                     if (job.RequestType.Equals(RequestType.Task))
                     {
-                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
+                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken, s)).FeedbackDue;
                     }
                 }
 
@@ -110,7 +110,7 @@ namespace HelpMyStreetFE.Controllers {
         [HttpGet("get-job-details")]
         public async Task<IActionResult> GetJobDetails(string j, string rq, JobSet js, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -167,14 +167,14 @@ namespace HelpMyStreetFE.Controllers {
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken);
+            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken, null);
 
             if (feedbackStatus.FeedbackDue)
             {
@@ -189,32 +189,24 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-view-location-popup")]
-        public IActionResult GetViewLocationPopup(string j, string r)
+        public IActionResult GetViewLocationPopup(string r)
         {
-            int? jobId = null;
             int? requestId = null;
-
-            if (!String.IsNullOrEmpty(j))
-            {
-                jobId = Base64Utils.Base64DecodeToInt(j);
-            }
-            else if (!String.IsNullOrEmpty(r))
+            try
             {
                 requestId = Base64Utils.Base64DecodeToInt(r);
+                return ViewComponent("ViewLocationPopup", new { requestId });
+            } catch (Exception e) {
+                throw new Exception("Unable to generate location popup", e);
             }
-            else
-            {
-                return StatusCode((int)HttpStatusCode.BadRequest);
-            }
-
-            return ViewComponent("ViewLocationPopup", new { jobId, requestId });
         }
 
-        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)
+        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken, JobStatuses? newJobStatus)
         {
             var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
 
-            if (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)
+            if ((newJobStatus == JobStatuses.Done || newJobStatus == JobStatuses.Cancelled) || 
+                (newJobStatus == null && (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)))
             {
                 bool feedbackSubmitted = await _feedbackService.GetFeedbackExists(jobId, role, userId);
 
@@ -228,8 +220,8 @@ namespace HelpMyStreetFE.Controllers {
                 }
                 else if (!job.Archive && (role.Equals(RequestRoles.GroupAdmin) || job.VolunteerUserID.Equals(userId)))
                 {
-                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
-                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl($"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl($"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
                     
                     return new JobFeedbackStatus
                     {

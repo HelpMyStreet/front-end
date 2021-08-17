@@ -89,7 +89,7 @@ namespace HelpMyStreetFE.Controllers
                 _logger.LogInformation("Posting new user");
                 var uid = await _authService.VerifyIdTokenAsync(userData.Token);
                 await _userService.CreateUserAsync(userData.Email, uid, Convert.ToInt32(userData.ReferringGroupId), userData.Source);
-                await _authService.LoginWithTokenAsync(userData.Token, HttpContext);
+                await _authService.LoginWithTokenAsync(userData.Token);
 
                 return Ok();
             }
@@ -104,7 +104,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("[controller]/step-two")]
         public async Task<ActionResult> StepTwo(CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-two"))
             {
@@ -123,7 +123,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/step-two")]
         public async Task<ActionResult> StepTwoPost([FromForm] StepTwoFormModel form, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-two"))
             {
@@ -148,7 +148,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet("[controller]/step-three")]
         public async Task<ActionResult> StepThree(CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             string correctPage = GetCorrectPage(user);
             
             if (!correctPage.StartsWith("/registration/step-three"))
@@ -176,7 +176,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpPost("[controller]/step-three")]
         public async Task<ActionResult> StepThreePost([FromForm] StepThreeFormModel form, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             string correctPage = GetCorrectPage(user);
             if (!correctPage.StartsWith("/registration/step-three"))
             {
