@@ -73,7 +73,7 @@
                                 <dd>@jobSummary.RecipientOrganisation</dd>
                             }
 
-                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobSummary, q)))
                             {
                                 <partial name="_Question" model="q" />
                             }

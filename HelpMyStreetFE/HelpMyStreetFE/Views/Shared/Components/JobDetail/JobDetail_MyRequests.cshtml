@@ -60,7 +60,7 @@
                         }
                         @if (showQuestions)
                         {
-                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(q)))
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobDetails, q)))
                             {
                                 <partial name="_Question" model="q" />
                             }
