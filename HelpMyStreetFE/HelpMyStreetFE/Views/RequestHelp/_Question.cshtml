@@ -1,0 +1,39 @@
+﻿@model HelpMyStreetFE.Models.RequestHelp.RequestHelpQuestion
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreetFE.Helpers;
+
+@{ 
+    var name = $"currentStep.Questions.[{Model.ID}].Model";
+}
+
+@switch (Model.InputType)
+{
+    case QuestionType.LabelOnly:
+        break;
+    case QuestionType.MultiLineText:
+        <textarea placeholder="@Model.PlaceholderText" data-id="@Model.ID" class="question @Model.Class()" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" name="@name">@Model.Model</textarea>
+        break;
+    case QuestionType.Text:
+        <input type="text" placeholder="@Model.PlaceholderText" data-id="@Model.ID" class="question @Model.Class()" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" value="@Model.Model" name="@name">
+        break;
+    case QuestionType.Number:
+        <input type="number" min="1" max="@Model.Max()" placeholder="@Model.PlaceholderText" data-id="@Model.ID" class="question @Model.Class()" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" value="@Model.Model" name="@name">
+        break;
+    case QuestionType.Radio:
+        var singleOption = Model.AdditionalData.Count == 1;
+        @foreach (var radio in Model.AdditionalData)
+        {
+            <div class="input--radio">
+                <label>
+                    <input type="radio" name="@name" value="@radio.Key" data-id="@Model.ID" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" class="question @Model.Class()" @(Model.Model == radio.Key || singleOption ? "checked" : "") hidden />
+                    <span class="input--radio__radio">
+                        <span class="input--radio__radio__inner"></span>
+                    </span>
+                    @radio.Value
+                </label>
+            </div>
+        }
+        break;
+}
+
+<span class="error">@Model.DataValidationMessage()</span>
