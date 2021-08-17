@@ -220,7 +220,7 @@ namespace HelpMyStreetFE.Controllers {
             {
                 case UpdateJobOutcome.AlreadyInThisState:
                 case UpdateJobOutcome.Success:
-                    return answer;
+                    return answer.ToHtmlSafeStringWithLineBreaks();
                 case UpdateJobOutcome.BadRequest:
                     return StatusCode(400);
                 case UpdateJobOutcome.Unauthorized:

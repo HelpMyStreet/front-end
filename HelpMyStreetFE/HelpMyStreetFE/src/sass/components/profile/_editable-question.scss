@@ -1,6 +1,6 @@
 ﻿.editable-question {
-    span.answer {
-        min-width: 5rem;
+    .answer-content {
+        display: inline-block;
     }
 
     a.edit img {
@@ -15,6 +15,15 @@
         .input {
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
+        }
+
+        button {
+            min-width: 13rem;
+
+            .loading-spinner {
+                width: auto;
+                margin: auto;
+            }
         }
     }
 }
