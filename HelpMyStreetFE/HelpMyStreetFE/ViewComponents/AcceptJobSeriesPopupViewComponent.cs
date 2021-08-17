@@ -38,7 +38,7 @@ namespace HelpMyStreetFE.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(int requestId, int stage, CancellationToken cancellationToken)
         {
             var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(request.ReferringGroupID, request.JobBasics.First().SupportActivity, user.ID, user.ID, cancellationToken);
 

@@ -110,7 +110,7 @@ namespace HelpMyStreetFE.ViewComponents
             var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
             filterRequest.UpdateFromFilterSet(filterSet);
 
-            return _filterService.SortAndFilterOpenJobs(openRequests, filterRequest);
+            return await _filterService.SortAndFilterOpenJobs(openRequests, filterRequest, cancellationToken);
         }
     }
 }

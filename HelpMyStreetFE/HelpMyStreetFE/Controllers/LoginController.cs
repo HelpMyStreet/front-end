@@ -40,7 +40,7 @@ namespace HelpMyStreetFE.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string er, string referringGroup, string source, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (user != null)
             {
                 return Redirect(PROFILE_URL);
