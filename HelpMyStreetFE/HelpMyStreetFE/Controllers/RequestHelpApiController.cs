@@ -11,10 +11,9 @@ using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Enums.Account;
 using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Services.Users;
-using HelpMyStreetFE.Services.Groups;
-using HelpMyStreetFE.Models.Account;
 using HelpMyStreetFE.Services;
 using System.Net;
+using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Controllers {
 
@@ -191,13 +190,43 @@ namespace HelpMyStreetFE.Controllers {
         [Route("get-view-location-popup")]
         public IActionResult GetViewLocationPopup(string r)
         {
-            int? requestId = null;
             try
             {
-                requestId = Base64Utils.Base64DecodeToInt(r);
+                var requestId = Base64Utils.Base64DecodeToInt(r);
                 return ViewComponent("ViewLocationPopup", new { requestId });
             } catch (Exception e) {
                 throw new Exception("Unable to generate location popup", e);
+            }
+        }
+
+        [AuthorizeAttributeNoRedirect]
+        [HttpPost("update-job-question")]
+        public async Task<ActionResult<string>> UpdateJobQuestion(string j, string q, [FromBody] Dictionary<string, string> body, CancellationToken cancellationToken)
+        {
+            int jobId = Base64Utils.Base64DecodeToInt(j);
+            int questionId = Base64Utils.Base64DecodeToInt(q);
+            string answer = body[$"currentStep.Questions.[{questionId}].Model"];
+
+            var user = await _authService.GetCurrentUser(cancellationToken);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            var outcome = UpdateJobOutcome.Success;// await _requestUpdatingService.UpdateJobQuestion(jobId, questionId, answer, user.ID, cancellationToken);
+
+            switch (outcome)
+            {
+                case UpdateJobOutcome.AlreadyInThisState:
+                case UpdateJobOutcome.Success:
+                    return answer;
+                case UpdateJobOutcome.BadRequest:
+                    return StatusCode(400);
+                case UpdateJobOutcome.Unauthorized:
+                    return StatusCode(401);
+                default:
+                    return StatusCode(500);
             }
         }
 

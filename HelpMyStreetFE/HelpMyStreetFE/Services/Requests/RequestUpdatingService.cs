@@ -140,6 +140,18 @@ namespace HelpMyStreetFE.Services.Requests
             return response.Fulfillable;
         }
 
+        public async Task<UpdateJobOutcome?> UpdateJobQuestion (int jobId, int questionId, string answer, int authorisedByUserId, CancellationToken cancellationToken)
+        {
+            var outcome = await _requestHelpRepository.PutUpdateJobQuestion(jobId, questionId, answer, authorisedByUserId);
+
+            if (outcome == UpdateJobOutcome.Success || outcome == UpdateJobOutcome.AlreadyInThisState)
+            {
+                _ = _jobCachingService.RefreshCacheAsync(jobId, cancellationToken);
+            }
+
+            return outcome;
+        }
+
         public async Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken)
         {
             UpdateJobStatusOutcome? outcome = status switch

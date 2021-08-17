@@ -37,17 +37,18 @@
 
             <button class="btn cta--dark-blue-border save-changes">
                 <span class="text">Save changes</span>
+                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Loading", ShowDarkSpinner = true }' /></div>
             </button>
 
             <button class="btn cta--orange-border cancel-editing">
                 <span class="text">Cancel editing</span>
             </button>
         </form>
-</dd>
+    </dd>
 }
 else
 {
-<dd>
-    @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
-</dd>
+    <dd>
+        @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
+    </dd>
 }
