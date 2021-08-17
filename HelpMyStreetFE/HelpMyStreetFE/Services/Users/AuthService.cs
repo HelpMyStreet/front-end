@@ -20,16 +20,20 @@ namespace HelpMyStreetFE.Services.Users
     {
         private readonly FirebaseAuth _firebase;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly ILogger<AuthService> _logger;
 
         private static readonly string AUTHORISED_URLS_SESSION_KEY = "authorised-urls";
 
-        public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger)
+        public AuthService(IConfiguration configuration, IUserService userService, ILogger<AuthService> logger, IHttpContextAccessor httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
-            _userService = userService;
             _logger = logger;
+            _userService = userService;
+
+            
 
             var firebaseCredentials = _configuration["Firebase:Credentials"];
 
@@ -66,8 +70,9 @@ namespace HelpMyStreetFE.Services.Users
             return decoded.Uid;
         }
 
-        public async Task LoginWithTokenAsync(string token, HttpContext httpContext)
+        public async Task LoginWithTokenAsync(string token)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
             var uid = await VerifyIdTokenAsync(token);
 
             User user = await _userService.GetUserByAuthId(uid);
@@ -87,8 +92,9 @@ namespace HelpMyStreetFE.Services.Users
                 });
         }
 
-        public async Task LoginWithUserId(int userId, HttpContext httpContext, CancellationToken cancellationToken)
+        public async Task LoginWithUserId(int userId, CancellationToken cancellationToken)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
             var user = await _userService.GetUserAsync(userId, cancellationToken);
             if (user == null)
             {
@@ -104,8 +110,9 @@ namespace HelpMyStreetFE.Services.Users
                 });
         }
 
-        public async Task<User> GetCurrentUser(HttpContext httpContext, CancellationToken cancellationToken)
+        public async Task<User> GetCurrentUser(CancellationToken cancellationToken)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
             if (httpContext.User != null && httpContext.User.Identity.IsAuthenticated)
             {
                 var id = int.Parse(httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -118,14 +125,16 @@ namespace HelpMyStreetFE.Services.Users
         }
 
 
-        public async Task Logout(HttpContext httpContext)
+        public async Task Logout()
         {
+            var httpContext = _httpContextAccessor.HttpContext;
             httpContext.Session.Clear();
             await httpContext.SignOutAsync();            
         }
 
-        public void PutSessionAuthorisedUrl(HttpContext httpContext, string authorisedURL)
+        public void PutSessionAuthorisedUrl(string authorisedURL)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
             var authorisedURLs = httpContext.Session.GetObjectFromJson<List<string>>(AUTHORISED_URLS_SESSION_KEY);
 
             if (authorisedURLs == null)
@@ -138,13 +147,15 @@ namespace HelpMyStreetFE.Services.Users
             httpContext.Session.SetObjectAsJson(AUTHORISED_URLS_SESSION_KEY, authorisedURLs);
         }
 
-        public bool GetUrlIsSessionAuthorised(HttpContext httpContext)
+        public bool GetUrlIsSessionAuthorised()
         {
-            return GetUrlIsSessionAuthorised(httpContext, httpContext.Request.Path + httpContext.Request.QueryString);
+            var httpContext = _httpContextAccessor.HttpContext;
+            return GetUrlIsSessionAuthorised(httpContext.Request.Path + httpContext.Request.QueryString);
         }
 
-        public bool GetUrlIsSessionAuthorised(HttpContext httpContext, string url)
+        public bool GetUrlIsSessionAuthorised(string url)
         {
+            var httpContext = _httpContextAccessor.HttpContext;
             var authorisedURLs = httpContext.Session.GetObjectFromJson<List<string>>(AUTHORISED_URLS_SESSION_KEY);
 
             return authorisedURLs != null && authorisedURLs.Contains(url);

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
-    public class JobDetail : JobSummary
+    public class JobDetail : JobSummary, IContainsLocation
     {
         public JobDetail(JobSummary jobSummary)
         {

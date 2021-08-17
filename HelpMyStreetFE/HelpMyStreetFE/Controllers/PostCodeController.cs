@@ -1,8 +1,11 @@
-﻿using HelpMyStreetFE.Models.Reponses;
+﻿using HelpMyStreetFE.Helpers;
+using HelpMyStreetFE.Models.Reponses;
 using HelpMyStreetFE.Services;
+using HelpMyStreetFE.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HelpMyStreetFE.Controllers
@@ -33,6 +36,5 @@ namespace HelpMyStreetFE.Controllers
             _logger.LogInformation($"Checking coverage for PostCode {postCode}");
             return await _addressService.GetPostcodeCoverage(postCode);
         }
-
     }
 }

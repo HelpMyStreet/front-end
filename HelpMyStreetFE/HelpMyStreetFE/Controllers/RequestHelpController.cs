@@ -93,7 +93,7 @@ namespace HelpMyStreetFE.Controllers
                             detailStage.Questions = await UpdateQuestionsViewModel(detailStage.Questions, requestHelp.RequestHelpFormVariant, RequestHelpFormStage.Detail, (SupportActivities)requestHelp.SelectedSupportActivity(), requestHelp.ReferringGroupID);
                             detailStage.NeedBothNames = requestStep.Tasks.Where(x => x.IsSelected).Any(x => x.SupportActivity == SupportActivities.CollectingPrescriptions);
 
-                            var loggedInUser = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                            var loggedInUser = await _authService.GetCurrentUser(cancellationToken);
                             if (loggedInUser != null)
                             {
                                 switch (detailStage.Type)
@@ -157,7 +157,7 @@ namespace HelpMyStreetFE.Controllers
                 {
                     var requestStage = (RequestHelpRequestStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
-                    var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                    var user = await _authService.GetCurrentUser(cancellationToken);
 
                     var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user, cancellationToken);
                     if (response.Equals(Fulfillable.Accepted_ManualReferral))
@@ -207,7 +207,7 @@ namespace HelpMyStreetFE.Controllers
 
             if (requestHelpJourney.AccessRestrictedByRole)
             {
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
                 var userHasPermission = user != null && await _groupMemberService.GetUserHasRole(user.ID, referringGroupId, GroupRoles.RequestSubmitter, true, cancellationToken);
                 if (!userHasPermission)
                 {

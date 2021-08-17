@@ -23,5 +23,6 @@ namespace HelpMyStreetFE.Services.Groups
         Task<Dictionary<SupportActivities, Instructions>> GetAllGroupSupportActivityInstructions(int groupId, IEnumerable<SupportActivities> supportActivities, CancellationToken cancellationToken); 
         Task<List<Group>> GetChildGroups(int groupId);
         Task<List<SupportActivityDetail>> GetSupportActivitesForRegistrationForm(RegistrationFormVariant registrationFormVariant);
+        Task<List<Location>> GetUserLocations(int userId);
     }
 }

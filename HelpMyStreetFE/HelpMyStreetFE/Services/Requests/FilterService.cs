@@ -11,16 +11,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.Threading;
 using HelpMyStreetFE.Services.Groups;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.Services.Requests
 {
     public class FilterService : IFilterService
     {
         private IAddressService _addressService;
+        private IUserLocationService _userLocationService;
+        
 
-        public FilterService(IAddressService addressService)
+        public FilterService(IAddressService addressService, IUserLocationService userLocationService)
         {
             _addressService = addressService;
+            _userLocationService = userLocationService;
         }
 
         public async Task<SortAndFilterSet> GetDefaultSortAndFilterSet(JobSet jobSet, int? groupId, List<JobStatuses> jobStatuses, User user, CancellationToken cancellationToken)
@@ -63,7 +67,7 @@ namespace HelpMyStreetFE.Services.Requests
                 },
             };
 
-            var userLocations = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+            var userLocations = await _userLocationService.GetLocationDetailsForUser(user, cancellationToken);
             filterSet.Locations = userLocations.Select(l => new FilterField<Location>
             {
                 Value = l.Location,
@@ -320,24 +324,30 @@ namespace HelpMyStreetFE.Services.Requests
             };
         }
 
-        public IEnumerable<RequestSummary> SortAndFilterGroupRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr)
+        public async Task<IEnumerable<RequestSummary>> SortAndFilterRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr, int? userId, CancellationToken cancellationToken)
         {
-            var requestsToDisplay = requests.Where(
+           var requestsWithDistances = await Task.WhenAll(requests.Select(async r => { r.DistanceInMiles = (await _userLocationService.GetLocationWithDistanceForCurrentUser(r, cancellationToken)).Distance; return r; }));
+
+            var requestsToDisplay = requestsWithDistances.Where(
                 r => (jfr.SupportActivities == null || r.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
-                    && (jfr.JobStatuses == null || r.JobBasics.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
+                    && (jfr.JobStatuses == null || r.JobBasics.Where(js => (!userId.HasValue || js.VolunteerUserID.Equals(userId.Value)) && jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(r.Shift.Location))
                     && (jfr.DueInNextXDays == null || r.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
                     && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(r.Shift.StartDate)).Count() > 0)
-                    && (jfr.DueAfter == null || r.NextDueDate() >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || r.NextDueDate() <= jfr.DueBefore?.Date)
+                    && (jfr.DueAfter == null || (userId.HasValue ? r.NextDueDate(userId.Value) : r.NextDueDate()) >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || (userId.HasValue ? r.NextDueDate(userId.Value) : r.NextDueDate()) <= jfr.DueBefore?.Date)
                     && (jfr.RequestedAfter == null || r.DateRequested.Date >= jfr.RequestedAfter?.Date)
                     && (jfr.RequestedBefore == null) || r.DateRequested.Date <= jfr.RequestedBefore?.Date);
 
             return jfr.OrderBy switch
             {
-                OrderBy.DateDue_Ascending =>
+                OrderBy.DateDue_Ascending when userId.HasValue =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate(userId.Value)),
+                OrderBy.DateDue_Descending when userId.HasValue =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate(userId.Value)),
+                OrderBy.DateDue_Ascending when !userId.HasValue =>
                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate()),
-                OrderBy.DateDue_Descending =>
+                OrderBy.DateDue_Descending when !userId.HasValue =>
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate()),
                 OrderBy.Emptiest =>
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobBasics.Where(js => js.JobStatus == JobStatuses.Open).Count()).ThenBy(r => r.NextDueDate()),
@@ -347,56 +357,30 @@ namespace HelpMyStreetFE.Services.Requests
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.DateRequested),
                 OrderBy.RequiringAdminAttention =>
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.RequiringAdminAttentionScore()).ThenBy(r => r.NextDueDate()),
-                OrderBy.DateStatusLastChanged_Ascending =>
+                OrderBy.DateStatusLastChanged_Ascending when userId.HasValue =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Where(j => j.VolunteerUserID.Equals(userId.Value)).Min(j => j.DateStatusLastChanged)),
+                OrderBy.DateStatusLastChanged_Descending when userId.HasValue =>
+                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Where(j => j.VolunteerUserID.Equals(userId.Value)).Max(j => j.DateStatusLastChanged)),
+                OrderBy.DateStatusLastChanged_Ascending when !userId.HasValue =>
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Min(j => j.DateStatusLastChanged)),
-                OrderBy.DateStatusLastChanged_Descending =>
+                OrderBy.DateStatusLastChanged_Descending when !userId.HasValue =>
                     requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Max(j => j.DateStatusLastChanged)),
                 _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
             };
         }
 
-        public IEnumerable<RequestSummary> SortAndFilterMyRequests(IEnumerable<RequestSummary> requests, JobFilterRequest jfr, int userId)
+        public async Task<IEnumerable<IEnumerable<JobSummary>>> SortAndFilterOpenJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr, CancellationToken cancellationToken)
         {
-            var requestsToDisplay = requests.Where(
-                r => (jfr.SupportActivities == null || r.JobBasics.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
-                    && (jfr.JobStatuses == null || r.JobBasics.Where(j => j.VolunteerUserID.Equals(userId) && jfr.JobStatuses.Contains(j.JobStatus)).Count() > 0)
-                    && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(r.Shift.Location))
-                    && (jfr.DueInNextXDays == null || r.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(r.Shift.StartDate)).Count() > 0)
-                    && (jfr.DueAfter == null || r.NextDueDate(userId) >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || r.NextDueDate(userId) <= jfr.DueBefore?.Date)
-                    && (jfr.RequestedAfter == null || r.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || r.DateRequested.Date <= jfr.RequestedBefore?.Date);
+            var jobswithDistances = await Task.WhenAll(jobs.Select(async j => await Task.WhenAll(j.Select(async jd => { jd.DistanceInMiles = await _userLocationService.GetDistanceFromPostcodeForCurrentUser(jd.PostCode, cancellationToken); return jd; }))));
 
-            return jfr.OrderBy switch
-            {
-                OrderBy.DateDue_Ascending =>
-                   requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.NextDueDate(userId)),
-                OrderBy.DateDue_Descending =>
-                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.NextDueDate(userId)),
-                OrderBy.DateRequested_Ascending =>
-                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.DateRequested),
-                OrderBy.DateRequested_Descending =>
-                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.DateRequested),
-                OrderBy.RequiringAdminAttention =>
-                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.RequiringAdminAttentionScore()).ThenBy(r => r.NextDueDate(userId)),
-                OrderBy.DateStatusLastChanged_Ascending =>
-                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenBy(r => r.JobSummaries.Where(j => j.VolunteerUserID.Equals(userId)).Min(j => j.DateStatusLastChanged)),
-                OrderBy.DateStatusLastChanged_Descending =>
-                    requestsToDisplay.OrderByDescending(r => Highlight(r, jfr)).ThenByDescending(r => r.JobSummaries.Where(j => j.VolunteerUserID.Equals(userId)).Max(j => j.DateStatusLastChanged)),
-                _ => throw new ArgumentException(message: $"Unexpected OrderByField value: {jfr.OrderBy}", paramName: nameof(jfr.OrderBy)),
-            };
-        }
-
-        public IEnumerable<IEnumerable<JobSummary>> SortAndFilterOpenJobs(IEnumerable<IEnumerable<JobSummary>> jobs, JobFilterRequest jfr)
-        {
-            var jobsToDisplay = jobs.Where(
+            var jobsToDisplay = jobswithDistances.Where(
                 js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.SupportActivities == null || js.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
                     && (jfr.MaxDistanceInMiles == null || js.First().DistanceInMiles <= jfr.MaxDistanceInMiles)
                     && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
                     && (jfr.RequestedAfter == null || js.First().DateRequested.Date >= jfr.RequestedAfter?.Date)
                     && (jfr.RequestedBefore == null) || js.First().DateRequested.Date <= jfr.RequestedBefore?.Date);
+
 
             return jfr.OrderBy switch
             {

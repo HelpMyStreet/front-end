@@ -13,29 +13,27 @@ using HelpMyStreet.Utils.Enums;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.EqualityComparers;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.ViewComponents
 {
     public class JobDetailViewComponent : ViewComponent
     {
         private readonly IRequestService _requestService;
-        private readonly IJobCachingService _jobCachingService;
         private readonly IGroupService _groupService;
-        private readonly IAddressService _addressService;
         private readonly IGroupMemberService _groupMemberService;
         private IEqualityComparer<JobBasic> _jobBasicEqualityComparer;
+        private readonly IUserLocationService _userLocationService;
 
         public JobDetailViewComponent(
             IRequestService requestService,
-            IJobCachingService jobCachingService,
             IGroupService groupService,
-            IAddressService addressService,
-            IGroupMemberService groupMemberService)
+            IGroupMemberService groupMemberService,
+            IUserLocationService userLocationService)
         {
+            _userLocationService = userLocationService;
             _requestService = requestService;
-            _jobCachingService = jobCachingService;
             _groupService = groupService;
-            _addressService = addressService;
             _groupMemberService = groupMemberService;
             _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
         }
@@ -69,7 +67,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (jobDetails.RequestSummary.Shift != null)
             {
-                var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
+                var userLocationDetails = await _userLocationService.GetLocationDetailsForUser(user, cancellationToken);
                 jobDetailViewModel.JobDetail.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
             }
 

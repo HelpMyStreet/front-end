@@ -37,6 +37,7 @@ namespace HelpMyStreetFE.Controllers
         private readonly IUserService _userService;
         private readonly IOptions<YotiOptions> _yotiOptions;
         private readonly IRequestService _requestService;
+        private readonly IRequestCachingService _requestCachingService;
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
         private readonly IGroupService _groupService;
@@ -57,7 +58,8 @@ namespace HelpMyStreetFE.Controllers
             IRequestService requestService,
             IAuthService authService,
             IGroupMemberService groupMemberService,
-            IFilterService filterService
+            IFilterService filterService,
+            IRequestCachingService requestCachingService
             )
         {
             _logger = logger;
@@ -70,12 +72,13 @@ namespace HelpMyStreetFE.Controllers
             _communicationService = communicationService;
             _addressService = addressService;
             _filterService = filterService;
+            _requestCachingService = requestCachingService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index(string next, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -93,7 +96,7 @@ namespace HelpMyStreetFE.Controllers
         [Route("profile")]
         public async Task<IActionResult> Profile(string next, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -114,7 +117,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> OpenRequests(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -134,7 +137,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> MyRequests(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -153,7 +156,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> MyShifts(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -172,7 +175,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> OpenShifts(string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -189,7 +192,7 @@ namespace HelpMyStreetFE.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadAwardsComponent(CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken); 
+            var user = await _authService.GetCurrentUser(cancellationToken); 
             return ViewComponent("Awards", new { userID = user.ID, cancellationToken = cancellationToken });
         }
 
@@ -198,17 +201,17 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> PrintJobDetails(string j, CancellationToken cancellationToken)
         {
             var jobID = Base64Utils.Base64DecodeToInt(j);
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
 
             return ViewComponent("JobDetail", new { JobID = jobID, User = user, Jobset = JobSet.UserMyRequests, ToPrint = true});
         }
 
         [Route("get-directions-link")]
         [HttpGet]
-        public async Task<IActionResult> GetDirectionsLink(string j, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetDirectionsLink(string r, CancellationToken cancellationToken)
         {
-            int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
-            var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
+            int.TryParse(Base64Utils.Base64Decode(r), out int requestId);
+            var shiftDetails = (await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken));
             string locationPostcode;
 
             if (shiftDetails.RequestType == RequestType.Task)
@@ -217,7 +220,7 @@ namespace HelpMyStreetFE.Controllers
             }
             else
             {
-                var location = shiftDetails.RequestSummary.Shift.Location;
+                var location = shiftDetails.Shift.Location;
                 LocationDetails locationDetails = await _addressService.GetLocationDetails(location, cancellationToken);
 
                 locationPostcode = WebUtility.UrlEncode(locationDetails.Address.Postcode);
@@ -232,7 +235,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> GetShiftCalendar(string j, CancellationToken cancellationToken)
         {
             int.TryParse(Base64Utils.Base64Decode(j), out int jobID);
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
             var shiftDetails = await _requestService.GetJobAndRequestSummaryAsync(jobID, cancellationToken);
             if (shiftDetails == null || shiftDetails.RequestType != RequestType.Shift)
             {
@@ -282,7 +285,7 @@ namespace HelpMyStreetFE.Controllers
         {
             var jobID = Base64Utils.Base64DecodeToInt(j);
             
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
             if (user == null)
             {
                 return Unauthorized();
@@ -305,7 +308,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> Group(string groupKey, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -337,7 +340,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> GroupRequests(string groupKey, string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -363,7 +366,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> GroupShifts(string groupKey, string encodedJobId, string encodedRequestId, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);
@@ -397,7 +400,7 @@ namespace HelpMyStreetFE.Controllers
         [AuthorizeAttributeNoRedirect]
         public async Task<int> NavigationBadge(MenuPage menuPage, string groupKey, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return 0;
@@ -413,7 +416,7 @@ namespace HelpMyStreetFE.Controllers
         public async Task<IActionResult> GroupVolunteers(string groupKey, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             if (!_userService.GetRegistrationIsComplete(user))
             {
                 return Redirect(REGISTRATION_URL);

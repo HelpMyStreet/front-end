@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.ViewComponents
             {
                 var jobStatuses = new List<JobStatuses>();
 
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
 
                 if (jobFilterViewModel.JobFilterRequest.HighlightJobId.HasValue)
                 {
