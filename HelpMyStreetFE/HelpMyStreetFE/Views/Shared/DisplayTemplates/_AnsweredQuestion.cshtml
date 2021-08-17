@@ -29,7 +29,17 @@
             <a href="#" class="edit ml-xs"><img src="~/img/icons/edit.png" alt="Edit" title="Edit" /></a>
         </div>
         <form>
-            <partial name="_Question" model="requestHelpQuestion" />
+            <div class="input">
+                <partial name="_Question" model="requestHelpQuestion" />
+            </div>
+
+            <button class="btn cta--dark-blue-border">
+                <span class="text">Save changes</span>
+            </button>
+
+            <button class="btn cta--orange-border">
+                <span class="text">Cancel editing</span>
+            </button>
         </form>
 </dd>
 }
