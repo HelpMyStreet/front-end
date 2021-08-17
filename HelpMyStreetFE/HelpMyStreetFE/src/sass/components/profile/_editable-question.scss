@@ -10,19 +10,36 @@
 
     form {
         display: none;
-        margin-block: 1rem;
+        margin-bottom: 0.25rem;
 
         .input {
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
         }
 
-        button {
-            min-width: 13rem;
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
 
-            .loading-spinner {
-                width: auto;
-                margin: auto;
+            @media (min-width: $sm-med-screen) {
+                flex-direction: row;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 0.5rem;
+
+                @media (min-width: $sm-med-screen) {
+                    width: 13rem;
+                    margin-left: 1rem;
+                    margin-right: 1rem;
+                }
+
+                .loading-spinner {
+                    width: auto;
+                    margin: auto;
+                }
             }
         }
     }

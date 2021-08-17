@@ -35,14 +35,16 @@
                 <partial name="_Question" model="requestHelpQuestion" />
             </div>
 
-            <button class="btn cta--dark-blue-border save-changes" type="submit">
-                <span class="text">Save changes</span>
-                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Saving", ShowDarkSpinner = true }' /></div>
-            </button>
+            <div class="buttons">
+                <button class="btn cta--dark-blue-border save-changes" type="submit">
+                    <span class="text">Save changes</span>
+                    <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Saving", ShowDarkSpinner = true }' /></div>
+                </button>
 
-            <button class="btn cta--orange-border cancel-editing" type="reset">
-                <span class="text">Cancel editing</span>
-            </button>
+                <button class="btn cta--orange-border cancel-editing" type="reset">
+                    <span class="text">Cancel editing</span>
+                </button>
+            </div>
         </form>
     </dd>
 }
