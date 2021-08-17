@@ -1,6 +1,8 @@
 ﻿@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreetFE.Models.RequestHelp;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Enums; 
 @using HelpMyStreetFE.Helpers;
 
 @model QuestionViewModel;
@@ -14,20 +16,26 @@
 
 @if (Model.IsEditable)
 {
+    var requestHelpQuestion = new RequestHelpQuestion
+    {
+        ID = Model.Question.Id,
+        InputType = QuestionType.MultiLineText, // Assumption for now
+        Model = Model.Question.Answer,
+    };
+
     <dd class="editable-question" data-job-id="@encodedJobID" data-question-id="@encodedQuestionID">
         <div>
             @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
             <a href="#" class="edit ml-xs"><img src="~/img/icons/edit.png" alt="Edit" title="Edit" /></a>
         </div>
         <form>
-            <input value="@Model.Question.Answer" />
-            <a href="#"></a>
+            <partial name="_Question" model="requestHelpQuestion" />
         </form>
-    </dd>
+</dd>
 }
 else
 {
-    <dd>
-        @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
-    </dd>
+<dd>
+    @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
+</dd>
 }
