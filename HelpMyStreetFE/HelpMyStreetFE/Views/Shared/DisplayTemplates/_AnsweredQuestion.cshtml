@@ -1,0 +1,33 @@
+﻿@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Helpers;
+
+@model QuestionViewModel;
+
+@{
+    var encodedJobID = Base64Utils.Base64Encode(Model.Job.JobID);
+    var encodedQuestionID = Base64Utils.Base64Encode(Model.Question.Id);
+}
+
+<dt>@Model.Question.FriendlyName()</dt>
+
+@if (Model.IsEditable)
+{
+    <dd class="editable-question" data-job-id="@encodedJobID" data-question-id="@encodedQuestionID">
+        <div>
+            @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
+            <a href="#" class="edit ml-xs"><img src="~/img/icons/edit.png" alt="Edit" title="Edit" /></a>
+        </div>
+        <form>
+            <input value="@Model.Question.Answer" />
+            <a href="#"></a>
+        </form>
+    </dd>
+}
+else
+{
+    <dd>
+        @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
+    </dd>
+}

@@ -1,0 +1,14 @@
+﻿.editable-question {
+    span.answer {
+        min-width: 5rem;
+    }
+
+    a.edit img {
+        width: 1.5rem;
+        vertical-align: text-bottom;
+    }
+
+    form {
+        display: none;
+    }
+}

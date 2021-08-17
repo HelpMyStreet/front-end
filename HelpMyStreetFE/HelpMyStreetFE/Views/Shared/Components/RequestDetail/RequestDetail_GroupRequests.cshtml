@@ -125,7 +125,7 @@
                         <dl>
                             @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobDetails, q, true)))
                             {
-                                <partial name="_Question" model="q" />
+                                <partial name="_AnsweredQuestion" model="q" />
                             }
                         </dl>
                     </div>
