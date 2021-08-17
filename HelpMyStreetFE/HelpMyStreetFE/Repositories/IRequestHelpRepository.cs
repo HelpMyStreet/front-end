@@ -4,6 +4,7 @@ using HelpMyStreet.Contracts.RequestService.Response;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
+using System;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -25,6 +26,8 @@ namespace HelpMyStreetFE.Repositories
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToAcceptedAsync(int jobId, int createdByUserId, int volunteerUserId);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusToInProgressAsync(int jobId, int createdByUserId, int volunteerUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateShiftStatusToAccepted(int requestId, SupportActivities supportActivity, int createdByUserId, int volunteerUserId);
+        Task<UpdateJobOutcome?> PutUpdateJobDueDate(int jobId, DateTime dueDate, int authorisedByUserID);
+        Task<UpdateJobOutcome?> PutUpdateJobQuestion(int jobId, int questionId, string answer, int authorisedByUserID);
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
         Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request);
         Task<IEnumerable<RequestSummary>> GetRequestsByFilter(GetRequestsByFilterRequest request);
