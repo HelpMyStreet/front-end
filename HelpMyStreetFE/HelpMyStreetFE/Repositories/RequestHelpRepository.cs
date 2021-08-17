@@ -338,5 +338,42 @@ namespace HelpMyStreetFE.Repositories
             }
             return null;
         }
+
+        public async Task<UpdateJobOutcome?> PutUpdateJobDueDate(int jobId, DateTime dueDate, int authorisedByUserID)
+        {
+            var request = new PutUpdateJobDueDateRequest()
+            {
+                JobID = jobId,
+                DueDate = dueDate,
+                AuthorisedByUserID = authorisedByUserID
+            };
+
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobDueDateResponse>>($"/api/PutUpdateJobDueDate", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            return null;
+        }
+
+        public async Task<UpdateJobOutcome?> PutUpdateJobQuestion(int jobId, int questionId, string answer, int authorisedByUserID)
+        {
+            var request = new PutUpdateJobQuestionRequest()
+            {
+                JobID = jobId,
+                QuestionID = questionId,
+                Answer = answer,
+                AuthorisedByUserID = authorisedByUserID
+            };
+
+            var response = await PutAsync<BaseRequestHelpResponse<PutUpdateJobQuestionResponse>>($"/api/PutUpdateJobQuestion", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            return null;
+        }
     }
 }
