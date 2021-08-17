@@ -32,7 +32,7 @@
     }
     else
     {
-        location = $"{Model.Item.PostCode.Split(" ").First()}, ({Model.Item.DistanceInMiles} miles away)";
+        location = $"{Model.Item.PostCode.Split(" ").First()}, ({Model.Item.DistanceInMiles?.ToString("0.0")} miles away)";
     }
 
     if (Model.Item.JobSummaries.Exists(j => j.JobStatus.Incomplete()))
