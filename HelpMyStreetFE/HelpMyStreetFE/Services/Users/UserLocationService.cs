@@ -95,9 +95,15 @@ namespace HelpMyStreetFE.Services.Users
                 locationDetails = await _addressService.GetLocationDetails(locationDetails.Location, cancellationToken);
             }
 
+            double distance = 0;
+            if (locationDetails.Address != null)
+            {
+                distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken);
+            }
+
             var lwd = new LocationWithDistance()
             {
-                Distance = await GetDistanceFromPostcodeForCurrentUser(locationDetails.Address.Postcode, cancellationToken),
+                Distance = distance,
                 Location = locationDetails.Location,
                 LocationDetails = locationDetails
             };
