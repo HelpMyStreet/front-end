@@ -19,13 +19,17 @@ namespace HelpMyStreetFE.Specs.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("RequestHelp", Description="\tRequest Help form", SourceFile="Features\\RequestHelp.feature", SourceLine=0)]
+    [TechTalk.SpecRun.FeatureAttribute("RequestHelp", new string[] {
+            "StartAtHomePage",
+            "AcceptAllCookies"}, Description="\tRequest Help form", SourceFile="Features\\RequestHelp.feature", SourceLine=2)]
     public partial class RequestHelpFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "StartAtHomePage",
+                "AcceptAllCookies"};
         
 #line 1 "RequestHelp.feature"
 #line hidden
@@ -34,7 +38,9 @@ namespace HelpMyStreetFE.Specs.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "RequestHelp", "\tRequest Help form", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "RequestHelp", "\tRequest Help form", ProgrammingLanguage.CSharp, new string[] {
+                        "StartAtHomePage",
+                        "AcceptAllCookies"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,14 +76,10 @@ namespace HelpMyStreetFE.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form", new string[] {
-                "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=5)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form", SourceLine=5)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm()
         {
-            string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage",
-                    "AcceptAllCookies"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correct activities visible on generic Request Help form", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 6

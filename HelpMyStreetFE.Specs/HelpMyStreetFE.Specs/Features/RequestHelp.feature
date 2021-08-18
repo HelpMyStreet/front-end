@@ -1,8 +1,8 @@
-﻿Feature: RequestHelp
+﻿@StartAtHomePage
+@AcceptAllCookies
+Feature: RequestHelp
 	Request Help form
 
-@StartAtHomePage
-@AcceptAllCookies
 Scenario: Correct activities visible on generic Request Help form
 	Given the url is request-help/
 	Then the element selected by .sm4:nth-child(1) .tiles__tile should have id #task_1

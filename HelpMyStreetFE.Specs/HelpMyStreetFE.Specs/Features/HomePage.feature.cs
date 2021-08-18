@@ -19,13 +19,15 @@ namespace HelpMyStreetFE.Specs.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [TechTalk.SpecRun.FeatureAttribute("HomePage", SourceFile="Features\\HomePage.feature", SourceLine=0)]
+    [TechTalk.SpecRun.FeatureAttribute("HomePage", new string[] {
+            "StartAtHomePage"}, SourceFile="Features\\HomePage.feature", SourceLine=1)]
     public partial class HomePageFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "StartAtHomePage"};
         
 #line 1 "HomePage.feature"
 #line hidden
@@ -34,7 +36,8 @@ namespace HelpMyStreetFE.Specs.Features
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "HomePage", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "HomePage", null, ProgrammingLanguage.CSharp, new string[] {
+                        "StartAtHomePage"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -70,12 +73,10 @@ namespace HelpMyStreetFE.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Cookie banner displayed", new string[] {
-                "StartAtHomePage"}, SourceLine=3)]
+        [TechTalk.SpecRun.ScenarioAttribute("Cookie banner displayed", SourceLine=3)]
         public virtual void CookieBannerDisplayed()
         {
-            string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cookie banner displayed", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 4
@@ -108,15 +109,13 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("All cookies accepted", new string[] {
-                "StartAtHomePage"}, SourceLine=8)]
+        [TechTalk.SpecRun.ScenarioAttribute("All cookies accepted", SourceLine=7)]
         public virtual void AllCookiesAccepted()
         {
-            string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All cookies accepted", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 9
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -136,25 +135,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
+#line 9
  testRunner.When("the element #gdpr-cookie-accept is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 10
  testRunner.Then("the element #gdpr-cookie-message-outer should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Home page title", new string[] {
-                "StartAtHomePage"}, SourceLine=13)]
+        [TechTalk.SpecRun.ScenarioAttribute("Home page title", SourceLine=11)]
         public virtual void HomePageTitle()
         {
-            string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Home page title", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 14
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -174,7 +171,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 13
  testRunner.Then("the page title should be Home Page - Help My Street", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -182,16 +179,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Header login failure", new string[] {
-                "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=18)]
+                "AcceptAllCookies"}, SourceLine=15)]
         public virtual void HeaderLoginFailure()
         {
             string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage",
                     "AcceptAllCookies"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Header login failure", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 19
+#line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -211,28 +206,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 20
+#line 17
  testRunner.Given("the element #email has value incorrect@nowhere.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 21
+#line 18
  testRunner.And("the element #password has value abcd1234", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 19
  testRunner.When("the element #login-submit is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 23
+#line 20
  testRunner.Then("the url should be login?email=incorrect@nowhere.com&er=login&ReturnUrl=null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 24
+#line 21
  testRunner.And("the element #email should have value incorrect@nowhere.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 22
  testRunner.And("the element #password should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 23
  testRunner.And("the element #login-fail-message should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 24
  testRunner.And("the element #login-fail-message should have text Sorry, we couldn\'t find an accou" +
                         "nt with that email address and password. Please check and try again", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -241,16 +236,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Header login blank email", new string[] {
-                "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=30)]
+                "AcceptAllCookies"}, SourceLine=26)]
         public virtual void HeaderLoginBlankEmail()
         {
             string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage",
                     "AcceptAllCookies"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Header login blank email", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 31
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -270,26 +263,26 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 32
+#line 28
  testRunner.When("the element #login-submit is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 33
+#line 29
  testRunner.Then("the url should be login?email=&er=email&ReturnUrl=null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 34
+#line 30
  testRunner.And("the element #email should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 35
+#line 31
  testRunner.And("the element #password should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 36
+#line 32
  testRunner.And("the element #login-fail-message should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 37
+#line 33
  testRunner.And("the element selected by input[name=\"email\"]~.login__fail-message-main should be v" +
                         "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 38
+#line 34
  testRunner.And("the element selected by input[name=\"email\"]~.login__fail-message-main should have" +
                         " text Please enter a valid email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -298,16 +291,14 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Header login blank password", new string[] {
-                "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=41)]
+                "AcceptAllCookies"}, SourceLine=36)]
         public virtual void HeaderLoginBlankPassword()
         {
             string[] tagsOfScenario = new string[] {
-                    "StartAtHomePage",
                     "AcceptAllCookies"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Header login blank password", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 42
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -327,28 +318,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 43
+#line 38
  testRunner.Given("the element #email has value somewhere@anywhere.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 44
+#line 39
  testRunner.When("the element #login-submit is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 45
+#line 40
  testRunner.Then("the url should be login?email=somewhere@anywhere.com&er=password&ReturnUrl=null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 46
+#line 41
  testRunner.And("the element #email should have value somewhere@anywhere.com", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
+#line 42
  testRunner.And("the element #password should be blank", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 43
  testRunner.And("the element #login-fail-message should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 49
+#line 44
  testRunner.And("the element #login-fail-message should have text Please enter a valid password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 45
  testRunner.And("the element selected by input[name=\"email\"]~.login__fail-message-main should not " +
                         "be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
