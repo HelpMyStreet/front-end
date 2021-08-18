@@ -82,7 +82,7 @@ namespace HelpMyStreetFE.Specs.Steps
             _pageObject.WaitForDisplayedFalse(elementId, null);
         }
 
-        [Then("the element selected by (.*) should not be visible")]
+        [StepDefinition("the element selected by (.*) should not be visible")]
         public void ThenTheElementWithSelectorShouldNotBeVisible(string selector)
         {
             _pageObject.WaitForDisplayedFalse(null, selector);
@@ -106,19 +106,19 @@ namespace HelpMyStreetFE.Specs.Steps
             _pageObject.GetValue(elementId, null).Should().Be(expectedValue);
         }
 
-        [Then("the element with selector (.*) should have value (.*)")]
+        [StepDefinition("the element with selector (.*) should have value (.*)")]
         public void ThenTheElementWithSelectorShouldHaveValue(string selector, string expectedValue)
         {
             _pageObject.GetValue(null, selector).Should().Be(expectedValue);
         }
 
-        [Then("the element #(.*) should have text (.*)")]
+        [StepDefinition("the element #(.*) should have text (.*)")]
         public void ThenTheElementWithIdShouldHaveText(string elementId, string expectedValue)
         {
             _pageObject.GetText(elementId, null).Should().Be(expectedValue);
         }
 
-        [Then("the element selected by (.*) should have text (.*)")]
+        [StepDefinition("the element selected by (.*) should have text (.*)")]
         public void ThenTheElementWithSelectorShouldHaveText(string selector, string expectedValue)
         {
             _pageObject.GetText(null, selector).Should().Be(expectedValue);
