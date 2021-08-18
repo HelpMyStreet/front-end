@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Specs.Drivers
     public class BrowserDriver : IDisposable
     {
         private readonly Lazy<IWebDriver> _currentWebDriverLazy;
+        private readonly Lazy<IWebDriver> _secondaryWebDriverLazy;
         private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private bool _isDisposed;
@@ -19,6 +20,7 @@ namespace HelpMyStreetFE.Specs.Drivers
         public BrowserDriver(FeatureContext featureContext, ScenarioContext scenarioContext)
         {
             _currentWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
+            _secondaryWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
             _featureContext = featureContext;
             _scenarioContext = scenarioContext;
         }
@@ -27,6 +29,7 @@ namespace HelpMyStreetFE.Specs.Drivers
         /// The Selenium IWebDriver instance
         /// </summary>
         public IWebDriver Current => _currentWebDriverLazy.Value;
+        public IWebDriver Secondary => _secondaryWebDriverLazy.Value;
 
         /// <summary>
         /// Creates the Selenium web driver (opens a browser)
@@ -64,6 +67,10 @@ namespace HelpMyStreetFE.Specs.Drivers
             var jsScript = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"" + (success ? "passed" : "failed") + "\", \"reason\": \"" + excapedReason + "\"}}";
 
             ((IJavaScriptExecutor)Current).ExecuteScript(jsScript);
+            if (_secondaryWebDriverLazy.IsValueCreated)
+            {
+                ((IJavaScriptExecutor)Secondary).ExecuteScript(jsScript);
+            }
         }
 
         /// <summary>
@@ -79,6 +86,11 @@ namespace HelpMyStreetFE.Specs.Drivers
             if (_currentWebDriverLazy.IsValueCreated)
             {
                 Current.Quit();
+            }
+
+            if (_secondaryWebDriverLazy.IsValueCreated)
+            {
+                Secondary.Quit();
             }
 
             _isDisposed = true;

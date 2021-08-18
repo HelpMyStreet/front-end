@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using HelpMyStreetFE.Specs.Drivers;
 using HelpMyStreetFE.Specs.PageObjects;
 using TechTalk.SpecFlow;
@@ -8,18 +9,27 @@ namespace HelpMyStreetFE.Specs.Steps
     [Binding]
     public sealed class GenericStepDefinitions
     {
-
+        private readonly BrowserDriver _browserDriver;
         private readonly GenericPageObject _pageObject;
+        private readonly Lazy<GenericPageObject> _secondaryPageObjectLazy;
 
         public GenericStepDefinitions(BrowserDriver browserDriver)
         {
+            _browserDriver = browserDriver;
             _pageObject = new GenericPageObject(browserDriver.Current);
+            _secondaryPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.Secondary); });
         }
 
         [Given("the url is (.*)")]
         public void GivenTheUrlIs(string value)
         {
             _pageObject.SetUrl(value);
+        }
+
+        [Given("the secondary url is (.*)")]
+        public void GivenTheSecondaryUrlIs(string value)
+        {
+            _secondaryPageObjectLazy.Value.SetUrl(value);
         }
 
         [Given("the element #(.*) has value (.*)")]
@@ -134,6 +144,12 @@ namespace HelpMyStreetFE.Specs.Steps
         public void ThenThePageTitleShouldBe(string expectedTitle)
         {
             _pageObject.GetTitle().Should().Be(expectedTitle);
+        }
+
+        [Then("the secondary page title should be (.*)")]
+        public void ThenTheSecondaryPageTitleShouldBe(string expectedTitle)
+        {
+            _secondaryPageObjectLazy.Value.GetTitle().Should().Be(expectedTitle);
         }
     }
 }

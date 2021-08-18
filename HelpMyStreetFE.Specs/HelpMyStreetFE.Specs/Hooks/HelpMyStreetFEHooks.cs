@@ -8,9 +8,16 @@ namespace HelpMyStreetFE.Specs.Hooks
     public class HelpMyStreetFEHooks
     {
         [BeforeScenario("StartAtHomePage")]
-        public static void BeforeScenario(BrowserDriver browserDriver)
+        public static void BeforeScenario_StartAtHomePage(BrowserDriver browserDriver)
         {
             var pageObject = new GenericPageObject(browserDriver.Current);
+            pageObject.EnsureHomePageIsOpenAndReset();
+        }
+
+        [BeforeScenario("AddSecondaryBrowser")]
+        public static void BeforeScenario_AddSecondaryBrowser(BrowserDriver browserDriver)
+        {
+            var pageObject = new GenericPageObject(browserDriver.Secondary);
             pageObject.EnsureHomePageIsOpenAndReset();
         }
 
