@@ -74,7 +74,16 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public void WaitForDisplayedFalse(string elementId, string selector)
         {
-            var el = GetElementByIdOrSelector(elementId, selector);
+            IWebElement el;
+            try
+            {
+                el = GetElementByIdOrSelector(elementId, selector);
+            }
+            catch (NoSuchElementException)
+            {
+                // Element not in DOM
+                return;
+            }
 
             try
             {
