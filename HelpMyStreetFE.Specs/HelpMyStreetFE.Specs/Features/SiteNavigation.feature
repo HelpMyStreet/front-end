@@ -1,14 +1,14 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
-@MaximiseWindow
+@MaximiseWindows
 Feature: SiteNavigation
 	Navigation using top menu bar on home page
 
 Scenario Outline: Correct navigation links visible
-	Given the element selected by #site-nav ul li:nth-child(<index>) a should have text <Name>
-	When the element selected by #site-nav ul li:nth-child(<index>) a is clicked
-	Then the url should be <url>
-	And the page title should be <Page Title>
+	Given the volunteer's element selected by #site-nav ul li:nth-child(<index>) a should have text <Name>
+	When the volunteer clicks the element selected by #site-nav ul li:nth-child(<index>) a
+	Then the volunteer's url should be <url>
+	And the volunteer's page title should be <Page Title>
 
 	Examples: 
 		| Name			| index | url				| Page Title										|
@@ -19,4 +19,4 @@ Scenario Outline: Correct navigation links visible
 
 
 Scenario: No further navigation links
-	But the element selected by #site-nav ul li:nth-child(5) a should not be visible
+	But the volunteer's element selected by #site-nav ul li:nth-child(5) a should not be visible

@@ -4,12 +4,12 @@ Feature: RequestHelp
 	Request Help form
 
 Background: 
-	Given the url is request-help/
+	Given the volunteer's url is request-help/
 
 Scenario Outline: Correct activities visible on generic Request Help form
-	Then the element selected by .sm4:nth-child(<index>) .tiles__tile should have id #task_<SupportActivityId>
-	And the element selected by #task_<SupportActivityId> .tiles__tile__content__header should have text <Name>
-	And the element selected by #task_<SupportActivityId> .tiles__tile__content__description should have text <Description>
+	Then the volunteer's element selected by .sm4:nth-child(<index>) .tiles__tile should have id #task_<SupportActivityId>
+	And the volunteer's element selected by #task_<SupportActivityId> .tiles__tile__content__header should have text <Name>
+	And the volunteer's element selected by #task_<SupportActivityId> .tiles__tile__content__description should have text <Description>
 
 	Examples: 
 		| Name			| index | SupportActivityId | Description																			|
@@ -24,4 +24,4 @@ Scenario Outline: Correct activities visible on generic Request Help form
 		| Other			|	  9 |				 11 | Please tell us more below																|
 
 Scenario: No excess activities visible on generic Request Help form
-	Then the element selected by .sm4:nth-child(10) .tiles__tile should not be visible
+	Then the volunteer's element selected by .sm4:nth-child(10) .tiles__tile should not be visible

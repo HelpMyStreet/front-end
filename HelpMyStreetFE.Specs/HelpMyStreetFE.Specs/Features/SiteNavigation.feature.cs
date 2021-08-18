@@ -22,7 +22,7 @@ namespace HelpMyStreetFE.Specs.Features
     [TechTalk.SpecRun.FeatureAttribute("SiteNavigation", new string[] {
             "StartVolunteerBrowser",
             "AcceptAllCookies",
-            "MaximiseWindow"}, Description="\tNavigation using top menu bar on home page", SourceFile="Features\\SiteNavigation.feature", SourceLine=3)]
+            "MaximiseWindows"}, Description="\tNavigation using top menu bar on home page", SourceFile="Features\\SiteNavigation.feature", SourceLine=3)]
     public partial class SiteNavigationFeature
     {
         
@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.Specs.Features
         private string[] _featureTags = new string[] {
                 "StartVolunteerBrowser",
                 "AcceptAllCookies",
-                "MaximiseWindow"};
+                "MaximiseWindows"};
         
 #line 1 "SiteNavigation.feature"
 #line hidden
@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.Specs.Features
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "SiteNavigation", "\tNavigation using top menu bar on home page", ProgrammingLanguage.CSharp, new string[] {
                         "StartVolunteerBrowser",
                         "AcceptAllCookies",
-                        "MaximiseWindow"});
+                        "MaximiseWindows"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -109,16 +109,17 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.Given(string.Format("the element selected by #site-nav ul li:nth-child({0}) a should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the volunteer\'s element selected by #site-nav ul li:nth-child({0}) a should have " +
+                            "text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
- testRunner.When(string.Format("the element selected by #site-nav ul li:nth-child({0}) a is clicked", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("the volunteer clicks the element selected by #site-nav ul li:nth-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 10
- testRunner.Then(string.Format("the url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 11
- testRunner.And(string.Format("the page title should be {0}", pageTitle), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s page title should be {0}", pageTitle), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -183,7 +184,8 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 22
- testRunner.But("the element selected by #site-nav ul li:nth-child(5) a should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
+ testRunner.But("the volunteer\'s element selected by #site-nav ul li:nth-child(5) a should not be " +
+                        "visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "But ");
 #line hidden
             }
             this.ScenarioCleanup();

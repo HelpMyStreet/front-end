@@ -31,6 +31,15 @@ namespace HelpMyStreetFE.Specs.Drivers
         public IWebDriver AdminWebDriver => _adminWebDriverLazy.Value;
         public IWebDriver VolunteerWebDriver => _volunteerWebDriverLazy.Value;
 
+        public bool AdminWebDriverIsCreated
+        {
+            get { return _adminWebDriverLazy.IsValueCreated; }
+        }
+        public bool VolunteerWebDriverIsCreated
+        {
+            get { return _volunteerWebDriverLazy.IsValueCreated; }
+        }
+
         /// <summary>
         /// Creates the Selenium web driver (opens a browser)
         /// </summary>
