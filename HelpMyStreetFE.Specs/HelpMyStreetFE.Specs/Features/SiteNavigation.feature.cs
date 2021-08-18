@@ -72,15 +72,17 @@ namespace HelpMyStreetFE.Specs.Features
         
         [TechTalk.SpecRun.ScenarioAttribute("Navigate to Request Help", new string[] {
                 "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=5)]
+                "AcceptAllCookies",
+                "MaximiseWindow"}, SourceLine=6)]
         public virtual void NavigateToRequestHelp()
         {
             string[] tagsOfScenario = new string[] {
                     "StartAtHomePage",
-                    "AcceptAllCookies"};
+                    "AcceptAllCookies",
+                    "MaximiseWindow"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Request Help", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 6
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -100,17 +102,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
+#line 8
  testRunner.Then("the element selected by #site-nav ul li:nth-child(1) a should have text Request H" +
                         "elp", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 8
+#line 9
  testRunner.When("the element selected by #site-nav ul li:nth-child(1) a is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 10
  testRunner.Then("the url should be request-help/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 10
+#line 11
  testRunner.And("the page title should be Request Help - Help My Street", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -119,15 +121,17 @@ this.ScenarioInitialize(scenarioInfo);
         
         [TechTalk.SpecRun.ScenarioAttribute("Navigate to Case Studies", new string[] {
                 "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=13)]
+                "AcceptAllCookies",
+                "MaximiseWindow"}, SourceLine=15)]
         public virtual void NavigateToCaseStudies()
         {
             string[] tagsOfScenario = new string[] {
                     "StartAtHomePage",
-                    "AcceptAllCookies"};
+                    "AcceptAllCookies",
+                    "MaximiseWindow"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Case Studies", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 14
+#line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -147,17 +151,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 17
  testRunner.Then("the element selected by #site-nav ul li:nth-child(2) a should have text Case Stud" +
                         "ies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 16
+#line 18
  testRunner.When("the element selected by #site-nav ul li:nth-child(2) a is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
+#line 19
  testRunner.Then("the url should be case-studies", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 18
+#line 20
  testRunner.And("the page title should be Case Studies - Help My Street", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -166,15 +170,17 @@ this.ScenarioInitialize(scenarioInfo);
         
         [TechTalk.SpecRun.ScenarioAttribute("Navigate to Resources", new string[] {
                 "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=21)]
+                "AcceptAllCookies",
+                "MaximiseWindow"}, SourceLine=24)]
         public virtual void NavigateToResources()
         {
             string[] tagsOfScenario = new string[] {
                     "StartAtHomePage",
-                    "AcceptAllCookies"};
+                    "AcceptAllCookies",
+                    "MaximiseWindow"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Resources", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 22
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -194,17 +200,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
+#line 26
  testRunner.Then("the element selected by #site-nav ul li:nth-child(3) a should have text Resources" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 24
+#line 27
  testRunner.When("the element selected by #site-nav ul li:nth-child(3) a is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 28
  testRunner.Then("the url should be resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 29
  testRunner.And("the page title should be Resources - Help My Street", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -213,15 +219,17 @@ this.ScenarioInitialize(scenarioInfo);
         
         [TechTalk.SpecRun.ScenarioAttribute("Navigate to Questions", new string[] {
                 "StartAtHomePage",
-                "AcceptAllCookies"}, SourceLine=29)]
+                "AcceptAllCookies",
+                "MaximiseWindow"}, SourceLine=33)]
         public virtual void NavigateToQuestions()
         {
             string[] tagsOfScenario = new string[] {
                     "StartAtHomePage",
-                    "AcceptAllCookies"};
+                    "AcceptAllCookies",
+                    "MaximiseWindow"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Navigate to Questions", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 30
+#line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -241,17 +249,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 31
+#line 35
  testRunner.Then("the element selected by #site-nav ul li:nth-child(4) a should have text Questions" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 32
+#line 36
  testRunner.When("the element selected by #site-nav ul li:nth-child(4) a is clicked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 33
+#line 37
  testRunner.Then("the url should be questions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 34
+#line 38
  testRunner.And("the page title should be Frequently Asked Questions - Help My Street", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

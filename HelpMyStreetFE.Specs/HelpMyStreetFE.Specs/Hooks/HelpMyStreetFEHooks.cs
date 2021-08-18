@@ -25,5 +25,11 @@ namespace HelpMyStreetFE.Specs.Hooks
                 pageObject.WaitForDisplayedFalse("gdpr-cookie-message-outer", null);
             }
         }
+
+        [BeforeScenario("MaximiseWindow")]
+        public static void BeforeScenario_MaximiseWindow(BrowserDriver browserDriver)
+        {
+            browserDriver.Current.Manage().Window.Maximize();
+        }
     }
 }

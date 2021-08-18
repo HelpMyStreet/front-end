@@ -3,6 +3,7 @@
 
 @StartAtHomePage
 @AcceptAllCookies
+@MaximiseWindow
 Scenario: Navigate to Request Help
 	Then the element selected by #site-nav ul li:nth-child(1) a should have text Request Help
 	When the element selected by #site-nav ul li:nth-child(1) a is clicked
@@ -11,6 +12,7 @@ Scenario: Navigate to Request Help
 
 @StartAtHomePage
 @AcceptAllCookies
+@MaximiseWindow
 Scenario: Navigate to Case Studies
 	Then the element selected by #site-nav ul li:nth-child(2) a should have text Case Studies
 	When the element selected by #site-nav ul li:nth-child(2) a is clicked
@@ -19,6 +21,7 @@ Scenario: Navigate to Case Studies
 
 @StartAtHomePage
 @AcceptAllCookies
+@MaximiseWindow
 Scenario: Navigate to Resources
 	Then the element selected by #site-nav ul li:nth-child(3) a should have text Resources
 	When the element selected by #site-nav ul li:nth-child(3) a is clicked
@@ -27,6 +30,7 @@ Scenario: Navigate to Resources
 
 @StartAtHomePage
 @AcceptAllCookies
+@MaximiseWindow
 Scenario: Navigate to Questions
 	Then the element selected by #site-nav ul li:nth-child(4) a should have text Questions
 	When the element selected by #site-nav ul li:nth-child(4) a is clicked

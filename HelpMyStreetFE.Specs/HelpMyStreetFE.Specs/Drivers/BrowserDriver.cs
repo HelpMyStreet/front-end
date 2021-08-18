@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -41,6 +41,7 @@ namespace HelpMyStreetFE.Specs.Drivers
             chromeCapability.AddAdditionalCapability("browser", "Chrome", true);
             chromeCapability.AddAdditionalCapability("browser_version", "latest", true);
             chromeCapability.AddAdditionalCapability("os", "Windows", true);
+            chromeCapability.AddAdditionalCapability("resolution", "1920x1080", true);
             chromeCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
             chromeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
             chromeCapability.AddAdditionalCapability("build", $"Local test build {version}", true);
