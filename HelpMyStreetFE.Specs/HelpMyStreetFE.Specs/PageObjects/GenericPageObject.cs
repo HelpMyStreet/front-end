@@ -52,6 +52,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
         public void Click(string elementId, string selector)
         {
             var el = GetElementByIdOrSelector(elementId, selector);
+            ScrollTo(el);
             el.Click();
         }
 
@@ -178,6 +179,11 @@ namespace HelpMyStreetFE.Specs.PageObjects
             {
                 return _webDriver.FindElement(By.CssSelector(selector));
             }
+        }
+
+        private void ScrollTo(IWebElement el)
+        {
+            ((IJavaScriptExecutor)_webDriver).ExecuteScript("arguments[0].scrollIntoView(true);", el);
         }
     }
 }

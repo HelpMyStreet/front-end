@@ -76,7 +76,7 @@ namespace HelpMyStreetFE.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void TopLevelNavigationWideScreen(string name, string index, string url, string pageTitle, string[] exampleTags)
+        public virtual void PrimaryNavigationWideScreen(string name, string index, string url, string pageTitle, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "MaximiseWindows"};
@@ -90,7 +90,7 @@ namespace HelpMyStreetFE.Specs.Features
             argumentsOfScenario.Add("index", index);
             argumentsOfScenario.Add("url", url);
             argumentsOfScenario.Add("Page Title", pageTitle);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Top level navigation (wide screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Primary navigation (wide screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -128,50 +128,50 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (wide screen), Request Help", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (wide screen), Request Help", new string[] {
                 "MaximiseWindows"}, SourceLine=14)]
-        public virtual void TopLevelNavigationWideScreen_RequestHelp()
+        public virtual void PrimaryNavigationWideScreen_RequestHelp()
         {
 #line 7
-this.TopLevelNavigationWideScreen("Request Help", "1", "request-help/", "Request Help - Help My Street", ((string[])(null)));
+this.PrimaryNavigationWideScreen("Request Help", "1", "request-help/", "Request Help - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (wide screen), Case Studies", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (wide screen), Case Studies", new string[] {
                 "MaximiseWindows"}, SourceLine=14)]
-        public virtual void TopLevelNavigationWideScreen_CaseStudies()
+        public virtual void PrimaryNavigationWideScreen_CaseStudies()
         {
 #line 7
-this.TopLevelNavigationWideScreen("Case Studies", "2", "case-studies", "Case Studies - Help My Street", ((string[])(null)));
+this.PrimaryNavigationWideScreen("Case Studies", "2", "case-studies", "Case Studies - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (wide screen), Resources", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (wide screen), Resources", new string[] {
                 "MaximiseWindows"}, SourceLine=14)]
-        public virtual void TopLevelNavigationWideScreen_Resources()
+        public virtual void PrimaryNavigationWideScreen_Resources()
         {
 #line 7
-this.TopLevelNavigationWideScreen("Resources", "3", "resources", "Resources - Help My Street", ((string[])(null)));
+this.PrimaryNavigationWideScreen("Resources", "3", "resources", "Resources - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (wide screen), Questions", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (wide screen), Questions", new string[] {
                 "MaximiseWindows"}, SourceLine=14)]
-        public virtual void TopLevelNavigationWideScreen_Questions()
+        public virtual void PrimaryNavigationWideScreen_Questions()
         {
 #line 7
-this.TopLevelNavigationWideScreen("Questions", "4", "questions", "Frequently Asked Questions - Help My Street", ((string[])(null)));
+this.PrimaryNavigationWideScreen("Questions", "4", "questions", "Frequently Asked Questions - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("No further navigation links (wide screen)", new string[] {
+        [TechTalk.SpecRun.ScenarioAttribute("No further primary navigation links (wide screen)", new string[] {
                 "MaximiseWindows"}, SourceLine=20)]
-        public virtual void NoFurtherNavigationLinksWideScreen()
+        public virtual void NoFurtherPrimaryNavigationLinksWideScreen()
         {
             string[] tagsOfScenario = new string[] {
                     "MaximiseWindows"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further navigation links (wide screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further primary navigation links (wide screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -200,7 +200,7 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void TopLevelNavigationNarrowScreen(string name, string index, string url, string pageTitle, string[] exampleTags)
+        public virtual void PrimaryNavigationNarrowScreen(string name, string index, string url, string pageTitle, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
@@ -208,7 +208,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("index", index);
             argumentsOfScenario.Add("url", url);
             argumentsOfScenario.Add("Page Title", pageTitle);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Top level navigation (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Primary navigation (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -250,44 +250,44 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (narrow screen), Request Help", SourceLine=33)]
-        public virtual void TopLevelNavigationNarrowScreen_RequestHelp()
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Request Help", SourceLine=33)]
+        public virtual void PrimaryNavigationNarrowScreen_RequestHelp()
         {
 #line 25
-this.TopLevelNavigationNarrowScreen("Request Help", "1", "request-help/", "Request Help - Help My Street", ((string[])(null)));
+this.PrimaryNavigationNarrowScreen("Request Help", "1", "request-help/", "Request Help - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (narrow screen), Case Studies", SourceLine=33)]
-        public virtual void TopLevelNavigationNarrowScreen_CaseStudies()
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Case Studies", SourceLine=33)]
+        public virtual void PrimaryNavigationNarrowScreen_CaseStudies()
         {
 #line 25
-this.TopLevelNavigationNarrowScreen("Case Studies", "2", "case-studies", "Case Studies - Help My Street", ((string[])(null)));
+this.PrimaryNavigationNarrowScreen("Case Studies", "2", "case-studies", "Case Studies - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (narrow screen), Resources", SourceLine=33)]
-        public virtual void TopLevelNavigationNarrowScreen_Resources()
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Resources", SourceLine=33)]
+        public virtual void PrimaryNavigationNarrowScreen_Resources()
         {
 #line 25
-this.TopLevelNavigationNarrowScreen("Resources", "3", "resources", "Resources - Help My Street", ((string[])(null)));
+this.PrimaryNavigationNarrowScreen("Resources", "3", "resources", "Resources - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Top level navigation (narrow screen), Questions", SourceLine=33)]
-        public virtual void TopLevelNavigationNarrowScreen_Questions()
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Questions", SourceLine=33)]
+        public virtual void PrimaryNavigationNarrowScreen_Questions()
         {
 #line 25
-this.TopLevelNavigationNarrowScreen("Questions", "4", "questions", "Frequently Asked Questions - Help My Street", ((string[])(null)));
+this.PrimaryNavigationNarrowScreen("Questions", "4", "questions", "Frequently Asked Questions - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("No further navigation links (narrow screen)", SourceLine=38)]
-        public virtual void NoFurtherNavigationLinksNarrowScreen()
+        [TechTalk.SpecRun.ScenarioAttribute("No further primary navigation links (narrow screen)", SourceLine=38)]
+        public virtual void NoFurtherPrimaryNavigationLinksNarrowScreen()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further navigation links (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further primary navigation links (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 39
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -314,6 +314,128 @@ this.ScenarioInitialize(scenarioInfo);
 #line 41
  testRunner.Then("the volunteer\'s element selected by #sitenavCollapsed #site-nav ul li:nth-child(5" +
                         ") a should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void FooterNavigation(string name, string index, string url, string pageTitle, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "MaximiseWindows"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Name", name);
+            argumentsOfScenario.Add("index", index);
+            argumentsOfScenario.Add("url", url);
+            argumentsOfScenario.Add("Page Title", pageTitle);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Footer navigation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 45
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 46
+ testRunner.Given(string.Format("the volunteer\'s element selected by footer a:nth-child({0}) should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 47
+ testRunner.When(string.Format("the volunteer clicks the element selected by footer a:nth-child({0})", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 48
+ testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 49
+ testRunner.And(string.Format("the volunteer\'s page title should be {0}", pageTitle), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, Privacy Policy", new string[] {
+                "MaximiseWindows"}, SourceLine=52)]
+        public virtual void FooterNavigation_PrivacyPolicy()
+        {
+#line 45
+this.FooterNavigation("Privacy Policy", "2", "privacy-policy", "Privacy Policy - Help My Street", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, Terms & Conditions", new string[] {
+                "MaximiseWindows"}, SourceLine=52)]
+        public virtual void FooterNavigation_TermsConditions()
+        {
+#line 45
+this.FooterNavigation("Terms & Conditions", "3", "terms-conditions", "Terms and Conditions - Help My Street", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, About Us", new string[] {
+                "MaximiseWindows"}, SourceLine=52)]
+        public virtual void FooterNavigation_AboutUs()
+        {
+#line 45
+this.FooterNavigation("About Us", "4", "about-us", "About Us - Help My Street", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, Contact Us", new string[] {
+                "MaximiseWindows"}, SourceLine=52)]
+        public virtual void FooterNavigation_ContactUs()
+        {
+#line 45
+this.FooterNavigation("Contact Us", "5", "contact-us", "Contact Us - Help My Street", ((string[])(null)));
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("No further footer navigation links (narrow screen)", new string[] {
+                "MaximiseWindows"}, SourceLine=58)]
+        public virtual void NoFurtherFooterNavigationLinksNarrowScreen()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "MaximiseWindows"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further footer navigation links (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 59
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 60
+ testRunner.Then("the volunteer\'s element selected by footer a:nth-child(6) should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
