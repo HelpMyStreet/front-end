@@ -18,12 +18,18 @@ namespace HelpMyStreetFE.Repositories
     public class AwardsRepository : IAwardsRepository
     {
         private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
         private readonly IUserService _userService;
         private readonly IGroupMemberService _groupMemberService;
 
-        public AwardsRepository(IRequestService requestService, IUserService userService, IGroupMemberService groupMemberService)
+        public AwardsRepository(
+            IRequestService requestService,
+            IJobCachingService jobCachingService,
+            IUserService userService, 
+            IGroupMemberService groupMemberService)
         {
             _requestService = requestService;
+            _jobCachingService = jobCachingService;
             _userService = userService;
             _groupMemberService = groupMemberService;
         }
@@ -99,15 +105,12 @@ namespace HelpMyStreetFE.Repositories
         {
             try
             {
-                var jobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
-                var shifts = await _requestService.GetShiftsForUserAsync(userID, null, null, true, cancellationToken);
                 var awards = await GetAwards();
 
                 bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
                 var predicates = new List<Object>() { userIsVerified };
 
-                IEnumerable<JobBasic> shiftsAndJobs = jobs.Select(j => (JobBasic)j).Concat(shifts.Select(s => (JobBasic)s));
-                var completedJobs = shiftsAndJobs.Where(x => x.JobStatus == JobStatuses.Done);
+                var completedJobs = await _requestService.GetUserCompletedJobs(userID, true, cancellationToken);
                 var relevantAward = awards.Where(x => completedJobs.Count() >= x.AwardValue && x.SpecificPredicate(predicates)).OrderBy(x => x.AwardValue).LastOrDefault();
 
                 var completedJobDictionary = completedJobs.GroupBy(x => x.SupportActivity).ToDictionary(g => g.Key, g => g.Count());

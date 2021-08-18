@@ -62,6 +62,11 @@ namespace HelpMyStreetFE.Services.Groups
             return (RegistrationFormVariant)registrationFormVariant;
         }
 
+        public async Task<List<Location>> GetUserLocations(int userId)
+        {
+            return await _groupRepository.GetUserLocations(userId);
+        }
+
         public async Task<RequestHelpJourney> GetRequestHelpFormVariant(int groupId, string source)
         {
             var groupServiceResponse = await _groupRepository.GetRequestHelpFormVariant(groupId, source);
@@ -113,7 +118,14 @@ namespace HelpMyStreetFE.Services.Groups
 
         public async Task<List<GroupCredential>> GetGroupCredentials(int groupId)
         {
-            return await _groupRepository.GetGroupCredentials(groupId);
+            var groupCredentials = await _groupRepository.GetGroupCredentials(groupId);
+
+            if (groupCredentials == null)
+            {
+                throw new Exception($"Unable to get group credentials for group {groupId}");
+            }
+
+            return groupCredentials;
         }
 
         public async Task<GroupCredential> GetGroupCredential(int groupId, int credentialId)

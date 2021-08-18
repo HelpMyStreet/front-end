@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(int targetUserId, int groupId, int credentialId, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -61,11 +61,11 @@ namespace HelpMyStreetFE.ViewComponents
         private List<ValidUntilViewModel> GetValidUntilOptions()
         {
             return new List<ValidUntilViewModel>() {
-                new ValidUntilViewModel() { ID = "1", Label = "Never", Value = "Null" } ,
-                new ValidUntilViewModel() { ID = "2", Label = "In one month", Value = DateTime.Now.AddMonths(1).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
-                new ValidUntilViewModel() { ID = "3", Label = "In one year", Value = DateTime.Now.AddYears(1).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
-                new ValidUntilViewModel() { ID = "4", Label = "In two years", Value = DateTime.Now.AddYears(2).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
-                new ValidUntilViewModel() { ID = "5", Label = "Enter a date", Value = "", ShowDatePicker = true } ,
+                new ValidUntilViewModel() { ID = 1, Label = "Never", Value = "Null" } ,
+                new ValidUntilViewModel() { ID = 2, Label = "In one month", Value = DateTime.Now.AddMonths(1).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
+                new ValidUntilViewModel() { ID = 3, Label = "In one year", Value = DateTime.Now.AddYears(1).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
+                new ValidUntilViewModel() { ID = 4, Label = "In two years", Value = DateTime.Now.AddYears(2).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) } ,
+                new ValidUntilViewModel() { ID = 5, Label = "Enter a date", Value = "", ShowDatePicker = true } ,
             };
         }
     }

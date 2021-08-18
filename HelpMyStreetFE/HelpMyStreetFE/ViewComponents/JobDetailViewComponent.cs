@@ -1,5 +1,4 @@
-﻿using HelpMyStreet.Utils.Models;
-using HelpMyStreetFE.Models.Account.Jobs;
+﻿using HelpMyStreetFE.Models.Account.Jobs;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +9,11 @@ using HelpMyStreetFE.Services.Requests;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Services;
 using System.Linq;
+using HelpMyStreet.Utils.Enums;
+using System.Collections.Generic;
+using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.EqualityComparers;
+using HelpMyStreetFE.Services.Users;
 
 namespace HelpMyStreetFE.ViewComponents
 {
@@ -17,43 +21,69 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IRequestService _requestService;
         private readonly IGroupService _groupService;
-        private readonly IAddressService _addressService;
+        private readonly IGroupMemberService _groupMemberService;
+        private IEqualityComparer<JobBasic> _jobBasicEqualityComparer;
+        private readonly IUserLocationService _userLocationService;
 
-        public JobDetailViewComponent(IRequestService requestService, IGroupService groupService, IAddressService addressService)
+        public JobDetailViewComponent(
+            IRequestService requestService,
+            IGroupService groupService,
+            IGroupMemberService groupMemberService,
+            IUserLocationService userLocationService)
         {
+            _userLocationService = userLocationService;
             _requestService = requestService;
             _groupService = groupService;
-            _addressService = addressService;
+            _groupMemberService = groupMemberService;
+            _jobBasicEqualityComparer = new JobBasicDedupeWithDate_EqualityComparer();
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, User user, JobSet jobSet, CancellationToken cancellationToken, bool toPrint = false)
         {
-            JobDetail jobDetails = jobSet.PrivilegedView() switch
+            JobDetail jobDetails = await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken);
+
+            if (jobSet.GroupAdminView() || jobSet.Equals(JobSet.UserMyShifts))
             {
-                true => await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken),
-                false => await _requestService.GetJobAndRequestSummaryAsync(jobId, cancellationToken)
-            };
+                jobDetails = await _requestService.GetJobDetailsAsync(jobId, user.ID, jobSet.GroupAdminView(), cancellationToken);
+            }
 
             if (jobDetails == null)
             {
                 throw new Exception($"Failed to retrieve job details for JobId {jobId}");
             }
 
-            JobDetailViewModel jobDetailViewModel = new JobDetailViewModel()
+            var jobDetailViewModel = new JobDetailViewModel
             {
-                JobDetail = jobDetails,
-                UserActingAsAdmin = jobSet == JobSet.GroupRequests,
-                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.JobSummary.ReferringGroupID, jobDetails.JobSummary.SupportActivity, cancellationToken),
-                ToPrint = toPrint
+                JobDetail = new JobViewModel<JobDetail>
+                {
+                    Item = jobDetails,
+                    User = user,
+                    UserRole = jobSet.GroupAdminView() ? RequestRoles.GroupAdmin : RequestRoles.Volunteer,
+                    UserHasRequiredCredentials = await _groupMemberService.GetUserHasCredentials(jobDetails.ReferringGroupID, jobDetails.SupportActivity, user.ID, user.ID, cancellationToken),
+                },
+                DuplicateJobs = jobDetails.RequestSummary.JobBasics.Where(j => _jobBasicEqualityComparer.Equals(j, jobDetails)),
+                GroupSupportActivityInstructions = await _groupService.GetGroupSupportActivityInstructions(jobDetails.ReferringGroupID, jobDetails.SupportActivity, cancellationToken),
             };
 
             if (jobDetails.RequestSummary.Shift != null)
             {
-                var userLocationDetails = await _addressService.GetLocationDetailsForUser(user, cancellationToken);
-                jobDetailViewModel.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
+                var userLocationDetails = await _userLocationService.GetLocationDetailsForUser(user, cancellationToken);
+                jobDetailViewModel.JobDetail.Location = userLocationDetails.FirstOrDefault(l => l.Location.Equals(jobDetails.RequestSummary.Shift.Location));
             }
 
-            return View("JobDetail", jobDetailViewModel);
+            string viewName = (jobSet, toPrint) switch
+            {
+                (JobSet.UserOpenRequests_MatchingCriteria, false) => "JobDetail_OpenRequests",
+                (JobSet.UserOpenRequests_NotMatchingCriteria, false) => "JobDetail_OpenRequests",
+                (JobSet.UserMyRequests, false) => "JobDetail_MyRequests",
+                (JobSet.UserMyRequests, true) => "JobDetail_Print",
+                (JobSet.UserOpenShifts, false) => "JobDetail_OpenShifts",
+                (JobSet.UserMyShifts, false) => "JobDetail_MyShifts",
+                (JobSet.GroupRequests, false) => "JobDetail_GroupRequests",
+                (_, _) => throw new ArgumentException($"Unexpected JobSet value: {jobSet}", paramName: nameof(jobSet))
+            };
+
+            return View(viewName, jobDetailViewModel);
         }
     }
 }

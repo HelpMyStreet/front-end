@@ -1,0 +1,154 @@
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Enums.Account;
+
+@model JobViewModel<RequestSummary>
+
+@{
+    var requestId = Base64Utils.Base64Encode(Model.Item.RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+    var admin = Model.UserRole == RequestRoles.GroupAdmin;
+
+    bool singleJob = Model.Item.JobBasics.Count() == 1 && Model.Item.RequestType.Equals(RequestType.Task);
+    var jobId = singleJob ? Base64Utils.Base64Encode(Model.Item.JobBasics.First().JobID) : "";
+
+    var className = "";
+    JobSummary myNextTaskDue = null;
+
+    if (Model.Item.JobSummaries.Exists(j => j.JobStatus.Incomplete() && (j.VolunteerUserID ?? Model.User.ID) == Model.User.ID))
+    {
+        myNextTaskDue = Model.Item.JobSummaries.Where(j => j.JobStatus.Incomplete() && (j.VolunteerUserID ?? Model.User.ID) == Model.User.ID).OrderBy(j => j.DueDate).First();
+    }
+
+    if (Model.Item.JobBasics.UnfilledJobs().Count() > 0)
+    {
+        if (Model.Item.Shift != null)
+        {
+            if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(3))
+            {
+                className += " job--urgent";
+            }
+
+            if (Model.Item.Shift.StartDate < DateTime.Now.AddDays(7))
+            {
+                className += " job--due-soon";
+            }
+        }
+        else if (myNextTaskDue != null)
+        {
+            var dueDate = myNextTaskDue.DueDate.JobDueDate(myNextTaskDue.DueDateType);
+
+            if (dueDate.Contains("urgent"))
+            {
+                className += " job--urgent";
+            }
+
+            if (dueDate.Contains("soon"))
+            {
+                className += " job--due-soon";
+            }
+        }
+    }
+
+    if (Model.HighlightJob)
+    {
+        className += " highlight";
+    }
+}
+
+<div class="job @className my-requests-view mt-lg mb-lg" id="@jobId" request-id="@requestId" data-job-status="" data-role="@role">
+    <div class="job__info @(admin ? "admin-view" : "")">
+        <div class="job__info__col1">
+            @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
+            {
+                <span class="job__info__col1__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+
+            @if (Model.JobListGroupId != Model.Item.ReferringGroupID)
+            {
+                <div class="job__info__col1__referrer other-group">
+                    <div class="toggle-on-status-change">
+                        <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.ReferringGroupID }" />
+                    </div>
+                </div>
+            }
+
+            @if (myNextTaskDue != null)
+            {
+                <span class="job__info__col1__urgency toggle-on-status-change">
+                    <partial name="_WhenIsHelpNeeded_JobList" model="Model.Item.JobSummaries.Where(j => j.VolunteerUserID.Equals(Model.User.ID))" />
+                </span>
+            }
+
+            <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
+            </span>
+        </div>
+        <div class="job__info__activity">
+            @foreach (SupportActivities activity in Model.Item.JobBasics.Select(a => a.SupportActivity).Distinct())
+            {
+                <span class="job__info__activity__title @activity.Class()">
+                    @if (activity != SupportActivities.Other)
+                    {
+                        <img src="~/img/icons/@activity.Icon()" />
+                    }
+                    <span>
+                        @activity.FriendlyNameShort()
+                    </span>
+                </span>
+            }
+            <span class="job__info__activity__location">
+                @if (Model.Location != null)
+                {
+                    @Model.Location.LocationDetails.Name
+                }
+                else if (Model.CanViewAddressPopup)
+                {
+                <a href="#" class="view-location">@Model.Item.PostCode</a>
+                } else
+                {
+                    @Model.ListLocalityDescription
+                }
+            </span>
+            @if (Model.Item.Shift != null)
+            {
+                if (Model.Item.Shift.StartDate.ToUKFromUTCTime().Date.Equals(Model.Item.Shift.EndDate.ToUKFromUTCTime().Date))
+                {
+                    <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</span>
+                    <span class="job__info__activity__date due-date">@Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.TimeFormat) &ndash; @Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.TimeFormat)</span>
+                }
+                else
+                {
+                    <span class="job__info__activity__date due-date" title="@Model.Item.Shift.StartDate.FriendlyFutureDate()">@Html.Raw(Model.Item.Shift.StartDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                    <span class="job__info__activity__date due-date">&ndash; @Html.Raw(Model.Item.Shift.EndDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormat))</span>
+                }
+            }
+        </div>
+        <div class="job__info__col3 flex-end">
+            @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
+            {
+                <span class="job__info__col3__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+            @if (myNextTaskDue != null)
+            {
+                <span class="job__info__col3__urgency toggle-on-status-change">
+                    <partial name="_WhenIsHelpNeeded_JobList" model="Model.Item.JobSummaries.Where(j => j.VolunteerUserID.Equals(Model.User.ID))" />
+                </span>
+            }
+        </div>
+
+    </div>
+    <div>
+        @await Component.InvokeAsync("RequestDetail", new { requestId = Model.Item.RequestID, user = Model.User, jobSet = JobSet.UserMyRequests })
+    </div>
+</div>

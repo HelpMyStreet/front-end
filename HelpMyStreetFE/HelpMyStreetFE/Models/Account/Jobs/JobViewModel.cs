@@ -11,6 +11,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     public class JobViewModel<T>
     {
         public T Item { get; set; }
+        public User User { get; set; }
         public bool UserHasRequiredCredentials { get; set; }
         public RequestRoles UserRole { get; set; }
         public bool HighlightJob { get; set; }
@@ -21,13 +22,17 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 
         private string GetLocalityInformation()
         {
+            var postCode = Location?.LocationDetails?.Address?.Postcode ?? "";
+            var distance = Location?.Distance ?? 0.0;
+
             return Item switch
             {
-                JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{js.PostCode.Split(" ")[0]}, {Math.Round(js.DistanceInMiles, 1)} miles away",
-                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{js.PostCode}",
-                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{js.PostCode.Split(" ")[0]}",
+                IEnumerable<JobDetail> jd => $"{postCode.Split(" ")[0]}, {distance.ToString("0.#")} miles away",
+                JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{postCode.Split(" ")[0]}, {distance.ToString("0.#")} miles away",
+                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode}",
+                JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode.Split(" ")[0]}",
                 ShiftJob sj => $"{Location.LocationDetails.Name}",
-                RequestSummary rs => rs.PostCode,
+                RequestSummary rs => postCode,
                 _ => "",
             };
         }
@@ -36,6 +41,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         {
             return Item switch
             {
+                IEnumerable<JobDetail> jss when jss.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => true,
                 JobSummary js when js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => true,
                 ShiftJob sj => true,
                 RequestSummary rs when rs.JobBasics.Select(jb => jb.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode)).Any(pdc => pdc) => true,

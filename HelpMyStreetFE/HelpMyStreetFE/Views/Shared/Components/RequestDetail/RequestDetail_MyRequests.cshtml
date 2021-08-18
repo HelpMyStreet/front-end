@@ -1,0 +1,128 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreetFE.Enums.Account;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using Westwind.AspNetCore.Markdown
+
+@model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
+
+@{
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+
+    var userDetailsHidden = Model.RequestSummary.JobBasics.First().SuppressRecipientPersonalDetail.GetValueOrDefault(false);
+
+    var requestorDetails = new PersonalDetailsView
+    {
+        PersonalDetails = Model.Requestor?.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor)),
+        RequestRole = RequestRoles.Requestor
+    };
+
+    var recipientDetails = new PersonalDetailsView
+    {
+        PersonalDetails = Model.Recipient?.GetDPSafePersonalDetails(Model.JobsToShow.First().SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient)),
+        RecipientOrganisation = Model.JobsToShow.First().RecipientOrganisation,
+        RequestRole = RequestRoles.Recipient
+    };
+}
+
+
+<div class="request-job__detail job__detail start-open" data-status="pre-loaded">
+
+    @if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
+    {
+        <div class="job__expander">
+            <h4>Request Details<span></span></h4>
+            <div class="job__expander__content">
+                <div class="row">
+                    <div class="sm12">
+                        @foreach (var activity in Model.GroupSupportActivityInstructions)
+                        {
+                            @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                            {
+                                <h5>@activity.Key.FriendlyNameShort()</h5>
+                            }
+                            @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="job__expander">
+        <h4>Volunteer Instructions<span></span></h4>
+        <div class="job__expander__content">
+            @foreach (var activity in Model.GroupSupportActivityInstructions)
+            {
+                <div class="row">
+                    @if (Model.GroupSupportActivityInstructions.Count() > 1)
+                    {
+                        <h5>@activity.Key.FriendlyNameShort()</h5>
+                    }
+                    <div class="sm12 volunteer-instructions">
+                        <partial name="_GroupSupportActivityInstructions" model="activity.Value" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="job__expander">
+        <h4>Contact Details<span></span></h4>
+        <div class="job__expander__content">
+            <div class="row">
+                @if (userDetailsHidden)
+                {
+                    <div class="sm12">
+                        <h5>Recipient</h5>
+                        <dl>
+                            <dd>
+                                The organisation managing this request would like to provide this information to you directly. 
+                                Please contact the requester quoting reference <strong>@Model.RequestSummary.HMSReference</strong> to find out who needs the help.
+                            </dd>
+                        </dl>
+                        <partial name="_PersonalDetails" model="@requestorDetails" />
+                    </div>
+                }
+                else
+                {
+                    @if (!string.IsNullOrEmpty(Model.JobsToShow.First().RecipientOrganisation) || Model.Recipient != null)
+                    {
+                        <partial name="_PersonalDetails" model="@recipientDetails" />
+                    }
+                    @if (Model.Requestor != null && Model.JobsToShow.First().RequestorType != RequestorType.Myself)
+                    {
+                        <partial name="_PersonalDetails" model="@requestorDetails" />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="request-job__list" show="user-jobs">
+    <div class="request-job__list__items">
+        @foreach (var job in Model.JobsToShow)
+        {
+            @await Component.InvokeAsync("JobDetail", new { jobId = job.JobID, user = Model.User, jobSet = JobSet.UserMyRequests });
+        }
+    </div>
+    @if (Model.JobsToShow.Any(j => !j.VolunteerUserID.Equals(Model.User.ID)))
+    {
+        <div class="request-job__list__summary">
+            <a href="#" class="request-job__list__toggle" show="all-jobs" title="Show all @Model.JobsToShow.Count() dates">
+                @foreach (var job in Model.JobsToShow)
+                {
+                    var userAllocatedToJob = job.VolunteerUserID.Equals(Model.User.ID);
+
+                    <img class="status-icon" src="~/img/icons/status/@job.JobStatus.Icon()" alt="@job.JobStatus.FriendlyName()" title="@job.DueDate.FormatDate(DateTimeFormat.ShortDateFormat) &ndash; @job.JobStatus.SlotJobStatusWithYouOrAnother(userAllocatedToJob)" />
+                }
+                <span>Show all @Model.JobsToShow.Count() dates</span>
+            </a>
+            <a href="#" class="request-job__list__toggle" show="user-jobs">
+                <span>Show only the dates I have accepted</span>
+            </a>
+        </div>
+    }
+</div>

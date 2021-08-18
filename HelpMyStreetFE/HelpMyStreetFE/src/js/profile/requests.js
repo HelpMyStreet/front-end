@@ -21,7 +21,7 @@ export async function initialiseRequests() {
         loadJobDetails(job).then(async () => {
             var canMap = await mapsAreGo;
             if (canMap){
-                createMap(job, job.attr("id"));
+                createMap(job, job.attr("request-id"));
             }
         });
     });
@@ -46,8 +46,14 @@ export async function initialiseRequests() {
         
     });
 
-    $('.job-list').on('click', '.job button.trigger-status-update-popup', function () {
+    $('.job-list').on('click', '.job button.trigger-status-update-popup', function (e) {
+        e.stopPropagation();
         showStatusUpdatePopup($(this));
+    });
+
+    $('.job-list').on('click', '.job button.trigger-series-status-update-popup', function (e) {
+        e.stopPropagation();
+        showSeriesStatusUpdatePopup($(this));
     });
 
     $('.job-list').on('click', '.job button.trigger-feedback-popup', function () {
@@ -57,7 +63,9 @@ export async function initialiseRequests() {
         showFeedbackPopup(jobId, role, function () { loadFeedbackComponent(job); });
     });
 
-    $('.job-list').on('click', '.undo-request', async function (evt) {
+    $('.job-list').on('click', '.undo-request', async function (e) {
+        e.stopPropagation();
+
         const job = $(this).closest(".job");
         const targetState = $(this).data("target-state");
         const targetUser = $(this).data("target-user") ?? "";
@@ -127,14 +135,19 @@ export async function initialiseRequests() {
 
     });
 
+    $('.job-list').on('click', '.request-job__list .request-job__list__toggle', function (e) {
+        e.preventDefault();
+        $(this).closest('.request-job__list').attr('show', $(this).attr('show'));
+    });
+
     mapsAreGo = await enableMaps();
     loadFeedbackComponents();
     
 }
 
-async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.vaccination){
-    if ($(`#map-${jobId}`).length != 0){
-        var linkResponse = await hmsFetch('/account/get-directions-link?j=' + jobId)
+async function createMap(parentElement, requestId, markerIcon = defaultMarkerIcons.vaccination){
+    if ($(`#map-${requestId}`).length != 0){
+        var linkResponse = await hmsFetch(`/account/get-directions-link?r=${requestId}`)
         var marker;
         if (linkResponse.fetchResponse == fetchResponses.SUCCESS) {
         var link = await linkResponse.fetchPayload;
@@ -158,7 +171,7 @@ async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.v
                     initialLat: Number(parentElement.find(".location-map").data("lat")) + 0.001, //Otherwise the map doesn't centre around the pin (because the pin is a tall rectangle and the map is a wide rectangle)
                     initialLng: Number(parentElement.find(".location-map").data("lng")),
                     initialZoom: 14,
-                    divID: "map-" + jobId,
+                    divID: "map-" + requestId,
                     singlePin: marker
                 };
 
@@ -167,13 +180,13 @@ async function createMap(parentElement, jobId, markerIcon = defaultMarkerIcons.v
 }
 
 export function showViewLocationPopup(job) {
-    const jobId = job.attr("id");
-    let popupSource = `/api/request-help/get-view-location-popup?j=${jobId}`
+    const requestId = job.attr("request-id")
+    let popupSource = `/api/request-help/get-view-location-popup?r=${requestId}`
     showServerSidePopup(popupSource).then(async () => {
         await mapsAreGo;
         if (mapsAreGo)
             {
-                createMap($("#location-popup"), jobId, defaultMarkerIcons.task);
+                createMap($("#location-popup"), requestId, defaultMarkerIcons.task);
             }
         });
     
@@ -201,7 +214,7 @@ export function showStatusUpdatePopup(btn) {
                 if (payload.requestFeedback === true) {
                     showFeedbackPopup(jobId, role);
                 }
-        updateAwards();
+                updateAwards();
                 return true;
             } else {
                 switch (response.fetchResponse) {
@@ -223,6 +236,88 @@ export function showStatusUpdatePopup(btn) {
     showServerSidePopup(popupSource, popupSettings);
 }
 
+export function showSeriesStatusUpdatePopup(btn) {
+    const job = btn.closest(".job");
+    const targetState = $(btn).data("target-state");
+
+    const requestId = $(job).attr("request-id");
+
+    if (targetState != 'InProgress') {
+        return false;
+    }
+
+    let popupSource = `/api/request-help/get-accept-job-series-popup?rq=${requestId}&stg=1`;
+
+    let popupSettings = {
+        acceptCallbackAsync: async () => {
+            let popup2Source = `/api/request-help/get-accept-job-series-popup?rq=${requestId}&stg=2`;
+
+            let popup2Settings = {
+                noFade: true,
+                acceptCallbackAsync: async () => {
+                    if ($(popup).find('.job[data-job-status="InProgress"]').length > 0) {
+                        $(job).find('.job__status__new').html('In Progress');
+                        $(job).find('button').toggle();
+                        $(job).find('.toggle-on-status-change').toggle();
+                    }
+                    return true;
+                }
+            };
+
+            let popup = await showServerSidePopup(popup2Source, popup2Settings);
+
+            const updatePrimaryButtonStyling = function () {
+                if ($(popup).find('.job[data-job-status="Open"]').length > 0) {
+                    $(popup.find('button.accept-all-jobs-now').removeClass('cta--green-border'));
+                } else {
+                    $(popup.find('button.accept-all-jobs-now').addClass('cta--green-border'));
+                }
+                if ($(popup).find('.job[data-job-status="InProgress"]').length > 0) {
+                    $(popup.find('button#popup-accept').removeClass('cta--green-border'));
+                } else {
+                    $(popup.find('button#popup-accept').addClass('cta--green-border'));
+                }
+            };
+
+            $(popup).find('button.accept-all-jobs-now').on('click', function (e) {
+                $(popup).find('button.accept-job-now:visible').click();
+                updatePrimaryButtonStyling();
+            });
+            
+            $(popup).find('button.accept-job-now').on('click', async function (e) {
+                e.stopPropagation();
+                buttonLoad($(this));
+                const job = $(this).closest(".job");
+                const response = await setJobStatus(job, 'InProgress');
+                if (response.fetchResponse == fetchResponses.SUCCESS) {
+                    $(job).attr('data-job-status', 'InProgress');
+                    $(job).find('button.accept-job-now').hide();
+                    $(job).find('button.undo-request').show();
+                }
+                buttonUnload($(this));
+                updatePrimaryButtonStyling();
+            });
+
+            $(popup).find('button.undo-request').on('click', async function (e) {
+                e.stopPropagation();
+                buttonLoad($(this));
+                const job = $(this).closest(".job");
+                const response = await setJobStatus(job, 'Open');
+                if (response.fetchResponse == fetchResponses.SUCCESS) {
+                    $(job).attr('data-job-status', 'Open');
+                    $(job).find('button.undo-request').hide();
+                    $(job).find('button.accept-job-now').show();
+                }
+                buttonUnload($(this));
+                updatePrimaryButtonStyling();
+            });
+
+            return true;
+        }
+    };
+
+    showServerSidePopup(popupSource, popupSettings);
+}
 
 async function setJobStatus(job, targetState, targetUser) {
     const jobId = job.attr("id");
@@ -235,6 +330,10 @@ async function setJobStatus(job, targetState, targetUser) {
 
 async function loadJobDetails(job, forceRefresh) {
     const jobDetail = $(job).find('.job__detail');
+
+    if (jobDetail.length == 0) {
+        return;
+    }
 
     if (!forceRefresh && jobDetail.data('status') !== undefined) {
         return;
@@ -271,13 +370,15 @@ async function loadFeedbackComponent(job) {
     const jobId = job.attr("id");
     const role = $(job).data("role");
 
-    const response = await hmsFetch('/api/request-help/get-feedback-component?j=' + jobId + '&r=' + role);
-    if (response.fetchResponse == fetchResponses.SUCCESS) {
-        const feedback = await response.fetchPayload;
-        if (feedback) {
-            job.find('.feedback-container').html(feedback);
+    if (jobId != "") {
+        const response = await hmsFetch('/api/request-help/get-feedback-component?j=' + jobId + '&r=' + role);
+        if (response.fetchResponse == fetchResponses.SUCCESS) {
+            const feedback = await response.fetchPayload;
+            if (feedback) {
+                job.find('.feedback-container').html(feedback);
+            }
         }
-    } else {
-        return false;
     }
+
+    return false;
 }
