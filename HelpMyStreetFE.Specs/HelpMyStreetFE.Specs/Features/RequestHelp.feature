@@ -3,8 +3,10 @@
 Feature: RequestHelp
 	Request Help form
 
-Scenario: Correct activities visible on generic Request Help form
+Background: 
 	Given the url is request-help/
+
+Scenario: Correct activities visible on generic Request Help form
 	Then the element selected by .sm4:nth-child(1) .tiles__tile should have id #task_1
 	And the element selected by #task_1 .tiles__tile__content__header should have text Shopping
 	And the element selected by #task_1 .tiles__tile__content__description should have text Picking up groceries and other essentials (e.g. food, toiletries, household products)

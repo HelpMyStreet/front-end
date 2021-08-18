@@ -76,13 +76,22 @@ namespace HelpMyStreetFE.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form", SourceLine=5)]
+        public virtual void FeatureBackground()
+        {
+#line 6
+#line hidden
+#line 7
+ testRunner.Given("the url is request-help/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form", SourceLine=8)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correct activities visible on generic Request Help form", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 6
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -102,106 +111,106 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
- testRunner.Given("the url is request-help/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 6
+this.FeatureBackground();
 #line hidden
-#line 8
+#line 10
  testRunner.Then("the element selected by .sm4:nth-child(1) .tiles__tile should have id #task_1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 9
+#line 11
  testRunner.And("the element selected by #task_1 .tiles__tile__content__header should have text Sh" +
                         "opping", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 10
+#line 12
  testRunner.And("the element selected by #task_1 .tiles__tile__content__description should have te" +
                         "xt Picking up groceries and other essentials (e.g. food, toiletries, household p" +
                         "roducts)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 11
+#line 13
  testRunner.And("the element selected by .sm4:nth-child(2) .tiles__tile should have id #task_12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 14
  testRunner.And("the element selected by #task_12 .tiles__tile__content__header should have text F" +
                         "ace Covering", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
+#line 15
  testRunner.And("the element selected by #task_12 .tiles__tile__content__description should have t" +
                         "ext Finding someone to provide washable fabric face coverings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 16
  testRunner.And("the element selected by .sm4:nth-child(3) .tiles__tile should have id #task_10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 17
  testRunner.And("the element selected by #task_10 .tiles__tile__content__header should have text C" +
                         "heck In", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 16
+#line 18
  testRunner.And("the element selected by #task_10 .tiles__tile__content__description should have t" +
                         "ext Checking that someone is OK", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 17
+#line 19
  testRunner.And("the element selected by .sm4:nth-child(4) .tiles__tile should have id #task_2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
+#line 20
  testRunner.And("the element selected by #task_2 .tiles__tile__content__header should have text Pr" +
                         "escriptions", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 19
+#line 21
  testRunner.And("the element selected by #task_2 .tiles__tile__content__description should have te" +
                         "xt Collecting prescriptions from a local pharmacy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 22
  testRunner.And("the element selected by .sm4:nth-child(5) .tiles__tile should have id #task_3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 21
+#line 23
  testRunner.And("the element selected by #task_3 .tiles__tile__content__header should have text Er" +
                         "rands", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 24
  testRunner.And("the element selected by #task_3 .tiles__tile__content__description should have te" +
                         "xt Running essential local errands (e.g. posting mail)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 25
  testRunner.And("the element selected by .sm4:nth-child(6) .tiles__tile should have id #task_6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 26
  testRunner.And("the element selected by #task_6 .tiles__tile__content__header should have text Pr" +
                         "epared Meal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 27
  testRunner.And("the element selected by #task_6 .tiles__tile__content__description should have te" +
                         "xt Getting a hot / pre-prepared meal", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 28
  testRunner.And("the element selected by .sm4:nth-child(7) .tiles__tile should have id #task_7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 29
  testRunner.And("the element selected by #task_7 .tiles__tile__content__header should have text Fr" +
                         "iendly Chat", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 30
  testRunner.And("the element selected by #task_7 .tiles__tile__content__description should have te" +
                         "xt A friendly chat on the phone", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 31
  testRunner.And("the element selected by .sm4:nth-child(8) .tiles__tile should have id #task_9", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 32
  testRunner.And("the element selected by #task_9 .tiles__tile__content__header should have text Ho" +
                         "mework", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 33
  testRunner.And("the element selected by #task_9 .tiles__tile__content__description should have te" +
                         "xt Remote support for children being home-schooled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 34
  testRunner.And("the element selected by .sm4:nth-child(9) .tiles__tile should have id #task_11", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 35
  testRunner.And("the element selected by #task_11 .tiles__tile__content__header should have text O" +
                         "ther", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 34
+#line 36
  testRunner.And("the element selected by #task_11 .tiles__tile__content__description should have t" +
                         "ext Please tell us more below", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
