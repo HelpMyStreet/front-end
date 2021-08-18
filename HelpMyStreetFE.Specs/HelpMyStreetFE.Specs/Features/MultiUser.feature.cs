@@ -20,18 +20,18 @@ namespace HelpMyStreetFE.Specs.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [TechTalk.SpecRun.FeatureAttribute("MultiUserTest", new string[] {
-            "StartAtHomePage",
+            "StartVolunteerBrowser",
             "AcceptAllCookies",
-            "AddSecondaryBrowser"}, Description="\tTest with two browser sessions", SourceFile="Features\\MultiUser.feature", SourceLine=3)]
+            "StartAdminBrowser"}, Description="\tTest with two browser sessions", SourceFile="Features\\MultiUser.feature", SourceLine=3)]
     public partial class MultiUserTestFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "StartAtHomePage",
+                "StartVolunteerBrowser",
                 "AcceptAllCookies",
-                "AddSecondaryBrowser"};
+                "StartAdminBrowser"};
         
 #line 1 "MultiUser.feature"
 #line hidden
@@ -41,9 +41,9 @@ namespace HelpMyStreetFE.Specs.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "MultiUserTest", "\tTest with two browser sessions", ProgrammingLanguage.CSharp, new string[] {
-                        "StartAtHomePage",
+                        "StartVolunteerBrowser",
                         "AcceptAllCookies",
-                        "AddSecondaryBrowser"});
+                        "StartAdminBrowser"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

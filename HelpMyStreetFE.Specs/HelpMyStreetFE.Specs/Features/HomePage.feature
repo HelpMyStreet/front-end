@@ -1,4 +1,4 @@
-﻿@StartAtHomePage
+﻿@StartVolunteerBrowser
 Feature: HomePage
 
 Scenario: Cookie banner displayed

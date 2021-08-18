@@ -1,6 +1,6 @@
-﻿@StartAtHomePage
+﻿@StartVolunteerBrowser
 @AcceptAllCookies
-@AddSecondaryBrowser
+@StartAdminBrowser
 Feature: MultiUserTest
 	Test with two browser sessions
 

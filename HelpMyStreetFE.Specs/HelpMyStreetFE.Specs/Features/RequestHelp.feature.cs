@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Specs.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [TechTalk.SpecRun.FeatureAttribute("RequestHelp", new string[] {
-            "StartAtHomePage",
+            "StartVolunteerBrowser",
             "AcceptAllCookies"}, Description="\tRequest Help form", SourceFile="Features\\RequestHelp.feature", SourceLine=2)]
     public partial class RequestHelpFeature
     {
@@ -28,7 +28,7 @@ namespace HelpMyStreetFE.Specs.Features
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "StartAtHomePage",
+                "StartVolunteerBrowser",
                 "AcceptAllCookies"};
         
 #line 1 "RequestHelp.feature"
@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Specs.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "RequestHelp", "\tRequest Help form", ProgrammingLanguage.CSharp, new string[] {
-                        "StartAtHomePage",
+                        "StartVolunteerBrowser",
                         "AcceptAllCookies"});
             testRunner.OnFeatureStart(featureInfo);
         }

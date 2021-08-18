@@ -11,16 +11,16 @@ namespace HelpMyStreetFE.Specs.Drivers
 {
     public class BrowserDriver : IDisposable
     {
-        private readonly Lazy<IWebDriver> _currentWebDriverLazy;
-        private readonly Lazy<IWebDriver> _secondaryWebDriverLazy;
+        private readonly Lazy<IWebDriver> _adminWebDriverLazy;
+        private readonly Lazy<IWebDriver> _volunteerWebDriverLazy;
         private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private bool _isDisposed;
 
         public BrowserDriver(FeatureContext featureContext, ScenarioContext scenarioContext)
         {
-            _currentWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
-            _secondaryWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
+            _adminWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
+            _volunteerWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
             _featureContext = featureContext;
             _scenarioContext = scenarioContext;
         }
@@ -28,8 +28,8 @@ namespace HelpMyStreetFE.Specs.Drivers
         /// <summary>
         /// The Selenium IWebDriver instance
         /// </summary>
-        public IWebDriver Current => _currentWebDriverLazy.Value;
-        public IWebDriver Secondary => _secondaryWebDriverLazy.Value;
+        public IWebDriver AdminWebDriver => _adminWebDriverLazy.Value;
+        public IWebDriver VolunteerWebDriver => _volunteerWebDriverLazy.Value;
 
         /// <summary>
         /// Creates the Selenium web driver (opens a browser)
@@ -66,10 +66,13 @@ namespace HelpMyStreetFE.Specs.Drivers
             var excapedReason = "";// reason?.Replace("\"", "'");
             var jsScript = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"" + (success ? "passed" : "failed") + "\", \"reason\": \"" + excapedReason + "\"}}";
 
-            ((IJavaScriptExecutor)Current).ExecuteScript(jsScript);
-            if (_secondaryWebDriverLazy.IsValueCreated)
+            if (_adminWebDriverLazy.IsValueCreated)
             {
-                ((IJavaScriptExecutor)Secondary).ExecuteScript(jsScript);
+                ((IJavaScriptExecutor)AdminWebDriver).ExecuteScript(jsScript);
+            }
+            if (_volunteerWebDriverLazy.IsValueCreated)
+            {
+                ((IJavaScriptExecutor)VolunteerWebDriver).ExecuteScript(jsScript);
             }
         }
 
@@ -83,14 +86,13 @@ namespace HelpMyStreetFE.Specs.Drivers
                 return;
             }
 
-            if (_currentWebDriverLazy.IsValueCreated)
+            if (_adminWebDriverLazy.IsValueCreated)
             {
-                Current.Quit();
+                AdminWebDriver.Quit();
             }
-
-            if (_secondaryWebDriverLazy.IsValueCreated)
+            if (_volunteerWebDriverLazy.IsValueCreated)
             {
-                Secondary.Quit();
+                VolunteerWebDriver.Quit();
             }
 
             _isDisposed = true;

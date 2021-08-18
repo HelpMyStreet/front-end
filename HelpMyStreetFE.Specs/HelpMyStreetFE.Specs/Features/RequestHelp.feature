@@ -1,4 +1,4 @@
-﻿@StartAtHomePage
+﻿@StartVolunteerBrowser
 @AcceptAllCookies
 Feature: RequestHelp
 	Request Help form

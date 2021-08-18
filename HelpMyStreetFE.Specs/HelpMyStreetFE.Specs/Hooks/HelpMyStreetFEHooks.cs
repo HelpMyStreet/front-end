@@ -7,24 +7,24 @@ namespace HelpMyStreetFE.Specs.Hooks
     [Binding]
     public class HelpMyStreetFEHooks
     {
-        [BeforeScenario("StartAtHomePage")]
-        public static void BeforeScenario_StartAtHomePage(BrowserDriver browserDriver)
+        [BeforeScenario("StartVolunteerBrowser")]
+        public static void BeforeScenario_StartVolunteerBrowser(BrowserDriver browserDriver)
         {
-            var pageObject = new GenericPageObject(browserDriver.Current);
+            var pageObject = new GenericPageObject(browserDriver.VolunteerWebDriver);
             pageObject.EnsureHomePageIsOpenAndReset();
         }
 
-        [BeforeScenario("AddSecondaryBrowser")]
-        public static void BeforeScenario_AddSecondaryBrowser(BrowserDriver browserDriver)
+        [BeforeScenario("StartAdminBrowser")]
+        public static void BeforeScenario_StartAdminBrowser(BrowserDriver browserDriver)
         {
-            var pageObject = new GenericPageObject(browserDriver.Secondary);
+            var pageObject = new GenericPageObject(browserDriver.AdminWebDriver);
             pageObject.EnsureHomePageIsOpenAndReset();
         }
 
         [BeforeScenario("AcceptAllCookies")]
         public static void BeforeScenario_AcceptAllCookies(BrowserDriver browserDriver)
         {
-            var pageObject = new GenericPageObject(browserDriver.Current);
+            var pageObject = new GenericPageObject(browserDriver.VolunteerWebDriver);
 
             if (pageObject.IsVisible("gdpr-cookie-message-outer", null))
             {
@@ -36,7 +36,7 @@ namespace HelpMyStreetFE.Specs.Hooks
         [BeforeScenario("MaximiseWindow")]
         public static void BeforeScenario_MaximiseWindow(BrowserDriver browserDriver)
         {
-            browserDriver.Current.Manage().Window.Maximize();
+            browserDriver.VolunteerWebDriver.Manage().Window.Maximize();
         }
     }
 }

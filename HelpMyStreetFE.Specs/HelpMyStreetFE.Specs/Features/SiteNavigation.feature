@@ -1,4 +1,4 @@
-﻿@StartAtHomePage
+﻿@StartVolunteerBrowser
 @AcceptAllCookies
 @MaximiseWindow
 Feature: SiteNavigation

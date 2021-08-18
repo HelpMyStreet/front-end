@@ -20,14 +20,14 @@ namespace HelpMyStreetFE.Specs.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [TechTalk.SpecRun.FeatureAttribute("HomePage", new string[] {
-            "StartAtHomePage"}, SourceFile="Features\\HomePage.feature", SourceLine=1)]
+            "StartVolunteerBrowser"}, SourceFile="Features\\HomePage.feature", SourceLine=1)]
     public partial class HomePageFeature
     {
         
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "StartAtHomePage"};
+                "StartVolunteerBrowser"};
         
 #line 1 "HomePage.feature"
 #line hidden
@@ -37,7 +37,7 @@ namespace HelpMyStreetFE.Specs.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "HomePage", null, ProgrammingLanguage.CSharp, new string[] {
-                        "StartAtHomePage"});
+                        "StartVolunteerBrowser"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

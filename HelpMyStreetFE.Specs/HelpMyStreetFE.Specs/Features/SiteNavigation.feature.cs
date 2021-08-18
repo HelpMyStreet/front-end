@@ -20,7 +20,7 @@ namespace HelpMyStreetFE.Specs.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [TechTalk.SpecRun.FeatureAttribute("SiteNavigation", new string[] {
-            "StartAtHomePage",
+            "StartVolunteerBrowser",
             "AcceptAllCookies",
             "MaximiseWindow"}, Description="\tNavigation using top menu bar on home page", SourceFile="Features\\SiteNavigation.feature", SourceLine=3)]
     public partial class SiteNavigationFeature
@@ -29,7 +29,7 @@ namespace HelpMyStreetFE.Specs.Features
         private TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "StartAtHomePage",
+                "StartVolunteerBrowser",
                 "AcceptAllCookies",
                 "MaximiseWindow"};
         
@@ -41,7 +41,7 @@ namespace HelpMyStreetFE.Specs.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "SiteNavigation", "\tNavigation using top menu bar on home page", ProgrammingLanguage.CSharp, new string[] {
-                        "StartAtHomePage",
+                        "StartVolunteerBrowser",
                         "AcceptAllCookies",
                         "MaximiseWindow"});
             testRunner.OnFeatureStart(featureInfo);

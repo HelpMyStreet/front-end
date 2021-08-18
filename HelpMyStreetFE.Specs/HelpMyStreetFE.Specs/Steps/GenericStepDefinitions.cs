@@ -10,92 +10,102 @@ namespace HelpMyStreetFE.Specs.Steps
     public sealed class GenericStepDefinitions
     {
         private readonly BrowserDriver _browserDriver;
-        private readonly GenericPageObject _pageObject;
-        private readonly Lazy<GenericPageObject> _secondaryPageObjectLazy;
+        private readonly Lazy<GenericPageObject> _adminPageObjectLazy;
+        private readonly Lazy<GenericPageObject> _volunuteerPageObjectLazy;
+
+        private GenericPageObject VolunteerPageObject
+        {
+            get { return _volunuteerPageObjectLazy.Value; }
+        }
+
+        private GenericPageObject AdminPageObject
+        {
+            get { return _adminPageObjectLazy.Value; }
+        }
 
         public GenericStepDefinitions(BrowserDriver browserDriver)
         {
             _browserDriver = browserDriver;
-            _pageObject = new GenericPageObject(browserDriver.Current);
-            _secondaryPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.Secondary); });
+            _adminPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.AdminWebDriver); });
+            _volunuteerPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.VolunteerWebDriver); });
         }
 
         [Given("the url is (.*)")]
         public void GivenTheUrlIs(string value)
         {
-            _pageObject.SetUrl(value);
+            VolunteerPageObject.SetUrl(value);
         }
 
         [Given("the secondary url is (.*)")]
         public void GivenTheSecondaryUrlIs(string value)
         {
-            _secondaryPageObjectLazy.Value.SetUrl(value);
+            AdminPageObject.SetUrl(value);
         }
 
         [Given("the element #(.*) has value (.*)")]
         public void GivenTheElementWithIdHasValue(string elementId, string value)
         {
-            _pageObject.SetValue(elementId, null, value);
+            VolunteerPageObject.SetValue(elementId, null, value);
         }
 
         [Given("the element selected by (.*) has value (.*)")]
         public void GivenTheElementWithSelectorHasValue(string selector, string value)
         {
-            _pageObject.SetValue(null, selector, value);
+            VolunteerPageObject.SetValue(null, selector, value);
         }
 
         [When("the element #(.*) is clicked")]
         public void WhenTheElementWithIdIsClicked(string elementId)
         {
-            _pageObject.Click(elementId, null);
+            VolunteerPageObject.Click(elementId, null);
         }
 
         [When("the element selected by (.*) is clicked")]
         public void WhenTheElementWithSelectorIsClicked(string selector)
         {
-            _pageObject.Click(null, selector);
+            VolunteerPageObject.Click(null, selector);
         }
 
         [Then("the element selected by (.*) should have id #(.*)")]
         public void ThenTheElementWithSelectorShouldHaveId(string selector, string expectedId)
         {
-            _pageObject.GetId(selector).Should().Be(expectedId);
+            VolunteerPageObject.GetId(selector).Should().Be(expectedId);
         }
 
         [Then("the element #(.*) should not be clickable")]
         public void ThenTheElementWithIdShouldNotBeClickable(string elementId)
         {
-            _pageObject.IsClickable(elementId, null).Should().BeFalse();
+            VolunteerPageObject.IsClickable(elementId, null).Should().BeFalse();
         }
 
         [Then("the element selected by (.*) should not be clickable")]
         public void ThenTheElementWithSelectorShouldNotBeClickable(string selector)
         {
-            _pageObject.IsClickable(null, selector).Should().BeFalse();
+            VolunteerPageObject.IsClickable(null, selector).Should().BeFalse();
         }
 
         [Then("the element #(.*) should be visible")]
         public void ThenTheElementWithIdShouldBeVisible(string elementId)
         {
-            _pageObject.IsVisible(elementId, null).Should().BeTrue();
+            VolunteerPageObject.IsVisible(elementId, null).Should().BeTrue();
         }
 
         [Then("the element selected by (.*) should be visible")]
         public void ThenTheElementWithSelectorShouldBeVisible(string selector)
         {
-            _pageObject.IsVisible(null, selector).Should().BeTrue();
+            VolunteerPageObject.IsVisible(null, selector).Should().BeTrue();
         }
 
         [Then("the element #(.*) should not be visible")]
         public void ThenTheElementWithIdShouldNotBeVisible(string elementId)
         {
-            _pageObject.WaitForDisplayedFalse(elementId, null);
+            VolunteerPageObject.WaitForDisplayedFalse(elementId, null);
         }
 
         [StepDefinition("the element selected by (.*) should not be visible")]
         public void ThenTheElementWithSelectorShouldNotBeVisible(string selector)
         {
-            _pageObject.WaitForDisplayedFalse(null, selector);
+            VolunteerPageObject.WaitForDisplayedFalse(null, selector);
         }
 
         [Then("the element #(.*) should be blank")]
@@ -113,43 +123,43 @@ namespace HelpMyStreetFE.Specs.Steps
         [Then("the element #(.*) should have value (.*)")]
         public void ThenTheElementWithIdShouldHaveValue(string elementId, string expectedValue)
         {
-            _pageObject.GetValue(elementId, null).Should().Be(expectedValue);
+            VolunteerPageObject.GetValue(elementId, null).Should().Be(expectedValue);
         }
 
         [StepDefinition("the element with selector (.*) should have value (.*)")]
         public void ThenTheElementWithSelectorShouldHaveValue(string selector, string expectedValue)
         {
-            _pageObject.GetValue(null, selector).Should().Be(expectedValue);
+            VolunteerPageObject.GetValue(null, selector).Should().Be(expectedValue);
         }
 
         [StepDefinition("the element #(.*) should have text (.*)")]
         public void ThenTheElementWithIdShouldHaveText(string elementId, string expectedValue)
         {
-            _pageObject.GetText(elementId, null).Should().Be(expectedValue);
+            VolunteerPageObject.GetText(elementId, null).Should().Be(expectedValue);
         }
 
         [StepDefinition("the element selected by (.*) should have text (.*)")]
         public void ThenTheElementWithSelectorShouldHaveText(string selector, string expectedValue)
         {
-            _pageObject.GetText(null, selector).Should().Be(expectedValue);
+            VolunteerPageObject.GetText(null, selector).Should().Be(expectedValue);
         }
 
         [Then("the url should be (.*)")]
         public void ThenTheUrlShouldBe(string url)
         {
-            _pageObject.WaitForUrlChange().Should().Be(GenericPageObject.HomePageUrl + url);
+            VolunteerPageObject.WaitForUrlChange().Should().Be(GenericPageObject.HomePageUrl + url);
         }
 
         [Then("the page title should be (.*)")]
         public void ThenThePageTitleShouldBe(string expectedTitle)
         {
-            _pageObject.GetTitle().Should().Be(expectedTitle);
+            VolunteerPageObject.GetTitle().Should().Be(expectedTitle);
         }
 
         [Then("the secondary page title should be (.*)")]
         public void ThenTheSecondaryPageTitleShouldBe(string expectedTitle)
         {
-            _secondaryPageObjectLazy.Value.GetTitle().Should().Be(expectedTitle);
+            AdminPageObject.GetTitle().Should().Be(expectedTitle);
         }
     }
 }
