@@ -41,6 +41,20 @@ namespace HelpMyStreetFE.Specs.Steps
             pageObject.SetValue(null, selector, value);
         }
 
+        [Given("the (.*) has clicked the element #(.*)")]
+        public void GivenTheElementWithIdIsClicked(string user, string elementId)
+        {
+            var pageObject = GetPageObject(user);
+            pageObject.Click(elementId, null);
+        }
+
+        [Given("the (.*) has clicked the element selected by (.*)")]
+        public void GivenTheElementWithSelectorIsClicked(string user, string selector)
+        {
+            var pageObject = GetPageObject(user);
+            pageObject.Click(null, selector);
+        }
+
         [When("the (.*) clicks the element #(.*)")]
         public void WhenTheElementWithIdIsClicked(string user, string elementId)
         {
