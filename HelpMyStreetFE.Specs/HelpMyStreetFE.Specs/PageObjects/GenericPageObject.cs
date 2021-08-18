@@ -19,6 +19,17 @@ namespace HelpMyStreetFE.Specs.PageObjects
             _webDriver = webDriver;
         }
 
+        public void SetUrl (string tailUrl)
+        {
+            _webDriver.Url = HomePageUrl + tailUrl;
+        }
+
+        public string GetId(string selector)
+        {
+            var el = GetElementByIdOrSelector(null, selector);
+            return el.GetAttribute("id");
+        }
+
         public string GetValue(string elementId, string selector)
         {
             var el = GetElementByIdOrSelector(elementId, selector);

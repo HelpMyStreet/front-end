@@ -16,6 +16,12 @@ namespace HelpMyStreetFE.Specs.Steps
             _pageObject = new GenericPageObject(browserDriver.Current);
         }
 
+        [Given("the url is (.*)")]
+        public void GivenTheUrlIs(string value)
+        {
+            _pageObject.SetUrl(value);
+        }
+
         [Given("the element #(.*) has value (.*)")]
         public void GivenTheElementWithIdHasValue(string elementId, string value)
         {
@@ -38,6 +44,12 @@ namespace HelpMyStreetFE.Specs.Steps
         public void WhenTheElementWithSelectorIsClicked(string selector)
         {
             _pageObject.Click(null, selector);
+        }
+
+        [Then("the element selected by (.*) should have id #(.*)")]
+        public void ThenTheElementWithSelectorShouldHaveId(string selector, string expectedId)
+        {
+            _pageObject.GetId(selector).Should().Be(expectedId);
         }
 
         [Then("the element #(.*) should not be clickable")]
