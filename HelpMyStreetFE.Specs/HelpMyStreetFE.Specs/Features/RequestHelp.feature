@@ -23,3 +23,5 @@ Scenario Outline: Correct activities visible on generic Request Help form
 		|	  8 |				  9 | Homework		| Remote support for children being home-schooled										|
 		|	  9 |				 11 | Other			| Please tell us more below																|
 
+Scenario: No excess activities visible on generic Request Help form
+	Then the element selected by .sm4:nth-child(10) .tiles__tile should not be visible
