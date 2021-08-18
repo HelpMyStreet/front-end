@@ -79,12 +79,12 @@ namespace HelpMyStreetFE.Specs.Features
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void CorrectNavigationLinksVisible(string index, string name, string url, string pageTitle, string[] exampleTags)
+        public virtual void CorrectNavigationLinksVisible(string name, string index, string url, string pageTitle, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("index", index);
             argumentsOfScenario.Add("Name", name);
+            argumentsOfScenario.Add("index", index);
             argumentsOfScenario.Add("url", url);
             argumentsOfScenario.Add("Page Title", pageTitle);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correct navigation links visible", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
@@ -124,35 +124,35 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, 1", SourceLine=14)]
-        public virtual void CorrectNavigationLinksVisible_1()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, Request Help", SourceLine=14)]
+        public virtual void CorrectNavigationLinksVisible_RequestHelp()
         {
 #line 7
-this.CorrectNavigationLinksVisible("1", "Request Help", "request-help/", "Request Help - Help My Street", ((string[])(null)));
+this.CorrectNavigationLinksVisible("Request Help", "1", "request-help/", "Request Help - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, 2", SourceLine=14)]
-        public virtual void CorrectNavigationLinksVisible_2()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, Case Studies", SourceLine=14)]
+        public virtual void CorrectNavigationLinksVisible_CaseStudies()
         {
 #line 7
-this.CorrectNavigationLinksVisible("2", "Case Studies", "case-studies", "Case Studies - Help My Street", ((string[])(null)));
+this.CorrectNavigationLinksVisible("Case Studies", "2", "case-studies", "Case Studies - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, 3", SourceLine=14)]
-        public virtual void CorrectNavigationLinksVisible_3()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, Resources", SourceLine=14)]
+        public virtual void CorrectNavigationLinksVisible_Resources()
         {
 #line 7
-this.CorrectNavigationLinksVisible("3", "Questions", "resources", "Resources - Help My Street", ((string[])(null)));
+this.CorrectNavigationLinksVisible("Resources", "3", "resources", "Resources - Help My Street", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, 4", SourceLine=14)]
-        public virtual void CorrectNavigationLinksVisible_4()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct navigation links visible, Questions", SourceLine=14)]
+        public virtual void CorrectNavigationLinksVisible_Questions()
         {
 #line 7
-this.CorrectNavigationLinksVisible("4", "Name", "questions", "Frequently Asked Questions - Help My Street", ((string[])(null)));
+this.CorrectNavigationLinksVisible("Questions", "4", "questions", "Frequently Asked Questions - Help My Street", ((string[])(null)));
 #line hidden
         }
         

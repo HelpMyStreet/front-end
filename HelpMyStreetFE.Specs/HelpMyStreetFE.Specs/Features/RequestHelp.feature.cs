@@ -85,13 +85,13 @@ namespace HelpMyStreetFE.Specs.Features
 #line hidden
         }
         
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm(string index, string supportActivityId, string name, string description, string[] exampleTags)
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm(string name, string index, string supportActivityId, string description, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Name", name);
             argumentsOfScenario.Add("index", index);
             argumentsOfScenario.Add("SupportActivityId", supportActivityId);
-            argumentsOfScenario.Add("Name", name);
             argumentsOfScenario.Add("Description", description);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correct activities visible on generic Request Help form", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 9
@@ -133,76 +133,76 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 1", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_1()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Shopping", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Shopping()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("1", "1", "Shopping", "Picking up groceries and other essentials (e.g. food, toiletries, household produ" +
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Shopping", "1", "1", "Picking up groceries and other essentials (e.g. food, toiletries, household produ" +
                     "cts)", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 2", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_2()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Face Covering", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_FaceCovering()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("2", "12", "Face Covering", "Finding someone to provide washable fabric face coverings", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Face Covering", "2", "12", "Finding someone to provide washable fabric face coverings", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 3", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_3()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Check In", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_CheckIn()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("3", "10", "Check In", "Checking that someone is OK", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Check In", "3", "10", "Checking that someone is OK", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 4", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_4()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Prescriptions", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Prescriptions()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("4", "2", "Prescriptions", "Collecting prescriptions from a local pharmacy", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Prescriptions", "4", "2", "Collecting prescriptions from a local pharmacy", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 5", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_5()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Errands", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Errands()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("5", "3", "Errands", "Running essential local errands (e.g. posting mail)", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Errands", "5", "3", "Running essential local errands (e.g. posting mail)", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 6", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_6()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Prepared Meal", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_PreparedMeal()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("6", "6", "Prepared Meal", "Getting a hot / pre-prepared meal", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Prepared Meal", "6", "6", "Getting a hot / pre-prepared meal", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 7", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_7()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Friendly Chat", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_FriendlyChat()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("7", "7", "Friendly Chat", "A friendly chat on the phone", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Friendly Chat", "7", "7", "A friendly chat on the phone", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 8", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_8()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Homework", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Homework()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("8", "9", "Homework", "Remote support for children being home-schooled", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Homework", "8", "9", "Remote support for children being home-schooled", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, 9", SourceLine=15)]
-        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_9()
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Other", SourceLine=15)]
+        public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Other()
         {
 #line 9
-this.CorrectActivitiesVisibleOnGenericRequestHelpForm("9", "11", "Other", "Please tell us more below", ((string[])(null)));
+this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Other", "9", "11", "Please tell us more below", ((string[])(null)));
 #line hidden
         }
         

@@ -12,16 +12,16 @@ Scenario Outline: Correct activities visible on generic Request Help form
 	And the element selected by #task_<SupportActivityId> .tiles__tile__content__description should have text <Description>
 
 	Examples: 
-		| index | SupportActivityId | Name			| Description																			|
-		|	  1 |				  1 | Shopping		| Picking up groceries and other essentials (e.g. food, toiletries, household products) |
-		|	  2 |				 12 | Face Covering	| Finding someone to provide washable fabric face coverings								|
-		|	  3 |				 10 | Check In		| Checking that someone is OK															|
-		|	  4 |				  2 | Prescriptions	| Collecting prescriptions from a local pharmacy										|
-		|	  5 |				  3 | Errands		| Running essential local errands (e.g. posting mail)									|
-		|	  6 |				  6 | Prepared Meal	| Getting a hot / pre-prepared meal														|
-		|	  7 |				  7 | Friendly Chat	| A friendly chat on the phone															|
-		|	  8 |				  9 | Homework		| Remote support for children being home-schooled										|
-		|	  9 |				 11 | Other			| Please tell us more below																|
+		| Name			| index | SupportActivityId | Description																			|
+		| Shopping		| 	  1 |				  1 | Picking up groceries and other essentials (e.g. food, toiletries, household products) |
+		| Face Covering	|	  2 |				 12 | Finding someone to provide washable fabric face coverings								|
+		| Check In		|	  3 |				 10 | Checking that someone is OK															|
+		| Prescriptions	| 	  4 |				  2 | Collecting prescriptions from a local pharmacy										|
+		| Errands		|	  5 |				  3 | Running essential local errands (e.g. posting mail)									|
+		| Prepared Meal	|	  6 |				  6 | Getting a hot / pre-prepared meal														|
+		| Friendly Chat	|	  7 |				  7 | A friendly chat on the phone															|
+		| Homework		|	  8 |				  9 | Remote support for children being home-schooled										|
+		| Other			|	  9 |				 11 | Please tell us more below																|
 
 Scenario: No excess activities visible on generic Request Help form
 	Then the element selected by .sm4:nth-child(10) .tiles__tile should not be visible

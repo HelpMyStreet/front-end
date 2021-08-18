@@ -11,11 +11,11 @@ Scenario Outline: Correct navigation links visible
 	And the page title should be <Page Title>
 
 	Examples: 
-		| index | Name			| url				| Page Title										|
-		|     1 | Request Help	| request-help/		| Request Help - Help My Street						|
-		|     2 | Case Studies	| case-studies		| Case Studies - Help My Street						|
-		|     3 | Questions		| resources			| Resources - Help My Street						|
-		|     4 | Name			| questions			| Frequently Asked Questions - Help My Street		|
+		| Name			| index | url				| Page Title										|
+		| Request Help	|     1 | request-help/		| Request Help - Help My Street						|
+		| Case Studies	|     2 | case-studies		| Case Studies - Help My Street						|
+		| Resources		|     3 | resources			| Resources - Help My Street						|
+		| Questions		|     4 | questions			| Frequently Asked Questions - Help My Street		|
 
 
 Scenario: No further navigation links
