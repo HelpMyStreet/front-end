@@ -308,8 +308,8 @@ namespace HelpMyStreetFE.Services.Requests
                 j => (jfr.JobStatuses == null || jfr.JobStatuses.Contains(j.JobStatus))
                     && (jfr.SupportActivities == null || jfr.SupportActivities.Contains(j.SupportActivity))
                     && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(j.Location))
-                    && (jfr.DueInNextXDays == null || j.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.StartDate)).Count() > 0)
+                    && (jfr.DueInNextXDays == null || j.StartDate.ToUKFromUTCTime() <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(j.StartDate.ToUKFromUTCTime())).Count() > 0)
                     );
 
             return jfr.OrderBy switch
@@ -332,12 +332,12 @@ namespace HelpMyStreetFE.Services.Requests
                 r => (jfr.SupportActivities == null || r.JobBasics.Where(js => jfr.SupportActivities.Contains(js.SupportActivity)).Count() > 0)
                     && (jfr.JobStatuses == null || r.JobBasics.Where(js => (!userId.HasValue || js.VolunteerUserID.Equals(userId.Value)) && jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.Locations == null || jfr.Locations.Count() == 0 || jfr.Locations.Contains(r.Shift.Location))
-                    && (jfr.DueInNextXDays == null || r.Shift.StartDate <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
-                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(r.Shift.StartDate)).Count() > 0)
-                    && (jfr.DueAfter == null || (userId.HasValue ? r.NextDueDate(userId.Value) : r.NextDueDate()) >= jfr.DueAfter?.Date)
-                    && (jfr.DueBefore == null || (userId.HasValue ? r.NextDueDate(userId.Value) : r.NextDueDate()) <= jfr.DueBefore?.Date)
-                    && (jfr.RequestedAfter == null || r.DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || r.DateRequested.Date <= jfr.RequestedBefore?.Date);
+                    && (jfr.DueInNextXDays == null || r.Shift.StartDate.ToUKFromUTCTime() <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value))
+                    && (jfr.PartsOfDay == null || jfr.PartsOfDay.Where(pod => pod.CheckStartTimeWithin(r.Shift.StartDate.ToUKFromUTCTime())).Count() > 0)
+                    && (jfr.DueAfter == null || (userId.HasValue ? r.NextDueDate(userId.Value) : r.NextDueDate().ToUKFromUTCTime()) >= jfr.DueAfter?.Date)
+                    && (jfr.DueBefore == null || (userId.HasValue ? r.NextDueDate(userId.Value) : r.NextDueDate().ToUKFromUTCTime()) <= jfr.DueBefore?.Date)
+                    && (jfr.RequestedAfter == null || r.DateRequested.Date.ToUKFromUTCTime() >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || r.DateRequested.Date.ToUKFromUTCTime() <= jfr.RequestedBefore?.Date);
 
             return jfr.OrderBy switch
             {
@@ -377,9 +377,9 @@ namespace HelpMyStreetFE.Services.Requests
                 js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.SupportActivities == null || js.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
                     && (jfr.MaxDistanceInMiles == null || js.First().DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
-                    && (jfr.RequestedAfter == null || js.First().DateRequested.Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || js.First().DateRequested.Date <= jfr.RequestedBefore?.Date);
+                    && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.ToUKFromUTCTime().Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
+                    && (jfr.RequestedAfter == null || js.First().DateRequested.ToUKFromUTCTime().Date >= jfr.RequestedAfter?.Date)
+                    && (jfr.RequestedBefore == null) || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date);
 
 
             return jfr.OrderBy switch
