@@ -11,6 +11,7 @@
     var requestSummary = Model.JobDetail.Item.RequestSummary;
 
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+    var encodedRequestID = Base64Utils.Base64Encode(jobSummary.RequestID);
 }
 
 <div class="job__expander">
@@ -51,7 +52,7 @@
                             @Html.DisplayFor(m => m.JobDetail.Location.LocationDetails.Address)
                             <span class="distance">(@Model.JobDetail.Location.Distance.ToString("0.0") miles away)</span>
                         </div>
-                        <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.JobDetail.Location.LocationDetails.Latitude" data-lng="@Model.JobDetail.Location.LocationDetails.Longitude"></div>
+                        <div class="location-map" id="map-@encodedRequestID" style="width:75%; height:150px" data-lat="@Model.JobDetail.Location.LocationDetails.Latitude" data-lng="@Model.JobDetail.Location.LocationDetails.Longitude"></div>
                     </dd>
                 </div>
 
