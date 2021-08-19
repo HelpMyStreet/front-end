@@ -336,20 +336,6 @@ namespace HelpMyStreetFE.Services.Requests
 
             return eHist;
         }
-
-        public async Task<IEnumerable<JobBasic>> GetUserCompletedJobs(int userId, bool waitForData, CancellationToken cancellationToken)
-        {
-            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
-
-            if (userRequestIDs != null)
-            {
-                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
-
-                var userJobs = userRequests?.SelectMany(r => r.JobBasics).Where(j => j.VolunteerUserID.Equals(userId));
-                return userJobs;
-            }
-            return null;
-        }
     }
 }
 
