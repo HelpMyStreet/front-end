@@ -10,7 +10,6 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestService
     {
-        Task<IEnumerable<JobBasic>> GetUserCompletedJobs(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
 

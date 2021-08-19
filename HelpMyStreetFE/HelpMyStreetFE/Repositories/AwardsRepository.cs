@@ -110,7 +110,8 @@ namespace HelpMyStreetFE.Repositories
                 bool userIsVerified = await _groupMemberService.GetUserIsVerified(userID, cancellationToken);
                 var predicates = new List<Object>() { userIsVerified };
 
-                var completedJobs = await _requestService.GetUserCompletedJobs(userID, true, cancellationToken);
+                var userJobs = await _requestService.GetJobsForUserAsync(userID, true, cancellationToken);
+                var completedJobs = userJobs.Where(j => j.JobStatus.Equals(JobStatuses.Done));
                 var relevantAward = awards.Where(x => completedJobs.Count() >= x.AwardValue && x.SpecificPredicate(predicates)).OrderBy(x => x.AwardValue).LastOrDefault();
 
                 var completedJobDictionary = completedJobs.GroupBy(x => x.SupportActivity).ToDictionary(g => g.Key, g => g.Count());
