@@ -33,11 +33,10 @@
                                     @Html.DisplayFor(m => m.JobDetail.Location.LocationDetails.Address)
                                     <span class="distance">(@Model.JobDetail.Location.Distance.ToString("0.0") miles away)</span>
                                 </div>
-                                <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.JobDetail.Location.LocationDetails.Latitude" data-lng="@Model.JobDetail.Location.LocationDetails.Longitude"></div>
                             </dd>
                         </div>
                     }
-                    @if (requestSummary.JobBasics.UnfilledJobs().Count() > 1)
+                    @if (requestSummary.JobBasics.IncompleteJobs().Count() > 1)
                     {
                         var total = requestSummary.JobBasics.IncompleteJobs().Count();
                         var unfilled = requestSummary.JobBasics.UnfilledJobs().Count();

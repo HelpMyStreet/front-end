@@ -104,6 +104,12 @@
                     </span>
                 </span>
             }
+            @if (!string.IsNullOrWhiteSpace(Model.Item.JobSummaries.First().Reference))
+            {
+                <span class="job__info__activity__title @Model.Item.JobBasics.First().SupportActivity.Class()">
+                    @($"Group Ref: {Model.Item.JobSummaries.First().Reference}")
+                </span>
+            }
             <span class="job__info__activity__location">
                 @if (Model.Location != null)
                 {
@@ -111,8 +117,9 @@
                 }
                 else if (Model.CanViewAddressPopup)
                 {
-                <a href="#" class="view-location">@Model.Item.PostCode</a>
-                } else
+                    <a href="#" class="view-location">@Model.Item.PostCode</a>
+                }
+                else
                 {
                     @Model.ListLocalityDescription
                 }
