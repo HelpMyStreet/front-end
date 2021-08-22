@@ -1,5 +1,4 @@
-﻿@using HelpMyStreetFE.Helpers;
-@using HelpMyStreet.Utils.Enums;
+﻿@using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreetFE.Models.Account.Jobs;
@@ -16,7 +15,7 @@
     var requestor = Model.JobDetail.Item.Requestor;
     var currentVolunteer = Model.JobDetail.Item.CurrentVolunteer;
 
-    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(true, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobSummary.QuestionsToDisplay(true, false);
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
@@ -62,21 +61,18 @@
             {
                 <div class="row">
                     <div class="sm12">
-                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
-                        {
-                            <dl>
+                        <dl>
+                            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                            {
                                 <dt>Organisation</dt>
                                 <dd>@jobSummary.RecipientOrganisation</dd>
-                            </dl>
-                        }
+                            }
 
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                        {
-                            <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
-                        }
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobSummary, q, jobSummary.JobStatus.Incomplete())))
+                            {
+                                <partial name="_AnsweredQuestion" model="q" />
+                            }
+                        </dl>
                     </div>
                 </div>
             }

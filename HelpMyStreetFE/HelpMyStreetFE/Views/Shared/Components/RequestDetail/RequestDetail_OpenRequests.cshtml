@@ -1,13 +1,11 @@
-﻿@using HelpMyStreetFE.Helpers;
-@using HelpMyStreet.Utils.Enums;
-@using HelpMyStreet.Utils.Extensions;
-@using HelpMyStreet.Utils.Utils;
+﻿@using HelpMyStreet.Utils.Extensions;
 @using Westwind.AspNetCore.Markdown
+@using HelpMyStreetFE.Models.Account.Jobs;
 
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
 @{
-    var questionsToDisplay = Model.JobsToShow.FirstOrDefault()?.Questions.Where(q => q.ShowOnTaskManagement(Model.UserRole.Equals(RequestRoles.GroupAdmin), false) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = Model.JobsToShow.FirstOrDefault()?.QuestionsToDisplay(false, false);
 }
 
 <div class="job__expander">
@@ -58,13 +56,12 @@
                         @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
                     }
 
-                    @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                    {
-                        <dl>
-                            <dt>@q.FriendlyName()</dt>
-                            <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                        </dl>
-                    }
+                    <dl>
+                        @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(Model.JobsToShow.FirstOrDefault(), q)))
+                        {
+                            <partial name="_AnsweredQuestion" model="q" />
+                        }
+                    </dl>
                 </div>
             </div>
         </div>

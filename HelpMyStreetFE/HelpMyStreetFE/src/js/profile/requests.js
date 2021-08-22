@@ -3,7 +3,8 @@ import { showServerSidePopup } from "../shared/popup";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { showFeedbackPopup } from "../feedback/feedback-capture";
 import { updateAwards } from "../shared/awards";
-import { enableMaps, drawMap, defaultMarkers, defaultMarkerIcons } from "../shared/maps";
+import { enableMaps, drawMap, defaultMarkerIcons } from "../shared/maps";
+import { initialiseEditableQuestions } from "./editable-question";
 
 let mapsAreGo;
 
@@ -142,7 +143,8 @@ export async function initialiseRequests() {
 
     mapsAreGo = await enableMaps();
     loadFeedbackComponents();
-    
+
+    initialiseEditableQuestions();
 }
 
 async function createMap(parentElement, requestId, markerIcon = defaultMarkerIcons.vaccination){
