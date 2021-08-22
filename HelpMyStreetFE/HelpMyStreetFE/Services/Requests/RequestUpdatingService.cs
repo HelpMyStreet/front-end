@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Services.Requests
             var selectedFrequency = requestStage.Frequencies.Where(x => x.IsSelected).FirstOrDefault();
 
             int numberOfOccurrences = 1;
-            if (requestStage.Occurrences.HasValue)
+            if (requestStage.Occurrences.HasValue && !selectedFrequency.Frequency.Equals(Frequency.Once))
             {
                 numberOfOccurrences = requestStage.Occurrences.Value;
             }
