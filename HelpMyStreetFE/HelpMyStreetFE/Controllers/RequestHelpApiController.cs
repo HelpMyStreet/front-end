@@ -214,7 +214,7 @@ namespace HelpMyStreetFE.Controllers {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var outcome = UpdateJobOutcome.Success;// await _requestUpdatingService.UpdateJobQuestion(jobId, questionId, answer, user.ID, cancellationToken);
+            var outcome = await _requestUpdatingService.UpdateJobQuestion(jobId, questionId, answer, user.ID, cancellationToken);
 
             switch (outcome)
             {
