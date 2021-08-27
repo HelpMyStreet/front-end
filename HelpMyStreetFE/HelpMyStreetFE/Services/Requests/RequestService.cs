@@ -100,6 +100,20 @@ namespace HelpMyStreetFE.Services.Requests
             return null;
         }
 
+        public async Task<IEnumerable<JobBasic>> GetAllJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
+        {
+            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
+
+            if (userRequestIDs != null)
+            {
+                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
+
+                var userJobs = userRequests?.SelectMany(r => r.JobBasics).Where(j => j.VolunteerUserID.Equals(userId));
+                return userJobs;
+            }
+            return null;
+        }
+
         // My Requests tab
         public async Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
@@ -335,20 +349,6 @@ namespace HelpMyStreetFE.Services.Requests
             }
 
             return eHist;
-        }
-
-        public async Task<IEnumerable<JobBasic>> GetUserCompletedJobs(int userId, bool waitForData, CancellationToken cancellationToken)
-        {
-            var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);
-
-            if (userRequestIDs != null)
-            {
-                var userRequests = await _requestCachingService.GetRequestSummariesAsync(userRequestIDs, waitForData, cancellationToken);
-
-                var userJobs = userRequests?.SelectMany(r => r.JobBasics).Where(j => j.VolunteerUserID.Equals(userId));
-                return userJobs;
-            }
-            return null;
         }
     }
 }

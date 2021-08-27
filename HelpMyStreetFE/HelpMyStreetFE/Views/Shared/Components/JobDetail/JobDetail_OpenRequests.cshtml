@@ -11,7 +11,7 @@
     var jobSummary = Model.JobDetail.Item;
     var requestSummary = Model.JobDetail.Item.RequestSummary;
 
-    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(false, false) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobSummary.QuestionsToDisplay(false, false);
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
@@ -33,11 +33,10 @@
                                     @Html.DisplayFor(m => m.JobDetail.Location.LocationDetails.Address)
                                     <span class="distance">(@Model.JobDetail.Location.Distance.ToString("0.0") miles away)</span>
                                 </div>
-                                <div class="location-map" id="map-@encodedJobID" style="width:75%; height:150px" data-lat="@Model.JobDetail.Location.LocationDetails.Latitude" data-lng="@Model.JobDetail.Location.LocationDetails.Longitude"></div>
                             </dd>
                         </div>
                     }
-                    @if (requestSummary.JobBasics.UnfilledJobs().Count() > 1)
+                    @if (requestSummary.JobBasics.IncompleteJobs().Count() > 1)
                     {
                         var total = requestSummary.JobBasics.IncompleteJobs().Count();
                         var unfilled = requestSummary.JobBasics.UnfilledJobs().Count();
@@ -71,21 +70,18 @@
             {
                 <div class="row">
                     <div class="sm12">
-                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
-                        {
-                            <dl>
+                        <dl>
+                            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                            {
                                 <dt>Organisation</dt>
                                 <dd>@jobSummary.RecipientOrganisation</dd>
-                            </dl>
-                        }
+                            }
 
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                        {
-                            <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
-                        }
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobSummary, q)))
+                            {
+                                <partial name="_AnsweredQuestion" model="q" />
+                            }
+                        </dl>
                     </div>
                 </div>
             }
