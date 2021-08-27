@@ -68,7 +68,7 @@
                                 <dd>@jobSummary.RecipientOrganisation</dd>
                             }
 
-                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobSummary, q, jobSummary.JobStatus.Incomplete())))
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobSummary, q, jobSummary.JobStatus.Incomplete() && q.AnswerMayBeEdited())))
                             {
                                 <partial name="_AnsweredQuestion" model="q" />
                             }
