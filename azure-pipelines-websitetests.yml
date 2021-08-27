@@ -5,19 +5,45 @@ trigger:
 - next-major-release
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.Specs.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: NuGetToolInstaller@1
+  displayName: NuGet install
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: NuGetCommand@2
+  displayName: NuGet restore
+  inputs:
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'select'
+    vstsFeed: 'e5c08e0c-1c28-42ca-815f-5ca90021fd46/9ff815b0-abc7-442a-98cb-d2879666c3bb'
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.1.302'
+  inputs:
+    version: 3.1.302
+
+- task: DotNetCoreCLI@2
+  displayName: DotNetCore build
+  inputs:
+    command: 'build'
+    projects: 'HelpMyStreetFE.Specs/HelpMyStreetFE.Specs/HelpMyStreetFE.Specs.csproj'
 
 - task: BrowserStackConfig@0
   inputs:
     BrowserStackServiceEndPoint: 'BrowserStack Connection'
+
+- task: DotNetCoreCLI@2
+  displayName: DotNetCore test
+  inputs:
+    command: 'test'
+    projects: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: BrowserStackResults@0
