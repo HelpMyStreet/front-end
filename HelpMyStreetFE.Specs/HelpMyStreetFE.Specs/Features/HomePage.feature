@@ -10,7 +10,7 @@ Scenario: All cookies accepted
 	Then the volunteer element #gdpr-cookie-message-outer should not be visible
 
 Scenario: Home page title
-	Then the volunteer's page title should be Home Page - Help My Street
+	Then the volunteer's page title should be Home Page *BROKEN* - Help My Street
 
 @AcceptAllCookies
 Scenario: Header login failure
