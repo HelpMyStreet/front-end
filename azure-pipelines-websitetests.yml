@@ -56,5 +56,6 @@ steps:
 - task: SpecFlowPlus@0
   inputs:
     generatorSource: 'FeatureFolder'
-    projectFilePath:  'HelpMyStreetFE.Specs/HelpMyStreetFE.Specs/HelpMyStreetFE.Specs.csproj'
+    projectFilePath:  'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
+    testExecutionJson: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\bin\Debug\netcoreapp3.1\TestExecution.json'
     
