@@ -53,4 +53,3 @@ steps:
     projects: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-- task: BrowserStackResults@0
