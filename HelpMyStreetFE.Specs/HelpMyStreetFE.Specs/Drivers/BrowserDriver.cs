@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -56,9 +56,10 @@ namespace HelpMyStreetFE.Specs.Drivers
             chromeCapability.AddAdditionalCapability("resolution", "1920x1080", true);
             chromeCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
             chromeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
-            chromeCapability.AddAdditionalCapability("build", $"Local test build {version}", true);
-            chromeCapability.AddAdditionalCapability("browserstack.user", "", true);
-            chromeCapability.AddAdditionalCapability("browserstack.key", "", true);
+            chromeCapability.AddAdditionalCapability("build", $"Version {version}", true);
+            chromeCapability.AddAdditionalCapability("app", Environment.GetEnvironmentVariable("BROWSERSTACK_APP_ID"), true);
+            chromeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
+            chromeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
 
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), chromeCapability);
 
