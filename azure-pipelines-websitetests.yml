@@ -6,15 +6,6 @@ schedules:
     -  HLFR-180-Automated-Testing
   always: true
   
-resources:
-  pipelines:
-  - pipeline: MyCIAlias  
-    source: Farbrikam-CI  
-    trigger:    
-      stages:         # This stage filter is used when evaluating conditions for 
-      - PreProduction # triggering your pipeine. On successful completion of all the stages
-      - Production    # provided, your pipeline will be triggered. 
-  
 trigger:
 - master
 - dev
