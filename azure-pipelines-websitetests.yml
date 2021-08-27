@@ -53,3 +53,8 @@ steps:
     projects: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+- task: SpecFlowPlus@0
+  inputs:
+    generatorSource: 'FeatureFolder'
+    projectFilePath:  'HelpMyStreetFE.Specs/HelpMyStreetFE.Specs/HelpMyStreetFE.Specs.csproj'
+    
