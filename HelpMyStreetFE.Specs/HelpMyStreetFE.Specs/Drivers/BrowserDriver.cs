@@ -56,7 +56,7 @@ namespace HelpMyStreetFE.Specs.Drivers
             chromeCapability.AddAdditionalCapability("resolution", "1920x1080", true);
             chromeCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
             chromeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
-            chromeCapability.AddAdditionalCapability("build", $"Version {version}", true);
+            chromeCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true);
             chromeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
             chromeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
 
