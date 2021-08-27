@@ -1,4 +1,11 @@
-
+schedules:
+- cron: "40 * * * *"
+  displayName: Schedule test build
+  branches:
+    include:
+    -  HLFR-180-Automated-Testing
+  always: true
+  
 trigger:
 - master
 - dev
@@ -40,7 +47,7 @@ steps:
     BrowserStackServiceEndPoint: 'BrowserStack Connection'
 
 - task: DotNetCoreCLI@2
-  displayName: DotNetCore test
+  displayName: DotNetCore test (BrowserStack)
   inputs:
     command: 'test'
     projects: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
