@@ -74,9 +74,15 @@ export async function initialiseRequests() {
         buttonLoad($(this));
         let response = await setJobStatus(job, targetState, targetUser);
         if (response.fetchResponse == fetchResponses.SUCCESS) {
-            updateAwards();
+            const payload = await response.fetchPayload;
             $(job).find('.job__status__new').html('');
             $(job).find('.toggle-on-status-change').toggle();
+            if (payload.lockQuestions === true) {
+                $(job).find('.editable-question .answer a.edit').hide();
+            } else {
+                $(job).find('.editable-question .answer a.edit').show();
+            }
+            updateAwards();
         }
         buttonUnload($(this));
     });
@@ -213,6 +219,11 @@ export function showStatusUpdatePopup(btn) {
                 $(job).find('.toggle-on-status-change').toggle();
                 if (payload.requestFeedback === true) {
                     showFeedbackPopup(jobId, role);
+                }
+                if (payload.lockQuestions === true) {
+                    $(job).find('.editable-question .answer a.edit').hide();
+                } else {
+                    $(job).find('.editable-question .answer a.edit').show();
                 }
                 updateAwards();
                 return true;

@@ -88,7 +88,8 @@ namespace HelpMyStreetFE.Controllers {
                         return new SetJobStatusResult
                         {
                             NewStatus = s.FriendlyName(),
-                            RequestFeedback = requestFeedback
+                            RequestFeedback = requestFeedback,
+                            LockQuestions = (s.Complete()),
                         };
                     case UpdateJobStatusOutcome.BadRequest:
                         return StatusCode(400);
