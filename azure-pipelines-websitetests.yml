@@ -57,5 +57,5 @@ steps:
   inputs:
     generatorSource: 'FeatureFolder'
     projectFilePath:  'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
-    testExecutionJson: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\bin\Debug\netcoreapp3.1\TestExecution.json'
+    testExecutionJson: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\bin\Release\netcoreapp3.1\TestExecution.json'
     
