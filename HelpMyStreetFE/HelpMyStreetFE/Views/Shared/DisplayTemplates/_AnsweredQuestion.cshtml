@@ -26,7 +26,7 @@
     <dd class="editable-question" data-job-id="@encodedJobID" data-question-id="@encodedQuestionID">
         <div class="answer">
             <div class="answer-content">
-                @Html.Raw(Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
+                @Html.Raw(string.IsNullOrWhiteSpace(Model.Question.Answer) ? "Not supplied" : Model.Question.Answer.ToHtmlSafeStringWithLineBreaks())
             </div>
             <a href="#" class="edit ml-xs"><img src="~/img/icons/edit.png" alt="Edit" title="Edit" /></a>
         </div>

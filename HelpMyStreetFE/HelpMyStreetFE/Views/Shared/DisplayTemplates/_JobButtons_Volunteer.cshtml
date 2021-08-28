@@ -12,7 +12,7 @@
     case JobStatuses.New:
         break;
     case JobStatuses.Open:
-        <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup" data-target-state="@JobStatuses.InProgress">
+        <button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.InProgress">
             <span class="text">Accept</span>
         </button>
         break;
@@ -21,11 +21,11 @@
         {
             if (Model.Item.NotBeforeDate == null || Model.Item.NotBeforeDate.Value < DateTime.UtcNow.ToUKFromUTCTime())
             {
-                <button class="btn cta trigger-status-update-popup" data-target-state="@JobStatuses.Done">
+                <button class="btn cta trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.Done">
                     <span class="text">Mark as Done</span>
                 </button>
             }
-            <button class="btn cta--dark-blue-border trigger-status-update-popup" data-target-state="@JobStatuses.Open">
+            <button class="btn cta--dark-blue-border trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.Open">
                 <span class="text">Can't do</span>
             </button>
         }
@@ -48,7 +48,7 @@
         }
         break;
 }
-<button class="btn cta--green-border undo-request dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">
+<button class="btn cta--green-border undo-request toggle-on-status-change dnone" data-target-state="@Model.Item.JobStatus" data-target-user="@(Model.Item.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.Item.VolunteerUserID.Value) : "")">
     <span class="text">Undo</span>
     <div class="loader dnone">
         <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Undoing...", ShowDarkSpinner= true }' />

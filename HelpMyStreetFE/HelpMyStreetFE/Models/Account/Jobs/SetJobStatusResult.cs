@@ -9,5 +9,6 @@ namespace HelpMyStreetFE.Models.Account.Jobs
     {
         public string NewStatus { get; set; }
         public bool RequestFeedback { get; set; }
+        public bool LockQuestions { get; set; }
     }
 }

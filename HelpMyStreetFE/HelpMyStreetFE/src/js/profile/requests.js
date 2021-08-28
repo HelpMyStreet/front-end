@@ -74,10 +74,15 @@ export async function initialiseRequests() {
         buttonLoad($(this));
         let response = await setJobStatus(job, targetState, targetUser);
         if (response.fetchResponse == fetchResponses.SUCCESS) {
-            updateAwards();
+            const payload = await response.fetchPayload;
             $(job).find('.job__status__new').html('');
             $(job).find('.toggle-on-status-change').toggle();
-            $(job).find('button').toggle();
+            if (payload.lockQuestions === true) {
+                $(job).find('.editable-question .answer a.edit').hide();
+            } else {
+                $(job).find('.editable-question .answer a.edit').show();
+            }
+            updateAwards();
         }
         buttonUnload($(this));
     });
@@ -211,10 +216,14 @@ export function showStatusUpdatePopup(btn) {
             if (response.fetchResponse == fetchResponses.SUCCESS) {
                 const payload = await response.fetchPayload;
                 $(job).find('.job__status__new').html(payload.newStatus);
-                $(job).find('button').toggle();
                 $(job).find('.toggle-on-status-change').toggle();
                 if (payload.requestFeedback === true) {
                     showFeedbackPopup(jobId, role);
+                }
+                if (payload.lockQuestions === true) {
+                    $(job).find('.editable-question .answer a.edit').hide();
+                } else {
+                    $(job).find('.editable-question .answer a.edit').show();
                 }
                 updateAwards();
                 return true;
@@ -259,7 +268,6 @@ export function showSeriesStatusUpdatePopup(btn) {
                 acceptCallbackAsync: async () => {
                     if ($(popup).find('.job[data-job-status="InProgress"]').length > 0) {
                         $(job).find('.job__status__new').html('In Progress');
-                        $(job).find('button').toggle();
                         $(job).find('.toggle-on-status-change').toggle();
                     }
                     return true;
