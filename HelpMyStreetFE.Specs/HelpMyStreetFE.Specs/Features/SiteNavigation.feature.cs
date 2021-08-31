@@ -112,11 +112,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.Given(string.Format("the volunteer\'s element selected by #site-nav ul li:nth-child({0}) a should have " +
-                            "text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the volunteer\'s element #site-nav ul li:nth-child({0}) a should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
- testRunner.When(string.Format("the volunteer clicks the element selected by #site-nav ul li:nth-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("the volunteer clicks the element #site-nav ul li:nth-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 10
  testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -193,8 +192,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 22
- testRunner.Then("the volunteer\'s element selected by #site-nav ul li:nth-child(5) a should not be " +
-                        "visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the volunteer\'s element #site-nav ul li:nth-child(5) a should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -233,12 +231,12 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("the volunteer has clicked the element #site-nav-toggle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 27
- testRunner.And(string.Format("the volunteer\'s element selected by #sitenavCollapsed #site-nav ul li:nth-child({" +
-                            "0}) a should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s element #sitenavCollapsed #site-nav ul li:nth-child({0}) a should" +
+                            " have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 28
- testRunner.When(string.Format("the volunteer clicks the element selected by #sitenavCollapsed #site-nav ul li:nt" +
-                            "h-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("the volunteer clicks the element #sitenavCollapsed #site-nav ul li:nth-child({0})" +
+                            " a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
  testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -312,8 +310,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("the volunteer has clicked the element #site-nav-toggle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 41
- testRunner.Then("the volunteer\'s element selected by #sitenavCollapsed #site-nav ul li:nth-child(5" +
-                        ") a should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the volunteer\'s element #sitenavCollapsed #site-nav ul li:nth-child(5) a should n" +
+                        "ot be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -355,10 +353,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 46
- testRunner.Given(string.Format("the volunteer\'s element selected by footer a:nth-child({0}) should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the volunteer\'s element footer a:nth-child({0}) should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 47
- testRunner.When(string.Format("the volunteer clicks the element selected by footer a:nth-child({0})", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("the volunteer clicks the element footer a:nth-child({0})", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 48
  testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -435,7 +433,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 60
- testRunner.Then("the volunteer\'s element selected by footer a:nth-child(6) should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the volunteer\'s element footer a:nth-child(6) should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

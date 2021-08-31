@@ -280,12 +280,12 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the volunteer\'s element #login-fail-message should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 33
- testRunner.And("the volunteer\'s element selected by input[name=\"email\"]~.login__fail-message-main" +
-                        " should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer\'s element input[name=\"email\"]~.login__fail-message-main should be v" +
+                        "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 34
- testRunner.And("the volunteer\'s element selected by input[name=\"email\"]~.login__fail-message-main" +
-                        " should have text Please enter a valid email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer\'s element input[name=\"email\"]~.login__fail-message-main should have" +
+                        " text Please enter a valid email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -343,8 +343,8 @@ this.ScenarioInitialize(scenarioInfo);
                         " password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 45
- testRunner.And("the volunteer\'s element selected by input[name=\"email\"]~.login__fail-message-main" +
-                        " should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer\'s element input[name=\"email\"]~.login__fail-message-main should not " +
+                        "be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using FluentAssertions;
 using HelpMyStreetFE.Specs.Context;
 using HelpMyStreetFE.Specs.Drivers;
@@ -26,179 +26,108 @@ namespace HelpMyStreetFE.Specs.Steps
         }
 
         [Given("the (.*) url is (.*)")]
-        public void GivenTheUrlIs(string user, string value)
+        public void Given_the_USER_url_is_URL(string user, string url)
         {
             var pageObject = GetPageObject(user);
-            pageObject.SetUrl(value);
+            pageObject.SetUrl(url);
         }
 
-        [Given("the (.*) element #(.*) has value (.*)")]
-        public void GivenTheElementWithIdHasValue(string user, string elementId, string value)
+        [Given("the (.*) element (.*) has value (.*)")]
+        public void Given_the_USER_element_SELECTOR_has_value_VALUE(string user, string selector, string value)
         {
             var pageObject = GetPageObject(user);
-            pageObject.SetValue(elementId, null, value);
+            pageObject.SetValue(selector, value);
         }
 
-        [Given("the (.*) element selected by (.*) has value (.*)")]
-        public void GivenTheElementWithSelectorHasValue(string user, string selector, string value)
+        [Given("the (.*) element (.*) has a new email address")]
+        public void Given_the_USER_element_SELECTOR_has_a_new_email_address(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.SetValue(null, selector, value);
+            pageObject.SetValue(selector, _userContext.Email);
         }
 
-        [Given("the (.*) element #(.*) has a new email address")]
-        public void GivenTheElementWithIdHasNewEmailAddress(string user, string elementId)
+        [StepDefinition("the (.*) has clicked the element (.*)")]
+        public void The_USER_has_clicked_the_element_SELECTOR(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.SetValue(elementId, null, _userContext.Email);
+            pageObject.Click(selector);
         }
 
-        [Given("the (.*) has clicked the element #(.*)")]
-        public void GivenTheElementWithIdIsClicked(string user, string elementId)
+        [When("the (.*) clicks the element (.*)")]
+        public void When_the_USER_clicks_the_element_SELECTOR(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.Click(elementId, null);
+            pageObject.Click(selector);
         }
 
-        [Given("the (.*) has clicked the element selected by (.*)")]
-        public void GivenTheElementWithSelectorIsClicked(string user, string selector)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.Click(null, selector);
-        }
-
-        [When("the (.*) clicks the element #(.*)")]
-        public void WhenTheElementWithIdIsClicked(string user, string elementId)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.Click(elementId, null);
-        }
-
-        [When("the (.*) clicks the element selected by (.*)")]
-        public void WhenTheElementWithSelectorIsClicked(string user, string selector)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.Click(null, selector);
-        }
-
-        [Then("the (.*) element selected by (.*) should have id #(.*)")]
-        public void ThenTheElementWithSelectorShouldHaveId(string user, string selector, string expectedId)
+        [Then("the (.*) element (.*) should have id (.*)")]
+        public void Then_the_USER_element_SELECTOR_should_have_id_EXPECTEDID(string user, string selector, string expectedId)
         {
             var pageObject = GetPageObject(user);
             pageObject.GetId(selector).Should().Be(expectedId);
         }
 
-        [Then("the (.*) element #(.*) should not be clickable")]
-        public void ThenTheElementWithIdShouldNotBeClickable(string user, string elementId)
+        [Then("the (.*) element (.*) should not be clickable")]
+        public void Then_the_USER_element_SELECTOR_should_not_be_clickable(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.IsClickable(elementId, null).Should().BeFalse();
+            pageObject.IsClickable(selector).Should().BeFalse();
         }
 
-        [Then("the (.*) element selected by (.*) should not be clickable")]
-        public void ThenTheElementWithSelectorShouldNotBeClickable(string user, string selector)
+        [Then("the (.*) element (.*) should be visible")]
+        public void Then_the_USER_element_SELECTOR_should_be_visible(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.IsClickable(null, selector).Should().BeFalse();
+            pageObject.IsVisible(selector).Should().BeTrue();
         }
 
-        [Then("the (.*) element #(.*) should be visible")]
-        public void ThenTheElementWithIdShouldBeVisible(string user, string elementId)
+        [Then("the (.*) element (.*) should not be visible")]
+        public void Then_the_USER_element_SELECTOR_should_not_be_visible(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.IsVisible(elementId, null).Should().BeTrue();
+            pageObject.WaitForDisplayedFalse(selector);
         }
 
-        [Then("the (.*) element selected by (.*) should be visible")]
-        public void ThenTheElementWithSelectorShouldBeVisible(string user, string selector)
+
+        [Then("the (.*) element (.*) should be blank")]
+        public void Then_the_USER_element_SELECTOR_should_be_blank(string user, string selector)
+        {
+            The_USER_element_SELECTOR_should_have_value_EXPECTEDVALUE(user, selector, "");
+        }
+
+        [StepDefinition("the (.*) element (.*) should have value (.*)")]
+        public void The_USER_element_SELECTOR_should_have_value_EXPECTEDVALUE(string user, string selector, string expectedValue)
         {
             var pageObject = GetPageObject(user);
-            pageObject.IsVisible(null, selector).Should().BeTrue();
+            pageObject.GetValue(selector).Should().Be(expectedValue);
         }
 
-        [Then("the (.*) element #(.*) should not be visible")]
-        public void ThenTheElementWithIdShouldNotBeVisible(string user, string elementId)
+        [StepDefinition("the (.*) element (.*) should have text (.*)")]
+        public void The_USER_element_SELECTOR_should_have_text_EXPECTEDTEXT(string user, string selector, string expectedText)
         {
             var pageObject = GetPageObject(user);
-            pageObject.WaitForDisplayedFalse(elementId, null);
+            pageObject.GetText(selector).Should().Be(expectedText);
         }
 
-        [StepDefinition("the (.*) element selected by (.*) should not be visible")]
-        public void ThenTheElementWithSelectorShouldNotBeVisible(string user, string selector)
+        [StepDefinition("if visible, the (.*) element (.*) should have text (.*)")]
+        public void If_visible_the_USER_element_SELECTOR_should_have_text_EXPECTEDTEXT(string user, string selector, string expectedText)
         {
             var pageObject = GetPageObject(user);
-            pageObject.WaitForDisplayedFalse(null, selector);
-        }
-
-        [Then("the (.*) element #(.*) should be blank")]
-        public void ThenTheElementWithIdShouldHaveValue(string user, string elementId)
-        {
-            ThenTheElementWithIdShouldHaveValue(user, elementId, "");
-        }
-
-        [Then("the (.*) element selected by (.*) should be blank")]
-        public void ThenTheElementWithSelectorShouldHaveValue(string user, string selector)
-        {
-            ThenTheElementWithSelectorShouldHaveValue(user, selector, "");
-        }
-
-        [Then("the (.*) element #(.*) should have value (.*)")]
-        public void ThenTheElementWithIdShouldHaveValue(string user, string elementId, string expectedValue)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.GetValue(elementId, null).Should().Be(expectedValue);
-        }
-
-        [StepDefinition("the (.*) element with selector (.*) should have value (.*)")]
-        public void ThenTheElementWithSelectorShouldHaveValue(string user, string selector, string expectedValue)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.GetValue(null, selector).Should().Be(expectedValue);
-        }
-
-        [StepDefinition("the (.*) element #(.*) should have text (.*)")]
-        public void ThenTheElementWithIdShouldHaveText(string user, string elementId, string expectedValue)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.GetText(elementId, null).Should().Be(expectedValue);
-        }
-
-        [StepDefinition("the (.*) element selected by (.*) should have text (.*)")]
-        public void ThenTheElementWithSelectorShouldHaveText(string user, string selector, string expectedValue)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.GetText(null, selector).Should().Be(expectedValue);
-        }
-
-        [StepDefinition("if visible, the (.*) element #(.*) should have text (.*)")]
-        public void ThenTheElementWithIdIfVisibleShouldHaveText(string user, string elementId, string expectedValue)
-        {
-            var pageObject = GetPageObject(user);
-            if (pageObject.IsVisible(elementId, null))
+            if (pageObject.IsVisible(selector))
             {
-                pageObject.GetText(elementId, null).Should().Be(expectedValue);
-            }
-        }
-
-        [StepDefinition("if visible, the (.*) element selected by (.*) should have text (.*)")]
-        public void ThenTheElementWithSelectorIfVisibleShouldHaveText(string user, string selector, string expectedValue)
-        {
-            var pageObject = GetPageObject(user);
-            if (pageObject.IsVisible(null, selector))
-            {
-                pageObject.GetText(null, selector).Should().Be(expectedValue);
+                pageObject.GetText(selector).Should().Be(expectedText);
             }
         }
 
         [Then("the (.*) url should be (.*)")]
-        public void ThenTheUrlShouldBe(string user, string url)
+        public void Then_the_USER_url_should_be_EXPECTEDURL(string user, string expectedUrl)
         {
             var pageObject = GetPageObject(user);
-            pageObject.WaitForUrlChange().Should().Be(GenericPageObject.HomePageUrl + url);
+            pageObject.WaitForUrlChange().Should().Be($"{GenericPageObject.HomePageUrl}{expectedUrl}");
         }
 
         [Then("the (.*) page title should be (.*)")]
-        public void ThenThePageTitleShouldBe(string user, string expectedTitle)
+        public void Then_the_USER_page_title_should_be_EXPECTEDTITLE(string user, string expectedTitle)
         {
             var pageObject = GetPageObject(user);
             pageObject.GetTitle().Should().Be(expectedTitle);

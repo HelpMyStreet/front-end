@@ -39,10 +39,10 @@ namespace HelpMyStreetFE.Specs.Hooks
         {
             var pageObject = new GenericPageObject(driver);
 
-            if (pageObject.IsVisible("gdpr-cookie-message-outer", null))
+            if (pageObject.IsVisible("#gdpr-cookie-message-outer"))
             {
-                pageObject.Click("gdpr-cookie-accept", null);
-                pageObject.WaitForDisplayedFalse("gdpr-cookie-message-outer", null);
+                pageObject.Click("#gdpr-cookie-accept");
+                pageObject.WaitForDisplayedFalse("#gdpr-cookie-message-outer");
             }
         }
 

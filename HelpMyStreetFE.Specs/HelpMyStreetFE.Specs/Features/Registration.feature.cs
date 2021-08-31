@@ -125,7 +125,7 @@ this.FeatureBackground();
  testRunner.And("the volunteer\'s element #confirm-password has value asd!\"£123ASD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
- testRunner.And("the volunteer\'s has clicked the element selected by #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
  testRunner.When("the volunteer clicks the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -134,8 +134,8 @@ this.FeatureBackground();
  testRunner.Then("the volunteer\'s url should be registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 16
- testRunner.And(string.Format("if visible, the volunteer\'s element selected by #registration_form .input:first-c" +
-                            "hild span should have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("if visible, the volunteer\'s element #registration_form .input:first-child span sh" +
+                            "ould have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -177,7 +177,7 @@ this.InvalidEmailAddresses("a@b.c", "Please enter a valid email address", ((stri
         public virtual void InvalidEmailAddresses_AbcDef_Com()
         {
 #line 9
-this.InvalidEmailAddresses("abc@def.com", "The email address is already in use by another account.", ((string[])(null)));
+this.InvalidEmailAddresses("abc@def.com", "The email address is already in use by another account", ((string[])(null)));
 #line hidden
         }
         
@@ -221,7 +221,7 @@ this.FeatureBackground();
  testRunner.And(string.Format("the volunteer\'s element #confirm-password has value {0}", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 31
- testRunner.And("the volunteer\'s has clicked the element selected by #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 32
  testRunner.When("the volunteer clicks the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -230,8 +230,8 @@ this.FeatureBackground();
  testRunner.Then("the volunteer\'s url should be registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 34
- testRunner.And(string.Format("the volunteer\'s element selected by #registration_form .input:nth-child(2) span.e" +
-                            "rror should have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s element #registration_form .input:nth-child(2) span.error should " +
+                            "have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -326,7 +326,7 @@ this.FeatureBackground();
  testRunner.And(string.Format("the volunteer\'s element #confirm-password has value {0}", confirmation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 50
- testRunner.And("the volunteer\'s has clicked the element selected by #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 51
  testRunner.When("the volunteer clicks the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -335,8 +335,8 @@ this.FeatureBackground();
  testRunner.Then("the volunteer\'s url should be registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 53
- testRunner.And(string.Format("the volunteer\'s element selected by #registration_form .input:nth-child(3) span.e" +
-                            "rror should have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s element #registration_form .input:nth-child(3) span.error should " +
+                            "have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

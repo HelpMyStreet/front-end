@@ -30,8 +30,8 @@ Scenario: Header login blank email
 	And the volunteer's element #email should be blank
 	And the volunteer's element #password should be blank
 	And the volunteer's element #login-fail-message should not be visible
-	And the volunteer's element selected by input[name="email"]~.login__fail-message-main should be visible
-	And the volunteer's element selected by input[name="email"]~.login__fail-message-main should have text Please enter a valid email address
+	And the volunteer's element input[name="email"]~.login__fail-message-main should be visible
+	And the volunteer's element input[name="email"]~.login__fail-message-main should have text Please enter a valid email address
 		
 @AcceptAllCookies
 Scenario: Header login blank password
@@ -42,4 +42,4 @@ Scenario: Header login blank password
 	And the volunteer's element #password should be blank
 	And the volunteer's element #login-fail-message should be visible
 	And the volunteer's element #login-fail-message should have text Please enter a valid password
-	And the volunteer's element selected by input[name="email"]~.login__fail-message-main should not be visible
+	And the volunteer's element input[name="email"]~.login__fail-message-main should not be visible
