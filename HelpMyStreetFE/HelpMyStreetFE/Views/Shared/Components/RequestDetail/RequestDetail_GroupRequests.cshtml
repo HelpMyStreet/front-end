@@ -3,6 +3,7 @@
 @using HelpMyStreet.Utils.Extensions;
 @using HelpMyStreet.Utils.Utils;
 @using Westwind.AspNetCore.Markdown
+@using HelpMyStreetFE.Models.Account.Jobs;
 
 @model HelpMyStreetFE.Models.Account.Jobs.RequestDetailViewModel
 
@@ -10,8 +11,6 @@
     var requestSummary = Model.RequestSummary;
     var requestId = Base64Utils.Base64Encode(requestSummary.RequestID);
     var role = Base64Utils.Base64Encode((int)Model.UserRole);
-
-    //var questionsToDisplay = Model.JobDetails.First().JobSummary.Questions.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
 }
 
 @if (requestSummary.RequestType == RequestType.Shift)
@@ -43,7 +42,7 @@
     var id = Base64Utils.Base64Encode(jobDetails.JobID);
     var volunteerDetails = jobDetails.CurrentVolunteer?.UserPersonalDetails;
 
-    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(true, false) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobDetails.QuestionsToDisplay(true, false);
 
     <div class="job__expander job request-job" id="@id" request-id="@requestId" data-role="@role">
         <h4>
@@ -123,13 +122,12 @@
                 <div class="row">
                     <div class="sm12 add-line-before">
                         <h5>Request Details</h5>
-                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                        {
-                            <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
-                        }
+                        <dl>
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobDetails, q, jobDetails.JobStatus.Incomplete())))
+                            {
+                                <partial name="_AnsweredQuestion" model="q" />
+                            }
+                        </dl>
                     </div>
                 </div>
             }
@@ -138,7 +136,7 @@
 }
 
 
-@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))// || questionsToDisplay.Count() > 0)
+@if (Model.GroupSupportActivityInstructions.Any(i => !string.IsNullOrEmpty(i.Value.ActivityDetails)))
 {
     <div class="job__expander">
         <h4>Request Details<span></span></h4>
@@ -153,14 +151,6 @@
                         }
                         @Markdown.ParseHtmlString(activity.Value.ActivityDetails)
                     }
-
-                    @*@foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
-                        {
-                            <dl>
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
-                            </dl>
-                        }*@
                 </div>
             </div>
         </div>
