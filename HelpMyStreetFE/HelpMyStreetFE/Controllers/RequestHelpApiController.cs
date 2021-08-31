@@ -25,15 +25,25 @@ namespace HelpMyStreetFE.Controllers {
     {
         private readonly ILogger<RequestHelpAPIController> _logger;
         private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
+        private readonly IRequestUpdatingService _requestUpdatingService;
         private readonly IAuthService _authService;
         private readonly IFeedbackService _feedbackService;
 
-        public RequestHelpAPIController(ILogger<RequestHelpAPIController> logger, IRequestService requestService, IAuthService authService, IFeedbackService feedbackService)
+        public RequestHelpAPIController(
+            ILogger<RequestHelpAPIController> logger, 
+            IRequestService requestService,
+            IJobCachingService jobCachingService,
+            IAuthService authService, 
+            IFeedbackService feedbackService, 
+            IRequestUpdatingService requestUpdatingService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _requestService = requestService ?? throw new ArgumentNullException(nameof(requestService));
+            _jobCachingService = jobCachingService ?? throw new ArgumentNullException(nameof(jobCachingService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _feedbackService = feedbackService ?? throw new ArgumentNullException(nameof(feedbackService));
+            _requestUpdatingService = requestUpdatingService ?? throw new ArgumentNullException(nameof(requestUpdatingService));
         }
 
 
@@ -43,7 +53,7 @@ namespace HelpMyStreetFE.Controllers {
         {
             try
             {
-                var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+                var user = await _authService.GetCurrentUser(cancellationToken);
 
                 UpdateJobStatusOutcome? outcome;
                 bool requestFeedback = false;
@@ -51,7 +61,7 @@ namespace HelpMyStreetFE.Controllers {
                 if (string.IsNullOrEmpty(j))
                 {
                     int requestId = Base64Utils.Base64DecodeToInt(rq);
-                    outcome = await _requestService.UpdateRequestStatusAsync(requestId, s, user.ID, cancellationToken);
+                    outcome = await _requestUpdatingService.UpdateRequestStatusAsync(requestId, s, user.ID, cancellationToken);
                 }
                 else
                 {
@@ -63,12 +73,12 @@ namespace HelpMyStreetFE.Controllers {
                     }
 
                     int jobId = Base64Utils.Base64DecodeToInt(j);
-                    outcome = await _requestService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
+                    outcome = await _requestUpdatingService.UpdateJobStatusAsync(jobId, s, user.ID, targetUserId, cancellationToken);
 
-                    var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                    var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
                     if (job.RequestType.Equals(RequestType.Task))
                     {
-                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken)).FeedbackDue;
+                        requestFeedback = (await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken, s)).FeedbackDue;
                     }
                 }
 
@@ -100,7 +110,7 @@ namespace HelpMyStreetFE.Controllers {
         [HttpGet("get-job-details")]
         public async Task<IActionResult> GetJobDetails(string j, string rq, JobSet js, CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
@@ -143,20 +153,28 @@ namespace HelpMyStreetFE.Controllers {
         }
 
         [AuthorizeAttributeNoRedirect]
+        [Route("get-accept-job-series-popup")]
+        public IActionResult GetStatusChangePopup(string rq, int stg)
+        {
+            int requestId = Base64Utils.Base64DecodeToInt(rq);
+            return ViewComponent("AcceptJobSeriesPopup", new { requestId, stage = stg });
+        }
+
+        [AuthorizeAttributeNoRedirect]
         [HttpGet("get-feedback-component")]
         public async Task<IActionResult> GetFeedbackComponent(string j, string r, CancellationToken cancellationToken)
         {
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken);
+            var feedbackStatus = await GetJobFeedbackStatus(jobId, user.ID, requestRole, cancellationToken, null);
 
             if (feedbackStatus.FeedbackDue)
             {
@@ -171,17 +189,24 @@ namespace HelpMyStreetFE.Controllers {
 
         [AuthorizeAttributeNoRedirect]
         [Route("get-view-location-popup")]
-        public IActionResult GetViewLocationPopup(string j)
+        public IActionResult GetViewLocationPopup(string r)
         {
-            int jobId = Base64Utils.Base64DecodeToInt(j);
-            return ViewComponent("ViewLocationPopup", new { jobId });
+            int? requestId = null;
+            try
+            {
+                requestId = Base64Utils.Base64DecodeToInt(r);
+                return ViewComponent("ViewLocationPopup", new { requestId });
+            } catch (Exception e) {
+                throw new Exception("Unable to generate location popup", e);
+            }
         }
 
-        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken)
+        private async Task<JobFeedbackStatus> GetJobFeedbackStatus(int jobId, int userId, RequestRoles role, CancellationToken cancellationToken, JobStatuses? newJobStatus)
         {
-            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
 
-            if (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)
+            if ((newJobStatus == JobStatuses.Done || newJobStatus == JobStatuses.Cancelled) || 
+                (newJobStatus == null && (job.JobStatus == JobStatuses.Done || job.JobStatus == JobStatuses.Cancelled)))
             {
                 bool feedbackSubmitted = await _feedbackService.GetFeedbackExists(jobId, role, userId);
 
@@ -193,10 +218,10 @@ namespace HelpMyStreetFE.Controllers {
                         FeedbackDue = false,
                     };
                 }
-                else if (!job.Archive)
+                else if (!job.Archive && (role.Equals(RequestRoles.GroupAdmin) || job.VolunteerUserID.Equals(userId)))
                 {
-                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
-                    _authService.PutSessionAuthorisedUrl(HttpContext, $"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl($"/api/feedback/get-post-task-feedback-popup?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
+                    _authService.PutSessionAuthorisedUrl($"/api/feedback/put-feedback?j={Base64Utils.Base64Encode(jobId)}&r={Base64Utils.Base64Encode((int)role)}");
                     
                     return new JobFeedbackStatus
                     {

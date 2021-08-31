@@ -31,7 +31,7 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(CancellationToken cancellationToken)
         {
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             SiteHeaderViewModel viewModel = new SiteHeaderViewModel
             {
                 isLoggedIn = (user != null)

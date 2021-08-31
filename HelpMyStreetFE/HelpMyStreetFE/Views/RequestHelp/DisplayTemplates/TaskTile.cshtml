@@ -49,7 +49,7 @@
 
 <div class="sm4">
 
-    <div id="task_@((int)Model.SupportActivity)" data-type="activities" data-id='@((int)Model.SupportActivity)' class="tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
+    <div id="task_@((int)Model.SupportActivity)" data-type="@Model.DataType" data-value="@Model.Value" data-id='@Model.ID' class="tile-selector__tile tiles__tile tiles__tile--large @activity.Activity.Class() @(Model.IsSelected && !ForReview ? "selected" : "" )">
         <div class="tiles__tile__content ">
             @if (activity.MultiVolunteer && !ForReview)
             {
@@ -65,19 +65,9 @@
             {
                 <div class="mt-md"></div>
             }
-            <div class="tiles__tile__content__header">@activity.Activity.FriendlyNameShort()</div>
+            <div class="tiles__tile__content__header">@Model.Description</div>
             <div class="tiles__tile__content__description">@activity.Description</div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
 

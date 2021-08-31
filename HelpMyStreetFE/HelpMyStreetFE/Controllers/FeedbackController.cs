@@ -23,19 +23,19 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IFeedbackService _feedbackService;
-        private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
 
-        public FeedbackController(IAuthService authService, IFeedbackService feedbackService, IRequestService requestService)
+        public FeedbackController(IAuthService authService, IFeedbackService feedbackService, IJobCachingService jobCachingService)
         {
             _authService = authService;
             _feedbackService = feedbackService;
-            _requestService = requestService;
+            _jobCachingService = jobCachingService;
         }
 
         [HttpGet]
         public async Task<IActionResult> PostTaskFeedbackCapture(string j, string r, string f, CancellationToken cancellationToken)
         {
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return Redirect("/Error/401");
             }
@@ -43,8 +43,8 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
             FeedbackRating feedbackRating = string.IsNullOrEmpty(f) ? 0 : (FeedbackRating)Base64Utils.Base64DecodeToInt(f);
-            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             if (job.JobStatus.Incomplete())
             {
@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return Redirect("/Error/401");
             }
@@ -78,8 +78,8 @@ namespace HelpMyStreetFE.Controllers
             model.JobId = jobId;
             model.RoleSubmittingFeedback = requestRole;
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
-            var job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
+            var job = await _jobCachingService.GetJobSummaryAsync(jobId, cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
             return ShowMessage(result, job.ReferringGroupID, model);

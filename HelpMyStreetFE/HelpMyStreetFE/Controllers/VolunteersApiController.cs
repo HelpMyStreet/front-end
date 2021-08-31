@@ -57,7 +57,7 @@ namespace HelpMyStreetFE.Controllers
             int groupId = Base64Utils.Base64DecodeToInt(g);
             int credentialId = Base64Utils.Base64DecodeToInt(c);
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             DateTime? validUntil = assignCredentialsViewModel.ValidUntil == "Null" ? (DateTime?)null : DateTime.ParseExact(assignCredentialsViewModel.ValidUntil, DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"));
 
@@ -74,7 +74,5 @@ namespace HelpMyStreetFE.Controllers
 
             return await _groupMemberService.PutGroupMemberCredentials(putGroupMemberCredentialsRequest);
         }
-
-
     }
 }

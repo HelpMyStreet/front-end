@@ -4,7 +4,7 @@
 }    
 
     <div class="sm4">
-        <div id="requestorFor_@Model.ID" data-type="request-for"  data-id='@Model.ID' class="tiles__tile tiles__tile--large requestorFor @Model.ColourCode @(Model.IsSelected && !ForReview? "selected" : "" )">
+        <div id="requestorFor_@Model.ID" data-type="@Model.DataType" data-value="@Model.Value" data-id='@Model.ID' class="tile-selector__tile tiles__tile tiles__tile--large requestorFor @Model.ColourCode @(Model.IsSelected && !ForReview? "selected" : "" )">
             <div class="tiles__tile__content ">
                 <div class="tiles__tile__content__icon">
                     <div class="cirlce">
@@ -12,16 +12,9 @@
                         <img class="on-selected" src="~/img/icons/@Model.IconLight" />
                     </div>
                 </div>
-                <div class="tiles__tile__content__header pt-xs">@Model.Title</div>
+                <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
                 <div class="tiles__tile__content__description">@Model.Text</div>
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
 

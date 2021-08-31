@@ -20,27 +20,34 @@ namespace HelpMyStreetFE.ViewComponents
     {
         private readonly IGroupMemberService _groupMemberService;
         private readonly IAuthService _authService;
-        private readonly IRequestService _requestService;
+        private readonly IJobCachingService _jobCachingService;
+            private readonly IRequestCachingService _requestCachingService;
         private readonly IGroupService _groupService;
 
-        public JobStatusChangePopupViewComponent(IGroupMemberService groupMemberService, IAuthService authService, IRequestService requestService, IGroupService groupService)
+        public JobStatusChangePopupViewComponent(
+            IGroupMemberService groupMemberService,
+            IAuthService authService,
+            IRequestCachingService requestCachingService,
+            IJobCachingService jobCachingService,
+            IGroupService groupService)
         {
             _groupMemberService = groupMemberService;
             _authService = authService;
-            _requestService = requestService;
+            _jobCachingService = jobCachingService;
+            _requestCachingService = requestCachingService;
             _groupService = groupService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(int jobId, int requestId, JobStatuses targetStatus, CancellationToken cancellationToken)
         {
-            JobSummary job = null;
+            JobBasic job = null;
             if (jobId > 0)
             {
-                job = await _requestService.GetJobSummaryAsync(jobId, cancellationToken);
+                job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
                 requestId = job.RequestID;
             }
-            var request = await _requestService.GetRequestSummaryAsync(requestId, cancellationToken);
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var request = await _requestCachingService.GetRequestSummaryAsync(requestId, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
 
             bool userIsAdmin = await _groupMemberService.GetUserHasRole(user.ID, request.ReferringGroupID, GroupRoles.TaskAdmin, true, cancellationToken);
             
@@ -48,11 +55,11 @@ namespace HelpMyStreetFE.ViewComponents
 
             if (job == null)
             {
-                return (request.SingleJobStatus(), targetStatus, userIsAdmin) switch
+                return (request.JobBasics.SingleJobStatus(), targetStatus, userIsAdmin) switch
                 {
                     (_, JobStatuses.Done, true) => View("Admin_MarkRequestAsDonePopup", vm),
                     (_, JobStatuses.Cancelled, true) => View("Admin_CancelRequestPopup", vm),
-                    _ => throw new Exception($"Unhandled status/admin combination for request: {request.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
+                    _ => throw new Exception($"Unhandled status/admin combination for request {requestId}, user {user.ID}: {request.JobBasics.SingleJobStatus()} -> {targetStatus} / admin:{userIsAdmin}")
                 };
             }
             else
@@ -73,33 +80,33 @@ namespace HelpMyStreetFE.ViewComponents
                     (JobStatuses.InProgress, JobStatuses.Open, true, false) => View("Admin_MarkAsOpenPopup", vm),
                     (_,                 JobStatuses.Cancelled, true, _    ) => View("Admin_CancelJobPopup", vm),
 
-                    _ => throw new Exception($"Unhandled status/admin combination: {job.JobStatus} -> {targetStatus} / admin:{userIsAdmin} / allocated to task:{userIsAllocatedToTask}")
+                    _ => throw new Exception($"Unhandled status/admin combination for job {jobId}, user {user.ID}: {job.JobStatus} -> {targetStatus} / admin:{userIsAdmin} / allocated to task:{userIsAllocatedToTask}")
                 };
             }
         }
 
         private async Task<IViewComponentResult> AcceptRequestIfCredentialsSatisfied(JobStatusChangePopupViewModel vm, User user, CancellationToken cancellationToken)
         {
-            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobSummary.ReferringGroupID, vm.JobSummary.SupportActivity, user.ID, user.ID, cancellationToken);
+            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobBasic.ReferringGroupID, vm.JobBasic.SupportActivity, user.ID, user.ID, cancellationToken);
 
-            if (credentials.AreSatisfied)
-            {
-                return View("AcceptRequestPopup", vm);
-            }
-            else
+            if (!credentials.AreSatisfied)
             {
                 vm.AnnotatedGroupActivityCredentialSets = credentials;
                 return View("CredentialsRequiredPopup", vm);
             }
+            else
+            {
+                return View("AcceptRequestPopup", vm);
+            }
         }
 
-        private async Task<JobStatusChangePopupViewModel> BuildVm(RequestSummary request, JobSummary job, JobStatuses targetStatus, CancellationToken cancellationToken)
+        private async Task<JobStatusChangePopupViewModel> BuildVm(RequestSummary request, JobBasic job, JobStatuses targetStatus, CancellationToken cancellationToken)
         {
             JobStatusChangePopupViewModel vm = new JobStatusChangePopupViewModel()
             {
                 RequestSummary = request,
                 RequestType = request.RequestType,
-                JobSummary = job,
+                JobBasic = job,
                 TargetStatus = targetStatus,
             };
 

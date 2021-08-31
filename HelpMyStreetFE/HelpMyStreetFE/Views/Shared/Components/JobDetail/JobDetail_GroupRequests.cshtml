@@ -1,0 +1,183 @@
+﻿@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Models;
+@using Westwind.AspNetCore.Markdown
+
+@model JobDetailViewModel
+
+@{
+    var jobSummary = Model.JobDetail.Item;
+    var requestSummary = Model.JobDetail.Item.RequestSummary;
+
+    var recipient = Model.JobDetail.Item.Recipient;
+    var requestor = Model.JobDetail.Item.Requestor;
+    var currentVolunteer = Model.JobDetail.Item.CurrentVolunteer;
+
+    var questionsToDisplay = jobSummary.Questions?.Where(q => q.ShowOnTaskManagement(true, jobSummary.JobStatus == JobStatuses.InProgress) && !string.IsNullOrEmpty(q.Answer));
+    var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
+}
+
+@if (jobSummary.JobStatus.Incomplete())
+{
+    <div class="job__expander">
+        <div class="row">
+            <div class="sm12">
+                <dl>
+                    <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
+
+                    @if (jobSummary.RequestType == RequestType.Shift)
+                    {
+                        <div class="location-details">
+                            <dt>Where is the shift?</dt>
+
+                            <dd>
+                                <div>
+                                    @Html.DisplayFor(m => m.JobDetail.Location.LocationDetails.Address)
+                                </div>
+                            </dd>
+                        </div>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || !string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
+{
+    <div class="job__expander">
+        <h4>Request Details<span></span></h4>
+        <div class="job__expander__content">
+            @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails)) { 
+            <div class="row">
+                <div class="sm12">
+                    @Markdown.ParseHtmlString(Model.GroupSupportActivityInstructions.ActivityDetails)
+                </div>
+            </div>
+            }
+            @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
+            {
+                <div class="row">
+                    <div class="sm12">
+                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                        {
+                            <dl>
+                                <dt>Organisation</dt>
+                                <dd>@jobSummary.RecipientOrganisation</dd>
+                            </dl>
+                        }
+
+                        @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                        {
+                            <dl>
+                                <dt>@q.FriendlyName()</dt>
+                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                            </dl>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<div class="job__expander">
+    <h4>Contact Details<span></span></h4>
+    <div class="job__expander__content">
+        <div class="row">
+            @if (jobSummary.Archive)
+            {
+                <div class="sm12">
+                    <h5>Recipient</h5>
+                    <dl>
+                        <dd><i>The @(jobSummary.RequestorType != RequestorType.Myself ? "requestor and" : "" ) recipient contact details for this request have been archived.</i></dd>
+                        @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation))
+                        {
+                            <dt>Organisation</dt>
+                            <dd>@jobSummary.RecipientOrganisation</dd>
+                        }
+                    </dl>
+                </div>
+                @if (currentVolunteer != null)
+                {
+                    var volunteerDetails = Model.JobDetail.Item.CurrentVolunteer.UserPersonalDetails.DisplayName;
+                    <div class="sm12">
+                        <h5>Volunteer</h5>
+                        <dl>
+                            <dd>@volunteerDetails</dd>
+                        </dl>
+                    </div>
+                }
+            }
+            else
+            {
+                @if (!string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || recipient != null)
+                {
+                    <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                PersonalDetails = Model.JobDetail.Item.Recipient.GetDPSafePersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient, true)),
+                                RecipientOrganisation = jobSummary.RecipientOrganisation,
+                                RequestRole = RequestRoles.Recipient
+                                }" />
+                }
+                @if (currentVolunteer != null)
+                {
+                    <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                PersonalDetails = (PersonalDetails) Model.JobDetail.Item.CurrentVolunteer.UserPersonalDetails.GetDPSafeUserPersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Volunteer, true)),
+                                RecipientOrganisation = null,
+                                RequestRole = RequestRoles.Volunteer
+                                }" />
+                }
+                @if (requestor != null && jobSummary.RequestorType != RequestorType.Myself)
+                {
+                    <partial name="_PersonalDetails" model="new PersonalDetailsView {
+                                PersonalDetails = Model.JobDetail.Item.Requestor.GetDPSafePersonalDetails(Model.JobDetail.Item.SupportActivity.PersonalDetailsComponent(RequestRoles.Requestor, true)),
+                                RecipientOrganisation = null,
+                                RequestRole = RequestRoles.Requestor
+                                }" />
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div class="job__expander">
+    <h4>Volunteer Instructions<span></span></h4>
+    <div class="job__expander__content">
+        <div class="row">
+            <div class="sm12 volunteer-instructions">
+                <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="job__expander">
+    <h4>Request Status History<span></span></h4>
+    <div class="job__expander__content">
+        <div class="row">
+            <div class="sm12">
+                <dl class="highlight-last">
+                    @foreach (var statusChange in Model.JobDetail.Item.JobStatusHistory)
+                    {
+                        <dt>
+                            @statusChange.JobStatusDescription
+                            @if (statusChange.VolunteerUser != null)
+                            {
+                                <span class="context">
+                                    @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
+                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                </span>
+                            }
+                        </dt>
+                        <dd>
+                            @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
+                        </dd>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

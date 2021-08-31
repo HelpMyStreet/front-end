@@ -18,15 +18,15 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ICommunicationService _communicationService;
         private readonly IAuthService _authService;
-        private readonly IRequestService _requestService;
+        private readonly IRequestLocationService _requestLocationService;
 
         private readonly string LINK_EXPIRED_URL = "/link-expired";
 
-        public RedirectionController(ICommunicationService communicationService, IAuthService authService, IRequestService requestService)
+        public RedirectionController(ICommunicationService communicationService, IAuthService authService, IRequestLocationService requestLocationService)
         {
-            _communicationService = communicationService;
-            _authService = authService;
-            _requestService = requestService;
+            _communicationService = communicationService ?? throw new ArgumentNullException(nameof(communicationService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _requestLocationService = requestLocationService ?? throw new ArgumentNullException(nameof(requestLocationService));
         }
 
         [Route("link/{token}")]
@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(LINK_EXPIRED_URL);
             }
 
-            _authService.PutSessionAuthorisedUrl(HttpContext, destination);
+            _authService.PutSessionAuthorisedUrl(destination);
 
             return Redirect(destination);
         }
@@ -50,14 +50,14 @@ namespace HelpMyStreetFE.Controllers
         {
 
             int jobId = Base64Utils.Base64DecodeToInt(encodedJobId);
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var jobLocation = await _requestService.LocateJob(jobId, user.ID, cancellationToken);
+            var jobLocation = await _requestLocationService.LocateJob(jobId, user.ID, cancellationToken);
             encodedJobId = Base64Utils.Base64Encode(jobId);
 
             string destination = jobLocation?.JobSet switch
@@ -81,14 +81,14 @@ namespace HelpMyStreetFE.Controllers
         {
 
             int requestId = Base64Utils.Base64DecodeToInt(encodedRequestId);
-            User user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            User user = await _authService.GetCurrentUser(cancellationToken);
 
             if (user == null)
             {
                 throw new UnauthorizedAccessException("No user in session");
             }
 
-            var jobLocation = await _requestService.LocateRequest(requestId, user.ID, cancellationToken);
+            var jobLocation = await _requestLocationService.LocateRequest(requestId, user.ID, cancellationToken);
             encodedRequestId = Base64Utils.Base64Encode(requestId);
 
             string destination = jobLocation?.JobSet switch

@@ -1,0 +1,141 @@
+@using HelpMyStreetFE.Helpers;
+@using HelpMyStreet.Utils.Enums;
+@using HelpMyStreet.Utils.Utils;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Models;
+@using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.EqualityComparers; 
+
+@model JobViewModel<IEnumerable<JobDetail>>
+
+@{
+    var singleDate = Model.Item.Distinct(new JobBasicDedupeWithDate_EqualityComparer()).Count() == 1;
+
+    var id = singleDate ? Base64Utils.Base64Encode(Model.Item.First().JobID) : "";
+    var requestId = Base64Utils.Base64Encode(Model.Item.First().RequestID);
+    var role = Base64Utils.Base64Encode((int)Model.UserRole);
+    
+    var firstOpenJob = Model.Item.FirstOpenJob();
+
+    var className = "";
+    var dueDate = firstOpenJob.DueDate.JobDueDate(firstOpenJob.DueDateType);
+
+    if (!singleDate)
+    {
+        dueDate = "First " + dueDate.ToLower();
+    }
+
+    if (dueDate.Contains("urgent"))
+    {
+        className += " job--urgent";
+    }
+
+    if (dueDate.Contains("soon"))
+    {
+        className += " job--due-soon";
+    }
+
+    if (Model.HighlightJob)
+    {
+        className += " highlight";
+    }
+
+}
+
+<div class="job @className mb-sm-md" id="@id" request-id="@requestId" data-job-status="@JobStatuses.Open" data-role="@role">
+    <div class="job__info">
+
+        <div class="job__info__col1">
+            @if (Model.Item.Any(j => j.IsHealthCritical))
+            {
+                <span class="job__info__col1__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+            <div class="toggle-on-status-change">
+                <div class="job__info__col1__referrer">
+                    <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = Model.Item.First().ReferringGroupID }" />
+                </div>
+            </div>
+
+            <span class="job__info__col1__urgency toggle-on-status-change">
+                <span class="job__info__col1__urgency__dates due-date" title="@(firstOpenJob.DueDateType == DueDateType.On ? firstOpenJob.DueDate.FriendlyFutureDate() : "")">
+                    @dueDate
+                </span>
+            </span>
+
+
+            <span class="job__info__col1__new-status job__status job__status__new dnone toggle-on-status-change">
+            </span>
+            <span class="job__info__col1__next-step dnone toggle-on-status-change">
+                <a href="/account/my-requests/r/@requestId">Go to My Requests</a>
+            </span>
+        </div> 
+        <div class="job__info__activity">
+            @if (Model.Item.Any(j => j.IsHealthCritical))
+            {
+                <span class="job__info__activity__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+            <span class="job__info__activity__title @Model.Item.First().SupportActivity.Class()">
+                @if (Model.Item.First().SupportActivity != SupportActivities.Other)
+                {
+                    <img src="~/img/icons/@Model.Item.First().SupportActivity.Icon()" />
+                }
+                <span>
+                    @Model.Item.First().SupportActivity.FriendlyNameShort()
+                </span>
+            </span>
+            @if (!string.IsNullOrWhiteSpace(Model.Item.First().Reference))
+            {
+                <span class="job__info__activity__title @Model.Item.First().SupportActivity.Class()">
+                    @($"Group Ref: {Model.Item.First().Reference}")
+                </span>
+            }
+            <span class="job__info__activity__location">
+                @if (Model.UserHasRequiredCredentials && Model.CanViewAddressPopup)
+                {
+                    <a href="#" class="view-location">@Model.ListLocalityDescription</a>
+            }
+            else
+            {
+
+            @Model.ListLocalityDescription
+                        }
+                    </span>
+
+            </div>
+        <div class="job__info__col3 flex-end">
+
+            @if (Model.Item.Any(j => j.IsHealthCritical))
+            {
+                <span class="job__info__col3__criticality">
+                    <span class="critical-icon">!</span>
+                    <span class="critical">Critical</span>
+                </span>
+            }
+        <div class="job__info__actions">
+            @if (singleDate)
+            {
+                <partial name="_JobButtons_Volunteer" model="new JobViewModel<JobDetail> {Item = Model.Item.First(), User = Model.User, UserHasRequiredCredentials = Model.UserHasRequiredCredentials }" />
+            }
+            else
+            {
+                <partial name="_OpenJobSeriesButtons_Volunteer" model="@Model" />
+            }
+        </div>
+            <div class="job__info__footer">
+                <a href="#" class="open">View more info<span></span></a>
+                <a href="#" class="close">View less info<span></span></a>
+            </div>
+        </div>
+
+    </div>
+    <div class="job__detail">
+        <partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel() { Hide = false, ShowDarkSpinner = true }' />
+    </div>
+</div>

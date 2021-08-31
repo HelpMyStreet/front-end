@@ -1,0 +1,19 @@
+﻿@using HelpMyStreet.Utils.Models;
+
+@model PersonalDetails;
+
+@if (!String.IsNullOrEmpty(Model.FullName()))
+{
+    <dt>Name</dt>
+    <dd>@Model.FullName()</dd>
+}
+@if (!String.IsNullOrEmpty(Model.EmailAddress))
+{
+    <dt>Email</dt>
+    <dd>@Model.EmailAddress</dd>
+}
+@if (Model.PhoneNumbers().Count() > 0)
+{
+    <dt>@(Model.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
+    <dd>@string.Join(" / ", Model.PhoneNumbers())</dd>
+}

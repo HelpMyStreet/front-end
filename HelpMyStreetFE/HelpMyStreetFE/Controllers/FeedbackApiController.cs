@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Controllers
         [AuthorizeAttributeNoRedirect]
         public IActionResult PostTaskFeedbackCapturePopup(string j, string r)
         {
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return StatusCode((int)HttpStatusCode.Unauthorized);
             }
@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Controllers
             int jobId = Base64Utils.Base64DecodeToInt(j);
             RequestRoles requestRole = (RequestRoles)Base64Utils.Base64DecodeToInt(r);
 
-            if (!_authService.GetUrlIsSessionAuthorised(HttpContext))
+            if (!_authService.GetUrlIsSessionAuthorised())
             {
                 return StatusCode((int)HttpStatusCode.Unauthorized);
             }
@@ -62,7 +62,7 @@ namespace HelpMyStreetFE.Controllers
             model.JobId = jobId;
             model.RoleSubmittingFeedback = requestRole;
 
-            var user = await _authService.GetCurrentUser(HttpContext, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
             var result = await _feedbackService.PostRecordFeedback(user, model);
 
             if (result == Result.Success || result == Result.Failure_FeedbackAlreadyRecorded)

@@ -25,9 +25,9 @@ namespace HelpMyStreetFE.Repositories
 
 	
 
-		public async Task<LogRequestResponse> PostNewRequestForHelpAsync(PostNewRequestForHelpRequest request)
+		public async Task<PostRequestForHelpResponse> PostRequestForHelpAsync(PostRequestForHelpRequest request)
 		{
-			var response = await PostAsync<BaseRequestHelpResponse<LogRequestResponse>>("/api/PostNewRequestForHelp", request);
+			var response = await PostAsync<BaseRequestHelpResponse<PostRequestForHelpResponse>>("/api/PostRequestForHelp", request);
          
             if (response.HasContent && response.IsSuccessful)
             {
@@ -47,24 +47,13 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<LogRequestResponse> PostNewShifts(PostNewShiftsRequest request)
-        {
-            var response = await PostAsync<BaseRequestHelpResponse<LogRequestResponse>>("/api/PostNewShifts", request);
-
-            if (response.HasContent && response.IsSuccessful)
-            {
-                return response.Content;
-            }
-            return null;
-        }
-
-        public async Task<GetJobSummaryResponse> GetJobSummaryAsync(int jobId)
+        public async Task<JobSummary> GetJobSummaryAsync(int jobId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetJobSummaryResponse>>($"/api/GetJobSummary?jobID={jobId}");
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.JobSummary;
             }
             return null;
         }
@@ -269,13 +258,25 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<GetRequestSummaryResponse> GetRequestSummaryAsync(int requestId)
+        public async Task<RequestSummary> GetRequestSummaryAsync(int requestId)
         {
-            var response = await GetAsync<BaseRequestHelpResponse<GetRequestSummaryResponse>>($"/api/GetRequestSummary?requestId={requestId}");
+            var response = await GetRequestSummariesAsync(new List<int> { requestId });
+
+            if (response != null && response.Count() == 1)
+            {
+                return response.First();
+            }
+            return null;
+        }
+
+        public async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync (IEnumerable<int> requestIDs)
+        {
+            var request = new GetAllRequestsRequest { RequestIDs = requestIDs.ToList() };
+            var response = await PostAsync<BaseRequestHelpResponse<GetAllRequestsResponse>>($"/api/GetAllRequests", request);
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content;
+                return response.Content.RequestSummaries;
             }
             return null;
         }
@@ -310,6 +311,30 @@ namespace HelpMyStreetFE.Repositories
             if (response.HasContent && response.IsSuccessful)
             {
                 return response.Content.Outcome;
+            }
+            return null;
+        }
+
+        public async Task<int> GetRequestId(int jobId)
+        {
+            var d = await GetRequestIDs(new List<int> { jobId });
+
+            if (d == null || d.Count == 0)
+            {
+                throw new Exception($"Could not find RequestId for jobid {jobId}");
+            }
+
+            return d.First().Value;
+        }
+
+        public async Task<Dictionary<int, int>> GetRequestIDs(IEnumerable<int> jobIDs)
+        {
+            var request = new GetRequestIDsRequest { JobIDs = jobIDs.ToList() };
+            var response = await PostAsync<BaseRequestHelpResponse<GetRequestIDsResponse>>($"/api/GetRequestIDs", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.JobIDsToRequestIDs;
             }
             return null;
         }
