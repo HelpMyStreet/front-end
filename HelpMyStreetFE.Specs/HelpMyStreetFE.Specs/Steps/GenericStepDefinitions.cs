@@ -158,6 +158,26 @@ namespace HelpMyStreetFE.Specs.Steps
             pageObject.GetText(null, selector).Should().Be(expectedValue);
         }
 
+        [StepDefinition("if visible, the (.*) element #(.*) should have text (.*)")]
+        public void ThenTheElementWithIdIfVisibleShouldHaveText(string user, string elementId, string expectedValue)
+        {
+            var pageObject = GetPageObject(user);
+            if (pageObject.IsVisible(elementId, null))
+            {
+                pageObject.GetText(elementId, null).Should().Be(expectedValue);
+            }
+        }
+
+        [StepDefinition("if visible, the (.*) element selected by (.*) should have text (.*)")]
+        public void ThenTheElementWithSelectorIfVisibleShouldHaveText(string user, string selector, string expectedValue)
+        {
+            var pageObject = GetPageObject(user);
+            if (pageObject.IsVisible(null, selector))
+            {
+                pageObject.GetText(null, selector).Should().Be(expectedValue);
+            }
+        }
+
         [Then("the (.*) url should be (.*)")]
         public void ThenTheUrlShouldBe(string user, string url)
         {

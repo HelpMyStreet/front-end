@@ -76,6 +76,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
             try
             {
                 var el = GetElementByIdOrSelector(elementId, selector);
+                ScrollTo(el);
                 return el.Displayed;
             }
             catch (NoSuchElementException)
