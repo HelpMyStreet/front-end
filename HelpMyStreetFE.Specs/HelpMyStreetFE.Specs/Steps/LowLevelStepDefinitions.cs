@@ -1,6 +1,5 @@
 ﻿using System;
 using FluentAssertions;
-using HelpMyStreetFE.Specs.Context;
 using HelpMyStreetFE.Specs.Drivers;
 using HelpMyStreetFE.Specs.PageObjects;
 using TechTalk.SpecFlow;
@@ -8,21 +7,17 @@ using TechTalk.SpecFlow;
 namespace HelpMyStreetFE.Specs.Steps
 {
     [Binding]
-    public sealed class GenericStepDefinitions
+    public sealed class LowLevelStepDefinitions
     {
         private readonly BrowserDriver _browserDriver;
         private readonly Lazy<GenericPageObject> _adminPageObjectLazy;
         private readonly Lazy<GenericPageObject> _volunuteerPageObjectLazy;
 
-        private readonly UserContext _userContext;
-
-        public GenericStepDefinitions(BrowserDriver browserDriver)
+        public LowLevelStepDefinitions(BrowserDriver browserDriver)
         {
             _browserDriver = browserDriver;
             _adminPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.AdminWebDriver); });
             _volunuteerPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.VolunteerWebDriver); });
-
-            _userContext = new UserContext();
         }
 
         [Given("the (.*) url is (.*)")]
@@ -37,13 +32,6 @@ namespace HelpMyStreetFE.Specs.Steps
         {
             var pageObject = GetPageObject(user);
             pageObject.SetValue(selector, value);
-        }
-
-        [Given("the (.*) element (.*) has a new email address")]
-        public void Given_the_USER_element_SELECTOR_has_a_new_email_address(string user, string selector)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.SetValue(selector, _userContext.Email);
         }
 
         [StepDefinition("the (.*) (?:clicks|has clicked) the element (.*)")]
