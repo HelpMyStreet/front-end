@@ -177,7 +177,7 @@ this.InvalidEmailAddresses("a@b.c", "Please enter a valid email address", ((stri
         public virtual void InvalidEmailAddresses_AbcDef_Com()
         {
 #line 9
-this.InvalidEmailAddresses("abc@def.com", "The email address is already in use by another account", ((string[])(null)));
+this.InvalidEmailAddresses("abc@def.com", "The email address is already in use by another account.", ((string[])(null)));
 #line hidden
         }
         

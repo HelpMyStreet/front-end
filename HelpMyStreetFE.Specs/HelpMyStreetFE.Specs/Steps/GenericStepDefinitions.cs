@@ -46,15 +46,8 @@ namespace HelpMyStreetFE.Specs.Steps
             pageObject.SetValue(selector, _userContext.Email);
         }
 
-        [StepDefinition("the (.*) has clicked the element (.*)")]
-        public void The_USER_has_clicked_the_element_SELECTOR(string user, string selector)
-        {
-            var pageObject = GetPageObject(user);
-            pageObject.Click(selector);
-        }
-
-        [When("the (.*) clicks the element (.*)")]
-        public void When_the_USER_clicks_the_element_SELECTOR(string user, string selector)
+        [StepDefinition("the (.*) (?:clicks|has clicked) the element (.*)")]
+        public void The_USER_clicks_the_element_SELECTOR(string user, string selector)
         {
             var pageObject = GetPageObject(user);
             pageObject.Click(selector);
@@ -95,7 +88,7 @@ namespace HelpMyStreetFE.Specs.Steps
             The_USER_element_SELECTOR_should_have_value_EXPECTEDVALUE(user, selector, "");
         }
 
-        [StepDefinition("the (.*) element (.*) should have value (.*)")]
+        [Then("the (.*) element (.*) should have value (.*)")]
         public void The_USER_element_SELECTOR_should_have_value_EXPECTEDVALUE(string user, string selector, string expectedValue)
         {
             var pageObject = GetPageObject(user);
@@ -109,7 +102,7 @@ namespace HelpMyStreetFE.Specs.Steps
             pageObject.GetText(selector).Should().Be(expectedText);
         }
 
-        [StepDefinition("if visible, the (.*) element (.*) should have text (.*)")]
+        [Then("if visible, the (.*) element (.*) should have text (.*)")]
         public void If_visible_the_USER_element_SELECTOR_should_have_text_EXPECTEDTEXT(string user, string selector, string expectedText)
         {
             var pageObject = GetPageObject(user);
