@@ -4,7 +4,10 @@ using System.IO;
 using System.Reflection;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Safari;
 using TechTalk.SpecFlow;
 
 namespace HelpMyStreetFE.Specs.Drivers
@@ -19,8 +22,8 @@ namespace HelpMyStreetFE.Specs.Drivers
 
         public BrowserDriver(FeatureContext featureContext, ScenarioContext scenarioContext)
         {
-            _adminWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
-            _volunteerWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
+            _adminWebDriverLazy = new Lazy<IWebDriver>(CreateChromeWebDriver);
+            _volunteerWebDriverLazy = new Lazy<IWebDriver>(CreateChromeWebDriver);
             _featureContext = featureContext;
             _scenarioContext = scenarioContext;
         }
@@ -44,7 +47,33 @@ namespace HelpMyStreetFE.Specs.Drivers
         /// Creates the Selenium web driver (opens a browser)
         /// </summary>
         /// <returns></returns>
-        private IWebDriver CreateWebDriver()
+        //private IWebDriver CreateWebDriver()
+        //{
+        //    Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+        //    ChromeOptions chromeCapability = new ChromeOptions();
+        //    chromeCapability.AddAdditionalCapability("os_version", "10", true);
+        //    chromeCapability.AddAdditionalCapability("browser", "Chrome", true);
+        //    chromeCapability.AddAdditionalCapability("browser_version", "latest", true);
+        //    chromeCapability.AddAdditionalCapability("os", "Windows", true);
+        //    chromeCapability.AddAdditionalCapability("resolution", "1920x1080", true);
+        //    chromeCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
+        //    chromeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
+        //    chromeCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true);
+        //    chromeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
+        //    chromeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
+
+        //    IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), chromeCapability);
+
+        //    return driver;
+
+        //    //We use the Chrome browser
+        //    //var chromeDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+
+        //    //return chromeDriver;
+        //}
+
+        private IWebDriver CreateChromeWebDriver()
         {
             Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -63,11 +92,69 @@ namespace HelpMyStreetFE.Specs.Drivers
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), chromeCapability);
 
             return driver;
+        }
 
-            //We use the Chrome browser
-            //var chromeDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        private IWebDriver CreateSafariWebDriver()
+        {
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
-            //return chromeDriver;
+            SafariOptions safariCapability = new SafariOptions();
+            safariCapability.AddAdditionalCapability("os_version", "Big Sur");
+            safariCapability.AddAdditionalCapability("browser", "Safari");
+            safariCapability.AddAdditionalCapability("browser_version", "latest");
+            safariCapability.AddAdditionalCapability("os", "OS X");
+            safariCapability.AddAdditionalCapability("resolution", "1920x1080");
+            safariCapability.AddAdditionalCapability("project", "HelpMyStreetFE");
+            safariCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title);
+            safariCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}");
+            safariCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"));
+            safariCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"));
+
+            IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), safariCapability);
+
+            return driver;
+        }
+
+        private IWebDriver CreateFireFoxWebDriver()
+        {
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            FirefoxOptions firefoxCapability = new FirefoxOptions();
+            firefoxCapability.AddAdditionalCapability("os_version", "10", true);
+            firefoxCapability.AddAdditionalCapability("browser", "Firefox", true);
+            firefoxCapability.AddAdditionalCapability("browser_version", "latest", true);
+            firefoxCapability.AddAdditionalCapability("os", "Windows", true);
+            firefoxCapability.AddAdditionalCapability("resolution", "1920x1080", true);
+            firefoxCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
+            firefoxCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
+            firefoxCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true);
+            firefoxCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
+            firefoxCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
+
+            IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), firefoxCapability);
+
+            return driver;
+        }
+
+        private IWebDriver CreateEdgeWebDriver()
+        {
+            Version version = Assembly.GetExecutingAssembly().GetName().Version;
+
+            EdgeOptions edgeCapability = new EdgeOptions();
+            edgeCapability.AddAdditionalCapability("os_version", "10");
+            edgeCapability.AddAdditionalCapability("browser", "Edge");
+            edgeCapability.AddAdditionalCapability("browser_version", "latest");
+            edgeCapability.AddAdditionalCapability("os", "Windows");
+            edgeCapability.AddAdditionalCapability("resolution", "1920x1080");
+            edgeCapability.AddAdditionalCapability("project", "HelpMyStreetFE");
+            edgeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title);
+            edgeCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}");
+            edgeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"));
+            edgeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"));
+
+            IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), edgeCapability);
+
+            return driver;
         }
 
         public void MarkResult(bool success, string reason)
