@@ -1,4 +1,4 @@
-﻿using OpenQA.Selenium;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -47,6 +47,8 @@ namespace HelpMyStreetFE.Specs.Drivers
             firefoxCapability.AddAdditionalCapability("browser", "firefox", true);
             firefoxCapability.AddAdditionalCapability("browser_version", "latest", true);
             firefoxCapability.AddAdditionalCapability("os", "Windows", true);
+            firefoxCapability.AddAdditionalCapability("resolution", "1920x1080", true);
+            firefoxCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
             firefoxCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true); // test name
             firefoxCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true); // Your tests will be organized within this build
             firefoxCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
