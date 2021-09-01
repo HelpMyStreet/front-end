@@ -1,5 +1,8 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
+@Browser_Chrome
+@Browser_Edge
+@Browser_Firefox
 Feature: Registration
 	Registration flow
 
@@ -23,7 +26,6 @@ Scenario Outline: Invalid email addresses
 		| a@b.c       | Please enter a valid email address                      |
 		| abc@def.com | The email address is already in use by another account. |
 
-
 Scenario Outline: Invalid password
 	Given the volunteer's element #email has a new email address 
 	And the volunteer's element #password has value <Password>
@@ -42,7 +44,6 @@ Scenario Outline: Invalid password
 		| !"£$%qwert123456 | Please use a strong password |
 		| !"£$%qwertQWERTY | Please use a strong password |
 
-
 Scenario Outline: Invalid confirm password
 	Given the volunteer's element #email has a new email address 
 	And the volunteer's element #password has value <Password>
@@ -55,5 +56,3 @@ Scenario Outline: Invalid confirm password
 	Examples: 
 		| Password     | Confirmation    | Validation error              |
 		| abcABC123!"£ | abcABC123!"£999 | Please ensure passwords match |
-
-

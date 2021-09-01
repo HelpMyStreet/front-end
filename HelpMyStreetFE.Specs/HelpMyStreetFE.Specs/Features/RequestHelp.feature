@@ -1,5 +1,8 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
+@Browser_Chrome
+@Browser_Edge
+@Browser_Firefox
 Feature: RequestHelp
 	Request Help form
 
@@ -22,6 +25,7 @@ Scenario Outline: Correct activities visible on generic Request Help form
 		| Friendly Chat	|	  7 |				  7 | A friendly chat on the phone															|
 		| Homework		|	  8 |				  9 | Remote support for children being home-schooled										|
 		| Other			|	  9 |				 11 | Please tell us more below																|
+
 
 Scenario: No excess activities visible on generic Request Help form
 	Then the volunteer's element .sm4:nth-child(10) .tiles__tile should not be visible

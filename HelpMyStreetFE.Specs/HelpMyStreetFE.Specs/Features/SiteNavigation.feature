@@ -1,5 +1,8 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
+@Browser_Chrome
+@Browser_Edge
+@Browser_Firefox
 Feature: SiteNavigation
 	Navigation using top menu bar on home page
 
@@ -20,7 +23,6 @@ Scenario Outline: Primary navigation (wide screen)
 @MaximiseWindows
 Scenario: No further primary navigation links (wide screen)
 	Then the volunteer's element #site-nav ul li:nth-child(5) a should not be visible
-
 
 Scenario Outline: Primary navigation (narrow screen)
 	Given the volunteer has clicked the element #site-nav-toggle

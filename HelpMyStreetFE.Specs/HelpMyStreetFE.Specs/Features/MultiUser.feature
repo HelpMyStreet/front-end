@@ -1,6 +1,10 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
 @StartAdminBrowser
+@Browser_Chrome
+@Browser_Edge
+@Browser_Firefox
+@Browser_Safari
 Feature: MultiUserTest
 	Test with two browser sessions
 

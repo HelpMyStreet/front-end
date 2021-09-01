@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
+  <Settings projectName="HelpMyStreetFE.Specs" />
+  <Execution stopAfterFailures="1" testThreadCount="1" testSchedulingMode="Sequential" />
+  <!-- For collecting by a SpecRun server update and enable the following element. For using the 
+      collected statistics, set testSchedulingMode="Adaptive" attribute on the <Execution> element.
+    <Server serverUrl="http://specrunserver:6365" publishResults="true" />
+  -->
+  <TestAssemblyPaths>
+    <TestAssemblyPath>HelpMyStreetFE.Specs.dll</TestAssemblyPath>
+  </TestAssemblyPaths>
+  <DeploymentTransformation>
+    <Steps>
+      <!-- sample config transform to change the connection string-->
+      <!--<ConfigFileTransformation configFile="App.config">
+        <Transformation>
+          <![CDATA[<?xml version="1.0" encoding="utf-8"?>
+							<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+                <connectionStrings>
+                  <add name="MyDatabase" connectionString="Data Source=.;Initial Catalog=MyDatabaseForTesting;Integrated Security=True" 
+                       xdt:Locator="Match(name)" xdt:Transform="SetAttributes(connectionString)" />
+                </connectionStrings>
+							</configuration>
+						]]>
+        </Transformation>
+      </ConfigFileTransformation>-->
+    </Steps>
+  </DeploymentTransformation>
+
+	<Targets>
+		<Target name="Edge">
+			<Filter>Browser_Edge</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="Edge" />
+			</DeploymentTransformationSteps>
+		</Target>
+		<Target name="Chrome">
+			<Filter>Browser_Chrome</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="Chrome" />
+			</DeploymentTransformationSteps>
+		</Target>
+		<Target name="Firefox">
+			<Filter>Browser_Firefox</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="Firefox" />
+			</DeploymentTransformationSteps>
+		</Target>
+
+		<Target name="Safari">
+			<Filter>Browser_Safari</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="Safari" />
+			</DeploymentTransformationSteps>
+		</Target>
+	</Targets>
+</TestProfile>
