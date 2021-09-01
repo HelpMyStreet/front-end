@@ -1,7 +1,4 @@
 ﻿@StartVolunteerBrowser
-@Browser_Chrome
-@Browser_Edge
-@Browser_Firefox
 Feature: HomePage
 
 Scenario: Cookie banner displayed

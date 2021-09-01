@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TestProfile xmlns="http://www.specflow.org/schemas/plus/TestProfile/1.5">
   <Settings projectName="HelpMyStreetFE.Specs" />
   <Execution stopAfterFailures="1" testThreadCount="10" testSchedulingMode="Random" />
@@ -29,26 +29,22 @@
 
 	<Targets>
 		<Target name="Edge">
-			<Filter>Browser_Edge</Filter>
 			<DeploymentTransformationSteps>
 				<EnvironmentVariable variable="Test_Browser" value="Edge" />
 			</DeploymentTransformationSteps>
 		</Target>
 		<Target name="Chrome">
-			<Filter>Browser_Chrome</Filter>
 			<DeploymentTransformationSteps>
 				<EnvironmentVariable variable="Test_Browser" value="Chrome" />
 			</DeploymentTransformationSteps>
 		</Target>
 		<Target name="Firefox">
-			<Filter>Browser_Firefox</Filter>
 			<DeploymentTransformationSteps>
 				<EnvironmentVariable variable="Test_Browser" value="Firefox" />
 			</DeploymentTransformationSteps>
 		</Target>
 
 		<Target name="Safari">
-			<Filter>Browser_Safari</Filter>
 			<DeploymentTransformationSteps>
 				<EnvironmentVariable variable="Test_Browser" value="Safari" />
 			</DeploymentTransformationSteps>

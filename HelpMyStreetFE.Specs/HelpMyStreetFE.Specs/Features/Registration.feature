@@ -1,8 +1,5 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
-@Browser_Chrome
-@Browser_Edge
-@Browser_Firefox
 Feature: Registration
 	Registration flow
 

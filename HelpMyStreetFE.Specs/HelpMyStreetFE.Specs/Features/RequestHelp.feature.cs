@@ -21,10 +21,7 @@ namespace HelpMyStreetFE.Specs.Features
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [TechTalk.SpecRun.FeatureAttribute("RequestHelp", new string[] {
             "StartVolunteerBrowser",
-            "AcceptAllCookies",
-            "Browser_Chrome",
-            "Browser_Edge",
-            "Browser_Firefox"}, Description="\tRequest Help form", SourceFile="Features\\RequestHelp.feature", SourceLine=5)]
+            "AcceptAllCookies"}, Description="\tRequest Help form", SourceFile="Features\\RequestHelp.feature", SourceLine=2)]
     public partial class RequestHelpFeature
     {
         
@@ -32,10 +29,7 @@ namespace HelpMyStreetFE.Specs.Features
         
         private string[] _featureTags = new string[] {
                 "StartVolunteerBrowser",
-                "AcceptAllCookies",
-                "Browser_Chrome",
-                "Browser_Edge",
-                "Browser_Firefox"};
+                "AcceptAllCookies"};
         
 #line 1 "RequestHelp.feature"
 #line hidden
@@ -46,10 +40,7 @@ namespace HelpMyStreetFE.Specs.Features
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "RequestHelp", "\tRequest Help form", ProgrammingLanguage.CSharp, new string[] {
                         "StartVolunteerBrowser",
-                        "AcceptAllCookies",
-                        "Browser_Chrome",
-                        "Browser_Edge",
-                        "Browser_Firefox"});
+                        "AcceptAllCookies"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -87,9 +78,9 @@ namespace HelpMyStreetFE.Specs.Features
         
         public virtual void FeatureBackground()
         {
-#line 9
+#line 6
 #line hidden
-#line 10
+#line 7
  testRunner.Given("the volunteer\'s url is request-help/", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -103,7 +94,7 @@ namespace HelpMyStreetFE.Specs.Features
             argumentsOfScenario.Add("SupportActivityId", supportActivityId);
             argumentsOfScenario.Add("Description", description);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correct activities visible on generic Request Help form", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 12
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -123,17 +114,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 13
+#line 10
  testRunner.Then(string.Format("the volunteer\'s element .sm4:nth-child({0}) .tiles__tile should have id task_{1}", index, supportActivityId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 14
+#line 11
  testRunner.And(string.Format("the volunteer\'s element #task_{0} .tiles__tile__content__header should have text " +
                             "{1}", supportActivityId, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 12
  testRunner.And(string.Format("the volunteer\'s element #task_{0} .tiles__tile__content__description should have " +
                             "text {1}", supportActivityId, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -141,86 +132,86 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Shopping", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Shopping", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Shopping()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Shopping", "1", "1", "Picking up groceries and other essentials (e.g. food, toiletries, household produ" +
                     "cts)", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Face Covering", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Face Covering", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_FaceCovering()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Face Covering", "2", "12", "Finding someone to provide washable fabric face coverings", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Check In", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Check In", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_CheckIn()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Check In", "3", "10", "Checking that someone is OK", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Prescriptions", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Prescriptions", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Prescriptions()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Prescriptions", "4", "2", "Collecting prescriptions from a local pharmacy", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Errands", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Errands", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Errands()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Errands", "5", "3", "Running essential local errands (e.g. posting mail)", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Prepared Meal", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Prepared Meal", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_PreparedMeal()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Prepared Meal", "6", "6", "Getting a hot / pre-prepared meal", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Friendly Chat", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Friendly Chat", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_FriendlyChat()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Friendly Chat", "7", "7", "A friendly chat on the phone", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Homework", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Homework", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Homework()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Homework", "8", "9", "Remote support for children being home-schooled", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Other", SourceLine=18)]
+        [TechTalk.SpecRun.ScenarioAttribute("Correct activities visible on generic Request Help form, Other", SourceLine=15)]
         public virtual void CorrectActivitiesVisibleOnGenericRequestHelpForm_Other()
         {
-#line 12
+#line 9
 this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Other", "9", "11", "Please tell us more below", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("No excess activities visible on generic Request Help form", SourceLine=29)]
+        [TechTalk.SpecRun.ScenarioAttribute("No excess activities visible on generic Request Help form", SourceLine=26)]
         public virtual void NoExcessActivitiesVisibleOnGenericRequestHelpForm()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No excess activities visible on generic Request Help form", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 30
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -240,10 +231,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 31
+#line 28
  testRunner.Then("the volunteer\'s element .sm4:nth-child(10) .tiles__tile should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
