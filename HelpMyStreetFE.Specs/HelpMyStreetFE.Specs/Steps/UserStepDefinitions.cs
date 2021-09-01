@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using HelpMyStreetFE.Specs.Context;
+using HelpMyStreetFE.Specs.Drivers;
+using HelpMyStreetFE.Specs.PageObjects;
 using TechTalk.SpecFlow;
 
 namespace HelpMyStreetFE.Specs.Steps
@@ -9,12 +9,17 @@ namespace HelpMyStreetFE.Specs.Steps
     [Binding]
     public sealed class UserStepDefinitions
     {
-        private readonly UserContext _userContext;
-        private readonly LowLevelStepDefinitions _lowLevelStepDefinitions;
+        private readonly BrowserDriver _browserDriver;
+        private readonly Lazy<GenericPageObject> _adminPageObjectLazy;
+        private readonly Lazy<GenericPageObject> _volunuteerPageObjectLazy;
 
-        public UserStepDefinitions(LowLevelStepDefinitions lowLevelStepDefinitions)
+        private readonly UserContext _userContext;
+
+        public UserStepDefinitions(BrowserDriver browserDriver)
         {
-            _lowLevelStepDefinitions = lowLevelStepDefinitions;
+            _browserDriver = browserDriver;
+            _adminPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.AdminWebDriver); });
+            _volunuteerPageObjectLazy = new Lazy<GenericPageObject>(() => { return new GenericPageObject(_browserDriver.VolunteerWebDriver); });
 
             _userContext = new UserContext();
         }
@@ -22,7 +27,20 @@ namespace HelpMyStreetFE.Specs.Steps
         [Given("the (.*) element (.*) has (?:a|the) unique email address")]
         public void Given_the_USER_element_SELECTOR_has_a_unique_email_address(string user, string selector)
         {
-            _lowLevelStepDefinitions.Given_the_USER_element_SELECTOR_has_value_VALUE(user, selector, _userContext.Email);
+            var pageObject = GetPageObject(user);
+            pageObject.SetValue(selector, _userContext.Email);
+        }
+
+        private GenericPageObject GetPageObject(string user)
+        {
+            return user switch
+            {
+                "volunteer" => _volunuteerPageObjectLazy.Value,
+                "volunteer's" => _volunuteerPageObjectLazy.Value,
+                "admin" => _adminPageObjectLazy.Value,
+                "admin's" => _adminPageObjectLazy.Value,
+                _ => throw new ArgumentException($"Unexpected user {user}", nameof(user))
+            };
         }
     }
 }
