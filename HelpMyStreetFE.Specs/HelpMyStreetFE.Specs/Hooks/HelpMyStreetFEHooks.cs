@@ -38,12 +38,9 @@ namespace HelpMyStreetFE.Specs.Hooks
         private static void AcceptAllCookies(IWebDriver driver)
         {
             var pageObject = new GenericPageObject(driver);
-
-            if (pageObject.IsVisible("#gdpr-cookie-message-outer"))
-            {
-                pageObject.Click("#gdpr-cookie-accept");
-                pageObject.WaitForDisplayedFalse("#gdpr-cookie-message-outer");
-            }
+            pageObject.WaitForDisplayedTrue("#gdpr-cookie-accept");
+            pageObject.Click("#gdpr-cookie-accept");
+            pageObject.WaitForDisplayedFalse("#gdpr-cookie-message-outer");
         }
 
         [BeforeScenario("MaximiseWindows")]
