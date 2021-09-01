@@ -24,7 +24,7 @@ Scenario Outline: Invalid email addresses
 
 
 Scenario Outline: Invalid password
-	Given the volunteer's element #email has a new email address 
+	Given the volunteer's element #email has a unique email address 
 	And the volunteer's element #password has value <Password>
 	And the volunteer's element #confirm-password has value <Password>
 	And the volunteer has clicked the element #privacy-and-terms+span
