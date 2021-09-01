@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace HelpMyStreetFE.Specs.Drivers
 {
@@ -50,7 +51,23 @@ namespace HelpMyStreetFE.Specs.Drivers
         private IWebDriver GetWebDriver()
         {
             string testBrowserId = Environment.GetEnvironmentVariable("Test_Browser");
-            return _browserSeleniumDriverFactory.GetForBrowser(testBrowserId);
+            try
+            {
+                return _browserSeleniumDriverFactory.GetForBrowser(testBrowserId);
+            }
+            catch (WebDriverException ex)
+            {
+                if (ex.Message.Contains("All parallel tests are currently in use"))
+                {
+                    Random random = new Random();
+                    Thread.Sleep(8000 + random.Next(4000));
+                    return GetWebDriver();
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         /// <summary>
