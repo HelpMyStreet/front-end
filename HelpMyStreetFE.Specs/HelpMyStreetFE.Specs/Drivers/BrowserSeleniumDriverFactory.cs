@@ -1,4 +1,4 @@
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
@@ -53,6 +53,8 @@ namespace HelpMyStreetFE.Specs.Drivers
             firefoxCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true); // Your tests will be organized within this build
             firefoxCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
             firefoxCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
+            firefoxCapability.AddAdditionalCapability("browserstack.console", "errors", true);
+            firefoxCapability.AddAdditionalCapability("browserstack.networkLogs", "true", true);
 
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), firefoxCapability);
 
@@ -74,6 +76,8 @@ namespace HelpMyStreetFE.Specs.Drivers
             chromeCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true);
             chromeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
             chromeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
+            chromeCapability.AddAdditionalCapability("browserstack.console", "errors", true);
+            chromeCapability.AddAdditionalCapability("browserstack.networkLogs", "true", true);
 
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), chromeCapability);
 
@@ -95,6 +99,8 @@ namespace HelpMyStreetFE.Specs.Drivers
             edgeCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}");
             edgeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"));
             edgeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"));
+            edgeCapability.AddAdditionalCapability("browserstack.console", "errors");
+            edgeCapability.AddAdditionalCapability("browserstack.networkLogs", "true");
 
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), edgeCapability);
 
@@ -116,6 +122,8 @@ namespace HelpMyStreetFE.Specs.Drivers
             safariCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}");
             safariCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"));
             safariCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"));
+            safariCapability.AddAdditionalCapability("browserstack.console", "errors");
+            safariCapability.AddAdditionalCapability("browserstack.networkLogs", "true");
 
             IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), safariCapability);
 
