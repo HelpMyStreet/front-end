@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Specs.Steps
             pageObject.SetValue(selector, value);
         }
 
-        [StepDefinition("the (.*) (?:clicks|has clicked) the element (.*)")]
+        [StepDefinition("the (.*) (?:clicks|has clicked|presses|has pressed) the element (.*)")]
         public void The_USER_clicks_the_element_SELECTOR(string user, string selector)
         {
             var pageObject = GetPageObject(user);
@@ -100,8 +100,8 @@ namespace HelpMyStreetFE.Specs.Steps
             }
         }
 
-        [Then("the (.*) url should be (.*)")]
-        public void Then_the_USER_url_should_be_EXPECTEDURL(string user, string expectedUrl)
+        [StepDefinition("the (.*) url should be (.*)")]
+        public void The_USER_url_should_be_EXPECTEDURL(string user, string expectedUrl)
         {
             var pageObject = GetPageObject(user);
             pageObject.WaitForUrlChange().Should().Be($"{GenericPageObject.HomePageUrl}{expectedUrl}");

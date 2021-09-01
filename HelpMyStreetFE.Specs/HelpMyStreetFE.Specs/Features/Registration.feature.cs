@@ -173,14 +173,6 @@ this.InvalidEmailAddresses("a@b.c", "Please enter a valid email address", ((stri
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid email addresses, abc@def.com", SourceLine=19)]
-        public virtual void InvalidEmailAddresses_AbcDef_Com()
-        {
-#line 9
-this.InvalidEmailAddresses("abc@def.com", "The email address is already in use by another account.", ((string[])(null)));
-#line hidden
-        }
-        
         public virtual void InvalidPassword(string password, string validationError, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
@@ -188,7 +180,7 @@ this.InvalidEmailAddresses("abc@def.com", "The email address is already in use b
             argumentsOfScenario.Add("Password", password);
             argumentsOfScenario.Add("Validation error", validationError);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid password", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 27
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -211,25 +203,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 28
+#line 27
  testRunner.Given("the volunteer\'s element #email has a new email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 29
+#line 28
  testRunner.And(string.Format("the volunteer\'s element #password has value {0}", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 29
  testRunner.And(string.Format("the volunteer\'s element #confirm-password has value {0}", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 30
  testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 31
  testRunner.When("the volunteer clicks the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 33
+#line 32
  testRunner.Then("the volunteer\'s url should be registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 34
+#line 33
  testRunner.And(string.Format("the volunteer\'s element #registration_form .input:nth-child(2) span.error should " +
                             "have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -237,50 +229,50 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, ", SourceLine=37)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, ", SourceLine=36)]
         public virtual void InvalidPassword_()
         {
-#line 27
+#line 26
 this.InvalidPassword("", "Please use a strong password", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, a", SourceLine=37)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, a", SourceLine=36)]
         public virtual void InvalidPassword_A()
         {
-#line 27
+#line 26
 this.InvalidPassword("a", "Please use a strong password", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, aA1!bB2\"", SourceLine=37)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, aA1!bB2\"", SourceLine=36)]
         public virtual void InvalidPassword_AA1BB2()
         {
-#line 27
+#line 26
 this.InvalidPassword("aA1!bB2\"", "Please use a strong password", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, !\"£$%QWERT123456", SourceLine=37)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, !\"£$%QWERT123456", SourceLine=36)]
         public virtual void InvalidPassword_QWERT123456()
         {
-#line 27
+#line 26
 this.InvalidPassword("!\"£$%QWERT123456", "Please use a strong password", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, !\"£$%qwert123456", SourceLine=37)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, !\"£$%qwert123456", SourceLine=36)]
         public virtual void InvalidPassword_Qwert123456()
         {
-#line 27
+#line 26
 this.InvalidPassword("!\"£$%qwert123456", "Please use a strong password", ((string[])(null)));
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, !\"£$%qwertQWERTY", SourceLine=37)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid password, !\"£$%qwertQWERTY", SourceLine=36)]
         public virtual void InvalidPassword_QwertQWERTY()
         {
-#line 27
+#line 26
 this.InvalidPassword("!\"£$%qwertQWERTY", "Please use a strong password", ((string[])(null)));
 #line hidden
         }
@@ -293,7 +285,7 @@ this.InvalidPassword("!\"£$%qwertQWERTY", "Please use a strong password", ((str
             argumentsOfScenario.Add("Confirmation", confirmation);
             argumentsOfScenario.Add("Validation error", validationError);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Invalid confirm password", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 46
+#line 45
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -316,25 +308,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 47
- testRunner.Given("the volunteer\'s element #email has a new email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 46
+ testRunner.Given("the volunteer\'s element #email has a unique email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 48
+#line 47
  testRunner.And(string.Format("the volunteer\'s element #password has value {0}", password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 49
+#line 48
  testRunner.And(string.Format("the volunteer\'s element #confirm-password has value {0}", confirmation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 49
  testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
+#line 50
  testRunner.When("the volunteer clicks the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 51
  testRunner.Then("the volunteer\'s url should be registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 53
+#line 52
  testRunner.And(string.Format("the volunteer\'s element #registration_form .input:nth-child(3) span.error should " +
                             "have text {0}", validationError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -342,12 +334,165 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Invalid confirm password, abcABC123!\"£", SourceLine=56)]
+        [TechTalk.SpecRun.ScenarioAttribute("Invalid confirm password, abcABC123!\"£", SourceLine=55)]
         public virtual void InvalidConfirmPassword_AbcABC123()
         {
-#line 46
+#line 45
 this.InvalidConfirmPassword("abcABC123!\"£", "abcABC123!\"£999", "Please ensure passwords match", ((string[])(null)));
 #line hidden
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Existing user", new string[] {
+                "StartAdminBrowser",
+                "AcceptAllCookies"}, SourceLine=60)]
+        public virtual void ExistingUser()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "StartAdminBrowser",
+                    "AcceptAllCookies"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Existing user", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 61
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 62
+ testRunner.Given("the volunteer\'s element #email has a unique email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 63
+ testRunner.And("the volunteer\'s element #password has value asd!\"£123ASD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 64
+ testRunner.And("the volunteer\'s element #confirm-password has value asd!\"£123ASD", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 65
+ testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 66
+ testRunner.And("the volunteer has clicked the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 67
+ testRunner.And("the volunteer\'s url should be registration/step-two", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 68
+ testRunner.Given("the admin\'s url is registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 69
+ testRunner.And("the admin\'s element #email has the unique email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 70
+ testRunner.And("the admin\'s element #password has value abcABC123!\"£", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 71
+ testRunner.And("the admin\'s element #confirm-password has value abcABC123!\"£", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 72
+ testRunner.And("the admin has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 73
+ testRunner.When("the admin clicks the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 74
+ testRunner.Then("the admin\'s url should be registration", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 75
+ testRunner.And("the admin\'s element #registration_form .input:first-child span should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 76
+ testRunner.And("the admin\'s element #registration_form .input:first-child span should have text T" +
+                        "he email address is already in use by another account.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [TechTalk.SpecRun.ScenarioAttribute("Resume registration at step 2", new string[] {
+                "StartAdminBrowser",
+                "AcceptAllCookies"}, SourceLine=79)]
+        public virtual void ResumeRegistrationAtStep2()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "StartAdminBrowser",
+                    "AcceptAllCookies"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Resume registration at step 2", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 80
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 81
+ testRunner.Given("the volunteer\'s element #email has a unique email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 82
+ testRunner.And("the volunteer\'s element #password has value abcABC123!\"£", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 83
+ testRunner.And("the volunteer\'s element #confirm-password has value abcABC123!\"£", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 84
+ testRunner.And("the volunteer has clicked the element #privacy-and-terms+span", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 85
+ testRunner.And("the volunteer has clicked the element #submit_button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 86
+ testRunner.And("the volunteer\'s url should be registration/step-two", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 87
+ testRunner.Given("the admin\'s url is /login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 88
+ testRunner.And("the admin\'s element #email has the unique email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 89
+ testRunner.And("the admin\'s element #password has value abcABC123!\"£", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 90
+ testRunner.When("the admin presses the element #login-submit", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 91
+ testRunner.Then("the admin\'s url should be registration/step-two", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
         }
     }
 }

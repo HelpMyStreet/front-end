@@ -19,10 +19,9 @@ namespace HelpMyStreetFE.Specs.Steps
             _userContext = new UserContext();
         }
 
-        [Given("the (.*) element (.*) has a new email address")]
-        public void Given_the_USER_element_SELECTOR_has_a_new_email_address(string user, string selector)
+        [Given("the (.*) element (.*) has (?:a|the) unique email address")]
+        public void Given_the_USER_element_SELECTOR_has_a_unique_email_address(string user, string selector)
         {
-
             _lowLevelStepDefinitions.Given_the_USER_element_SELECTOR_has_value_VALUE(user, selector, _userContext.Email);
         }
     }

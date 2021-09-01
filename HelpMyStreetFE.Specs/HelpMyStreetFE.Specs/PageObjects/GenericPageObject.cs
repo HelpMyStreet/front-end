@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         private readonly IWebDriver _webDriver;
 
-        public const int DefaultWaitInSeconds = 5;
+        public const int DefaultWaitInSeconds = 10;
 
         public GenericPageObject(IWebDriver webDriver)
         {
