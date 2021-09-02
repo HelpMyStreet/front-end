@@ -109,13 +109,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("All cookies accepted", SourceLine=7)]
+        [TechTalk.SpecRun.ScenarioAttribute("All cookies accepted", new string[] {
+                "AcceptAllCookies"}, SourceLine=8)]
         public virtual void AllCookiesAccepted()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "AcceptAllCookies"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All cookies accepted", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 8
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -135,9 +137,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.When("the volunteer clicks the element #gdpr-cookie-accept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 10
  testRunner.Then("the volunteer element #gdpr-cookie-message-outer should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

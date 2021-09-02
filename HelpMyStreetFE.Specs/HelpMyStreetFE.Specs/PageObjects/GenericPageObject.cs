@@ -82,53 +82,24 @@ namespace HelpMyStreetFE.Specs.PageObjects
             }
             catch (NoSuchElementException)
             {
+                // Element not in DOM
+                return false;
+            }
+            catch (StaleElementReferenceException)
+            {
+                // Element has been removed from page
                 return false;
             }
         }
 
         public void WaitForDisplayedTrue(string selector)
         {
-            IWebElement el;
-
-            WaitUntilBool(() =>
-            {
-                try
-                {
-                    el = GetElement(selector);
-                }
-                catch (NoSuchElementException)
-                {
-                        // Element not in DOM
-                        return false;
-                }
-                catch (StaleElementReferenceException)
-                {
-                        // Element has been removed from page
-                        return false;
-                }
-                return el.Displayed;
-            }, true);
+            WaitUntilBool(() => IsVisible(selector), true);
         }
 
         public void WaitForDisplayedFalse(string selector)
         {
-            try
-            {
-                IWebElement el = GetElement(selector);
-                WaitUntilBool(() => el.Displayed, false);
-            }
-            catch (NoSuchElementException)
-            {
-                // Element not in DOM
-            }
-            catch (StaleElementReferenceException)
-            {
-                // Element has been removed from page
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            WaitUntilBool(() => IsVisible(selector), false);
         }
 
         public string WaitForUrlChange()

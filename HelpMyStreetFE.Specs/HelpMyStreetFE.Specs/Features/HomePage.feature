@@ -5,8 +5,8 @@ Scenario: Cookie banner displayed
 	Then the volunteer element #gdpr-cookie-message-outer should be visible
 	And the volunteer element #login-submit should not be clickable
 
+@AcceptAllCookies
 Scenario: All cookies accepted
-	When the volunteer clicks the element #gdpr-cookie-accept
 	Then the volunteer element #gdpr-cookie-message-outer should not be visible
 
 Scenario: Home page title
