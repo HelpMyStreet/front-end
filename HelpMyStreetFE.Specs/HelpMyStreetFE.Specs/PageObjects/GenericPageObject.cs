@@ -60,12 +60,20 @@ namespace HelpMyStreetFE.Specs.PageObjects
         public bool IsClickable(string selector)
         {
             bool clickable = true;
+            var el = GetElement(selector);
             try
             {
-                var el = GetElement(selector);
                 el.Click();
             }
             catch (ElementClickInterceptedException)
+            {
+                clickable = false;
+            }
+            catch (ElementNotInteractableException)
+            {
+                clickable = false;
+            }
+            catch (WebDriverException)
             {
                 clickable = false;
             }
