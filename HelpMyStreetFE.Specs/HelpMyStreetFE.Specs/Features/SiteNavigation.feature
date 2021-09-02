@@ -1,9 +1,11 @@
 ﻿@StartVolunteerBrowser
 @AcceptAllCookies
+@Desktop
 Feature: SiteNavigation
 	Navigation using top menu bar on home page
 
 @MaximiseWindows
+
 Scenario Outline: Primary navigation (wide screen)
 	Given the volunteer's element #site-nav ul li:nth-child(<index>) a should have text <Name>
 	When the volunteer clicks the element #site-nav ul li:nth-child(<index>) a
