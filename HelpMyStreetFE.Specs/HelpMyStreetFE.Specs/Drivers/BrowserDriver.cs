@@ -60,7 +60,7 @@ namespace HelpMyStreetFE.Specs.Drivers
                 if (ex.Message.Contains("All parallel tests are currently in use"))
                 {
                     Random random = new Random();
-                    Thread.Sleep(8000 + random.Next(4000));
+                    Thread.Sleep(4000 + random.Next(4000));
                     return GetWebDriver();
                 }
                 else
