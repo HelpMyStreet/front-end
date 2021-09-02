@@ -59,7 +59,7 @@ namespace HelpMyStreetFE.Specs.Steps
         public void Then_the_USER_element_SELECTOR_should_be_visible(string user, string selector)
         {
             var pageObject = GetPageObject(user);
-            pageObject.IsVisible(selector).Should().BeTrue();
+            pageObject.WaitForDisplayedTrue(selector);
         }
 
         [Then("the (.*) element (.*) should not be visible")]
