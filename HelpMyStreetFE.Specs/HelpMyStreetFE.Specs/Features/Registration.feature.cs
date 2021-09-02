@@ -477,7 +477,7 @@ this.FeatureBackground();
  testRunner.And("the volunteer\'s url should be registration/step-two", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 85
- testRunner.Given("the admin\'s url is /login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("the admin\'s url is login", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 86
  testRunner.And("the admin\'s element #email has the unique email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

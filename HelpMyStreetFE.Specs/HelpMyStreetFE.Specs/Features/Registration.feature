@@ -82,7 +82,7 @@ Scenario: Resume registration at step 2
 	And the volunteer has clicked the element #privacy-and-terms+span
 	And the volunteer has clicked the element #submit_button
 	And the volunteer's url should be registration/step-two
-	Given the admin's url is /login
+	Given the admin's url is login
 	And the admin's element #email has the unique email address
 	And the admin's element #password has value abcABC123!"£
 	When the admin presses the element #login-submit
