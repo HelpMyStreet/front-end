@@ -227,10 +227,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 23
  testRunner.And("the volunteer\'s element #login-fail-message should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
- testRunner.And("the volunteer\'s element #login-fail-message should have text Sorry, we couldn\'t f" +
-                        "ind an account with that email address and password. Please check and try again", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
