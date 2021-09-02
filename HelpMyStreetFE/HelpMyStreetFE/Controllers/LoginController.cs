@@ -26,10 +26,10 @@ namespace HelpMyStreetFE.Controllers
 
         private Dictionary<string, string> Errors = new Dictionary<string, string>()
         {
-            { "login", "Sorry, we couldn't find an account with that email address and password.  Please check and try again" },
-            {"server", "Uh-oh, something has gone wrong at our end. Please try again" },
-            {"email", "Please enter a valid email address" },
-            {"password", "Please enter a valid password" }
+            { "login", "Sorry, we couldn't find an account with that email address and password. Please check and try again" },
+            { "server", "Uh-oh, something has gone wrong at our end. Please try again" },
+            { "email", "Please enter a valid email address" },
+            { "password", "Please enter a valid password" }
         };
 
 
