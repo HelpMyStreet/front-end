@@ -1,28 +1,27 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
-using TechTalk.SpecFlow;
+using System.Text;
+using System.Threading;
 
 namespace HelpMyStreetFE.Specs.Drivers
 {
     public class BrowserDriver : IDisposable
     {
+        private readonly BrowserSeleniumDriverFactory _browserSeleniumDriverFactory;
         private readonly Lazy<IWebDriver> _adminWebDriverLazy;
         private readonly Lazy<IWebDriver> _volunteerWebDriverLazy;
-        private readonly FeatureContext _featureContext;
-        private readonly ScenarioContext _scenarioContext;
+        private readonly Lazy<WebDriverWait> _waitLazy;
+        private readonly TimeSpan _waitDuration = TimeSpan.FromSeconds(10);
         private bool _isDisposed;
 
-        public BrowserDriver(FeatureContext featureContext, ScenarioContext scenarioContext)
+        public BrowserDriver(BrowserSeleniumDriverFactory browserSeleniumDriverFactory)
         {
-            _adminWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
-            _volunteerWebDriverLazy = new Lazy<IWebDriver>(CreateWebDriver);
-            _featureContext = featureContext;
-            _scenarioContext = scenarioContext;
+            _browserSeleniumDriverFactory = browserSeleniumDriverFactory;            
+            _adminWebDriverLazy = new Lazy<IWebDriver>(GetWebDriver);
+            _volunteerWebDriverLazy = new Lazy<IWebDriver>(GetWebDriver);
+            //_waitLazy = new Lazy<WebDriverWait>(GetWebDriverWait);
         }
 
         /// <summary>
@@ -40,48 +39,34 @@ namespace HelpMyStreetFE.Specs.Drivers
             get { return _volunteerWebDriverLazy.IsValueCreated; }
         }
 
-        /// <summary>
-        /// Creates the Selenium web driver (opens a browser)
-        /// </summary>
-        /// <returns></returns>
-        private IWebDriver CreateWebDriver()
+
+
+        //public WebDriverWait Wait => _waitLazy.Value;
+
+        //private WebDriverWait GetWebDriverWait()
+        //{
+        //    return new WebDriverWait(Current, _waitDuration);
+        //}
+
+        private IWebDriver GetWebDriver()
         {
-            Version version = Assembly.GetExecutingAssembly().GetName().Version;
-
-            ChromeOptions chromeCapability = new ChromeOptions();
-            chromeCapability.AddAdditionalCapability("os_version", "10", true);
-            chromeCapability.AddAdditionalCapability("browser", "Chrome", true);
-            chromeCapability.AddAdditionalCapability("browser_version", "latest", true);
-            chromeCapability.AddAdditionalCapability("os", "Windows", true);
-            chromeCapability.AddAdditionalCapability("resolution", "1920x1080", true);
-            chromeCapability.AddAdditionalCapability("project", "HelpMyStreetFE", true);
-            chromeCapability.AddAdditionalCapability("name", _featureContext.FeatureInfo.Title + " / " + _scenarioContext.ScenarioInfo.Title, true);
-            chromeCapability.AddAdditionalCapability("build", $"Version {version} on {System.Environment.MachineName}", true);
-            chromeCapability.AddAdditionalCapability("browserstack.user", Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME"), true);
-            chromeCapability.AddAdditionalCapability("browserstack.key", Environment.GetEnvironmentVariable("BROWSERSTACK_ACCESS_KEY"), true);
-
-            IWebDriver driver = new RemoteWebDriver(new Uri("https://hub-cloud.browserstack.com/wd/hub/"), chromeCapability);
-
-            return driver;
-
-            //We use the Chrome browser
-            //var chromeDriver = new ChromeDriver(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-
-            //return chromeDriver;
-        }
-
-        public void MarkResult(bool success, string reason)
-        {
-            var excapedReason = "";// reason?.Replace("\"", "'");
-            var jsScript = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"" + (success ? "passed" : "failed") + "\", \"reason\": \"" + excapedReason + "\"}}";
-
-            if (_adminWebDriverLazy.IsValueCreated)
+            string testBrowserId = Environment.GetEnvironmentVariable("Test_Browser");
+            try
             {
-                ((IJavaScriptExecutor)AdminWebDriver).ExecuteScript(jsScript);
+                return _browserSeleniumDriverFactory.GetForBrowser(testBrowserId);
             }
-            if (_volunteerWebDriverLazy.IsValueCreated)
+            catch (WebDriverException ex)
             {
-                ((IJavaScriptExecutor)VolunteerWebDriver).ExecuteScript(jsScript);
+                if (ex.Message.Contains("All parallel tests are currently in use"))
+                {
+                    Random random = new Random();
+                    Thread.Sleep(4000 + random.Next(4000));
+                    return GetWebDriver();
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
@@ -105,6 +90,21 @@ namespace HelpMyStreetFE.Specs.Drivers
             }
 
             _isDisposed = true;
+        }
+
+        public void MarkResult(bool success, string reason)
+        {
+            var excapedReason = "";// reason?.Replace("\"", "'");
+            var jsScript = "browserstack_executor: {\"action\": \"setSessionStatus\", \"arguments\": {\"status\":\"" + (success ? "passed" : "failed") + "\", \"reason\": \"" + excapedReason + "\"}}";
+
+            if (_adminWebDriverLazy.IsValueCreated)
+            {
+                ((IJavaScriptExecutor)AdminWebDriver).ExecuteScript(jsScript);
+            }
+            if (_volunteerWebDriverLazy.IsValueCreated)
+            {
+                ((IJavaScriptExecutor)VolunteerWebDriver).ExecuteScript(jsScript);
+            }
         }
     }
 }

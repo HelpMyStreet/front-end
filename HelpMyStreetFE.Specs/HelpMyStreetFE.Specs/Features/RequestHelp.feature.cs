@@ -118,16 +118,15 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 10
- testRunner.Then(string.Format("the volunteer\'s element selected by .sm4:nth-child({0}) .tiles__tile should have " +
-                            "id #task_{1}", index, supportActivityId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then(string.Format("the volunteer\'s element .sm4:nth-child({0}) .tiles__tile should have id task_{1}", index, supportActivityId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 11
- testRunner.And(string.Format("the volunteer\'s element selected by #task_{0} .tiles__tile__content__header shoul" +
-                            "d have text {1}", supportActivityId, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s element #task_{0} .tiles__tile__content__header should have text " +
+                            "{1}", supportActivityId, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.And(string.Format("the volunteer\'s element selected by #task_{0} .tiles__tile__content__description " +
-                            "should have text {1}", supportActivityId, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s element #task_{0} .tiles__tile__content__description should have " +
+                            "text {1}", supportActivityId, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -206,13 +205,13 @@ this.CorrectActivitiesVisibleOnGenericRequestHelpForm("Other", "9", "11", "Pleas
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("No excess activities visible on generic Request Help form", SourceLine=25)]
+        [TechTalk.SpecRun.ScenarioAttribute("No excess activities visible on generic Request Help form", SourceLine=26)]
         public virtual void NoExcessActivitiesVisibleOnGenericRequestHelpForm()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No excess activities visible on generic Request Help form", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 26
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -235,9 +234,8 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 27
- testRunner.Then("the volunteer\'s element selected by .sm4:nth-child(10) .tiles__tile should not be" +
-                        " visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+ testRunner.Then("the volunteer\'s element .sm4:nth-child(10) .tiles__tile should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

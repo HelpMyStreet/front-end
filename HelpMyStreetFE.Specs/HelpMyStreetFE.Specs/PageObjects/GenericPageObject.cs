@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -12,7 +13,7 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         private readonly IWebDriver _webDriver;
 
-        public const int DefaultWaitInSeconds = 5;
+        public const int DefaultWaitInSeconds = 10;
 
         public GenericPageObject(IWebDriver webDriver)
         {
@@ -26,86 +27,87 @@ namespace HelpMyStreetFE.Specs.PageObjects
 
         public string GetId(string selector)
         {
-            var el = GetElementByIdOrSelector(null, selector);
+            var el = GetElement(selector);
             return el.GetAttribute("id");
         }
 
-        public string GetValue(string elementId, string selector)
+        public string GetValue(string selector)
         {
-            var el = GetElementByIdOrSelector(elementId, selector);
+            var el = GetElement(selector);
             return el.GetAttribute("value");
         }
 
-        public void SetValue(string elementId, string selector, string value)
+        public void SetValue(string selector, string value)
         {
-            var el = GetElementByIdOrSelector(elementId, selector);
+            var el = GetElement(selector);
             el.Clear();
             el.SendKeys(value);
         }
 
-        public string GetText(string elementId, string selector)
+        public string GetText(string selector)
         {
-            var el = GetElementByIdOrSelector(elementId, selector);
+            var el = GetElement(selector);
             return el.Text;
         }
 
-        public void Click(string elementId, string selector)
+        public void Click(string selector)
         {
-            var el = GetElementByIdOrSelector(elementId, selector);
+            var el = GetElement(selector);
             ScrollTo(el);
             el.Click();
         }
 
-        public bool IsClickable(string elementId, string selector)
+        public bool IsClickable(string selector)
         {
             bool clickable = true;
+            var el = GetElement(selector);
             try
             {
-                var el = GetElementByIdOrSelector(elementId, selector);
                 el.Click();
             }
             catch (ElementClickInterceptedException)
             {
                 clickable = false;
             }
+            catch (ElementNotInteractableException)
+            {
+                clickable = false;
+            }
+            catch (WebDriverException)
+            {
+                clickable = false;
+            }
             return clickable;
         }
 
-        public bool IsVisible(string elementId, string selector)
+        public bool IsVisible(string selector)
         {
             try
             {
-                var el = GetElementByIdOrSelector(elementId, selector);
+                var el = GetElement(selector);
                 ScrollTo(el);
                 return el.Displayed;
             }
             catch (NoSuchElementException)
             {
-                return false;
-            }
-        }
-
-        public void WaitForDisplayedFalse(string elementId, string selector)
-        {
-            IWebElement el;
-            try
-            {
-                el = GetElementByIdOrSelector(elementId, selector);
-            }
-            catch (NoSuchElementException)
-            {
                 // Element not in DOM
-                return;
-            }
-
-            try
-            {
-                WaitUntilBool(() => el.Displayed, false);
+                return false;
             }
             catch (StaleElementReferenceException)
             {
                 // Element has been removed from page
+                return false;
             }
+        }
+
+        public void WaitForDisplayedTrue(string selector)
+        {
+            WaitUntilBool(() => IsVisible(selector), true);
+        }
+
+        public void WaitForDisplayedFalse(string selector)
+        {
+            WaitUntilBool(() => IsVisible(selector), false);
         }
 
         public string WaitForUrlChange()
@@ -170,16 +172,9 @@ namespace HelpMyStreetFE.Specs.PageObjects
             });
         }
 
-        private IWebElement GetElementByIdOrSelector(string id, string selector)
+        private IWebElement GetElement(string selector)
         {
-            if (id != null)
-            {
-                return _webDriver.FindElement(By.Id(id));
-            }
-            else
-            {
-                return _webDriver.FindElement(By.CssSelector(selector));
-            }
+            return _webDriver.FindElement(By.CssSelector(selector));
         }
 
         private void ScrollTo(IWebElement el)

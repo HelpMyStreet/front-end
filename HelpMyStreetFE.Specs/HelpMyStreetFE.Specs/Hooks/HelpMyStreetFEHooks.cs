@@ -1,4 +1,5 @@
-﻿using HelpMyStreetFE.Specs.Drivers;
+﻿using System.Drawing;
+using HelpMyStreetFE.Specs.Drivers;
 using HelpMyStreetFE.Specs.PageObjects;
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
@@ -38,12 +39,9 @@ namespace HelpMyStreetFE.Specs.Hooks
         private static void AcceptAllCookies(IWebDriver driver)
         {
             var pageObject = new GenericPageObject(driver);
-
-            if (pageObject.IsVisible("gdpr-cookie-message-outer", null))
-            {
-                pageObject.Click("gdpr-cookie-accept", null);
-                pageObject.WaitForDisplayedFalse("gdpr-cookie-message-outer", null);
-            }
+            pageObject.WaitForDisplayedTrue("#gdpr-cookie-accept");
+            pageObject.Click("#gdpr-cookie-accept");
+            pageObject.WaitForDisplayedFalse("#gdpr-cookie-message-outer");
         }
 
         [BeforeScenario("MaximiseWindows")]
@@ -56,6 +54,19 @@ namespace HelpMyStreetFE.Specs.Hooks
             if (browserDriver.VolunteerWebDriverIsCreated)
             {
                 browserDriver.VolunteerWebDriver.Manage().Window.Maximize();
+            }
+        }
+
+        [BeforeScenario("800pxWidth")]
+        public static void BeforeScenario_800pxWidth(BrowserDriver browserDriver)
+        {
+            if (browserDriver.AdminWebDriverIsCreated)
+            {
+                browserDriver.AdminWebDriver.Manage().Window.Size = new Size(800, 1000);
+            }
+            if (browserDriver.VolunteerWebDriverIsCreated)
+            {
+                browserDriver.VolunteerWebDriver.Manage().Window.Size = new Size(800, 1000);
             }
         }
     }

@@ -5,8 +5,8 @@ Feature: SiteNavigation
 
 @MaximiseWindows
 Scenario Outline: Primary navigation (wide screen)
-	Given the volunteer's element selected by #site-nav ul li:nth-child(<index>) a should have text <Name>
-	When the volunteer clicks the element selected by #site-nav ul li:nth-child(<index>) a
+	Given the volunteer's element #site-nav ul li:nth-child(<index>) a should have text <Name>
+	When the volunteer clicks the element #site-nav ul li:nth-child(<index>) a
 	Then the volunteer's url should be <url>
 	And the volunteer's page title should be <Page Title>
 
@@ -19,13 +19,13 @@ Scenario Outline: Primary navigation (wide screen)
 
 @MaximiseWindows
 Scenario: No further primary navigation links (wide screen)
-	Then the volunteer's element selected by #site-nav ul li:nth-child(5) a should not be visible
+	Then the volunteer's element #site-nav ul li:nth-child(5) a should not be visible
 
-
+@800pxWidth
 Scenario Outline: Primary navigation (narrow screen)
 	Given the volunteer has clicked the element #site-nav-toggle
-	And the volunteer's element selected by #sitenavCollapsed #site-nav ul li:nth-child(<index>) a should have text <Name>
-	When the volunteer clicks the element selected by #sitenavCollapsed #site-nav ul li:nth-child(<index>) a
+	And the volunteer's element #sitenavCollapsed #site-nav ul li:nth-child(<index>) a should have text <Name>
+	When the volunteer clicks the element #sitenavCollapsed #site-nav ul li:nth-child(<index>) a
 	Then the volunteer's url should be <url>
 	And the volunteer's page title should be <Page Title>
 
@@ -36,15 +36,16 @@ Scenario Outline: Primary navigation (narrow screen)
 		| Resources		|     3 | resources			| Resources - Help My Street						|
 		| Questions		|     4 | questions			| Frequently Asked Questions - Help My Street		|
 
+@800pxWidth
 Scenario: No further primary navigation links (narrow screen)
 	Given the volunteer has clicked the element #site-nav-toggle
-	Then the volunteer's element selected by #sitenavCollapsed #site-nav ul li:nth-child(5) a should not be visible
+	Then the volunteer's element #sitenavCollapsed #site-nav ul li:nth-child(5) a should not be visible
 
 
 @MaximiseWindows
 Scenario Outline: Footer navigation
-	Given the volunteer's element selected by footer a:nth-child(<index>) should have text <Name>
-	When the volunteer clicks the element selected by footer a:nth-child(<index>)
+	Given the volunteer's element footer a:nth-child(<index>) should have text <Name>
+	When the volunteer clicks the element footer a:nth-child(<index>)
 	Then the volunteer's url should be <url>
 	And the volunteer's page title should be <Page Title>
 
@@ -57,5 +58,5 @@ Scenario Outline: Footer navigation
 
 @MaximiseWindows
 Scenario: No further footer navigation links (narrow screen)
-	Then the volunteer's element selected by footer a:nth-child(6) should not be visible
+	Then the volunteer's element footer a:nth-child(6) should not be visible
 

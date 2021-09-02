@@ -112,11 +112,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.Given(string.Format("the volunteer\'s element selected by #site-nav ul li:nth-child({0}) a should have " +
-                            "text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("the volunteer\'s element #site-nav ul li:nth-child({0}) a should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 9
- testRunner.When(string.Format("the volunteer clicks the element selected by #site-nav ul li:nth-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("the volunteer clicks the element #site-nav ul li:nth-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 10
  testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -193,8 +192,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 22
- testRunner.Then("the volunteer\'s element selected by #site-nav ul li:nth-child(5) a should not be " +
-                        "visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the volunteer\'s element #site-nav ul li:nth-child(5) a should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -202,7 +200,13 @@ this.ScenarioInitialize(scenarioInfo);
         
         public virtual void PrimaryNavigationNarrowScreen(string name, string index, string url, string pageTitle, string[] exampleTags)
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] @__tags = new string[] {
+                    "800pxWidth"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("Name", name);
             argumentsOfScenario.Add("index", index);
@@ -233,12 +237,12 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("the volunteer has clicked the element #site-nav-toggle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 27
- testRunner.And(string.Format("the volunteer\'s element selected by #sitenavCollapsed #site-nav ul li:nth-child({" +
-                            "0}) a should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the volunteer\'s element #sitenavCollapsed #site-nav ul li:nth-child({0}) a should" +
+                            " have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 28
- testRunner.When(string.Format("the volunteer clicks the element selected by #sitenavCollapsed #site-nav ul li:nt" +
-                            "h-child({0}) a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("the volunteer clicks the element #sitenavCollapsed #site-nav ul li:nth-child({0})" +
+                            " a", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
  testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -250,7 +254,8 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Request Help", SourceLine=33)]
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Request Help", new string[] {
+                "800pxWidth"}, SourceLine=33)]
         public virtual void PrimaryNavigationNarrowScreen_RequestHelp()
         {
 #line 25
@@ -258,7 +263,8 @@ this.PrimaryNavigationNarrowScreen("Request Help", "1", "request-help/", "Reques
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Case Studies", SourceLine=33)]
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Case Studies", new string[] {
+                "800pxWidth"}, SourceLine=33)]
         public virtual void PrimaryNavigationNarrowScreen_CaseStudies()
         {
 #line 25
@@ -266,7 +272,8 @@ this.PrimaryNavigationNarrowScreen("Case Studies", "2", "case-studies", "Case St
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Resources", SourceLine=33)]
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Resources", new string[] {
+                "800pxWidth"}, SourceLine=33)]
         public virtual void PrimaryNavigationNarrowScreen_Resources()
         {
 #line 25
@@ -274,7 +281,8 @@ this.PrimaryNavigationNarrowScreen("Resources", "3", "resources", "Resources - H
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Questions", SourceLine=33)]
+        [TechTalk.SpecRun.ScenarioAttribute("Primary navigation (narrow screen), Questions", new string[] {
+                "800pxWidth"}, SourceLine=33)]
         public virtual void PrimaryNavigationNarrowScreen_Questions()
         {
 #line 25
@@ -282,13 +290,15 @@ this.PrimaryNavigationNarrowScreen("Questions", "4", "questions", "Frequently As
 #line hidden
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("No further primary navigation links (narrow screen)", SourceLine=38)]
+        [TechTalk.SpecRun.ScenarioAttribute("No further primary navigation links (narrow screen)", new string[] {
+                "800pxWidth"}, SourceLine=39)]
         public virtual void NoFurtherPrimaryNavigationLinksNarrowScreen()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "800pxWidth"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further primary navigation links (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 39
+#line 40
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -308,12 +318,12 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 40
+#line 41
  testRunner.Given("the volunteer has clicked the element #site-nav-toggle", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 41
- testRunner.Then("the volunteer\'s element selected by #sitenavCollapsed #site-nav ul li:nth-child(5" +
-                        ") a should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 42
+ testRunner.Then("the volunteer\'s element #sitenavCollapsed #site-nav ul li:nth-child(5) a should n" +
+                        "ot be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -334,7 +344,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("url", url);
             argumentsOfScenario.Add("Page Title", pageTitle);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Footer navigation", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 45
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -354,16 +364,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 46
- testRunner.Given(string.Format("the volunteer\'s element selected by footer a:nth-child({0}) should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 47
- testRunner.When(string.Format("the volunteer clicks the element selected by footer a:nth-child({0})", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given(string.Format("the volunteer\'s element footer a:nth-child({0}) should have text {1}", index, name), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 48
- testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When(string.Format("the volunteer clicks the element footer a:nth-child({0})", index), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 49
+ testRunner.Then(string.Format("the volunteer\'s url should be {0}", url), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 50
  testRunner.And(string.Format("the volunteer\'s page title should be {0}", pageTitle), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -371,50 +381,50 @@ this.ScenarioInitialize(scenarioInfo);
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, Privacy Policy", new string[] {
-                "MaximiseWindows"}, SourceLine=52)]
+                "MaximiseWindows"}, SourceLine=53)]
         public virtual void FooterNavigation_PrivacyPolicy()
         {
-#line 45
+#line 46
 this.FooterNavigation("Privacy Policy", "2", "privacy-policy", "Privacy Policy - Help My Street", ((string[])(null)));
 #line hidden
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, Terms & Conditions", new string[] {
-                "MaximiseWindows"}, SourceLine=52)]
+                "MaximiseWindows"}, SourceLine=53)]
         public virtual void FooterNavigation_TermsConditions()
         {
-#line 45
+#line 46
 this.FooterNavigation("Terms & Conditions", "3", "terms-conditions", "Terms and Conditions - Help My Street", ((string[])(null)));
 #line hidden
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, About Us", new string[] {
-                "MaximiseWindows"}, SourceLine=52)]
+                "MaximiseWindows"}, SourceLine=53)]
         public virtual void FooterNavigation_AboutUs()
         {
-#line 45
+#line 46
 this.FooterNavigation("About Us", "4", "about-us", "About Us - Help My Street", ((string[])(null)));
 #line hidden
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("Footer navigation, Contact Us", new string[] {
-                "MaximiseWindows"}, SourceLine=52)]
+                "MaximiseWindows"}, SourceLine=53)]
         public virtual void FooterNavigation_ContactUs()
         {
-#line 45
+#line 46
 this.FooterNavigation("Contact Us", "5", "contact-us", "Contact Us - Help My Street", ((string[])(null)));
 #line hidden
         }
         
         [TechTalk.SpecRun.ScenarioAttribute("No further footer navigation links (narrow screen)", new string[] {
-                "MaximiseWindows"}, SourceLine=58)]
+                "MaximiseWindows"}, SourceLine=59)]
         public virtual void NoFurtherFooterNavigationLinksNarrowScreen()
         {
             string[] tagsOfScenario = new string[] {
                     "MaximiseWindows"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("No further footer navigation links (narrow screen)", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 59
+#line 60
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -434,8 +444,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 60
- testRunner.Then("the volunteer\'s element selected by footer a:nth-child(6) should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 61
+ testRunner.Then("the volunteer\'s element footer a:nth-child(6) should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

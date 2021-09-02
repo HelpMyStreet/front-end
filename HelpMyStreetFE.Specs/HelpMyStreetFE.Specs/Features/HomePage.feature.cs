@@ -109,13 +109,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [TechTalk.SpecRun.ScenarioAttribute("All cookies accepted", SourceLine=7)]
+        [TechTalk.SpecRun.ScenarioAttribute("All cookies accepted", new string[] {
+                "AcceptAllCookies"}, SourceLine=8)]
         public virtual void AllCookiesAccepted()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "AcceptAllCookies"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("All cookies accepted", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 8
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -135,9 +137,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
- testRunner.When("the volunteer clicks the element #gdpr-cookie-accept", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 10
  testRunner.Then("the volunteer element #gdpr-cookie-message-outer should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -228,10 +227,6 @@ this.ScenarioInitialize(scenarioInfo);
 #line 23
  testRunner.And("the volunteer\'s element #login-fail-message should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
- testRunner.And("the volunteer\'s element #login-fail-message should have text Sorry, we couldn\'t f" +
-                        "ind an account with that email address and password. Please check and try again", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -280,12 +275,12 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("the volunteer\'s element #login-fail-message should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 33
- testRunner.And("the volunteer\'s element selected by input[name=\"email\"]~.login__fail-message-main" +
-                        " should be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer\'s element input[name=\"email\"]~.login__fail-message-main should be v" +
+                        "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 34
- testRunner.And("the volunteer\'s element selected by input[name=\"email\"]~.login__fail-message-main" +
-                        " should have text Please enter a valid email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer\'s element input[name=\"email\"]~.login__fail-message-main should have" +
+                        " text Please enter a valid email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -343,8 +338,8 @@ this.ScenarioInitialize(scenarioInfo);
                         " password", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 45
- testRunner.And("the volunteer\'s element selected by input[name=\"email\"]~.login__fail-message-main" +
-                        " should not be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the volunteer\'s element input[name=\"email\"]~.login__fail-message-main should not " +
+                        "be visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
