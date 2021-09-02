@@ -21,6 +21,7 @@ Scenario Outline: Primary navigation (wide screen)
 Scenario: No further primary navigation links (wide screen)
 	Then the volunteer's element #site-nav ul li:nth-child(5) a should not be visible
 
+@800pxWidth
 Scenario Outline: Primary navigation (narrow screen)
 	Given the volunteer has clicked the element #site-nav-toggle
 	And the volunteer's element #sitenavCollapsed #site-nav ul li:nth-child(<index>) a should have text <Name>
@@ -35,6 +36,7 @@ Scenario Outline: Primary navigation (narrow screen)
 		| Resources		|     3 | resources			| Resources - Help My Street						|
 		| Questions		|     4 | questions			| Frequently Asked Questions - Help My Street		|
 
+@800pxWidth
 Scenario: No further primary navigation links (narrow screen)
 	Given the volunteer has clicked the element #site-nav-toggle
 	Then the volunteer's element #sitenavCollapsed #site-nav ul li:nth-child(5) a should not be visible
