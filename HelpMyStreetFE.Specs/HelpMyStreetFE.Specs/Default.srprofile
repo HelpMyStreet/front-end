@@ -49,5 +49,17 @@
 				<EnvironmentVariable variable="Test_Browser" value="Safari" />
 			</DeploymentTransformationSteps>
 		</Target>
+
+		<Target name="Android">
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="Android" />
+			</DeploymentTransformationSteps>
+		</Target>
+
+		<Target name="IOS">
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="IOS" />
+			</DeploymentTransformationSteps>
+		</Target>
 	</Targets>
 </TestProfile>
