@@ -13,7 +13,7 @@
 
     var userAllocatedToTask = jobDetails.VolunteerUserID.Equals(Model.JobDetail.User.ID);
 
-    var questionsToDisplay = jobDetails.Questions?.Where(q => q.ShowOnTaskManagement(false, userAllocatedToTask) && !string.IsNullOrEmpty(q.Answer));
+    var questionsToDisplay = jobDetails.QuestionsToDisplay(false, userAllocatedToTask);
     var encodedJobID = Base64Utils.Base64Encode(jobDetails.JobID);
     var encodedRequestID = Base64Utils.Base64Encode(jobDetails.RequestID);
     var encodedRole = Base64Utils.Base64Encode((int)Model.JobDetail.UserRole);
@@ -24,7 +24,7 @@
 }
 
 <div class="job__expander job mini-job-detail" id="@encodedJobID" request-id="@encodedRequestID" data-role="@encodedRole" data-user-allocated-to-job="@userAllocatedToTask">
-    <h4 class="@((showDuplicateJobs || showQuestions) ? "" : "no-click")">
+    <h4 class="@((showDuplicateJobs || showQuestions || jobDetails.JobStatus == JobStatuses.InProgress) ? "" : "no-click")">
         <span class="pt-xs pb-xs">
             <img class="status-icon toggle-on-status-change" src="~/img/icons/status/@jobDetails.JobStatus.Icon()" alt="@jobDetails.JobStatus.FriendlyName()" title="@jobDetails.JobStatus.FriendlyName()" />
             <span title="@jobDetails.DueDate.FriendlyFutureDate()">
@@ -60,10 +60,9 @@
                         }
                         @if (showQuestions)
                         {
-                            @foreach (var q in questionsToDisplay.OrderBy(q => q.TaskManagementDisplayOrder()))
+                            @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobDetails, q)))
                             {
-                                <dt>@q.FriendlyName()</dt>
-                                <dd>@Html.Raw(q.Answer.ToHtmlSafeStringWithLineBreaks())</dd>
+                                <partial name="_AnsweredQuestion" model="q" />
                             }
                         }
                     </dl>

@@ -78,7 +78,14 @@ namespace HelpMyStreetFE.Services.Requests
         /// <returns></returns>
         public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken)
         {
-            return await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontWaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
+            var requestSummary = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontWaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
+
+            if (requestSummary == null)
+            {
+                throw new Exception($"Failed to retrieve Request {requestId}");
+            }
+
+            return requestSummary;
         }
 
         /// <summary>

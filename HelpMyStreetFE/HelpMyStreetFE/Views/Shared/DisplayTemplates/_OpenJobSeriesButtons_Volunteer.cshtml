@@ -7,6 +7,6 @@
 
 @model JobViewModel<IEnumerable<JobDetail>>;
 
-<button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-series-status-update-popup" data-target-state="@JobStatuses.InProgress">
+<button class="btn cta @(Model.UserHasRequiredCredentials ? "" : "cta--green-border") trigger-series-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.InProgress">
     <span class="text">Accept</span>
 </button>
