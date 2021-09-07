@@ -21,11 +21,11 @@ else
     var today = DateTime.UtcNow.ToUKFromUTCTime().Date;
 
 
-    @if (dueDate.Date < today)
+    @if (dueDate.ToUKFromUTCTime().Date < today)
     {
         <div><strong>As soon as possible</strong> (This request is now overdue.)</div>
     }
-    else if (dueDate.Date == today)
+    else if (dueDate.ToUKFromUTCTime().Date == today)
     {
         if (Model.DueDateType == DueDateType.ASAP)
         {
@@ -61,7 +61,7 @@ else
                 <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
             </div>
         }
-        else if (notBeforeDate.HasValue && notBeforeDate.Value.Date > today)
+        else if (notBeforeDate.HasValue && notBeforeDate.Value.ToUKFromUTCTime().Date > today)
         {
             <div>
                 Between
