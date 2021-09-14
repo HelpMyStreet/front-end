@@ -52,7 +52,7 @@ else
     var today = DateTime.UtcNow.ToUKFromUTCTime().Date;
 
 
-    @if (dueDate.Date < today)
+    @if (dueDate.ToUKFromUTCTime().Date < today)
     {
         if (Model.JobStatus == JobStatuses.New || Model.JobStatus == JobStatuses.Open)
         {
@@ -77,7 +77,7 @@ else
             }
         }
     }
-    else if (dueDate.Date == today)
+    else if (dueDate.ToUKFromUTCTime().Date == today)
     {
         if (Model.JobStatus == JobStatuses.New || Model.JobStatus == JobStatuses.Open)
         {
@@ -145,7 +145,7 @@ else
                 the person who requested the help would prefer it on this date.
             </dd>
         }
-        else if (notBeforeDate.HasValue && notBeforeDate.Value.Date > today)
+        else if (notBeforeDate.HasValue && notBeforeDate.Value.ToUKFromUTCTime().Date > today)
         {
             <dd>
                 You can complete this request any time between
