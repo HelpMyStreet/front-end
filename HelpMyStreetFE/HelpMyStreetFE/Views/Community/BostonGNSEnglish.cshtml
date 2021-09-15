@@ -91,4 +91,24 @@
     <div class="outer-container outer-container--darker mb-md">
         <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
     </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                <div class="flex sm6">
+                    <partial name="_HowCanWeHelpCard" model="Model" />
+                </div>
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
