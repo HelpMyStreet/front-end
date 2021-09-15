@@ -759,6 +759,35 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", "BostonGNSEnglish");
 
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Proudly funded by The National Lottery Community Fund",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Training and support provided by YMCA",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/ymcalogosmall.png"
+                },
+
+                new CommunityVolunteer()
+                {
+                    Name = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/EHClogo.jpg"
+                },
+            };
+
             var carouselPath = "/img/community/bostongns/carousel";
             communityViewModel.CarouselImages = new List<List<string>>
             {
