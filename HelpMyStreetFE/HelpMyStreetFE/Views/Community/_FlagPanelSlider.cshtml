@@ -1,0 +1,15 @@
+﻿@using HelpMyStreetFE.Models.Community;
+
+@model CommunityViewModel
+
+<div class="slider">
+    <div class="slides">
+        @foreach (var flags in Model.Flags)
+        {
+            <div class="volunteer">
+                <a href="@flags.LinkUrl"><img class="slide logo" src="@flags.ImageLocation" alt="@flags.Name" /></a>
+                <p class="bold mt-sm mb-xs">@flags.Name</p>                
+            </div>
+        }
+    </div>
+</div>

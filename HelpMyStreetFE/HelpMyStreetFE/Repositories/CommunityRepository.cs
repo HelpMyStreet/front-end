@@ -759,6 +759,60 @@ namespace HelpMyStreetFE.Repositories
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", "BostonGNSEnglish");
 
+            communityViewModel.Flags = new List<FlagViewModel>()
+            {
+                new FlagViewModel()
+                {
+                    Name = "English",
+                    ImageLocation = "/img/community/bostongns/flags/united-kingdom-flag-small.png",
+                    LinkUrl = "www.google.com/english"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Polskie",
+                    ImageLocation = "/img/community/bostongns/flags/poland-flag-small.png",
+                    LinkUrl = "www.google.com/poland"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Lietuvis",
+                    ImageLocation = "/img/community/bostongns/flags/lithuania-flag-small.png",
+                    LinkUrl = "www.google.com/lithunia"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Russia",
+                    ImageLocation = "/img/community/bostongns/flags/russia-flag-small.png",
+                    LinkUrl = "www.google.com/russia"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Latvietis",
+                    ImageLocation = "/img/community/bostongns/flags/latvia-flag-small.png",
+                    LinkUrl = "www.google.com/latvia"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Romana",
+                    ImageLocation = "/img/community/bostongns/flags/romania-flag-small.png",
+                    LinkUrl = "www.google.com/romania"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Bulgaria",
+                    ImageLocation = "/img/community/bostongns/flags/bulgaria-flag-small.png",
+                    LinkUrl = "www.google.com/bulgaria"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Portuges",
+                    ImageLocation = "/img/community/bostongns/flags/portugal-flag-small.png",
+                    LinkUrl = "www.google.com/portugal"
+                }
+            };
+
+
+
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
