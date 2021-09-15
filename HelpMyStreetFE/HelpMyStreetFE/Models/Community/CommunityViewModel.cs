@@ -22,8 +22,8 @@ namespace HelpMyStreetFE.Models.Community
         public HelpExampleCardsViewModel HelpExampleCards { get; set; }
 
         public IEnumerable<CommunityVolunteer> CommunityVolunteers { get; set; }
-
         public List<List<string>> CarouselImages { get; set; }
+        public List<FlagViewModel> Flags { get; set; }
 
         public Group Group { get; set; }
         public string EncodedGroupId

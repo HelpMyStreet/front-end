@@ -43,6 +43,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Southwell => GetSouthwell(),
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
+                Groups.BostonGNS => GetBostonGNS(),
                 _ => null,
             };
 
@@ -748,6 +749,109 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/carousel-3.png",
                     $"{carouselPath}/carousel-4.png",
                     $"{carouselPath}/carousel-5.jpg",
+                },
+            };
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetBostonGNS()
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", "BostonGNSEnglish");
+
+            communityViewModel.Flags = new List<FlagViewModel>()
+            {
+                new FlagViewModel()
+                {
+                    Name = "English",
+                    ImageLocation = "/img/community/bostongns/flags/united-kingdom-flag-small.png",
+                    LinkUrl = "www.google.com/english"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Polskie",
+                    ImageLocation = "/img/community/bostongns/flags/poland-flag-small.png",
+                    LinkUrl = "www.google.com/poland"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Lietuvis",
+                    ImageLocation = "/img/community/bostongns/flags/lithuania-flag-small.png",
+                    LinkUrl = "www.google.com/lithunia"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Russia",
+                    ImageLocation = "/img/community/bostongns/flags/russia-flag-small.png",
+                    LinkUrl = "www.google.com/russia"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Latvietis",
+                    ImageLocation = "/img/community/bostongns/flags/latvia-flag-small.png",
+                    LinkUrl = "www.google.com/latvia"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Romana",
+                    ImageLocation = "/img/community/bostongns/flags/romania-flag-small.png",
+                    LinkUrl = "www.google.com/romania"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Bulgaria",
+                    ImageLocation = "/img/community/bostongns/flags/bulgaria-flag-small.png",
+                    LinkUrl = "www.google.com/bulgaria"
+                },
+                new FlagViewModel()
+                {
+                    Name = "Portuges",
+                    ImageLocation = "/img/community/bostongns/flags/portugal-flag-small.png",
+                    LinkUrl = "www.google.com/portugal"
+                }
+            };
+
+
+
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
+            {
+                new CommunityVolunteer()
+                {
+                    Name = "Proudly funded by The National Lottery Community Fund",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Name = "Training and support provided by YMCA",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/ymcalogosmall.png"
+                },
+
+                new CommunityVolunteer()
+                {
+                    Name = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
+                    Role = "",
+                    Location = "",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/EHClogo.jpg"
+                },
+            };
+
+            var carouselPath = "/img/community/bostongns/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/Picture4.jpg",
+                    $"{carouselPath}/Picture5.png",
+                    $"{carouselPath}/Picture6.jpg",
+                    $"{carouselPath}/Signs.jpeg",
+                    $"{carouselPath}/stump1.jpeg",
                 },
             };
 

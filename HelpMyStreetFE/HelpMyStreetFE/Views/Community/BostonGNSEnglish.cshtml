@@ -1,0 +1,130 @@
+﻿@using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+        <div class="community-banner">
+            <img src="~/img/community/bostongns/banner.png" alt="Boston" />
+        </div>
+        <div class="outer-container outer-container--darker">
+            <partial name="_FlagPanelSlider" model="Model" />
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center justify-center content-page pad-md">
+                    <header class="mw1000 text-center">
+                        <h2 class="mb0 mt-md">Welcome to Boston Good Neighbour Scheme</h2>
+                    </header>
+
+                    <p class='mt-sm mb-s'>
+                        Good Neighbour Schemes are run by local volunteers who provide day to day support for other residents who may need help on an occasional or regular basis. For older people, this support may enable them to live independently in their own homes and communities for longer and reduce feelings of isolation and loneliness.
+                    </p>
+
+                    <p class='mt-sm mb-xs'>
+                        Here in Boston, we can help everyone with
+                    </p>
+
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Collecting essential shopping</li>
+                        <li>Local errands</li>
+                        <li>Practical support</li>
+                        <li>A friendly chat</li>
+                        <li>Anything else, just ask!</li>
+                    </ul>
+
+                    <div class="row sm6 text-center justify-center mb-sm">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            If you or someone you know needs help, complete our quick and easy online form.
+                        </p>
+                        <partial name="_RequestHelpButton" model="Model" />
+                    </div>
+
+                    <div class="row sm6 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            To register your interest as a community volunteer and find opportunities near you, sign up or log in today
+                        </p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md card">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Good Neighbour Schemes - Helping Your Community</h2>
+                    <div class="outer-container outer-container--darker">
+                        <partial name="_CommunityVolunteersSlider" model="Model" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Useful Links</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div id="resources" class="sm12 community-useful-links mb-lg">
+                    <p><a href="https://www.mybostonuk.com/">Boston Borough Council</a> - Your local council homepage</p>
+                    <p><a href="https://www.mybostonuk.com/ehcprogramme/">Empowering Healthy Communities Programme</a> - Find out more about the Boston Borough Council health and wellbeing initiative designed to support residents during and beyond Covid-19.</p>
+                    <p><a href="http://www.lincolnshirecvs.org.uk/">Lincolnshire Community and Voluntary Service</a> - Use LCVS’s resources to help you get the most out of volunteering</p>
+                    <p><a href="https://restorechurchboston.co.uk/">Restore Church</a> - Find out more about Restore Church Boston</p>
+                    <h6>Other ways to access support in Boston:</h6>
+                    <p><a href="https://www.ageuk.org.uk/lincolnsouthlincolnshire/">Age UK Lincoln & South Lincolnshire</a> - Get support for older people in Lincoln and Lincolnshire</p>
+                    <p><a href="https://boston.foodbank.org.uk/">Boston Foodbank</a> - Find out how to get help from the Boston foodbank</p>
+                    <p><a href="https://centrepoint-outreach.com/">Centrepoint Outreach</a> - Supporting people who are homeless, lonely and vulnerable</p>
+                    <p><a href="https://www.citizensadvice.org.uk/local/mid-lincolnshire/">Citizens Advice Mid Lincolnshire</a> - Free, confidential and impartial advice</p>
+                    <p><a href="https://www.wellbeinglincs.org/">Wellbeing Lincs</a> - Wellbeing Lincs is a countywide service designed to promote confidence in living independently. If you or someone you know is aged 18+ and needs a little support, get in touch to see how we can help.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey })
+    </div>
+
+        <div class="outer-container outer-container--darker mb-md">
+            <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+        </div>
+
+        <div class="outer-container outer-container--darker">
+            <partial name="_AboutHelpMyStreet" />
+        </div>
+
+        <div class="outer-container">
+            <div class="container inner-container--no-side-padding">
+                <div class="row hero flex text-center justify-center">
+
+                    <div class="flex sm6">
+                        <partial name="_HowCanWeHelpCard" model="Model" />
+                    </div>
+
+                    <div class="flex sm6">
+                        <partial name="_VolunteerWithUsCard" model="Model" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
