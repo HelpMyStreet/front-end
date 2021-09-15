@@ -43,6 +43,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Southwell => GetSouthwell(),
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
+                Groups.BostonGNS => GetBostonGNS(),
                 _ => null,
             };
 
@@ -748,6 +749,26 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/carousel-3.png",
                     $"{carouselPath}/carousel-4.png",
                     $"{carouselPath}/carousel-5.jpg",
+                },
+            };
+
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetBostonGNS()
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", "BostonGNSEnglish");
+
+            var carouselPath = "/img/community/bostongns/carousel";
+            communityViewModel.CarouselImages = new List<List<string>>
+            {
+                new List<string>
+                {
+                    $"{carouselPath}/Picture4.jpg",
+                    $"{carouselPath}/Picture5.png",
+                    $"{carouselPath}/Picture6.jpg",
+                    $"{carouselPath}/Signs.jpeg",
+                    $"{carouselPath}/stump1.jpeg",
                 },
             };
 

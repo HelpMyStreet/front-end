@@ -438,6 +438,78 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "ageuk-midmersey",
                 },
+
+                new Testimonial()
+                {
+                    Tagline = "New friendships",
+                    Message = "It’s wonderful to hear from local people who have already made new connections and friendships thanks to the Good Neighbour Schemes. We are proud to be funding Community Lincs so it can continue to build on this success, helping more people tap into this support and feel less isolated. Thanks to National Lottery players, these Good Neighbour Schemes will bring communities together, empowering them to thrive.",
+                    Person = "Matt Poole, Senior Head of Funding for the Midlands at The National Lottery Community Fund",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "One of the best things I have done",
+                    Message = "GNS is one of the best things I have done in my life, despite taking considerable effort and time to organise and manage. Without Community Lincs our Good Neighbour Scheme would not have been organised. Neither would it have been so confident and competent. Community Lincs are our people to go to for support and information; we would feel lost without them.",
+                    Person = "Good Neighbour Scheme Volunteer",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "People who really care",
+                    Message = "I couldn’t manage without my Good Neighbours. I have used the service mainly for transport, but the support and friendship is fantastic. It makes a huge difference knowing there are people there who really care.",
+                    Person = "Good Neighbour Scheme Service User",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Best thing to happen in this area for many a year",
+                    Message = "Our Good Neighbour Scheme is the best thing to happen in this area for many a year. It gives me peace of mind that there is always someone to help with my many regular trips to various clinics, and I really enjoy the regular visits from my befriender. Little things such as making telephone calls on my behalf make such a difference.",
+                    Person = "GNS Service User",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Very rewarding",
+                    Message = "The benefits for myself have been very rewarding - meeting new people and learning new skills.",
+                    Person = "GNS Volunteer",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Coffee mornings",
+                    Message = "I really like attending the good neighbour coffee mornings; I have met lots of new people and made friends.",
+                    Person = "GNS Service User",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Impressive",
+                    Message = "Community Lincs provided the spark that ignited interest in setting-up our Good Neighbour Scheme and has provided ongoing support from initial consultation with the local community through presentations, networking with existing organisations and co-ordinating a community survey to the formation of a constituted group with policies, procedures and a bespoke IT system culminating in a fully operational scheme. The breadth of support provided has been particularly impressive.",
+                    Person = "GNS Volunteer",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "My days are much brighter now",
+                    Message = "My days are much brighter now that my GNS volunteer visits me, as I used to be quite lonely. They also help me get to my hospital appointments, as my family live a long way away.",
+                    Person = "GNS Service User",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                },
             };
 
             return messageList;

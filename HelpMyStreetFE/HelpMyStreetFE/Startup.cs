@@ -421,6 +421,11 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });
 
                 endpoints.MapControllerRoute(
+                   name: "boston",
+                   pattern: "boston",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "boston" });
+
+                endpoints.MapControllerRoute(
                    name: "registration",
                    pattern: "registration",
                    defaults: new { controller = "Registration", action = "StepOne" });
