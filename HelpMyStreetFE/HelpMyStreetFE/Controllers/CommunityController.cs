@@ -65,7 +65,7 @@ namespace HelpMyStreetFE.Controllers
             return View(communityViewModel.View, communityViewModel);
         }
 
-        public async Task<IActionResult> Index(string groupKey, CancellationToken cancellationToken, bool suag = false)
+        public async Task<IActionResult> Index(string language, string groupKey, CancellationToken cancellationToken, bool suag = false)
         {
             if (String.IsNullOrWhiteSpace(groupKey))
             {
@@ -73,7 +73,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(groupKey, cancellationToken);
+            CommunityViewModel communityViewModel = await _communityRepository.GetCommunity(groupKey, language, cancellationToken);
 
             if (communityViewModel == null)
             {
