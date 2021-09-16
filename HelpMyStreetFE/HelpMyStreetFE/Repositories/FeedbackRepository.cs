@@ -510,6 +510,16 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                 },
+
+                new Testimonial()
+                {
+                    Tagline = "Nowe znajomości",
+                    Message = "Wspaniale jest usłyszeć od lokalnych mieszkańców, którzy już nawiązali nowe znajomości i przyjaźnie dzięki Programom Dobrego Sąsiada. Jesteśmy dumni z tego, że finansujemy Community Lincs, aby móc dalej budować na tym sukcesie, pomagając większej liczbie osób w skorzystaniu z tego wsparcia i poczuciu się mniej odosobnionym. Dzięki graczom National Lottery te programy dobrych sąsiadów połączą społeczności, umożliwiając im rozwój.",
+                    Person = "Matt Poole, Starszy kierownik ds. finansowania Midlands w The National Lottery Community Fund",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
             };
 
             return messageList;
