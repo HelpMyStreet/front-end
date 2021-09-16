@@ -23,7 +23,7 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
+        private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken, string language = null)
         {
             CommunityViewModel vm = ((Groups)group.GroupId) switch
             {
@@ -43,7 +43,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Southwell => GetSouthwell(),
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
-                Groups.BostonGNS => GetBostonGNS(),
+                Groups.BostonGNS => GetBostonGNS(language),
                 _ => null,
             };
 
@@ -59,10 +59,10 @@ namespace HelpMyStreetFE.Repositories
             return await GetCommunity(group, cancellationToken);
         }
 
-        public async Task<CommunityViewModel> GetCommunity(string groupKey, CancellationToken cancellationToken)
+        public async Task<CommunityViewModel> GetCommunity(string groupKey, string language, CancellationToken cancellationToken)
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
-            return await GetCommunity(group, cancellationToken);
+            return await GetCommunity(group, cancellationToken, language);
         }
 
         public async Task<List<CommunityModel>> GetCommunities()
@@ -755,9 +755,14 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetBostonGNS()
+        private CommunityViewModel GetBostonGNS(string pLanguage)
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", "BostonGNSEnglish");
+            string language = "English";
+            if(!string.IsNullOrEmpty(pLanguage))
+            {
+                language = pLanguage;
+            }
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", $"BostonGNS{language}");
 
             communityViewModel.Flags = new List<FlagViewModel>()
             {
@@ -765,49 +770,49 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Name = "English",
                     ImageLocation = "/img/community/bostongns/flags/united-kingdom-flag-small.png",
-                    LinkUrl = "www.google.com/english"
+                    Language = "English"
                 },
                 new FlagViewModel()
                 {
                     Name = "Polskie",
                     ImageLocation = "/img/community/bostongns/flags/poland-flag-small.png",
-                    LinkUrl = "www.google.com/poland"
+                    Language = "Polish"
                 },
                 new FlagViewModel()
                 {
                     Name = "Lietuvis",
                     ImageLocation = "/img/community/bostongns/flags/lithuania-flag-small.png",
-                    LinkUrl = "www.google.com/lithunia"
+                    Language = "Lithunian"
                 },
                 new FlagViewModel()
                 {
                     Name = "Russia",
                     ImageLocation = "/img/community/bostongns/flags/russia-flag-small.png",
-                    LinkUrl = "www.google.com/russia"
+                    Language = "Russian"
                 },
                 new FlagViewModel()
                 {
                     Name = "Latvietis",
                     ImageLocation = "/img/community/bostongns/flags/latvia-flag-small.png",
-                    LinkUrl = "www.google.com/latvia"
+                    Language = "Latvian"
                 },
                 new FlagViewModel()
                 {
                     Name = "Romana",
                     ImageLocation = "/img/community/bostongns/flags/romania-flag-small.png",
-                    LinkUrl = "www.google.com/romania"
+                    Language = "Romanian"
                 },
                 new FlagViewModel()
                 {
                     Name = "Bulgaria",
                     ImageLocation = "/img/community/bostongns/flags/bulgaria-flag-small.png",
-                    LinkUrl = "www.google.com/bulgaria"
+                    Language = "Bulgarian"
                 },
                 new FlagViewModel()
                 {
                     Name = "Portuges",
                     ImageLocation = "/img/community/bostongns/flags/portugal-flag-small.png",
-                    LinkUrl = "www.google.com/portugal"
+                    Language = "Portugese"
                 }
             };
 

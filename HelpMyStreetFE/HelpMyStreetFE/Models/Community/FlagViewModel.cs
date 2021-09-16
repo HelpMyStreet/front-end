@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
         public string ImageLocation { get; set; }
-        public string LinkUrl { get; set; }
+        public string Language { get; set; }
     }
 }
