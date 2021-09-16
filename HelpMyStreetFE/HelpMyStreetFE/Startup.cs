@@ -300,15 +300,19 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", referringGroup = "", source = "" });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", referringGroup = "", source = "", language = "English" });
                 endpoints.MapControllerRoute(
                     name: "request-help/group",
                     pattern: "request-help/{referringGroup}",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "", language = "English" });
+                endpoints.MapControllerRoute(
+                    name: "request-help/group/language",
+                    pattern: "request-help/{referringGroup}/{language}",
                     defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "" });
                 endpoints.MapControllerRoute(
                     name: "request-help/group/source",
                     pattern: "request-help/{referringGroup}/{source}",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp" });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", language="English" });
                 endpoints.MapControllerRoute(
                     name: "request-help/success",
                     pattern: "request-help/success",

@@ -10,7 +10,7 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestUpdatingService
     {
-        Task<Fulfillable> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, User user, CancellationToken cancellationToken);
+        Task<Fulfillable> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, string language, User user, CancellationToken cancellationToken);
         Task<UpdateJobStatusOutcome?> UpdateRequestStatusAsync(int requestId, JobStatuses status, int createdByUserId, CancellationToken cancellationToken);
         Task<UpdateJobStatusOutcome?> UpdateJobStatusAsync(int jobID, JobStatuses status, int createdByUserId, int? volunteerUserId, CancellationToken cancellationToken);
         Task<UpdateJobOutcome?> UpdateJobQuestion(int jobId, int questionId, string answer, int authorisedByUserId, CancellationToken cancellationToken);

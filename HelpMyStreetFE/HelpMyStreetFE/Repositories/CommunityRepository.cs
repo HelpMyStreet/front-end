@@ -763,6 +763,7 @@ namespace HelpMyStreetFE.Repositories
                 language = pLanguage;
             }
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", $"BostonGNS{language}");
+            communityViewModel.Language = language;
 
             communityViewModel.Flags = new List<FlagViewModel>()
             {

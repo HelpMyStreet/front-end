@@ -23,14 +23,15 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpRepository = requestHelpRepository;
         }
         
-        public RequestHelpViewModel GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source)
+        public RequestHelpViewModel GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupID, string source, string language)
         {
             RequestHelpFormVariant requestHelpFormVariant = requestHelpJourney.RequestHelpFormVariant;
 
-            var model =  new RequestHelpViewModel
+            var model = new RequestHelpViewModel
             {
                 ReferringGroupID = referringGroupID,
                 Source = source,
+                Language = language,
                 RequestHelpFormVariant = requestHelpFormVariant,
                 CurrentStepIndex = 0,
                 Steps = new List<IRequestHelpStageViewModel>
