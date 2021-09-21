@@ -151,10 +151,18 @@
 
     .flag-panel-container {
 
-        img {
-            width: 8rem;
-            height: 4.5rem;
-            border-radius: 10px;
+        .flag-panel-toggle {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            span {
+                margin-right: 1.5rem;
+            }
+            img {
+                width: 5rem;
+                border-radius: 5px;
+            }
         }
 
         .flag-panel {
@@ -178,6 +186,9 @@
                 }
 
                 img {
+                    width: 8rem;
+                    height: 4.5rem;
+                    border-radius: 10px;
                     border: 2px solid $background-main;
                 }
 
