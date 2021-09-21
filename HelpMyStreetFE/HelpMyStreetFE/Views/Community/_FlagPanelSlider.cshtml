@@ -16,14 +16,16 @@
         </div>
     </a>
     <div class="flag-panel">
-        @foreach (var flags in Model.Flags)
-        {
-            <div class="flag-container @(flags.IsSelected ? "selected" : "")">
-                <a href="/boston/@flags.Language">
-                    <img class="slide logo" src="@flags.ImageLocation" alt="@flags.Name" />
-                    <span>@flags.Name</span>
-                </a>
-            </div>
-        }
+        <div class="flag-panel-inner">
+            @foreach (var flags in Model.Flags)
+            {
+                <div class="flag-container @(flags.IsSelected ? "selected" : "")">
+                    <a href="/boston/@flags.Language">
+                        <img class="slide logo" src="@flags.ImageLocation" alt="@flags.Name" />
+                        <span>@flags.Name</span>
+                    </a>
+                </div>
+            }
+        </div>
     </div>
 </div>

@@ -159,6 +159,7 @@
             span {
                 margin-right: 1.5rem;
             }
+
             img {
                 width: 5rem;
                 border-radius: 5px;
@@ -166,38 +167,43 @@
         }
 
         .flag-panel {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: none;
 
-            .flag-container {
-                margin: 0.5rem 0.25rem;
+            .flag-panel-inner {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
 
-                a {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    color: $black;
+                .flag-container {
+                    margin: 0.5rem 0.25rem;
 
-                    &:hover {
-                        color: $green;
-                        transition: color 0.1s;
-                    }
-                }
-
-                img {
-                    width: 8rem;
-                    height: 4.5rem;
-                    border-radius: 10px;
-                    border: 2px solid $background-main;
-                }
-
-                &.selected {
-                    img {
-                        border-color: $green;
-                    }
                     a {
-                        color: $green;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        color: $black;
+
+                        &:hover {
+                            color: $green;
+                            transition: color 0.1s;
+                        }
+                    }
+
+                    img {
+                        width: 8rem;
+                        height: 4.5rem;
+                        border-radius: 10px;
+                        border: 2px solid $background-main;
+                    }
+
+                    &.selected {
+                        img {
+                            border-color: $green;
+                        }
+
+                        a {
+                            color: $green;
+                        }
                     }
                 }
             }
@@ -212,8 +218,12 @@
             }
 
             .flag-panel {
-                justify-content: space-around;
-                flex-wrap: nowrap;
+                display: block;
+
+                .flag-panel-inner {
+                    justify-content: space-around;
+                    flex-wrap: nowrap;
+                }
             }
         }
     }
