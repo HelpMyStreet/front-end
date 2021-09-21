@@ -6,14 +6,15 @@
     <div class="slides">
         @foreach (var volunteer in Model.CommunityVolunteers)
         {
-            <div class="volunteer">
-                <img class="slide @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
-                <p class="bold mt-sm mb-xs">@volunteer.Name</p>
-                @if (volunteer.Role != null)
-                {<p class="mt-xs mb-xs ">@volunteer.Role</p>}
-                @if (volunteer.Location != null)
-                {<p class="mt-xs mb-xs">@volunteer.Location</p>}
-            </div>
+        <div class="volunteer">
+            <img class="slide @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+            @if (volunteer.Name != null)
+            {<p class="bold mt-sm mb-xs">@volunteer.Name</p>}
+            @if (volunteer.Role != null)
+            {<p class="mt-xs mb-xs ">@volunteer.Role</p>}
+            @if (volunteer.Location != null)
+            {<p class="mt-xs mb-xs">@volunteer.Location</p>}
+        </div>
         }
     </div>
 </div>

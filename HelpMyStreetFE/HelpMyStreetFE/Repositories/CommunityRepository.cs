@@ -763,6 +763,7 @@ namespace HelpMyStreetFE.Repositories
                 language = pLanguage;
             }
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", $"BostonGNS{language}");
+            //communityViewModel.Map_ZoomLevel = 14.0d;
             communityViewModel.Language = language;
 
             communityViewModel.Flags = new List<FlagViewModel>()
@@ -823,26 +824,26 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Name = "Proudly funded by The National Lottery Community Fund",
+                    Name = "",
                     Role = "",
-                    Location = "",
+                    Location = "Proudly funded by The National Lottery Community Fund",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Training and support provided by YMCA",
+                    Name = "",
                     Role = "",
-                    Location = "",
+                    Location = "Training and support provided by YMCA",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/ymcalogosmall.png"
                 },
 
                 new CommunityVolunteer()
                 {
-                    Name = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
+                    Name = "",
                     Role = "",
-                    Location = "",
+                    Location = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/EHClogo.jpg"
                 },
@@ -854,10 +855,10 @@ namespace HelpMyStreetFE.Repositories
                 new List<string>
                 {
                     $"{carouselPath}/Picture4.jpg",
-                    $"{carouselPath}/Picture5.png",
-                    $"{carouselPath}/Picture6.jpg",
                     $"{carouselPath}/Signs.jpeg",
+                    $"{carouselPath}/Picture5.png",
                     $"{carouselPath}/stump1.jpeg",
+                    $"{carouselPath}/Picture6.jpg",                    
                 },
             };
 
