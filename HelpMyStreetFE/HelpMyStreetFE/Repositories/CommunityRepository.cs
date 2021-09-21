@@ -823,16 +823,12 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Name = "",
-                    Role = "",
                     Location = "Proudly funded by The National Lottery Community Fund",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "",
-                    Role = "",
                     Location = "Training and support provided by YMCA",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/ymcalogosmall.png"
@@ -840,8 +836,6 @@ namespace HelpMyStreetFE.Repositories
 
                 new CommunityVolunteer()
                 {
-                    Name = "",
-                    Role = "",
                     Location = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/EHClogo.jpg"
