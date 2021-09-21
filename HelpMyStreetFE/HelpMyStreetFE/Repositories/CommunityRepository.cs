@@ -763,6 +763,7 @@ namespace HelpMyStreetFE.Repositories
                 language = pLanguage;
             }
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", $"BostonGNS{language}");
+            communityViewModel.Language = language;
 
             communityViewModel.Flags = new List<FlagViewModel>()
             {
@@ -786,7 +787,7 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Russia",
+                    Name = "Русский",
                     ImageLocation = "/img/community/bostongns/flags/russia-flag-small.png",
                     Language = "Russian"
                 },
@@ -798,50 +799,44 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Romana",
+                    Name = "Română",
                     ImageLocation = "/img/community/bostongns/flags/romania-flag-small.png",
                     Language = "Romanian"
                 },
                 new FlagViewModel()
                 {
-                    Name = "Bulgaria",
+                    Name = "български",
                     ImageLocation = "/img/community/bostongns/flags/bulgaria-flag-small.png",
                     Language = "Bulgarian"
                 },
                 new FlagViewModel()
                 {
-                    Name = "Portuges",
+                    Name = "Português",
                     ImageLocation = "/img/community/bostongns/flags/portugal-flag-small.png",
                     Language = "Portugese"
                 }
             };
 
-
+            communityViewModel.Flags.First(f => f.Language.Equals(language)).IsSelected = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
                 {
-                    Name = "Proudly funded by The National Lottery Community Fund",
-                    Role = "",
-                    Location = "",
+                    Location = "Proudly funded by The National Lottery Community Fund",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Name = "Training and support provided by YMCA",
-                    Role = "",
-                    Location = "",
+                    Location = "Training and support provided by YMCA",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/ymcalogosmall.png"
                 },
 
                 new CommunityVolunteer()
                 {
-                    Name = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
-                    Role = "",
-                    Location = "",
+                    Location = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/EHClogo.jpg"
                 },
@@ -853,10 +848,10 @@ namespace HelpMyStreetFE.Repositories
                 new List<string>
                 {
                     $"{carouselPath}/Picture4.jpg",
-                    $"{carouselPath}/Picture5.png",
-                    $"{carouselPath}/Picture6.jpg",
                     $"{carouselPath}/Signs.jpeg",
+                    $"{carouselPath}/Picture5.png",
                     $"{carouselPath}/stump1.jpeg",
+                    $"{carouselPath}/Picture6.jpg",                    
                 },
             };
 

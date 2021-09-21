@@ -34,6 +34,8 @@ namespace HelpMyStreetFE.Models.RequestHelp
             return selectedTask != null ? (int?)selectedTask.SupportActivity : null;
         }
 
+        public string Language { get; set; }
+
     }
 }
 

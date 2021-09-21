@@ -2,13 +2,25 @@
 
 @model CommunityViewModel
 
-<div class="slider">
-    <div class="slides">
+@{ 
+    var selectedFlag = Model.Flags.First(f => f.IsSelected);
+} 
+
+<div class="flag-panel-container">
+    <a class="flag-panel-toggle" href="#">
+        Select language
+        <div class="">
+            <img class="slide logo" src="@selectedFlag.ImageLocation" alt="@selectedFlag.Name" />
+        </div>
+    </a>
+    <div class="flag-panel">
         @foreach (var flags in Model.Flags)
         {
-            <div class="volunteer">
-                <a href="/boston/@flags.Language"><img class="slide logo" src="@flags.ImageLocation" alt="@flags.Name" /></a>
-                <p class="bold mt-sm mb-xs">@flags.Name</p>
+            <div class="flag-container @(flags.IsSelected ? "selected" : "")">
+                <a href="/boston/@flags.Language">
+                    <img class="slide logo" src="@flags.ImageLocation" alt="@flags.Name" />
+                    <span>@flags.Name</span>
+                </a>
             </div>
         }
     </div>

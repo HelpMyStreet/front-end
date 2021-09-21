@@ -36,5 +36,7 @@ namespace HelpMyStreetFE.Models.Community
 
         public bool ShowRequestHelpPopup { get; set; }
         public bool ShowPopupOnSignUp { get; set; } = false;
+
+        public string Language { get; set; } = "English";
     }
 }

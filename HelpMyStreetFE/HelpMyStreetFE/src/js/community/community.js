@@ -105,4 +105,8 @@ $(document).ready(function () {
         });
     });
 
+    $('.flag-panel-container .flag-panel-toggle').on('click', function (event) {
+        event.preventDefault();
+        $(this).next().slideToggle();
+    });
 });
