@@ -763,7 +763,6 @@ namespace HelpMyStreetFE.Repositories
                 language = pLanguage;
             }
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("boston", $"BostonGNS{language}");
-            //communityViewModel.Map_ZoomLevel = 14.0d;
             communityViewModel.Language = language;
 
             communityViewModel.Flags = new List<FlagViewModel>()
@@ -788,7 +787,7 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Russia",
+                    Name = "Русский",
                     ImageLocation = "/img/community/bostongns/flags/russia-flag-small.png",
                     Language = "Russian"
                 },
@@ -800,19 +799,19 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Romana",
+                    Name = "Română",
                     ImageLocation = "/img/community/bostongns/flags/romania-flag-small.png",
                     Language = "Romanian"
                 },
                 new FlagViewModel()
                 {
-                    Name = "Bulgaria",
+                    Name = "български",
                     ImageLocation = "/img/community/bostongns/flags/bulgaria-flag-small.png",
                     Language = "Bulgarian"
                 },
                 new FlagViewModel()
                 {
-                    Name = "Portuges",
+                    Name = "Português",
                     ImageLocation = "/img/community/bostongns/flags/portugal-flag-small.png",
                     Language = "Portugese"
                 }
