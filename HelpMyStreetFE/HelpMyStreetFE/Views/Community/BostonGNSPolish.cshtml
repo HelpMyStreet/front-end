@@ -17,7 +17,9 @@
         <div class="community-banner">
             <img src="~/img/community/bostongns/banner.png" alt="Boston" />
         </div>
-        <div class="outer-container outer-container--darker">
+    </div>
+    <div class="outer-container outer-container--darker mt-lg mb-lg">
+        <div class="container">
             <partial name="_FlagPanelSlider" model="Model" />
         </div>
     </div>
@@ -104,27 +106,27 @@
         @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey, language = "Polish" })
     </div>
 
-        <div class="outer-container outer-container--darker mb-md">
-            <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
-        </div>
+    <div class="outer-container outer-container--darker mb-md">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
 
-        <div class="outer-container outer-container--darker">
-            <partial name="_AboutHelpMyStreet" />
-        </div>
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
 
-        <div class="outer-container">
-            <div class="container inner-container--no-side-padding">
-                <div class="row hero flex text-center justify-center">
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
 
-                    <div class="flex sm6">
-                        <partial name="_HowCanWeHelpCard" model="Model" />
-                    </div>
-
-                    <div class="flex sm6">
-                        <partial name="_VolunteerWithUsCard" model="Model" />
-                    </div>
-
+                <div class="flex sm6">
+                    <partial name="_HowCanWeHelpCard" model="Model" />
                 </div>
+
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+
             </div>
         </div>
     </div>
+</div>
