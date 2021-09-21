@@ -186,6 +186,10 @@
                         &:hover {
                             color: $green;
                             transition: color 0.1s;
+
+                            img {
+                                border-color: $green;
+                            }
                         }
                     }
 
@@ -194,6 +198,7 @@
                         height: 4.5rem;
                         border-radius: 10px;
                         border: 2px solid $background-main;
+                        transition: border-color 0.1s;
                     }
 
                     &.selected {
