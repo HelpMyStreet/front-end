@@ -148,4 +148,59 @@
             line-height: 2rem;
         }
     }
+
+    .flag-panel-container {
+
+        img {
+            width: 8rem;
+            height: 4.5rem;
+            border-radius: 10px;
+        }
+
+        .flag-panel {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .flag-container {
+                margin: 0.5rem 0.25rem;
+
+                a {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    color: $black;
+
+                    &:hover {
+                        color: $green;
+                        transition: color 0.1s;
+                    }
+                }
+
+                img {
+                    border: 2px solid $background-main;
+                }
+
+                &.selected {
+                    img {
+                        border-color: $green;
+                    }
+                    a {
+                        color: $green;
+                    }
+                }
+            }
+        }
+
+        @media screen and (min-width: $med-screen) {
+            .flag-panel-toggle {
+                display: none;
+            }
+
+            .flag-panel {
+                justify-content: space-around;
+                flex-wrap: nowrap;
+            }
+        }
+    }
 }

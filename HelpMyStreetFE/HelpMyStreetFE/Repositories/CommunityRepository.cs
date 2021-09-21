@@ -818,7 +818,7 @@ namespace HelpMyStreetFE.Repositories
                 }
             };
 
-
+            communityViewModel.Flags.First(f => f.Language.Equals(language)).IsSelected = true;
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
