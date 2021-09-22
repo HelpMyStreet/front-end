@@ -94,7 +94,8 @@ namespace HelpMyStreetFE.Services.Requests
                             Recipient = recipient,
                             Requestor = requestor,
                             ReferringGroupId = referringGroupID,
-                            Source = source
+                            Source = source,
+                            Language = language
                         },
                         NewJobsRequest = new NewJobsRequest
                         {

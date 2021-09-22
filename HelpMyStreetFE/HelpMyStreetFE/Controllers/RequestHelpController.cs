@@ -161,7 +161,7 @@ namespace HelpMyStreetFE.Controllers
 
                     string language = requestHelp.Language;
 
-                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, string.Empty, user, cancellationToken);
+                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, language, user, cancellationToken);
                     if (response.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new
