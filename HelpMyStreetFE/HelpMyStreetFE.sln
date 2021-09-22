@@ -1,11 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpMyStreetFE.UnitTests", "HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj", "{AF5BA1F6-3877-4CF5-BFDC-5DCEFDD8805F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpMyStreetFE.UnitTests", "HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj", "{AF5BA1F6-3877-4CF5-BFDC-5DCEFDD8805F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelpMyStreetFE", "HelpMyStreetFE\HelpMyStreetFE.csproj", "{08214EB0-48F0-4F31-858A-17134575138E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelpMyStreetFE", "HelpMyStreetFE\HelpMyStreetFE.csproj", "{08214EB0-48F0-4F31-858A-17134575138E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
