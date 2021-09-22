@@ -14,7 +14,7 @@
 
 <div class="community" data-group-id="@Model.EncodedGroupId">
     <div class="container">
-        <div class="community-banner">
+        <div class="community-banner crop-when-oversize">
             <img src="~/img/community/bostongns/banner.png" alt="Boston" />
         </div>
     </div>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
 
-                <div class="sm6 pl-md card">
+                <div class="sm6 pl-md">
                     <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
                 </div>
             </div>

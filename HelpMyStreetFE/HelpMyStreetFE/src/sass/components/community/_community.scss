@@ -16,6 +16,15 @@
         img {
             width: 100%;
         }
+
+        &.crop-when-oversize {
+            display: block;
+
+            img {
+                width: 1248px;
+                max-width: initial;
+            }
+        }
     }
 
     .north-muskham-banner {
