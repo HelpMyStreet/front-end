@@ -20,11 +20,9 @@
     JobSummary nextTaskDue = null;
     var location = "";
 
-
-    if (Model.Location != null ){
-
+    if (Model.Location?.LocationDetails?.Name != null ){
+        
         location = Model.Location.LocationDetails.Name;
-            
     }
     else if (admin)
     {
