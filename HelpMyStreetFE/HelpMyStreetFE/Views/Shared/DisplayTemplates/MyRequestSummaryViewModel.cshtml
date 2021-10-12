@@ -111,7 +111,7 @@
                 </span>
             }
             <span class="job__info__activity__location">
-                @if (Model.Location != null)
+                @if (Model.Location?.LocationDetails?.Name != null)
                 {
                     @Model.Location.LocationDetails.Name
                 }
