@@ -1,0 +1,58 @@
+schedules:
+- cron: "0 0 * * *"
+  displayName: Midnight build
+  always: true
+  
+trigger:
+- master
+- dev
+- next-major-release
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.Specs.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: NuGet install
+
+- task: NuGetCommand@2
+  displayName: NuGet restore
+  inputs:
+    command: 'restore'
+    restoreSolution: '$(solution)'
+    feedsToUse: 'select'
+    vstsFeed: 'e5c08e0c-1c28-42ca-815f-5ca90021fd46/9ff815b0-abc7-442a-98cb-d2879666c3bb'
+
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 3.1.302'
+  inputs:
+    version: 3.1.302
+
+- task: DotNetCoreCLI@2
+  displayName: DotNetCore build
+  inputs:
+    command: 'build'
+    projects: 'HelpMyStreetFE.Specs/HelpMyStreetFE.Specs/HelpMyStreetFE.Specs.csproj'
+
+- task: BrowserStackConfig@0
+  inputs:
+    BrowserStackServiceEndPoint: 'BrowserStack Connection'
+
+- task: DotNetCoreCLI@2
+  displayName: DotNetCore test (BrowserStack)
+  inputs:
+    command: 'test'
+    projects: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: SpecFlowPlus@0
+  inputs:
+    generatorSource: 'FeatureFolder'
+    projectFilePath:  'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\HelpMyStreetFE.Specs.csproj'
+    testExecutionJson: 'HelpMyStreetFE.Specs\HelpMyStreetFE.Specs\bin\Release\netcoreapp3.1\TestExecution.json'
+    
