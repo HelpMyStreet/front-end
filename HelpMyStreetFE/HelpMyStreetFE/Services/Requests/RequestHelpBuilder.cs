@@ -365,7 +365,7 @@ namespace HelpMyStreetFE.Services.Requests
 
                 });                   
             }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.BostonGNS_Public || requestHelpFormVariant == RequestHelpFormVariant.BostonGNS_RequestSubmitter)
+            else if (requestHelpFormVariant == RequestHelpFormVariant.BostonGNS_Public)
             {
                 tasks.AddRange(new List<TasksViewModel>
                 {
@@ -376,6 +376,20 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.DogWalking},
                     new TasksViewModel { SupportActivity = SupportActivities.DigitalSupport},
                     new TasksViewModel { SupportActivity = SupportActivities.Other}
+                });
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.BostonGNS_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.Shopping},
+                    new TasksViewModel { SupportActivity = SupportActivities.PhoneCalls_Friendly},
+                    new TasksViewModel { SupportActivity = SupportActivities.CollectingPrescriptions},
+                    new TasksViewModel { SupportActivity = SupportActivities.PracticalSupport},
+                    new TasksViewModel { SupportActivity = SupportActivities.DogWalking},
+                    new TasksViewModel { SupportActivity = SupportActivities.DigitalSupport},
+                    new TasksViewModel { SupportActivity = SupportActivities.Other},
+                    new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport}
                 });
             }
             else
