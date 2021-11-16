@@ -823,23 +823,28 @@ namespace HelpMyStreetFE.Repositories
             {
                 new CommunityVolunteer()
                 {
-                    Location = "Proudly funded by The National Lottery Community Fund",
-                    IsLogo = true,
-                    ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
-                },
-                new CommunityVolunteer()
-                {
-                    Location = "Training and support provided by YMCA",
-                    IsLogo = true,
-                    ImageLocation = "/img/community/bostongns/ymcalogosmall.png"
-                },
-
-                new CommunityVolunteer()
-                {
                     Location = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/EHClogo.jpg"
                 },
+                new CommunityVolunteer()
+                {
+                    Location = "A community project bringing people together",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/GNS.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Location = "Training and support provided by YMCA Lincolnshire",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/ymcalincsnarrow.png"
+                },
+                new CommunityVolunteer()
+                {
+                    Location = "Proudly funded by The National Lottery Community Fund",
+                    IsLogo = true,
+                    ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
+                }
             };
 
             var carouselPath = "/img/community/bostongns/carousel";
