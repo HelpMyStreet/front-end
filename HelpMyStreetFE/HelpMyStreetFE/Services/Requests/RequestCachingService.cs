@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -97,7 +97,9 @@ namespace HelpMyStreetFE.Services.Requests
         /// <returns></returns>
         public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken)
         {
-            var requestSummaryInWrapper = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontWaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
+            // RefreshBehaviour.DontRefreshData avoids tsunami of calls to Request Service when loading a long page of requests
+            // Refresh of stale RequestSummaries will be triggered via GetRequestSummariesAsync instead
+            var requestSummaryInWrapper = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
 
             if (requestSummaryInWrapper.Content == null)
             {
