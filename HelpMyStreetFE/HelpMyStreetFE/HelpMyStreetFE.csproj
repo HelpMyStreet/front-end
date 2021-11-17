@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\img\community\ageUK\kent\southkentcoast\carousel\SKC 7.jpg" />
+    <Content Remove="wwwroot\img\community\bostongns\ymcalogosmall.png" />
   </ItemGroup>
 
   <ItemGroup>
