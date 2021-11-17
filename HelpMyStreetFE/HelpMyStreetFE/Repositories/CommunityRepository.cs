@@ -837,7 +837,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Location = "Training and support provided by YMCA Lincolnshire",
                     IsLogo = true,
-                    ImageLocation = "/img/community/bostongns/ymcalincsnarrow.png"
+                    ImageLocation = "/img/community/bostongns/ymcalincs.png"
                 },
                 new CommunityVolunteer()
                 {
