@@ -32,7 +32,7 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.806" />
+	<!--<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.806" />-->
 	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.806" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.806" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -76,5 +76,9 @@
     <Folder Include="wwwroot\img\community\southwell\carousel\" />
     <Folder Include="Views\Shared\Components\ViewLocationPopup\" />
     <Folder Include="wwwroot\img\community\ageUK\midmersey\carousel1\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HelpMyStreet.Cache\HelpMyStreet.Cache.csproj" />
   </ItemGroup>
 </Project>
