@@ -137,7 +137,7 @@ namespace HelpMyStreetFE.UnitTests.Services
         {
             var result = await _classUnderTest.GetRequestSummaryAsync(2, _cancellationToken);
 
-            _cache.Verify(x => x.GetCachedDataInWrapperAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-2", RefreshBehaviour.DontWaitForFreshData, _cancellationToken, NotInCacheBehaviour.WaitForData, null), Times.Once);
+            _cache.Verify(x => x.GetCachedDataInWrapperAsync(It.IsAny<Func<CancellationToken, Task<RequestSummary>>>(), "request-caching-service-request-2", RefreshBehaviour.DontRefreshData, _cancellationToken, NotInCacheBehaviour.WaitForData, null), Times.Once);
             Assert.AreEqual(2, result.RequestID);
         }
 
