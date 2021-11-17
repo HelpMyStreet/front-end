@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
+using HelpMyStreet.Cache.Models;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
@@ -37,18 +38,31 @@ namespace HelpMyStreetFE.Services.Requests
         {
             var results = new List<RequestSummary>();
             var missingIds = new List<int>();
+            var staleIds = new List<int>();
 
             foreach (int requestId in requestIds.Distinct())
             {
-                var requestSummary = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.DontGetData, cancellationToken);
-                if (requestSummary == null)
+                var requestSummaryInWrapper = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontRefreshData, NotInCacheBehaviour.DontGetData, cancellationToken);
+                if (requestSummaryInWrapper.Content == null)
                 {
                     missingIds.Add(requestId);
                 }
                 else
                 {
-                    results.Add(requestSummary);
+                    results.Add(requestSummaryInWrapper.Content);
+
+                    if (requestSummaryInWrapper.IsFreshUntil < DateTime.UtcNow)
+                    {
+                        staleIds.Add(requestId);
+                    }
                 }
+            }
+
+            if (staleIds.Count > 0)
+            {
+#pragma warning disable CS4014
+                Task.Factory.StartNew(async () => await RefreshCacheAsync(staleIds, cancellationToken));
+#pragma warning restore CS4014
             }
 
             if (missingIds.Count > 0)
@@ -78,14 +92,14 @@ namespace HelpMyStreetFE.Services.Requests
         /// <returns></returns>
         public async Task<RequestSummary> GetRequestSummaryAsync(int requestId, CancellationToken cancellationToken)
         {
-            var requestSummary = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontWaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
+            var requestSummaryInWrapper = await GetRequestSummaryAsync(requestId, RefreshBehaviour.DontWaitForFreshData, NotInCacheBehaviour.WaitForData, cancellationToken);
 
-            if (requestSummary == null)
+            if (requestSummaryInWrapper.Content == null)
             {
                 throw new Exception($"Failed to retrieve Request {requestId}");
             }
 
-            return requestSummary;
+            return requestSummaryInWrapper.Content;
         }
 
         /// <summary>
@@ -125,9 +139,9 @@ namespace HelpMyStreetFE.Services.Requests
             return requestSummaries;
         }
 
-        private async Task<RequestSummary> GetRequestSummaryAsync(int requestId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
+        private async Task<CachedItemWrapper<RequestSummary>> GetRequestSummaryAsync(int requestId, RefreshBehaviour refreshBehaviour, NotInCacheBehaviour notInCacheBehaviour, CancellationToken cancellationToken)
         {
-            return await _memDistCache_RequestSummary.GetCachedDataAsync(async (cancellationToken) =>
+            return await _memDistCache_RequestSummary.GetCachedDataInWrapperAsync(async (cancellationToken) =>
             {
                 return await _requestHelpRepository.GetRequestSummaryAsync(requestId);
             }, GetRequestCacheKey(requestId), refreshBehaviour, cancellationToken, notInCacheBehaviour);
