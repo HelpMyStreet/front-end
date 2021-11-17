@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
 using HelpMyStreet.Cache.Models;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
@@ -131,15 +132,22 @@ namespace HelpMyStreetFE.Services.Requests
         /// <returns></returns>
         public async Task<IEnumerable<RequestSummary>> RefreshCacheAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
         {
-            var requestSummaries = await GetRequestSummariesAsync(requestIds, cancellationToken);
-
-            foreach (var requestSummary in requestSummaries)
+            var tasks = requestIds.ChunkBy(100).Select(async (chunk) =>
             {
-                _ = _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
+                var chunkRequestSummaries = await GetRequestSummariesAsync(chunk, cancellationToken);
+
+                foreach (var requestSummary in chunkRequestSummaries)
                 {
-                    return requestSummary;
-                }, GetRequestCacheKey(requestSummary.RequestID), cancellationToken);
-            }
+                    _ = _memDistCache_RequestSummary.RefreshDataAsync(async (cancellationToken) =>
+                    {
+                        return requestSummary;
+                    }, GetRequestCacheKey(requestSummary.RequestID), cancellationToken);
+                }
+
+                return chunkRequestSummaries;
+            });
+
+            var requestSummaries = (await Task.WhenAll(tasks)).SelectMany(rss => rss);
 
             return requestSummaries;
         }
