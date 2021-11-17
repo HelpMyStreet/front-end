@@ -46,10 +46,11 @@ async function refreshBadge(badge) {
   if (response.fetchResponse == fetchResponses.SUCCESS) {
     var newCount = await response.fetchPayload;
     if ($(badge).find('.number').html() != newCount) {
-      if ($(badge).is(':visible')) {
-        $(badge).addClass('updated');
+      if (newCount > 0) {
+          $(badge).removeClass('dnone');
+          $(badge).addClass('updated');
       } else {
-        $(badge).removeClass('dnone');
+        $(badge).addClass('dnone');
       }
       $(badge).find('.number').html(newCount);
     } else {
