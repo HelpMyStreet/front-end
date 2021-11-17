@@ -1,9 +1,6 @@
 schedules:
 - cron: "0 0 * * *"
   displayName: Midnight build
-  branches:
-    include:
-    -  HLFR-180-Automated-Testing
   always: true
   
 trigger:
