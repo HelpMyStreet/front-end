@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,6 +8,9 @@ using HelpMyStreet.Cache.Models;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
+using Polly;
+using Polly.Contrib.DuplicateRequestCollapser;
+
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -15,6 +18,8 @@ namespace HelpMyStreetFE.Services.Requests
     {
         private readonly IRequestHelpRepository _requestHelpRepository;
         private readonly ILogger<RequestCachingService> _logger;
+
+        private static readonly IAsyncRequestCollapserPolicy _collapserPolicy = AsyncRequestCollapserPolicy.Create();
 
         private readonly IMemDistCache<RequestSummary> _memDistCache_RequestSummary;
 
@@ -124,9 +129,7 @@ namespace HelpMyStreetFE.Services.Requests
         /// <returns></returns>
         public async Task<IEnumerable<RequestSummary>> RefreshCacheAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Refreshing cache for RequestIDs {string.Join(',', requestIds)}");
-
-            var requestSummaries = await _requestHelpRepository.GetRequestSummariesAsync(requestIds);
+            var requestSummaries = await GetRequestSummariesAsync(requestIds, cancellationToken);
 
             foreach (var requestSummary in requestSummaries)
             {
@@ -135,6 +138,21 @@ namespace HelpMyStreetFE.Services.Requests
                     return requestSummary;
                 }, GetRequestCacheKey(requestSummary.RequestID), cancellationToken);
             }
+
+            return requestSummaries;
+        }
+
+        private async Task<IEnumerable<RequestSummary>> GetRequestSummariesAsync(IEnumerable<int> requestIds, CancellationToken cancellationToken)
+        {
+            var requestIdsString = string.Join(',', requestIds);
+
+            _logger.LogInformation($"Refreshing cache for RequestIDs {requestIdsString}");
+
+            var requestSummaries = await _collapserPolicy.ExecuteAsync(async (context, token) =>
+            {
+                _logger.LogInformation($"Going to repo for RequestIDs {requestIdsString}");
+                return await _requestHelpRepository.GetRequestSummariesAsync(requestIds);
+            }, new Context(requestIdsString), cancellationToken);
 
             return requestSummaries;
         }
