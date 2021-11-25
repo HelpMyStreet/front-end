@@ -664,10 +664,7 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Lithuanian"
-                }
-
-
-                ,
+                },
                 new Testimonial()
                 {
                     Tagline = "Tagad manas dienas ir daudz gaišākas",
@@ -739,6 +736,87 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Latvian"
+                }
+
+
+
+
+
+
+
+
+                ,
+                new Testimonial()
+                {
+                    Tagline = "Moje dni są teraz o wiele jaśniejsze",
+                    Message = "Moje dni są teraz o wiele jaśniejsze, gdy odwiedza mnie wolontariusz GNS, ponieważ wcześniej byłam dość samotna. Wolontariusze pomagają mi także w dotarciu na wizyty w szpitalu, ponieważ moja rodzina mieszka daleko.",
+                    Person = "Użytkownik usługi GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Ludzie, którym naprawdę zależy",
+                    Message = "Nie poradziłabym sobie bez moich Dobrych Sąsiadów. Korzystam z tej usługi głównie ze względu na transport, ale oferowane wsparcie i przyjaźń są fantastyczne. To ogromna różnica wiedzieć, że są ludzie, którym naprawdę zależy\".",
+                    Person = "Użytkownik usługi Programu Dobrego Sąsiada",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Poranki kawowe",
+                    Message = "Bardzo lubię uczestniczyć w porankach kawowych dobrych sąsiadów; poznałam tam wiele nowych osób i zaprzyjaźniłam się z nimi.",
+                    Person = "Użytkownik usługi Programu Dobrego Sąsiada",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Najlepsza rzecz, jaka wydarzyła się w tej okolicy od wielu lat",
+                    Message = "Nasz Program Dobrego Sąsiada to najlepsza rzecz, jaka przytrafiła się w tej okolicy od wielu lat. Jestem spokojna, że zawsze jest osoba, które może mi pomóc przy moich wielu regularnych wizytach w różnych przychodniach i naprawdę cieszę się z regularnych wizyt mojego przyjaciela. Drobne rzeczy, jak na przykład wykonywanie telefonów w moim imieniu, mają tak duże znaczenie.",
+                    Person = "Użytkownik usługi Programu Dobrego Sąsiada",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Jedna z najlepszych rzeczy, jakie zrobiłem",
+                    Message = "GNS jest jedną z najlepszych rzeczy, jakie zrobiłem w swoim życiu, pomimo tego, że organizacja i zarządzanie nim wymaga znacznego wysiłku i czasu. Bez Community Lincs nasz Program Dobrego Sąsiada nie zostałby zorganizowany. Nie byłby też tak pewny i kompetentny. Community Lincs to nasi ludzie, do których możemy się udać po wsparcie i informacje; bez nich czulibyśmy się zagubieni.",
+                    Person = "Wolontariusz Programu Dobrego Sąsiada",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Nowe przyjaźnie",
+                    Message = "Wspaniale jest słuchać relacji mieszkańców, którzy już nawiązali nowe znajomości i przyjaźnie dzięki Programom Dobrego Sąsiada. Jesteśmy dumni, że możemy finansować Community Lincs i może się ono dalej z sukcesem rozwijać pomagając większej liczbie osób korzystać z tego wsparcia i czuć się mniej odizolowany. Dzięki graczom w National Lottery, te Programy Dobrego Sąsiada integrują społeczności, umożliwiając im rozkwit.",
+                    Person = "Matt Poole, starszy kierownik ds. finansowania dla Midlands w National Lottery Community Fund",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Imponujące",
+                    Message = "Community Lincs wykrzesała iskrę, która zapoczątkowała zainteresowanie ustanowieniem naszego Programu Dobrego Sąsiada i zapewniła stałe wsparcie od początkowych konsultacji z lokalną społecznością poprzez prezentacje, tworzenie sieci kontaktów z istniejącymi organizacjami i koordynację ankiety środowiskowej do utworzenia ukonstytuowanej grupy z zasadami, procedurami i dostosowanym systemem informatycznym, którego zwieńczeniem jest w pełni działający program. Zakres udzielonego wsparcia był szczególnie imponujący.",
+                    Person = "Wolontariusz GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Bardzo satysfakcjonujące",
+                    Message = "Korzyści dla mnie były bardzo satysfakcjonujące - poznawanie nowych ludzi i uczenie się nowych umiejętności.",
+                    Person = "GNS brīvprātīgais",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Polish"
                 }
 
             };
