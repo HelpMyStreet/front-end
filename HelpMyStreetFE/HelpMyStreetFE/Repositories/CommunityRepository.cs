@@ -819,29 +819,36 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Flags.First(f => f.Language.Equals(language)).IsSelected = true;
 
+            Dictionary<Tuple<string, string>, string> dict = new Dictionary<Tuple<string, string>, string>();
+            
+            dict.Add(new Tuple<string, string>("Bulgarian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Подкрепа по Програмата на Общинския Съвет на Бостън “Глас за Здрави Общности” (или “Да Дадем Сила на Здравите Общности”)");
+            dict.Add(new Tuple<string, string>("Bulgarian", "A community project bringing people together"), "Общностен проект, който обединява хората");
+            dict.Add(new Tuple<string, string>("Bulgarian", "Training and support provided by YMCA Lincolnshire"), "Обучение и подкрепа, осигурени от YMCA Линкълншър");
+            dict.Add(new Tuple<string, string>("Bulgarian", "Proudly funded by The National Lottery Community Fund"), "Финансиран с гордост от Обществения Фонд на Националната лотария");
+
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
                 {
-                    Location = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"Supported by Boston Borough Council’s Empowering Healthy Communities Programme"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/EHClogo.jpg"
                 },
                 new CommunityVolunteer()
                 {
-                    Location = "A community project bringing people together",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"A community project bringing people together"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/GNS.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Location = "Training and support provided by YMCA Lincolnshire",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"Training and support provided by YMCA Lincolnshire"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/ymcalincs.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Location = "Proudly funded by The National Lottery Community Fund",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"Proudly funded by The National Lottery Community Fund"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
                 }
@@ -861,6 +868,11 @@ namespace HelpMyStreetFE.Repositories
             };
 
             return communityViewModel;
+        }
+
+        private string GetTranslationForCommunityVolunteer(Dictionary<Tuple<string, string>, string> dict, string language, string key)
+        {
+            return dict.GetValueOrDefault(new Tuple<string, string>(language, key), key);
         }
 
         private CommunityViewModel GetFtLOS()

@@ -446,6 +446,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Matt Poole, Senior Head of Funding for the Midlands at The National Lottery Community Fund",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
@@ -455,6 +456,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Good Neighbour Scheme Volunteer",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
@@ -473,6 +475,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "GNS Service User",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
@@ -482,6 +485,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "GNS Volunteer",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
@@ -491,6 +495,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "GNS Service User",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
@@ -500,6 +505,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "GNS Volunteer",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
@@ -509,17 +515,84 @@ namespace HelpMyStreetFE.Repositories
                     Person = "GNS Service User",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
+                    Language = "English"
                 },
 
                 new Testimonial()
                 {
-                    Tagline = "Nowe znajomości",
-                    Message = "Wspaniale jest usłyszeć od lokalnych mieszkańców, którzy już nawiązali nowe znajomości i przyjaźnie dzięki Programom Dobrego Sąsiada. Jesteśmy dumni z tego, że finansujemy Community Lincs, aby móc dalej budować na tym sukcesie, pomagając większej liczbie osób w skorzystaniu z tego wsparcia i poczuciu się mniej odosobnionym. Dzięki graczom National Lottery te programy dobrych sąsiadów połączą społeczności, umożliwiając im rozwój.",
-                    Person = "Matt Poole, Starszy kierownik ds. finansowania Midlands w The National Lottery Community Fund",
+                    Tagline = "Сега дните ми са много по-светли",
+                    Message = "Дните ми са много по-светли сега, когато ме посещава моят доброволец от СД, докато преди бях доста самотна/самотен. Те  ми помагат да отида до болницата за преглед, защото семейството ми живее далеч.",
+                    Person = "Потребител на услугата СД",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
-                    Language = "Polish"
+                    Language = "Bulgarian"
                 },
+
+                new Testimonial()
+                {
+                    Tagline = "Хора, които наистина ги е грижа",
+                    Message = "Не бих могъл/могла да се справя без моите добри съседи. Използвал/а съм услугата главно за транспорт, но подкрепата и приятелството са невероятни. От огромно значение е да знаеш, че има хора, които наистина ги е грижа.",
+                    Person = "Потребител на услугата „Програма за Добросъседство“",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Сутрешно кафе",
+                    Message = "Много ми харесва да участвам в добросъседските срещи за сутрешно кафе ; срещнах много нови хора и намерих приятели.",
+                    Person = "Потребител на услугата СД",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                },
+
+                new Testimonial()
+                {
+                    Tagline = "Най-хубавото, което се е случвало в този район от много години насам",
+                    Message = "Нашата програма  за добросъседство е най- хубавото нещо, което се е случвало в този район от много години насам. Тя ми дава спокойствие, като знам че  винаги има кой да ми помогне при честите ми посещения в различни клиники, и наистина се радвам на редовните посещения на моя приятел. Малки  неща, като например провеждането на телефонни разговори от мое име, са от огромно значение.",
+                    Person = "Потребител на услугата СД",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Едно от най-хубавите неща, които съм правил/а",
+                    Message = "СД е едно от най-хубавите неща, които съм правил/а в живота си, въпреки че организацията и управлението изискват значителни усилия и време. Без „Къмюнити Линкс“ нашата програма  за добросъседство нямаше да се реализира. Нито пък щеше да е толкова надеждна и компетентна. „Къмюнити Линкс“ са хората, към които се обръщаме за подкрепа и информация; без тях бихме били като изгубени.",
+                    Person = "Доброволец по Програмата  за Добросъседство",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Нови приятелства",
+                    Message = "Чудесно е да чуваме мнението на местни хора, които вече са създали нови връзки и приятелства благодарение на програмите  за добросъседство. Горди сме, че финансираме „Къмюнити Линкс“, за да може тя да продължи да надгражда този успех, като помага на все повече хора да се възползват от тази подкрепа и да се чувстват по-малко изолирани. Благодарение на участниците в Националната лотария, програмите  за добросъседство ще обединяват общностите и ще им дадат възможност да се развиват.",
+                    Person = "Мат Пул, старши ръководител „Финансиране за Мидлъндс“ към Обществения Фонд на Националната лотария",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Впечатляващо",
+                    Message = "„Къмюнити Линкс“ даде искрата, която запали интереса към създаването на нашата програма  за добросъседство. Те осигуряватнепрестанна подкрепа – от първоначалните консултации с местната общност чрез презентации, контакти с действащи организации и координиране на анкети в общността до формирането на група с политики, процедури и специално разработена ИТ система, която се превърна в пълноценно функционираща програма. Обхватът на предоставената подкрепа е особено  впечатляващ.",
+                    Person = "Доброволец на СД",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Много удовлетворяващо",
+                    Message = "За мен удовлетворението е огромно – срещам нови хора и усвоявам нови умения.",
+                    Person = "Доброволец на СД",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Bulgarian"
+                }
             };
 
             return messageList;
