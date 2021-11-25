@@ -783,7 +783,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Name = "Lietuvis",
                     ImageLocation = "/img/community/bostongns/flags/lithuania-flag-small.png",
-                    Language = "Lithunian"
+                    Language = "Lithuanian"
                 },
                 new FlagViewModel()
                 {
@@ -825,6 +825,11 @@ namespace HelpMyStreetFE.Repositories
             dict.Add(new Tuple<string, string>("Bulgarian", "A community project bringing people together"), "Общностен проект, който обединява хората");
             dict.Add(new Tuple<string, string>("Bulgarian", "Training and support provided by YMCA Lincolnshire"), "Обучение и подкрепа, осигурени от YMCA Линкълншър");
             dict.Add(new Tuple<string, string>("Bulgarian", "Proudly funded by The National Lottery Community Fund"), "Финансиран с гордост от Обществения Фонд на Националната лотария");
+
+            dict.Add(new Tuple<string, string>("Lithuanian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"),"Rėmėjas – Bostono rajono tarybos programa „Sveikų bendruomenių įgalinimas“");
+            dict.Add(new Tuple<string, string>("Lithuanian", "A community project bringing people together"), "Bendruomenės projektas, vienijantis žmones");
+            dict.Add(new Tuple<string, string>("Lithuanian", "Training and support provided by YMCA Lincolnshire"), "Apmokymus ir paramą tekia „YMCA Lincolnshire“");
+            dict.Add(new Tuple<string, string>("Lithuanian", "Proudly funded by The National Lottery Community Fund"), "Finansavimą teikia Nacionalinės loterijos bendruomenės fondas");
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {

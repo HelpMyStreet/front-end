@@ -592,7 +592,80 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Bulgarian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Mano dienos dabar daug šviesesnės",
+                    Message = "Dabar, kai mane lanko geros kaimynystės programos savanoris, mano dienos daug šviesesnės, nes anksčiau buvau gana vienišas. Jie taip pat padeda man nuvykti į vizitus ligoninėje, nes mano šeima gyvena toli.",
+                    Person = "Geros kaimynystės programos paslaugų naudotojas",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Žmonės, kuriems iš tiesų rūpi",
+                    Message = "Negalėčiau apsieiti be savo gerųjų kaimynų. Šia paslauga daugiausia naudojuosi dėl transporto, tačiau parama ir draugystė yra fantastiška. Labai svarbu žinoti, kad yra žmonių, kuriems tikrai rūpi.",
+                    Person = "Geros kaimynystės programos paslaugų naudotojas",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Kavos rytai",
+                    Message = "Man labai patinka dalyvauti gerų kaimynų rytinuose kavos susitikimuose; sutikau daug naujų žmonių ir susiradau draugų.",
+                    Person = "Geros kaimynystės programos paslaugų naudotojas",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Geriausias dalykas, kuris įvyko šioje vietovėje per daugelį metų",
+                    Message = "Mūsų geros kaimynystės programa yra geriausias dalykas, kuris šioje vietovėje įvyko per daugelį metų. Man ramu, kad visada yra kas nors, kas gali padėti man reguliariai vykstant į skirtingas klinikas, ir labai džiaugiuosi reguliariais draugo apsilankymais. Tokios smulkmenos, kaip skambinimas telefonu mano vardu, yra labai svarbios.",
+                    Person = "Geros kaimynystės programos paslaugų naudotojas",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Vienas iš geriausių mano padarytų dalykų",
+                    Message = "Geros kaimynystės programa – vienas geriausių dalykų, kuriuos esu padaręs savo gyvenime, nors jos organizavimas ir valdymas reikalauja daug pastangų ir laiko. Be „Community Lincs“ mūsų geros kaimynystės programa nebūtų organizuota. Ji taip pat nebūtų buvusi tokia patikima ir kompetentinga. „Community Lincs“ – žmonės, į kuriuos kreipiamės dėl paramos ir informacijos; be jų jaustumėmės pasimetę.",
+                    Person = "Geros kaimynystės programos savanoris",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Naujos draugystės",
+                    Message = "Nuostabu girdėti iš vietos gyventojų, kurie jau užmezgė naujus ryšius ir draugystę, pasinaudoję geros kaimynystės programomis. Didžiuojamės galėdami finansuoti „Community Lincs“ organizaciją, kad ji galėtų toliau sėkmingai plėtoti šią veiklą, padėdama daugiau žmonių pasinaudoti šia parama ir jaustis mažiau atskirtiems. Nacionalinės loterijos žaidėjų dėka šios geros kaimynystės programos suvienys bendruomenes ir suteiks joms galimybę klestėti.",
+                    Person = "Matt Poole, Nacionalinės loterijos bendruomenės fondo Midlands regiono finansavimo vyresnysis vadovas",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Įspūdinga",
+                    Message = "„Community Lincs“ įžiebė kibirkštį, kuri paskatino susidomėjimą mūsų geros kaimynystės programos kūrimu, ir nuolat teikė paramą nuo pradinių konsultacijų su vietos bendruomene, rengiant pristatymus, užmezgant ryšius su esamomis organizacijomis ir koordinuojant bendruomenės apklausą, iki įsteigtos grupės su politika, procedūromis ir specialiai sukurta IT sistema, kol galiausiai buvo sukurta visiškai veikianti programa. Suteiktos paramos mastas buvo ypač įspūdingas.",
+                    Person = "Geros kaimynystės programos savanoris",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Labai naudinga",
+                    Message = "Man pačiam tai buvo labai naudinga – susipažinau su naujais žmonėmis ir įgijau naujų įgūdžių.",
+                    Person = "Geros kaimynystės programos savanoris",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Lithuanian"
                 }
+
             };
 
             return messageList;
