@@ -666,6 +666,81 @@ namespace HelpMyStreetFE.Repositories
                     Language = "Lithuanian"
                 }
 
+
+                ,
+                new Testimonial()
+                {
+                    Tagline = "Tagad manas dienas ir daudz gaišākas",
+                    Message = "Tagad, kad mani apmeklē mans GNS brīvprātīgais, manas dienas ir daudz gaišākas, jo agrāk es biju diezgan vientuļa. Viņi arī palīdz man nokļūt uz vizītēm slimnīcā, jo mana ģimene dzīvo tālu prom.",
+                    Person = "GNS pakalpojumu lietotājs",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Cilvēki, kuriem patiešām rūp",
+                    Message = "Es nevarētu iztikt bez saviem Labajiem kaimiņiem. Esmu izmantojusi šo pakalpojumu galvenokārt transporta vajadzībām, bet atbalsts un draudzība ir fantastiska. Tā ir milzīga atšķirība, zinot, ka ir cilvēki, kuriem patiešām rūp.",
+                    Person = "Labo kaimiņu shēmas pakalpojumu lietotājs",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Kafijas rīti",
+                    Message = "Man ļoti patīk apmeklēt Labo kaimiņu kafijas rītus; esmu iepazinusi daudz jaunu cilvēku un ieguvusi draugus.",
+                    Person = "GNS pakalpojumu lietotājs",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Labākais, kas šajā apkaimē noticis daudzu gadu laikā",
+                    Message = "Mūsu Labo kaimiņu programma ir labākais, kas šajā reģionā noticis daudzu gadu laikā. Tā dod man sirdsmieru, ka vienmēr ir kāds, kas var palīdzēt manos regulārajos braucienos uz dažādām klīnikām, un man ļoti patīk, ka mani regulāri apmeklē mans draugs. Nelieli darbi, piemēram, telefona zvanu veikšana manā vārdā, ir tik nozīmīgi.",
+                    Person = "GNS pakalpojumu lietotājs",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Viena no labākajām lietām, ko esmu darījis",
+                    Message = "GNS ir viena no labākajām lietām, ko esmu darījis savā dzīvē, lai gan tās organizēšana un vadīšana prasīja daudz pūļu un laika. Bez Community Lincs mūsu Labo kaimiņu programma nepastāvētu. Mēs arī nebūtu tik pārliecināti un kompetenti. Community Lincs ir mūsu cilvēki, pie kuriem vērsties pēc atbalsta un informācijas; bez viņiem mēs justos pazuduši.",
+                    Person = "Laba kaimiņa shēmas brīvprātīgais",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Jaunas draudzības",
+                    Message = "Ir brīnišķīgi dzirdēt no vietējiem iedzīvotājiem, kuri, pateicoties Labā kaimiņa shēmām, jau ir nodibinājuši jaunus kontaktus un draudzības. Mēs lepojamies, ka finansējam Community Lincs, lai tā varētu turpināt vairot šos panākumus, palīdzot vairāk cilvēkiem izmantot šo atbalstu un justies mazāk izolētiem. Pateicoties Nacionālās loterijas spēlētājiem, šīs Labo kaimiņu shēmas saliedēs kopienas, dodot tām iespēju uzplaukt.",
+                    Person = "Mets Pūls (Matt Poole), Nacionālās loterijas kopienas fonda (National Lottery Community Fund) Midlendas reģiona finansēšanas nodaļas vecākais vadītājs",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Iespaidīgi",
+                    Message = "Community Lincs nodrošināja dzirksteli, kas radīja interesi par mūsu Labo kaimiņu shēmas izveidi, un ir sniegusi nepārtrauktu atbalstu, sākot no sākotnējām konsultācijām ar vietējo kopienu, izmantojot prezentācijas, sadarbojoties ar esošajām organizācijām un koordinējot kopienas aptauju, līdz pat grupas izveidei ar politiku, procedūrām un pielāgotu IT sistēmu, kas noslēdzas ar pilnībā funkcionējošas shēmas izveidi. Sniegtā atbalsta apjoms ir bijis īpaši iespaidīgs.",
+                    Person = "GNS brīvprātīgais",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Ļoti vērtīgs",
+                    Message = "Man pašai tas ir devis lielu gandarījumu - esmu iepazinusi jaunus cilvēkus un apguvusi jaunas prasmes.",
+                    Person = "GNS brīvprātīgais",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Latvian"
+                }
+
             };
 
             return messageList;
