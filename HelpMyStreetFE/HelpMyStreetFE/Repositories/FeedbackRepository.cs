@@ -809,9 +809,6 @@ namespace HelpMyStreetFE.Repositories
                     GroupKey = "boston",
                     Language = "Polish"
                 },
-
-
-
                 new Testimonial()
                 {
                     Tagline = "Os meus dias são agora muito mais alegres",
@@ -883,6 +880,86 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Portugese"
+                },
+
+
+
+
+
+
+
+
+                new Testimonial()
+                {
+                    Tagline = "Zilele mele au devenit mult mai luminoase",
+                    Message = "Zilele mele au devenit mult mai luminoase acum, când mă vizitează voluntarul proiectului de bună vecinătate (GNS), înainte aveam o viață destul de singuratică. De asemenea mă ajută să ajung la programările la spital, având în vedere că familia mea locuiește la o distanță mare.",
+                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate (GNS)",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Oameni cărora chiar le pasă",
+                    Message = "Nu m-aș descurca fără voluntarii din Proiectul de bună vecinătate. Am apelat la serviciile lor în principal pentru transport, însă sprijinul oferit și prietenia sunt fantastice. Este nemaipomenit de important să știu că există oameni cărora chiar le pasă.",
+                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Dimineața la o cafea",
+                    Message = "Îmi place foarte mult să-mi petrec diminețile la o cafea în cadrul proiectului de bună vecinătate; am cunoscut multe persoane noi și mi-am făcut prieteni.",
+                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate (GNS)",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Cel mai bun lucru care s-a întâmplat în zonă de mulți ani",
+                    Message = "Proiectul nostru de bună vecinătate este cel mai bun lucru întâmplat în această zonă de mulți ani. Mă liniștește gândul că există mereu cineva care să mă ajute cu numeroasele mele vizite regulate la diverse clinici și mă bucur sincer de vizitele periodice pe care mi le face voluntarul prieten. Lucruri mărunte, precum faptul că dă telefoane în numele meu, fac o mare diferență.",
+                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate (GNS)",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Unul dintre cele mai bune lucruri pe care le-am făcut",
+                    Message = "GNS este unul dintre cele mai bune lucruri pe care le-am făcut vreodată, în ciuda faptului că organizarea și gestionarea proiectului presupun dedicarea unor eforturi și investiții de timp considerabile. Dacă nu ar fi existat Community Lincs, Proiectul nostru de bună vecinătate nu ar fi fost organizat, nici nu ar fi fost la fel de încrezător și de avizat. Community Lincs înseamnă oamenii cărora ne putem adresa pentru asistență și informații; fără ei, ne-am simți pierduți.",
+                    Person = "Voluntar în cadrul Proiectului de bună vecinătate",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Prietenii noi",
+                    Message = "Este minunat să auzim de la localnici care au creat deja relații și prietenii noi datorită proiectelor de bună vecinătate. Suntem mândri că finanțăm Community Lincs astfel încât să se poată baza în continuare pe această reușită, ajutând mai mulți oameni să se bucure de acest sprijin și să se simtă mai puțin izolați. Mulțumită participanților la loteria națională, aceste proiecte de bună vecinătate vor reuni comunitățile, dându-le posibilitatea de a prospera.",
+                    Person = "Matt Poole, coordonator principal al programului de finanțare pentru regiunea Midlands în cadrul Fondului Comunitar al Loteriei Naționale",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Impresionant",
+                    Message = "Community Lincs a adus scânteia care a aprins interesul pentru înființarea proiectului nostru de bună vecinătate și a oferit sprijin continuu de la consultarea inițială cu membrii comunității locale, apoi la prezentări, întărirea relațiilor cu organizațiile existente și coordonarea unui sondaj în cadrul comunității până la formarea unui grup stabil cu politici, proceduri și un sistem IT special, culminând cu un proiect pe deplin operațional. Amploarea sprijinului asigurat a fost deosebit de impresionantă.",
+                    Person = "Voluntar în cadrul GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "O experiență foarte satisfăcătoare",
+                    Message = "Pentru mine, este o experiență foarte satisfăcătoare – am cunoscut persoane noi și am deprins abilități noi.",
+                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
                 }
 
             };
