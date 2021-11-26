@@ -1013,7 +1013,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Волонтер GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
-                    Language = "Romanian"
+                    Language = "Russian"
                 },
                 new Testimonial()
                 {
@@ -1022,7 +1022,7 @@ namespace HelpMyStreetFE.Repositories
                     Person = "Пользователь услуг программы добрососедства",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
-                    Language = "Romanian"
+                    Language = "Russian"
                 }
 
             };
