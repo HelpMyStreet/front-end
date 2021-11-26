@@ -880,16 +880,7 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Portugese"
-                },
-
-
-
-
-
-
-
-
-                new Testimonial()
+                },new Testimonial()
                 {
                     Tagline = "Zilele mele au devenit mult mai luminoase",
                     Message = "Zilele mele au devenit mult mai luminoase acum, când mă vizitează voluntarul proiectului de bună vecinătate (GNS), înainte aveam o viață destul de singuratică. De asemenea mă ajută să ajung la programările la spital, având în vedere că familia mea locuiește la o distanță mare.",
@@ -957,6 +948,78 @@ namespace HelpMyStreetFE.Repositories
                     Tagline = "O experiență foarte satisfăcătoare",
                     Message = "Pentru mine, este o experiență foarte satisfăcătoare – am cunoscut persoane noi și am deprins abilități noi.",
                     Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Теперь мои дни стали намного ярче",
+                    Message = "Мои дни стали намного светлее, когда меня навещает волонтер программы добрососедства (GNS), ведь раньше мне было очень одиноко. Они также помогают мне добираться на приемы в больницу, поскольку моя семья живет далеко.",
+                    Person = "Пользователь услуг GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Russian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Люди, которым действительно не все равно",
+                    Message = "Я бы не смогла обходиться без моих добрых соседей. Я пользовалась услугами службы в основном для транспортировки, но поддержка и дружба просто фантастические. Очень важно знать, что рядом есть люди, которым не все равно.",
+                    Person = "Пользователь услуг программы добрососедства",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Russian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Утренние встречи за чашкой кофе",
+                    Message = "Мне очень нравится посещать утренние встречи за чашкой кофе для добрых соседей; я познакомилась со многими новыми людьми и завела друзей.",
+                    Person = "Пользователь услуг GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Russian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Лучшее, что произошло в этом районе за многие годы",
+                    Message = "Наша программа добрососедства — это лучшее, что произошло в этом районе за многие годы. Она дает мне уверенность в том, что всегда есть кому помочь мне с регулярными походами в различные клиники, и мне очень нравятся регулярные визиты моего помощника. Такие мелочи, как телефонные звонки от моего имени, имеют большое значение.",
+                    Person = "Пользователь услуг GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Russian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Одна из лучших вещей, которые я сделал",
+                    Message = "GNS — одна из лучших вещей, которые я сделал в своей жизни несмотря на то, что ее организация и управление требуют значительных усилий и времени. Без Community Lincs наша программа добрососедства не была бы организована. Она также не была бы столь уверенной и компетентной. Community Lincs — это люди, к которым мы обращаемся за поддержкой и информацией; без них мы бы чувствовали себя потерянными.",
+                    Person = "Волонтер Программы добрососедства",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Russian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Новые дружеские отношения",
+                    Message = "Приятно слышать отзывы от местных жителей, которые уже завели новые связи и дружбу благодаря программам добрососедства. Мы гордимся тем, что финансируем Community Lincs, чтобы она могла продолжать развивать этот успех, помогая большему количеству людей воспользоваться этой поддержкой и почувствовать себя менее изолированными. Благодаря игрокам Национальной лотереи эти программы добрососедства объединят сообщества и позволят им процветать.",
+                    Person = "Мэтт Пул, старший руководитель отдела финансирования для центральных графств в Фонде сообществ Национальной лотереи",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Russian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Впечатляюще",
+                    Message = "Community Lincs послужила той искрой, которая зажгла интерес к созданию нашей программы добрососедства, и обеспечила постоянную поддержку, начиная с первоначальных консультаций с местным сообществом посредством презентаций, налаживания связей с существующими организациями и координации опроса сообщества и заканчивая формированием группы с политикой, процедурами и разработанной на заказ ИТ-системой, что привело к созданию полностью функционирующей программы. Особенно впечатляет широта предоставляемой поддержки.",
+                    Person = "Волонтер GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Romanian"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Очень полезно",
+                    Message = "Для меня самого знакомство с новыми людьми и приобретение новых навыков было очень полезно.",
+                    Person = "Пользователь услуг программы добрососедства",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Romanian"
