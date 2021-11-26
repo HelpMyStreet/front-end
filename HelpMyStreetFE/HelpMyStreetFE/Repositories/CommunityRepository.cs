@@ -841,6 +841,11 @@ namespace HelpMyStreetFE.Repositories
             dict.Add(new Tuple<string, string>("Polish", "Training and support provided by YMCA Lincolnshire"), "Szkolenie i wsparcie zapewnione przez YMCA Lincolnshire");
             dict.Add(new Tuple<string, string>("Polish", "Proudly funded by The National Lottery Community Fund"), "Dumnie finansowany przez Fundusz Społeczny Loterii Narodowej");
 
+            dict.Add(new Tuple<string, string>("Portugese", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Com o apoio do Programa Empowering Healthy Communities do Boston Borough Council");
+            dict.Add(new Tuple<string, string>("Portugese", "A community project bringing people together"), "Um projeto comunitário que une as pessoas");
+            dict.Add(new Tuple<string, string>("Portugese", "Training and support provided by YMCA Lincolnshire"), "Formação e apoio prestados pela YMCA Lincolnshire");
+            dict.Add(new Tuple<string, string>("Portugese", "Proudly funded by The National Lottery Community Fund"), "Orgulhosamente financiado pelo Fundo Comunitário da Lotaria Nacional (The National Lottery Community Fund)");
+
 
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {

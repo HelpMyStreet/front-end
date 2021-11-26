@@ -736,16 +736,7 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Latvian"
-                }
-
-
-
-
-
-
-
-
-                ,
+                },
                 new Testimonial()
                 {
                     Tagline = "Moje dni są teraz o wiele jaśniejsze",
@@ -817,6 +808,81 @@ namespace HelpMyStreetFE.Repositories
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Polish"
+                },
+
+
+
+                new Testimonial()
+                {
+                    Tagline = "Os meus dias são agora muito mais alegres",
+                    Message = "Agora que o meu voluntário do GNS me visita, os meus dias são muito mais alegres, pois sentia-me muito sozinho. Também me ajudam a ir às minhas consultas no hospital, pois a minha família vive muito longe.",
+                    Person = "Utilizador do Serviço GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Pessoas que realmente se importam",
+                    Message = "Eu não conseguiria dar conta de tudo sem os meus Bons Vizinhos. Tenho utilizado o serviço principalmente para transporte, mas o apoio e a amizade são fantásticos. Saber que há pessoas que realmente se importam faz uma grande diferença.",
+                    Person = "Utilizador do Serviço Good Neighbour Scheme",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Manhãs de café",
+                    Message = "Gosto muito de participar nos eventos organizados pelos Bons Vizinhos, em que bebemos café de manhã. Conheci várias pessoas e fiz amigos.",
+                    Person = "Utilizador do Serviço GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "A melhor coisa a acontecer nesta zona desde há muito tempo",
+                    Message = "O nosso Good Neighbour Scheme é a melhor coisa que aconteceu nesta zona desde há muito tempo. Saber que há sempre alguém para me ajudar nas minhas deslocações periódicas à clínica dá-me paz de espírito, e gosto muito das visitas regulares do meu novo amigo. São as pequenas coisas, como fazer telefonemas em meu nome, que fazem toda a diferença.",
+                    Person = "Utilizador do Serviço GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Uma das melhores coisas que já fiz",
+                    Message = "O GNS é uma das melhores coisas que fiz na vida, apesar de a sua organização e gestão levar um esforço e tempo consideráveis. Sem a Community Lincs, o nosso Good Neighbour Scheme não teria sido organizado. Nem teria tanta confiança e competência. A Community Lincs é constituída pelo nosso pessoal, a quem recorremos para obter apoio e informação. Sem eles, estaríamos perdidos.",
+                    Person = "Voluntário do Good Neighbour Scheme",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Novas amizades",
+                    Message = "É maravilhoso ouvir os residentes locais dizer que já estabeleceram novas ligações e amizades graças aos Good Neighbour Schemes. É com orgulho que financiamos a Community Lincs para que esta possa continuar a crescer, ajudando mais pessoas a tirar partido deste apoio e sentir-se menos isoladas. Graças aos jogadores da Lotaria Nacional, estes Good Neighbour Schemes irão unir as comunidades, ajudando-as a prosperar.",
+                    Person = "Matt Poole, responsável pelo financiamento para as Midlands do Fundo Comunitário da Lotaria Nacional",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Impressionante",
+                    Message = "A Community Lincs produziu a faísca que despertou o interesse na criação do nosso Good Neighbour Scheme e tem oferecido um apoio contínuo desde a consulta inicial com a comunidade local, através de apresentações, interações com organizações existentes e coordenação de um inquérito comunitário para a formação de um grupo constituído com políticas, procedimentos e um sistema de TI personalizado, culminando num programa totalmente operacional. A envergadura do apoio prestado tem sido particularmente impressionante.",
+                    Person = "Voluntário do GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
+                },
+                new Testimonial()
+                {
+                    Tagline = "Muito gratificante",
+                    Message = "As vantagens para mim têm sido muito gratificantes: conhecer pessoas novas e adquirir novas competências.",
+                    Person = "Utilizador do Serviço GNS",
+                    Type = FeedbackMessageType.Group,
+                    GroupKey = "boston",
+                    Language = "Portugese"
                 }
 
             };
