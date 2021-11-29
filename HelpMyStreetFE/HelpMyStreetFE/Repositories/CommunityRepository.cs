@@ -783,7 +783,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Name = "Lietuvis",
                     ImageLocation = "/img/community/bostongns/flags/lithuania-flag-small.png",
-                    Language = "Lithunian"
+                    Language = "Lithuanian"
                 },
                 new FlagViewModel()
                 {
@@ -819,29 +819,66 @@ namespace HelpMyStreetFE.Repositories
 
             communityViewModel.Flags.First(f => f.Language.Equals(language)).IsSelected = true;
 
+            Dictionary<Tuple<string, string>, string> dict = new Dictionary<Tuple<string, string>, string>();
+            
+            dict.Add(new Tuple<string, string>("Bulgarian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Подкрепа по Програмата на Общинския Съвет на Бостън “Глас за Здрави Общности” (или “Да Дадем Сила на Здравите Общности”)");
+            dict.Add(new Tuple<string, string>("Bulgarian", "A community project bringing people together"), "Общностен проект, който обединява хората");
+            dict.Add(new Tuple<string, string>("Bulgarian", "Training and support provided by YMCA Lincolnshire"), "Обучение и подкрепа, осигурени от YMCA Линкълншър");
+            dict.Add(new Tuple<string, string>("Bulgarian", "Proudly funded by The National Lottery Community Fund"), "Финансиран с гордост от Обществения Фонд на Националната лотария");
+
+            dict.Add(new Tuple<string, string>("Lithuanian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"),"Rėmėjas – Bostono rajono tarybos programa „Sveikų bendruomenių įgalinimas“");
+            dict.Add(new Tuple<string, string>("Lithuanian", "A community project bringing people together"), "Bendruomenės projektas, vienijantis žmones");
+            dict.Add(new Tuple<string, string>("Lithuanian", "Training and support provided by YMCA Lincolnshire"), "Apmokymus ir paramą tekia „YMCA Lincolnshire“");
+            dict.Add(new Tuple<string, string>("Lithuanian", "Proudly funded by The National Lottery Community Fund"), "Finansavimą teikia Nacionalinės loterijos bendruomenės fondas");
+
+            dict.Add(new Tuple<string, string>("Latvian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Atbalsta Bostonas rajona padomes programma \"Veselīgu kopienu stiprināšanai\"");
+            dict.Add(new Tuple<string, string>("Latvian", "A community project bringing people together"), "Sabiedrības projekts, kas apvieno cilvēkus");
+            dict.Add(new Tuple<string, string>("Latvian", "Training and support provided by YMCA Lincolnshire"), "YMCA Lincolnshire nodrošinātā apmācība un atbalsts");
+            dict.Add(new Tuple<string, string>("Latvian", "Proudly funded by The National Lottery Community Fund"), "Ar lepnumu finansē Nacionālās loterijas kopienas fonds");
+
+            dict.Add(new Tuple<string, string>("Polish", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Wspierany przez program Rady Miasta Boston \"Empowering Healthy Communities\" (Wzmacnianie Zdrowych Społeczności).");
+            dict.Add(new Tuple<string, string>("Polish", "A community project bringing people together"), "Projekt wspólnotowy zbliżający ludzi");
+            dict.Add(new Tuple<string, string>("Polish", "Training and support provided by YMCA Lincolnshire"), "Szkolenie i wsparcie zapewnione przez YMCA Lincolnshire");
+            dict.Add(new Tuple<string, string>("Polish", "Proudly funded by The National Lottery Community Fund"), "Dumnie finansowany przez Fundusz Społeczny Loterii Narodowej");
+
+            dict.Add(new Tuple<string, string>("Portugese", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Com o apoio do Programa Empowering Healthy Communities do Boston Borough Council");
+            dict.Add(new Tuple<string, string>("Portugese", "A community project bringing people together"), "Um projeto comunitário que une as pessoas");
+            dict.Add(new Tuple<string, string>("Portugese", "Training and support provided by YMCA Lincolnshire"), "Formação e apoio prestados pela YMCA Lincolnshire");
+            dict.Add(new Tuple<string, string>("Portugese", "Proudly funded by The National Lottery Community Fund"), "Orgulhosamente financiado pelo Fundo Comunitário da Lotaria Nacional (The National Lottery Community Fund)");
+
+            dict.Add(new Tuple<string, string>("Romanian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Susținute prin Programul „Empowering Healthy Communities” al Consiliului Districtual Boston");
+            dict.Add(new Tuple<string, string>("Romanian", "A community project bringing people together"), "Un proiect comunitar care aduce oamenii împreună");
+            dict.Add(new Tuple<string, string>("Romanian", "Training and support provided by YMCA Lincolnshire"), "Instruire și support oferite de Asociația Creștină pentru Tineret ( YMCA) din Lincolnshire");
+            dict.Add(new Tuple<string, string>("Romanian", "Proudly funded by The National Lottery Community Fund"), "Finanțat cu mândrie de Fondul Comunitar al Loteriei Naționale");
+
+            dict.Add(new Tuple<string, string>("Russian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "При поддержке программы «Расширение возможностей здоровых сообществ» Совета Бостонского округа");
+            dict.Add(new Tuple<string, string>("Russian", "A community project bringing people together"), "Общественный проект, объединяющий людей");
+            dict.Add(new Tuple<string, string>("Russian", "Training and support provided by YMCA Lincolnshire"), "Обучение и поддержка, предоставляемые Христианской Ассоциацией молодых людей (YMCA)  в Линкольншире");
+            dict.Add(new Tuple<string, string>("Russian", "Proudly funded by The National Lottery Community Fund"), "Финансируется Фондом сообществ Национальной лотереи");
+
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
             {
                 new CommunityVolunteer()
                 {
-                    Location = "Supported by Boston Borough Council’s Empowering Healthy Communities Programme",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"Supported by Boston Borough Council’s Empowering Healthy Communities Programme"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/EHClogo.jpg"
                 },
                 new CommunityVolunteer()
                 {
-                    Location = "A community project bringing people together",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"A community project bringing people together"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/GNS.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Location = "Training and support provided by YMCA Lincolnshire",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"Training and support provided by YMCA Lincolnshire"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/ymcalincs.png"
                 },
                 new CommunityVolunteer()
                 {
-                    Location = "Proudly funded by The National Lottery Community Fund",
+                    Location = GetTranslationForCommunityVolunteer(dict,language,"Proudly funded by The National Lottery Community Fund"),
                     IsLogo = true,
                     ImageLocation = "/img/community/bostongns/NationalLotteryLogo.png"
                 }
@@ -861,6 +898,11 @@ namespace HelpMyStreetFE.Repositories
             };
 
             return communityViewModel;
+        }
+
+        private string GetTranslationForCommunityVolunteer(Dictionary<Tuple<string, string>, string> dict, string language, string key)
+        {
+            return dict.GetValueOrDefault(new Tuple<string, string>(language, key), key);
         }
 
         private CommunityViewModel GetFtLOS()
