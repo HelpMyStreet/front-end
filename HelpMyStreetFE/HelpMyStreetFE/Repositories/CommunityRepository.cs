@@ -717,6 +717,8 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
+            communityViewModel.NewsTickerMessages =  _groupService.GetNewsTickerMessages((int)Groups.AgeUKWirral).Result;
+
             return communityViewModel;
         }
 

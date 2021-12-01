@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Models.Community
 {
@@ -38,5 +39,7 @@ namespace HelpMyStreetFE.Models.Community
         public bool ShowPopupOnSignUp { get; set; } = false;
 
         public string Language { get; set; } = "English";
+
+        public List<NewsTickerMessage> NewsTickerMessages { get; set; }
     }
 }
