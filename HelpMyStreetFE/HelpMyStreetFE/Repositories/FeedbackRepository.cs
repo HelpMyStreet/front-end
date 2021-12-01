@@ -1019,7 +1019,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Очень полезно",
                     Message = "Для меня самого знакомство с новыми людьми и приобретение новых навыков было очень полезно.",
-                    Person = "Пользователь услуг программы добрососедства",
+                    Person = "Волонтер GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Russian"
