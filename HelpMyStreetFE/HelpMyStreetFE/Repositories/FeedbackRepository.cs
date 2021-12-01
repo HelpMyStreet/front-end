@@ -759,7 +759,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Poranki kawowe",
                     Message = "Bardzo lubię uczestniczyć w porankach kawowych dobrych sąsiadów; poznałam tam wiele nowych osób i zaprzyjaźniłam się z nimi.",
-                    Person = "Użytkownik usługi Programu Dobrego Sąsiada",
+                    Person = "Użytkownik usługi GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Polish"
@@ -768,7 +768,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Najlepsza rzecz, jaka wydarzyła się w tej okolicy od wielu lat",
                     Message = "Nasz Program Dobrego Sąsiada to najlepsza rzecz, jaka przytrafiła się w tej okolicy od wielu lat. Jestem spokojna, że zawsze jest osoba, które może mi pomóc przy moich wielu regularnych wizytach w różnych przychodniach i naprawdę cieszę się z regularnych wizyt mojego przyjaciela. Drobne rzeczy, jak na przykład wykonywanie telefonów w moim imieniu, mają tak duże znaczenie.",
-                    Person = "Użytkownik usługi Programu Dobrego Sąsiada",
+                    Person = "Użytkownik usługi GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Polish"
@@ -804,7 +804,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Bardzo satysfakcjonujące",
                     Message = "Korzyści dla mnie były bardzo satysfakcjonujące - poznawanie nowych ludzi i uczenie się nowych umiejętności.",
-                    Person = "GNS brīvprātīgais",
+                    Person = "Użytkownik usługi GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Polish"
@@ -1019,7 +1019,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Очень полезно",
                     Message = "Для меня самого знакомство с новыми людьми и приобретение новых навыков было очень полезно.",
-                    Person = "Пользователь услуг программы добрососедства",
+                    Person = "Волонтер GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Russian"
