@@ -32,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="src\sass\components\h-ticker.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.843" />
 	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.843" />

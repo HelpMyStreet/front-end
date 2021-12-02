@@ -11,16 +11,19 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Google.Apis.Util;
 using HelpMyStreet.Utils.Extensions;
 using System;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
         private readonly IGroupService _groupService;
+        private readonly INewsTickersService _newsTickerService;
 
-        public CommunityRepository(IGroupService groupService)
+        public CommunityRepository(IGroupService groupService, INewsTickersService newsTickerService)
         {
             _groupService = groupService;
+            _newsTickerService = newsTickerService;
         }
 
         private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken, string language = null)
@@ -717,7 +720,7 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-            communityViewModel.NewsTickerMessages =  _groupService.GetNewsTickerMessages((int)Groups.AgeUKWirral).Result;
+            communityViewModel.NewsTickerMessages =  _newsTickerService.GetNewsTickerMessages((int)Groups.AgeUKWirral).Result;
 
             return communityViewModel;
         }
