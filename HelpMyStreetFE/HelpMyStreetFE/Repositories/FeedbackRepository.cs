@@ -947,7 +947,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "O experiență foarte satisfăcătoare",
                     Message = "Pentru mine, este o experiență foarte satisfăcătoare – am cunoscut persoane noi și am deprins abilități noi.",
-                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate",
+                    Person = "Voluntar în cadrul GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Romanian"
