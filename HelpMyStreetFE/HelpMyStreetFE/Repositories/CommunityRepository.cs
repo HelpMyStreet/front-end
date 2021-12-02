@@ -720,7 +720,7 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-            communityViewModel.NewsTickerMessages =  _newsTickerService.GetNewsTickerMessages((int)Groups.AgeUKWirral).Result;
+            communityViewModel.NewsTickerMessages =  _newsTickerService.GetNewsTickerMessages((int) Groups.AgeUKWirral ).Result;
 
             return communityViewModel;
         }

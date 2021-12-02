@@ -3,12 +3,16 @@
 
 @model CommunityViewModel
 
+@if (Model.NewsTickerMessages != null)
+{
 <div class="hwrap">
-    <div class="hmove">
+    <div class="hmove">       
         @foreach (var message in Model.NewsTickerMessages)
         {
             <div class="hitem"> @Markdown.ParseHtmlString(message.Message)</div>
         }
     </div>
 </div>
+}
+
 
