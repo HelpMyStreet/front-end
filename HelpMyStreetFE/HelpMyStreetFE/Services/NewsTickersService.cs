@@ -33,11 +33,11 @@ namespace HelpMyStreetFE.Services
 
                 List<NewsTickerMessage> requestServiceMessages = await _requestService.GetNewsTickerMessages(groupId);
 
-                //List<NewsTickerMessage> feedbackServiceMessages = await _feedbackService.GetNewsTickerMessages(groupId);
+                List<NewsTickerMessage> feedbackServiceMessages = await _feedbackService.GetNewsTickerMessages(groupId);
 
                 return groupServiceMessages
                     .Concat(requestServiceMessages)
-                    //.Concat(feedbackServiceMessages)
+                    .Concat(feedbackServiceMessages)
                     .ToList();
             }, $"{CACHE_KEY_PREFIX}-group-{groupId}",RefreshBehaviour.DontWaitForFreshData, CancellationToken.None, NotInCacheBehaviour.DontWaitForData);
 
