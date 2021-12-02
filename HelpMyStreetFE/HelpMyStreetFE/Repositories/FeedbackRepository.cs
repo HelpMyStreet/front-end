@@ -804,7 +804,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Bardzo satysfakcjonujące",
                     Message = "Korzyści dla mnie były bardzo satysfakcjonujące - poznawanie nowych ludzi i uczenie się nowych umiejętności.",
-                    Person = "Użytkownik usługi GNS",
+                    Person = "Wolontariusz GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Polish"
