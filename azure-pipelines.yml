@@ -46,6 +46,7 @@ steps:
     projects: 'HelpMyStreetFE\HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
+# Expect to remove this step once the new version of npm/node works
 - task: NodeTool@0
   inputs:
     versionSpec: '14.18.1'
