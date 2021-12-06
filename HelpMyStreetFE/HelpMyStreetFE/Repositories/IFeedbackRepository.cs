@@ -12,6 +12,6 @@ namespace HelpMyStreetFE.Repositories
         Task<List<Testimonial>> GetTestimonials();
         Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole, int? userId);
         Task<bool> PostRecordFeedback(int jobId, RequestRoles requestRoles, int? userId, FeedbackRating feedbackRating);
-        Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
     }
 }

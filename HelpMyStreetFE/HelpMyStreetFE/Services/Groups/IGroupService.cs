@@ -11,7 +11,7 @@ namespace HelpMyStreetFE.Services.Groups
 {
     public interface IGroupService
     {
-        Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
         Task<List<Group>> GetGroupsWithMapDetails(MapLocation mapLocation, CancellationToken cancellationToken);
         Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);
         Task<Group> GetGroupById(int groupId, CancellationToken cancellationToken);

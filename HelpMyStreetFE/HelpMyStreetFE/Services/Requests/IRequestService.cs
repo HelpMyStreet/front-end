@@ -11,7 +11,7 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestService
     {
-        Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
         Task<IEnumerable<JobBasic>> GetAllJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<RequestSummary>> GetRequestsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);

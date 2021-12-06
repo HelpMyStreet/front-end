@@ -191,7 +191,7 @@ namespace HelpMyStreetFE.Services.Groups
             }, $"{CACHE_KEY_PREFIX}-group-maps-{(int)mapLocation}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
         }
 
-        public async Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
         {
             return await _groupRepository.GetNewsTickerMessages(groupId);
         }

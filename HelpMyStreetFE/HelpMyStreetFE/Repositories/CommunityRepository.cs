@@ -33,14 +33,14 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Tankersley => GetTankersley(),
                 Groups.Ruddington => GetRuddington(),
                 Groups.AgeUKLSL => GetAgeUKLSL(),
-                Groups.AgeUKWirral => GetAgeUKWirral(),
+                Groups.AgeUKWirral => await GetAgeUKWirral(cancellationToken),
                 Groups.FTLOS => GetFtLOS(),
                 Groups.AgeUKNottsBalderton => GetBalderton(),
                 Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
                 Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
                 Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
-                Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
+                Groups.LincolnshireVolunteers => await GetLincolnshireVolunteers(cancellationToken),
                 Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
                 Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),
                 Groups.Southwell => GetSouthwell(),
@@ -380,7 +380,7 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetLincolnshireVolunteers()
+        private async Task<CommunityViewModel> GetLincolnshireVolunteers(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("lincs-volunteers", "LincolnshireVolunteers", true);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
@@ -443,7 +443,7 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-            communityViewModel.NewsTickerMessages = _newsTickerService.GetNewsTickerMessages((int)Groups.LincolnshireVolunteers).Result;
+            communityViewModel.NewsTickerMessages = await _newsTickerService.GetNewsTickerMessages((int)Groups.LincolnshireVolunteers, cancellationToken);
 
             return communityViewModel;
         }
@@ -695,7 +695,7 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetAgeUKWirral()
+        private async Task<CommunityViewModel> GetAgeUKWirral(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageukwirral", "AgeUKWirral");
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
@@ -721,7 +721,7 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
-            communityViewModel.NewsTickerMessages = _newsTickerService.GetNewsTickerMessages((int)Groups.AgeUKWirral).Result;
+            communityViewModel.NewsTickerMessages = await _newsTickerService.GetNewsTickerMessages((int)Groups.AgeUKWirral, cancellationToken);
 
             return communityViewModel;
         }

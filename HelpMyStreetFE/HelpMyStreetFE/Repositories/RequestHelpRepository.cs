@@ -379,7 +379,7 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
-        public async Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
         {
             string url = "/api/GetNewsTicker";
 

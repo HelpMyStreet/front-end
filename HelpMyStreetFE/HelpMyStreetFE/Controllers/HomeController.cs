@@ -13,6 +13,7 @@ using System.Linq;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Enums;
+using System.Threading;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -30,14 +31,14 @@ namespace HelpMyStreetFE.Controllers
             _newsTickersService = newsTickersService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Get home");
 
             var model = new HomeViewModel
             {
                 isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated),
-                NewsTickerMessages = await _newsTickersService.GetNewsTickerMessages(null)
+                NewsTickerMessages = await _newsTickersService.GetNewsTickerMessages(null, cancellationToken)
             };
 
             

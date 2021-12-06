@@ -352,7 +352,7 @@ namespace HelpMyStreetFE.Services.Requests
             return eHist;
         }
 
-        public async Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
         {
             return await _requestHelpRepository.GetNewsTickerMessages(groupId);
         }

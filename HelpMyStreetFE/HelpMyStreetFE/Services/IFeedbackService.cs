@@ -15,6 +15,6 @@ namespace HelpMyStreetFE.Services
         Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole, int? userId);
         Task<Result> PostRecordFeedback(User user, CapturedFeedback feedback);
 
-        Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
     }
 }

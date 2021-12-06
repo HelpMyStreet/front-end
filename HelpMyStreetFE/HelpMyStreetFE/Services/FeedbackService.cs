@@ -32,7 +32,7 @@ namespace HelpMyStreetFE.Services
             return await _feedbackRepository.GetFeedbackExists(jobId, requestRole, userId);
         }
 
-        public async Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
         {
             return await _feedbackRepository.GetNewsTickerMessages(groupId);
         }

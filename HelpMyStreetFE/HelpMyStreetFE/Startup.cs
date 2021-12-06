@@ -190,7 +190,7 @@ namespace HelpMyStreetFE
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
             services.AddMemCache();
-            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<NewsTickerMessage>>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnHour));
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<NewsTickerMessage>>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<int>>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<RequestSummary>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));

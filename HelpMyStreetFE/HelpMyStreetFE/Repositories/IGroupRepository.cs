@@ -31,6 +31,6 @@ namespace HelpMyStreetFE.Repositories
         Task<List<Location>> GetGroupLocations(int groupId, bool includeChildGroups);
         Task<List<Location>> GetUserLocations(int userId);
         Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant);
-        Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
     }
 }

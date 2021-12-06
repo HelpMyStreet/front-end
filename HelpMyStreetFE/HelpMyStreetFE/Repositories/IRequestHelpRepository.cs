@@ -36,6 +36,6 @@ namespace HelpMyStreetFE.Repositories
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
         Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request);
-        Task<List<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
     }
 }
