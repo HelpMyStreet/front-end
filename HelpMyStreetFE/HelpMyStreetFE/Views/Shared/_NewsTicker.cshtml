@@ -1,0 +1,17 @@
+﻿@using HelpMyStreet.Contracts;
+@using Westwind.AspNetCore.Markdown;
+
+@model List<NewsTickerMessage>
+
+@if (Model != null)
+{
+    <div class="hwrap">
+        <div class="hmove">
+            @foreach (var message in Model)
+            {
+                <div class="hitem"> @Markdown.ParseHtmlString(message.Message)</div>
+            }
+        </div>
+    </div>
+}
+

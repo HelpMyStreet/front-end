@@ -11,16 +11,19 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Google.Apis.Util;
 using HelpMyStreet.Utils.Extensions;
 using System;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
         private readonly IGroupService _groupService;
+        private readonly INewsTickersService _newsTickerService;
 
-        public CommunityRepository(IGroupService groupService)
+        public CommunityRepository(IGroupService groupService, INewsTickersService newsTickerService)
         {
             _groupService = groupService;
+            _newsTickerService = newsTickerService;
         }
 
         private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
@@ -440,6 +443,8 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
+            communityViewModel.NewsTickerMessages = _newsTickerService.GetNewsTickerMessages((int)Groups.LincolnshireVolunteers).Result;
+
             return communityViewModel;
         }
 
@@ -715,6 +720,8 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
                 },
             };
+
+            communityViewModel.NewsTickerMessages = _newsTickerService.GetNewsTickerMessages((int)Groups.AgeUKWirral).Result;
 
             return communityViewModel;
         }
