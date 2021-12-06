@@ -46,6 +46,9 @@ steps:
     projects: 'HelpMyStreetFE\HelpMyStreetFE.UnitTests\HelpMyStreetFE.UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.18.1'
 - task: Npm@1
   displayName: npm install
   inputs:

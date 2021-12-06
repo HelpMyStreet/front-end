@@ -804,7 +804,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Bardzo satysfakcjonujące",
                     Message = "Korzyści dla mnie były bardzo satysfakcjonujące - poznawanie nowych ludzi i uczenie się nowych umiejętności.",
-                    Person = "Użytkownik usługi GNS",
+                    Person = "Wolontariusz GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Polish"
@@ -876,7 +876,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "Muito gratificante",
                     Message = "As vantagens para mim têm sido muito gratificantes: conhecer pessoas novas e adquirir novas competências.",
-                    Person = "Utilizador do Serviço GNS",
+                    Person = "Voluntário do GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Portugese"
@@ -947,7 +947,7 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Tagline = "O experiență foarte satisfăcătoare",
                     Message = "Pentru mine, este o experiență foarte satisfăcătoare – am cunoscut persoane noi și am deprins abilități noi.",
-                    Person = "Utilizator al serviciilor asigurate în cadrul Proiectului de bună vecinătate",
+                    Person = "Voluntar în cadrul GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",
                     Language = "Romanian"
