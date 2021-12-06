@@ -1,13 +1,13 @@
-﻿@using HelpMyStreetFE.Models.Community;
+﻿@using HelpMyStreet.Contracts;
 @using Westwind.AspNetCore.Markdown;
 
-@model CommunityViewModel
+@model List<NewsTickerMessage>
 
-@if (Model.NewsTickerMessages != null)
+@if (Model != null)
 {
 <div class="hwrap">
     <div class="hmove">       
-        @foreach (var message in Model.NewsTickerMessages)
+        @foreach (var message in Model)
         {
             <div class="hitem"> @Markdown.ParseHtmlString(message.Message)</div>
         }
