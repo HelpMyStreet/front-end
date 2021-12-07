@@ -9,6 +9,7 @@ using System.Threading;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Contracts.GroupService.Response;
 using HelpMyStreetFE.Models.RequestHelp;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Services.Groups
 {
@@ -188,6 +189,11 @@ namespace HelpMyStreetFE.Services.Groups
             {
                 return (await _groupRepository.GetGroupsWithMapDetails(mapLocation)).Groups;
             }, $"{CACHE_KEY_PREFIX}-group-maps-{(int)mapLocation}", RefreshBehaviour.DontWaitForFreshData, cancellationToken);
+        }
+
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        {
+            return await _groupRepository.GetNewsTickerMessages(groupId);
         }
     }
 }

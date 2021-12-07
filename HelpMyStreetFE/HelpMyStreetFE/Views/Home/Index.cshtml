@@ -33,6 +33,8 @@
         </div>
     </header>
 
+    <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
+
     <div class="row hero flex sm12 mb-sm content-page">
 
         <div class="row sm5 align-center pad-md">
@@ -59,10 +61,10 @@
             <div class="row sm12 text-center justify-center mb-lg">
                 @if (!Model.isLoggedIn)
                 {
-    <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
+                    <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
                 else
                 {
-    <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
+                    <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
             </div>
         </div>
         <div class="flex sm7 home-video-container justify-center align-center text-right mb-lg pad-sm" id="video">
@@ -138,9 +140,9 @@
     <div class="row justify-center text-center">
         @if (Model.isLoggedIn)
         {
-<a href="/account" class="btn cta large fill mt16 btn--sign-up fill">View Open Requests</a> }
-            else
-            {
-<a href="/login" class="btn cta large fill mt16 btn--sign-up fill">Sign Up or Log In</a>}
+            <a href="/account" class="btn cta large fill mt16 btn--sign-up fill">View Open Requests</a> }
+        else
+        {
+            <a href="/login" class="btn cta large fill mt16 btn--sign-up fill">Sign Up or Log In</a>}
     </div>
 </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HelpMyStreet.Contracts;
 using HelpMyStreet.Contracts.CommunicationService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Enums;
@@ -29,6 +30,11 @@ namespace HelpMyStreetFE.Services
         public async Task<bool> GetFeedbackExists(int jobId, RequestRoles requestRole, int? userId)
         {
             return await _feedbackRepository.GetFeedbackExists(jobId, requestRole, userId);
+        }
+
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        {
+            return await _feedbackRepository.GetNewsTickerMessages(groupId);
         }
 
         public async Task<Result> PostRecordFeedback(User user, CapturedFeedback feedback)

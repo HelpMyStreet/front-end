@@ -5,11 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Services.Groups
 {
     public interface IGroupService
     {
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
         Task<List<Group>> GetGroupsWithMapDetails(MapLocation mapLocation, CancellationToken cancellationToken);
         Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);
         Task<Group> GetGroupById(int groupId, CancellationToken cancellationToken);

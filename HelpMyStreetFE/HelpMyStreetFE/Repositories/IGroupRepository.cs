@@ -5,6 +5,7 @@ using HelpMyStreet.Utils.Enums;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using System;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -30,5 +31,6 @@ namespace HelpMyStreetFE.Repositories
         Task<List<Location>> GetGroupLocations(int groupId, bool includeChildGroups);
         Task<List<Location>> GetUserLocations(int userId);
         Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
     }
 }

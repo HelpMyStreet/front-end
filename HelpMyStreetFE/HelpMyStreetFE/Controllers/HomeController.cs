@@ -13,6 +13,7 @@ using System.Linq;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreet.Utils.Enums;
+using System.Threading;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -20,20 +21,24 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly INewsTickersService _newsTickersService;
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration)
+
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, INewsTickersService newsTickersService)
         {
             _logger = logger;
             _configuration = configuration;
+            _newsTickersService = newsTickersService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Get home");
 
             var model = new HomeViewModel
             {
                 isLoggedIn = ((HttpContext.User != null) && HttpContext.User.Identity.IsAuthenticated),
+                NewsTickerMessages = await _newsTickersService.GetNewsTickerMessages(null, cancellationToken)
             };
 
             
