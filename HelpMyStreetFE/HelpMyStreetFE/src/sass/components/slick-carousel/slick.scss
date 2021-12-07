@@ -101,35 +101,55 @@
 }
 
 .slick-track {
-  @extend .flex;
-
-  .slick-slide {
     @extend .flex;
-    height: auto;
 
-    div {
-      @extend .flex;
+    .slick-slide {
+        @extend .flex;
+        height: auto;
 
-      div.card-feedback {
-        .card-feedback-inner {
-          @extend .flex-column;
-          height: 100%;
+        div {
+            @extend .flex;
 
-          img {
-              height: 10rem;
-              width: 8rem;
-          }
+            div.card-feedback {
+                .card-feedback-inner {
+                    @extend .flex-column;
+                    height: 100%;
 
-          * {
-            @extend .flex-grow;
+                    img {
+                        height: 10rem;
+                        width: 8rem;
+                    }
 
-            &.person {
-              font-style: italic;
-              flex-grow: 0;
+                    * {
+                        @extend .flex-grow;
+
+                        &.person {
+                            font-style: italic;
+                            flex-grow: 0;
+                        }
+                    }
+                }
             }
-          }
+
+            div.card-partner {
+                .card-partner-inner {
+                    @extend .flex-column;
+                    height: 100%;
+
+                    img {
+                        width:8rem;
+                    }
+
+                    * {
+                        @extend .flex-grow;
+
+                        &.person {
+                            font-style: italic;
+                            flex-grow: 0;
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
