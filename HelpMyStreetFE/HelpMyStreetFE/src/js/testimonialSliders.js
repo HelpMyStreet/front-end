@@ -27,5 +27,31 @@ $(function () {
             }
         ]
     });
+
+    $(".partners-container").not('.slick-initialized').slick({
+        slidesToShow: 6,
+        slidesToScroll: 6,
+        autoplay: true,
+        autoplaySpeed: 10000,
+        dots: true,
+
+        responsive: [
+            {
+                breakpoint: 1100,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                },
+            },
+            {
+                breakpoint: 700,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false,
+                }
+            }
+        ]
+    });
     
 });

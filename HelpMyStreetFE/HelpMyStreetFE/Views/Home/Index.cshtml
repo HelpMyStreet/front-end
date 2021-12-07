@@ -33,6 +33,10 @@
         </div>
     </header>
 
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Partners")
+    </div>
+
     <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
 
     <div class="row hero flex sm12 mb-sm content-page">
