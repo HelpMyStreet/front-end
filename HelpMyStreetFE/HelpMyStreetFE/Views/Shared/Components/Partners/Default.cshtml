@@ -1,0 +1,24 @@
+﻿@model HelpMyStreetFE.Models.PartnersViewModel;
+@using HelpMyStreetFE.Models;
+@using HelpMyStreetFE.Models.Community;
+
+<script type="text/javascript" src="~/testimonials.js" asp-append-version="true"></script>
+
+<div class="ml-md mr-md">
+    @if (Model.Partners.Count() > 0)
+    {
+        <div>In partnership with...</div>
+        <div class="partners-container">            
+            @foreach (Partner partner in Model.Partners)
+            {
+                <div class="card-partner mr-sm ml-sm mb-sm">
+                    <div class="card-partner-inner">
+                        <a href="/community/@partner.GroupKey">
+                            <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = (int) partner.Group }" />
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
