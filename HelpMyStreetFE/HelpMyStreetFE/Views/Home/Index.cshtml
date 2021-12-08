@@ -8,34 +8,36 @@
 }
 @if (!Model.isLoggedIn)
 {
-<div class="sticky-nav" id="sticky-nav">
-    <div class="row sm12 justify-center">
-        <div class="flex row">
-            <div class="sm6 mr-sm">
-                <a href="/login" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up or Log In</a>
-                <span>  </span>
+    <div class="sticky-nav" id="sticky-nav">
+        <div class="row sm12 justify-center">
+            <div class="flex row">
+                <div class="sm6 mr-sm">
+                    <a href="/login" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up or Log In</a>
+                    <span>  </span>
 
-            </div>
-            <div class="sm6">
-                <span>  </span>
-                <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
+                </div>
+                <div class="sm6">
+                    <span>  </span>
+                    <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
+                </div>
             </div>
         </div>
-    </div>
-</div>}
+    </div>}
+<div class="outer-container outer-container--darker">
+    <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
+</div>
 <div class="container">
 
-    <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
 
     <header class="content-page__header">
-        <div class="row">
-            <h2 class="sm12 mb-md pad-md">The platform that helps local people look after each other</h2>
-        </div>
     </header>
 
     <div class="row hero flex sm12 mb-sm content-page">
 
-        <div class="row sm5 align-center pad-md">
+        <div class="row sm6 align-center pad-md">
+            <div class="row">
+                <h2 class="sm12 mb-md">The platform that helps local people look after each other</h2>
+            </div>
             <p class="row sm12 mt-sm mb-xs">
                 HelpMyStreet helps organisations to connect neighbours in need with people who can help.<br>
             </p>
@@ -52,26 +54,12 @@
                     <li>Assistance getting to and from essential appointments</li>
                 </ul>
             </div>
-            <p class="row sm12 mt-sm mb-sm">Request help today</p>
-
-            <div class="row sm12 text-center justify-center mb-sm">
-                <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
-            </div>
-
-            <p class="row sm12 mt-sm mb-sm">Help your neighbours</p>
-
-            <div class="row sm12 text-center justify-center mb-lg">
-                @if (!Model.isLoggedIn)
-                {
-                    <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
-                else
-                {
-                    <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
+            <div class="row sm12 mt-md">
+                @await Component.InvokeAsync("Partners")
             </div>
         </div>
-        <div class="row card sm7 street-check" id="street-map">
-            <h2 class="mb-sm">Enter your postcode to see if there are <span class="orange" >VOLUNTEERS</span> or <span class="blue">ORGANISATIONS</span> near you?</h2>
-            <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
+        <div class="row card sm6 street-check" id="street-map">
+            <input id="pac-input" class="controls" type="text" placeholder="Type your town, city or street...">
             <div id="your-location">
                 <button title="Your location">
                     <div id="your-location-image"></div>
@@ -80,29 +68,44 @@
             <div class="row sm12 map homepage-map" id="map">
             </div>
             <div class="row sm12 text-center justify-center">
-                <p><strong>Would you like to see your organisation on the map? Email <a href="mailto:contact@helpmystreet.org">contact@helpmystreet.org</a>.</strong></p>
+                <p class="mb-0"><strong>Would you like to see your organisation on the map?</strong> <a href="mailto:contact@helpmystreet.org">Email us</a></p>
             </div>
         </div>
     </div>
 
-    <div class="container mt-md mb-lg">
-        @await Component.InvokeAsync("Partners")
-    </div>
 
-    <div class="mt-lg">
-        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
-    </div>
 
-    <div class="how-to-use row mt72 justify-center card">
-        <partial name="_HowToUse" model=@Model.isLoggedIn />
-    </div>
 
-    <div class="row mt-lg justify-center">
-        <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
-        <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
-    </div>
+</div>
 
-    <div class="outer-container outer-container--darker">
+<div class="outer-container outer-container--darker mt-md">
+    <div class="container pt-md pb-md">
+        <div class="how-to-use row justify-center card">
+            <partial name="_HowToUse" model=@Model.isLoggedIn />
+        </div>
+    </div>
+</div>
+
+<div class="outer-container">
+    <div class="container">
+        <div class="mt-lg">
+            @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
+        </div>
+    </div>
+</div>
+
+<div class="outer-container outer-container--darker mt-lg">
+    <div class="container pt-sm">
+        <div class="row mt-lg justify-center">
+            <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
+            <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="outer-container">
+    <div class="container">
         <partial name="_AboutHelpMyStreet" />
     </div>
 </div>

@@ -7,8 +7,8 @@
 <div class="ml-md mr-md">
     @if (Model.Partners.Count() > 0)
     {
-        <div>In partnership with...</div>
-        <div class="partners-container">            
+        <div class="mb-sm" style="margin-left:-1.5rem;"><strong>In partnership with...</strong></div>
+        <div class="partners-container" style="width: 500px;">
             @foreach (Partner partner in Model.Partners)
             {
                 <div class="card-partner mr-sm ml-sm mb-sm">

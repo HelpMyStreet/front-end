@@ -8,8 +8,8 @@ let defaultOptions = {
   allowSearch: true,
   consoleCoordinates: false,
   initialLat: 55.0,
-  initialLng: -10.0,
-  initialZoom: 5.3,
+  initialLng: -7.0,
+  initialZoom: 4.9,
   divID: "map",
   singlePin: false,
 };

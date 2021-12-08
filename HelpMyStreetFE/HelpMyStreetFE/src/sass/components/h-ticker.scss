@@ -1,7 +1,6 @@
 ﻿/* (A) FIXED WRAPPER */
 .hwrap {
     overflow: hidden; /* HIDE SCROLL BAR */
-    background: #eee;
 }
 
 /* (B) MOVING TICKER WRAPPER */
@@ -14,8 +13,13 @@
     flex-shrink: 0;
     width: 100%;
     box-sizing: border-box;
-    padding: 10px;
     text-align: center;
+    margin: 0.5rem;
+
+    p {
+      margin: 0;
+      font-size: 1.5rem;
+    }
 }
 
 /* (D) ANIMATION - MOVE ITEMS FROM RIGHT TO LEFT */
@@ -31,7 +35,7 @@
 }
 
 .hmove {
-    animation: tickerh linear 30s infinite;
+    animation: tickerh linear 60s infinite;
 }
 
 .hmove:hover {
