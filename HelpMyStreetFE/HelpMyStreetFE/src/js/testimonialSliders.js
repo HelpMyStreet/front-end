@@ -29,8 +29,8 @@ $(function () {
     });
 
     $(".partners-container").not('.slick-initialized').slick({
-        slidesToShow: 2,
-        slidesToScroll: 2,
+        slidesToShow: 1,
+        slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 10000,
         dots: true,
