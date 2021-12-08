@@ -35,7 +35,7 @@
     <div class="row">
         <h2 class="sm12 mb-lg mt-lg">The platform that helps local people look after each other</h2>
     </div>
-    <div class="row hero flex sm12 mb-sm content-page">
+    <div class="row hero flex sm12 mb-lg content-page">
 
         <div class="row sm6 align-center pad-md">
             <p class="row sm12 mt-sm mb-xs">
@@ -54,32 +54,36 @@
                     <li><strong>Assistance</strong> getting to and from essential appointments</li>
                 </ul>
             </div>
+            <div class="row sm12 mt-lg">
+                <div class="row sm6 text-center justify-center mb-sm">
+                    <a href="/request-help" class="btn cta fill cta--orange mr-lg">Request Help</a>
+
+                    @if (!Model.isLoggedIn)
+                    {
+                        <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
+                    else
+                    {
+                        <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
+                </div>
+            </div>
         </div>
         <div class="row sm6">
-            <div class="row sm12 mt-xs ml-lg">
+            <img src="~/img/homepage-video-still.jpg"/>
+        </div>
+    </div>
+</div>
+
+<div class="outer-container outer-container--darker">
+    <div class="container">
+        <div class="row sm12">
+            <div class="row sm12 mt-md ml-lg mb-lg">
                 @await Component.InvokeAsync("Partners")
             </div>
         </div>
     </div>
-    <div class="row sm12 mt-lg">
-        <div class="row sm6 text-center justify-center mb-sm">
-            <a href="/request-help" class="btn cta fill cta--orange mr-lg">Request Help</a>
-
-            @if (!Model.isLoggedIn)
-            {
-                <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
-            else
-            {
-                <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
-        </div>
-    </div>
-
-
-
-
 </div>
 
-<div class="outer-container outer-container--darker">
+<div class="outer-container">
     <div class="container">
         <div class="mt-lg" id="street-map">
             <h2 class="mb-sm pt-md">Check for <span class="orange">volunteers</span> and <span class="blue">organisations</span> near you!</h2>
@@ -98,15 +102,15 @@
     </div>
 </div>
 
-<div class="outer-container ">
+<div class="outer-container outer-container--darker">
     <div class="container">
-        <div class="mt-lg">
+        <div class="mt-lg pb-lg">
             @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
         </div>
     </div>
 </div>
 
-<div class="outer-container mt-md outer-container--darker">
+<div class="outer-container mt-md">
     <div class="container pt-md pb-md">
         <div class="how-to-use row justify-center card">
             <partial name="_HowToUse" model=@Model.isLoggedIn />
@@ -114,7 +118,7 @@
     </div>
 </div>
 
-<div class="outer-container mt-lg">
+<div class="outer-container mt-lg outer-container--darker">
     <div class="container pt-sm">
         <div class="row mt-lg justify-center">
             <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
@@ -124,7 +128,7 @@
 </div>
 
 
-<div class="outer-container outer-container--darker">
+<div class="outer-container">
     <div class="container">
         <partial name="_AboutHelpMyStreet" />
     </div>
