@@ -23,55 +23,26 @@
             </div>
         </div>
     </div>}
-<div class="outer-container">
-    <img style="width: 100%;" src="~/img/community/ageUK/kent/southkentcoast/banner.jpg" />
-    <div class="container">
-        <h2 style="color:white; position: absolute; bottom: 5rem; left: 1.5rem; width: 45%; font-size: 2.5rem;  text-shadow: 2px 2px 2px #51535b;">
-            The platform that helps local people look after each other
-        </h2>
-    </div>
-
-</div>
-
 <div class="outer-container outer-container--darker">
     <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
 </div>
-
-<div class="container">
-    <div class="row hero flex sm12 mb-lg mt-lg content-page">
-
-        <div class="row sm8 align-center pad-md">
-            <p class="row sm12 mt-sm mb-xs">
-                HelpMyStreet helps organisations to connect neighbours in need with people who can help.<br>
-            </p>
-
-            <p class="row sm12 mt-sm mb-xs">
-                We have a range of partners all over the country, and here are some of the things they are helping with:<br>
-            </p>
-            <div class="row sm12">
-                <ul class="tick-list mt-xs mb-sm compact-list">
-                    <li><strong>Everyday tasks</strong> like collecting shopping</li>
-                    <li><strong>Strenuous activities</strong> like moving furniture or mowing the lawn</li>
-                    <li><strong>Practical support</strong> like filling in forms or setting up your Wi-Fi</li>
-                    <li><strong>Tackling loneliness</strong> with friendly phone calls or a check-in</li>
-                    <li><strong>Assistance</strong> getting to and from essential appointments</li>
-                </ul>
-            </div>
+<div class="outer-container">
+    <img style="width: 100%;" src="~/img/community/ageUK/kent/southkentcoast/banner.jpg" />
+    <div class="container">
+        <div class="row sm12 mb-lg">
+            <h2 style="color:white; position: absolute; bottom: 5rem; left: 1.5rem; width: 45%; font-size: 2.5rem;  text-shadow: 2px 2px 2px #51535b;">
+                The platform that helps local people look after each other
+            </h2>
         </div>
-        <div class="row sm4">
-            <div class="row sm12 mt-lg">
-                <div class="row sm6 text-center justify-center mb-sm">
-                    <p class="row sm12 mt-sm mb-sm">Request help today</p>
-                    <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
+    </div>
 
-                    <p class="row sm12 mt-sm mb-sm">Help your neighbours</p>
-                    @if (!Model.isLoggedIn)
-                    {
-                        <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
-                    else
-                    {
-                        <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
-                </div>
+</div>
+
+<div class="outer-container">
+    <div class="container">
+        <div class="row sm12">
+            <div class="row sm12 mt-xs ml-lg mb-lg">
+                @await Component.InvokeAsync("Partners")
             </div>
         </div>
     </div>
@@ -79,9 +50,41 @@
 
 <div class="outer-container outer-container--darker">
     <div class="container">
-        <div class="row sm12">
-            <div class="row sm12 mt-md ml-lg mb-lg">
-                @await Component.InvokeAsync("Partners")
+        <div class="row hero flex sm12 mt-lg mb-lg pb-lg content-page">
+
+            <div class="row sm8 align-center pad-md pt-lg">
+                <p class="row sm12 mt-sm mb-xs">
+                    HelpMyStreet helps organisations to connect neighbours in need with people who can help.<br>
+                </p>
+
+                <p class="row sm12 mt-sm mb-xs">
+                    We have a range of partners all over the country, and here are some of the things they are helping with:<br>
+                </p>
+                <div class="row sm12">
+                    <ul class="tick-list mt-xs mb-sm compact-list">
+                        <li><strong>Everyday tasks</strong> like collecting shopping</li>
+                        <li><strong>Strenuous activities</strong> like moving furniture or mowing the lawn</li>
+                        <li><strong>Practical support</strong> like filling in forms or setting up your Wi-Fi</li>
+                        <li><strong>Tackling loneliness</strong> with friendly phone calls or a check-in</li>
+                        <li><strong>Assistance</strong> getting to and from essential appointments</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row sm4">
+                <div class="row sm12 mt-lg">
+                    <div class="row sm6 text-center justify-center mb-sm">
+                        <p class="row sm12 mt-sm mb-sm">Request help today</p>
+                        <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
+
+                        <p class="row sm12 mt-sm mb-sm">Help your neighbours</p>
+                        @if (!Model.isLoggedIn)
+                        {
+                            <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
+                        else
+                        {
+                            <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
