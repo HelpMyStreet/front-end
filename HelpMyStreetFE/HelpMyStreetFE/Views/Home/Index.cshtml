@@ -23,9 +23,6 @@
             </div>
         </div>
     </div>}
-<div class="outer-container outer-container--darker">
-    <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
-</div>
 <div class="container">
 
 
@@ -79,6 +76,10 @@
 </div>
 
 <div class="outer-container outer-container--darker mt-md">
+    <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
+</div>
+
+<div class="outer-container mt-xs">
     <div class="container pt-md pb-md">
         <div class="how-to-use row justify-center card">
             <partial name="_HowToUse" model=@Model.isLoggedIn />
@@ -86,7 +87,7 @@
     </div>
 </div>
 
-<div class="outer-container">
+<div class="outer-container outer-container--darker">
     <div class="container">
         <div class="mt-lg">
             @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12 })
@@ -94,7 +95,7 @@
     </div>
 </div>
 
-<div class="outer-container outer-container--darker mt-lg">
+<div class="outer-container mt-lg">
     <div class="container pt-sm">
         <div class="row mt-lg justify-center">
             <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
@@ -104,7 +105,7 @@
 </div>
 
 
-<div class="outer-container">
+<div class="outer-container outer-container--darker">
     <div class="container">
         <partial name="_AboutHelpMyStreet" />
     </div>
