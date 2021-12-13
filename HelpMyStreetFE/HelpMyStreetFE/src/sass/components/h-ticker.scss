@@ -1,4 +1,4 @@
-﻿/* (A) FIXED WRAPPER */
+/* (A) FIXED WRAPPER */
 .hwrap {
     overflow: hidden; /* HIDE SCROLL BAR */
     background: #eee;
@@ -11,12 +11,16 @@
 
 /* (C) ITEMS - INTO A LONG HORIZONTAL ROW */
 .hitem {
-    flex-shrink: 0;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    text-align: center;
-}
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0.5rem;
+
+  p {
+    margin: 0;
+    font-size: 1.5rem;
+  }
 
 /* (D) ANIMATION - MOVE ITEMS FROM RIGHT TO LEFT */
 /* 4 ITEMS -400%, CHANGE THIS IF YOU ADD/REMOVE ITEMS */
