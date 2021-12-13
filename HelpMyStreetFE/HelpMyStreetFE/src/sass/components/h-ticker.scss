@@ -22,6 +22,15 @@
     font-size: 1.5rem;
   }
 
+  &:nth-child(even) {
+    background: yellow;
+  }
+
+  &:nth-child(odd) {
+    background: green;
+  }
+}
+
 /* (D) ANIMATION - MOVE ITEMS FROM RIGHT TO LEFT */
 /* 4 ITEMS -400%, CHANGE THIS IF YOU ADD/REMOVE ITEMS */
 @keyframes tickerh {
