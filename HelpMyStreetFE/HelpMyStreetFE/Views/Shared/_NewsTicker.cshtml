@@ -5,6 +5,10 @@
 
 @if (Model != null)
 {
+    <script>
+        document.documentElement.style.setProperty("--numberOfMessages", @Model.Count());
+    </script>
+
     <div class="hwrap">
         <div class="hmove">
             @foreach (var message in Model)

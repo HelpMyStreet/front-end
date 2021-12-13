@@ -1,4 +1,4 @@
-/* (A) FIXED WRAPPER */
+﻿/* (A) FIXED WRAPPER */
 .hwrap {
     overflow: hidden; /* HIDE SCROLL BAR */
     background: #eee;
@@ -38,13 +38,13 @@
         transform: translate3d(100%, 0, 0);
     }
 
-    100% {
-        transform: translate3d(-400%, 0, 0);
-    }
+  100% {
+    transform: translate3d(calc(-100% * var(--numberOfMessages)), 0, 0);
+  }
 }
 
 .hmove {
-    animation: tickerh linear 30s infinite;
+  animation: tickerh linear calc(5s * var(--numberOfMessages)) infinite;
 }
 
 .hmove:hover {
