@@ -8,7 +8,7 @@
 {
     <div class="news-ticker">
         <div class="news-ticker__inner">
-            @foreach (var message in Model)
+            @foreach (var message in Model.OrderBy(x => Guid.NewGuid()))
             {
                 <div class="news-ticker__item @(message.SupportActivity.HasValue ? message.SupportActivity.Value.Class() : "")">
                     @if (message.SupportActivity.HasValue)
