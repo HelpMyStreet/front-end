@@ -1,103 +1,107 @@
 .btn {
-    border-radius: 24px;
-    border: 2px solid transparent;
+  border-radius: 24px;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  line-height: 1.222;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  padding: 0 2.5rem;
+  height: 2.7rem;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  transition: border-color 0.5s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  .text, .loading-spinner__label {
     font-size: 1rem;
     line-height: 1.222;
     font-weight: bold;
-    letter-spacing: 0.5px;
-    padding: 0 2.5rem;
-    height: 2.7rem;
-    text-decoration: none;
-    text-align: center;
-    white-space: nowrap;
-    transition: border-color 0.5s;
-    display: inline-flex;
+    margin: auto;
+  }
+
+  &.border-blue {
+    border: 2px solid $blue;
+  }
+
+  &.border-green {
+    border: 2px solid $green;
+  }
+
+  &.large {
+    border-radius: 32px;
+    height: 3.1rem;
+
+    @media screen and (max-width: $sm-screen) {
+      width: 100%;
+    }
+  }
+
+  &.small {
+    @media screen and (max-width: $sm-screen) {
+      border-radius: 12px;
+      font-size: 0.9rem;
+      padding: 8px 14px;
+      line-height: 1;
+    }
+  }
+
+  &.less-rounded {
+    border-radius: 12px;
+  }
+
+  &.wide {
+    min-width: 17em;
+    border-radius: 32px;
+  }
+
+  &.square {
+    border-radius: 12px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    border-color: $black;
+    transition: border-color 0.1s;
+  }
+
+  &:focus {
+    outline: none;
+  }
+  /** Standard close button */
+  &--close {
+    background: transparent;
+    border: none;
+    display: flex;
     align-items: center;
-    justify-content: center;
+    cursor: pointer;
 
-    .text, .loading-spinner__label {
-        font-size: 1rem;
-        line-height: 1.222;
-        font-weight: bold;
-        margin: auto;
+    .icon--close {
+      .bg {
+        fill: $gray-8;
+      }
+
+      .cross {
+        stroke: white;
+        stroke-width: 12px;
+      }
     }
 
-    &.border-blue {
-        border: 2px solid $blue;
+    @media screen and (min-width: $breakpointSm) {
+      .icon--close.btn__filter-toggle {
+        display: none;
+      }
     }
 
-    &.border-green {
-        border: 2px solid $green;
+    &:before {
+      @include copy-sz-xs;
+      color: $gray-8;
+      margin-right: 0.5rem;
+      content: "Close";
     }
-
-    &.large {
-        border-radius: 32px;
-        height: 3.1rem;
-
-        @media screen and (max-width: $sm-screen) {
-            width: 100%;
-        }
-    }
-
-    &.small {
-        @media screen and (max-width: $sm-screen) {
-            border-radius: 12px;
-            font-size: 0.9rem;
-            padding: 8px 14px;
-            line-height: 1;
-        }
-    }
-
-    &.less-rounded {
-        border-radius: 12px;
-    }
-
-    &.wide {
-        min-width: 17em;
-        border-radius: 32px;
-    }
-
-    &:hover {
-        cursor: pointer;
-        border-color: $black;
-        transition: border-color 0.1s;
-    }
-
-    &:focus {
-        outline: none;
-    }
-    /** Standard close button */
-    &--close {
-        background: transparent;
-        border: none;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-
-        .icon--close {
-            .bg {
-                fill: $gray-8;
-            }
-
-            .cross {
-                stroke: white;
-                stroke-width: 12px;
-            }
-        }
-
-        @media screen and (min-width: $breakpointSm) {
-            .icon--close.btn__filter-toggle {
-                display: none;
-            }
-        }
-
-        &:before {
-            @include copy-sz-xs;
-            color: $gray-8;
-            margin-right: 0.5rem;
-            content: "Close";
-        }
-    }
+  }
 }
 
 .clear {

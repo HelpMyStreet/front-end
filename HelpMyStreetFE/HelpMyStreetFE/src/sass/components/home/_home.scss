@@ -22,3 +22,14 @@
         }
     }
 }
+
+.homepage-cta-cards {
+  @extend .flex;
+  flex-direction: column;
+
+  @media screen and (min-width: $sm-med-screen) {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-around;
+  }
+}

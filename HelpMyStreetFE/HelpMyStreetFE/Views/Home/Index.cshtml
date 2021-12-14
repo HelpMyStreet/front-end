@@ -68,21 +68,28 @@
                     </ul>
                 </div>
             </div>
-            <div class="row sm4">
-                <div class="row sm12 card mt-lg">
-                    <div class="row sm6 text-center justify-center mb-sm">
-                        <p class="row sm12 mt-0 mb-sm bold">Request help today</p>
-                        <a href="/request-help" class="btn cta fill cta--orange">Request Help</a>
-
-                        <p class="row sm12 mt-md mb-sm bold">Help your neighbours</p>
-                        @if (!Model.isLoggedIn)
-                        {
-                            <a href="/login/" class="btn cta btn--sign-up fill">Sign Up or Log In</a> }
-                        else
-                        {
-                            <a href="/account" class="btn cta btn--sign-up fill">View Open Requests</a>}
+            <div class="row sm4 homepage-cta-cards">
+                <div class="row sm6 card mt-lg p-sm-md">
+                    <div class="row sm12 text-center justify-center">
+                        <p class="mt-0 mb-sm bold orange">Request help today</p>
+                        <a href="/request-help" class="btn cta fill cta--orange wide square">Request Help</a>
                     </div>
                 </div>
+
+                <div class="row sm6 card mt-md p-sm-md">
+                    <div class="row sm12 text-center justify-center">
+                        <p class="mt-0 mb-sm bold green">Help your neighbours</p>
+                        @if (!Model.isLoggedIn)
+                        {
+                            <a href="/login/" class="btn cta btn--sign-up fill wide square">Sign Up or Log In</a> 
+                        }
+                        else
+                        {
+                            <a href="/account" class="btn cta btn--sign-up fill wide square">View Open Requests</a>
+                        }
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
