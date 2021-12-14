@@ -138,6 +138,8 @@
 
         div.card-partner {
           height: 100%;
+          border-width: 2px;
+          transition: border-color 0.5s;
 
           .card-partner-inner {
             @extend .flex-column;
@@ -150,6 +152,13 @@
                 max-height: 4.5rem;
               }
             }
+          }
+        }
+
+        &:hover {
+          div.card-partner {
+            border-color: $black;
+            transition: border-color 0.1s;
           }
         }
       }
