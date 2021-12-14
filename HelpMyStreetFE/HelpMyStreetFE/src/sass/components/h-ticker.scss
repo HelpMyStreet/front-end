@@ -6,47 +6,19 @@
 
 /* (B) MOVING TICKER WRAPPER */
 .hmove {
-    display: flex;
+    height: 3rem;
+    padding: 0.5rem 0;
 }
 
 /* (C) ITEMS - INTO A LONG HORIZONTAL ROW */
 .hitem {
-  flex-shrink: 0;
+  position: absolute;
   width: 100%;
-  box-sizing: border-box;
   text-align: center;
-  margin: 0.5rem;
 
   p {
     margin: 0;
     font-size: 1.5rem;
+    white-space: nowrap;
   }
-
-  &:nth-child(even) {
-    background: yellow;
-  }
-
-  &:nth-child(odd) {
-    background: green;
-  }
-}
-
-/* (D) ANIMATION - MOVE ITEMS FROM RIGHT TO LEFT */
-/* 4 ITEMS -400%, CHANGE THIS IF YOU ADD/REMOVE ITEMS */
-@keyframes tickerh {
-    0% {
-        transform: translate3d(100%, 0, 0);
-    }
-
-  100% {
-    transform: translate3d(calc(-100% * var(--numberOfMessages)), 0, 0);
-  }
-}
-
-.hmove {
-  animation: tickerh linear calc(5s * var(--numberOfMessages)) infinite;
-}
-
-.hmove:hover {
-    animation-play-state: paused;
 }

@@ -9,12 +9,14 @@
         document.documentElement.style.setProperty("--numberOfMessages", @Model.Count());
     </script>
 
-    <div class="hwrap">
-        <div class="hmove">
-            @foreach (var message in Model)
-            {
-                <div class="hitem"> @Markdown.ParseHtmlString(message.Message)</div>
-            }
+    <div class="news-ticker">
+        <div class="hwrap">
+            <div class="hmove">
+                @foreach (var message in Model)
+                {
+                    <div class="hitem">@Markdown.ParseHtmlString(message.Message)</div>
+                }
+            </div>
         </div>
     </div>
 }
