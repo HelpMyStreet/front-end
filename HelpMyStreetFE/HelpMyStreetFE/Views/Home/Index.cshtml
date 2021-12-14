@@ -1,4 +1,4 @@
-﻿@model HomeViewModel;
+@model HomeViewModel;
 @using HelpMyStreetFE.Models.Feedback;
 
 @{ ViewData["Title"] = "Home Page"; }
@@ -40,10 +40,8 @@
 
 <div class="outer-container">
     <div class="container">
-        <div class="row sm12">
-            <div class="row sm12 mt-xs ml-lg mb-lg">
-                @await Component.InvokeAsync("Partners")
-            </div>
+        <div class="mt-xs ml-lg mb-lg">
+            @await Component.InvokeAsync("Partners")
         </div>
     </div>
 </div>
