@@ -1,5 +1,6 @@
 ﻿@using HelpMyStreet.Contracts;
 @using Westwind.AspNetCore.Markdown;
+@using HelpMyStreetFE.Helpers;
 
 @model IEnumerable<NewsTickerMessage>
 
@@ -13,6 +14,10 @@
         <div class="hmove">
             @foreach (var message in Model)
             {
+                @if (message.SupportActivity.HasValue)
+                {
+                    <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
+                }
                 <div class="hitem"> @Markdown.ParseHtmlString(message.Message)</div>
             }
         </div>
