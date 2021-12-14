@@ -15,11 +15,13 @@
             <div class="hmove">
                 @foreach (var message in Model)
                 {
-                @if (message.SupportActivity.HasValue)
-                {
-                    <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
-                }
-                    <div class="hitem">@Markdown.ParseHtmlString(message.Message)</div>
+                    <div class="hitem">
+                        @if (message.SupportActivity.HasValue)
+                        {
+                            <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
+                        }
+                        @Markdown.ParseHtmlString(message.Message)
+                    </div>
                 }
             </div>
         </div>

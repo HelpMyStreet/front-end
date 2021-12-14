@@ -14,11 +14,17 @@
 .hitem {
   position: absolute;
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
 
   p {
     margin: 0;
     font-size: 1.5rem;
     white-space: nowrap;
+  }
+
+  img {
+    max-height: 2rem;
+    margin-right: 1rem;
   }
 }
