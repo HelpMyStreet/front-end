@@ -11,13 +11,13 @@
         <div class="partners-container" style="width: 1248px">
             @foreach (Partner partner in Model.Partners)
             {
-                <div class="card-partner mr-sm ml-sm mb-sm">
-                    <div class="card-partner-inner">
-                        <a href="/community/@partner.GroupKey">
+                <a href="/community/@partner.GroupKey" class="mr-sm ml-sm mb-sm">
+                    <div class="card-partner">
+                        <div class="card-partner-inner">
                             <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = (int) partner.Group }" />
-                        </a>
+                        </div>
                     </div>
-                </div>
+                </a>
             }
         </div>
     }
