@@ -1,27 +1,29 @@
 ﻿.news-ticker {
   overflow: hidden;
   background: #eee;
-}
 
-.news-ticker-inner {
-  height: 3rem;
-  padding: 0.5rem 0;
-}
-
-.news-ticker-item {
-  position: absolute;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-
-  p {
-    margin: 0;
-    font-size: 1.5rem;
-    white-space: nowrap;
+  &__inner {
+    height: 3rem;
+    padding: 0.5rem 0;
   }
 
-  img {
-    max-height: 2rem;
-    margin-right: 1rem;
+  &__item {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    p {
+      margin: 0;
+      font-size: 1.5rem;
+      white-space: nowrap;
+    }
+
+    img {
+      max-height: 2rem;
+      margin-right: 1rem;
+    }
   }
+
 }
+

@@ -1,4 +1,4 @@
-@using HelpMyStreet.Contracts;
+﻿@using HelpMyStreet.Contracts;
 @using Westwind.AspNetCore.Markdown;
 @using HelpMyStreetFE.Helpers;
 
@@ -7,10 +7,10 @@
 @if (Model != null)
 {
     <div class="news-ticker">
-        <div class="news-ticker-inner">
+        <div class="news-ticker__inner">
             @foreach (var message in Model)
             {
-                <div class="news-ticker-item">
+                <div class="news-ticker__item">
                     @if (message.SupportActivity.HasValue)
                     {
                         <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
