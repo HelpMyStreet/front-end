@@ -10,7 +10,7 @@
         <div class="news-ticker__inner">
             @foreach (var message in Model)
             {
-                <div class="news-ticker__item">
+                <div class="news-ticker__item @(message.SupportActivity.HasValue ? message.SupportActivity.Value.Class() : "")">
                     @if (message.SupportActivity.HasValue)
                     {
                         <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />

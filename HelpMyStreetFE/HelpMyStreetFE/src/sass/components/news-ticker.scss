@@ -19,11 +19,22 @@
       white-space: nowrap;
     }
 
+    &.dark-blue strong {
+      color: $dark-blue;
+    }
+
+    &.blue strong {
+      color: $blue;
+    }
+
+    &.light-purple strong {
+      color: $light-purple;
+    }
+
+
     img {
       max-height: 2rem;
       margin-right: 1rem;
     }
   }
-
 }
-
