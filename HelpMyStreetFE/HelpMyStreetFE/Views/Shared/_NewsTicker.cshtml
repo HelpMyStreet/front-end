@@ -1,4 +1,4 @@
-﻿@using HelpMyStreet.Contracts;
+@using HelpMyStreet.Contracts;
 @using Westwind.AspNetCore.Markdown;
 @using HelpMyStreetFE.Helpers;
 
@@ -6,10 +6,6 @@
 
 @if (Model != null)
 {
-    <script>
-        document.documentElement.style.setProperty("--numberOfMessages", @Model.Count());
-    </script>
-
     <div class="news-ticker">
         <div class="news-ticker-inner">
             @foreach (var message in Model)
