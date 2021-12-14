@@ -11,19 +11,17 @@
     </script>
 
     <div class="news-ticker">
-        <div class="hwrap">
-            <div class="hmove">
-                @foreach (var message in Model)
-                {
-                    <div class="hitem">
-                        @if (message.SupportActivity.HasValue)
-                        {
-                            <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
-                        }
-                        @Markdown.ParseHtmlString(message.Message)
-                    </div>
-                }
-            </div>
+        <div class="news-ticker-inner">
+            @foreach (var message in Model)
+            {
+                <div class="news-ticker-item">
+                    @if (message.SupportActivity.HasValue)
+                    {
+                        <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
+                    }
+                    @Markdown.ParseHtmlString(message.Message)
+                </div>
+            }
         </div>
     </div>
 }

@@ -7,8 +7,8 @@ export function initialiseNewsTicker() {
   $('.news-ticker').not('news-ticker-initialised').each(function () {
     $(this).addClass('news-ticker-initialised');
 
-    $(this).find('.hmove .hitem').css('left', '100%');
-    animateNewsTickerItem($(this).find('.hmove .hitem').first());
+    $(this).find('.news-ticker-inner .news-ticker-item').css('left', '100%');
+    animateNewsTickerItem($(this).find('.news-ticker-inner .news-ticker-item').first());
   });
 };
 
@@ -18,11 +18,11 @@ function animateNewsTickerItem(item) {
       $(item).animate({ left: '-100%' }, animationLength, 'easeInQuart', function () {
         $(item).css('left', '100%');
 
-        const nextItem = $(item).next('.hitem');
+        const nextItem = $(item).next('.news-ticker-item');
         if (nextItem.length > 0) {
           animateNewsTickerItem(nextItem);
         } else {
-          const firstItem = $(item).siblings().first('.hitem');
+          const firstItem = $(item).siblings().first('.news-ticker-item');
           animateNewsTickerItem(firstItem);
         }
       });
