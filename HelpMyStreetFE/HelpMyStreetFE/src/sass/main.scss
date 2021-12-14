@@ -43,7 +43,7 @@
 @import "./components/_map-markers";
 @import "./components/awards/awards";
 @import "./components/community/group-logo";
-@import "./components/h-ticker";
+@import "./components/news-ticker";
 
 * {
   font-family: "Montserrat", sans-serif;
@@ -122,7 +122,7 @@ h6 + p {
   margin-top: 0;
 }
 
-span, b, strong, a, i {
+span, b, strong, a, i, em {
   font-size: inherit;
 }
 
