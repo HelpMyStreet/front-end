@@ -9,7 +9,7 @@
     {
         <div class="mb-sm" style="margin-left:-1.5rem;"><strong>In partnership with...</strong></div>
         <div class="partners-container">
-            @foreach (Partner partner in Model.Partners)
+            @foreach (Partner partner in Model.Partners.OrderBy(x => Guid.NewGuid()))
             {
                 <a href="/community/@partner.GroupKey" class="mr-sm ml-sm mb-sm">
                     <div class="card-partner">
