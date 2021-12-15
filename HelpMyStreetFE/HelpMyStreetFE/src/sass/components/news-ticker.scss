@@ -9,12 +9,12 @@
 
   &__item {
     position: absolute;
-    width: 100%;
+    min-width: 100%;
     display: flex;
     justify-content: center;
 
     p {
-      margin: 0;
+      margin: 0 1rem;
       font-size: 1.5rem;
       white-space: nowrap;
     }
@@ -34,7 +34,6 @@
 
     img {
       max-height: 2rem;
-      margin-right: 1rem;
     }
   }
 }

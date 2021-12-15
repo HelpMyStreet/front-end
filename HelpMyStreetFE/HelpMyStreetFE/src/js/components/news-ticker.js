@@ -7,16 +7,17 @@ export function initialiseNewsTicker() {
   $('.news-ticker').not('news-ticker-initialised').each(function () {
     $(this).addClass('news-ticker-initialised');
 
-    $(this).find('.news-ticker__inner .news-ticker__item').css('left', '100%');
+    $(this).find('.news-ticker__inner .news-ticker__item').css('left', '100%').hide();
     animateNewsTickerItem($(this).find('.news-ticker__inner .news-ticker__item').first());
   });
 };
 
 function animateNewsTickerItem(item) {
+  $(item).show();
   $(item).animate({ left: '0' }, animationLength, 'easeOutQuart', function () {
     setTimeout(function () {
       $(item).animate({ left: '-100%' }, animationLength, 'easeInQuart', function () {
-        $(item).css('left', '100%');
+        $(item).css('left', '100%').hide();
 
         const nextItem = $(item).next('.news-ticker__item');
         if (nextItem.length > 0) {
