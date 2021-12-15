@@ -1,11 +1,11 @@
 ﻿.group-logo {
     img {
         display: block;
-        /*max-height: 2.5rem;*/
+        max-height: 2.5rem;
         margin: 0.25rem;
 
         @media (min-width: $med-screen) {
-            /*max-width: 10rem;*/
+            max-width: 10rem;
             max-height: 8rem;
         }
     }
@@ -25,4 +25,22 @@
             color: black;
         }
     }
+}
+
+.card-partner {
+  .group-logo {
+    img {
+      max-height: initial;
+
+      @media (min-width: $med-screen) {
+        max-width: 100%;
+      }
+    }
+
+    .composite-logo {
+      img {
+        max-width: 2.5rem;
+      }
+    }
+  }
 }
