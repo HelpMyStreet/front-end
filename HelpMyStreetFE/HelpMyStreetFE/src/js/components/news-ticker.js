@@ -22,7 +22,7 @@ function animateNewsTickerItem(item) {
         if (nextItem.length > 0) {
           animateNewsTickerItem(nextItem);
         } else {
-          const firstItem = $(item).siblings().first('.news-ticker__item');
+          const firstItem = $(item).parent().children().first('.news-ticker__item');
           animateNewsTickerItem(firstItem);
         }
       });
