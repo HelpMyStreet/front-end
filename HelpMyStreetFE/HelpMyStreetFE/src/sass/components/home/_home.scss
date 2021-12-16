@@ -23,6 +23,38 @@
     }
 }
 
+.homepage-banner-container {
+  > img {
+    width: 100%;
+  }
+
+  .news-ticker {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: none;
+  }
+
+  .h1-container-outer {
+    position: absolute;
+    bottom: 5rem;
+    width: 100%;
+
+    .h1-container {
+      @extend .container;
+
+      h1 {
+        max-width: 52rem;
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 2px;
+        padding: 0.5rem 1.25rem;
+        font-size: 3rem;
+        color: $gray-4;
+      }
+    }
+  }
+}
+
 .homepage-cta-cards {
   @extend .flex;
   flex-direction: column;
