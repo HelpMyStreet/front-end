@@ -78,23 +78,11 @@ $.extend($.easing,
     swing: function (x, t, b, c, d) {
       return $.easing[$.easing.def](x, t, b, c, d);
     },
-    easeInQuad: function (x, t, b, c, d) {
-      return c * (t /= d) * t + b;
-    },
-    easeOutQuad: function (x, t, b, c, d) {
-      return -c * (t /= d) * (t - 2) + b;
-    },
     easeInQuart: function (x, t, b, c, d) {
       return c * (t /= d) * t * t * t + b;
     },
     easeOutQuart: function (x, t, b, c, d) {
       return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-    },
-    easeInQuint: function (x, t, b, c, d) {
-      return c * (t /= d) * t * t * t * t + b;
-    },
-    easeOutQuint: function (x, t, b, c, d) {
-      return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
     }
   });
 
