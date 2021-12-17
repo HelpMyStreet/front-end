@@ -24,8 +24,13 @@
 }
 
 .homepage-banner-container {
+  @extend .outer-container--darker;
+
   > img {
     width: 100%;
+    height: calc(24vw + 4rem);
+    object-fit: cover;
+    object-position: bottom;
   }
 
   .news-ticker {
@@ -36,20 +41,36 @@
   }
 
   .h1-container-outer {
-    position: absolute;
-    bottom: 5rem;
-    width: 100%;
 
     .h1-container {
       @extend .container;
+    }
+
+    h1 {
+      font-size: 1.77rem;
+      margin: 0.25rem 0 1.5rem 0;
+    }
+
+    @media screen and (min-width: $sm-med-screen) {
+      position: absolute;
+      bottom: 3vw;
+      width: 100%;
+
+      h1 {
+        max-width: 52vw;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 2px;
+        padding: 0.5vw 1.25vw;
+        font-size: 3vw;
+        color: $gray-4;
+      }
+    }
+
+    @media screen and (min-width: $xxl-screen) {
 
       h1 {
         max-width: 52rem;
-        background-color: rgba(255, 255, 255, 0.6);
-        border-radius: 2px;
-        padding: 0.5rem 1.25rem;
         font-size: 3rem;
-        color: $gray-4;
       }
     }
   }
