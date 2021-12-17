@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Services
                 return groupServiceMessages
                     .Concat(requestServiceMessages)
                     .Concat(feedbackServiceMessages);
-            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, NotInCacheBehaviour.DontWaitForData);
+            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, NotInCacheBehaviour.WaitForData);
 
 
             return result;
