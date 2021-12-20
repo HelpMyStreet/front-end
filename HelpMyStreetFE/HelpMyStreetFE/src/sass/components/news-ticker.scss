@@ -40,4 +40,13 @@
       max-height: 2rem;
     }
   }
+
+  &__border {
+    height: 1px;
+    width: 100%;
+    background: $background-main;
+    position: absolute;
+    bottom: 100%;
+    opacity: 0;
+  }
 }

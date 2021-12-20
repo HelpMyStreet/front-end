@@ -8,26 +8,30 @@ export function initialiseNewsTicker() {
     $(this).addClass('news-ticker-initialised');
 
     $(this).find('.news-ticker__inner .news-ticker__item').css('left', '100%').hide();
-    animateNewsTickerItem($(this).find('.news-ticker__inner .news-ticker__item').first());
+    animateNewsTickerItem($(this).find('.news-ticker__inner .news-ticker__item').first(), $(this).find('.news-ticker__border'));
   });
 };
 
-function animateNewsTickerItem(item) {
+function animateNewsTickerItem(item, border) {
   $(item).show();
-  $(item).animate({ left: '0' }, animationLength, 'easeOutQuart', function () {
-    setTimeout(function () {
-      $(item).animate({ left: '-100%' }, animationLength, 'easeInQuart', function () {
-        $(item).css('left', '100%').hide();
+  $(border).animate({ bottom: '0', opacity: '100%' }, animationLength * 0.1, function () {
+    $(item).animate({ left: '0' }, animationLength * 0.9, 'easeOutQuart', function () {
+      setTimeout(function () {
+        $(item).animate({ left: '-100%' }, animationLength * 0.9, 'easeInQuart', function () {
+          $(border).animate({ bottom: '100%', opacity: '0%' }, animationLength * 0.1, function () {
+            $(item).css('left', '100%').hide();
 
-        const nextItem = $(item).next('.news-ticker__item');
-        if (nextItem.length > 0) {
-          animateNewsTickerItem(nextItem);
-        } else {
-          const firstItem = $(item).parent().children().first('.news-ticker__item');
-          animateNewsTickerItem(firstItem);
-        }
-      });
-    }, animationPause);
+            const nextItem = $(item).next('.news-ticker__item');
+            if (nextItem.length > 0) {
+              animateNewsTickerItem(nextItem, border);
+            } else {
+              const firstItem = $(item).parent().children().first('.news-ticker__item');
+              animateNewsTickerItem(firstItem, border);
+            }
+          });
+        });
+      }, animationPause);
+    });
   });
 };
 
@@ -70,21 +74,15 @@ function animateNewsTickerItem(item) {
 */
 
 // t: current time, b: begInnIng value, c: change In value, d: duration
-$.easing.jswing = $.easing.swing;
 
-$.extend($.easing,
-  {
-    def: 'easeOutQuad',
-    swing: function (x, t, b, c, d) {
-      return $.easing[$.easing.def](x, t, b, c, d);
-    },
-    easeInQuart: function (x, t, b, c, d) {
-      return c * (t /= d) * t * t * t + b;
-    },
-    easeOutQuart: function (x, t, b, c, d) {
-      return -c * ((t = t / d - 1) * t * t * t - 1) + b;
-    }
-  });
+$.easing = Object.assign({}, $.easing, {
+  easeInQuart: function (x, t, b, c, d) {
+    return c * (t /= d) * t * t * t + b;
+  },
+  easeOutQuart: function (x, t, b, c, d) {
+    return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+  }
+})
 
 /*
  *
