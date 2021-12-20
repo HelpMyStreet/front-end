@@ -7,17 +7,17 @@
 <div class="ml-md mr-md">
     @if (Model.Partners.Count() > 0)
     {
-        <div>In partnership with...</div>
-        <div class="partners-container">            
-            @foreach (Partner partner in Model.Partners)
+        <div class="mb-sm" style="margin-left:-1.5rem;"><strong>In partnership with...</strong></div>
+        <div class="partners-container">
+            @foreach (Partner partner in Model.Partners.OrderBy(x => Guid.NewGuid()))
             {
-                <div class="card-partner mr-sm ml-sm mb-sm">
-                    <div class="card-partner-inner">
-                        <a href="/community/@partner.GroupKey">
+                <a href="/community/@partner.GroupKey" class="mr-sm ml-sm mb-sm">
+                    <div class="card-partner">
+                        <div class="card-partner-inner">
                             <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = (int) partner.Group }" />
-                        </a>
+                        </div>
                     </div>
-                </div>
+                </a>
             }
         </div>
     }

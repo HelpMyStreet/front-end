@@ -101,55 +101,68 @@
 }
 
 .slick-track {
+  @extend .flex;
+
+  .slick-slide {
     @extend .flex;
+    height: auto;
 
-    .slick-slide {
-        @extend .flex;
-        height: auto;
+    div {
+      @extend .flex;
+      width: 100%;
 
-        div {
-            @extend .flex;
+      div.card-feedback {
+        .card-feedback-inner {
+          @extend .flex-column;
+          height: 100%;
 
-            div.card-feedback {
-                .card-feedback-inner {
-                    @extend .flex-column;
-                    height: 100%;
+          img {
+            height: 10rem;
+            width: 8rem;
+          }
 
-                    img {
-                        height: 10rem;
-                        width: 8rem;
-                    }
+          * {
+            @extend .flex-grow;
 
-                    * {
-                        @extend .flex-grow;
-
-                        &.person {
-                            font-style: italic;
-                            flex-grow: 0;
-                        }
-                    }
-                }
+            &.person {
+              font-style: italic;
+              flex-grow: 0;
             }
-
-            div.card-partner {
-                .card-partner-inner {
-                    @extend .flex-column;
-                    height: 100%;
-
-                    img {
-                        width:8rem;
-                    }
-
-                    * {
-                        @extend .flex-grow;
-
-                        &.person {
-                            font-style: italic;
-                            flex-grow: 0;
-                        }
-                    }
-                }
-            }
+          }
         }
+      }
+
+      a {
+        text-decoration: none;
+        @extend .flex;
+
+        div.card-partner {
+          height: 100%;
+          border-width: 2px;
+          border-radius: 25px;
+          transition: border-color 0.5s;
+
+          .card-partner-inner {
+            @extend .flex-column;
+            justify-content: center;
+
+            .group-logo {
+              justify-content: center;
+
+              img {
+                max-height: 4.5rem;
+              }
+            }
+          }
+        }
+
+        &:hover {
+          div.card-partner {
+            border-color: $black;
+            transition: border-color 0.1s;
+          }
+        }
+      }
     }
+  }
 }
