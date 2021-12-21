@@ -14,11 +14,25 @@ export function initialiseNewsTicker() {
 
 function animateNewsTickerItem(item, border) {
   $(item).show();
-  $(border).animate({ bottom: '0', opacity: '100%' }, animationLength * 0.1, function () {
-    $(item).animate({ left: '0' }, animationLength * 0.9, 'easeOutQuart', function () {
+  $(item).animate({ left: '0' }, {
+    duration: animationLength,
+    easing: 'easeOutQuart',
+    start: function () {
       setTimeout(function () {
-        $(item).animate({ left: '-100%' }, animationLength * 0.9, 'easeInQuart', function () {
-          $(border).animate({ bottom: '100%', opacity: '0%' }, animationLength * 0.1, function () {
+        $(border).animate({ opacity: '100%' }, animationLength * 0.5);
+      }, animationLength * 0.25);
+    },
+    complete: function () {
+      setTimeout(function () {
+        $(item).animate({ left: '-100%' }, {
+          duration: animationLength,
+          easing: 'easeInQuart',
+          start: function () {
+            setTimeout(function () {
+              $(border).animate({ opacity: '0%' }, animationLength * 0.5);
+            }, animationLength * 0.25);
+          },
+          complete: function () {
             $(item).css('left', '100%').hide();
 
             const nextItem = $(item).next('.news-ticker__item');
@@ -28,10 +42,10 @@ function animateNewsTickerItem(item, border) {
               const firstItem = $(item).parent().children().first('.news-ticker__item');
               animateNewsTickerItem(firstItem, border);
             }
-          });
+          }
         });
       }, animationPause);
-    });
+    }
   });
 };
 

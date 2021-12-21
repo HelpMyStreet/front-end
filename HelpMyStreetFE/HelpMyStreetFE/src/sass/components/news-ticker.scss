@@ -42,11 +42,11 @@
   }
 
   &__border {
-    height: 1px;
+    height: 2px;
     width: 100%;
-    background: $background-main;
+    background: linear-gradient(0.25turn, rgba(247, 246, 244, 0), $background-main 20%, $background-main 80%, rgba(247, 246, 244, 0));
     position: absolute;
-    bottom: 100%;
+    bottom: 0;
     opacity: 0;
   }
 }
