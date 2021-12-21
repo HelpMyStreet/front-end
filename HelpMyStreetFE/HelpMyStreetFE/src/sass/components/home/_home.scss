@@ -26,11 +26,12 @@
 .homepage-banner-container {
   @extend .outer-container--darker;
 
-  > img {
+  .homepage-banner-image {
+    background-image: url(/img/homepage-aerial-photo.jpg);
     width: 100%;
     height: calc(24vw + 4rem);
-    object-fit: cover;
-    object-position: bottom;
+    background-size: cover;
+    background-position: bottom;
   }
 
   .news-ticker {
