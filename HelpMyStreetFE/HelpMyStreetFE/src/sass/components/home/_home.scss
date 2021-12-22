@@ -21,33 +21,28 @@
     background-size: cover;
     background-position: bottom;
 
-    .h1-container {
+    h1 {
       position: absolute;
-      width: calc(min(100% - 3rem, 30rem));
       left: 1.5rem;
       bottom: 3vw;
+      width: calc(min(100% - 3rem, 30rem));
+      padding: 0.25vw 1vw 0.75vw 1vw;
+      margin: 0;
 
-      h1 {
-        background-color: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(2px);
-        border-radius: 5px;
-        font-size: 1.77rem;
-        color: $gray-4;
-        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.7);
-        padding: 0.25vw 1vw 0.75vw 1vw;
-        margin: 0;
-      }
+      color: $gray-4;
+      font-size: 1.77rem;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(2px);
+      border-radius: 5px;
+      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.7);
 
       @media screen and (min-width: $sm-med-screen) {
         width: 51.5vw;
+        font-size: 3vw;
+      }
 
-        @media screen and (min-width: $xl-screen) {
-          left: calc(max(1.5rem, min(11vw, (100vw - 1300px)/2)));
-        }
-
-        h1 {
-          font-size: 3vw;
-        }
+      @media screen and (min-width: $xl-screen) {
+        left: calc(max(1.5rem, min(11vw, (100vw - 1300px)/2)));
       }
     }
   }
