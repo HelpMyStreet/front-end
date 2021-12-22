@@ -33,10 +33,10 @@
         position: absolute;
         left: 0;
         top: 0;
-        clip-path: inset(calc(12.26vw + 4rem) calc(100% - 51.5vw - 1.5rem) 3vw 1.5rem round 3px);
+        clip-path: inset(calc(12.26vw + 4rem) calc(100% - 51.5vw - 1.5rem) 3vw 1.5rem round 5px);
 
-        @media screen and (min-width: $xxl-screen) {
-          clip-path: inset(calc(12.26vw + 4rem) calc(100% - 62.5vw) 3vw 11vw round 3px);
+        @media screen and (min-width: $xl-screen) {
+          clip-path: inset(calc(12.26vw + 4rem) calc(100% - 51.5vw - max(1.5rem, min(11vw, (100vw - 1300px)/2))) 3vw calc(max(1.5rem, min(11vw, (100vw - 1300px)/2))) round 5px);
         }
       }
     }
@@ -58,13 +58,13 @@
       bottom: 3vw;
       max-width: 51.5vw;
 
-      @media screen and (min-width: $xxl-screen) {
-        left: 11vw;
+      @media screen and (min-width: $xl-screen) {
+        left: calc(max(1.5rem, min(11vw, (100vw - 1300px)/2)));
       }
 
       h1 {
         background-color: rgba(255, 255, 255, 0.7);
-        border-radius: 3px;
+        border-radius: 5px;
         padding: 0.25vw 1vw 0.75vw 1vw;
         margin: 0;
         font-size: 3vw;
