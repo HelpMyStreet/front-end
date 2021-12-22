@@ -56,6 +56,13 @@
 
 }
 
+.homepage-we-help {
+  @media screen and (min-width: $med-screen) {
+    padding-top: 2.2225rem;
+    padding-right: 1.6666rem;
+  }
+}
+
 .homepage-cta-cards {
   @extend .flex;
   flex-direction: column;
@@ -64,5 +71,11 @@
     flex-direction: row;
     align-items: baseline;
     justify-content: space-around;
+  }
+}
+
+.homepage-map {
+  @media screen and (min-width: $med-screen) {
+    margin-top: 2.2225rem;
   }
 }
