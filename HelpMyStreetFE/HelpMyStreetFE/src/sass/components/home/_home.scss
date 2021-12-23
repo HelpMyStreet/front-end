@@ -28,13 +28,16 @@
       width: calc(min(100% - 3rem, 30rem));
       padding: 0.25vw 1vw 0.75vw 1vw;
       margin: 0;
-
       color: $gray-4;
-      font-size: 1.77rem;
+      font-size: 6vw;
       background-color: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(2px);
       border-radius: 5px;
       box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.7);
+
+      @media screen and (min-width: $sm-screen) {
+        font-size: 4.5vw;
+      }
 
       @media screen and (min-width: $sm-med-screen) {
         width: 51.5vw;
@@ -53,7 +56,6 @@
     width: 100%;
     background: none;
   }
-
 }
 
 .homepage-we-help {
@@ -74,7 +76,7 @@
   }
 }
 
-.homepage-map {
+#street-map {
   @media screen and (min-width: $med-screen) {
     margin-top: 2.2225rem;
   }
