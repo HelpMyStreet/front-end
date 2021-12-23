@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HelpMyStreetFE.Models.Feedback;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Utils;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Models.Community
 {
@@ -36,5 +37,7 @@ namespace HelpMyStreetFE.Models.Community
 
         public bool ShowRequestHelpPopup { get; set; }
         public bool ShowPopupOnSignUp { get; set; } = false;
+
+        public IEnumerable<NewsTickerMessage> NewsTickerMessages { get; set; }
     }
 }

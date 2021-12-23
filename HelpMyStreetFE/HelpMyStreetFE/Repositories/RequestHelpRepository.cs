@@ -1,10 +1,13 @@
-﻿using HelpMyStreet.Contracts.RequestService.Request;
+﻿using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Reponses;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -374,6 +377,26 @@ namespace HelpMyStreetFE.Repositories
                 return response.Content.Outcome;
             }
             return null;
+        }
+
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        {
+            string url = "/api/GetNewsTicker";
+
+            if (groupId.HasValue)
+            {
+                url += $"?groupId={groupId.Value}";
+            }
+
+
+            HttpResponseMessage response = await Client.GetAsync(url);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<NewsTickerResponse, RequestServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.Messages;
+            }
+            throw new Exception($"Bad response from GetNewsTicker for groupId {groupId}");
         }
     }
 }

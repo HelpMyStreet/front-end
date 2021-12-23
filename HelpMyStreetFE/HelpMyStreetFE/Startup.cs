@@ -29,6 +29,7 @@ using HelpMyStreetFE.Services.Users;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreet.Contracts.GroupService.Response;
 using HelpMyStreet.Contracts.AddressService.Response;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE
 {
@@ -181,6 +182,8 @@ namespace HelpMyStreetFE
             services.AddSingleton<IFilterService, FilterService>();
             services.AddSingleton<IFeedbackService, FeedbackService>();
             services.AddSingleton<IUserLocationService, UserLocationService>();
+            services.AddSingleton<INewsTickersService, NewsTickersService>();
+            services.AddSingleton<IPartnerService, PartnerService>();
             services.AddHttpContextAccessor();
 
             // cache
@@ -188,6 +191,7 @@ namespace HelpMyStreetFE
             services.AddTransient<ISystemClock, MockableDateTime>();
             services.AddSingleton<ICoordinatedResetCache, CoordinatedResetCache>();
             services.AddMemCache();
+            services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<NewsTickerMessage>>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnHour));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<IEnumerable<int>>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<RequestSummary>>().GetCache(new TimeSpan(10, 0, 0, 0), ResetTimeFactory.OnMinute));
             services.AddSingleton(x => x.GetService<IMemDistCacheFactory<List<UserGroup>>>().GetCache(new TimeSpan(1, 0, 0), ResetTimeFactory.OnMinute));

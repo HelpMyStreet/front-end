@@ -1,0 +1,52 @@
+﻿.news-ticker {
+  overflow: hidden;
+  background: #eee;
+
+  &__inner {
+    height: 3rem;
+    padding: 0.5rem 0;
+  }
+
+  &__item {
+    position: absolute;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+
+    p {
+      margin: 0 1rem;
+      font-size: 1.2rem;
+      white-space: nowrap;
+
+      @media screen and (min-width: $sm-med-screen) {
+        font-size: 1.5rem;
+      }
+    }
+
+    &.dark-blue strong {
+      color: $dark-blue;
+    }
+
+    &.blue strong {
+      color: $blue;
+    }
+
+    &.light-purple strong {
+      color: $light-purple;
+    }
+
+
+    img {
+      max-height: 2rem;
+    }
+  }
+
+  &__border {
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(0.25turn, rgba(247, 246, 244, 0), $background-main 20%, $background-main 80%, rgba(247, 246, 244, 0));
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+  }
+}

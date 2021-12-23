@@ -12,6 +12,7 @@ using System.Threading;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Contracts.RequestService.Request;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -349,6 +350,11 @@ namespace HelpMyStreetFE.Services.Requests
             }
 
             return eHist;
+        }
+
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        {
+            return await _requestHelpRepository.GetNewsTickerMessages(groupId);
         }
     }
 }

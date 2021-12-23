@@ -11,16 +11,19 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Google.Apis.Util;
 using HelpMyStreet.Utils.Extensions;
 using System;
+using HelpMyStreetFE.Services;
 
 namespace HelpMyStreetFE.Repositories
 {
     public class CommunityRepository : ICommunityRepository
     {
         private readonly IGroupService _groupService;
+        private readonly INewsTickersService _newsTickerService;
 
-        public CommunityRepository(IGroupService groupService)
+        public CommunityRepository(IGroupService groupService, INewsTickersService newsTickerService)
         {
             _groupService = groupService;
+            _newsTickerService = newsTickerService;
         }
 
         private async Task<CommunityViewModel> GetCommunity(Group group, CancellationToken cancellationToken)
@@ -30,14 +33,14 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Tankersley => GetTankersley(),
                 Groups.Ruddington => GetRuddington(),
                 Groups.AgeUKLSL => GetAgeUKLSL(),
-                Groups.AgeUKWirral => GetAgeUKWirral(),
+                Groups.AgeUKWirral => await GetAgeUKWirral(cancellationToken),
                 Groups.FTLOS => GetFtLOS(),
                 Groups.AgeUKNottsBalderton => GetBalderton(),
                 Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
                 Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
                 Groups.AgeUKFavershamAndSittingbourne => GetFavershameAndSittingBourne(),
                 Groups.AgeUKNorthWestKent => GetNorthWestKent(),
-                Groups.LincolnshireVolunteers => GetLincolnshireVolunteers(),
+                Groups.LincolnshireVolunteers => await GetLincolnshireVolunteers(cancellationToken),
                 Groups.AgeConnectsCardiff => GetAgeConnectsCardiff(),
                 Groups.MeadowsCommunityHelpers => GetMeadowsCommunityHelpers(),
                 Groups.Southwell => GetSouthwell(),
@@ -377,7 +380,7 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetLincolnshireVolunteers()
+        private async Task<CommunityViewModel> GetLincolnshireVolunteers(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("lincs-volunteers", "LincolnshireVolunteers", true);
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
@@ -439,6 +442,8 @@ namespace HelpMyStreetFE.Repositories
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png"
                 },
             };
+
+            communityViewModel.NewsTickerMessages = await _newsTickerService.GetNewsTickerMessages((int)Groups.LincolnshireVolunteers, cancellationToken);
 
             return communityViewModel;
         }
@@ -690,7 +695,7 @@ namespace HelpMyStreetFE.Repositories
             return communityViewModel;
         }
 
-        private CommunityViewModel GetAgeUKWirral()
+        private async Task<CommunityViewModel> GetAgeUKWirral(CancellationToken cancellationToken)
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageukwirral", "AgeUKWirral");
             communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
@@ -715,6 +720,8 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/photo-1587040273238-9ba47c714796.jpg",
                 },
             };
+
+            communityViewModel.NewsTickerMessages = await _newsTickerService.GetNewsTickerMessages((int)Groups.AgeUKWirral, cancellationToken);
 
             return communityViewModel;
         }

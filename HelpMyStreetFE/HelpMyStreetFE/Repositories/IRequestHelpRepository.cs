@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
 using System;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -35,5 +36,6 @@ namespace HelpMyStreetFE.Repositories
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
         Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request);
+        Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
     }
 }

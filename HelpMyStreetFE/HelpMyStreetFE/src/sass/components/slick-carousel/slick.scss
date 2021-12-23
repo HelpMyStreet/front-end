@@ -109,6 +109,7 @@
 
     div {
       @extend .flex;
+      width: 100%;
 
       div.card-feedback {
         .card-feedback-inner {
@@ -116,8 +117,8 @@
           height: 100%;
 
           img {
-              height: 10rem;
-              width: 8rem;
+            height: 10rem;
+            width: 8rem;
           }
 
           * {
@@ -127,6 +128,38 @@
               font-style: italic;
               flex-grow: 0;
             }
+          }
+        }
+      }
+
+      a {
+        text-decoration: none;
+        @extend .flex;
+
+        div.card-partner {
+          height: 100%;
+          border-width: 2px;
+          border-radius: 25px;
+          transition: border-color 0.5s;
+
+          .card-partner-inner {
+            @extend .flex-column;
+            justify-content: center;
+
+            .group-logo {
+              justify-content: center;
+
+              img {
+                max-height: 4.5rem;
+              }
+            }
+          }
+        }
+
+        &:hover {
+          div.card-partner {
+            border-color: $black;
+            transition: border-color 0.1s;
           }
         }
       }
