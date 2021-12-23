@@ -11,26 +11,40 @@
     text-decoration: none;
 }
 
-.homepage-vaccination-banner {
-    @include border-red-yellow;
-
-    &__inner {
-        background: white;
-
-        &__left {
-            align-self: center;
-        }
-    }
-}
-
 .homepage-banner-container {
   @extend .outer-container--darker;
 
-  > img {
+  .homepage-banner-image {
+    background-image: url(/img/homepage-aerial-photo.jpg);
     width: 100%;
     height: calc(24vw + 4rem);
-    object-fit: cover;
-    object-position: bottom;
+    background-size: cover;
+    background-position: bottom;
+
+    h1 {
+      position: absolute;
+      left: 1.5rem;
+      bottom: 3vw;
+      width: calc(min(100% - 3rem, 30rem));
+      padding: 0.25vw 1vw 0.75vw 1vw;
+      margin: 0;
+
+      color: $gray-4;
+      font-size: 1.77rem;
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(2px);
+      border-radius: 5px;
+      box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.7);
+
+      @media screen and (min-width: $sm-med-screen) {
+        width: 51.5vw;
+        font-size: 3vw;
+      }
+
+      @media screen and (min-width: $xl-screen) {
+        left: calc(max(1.5rem, min(11vw, (100vw - 1300px)/2)));
+      }
+    }
   }
 
   .news-ticker {
@@ -40,36 +54,12 @@
     background: none;
   }
 
-  .h1-container-outer {
+}
 
-    .h1-container {
-      @extend .container;
-
-      @media screen and (min-width: $xxl-screen) {
-        width: 78vw;
-      }
-    }
-
-    h1 {
-      font-size: 1.77rem;
-      margin: 0.25rem 0 1.5rem 0;
-    }
-
-    @media screen and (min-width: $sm-med-screen) {
-      position: absolute;
-      bottom: 3vw;
-      width: 100%;
-
-      h1 {
-        max-width: 52vw;
-        background-color: rgba(255, 255, 255, 0.7);
-        border-radius: 2px;
-        padding: 0.5vw 1.25vw;
-        font-size: 3vw;
-        color: $gray-4;
-        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.7);
-      }
-    }
+.homepage-we-help {
+  @media screen and (min-width: $med-screen) {
+    padding-top: 2.2225rem;
+    padding-right: 1.6666rem;
   }
 }
 
@@ -81,5 +71,11 @@
     flex-direction: row;
     align-items: baseline;
     justify-content: space-around;
+  }
+}
+
+.homepage-map {
+  @media screen and (min-width: $med-screen) {
+    margin-top: 2.2225rem;
   }
 }
