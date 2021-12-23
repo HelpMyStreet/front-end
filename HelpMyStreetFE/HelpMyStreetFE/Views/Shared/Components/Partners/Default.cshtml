@@ -4,21 +4,23 @@
 
 <script type="text/javascript" src="~/testimonials.js" asp-append-version="true"></script>
 
-<div class="ml-md mr-md">
+<div>
     @if (Model.Partners.Count() > 0)
     {
-        <div class="mb-sm" style="margin-left:-1.5rem;"><strong>In partnership with...</strong></div>
-        <div class="partners-container">
-            @foreach (Partner partner in Model.Partners.OrderBy(x => Guid.NewGuid()))
-            {
-                <a href="/community/@partner.GroupKey" class="mr-sm ml-sm mb-sm">
-                    <div class="card-partner">
-                        <div class="card-partner-inner">
-                            <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = (int) partner.Group }" />
+        <h2 class="mb-sm-md">In partnership with...</h2>
+        <div class="ml-md mr-md">
+            <div class="partners-container">
+                @foreach (Partner partner in Model.Partners.OrderBy(x => Guid.NewGuid()))
+                {
+                    <a href="/community/@partner.GroupKey" class="mr-sm ml-sm mb-sm">
+                        <div class="card-partner">
+                            <div class="card-partner-inner">
+                                <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = (int) partner.Group }" />
+                            </div>
                         </div>
-                    </div>
-                </a>
-            }
+                    </a>
+                }
+            </div>
         </div>
     }
 </div>
