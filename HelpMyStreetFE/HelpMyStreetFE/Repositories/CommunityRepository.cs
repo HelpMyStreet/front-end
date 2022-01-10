@@ -775,7 +775,7 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Polskie",
+                    Name = "Polski",
                     ImageLocation = "/img/community/bostongns/flags/poland-flag-small.png",
                     Language = "Polish"
                 },
@@ -821,7 +821,7 @@ namespace HelpMyStreetFE.Repositories
 
             Dictionary<Tuple<string, string>, string> dict = new Dictionary<Tuple<string, string>, string>();
             
-            dict.Add(new Tuple<string, string>("Bulgarian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Подкрепа по Програмата на Общинския Съвет на Бостън “Глас за Здрави Общности” (или “Да Дадем Сила на Здравите Общности”)");
+            dict.Add(new Tuple<string, string>("Bulgarian", "Supported by Boston Borough Council’s Empowering Healthy Communities Programme"), "Подкрепа по Програмата на Общинския Съвет на Бостън “Глас за Здрави Общности”");
             dict.Add(new Tuple<string, string>("Bulgarian", "A community project bringing people together"), "Общностен проект, който обединява хората");
             dict.Add(new Tuple<string, string>("Bulgarian", "Training and support provided by YMCA Lincolnshire"), "Обучение и подкрепа, осигурени от YMCA Линкълншър");
             dict.Add(new Tuple<string, string>("Bulgarian", "Proudly funded by The National Lottery Community Fund"), "Финансиран с гордост от Обществения Фонд на Националната лотария");
