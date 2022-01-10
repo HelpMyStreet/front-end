@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -29,6 +29,11 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<JobLocation> LocateJob(int jobId, int userId, CancellationToken cancellationToken)
         {
             var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
+
+            if (job == null)
+            {
+                throw new Exception($"Failed to locate job {jobId} for user {userId}");
+            }
 
             if (job.VolunteerUserID == userId && job.JobStatus != JobStatuses.Open)
             {
