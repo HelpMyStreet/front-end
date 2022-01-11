@@ -1018,7 +1018,7 @@ namespace HelpMyStreetFE.Repositories
                 new Testimonial()
                 {
                     Tagline = "Очень полезно",
-                    Message = "Для меня самого знакомство с новыми людьми и приобретение новых навыков было очень полезно.",
+                    Message = "Для меня самого знакомство с новыми людьми и приобретение новых навыков было очень полезным.",
                     Person = "Волонтер GNS",
                     Type = FeedbackMessageType.Group,
                     GroupKey = "boston",

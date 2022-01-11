@@ -781,7 +781,7 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Lietuvis",
+                    Name = "Lietuvių",
                     ImageLocation = "/img/community/bostongns/flags/lithuania-flag-small.png",
                     Language = "Lithuanian"
                 },
@@ -793,7 +793,7 @@ namespace HelpMyStreetFE.Repositories
                 },
                 new FlagViewModel()
                 {
-                    Name = "Latvietis",
+                    Name = "Latviski",
                     ImageLocation = "/img/community/bostongns/flags/latvia-flag-small.png",
                     Language = "Latvian"
                 },
