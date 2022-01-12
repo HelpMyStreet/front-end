@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\img\community\ageUK\kent\southkentcoast\carousel\SKC 7.jpg" />
+    <Content Remove="wwwroot\img\community\bostongns\ymcalogosmall.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\community\ageUK\kent\northwest\carousel\" />
+    <Folder Include="wwwroot\img\community\bostongns\carousel\" />
+    <Folder Include="wwwroot\img\community\bostongns\flags\" />
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />

@@ -44,7 +44,7 @@ namespace HelpMyStreetFE.Services.Requests
             _requestHelpBuilder = requestHelpBuilder ?? throw new ArgumentNullException(nameof(requestHelpBuilder));
         }
 
-        public async Task<Fulfillable> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, User user, CancellationToken cancellationToken)
+        public async Task<Fulfillable> LogRequestAsync(RequestHelpRequestStageViewModel requestStage, RequestHelpDetailStageViewModel detailStage, int referringGroupID, string source, string language, User user, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Logging Request");
 
@@ -94,7 +94,8 @@ namespace HelpMyStreetFE.Services.Requests
                             Recipient = recipient,
                             Requestor = requestor,
                             ReferringGroupId = referringGroupID,
-                            Source = source
+                            Source = source,
+                            Language = language
                         },
                         NewJobsRequest = new NewJobsRequest
                         {

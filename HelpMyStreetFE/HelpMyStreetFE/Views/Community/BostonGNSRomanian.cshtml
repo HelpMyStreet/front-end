@@ -1,0 +1,216 @@
+﻿@using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+        <div class="community-banner crop-when-oversize">
+            <img src="~/img/community/bostongns/banner.png" alt="Boston" />
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker mt-lg mb-lg">
+        <div class="container">
+            <partial name="_FlagPanelSlider" model="Model" />
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000 text-center">
+                        <h2 class="mb0 mt-md">Bine ați venit la Proiectul de bună vecinătate din Boston (Boston Good Neighbour Scheme)</h2>
+                    </header>
+
+                    <p class='mt-sm mb-s'>
+                        Proiectele de bună vecinătate sunt gestionate de voluntari locali care oferă sprijin zilnic altor locuitori care, din când în când sau în mod regulat, ar putea avea nevoie de ajutor. Pentru persoanele în vârstă, acest sprijin înseamnă că ar putea locui independent în propriile locuințe și comunități pentru o perioadă mai îndelungată, precum și  diminuarea sentimentelor de izolare și de singurătate.
+                    </p>
+
+                    <p class='mt-sm mb-xs'>
+                        Aici, în Boston, putem ajuta pe toată lumea cu privire la:
+                    </p>
+
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Ridicarea cumpărăturilor esențiale</li>
+                        <li>Diverse comisioane locale</li>
+                        <li>Asistență practică</li>
+                        <li>O discuție prietenească</li>
+                        <li>Orice altceva, trebuie doar să cereți!</li>
+                    </ul>
+
+                    @*<div class="row sm6 text-center justify-center mb-sm">
+                            <p class="mt-sm mb-sm pl-md pr-md">
+                                If you or someone you know needs help, complete our quick and easy online form.
+                            </p>
+                            <partial name="_RequestHelpButton" model="Model" />
+                        </div>*@
+
+                    <div class="row sm6 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            Pentru a vă face cunoscut interesul de a deveni voluntar în cadrul comunității și pentru a descoperi ocazii în apropierea dumneavoastră, înregistrați-vă sau conectați-vă astăzi.
+                        </p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Proiecte de bună vecinătate – ajutor acordat comunității dvs</h2>
+                    <div class="outer-container outer-container--darker">
+                        <partial name="_CommunityVolunteersSlider" model="Model" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Ce este un proiect de bună vecinătate?</h2>
+                    <p>Proiectele de bună vecinătate sunt proiecte comunitare gestionate și desfășurate de echipe de voluntari locali. În timp ce pot aduce beneficii la nivelul întregii comunității, scopul lor primar este să ajute persoanele în vârstă, persoanele cu dizabilități, pe cele vulnerabile, cele care au o sănătate precară sau persoanele izolate. Ajutorul este acordat gratuit celor care au nevoie de el, deși, de obicei, se percepe un comision rezonabil pentru distanța parcursă la transport.</p>
+                    <p><strong>Cum puteți fi de ajutor?</strong></p>
+                    <p>Proiectele de bună vecinătate răspund nevoilor localnicilor prin ajutor acordat în cazul unor activități precum:</p>
+                    <ul>
+                        <li>Împrietenire, vizite la domiciliu, companie, însoțitori la evenimente sociale</li>
+                        <li>Plimbarea câinilor și îngrijirea animalelor de companie în timpul vacanțelor sau în cazul îmbolnăvirii</li>
+                        <li>Diverse comisioane și cumpărături</li>
+                        <li>Completarea formularelor, redactarea scrisorilor, citirea și ajutorul acordat la folosirea calculatoarelor și a internetului</li>
+                        <li>Grădinărit</li>
+                        <li>Transport auto la cabinetul medicului generalist, la clinică, spital, la centrele de primire de zi, la alte întâlniri</li>
+                        <li>Sarcini casnice, inclusiv reglarea televizoarelor, schimbarea becurilor și a alarmelor de fum</li>
+                        <li>Mutarea mobilei, demontarea și montarea draperiilor și a tablourilor</li>
+                    </ul>
+                    <p>Este vorba despre localnici care-și ajută vecinii să beneficieze de o mai bună calitate a vieții. Proiectele de bună vecinătate contribuie la crearea unui mediu în care oamenii se simt în siguranță și protejați, deoarece au o legătură reală unii cu alții.</p>
+                    <p><strong>Cum pot solicita ajutor?</strong></p>
+                    <p>În prezent, ne concentrăm pe recrutarea de voluntari. De îndată ce vom putea, vom lansa un formular de cerere online pe care-l veți putea completa pentru a solicita ajutor pentru dvs. sau în numele altei persoane (cu permisiunea acesteia), dacă aceasta locuiește în zona Boston. Formularul de cerere va fi disponibil pe această pagină, așadar atenție la spațiul de aici!</p>
+                    <p><strong>Cum devin membru al Programului de bună vecinătate?</strong></p>
+                    <p>Dacă doriți să vă oferiți din timp și din sprijin pentru a vă ajuta vecinii, înscrieți-vă și alăturați-vă astăzi echipei noastre, prin apăsarea pe unul dintre butoanele verzi de pe această pagină. Odată înregistrat, veți vedea cererile disponibile din zona dvs. Puteți accepta cât de multe sau cât de puține doriți – apreciem fiecare contribuție.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @*<div class="flex sm6">
+                        <div class="card flex m-sm">
+                            <h2>How can we help?</h2>
+                            <p class="mt-sm mb-md">
+                                We&rsquo;ve got volunteers all ready and waiting to help you! Use the buttons on this page to request help today.
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId/ /@Model.Language" class="btn cta btn--request-help fill cta--orange  ">Request Help</a>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Fiți voluntar cu noi!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Alăturați-vă echipei noastre pentru a vă ajuta vecinii. Trebuie doar să ne anunțați când, unde și cum puteți ajuta. Puteți ajuta mai puțin sau mai mult, după cum doriți! Apreciem fiecare contribuție.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Vă mulțumim că faceți parte din Boston și zonele învecinate. Faceți clic mai jos pentru a vizualiza cererile de ajutor.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Lincuri utile</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div id="resources" class="sm12 community-useful-links mb-lg">
+                    <p><a href="https://www.mybostonuk.com/">Consiliul Districtual Boston</a> - Pagina de pornire a consiliului dvs. local</p>
+                    <p><a href="https://www.lincsymca.co.uk/communities/">Pagina Comunității YMCA</a> - Informații suplimentare despre proiectele comunitare susținute de YMCA Lincolnshire</p>
+                    <p><a href="https://www.mybostonuk.com/ehcprogramme/">Programul Consoloidarea comunităților sănătoase</a> - Aflați mai multe despre inițiativa Consiliului Districtual Boston referitoare la sănătate și stare de bine, o inițiativă menită să sprijine locuitorii în timpul pandemiei de Covid și dincolo de aceasta.</p>
+                    <p><a href="http://www.lincolnshirecvs.org.uk/">Serviciul comunitar și voluntar din Lincolnshire</a> - Folosiți-vă de resursele LCVS în așa fel încât să vă bucurați maxim de activitatea de voluntariat</p>
+                    <h5>Alte moduri prin care puteți avea acces la sprijin în Boston:</h5>
+                    <p><a href="https://www.ageuk.org.uk/lincolnsouthlincolnshire/">Age UK Lincoln & South Lincolnshire</a> - Obțineți sprijin pentru persoane în vârstă din Lincoln și Lincolnshire</p>
+                    <p><a href="https://boston.foodbank.org.uk/">Banca pentru Alimente din Boston</a> - Aflați informații despre cum puteți obține ajutor de la banca de alimente din Boston</p>
+                    <p><a href="https://centrepoint-outreach.com/">Centrul de asistență</a> - Oferă sprijin persoanelor fără adăpost, singure și vulnerabile</p>
+                    <p><a href="https://www.citizensadvice.org.uk/local/mid-lincolnshire/">Consilierea Cetățenilor Mid Lincolnshire</a> - Consiliere gratuită, confidențială și fără prejudecăți</p>
+                    <p><a href="https://www.wellbeinglincs.org/">Wellbeing Lincs</a> - Wellbeing Lincs este un serviciu la nivel de comitat, capabil să ofere sprijin mai specializat și un plan personal de asistență.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey, language = "Romanian" })
+    </div>
+
+    <div class="outer-container outer-container--darker mb-md">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
+
+    @*<div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>*@
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @*<div class="flex sm6">
+                        <div class="card flex m-sm">
+                            <h2>How can we help?</h2>
+                            <p class="mt-sm mb-md">
+                                We&rsquo;ve got volunteers all ready and waiting to help you! Use the buttons on this page to request help today.
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId/ /@Model.Language" class="btn cta btn--request-help fill cta--orange  ">Request Help</a>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Fiți voluntar cu noi!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Alăturați-vă echipei noastre pentru a vă ajuta vecinii. Trebuie doar să ne anunțați când, unde și cum puteți ajuta. Puteți ajuta mai puțin sau mai mult, după cum doriți! Apreciem fiecare contribuție.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Vă mulțumim că faceți parte din Boston și zonele învecinate. Faceți clic mai jos pentru a vizualiza cererile de ajutor.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

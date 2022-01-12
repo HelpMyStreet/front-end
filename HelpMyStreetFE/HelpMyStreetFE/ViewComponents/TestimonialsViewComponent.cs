@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Models;
+﻿using FirebaseAdmin.Messaging;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models;
 using HelpMyStreetFE.Models.Feedback;
@@ -24,10 +25,16 @@ namespace HelpMyStreetFE.ViewComponents
             _feedbackRepository = feedbackRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow, string groupKey, bool? b2bFeedback)
+        public async Task<IViewComponentResult> InvokeAsync(FeedbackMessageType feedbackMessageType, int? numberToShow, string groupKey, bool? b2bFeedback, string language = null)
         {
             var viewModel = new TestimonialsViewModel();
             var messages = await _feedbackRepository.GetTestimonials();
+
+            if(!string.IsNullOrEmpty(language))
+            {
+                messages = messages.Where(x => x.Language == language).ToList();
+            }
+
             if (feedbackMessageType == FeedbackMessageType.Other)
             {
                 var faceMasks = messages.FindAll(e => e.Type == FeedbackMessageType.FaceCovering);
