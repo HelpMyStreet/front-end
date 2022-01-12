@@ -6,7 +6,7 @@
 
         @media (min-width: $med-screen) {
             max-width: 10rem;
-            max-height: 4rem;
+            max-height: 8rem;
         }
     }
 
@@ -25,4 +25,22 @@
             color: black;
         }
     }
+}
+
+.card-partner {
+  .group-logo {
+    img {
+      max-height: initial;
+
+      @media (min-width: $med-screen) {
+        max-width: 100%;
+      }
+    }
+
+    .composite-logo {
+      img {
+        max-width: 2.5rem;
+      }
+    }
+  }
 }

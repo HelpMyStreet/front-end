@@ -28,11 +28,6 @@ steps:
     feedsToUse: 'select'
     vstsFeed: 'e5c08e0c-1c28-42ca-815f-5ca90021fd46/9ff815b0-abc7-442a-98cb-d2879666c3bb'
 
-- task: UseDotNet@2
-  displayName: 'Use .NET Core sdk 3.1.302'
-  inputs:
-    version: 3.1.302
-
 - task: DotNetCoreCLI@2
   displayName: DotNetCore build
   inputs:

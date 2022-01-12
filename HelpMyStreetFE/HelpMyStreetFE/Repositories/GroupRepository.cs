@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using Microsoft.AspNetCore.Http;
+using HelpMyStreet.Contracts;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -320,6 +321,26 @@ namespace HelpMyStreetFE.Repositories
             {
                 throw new Exception($"Bad response from GetGroupsWithMapDetailsResponse for MapLocation {mapLocation}");
             }
+        }
+
+        public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
+        {
+            string url = "/api/GetNewsTicker";
+
+            if (groupId.HasValue)
+            {
+                url += $"?groupId={groupId.Value}";
+            }
+
+
+            HttpResponseMessage response = await Client.GetAsync(url);
+            string str = await response.Content.ReadAsStringAsync();
+            var deserializedResponse = JsonConvert.DeserializeObject<ResponseWrapper<NewsTickerResponse, GroupServiceErrorCode>>(str);
+            if (deserializedResponse.HasContent && deserializedResponse.IsSuccessful)
+            {
+                return deserializedResponse.Content.Messages;
+            }
+            throw new Exception($"Bad response from GetNewsTicker for groupId {groupId}");
         }
     }
 }

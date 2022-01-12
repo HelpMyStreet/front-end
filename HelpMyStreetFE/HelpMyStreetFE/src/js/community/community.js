@@ -2,6 +2,7 @@ import { initialiseSliders } from "../shared/image-slider.js";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 import { hidePopup, showServerSidePopup } from "../shared/popup";
 import { enableMaps, drawMap } from "../shared/maps";
+import { initialiseNewsTicker } from "../components/news-ticker"
 
 async function initialiseMaps(){
     var options = {
@@ -23,6 +24,7 @@ async function initialiseMaps(){
 
 $(document).ready(function () {
     initialiseSliders();
+    initialiseNewsTicker();
     enableMaps().then(() => initialiseMaps());
     if ($('.select-all').length > 0) {
         $('.btn--sign-up').addClass("disabled");

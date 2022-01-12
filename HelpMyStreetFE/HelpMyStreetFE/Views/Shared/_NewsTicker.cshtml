@@ -1,0 +1,25 @@
+﻿@using HelpMyStreet.Contracts;
+@using Westwind.AspNetCore.Markdown;
+@using HelpMyStreetFE.Helpers;
+
+@model IEnumerable<NewsTickerMessage>
+
+@if (Model != null)
+{
+    <div class="news-ticker">
+        <div class="news-ticker__inner">
+            @foreach (var message in Model.OrderBy(x => Guid.NewGuid()))
+            {
+                <div class="news-ticker__item @(message.SupportActivity.HasValue ? message.SupportActivity.Value.Class() : "")">
+                    @if (message.SupportActivity.HasValue)
+                    {
+                        <img src="~/img/icons/@message.SupportActivity.Value.Icon()" />
+                    }
+                    @Markdown.ParseHtmlString(message.Message)
+                </div>
+            }
+        </div>
+        <div class="news-ticker__border"></div>
+    </div>
+}
+

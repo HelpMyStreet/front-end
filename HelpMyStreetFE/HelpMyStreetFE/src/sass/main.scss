@@ -43,6 +43,7 @@
 @import "./components/_map-markers";
 @import "./components/awards/awards";
 @import "./components/community/group-logo";
+@import "./components/news-ticker";
 
 * {
   font-family: "Montserrat", sans-serif;
@@ -121,7 +122,7 @@ h6 + p {
   margin-top: 0;
 }
 
-span, b, strong, a, i {
+span, b, strong, a, i, em {
   font-size: inherit;
 }
 
@@ -278,6 +279,18 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: $med-margin 16px;
   }
 
+  &.p-sm {
+    @extend .p-sm;
+  }
+
+  &.p-sm-md {
+    @extend .p-sm-md;
+  }
+
+  &.p-md {
+    @extend .p-md;
+  }
+
   &__buttons {
     .btn {
       @extend .mt-sm;
@@ -290,7 +303,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
   }
 
-  &-feedback {
+  &-feedback, &-partner {
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     border: 1px solid #dddddd;

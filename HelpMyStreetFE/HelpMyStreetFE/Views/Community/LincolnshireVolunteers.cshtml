@@ -23,26 +23,29 @@
                 We&rsquo;re supporting the COVID-19 vaccination programme - Find out more below
             </div>
         </div>
-
     </div>
-    <div class="outer-container">
+
+    <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
+
+    <div class="outer-container mt-sm-md">
         <div class="container">
             <div class="row flex hero mb-lg">
                 <div class="row sm4 align-center justify-center text-center content-page mr-md">
 
-                        <h2 class="mb0 mt-md">Welcome to Lincolnshire Volunteers</h2>
+                    <h2 class="mb0 mt-md">Welcome to Lincolnshire Volunteers</h2>
 
                     <p class='row sm12 text-center justify-center mb-sm'>
                         Lincolnshire Volunteers has been set up to support our community through times of need. Our ambition is to have our own network of community volunteers who can be called upon when they are needed.
-                        </p><p class="row sm12 text-center justify-center mb-sm ">
+                    </p><p class="row sm12 text-center justify-center mb-sm ">
                         Our main priority at the moment is to find volunteers to support our local programme for COVID-19 vaccinations. Find out more about the roles below.
                     </p>
-                
+
 
                     <div class="row sm12 text-center justify-center mb-md">
                         <p class="mt-sm mb-lg pl-md pr-md">
-                            To register your interest as a community volunteer and find opportunities near you, sign up today</p>
-                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                            To register your interest as a community volunteer and find opportunities near you, sign up today
+                        </p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
                     </div>
                 </div>
 
