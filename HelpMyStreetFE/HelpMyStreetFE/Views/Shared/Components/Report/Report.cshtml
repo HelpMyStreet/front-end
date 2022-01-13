@@ -44,23 +44,45 @@
         grey: 'rgb(201, 203, 207)'
     };
 
-    const DATA_COUNT = 7;
-    const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
-    const labels = months({ count: 7 });
+    const labels = months({ count: 12 });
     const data = {
         labels: labels,
         datasets: [
             {
-                label: 'Dataset 1',
-                data: [50, -25, -30, 80, 70, 60, 50],
+                label: 'Errands',
+                data: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 borderColor: CHART_COLORS.red,
-                backgroundColor: CHART_COLORS.red,
+                backgroundColor: CHART_COLORS.red
             },
             {
-                label: 'Dataset 2',
-                data: [60, 75, 30, 50, 60, 70, 60],
+                label: 'Face Covering',
+                data: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
                 borderColor: CHART_COLORS.blue,
-                backgroundColor: CHART_COLORS.blue,
+                backgroundColor: CHART_COLORS.blue
+            },
+            {
+                label: 'Friendly Chat',
+                data: [2, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0],
+                borderColor: CHART_COLORS.grey,
+                backgroundColor: CHART_COLORS.grey
+            },
+            {
+                label: 'Other',
+                data: [0, 2, 0, 1, 2, 3, 1, 12, 24, 6, 12],
+                borderColor: CHART_COLORS.yellow,
+                backgroundColor: CHART_COLORS.yellow
+            },
+            {
+                label: 'Prescriptions',
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+                borderColor: CHART_COLORS.purple,
+                backgroundColor: CHART_COLORS.purple
+            },
+            {
+                label: 'Shopping',
+                data: [1, 2, 5, 1, 1, 0, 1, 0, 0, 0, 0],
+                borderColor: CHART_COLORS.green,
+                backgroundColor: CHART_COLORS.green
             }
         ]
     };
@@ -84,7 +106,7 @@
                 },
                 title: {
                     display: true,
-                    text: 'Chart.js Horizontal Bar Chart'
+                    text: 'Count of support activity by month'
                 }
             }
         },
@@ -153,11 +175,11 @@
     ];
 </script>
 
-<h1>Horizontal Bar Chart</h1>
 <div id="chartHolder">
     <canvas id="myChart"></canvas>
 </div>
 <script>
+    
     const myChart = new Chart(
         document.getElementById('myChart'),
         config
