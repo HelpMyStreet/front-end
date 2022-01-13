@@ -1,0 +1,17 @@
+﻿@using HelpMyStreetFE.Models.Account;
+
+@model AccountViewModel
+
+<div class="user-profile profile-panel p-md">
+    <header class="profile-panel__header">
+        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Reports</h3>
+    </header>
+
+    <div class="">
+        @await Component.InvokeAsync("Report", new
+   {
+       GroupId = Model.CurrentGroup.GroupId
+   })
+    </div>
+
+</div>

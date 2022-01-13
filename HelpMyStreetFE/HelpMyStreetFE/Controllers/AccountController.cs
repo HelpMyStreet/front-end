@@ -434,6 +434,20 @@ namespace HelpMyStreetFE.Controllers
             return View("Index", viewModel);
         }
 
+        [Route("g/{groupKey}/reports")]
+        [HttpGet]
+        public async Task<IActionResult> Reports(string groupKey, CancellationToken cancellationToken)
+        {
+            var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
+            var user = await _authService.GetCurrentUser(cancellationToken);
+            var viewModel = await GetAccountViewModel(user, cancellationToken);
+
+            viewModel.CurrentPage = MenuPage.Reports;
+            viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
+
+            return View("Index", viewModel);
+        }
+
         [HttpPut]
         public async Task<IActionResult> CloseNotification(Guid id)
         {
