@@ -10,5 +10,6 @@ namespace HelpMyStreetFE.Models
     {
         public Groups Group { get; set; }
         public string GroupKey { get; set; }
+        public string Label { get; set; }
     }
 }

@@ -16,6 +16,10 @@
                         <div class="card-partner">
                             <div class="card-partner-inner">
                                 <partial name="_GroupLogo" model="new GroupLogoViewModel { GroupId = (int) partner.Group }" />
+                                @if(!string.IsNullOrEmpty(partner.Label))
+                                {
+                                    <span>@partner.Label</span>
+                                }
                             </div>
                         </div>
                     </a>
