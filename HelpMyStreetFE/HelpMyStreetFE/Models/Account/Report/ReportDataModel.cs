@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 namespace HelpMyStreetFE.Models.Account.Report
 {
-    public class ReportViewModel
+    public class ReportDataModel
     {
-        public string Labels { get; set; }
-        public List<ReportItemModel> Data { get; set; }
+        public string XAxis { get; set; }
+        public string Label { get; set; }
+        public int Count { get; set; }
     }
 }

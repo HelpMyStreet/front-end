@@ -184,6 +184,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IUserLocationService, UserLocationService>();
             services.AddSingleton<INewsTickersService, NewsTickersService>();
             services.AddSingleton<IPartnerService, PartnerService>();
+            services.AddSingleton<IReportRepository, ReportRepository>();
             services.AddHttpContextAccessor();
 
             // cache

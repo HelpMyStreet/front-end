@@ -1,6 +1,8 @@
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreet.Utils.Extensions;
 
+@model HelpMyStreetFE.Models.Account.Report.ReportViewModel
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link href="css/chart.css" rel="stylesheet" />
 <script>
@@ -177,12 +179,28 @@
 
 <div id="chartHolder">
     <canvas id="myChart"></canvas>
+    <textarea rows="10" cols="100" id="chartdata"></textarea>
+    <textarea rows="10" cols="100" id="chartlabel"></textarea>
 </div>
 <script>
-    
+
+    const colours = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
+    var datasets = [];
+    const chartdata = @Html.Raw(Json.Serialize(@Model.Data));
+    const chartlabels = @Html.Raw(Json.Serialize(@Model.Labels));
+    chartdata.forEach(myFunction);
+
+    function myFunction(item, index) {
+        const car = { label: item.label, data: item.data, borderColor: colours[index], backgroundColor:colours[index] };
+        datasets.push(car);
+    }
+
+    document.getElementById('chartdata').value = JSON.stringify(datasets);
+    document.getElementById('chartlabel').value = chartlabels;
+
     const myChart = new Chart(
-        document.getElementById('myChart'),
-        config
-    );
+document.getElementById('myChart'),
+config
+);
 
 </script>
