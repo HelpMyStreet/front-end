@@ -7,6 +7,8 @@ namespace HelpMyStreetFE.Models.Account.Report
     public class ReportItemModel
     {
         public string Label { get; set; }
+
+        public List<int> DataItems { get; set; }
         public string Data  { get; set; }
         //public string BorderColor { get; set; }
         //public string BackgroundColor { get; set; }

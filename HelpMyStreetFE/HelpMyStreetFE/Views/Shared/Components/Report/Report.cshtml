@@ -4,37 +4,15 @@
 @model HelpMyStreetFE.Models.Account.Report.ReportViewModel
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="css/chart.css" rel="stylesheet" />
 <script>
-    const MONTHS = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-    ];
 
-    function months(config) {
-        var cfg = config || {};
-        var count = cfg.count || 12;
-        var section = cfg.section;
-        var values = [];
-        var i, value;
 
-        for (i = 0; i < count; ++i) {
-            value = MONTHS[Math.ceil(i) % 12];
-            values.push(value.substring(0, section));
-        }
+</script>
 
-        return values;
-    }
+<div id="chartHolder">
+    <canvas id="myChart"></canvas>
+</div>
+<script>
 
     const CHART_COLORS = {
         red: 'rgb(255, 99, 132)',
@@ -46,157 +24,162 @@
         grey: 'rgb(201, 203, 207)'
     };
 
-    const labels = months({ count: 12 });
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Errands',
-                data: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                borderColor: CHART_COLORS.red,
-                backgroundColor: CHART_COLORS.red
-            },
-            {
-                label: 'Face Covering',
-                data: [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-                borderColor: CHART_COLORS.blue,
-                backgroundColor: CHART_COLORS.blue
-            },
-            {
-                label: 'Friendly Chat',
-                data: [2, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0],
-                borderColor: CHART_COLORS.grey,
-                backgroundColor: CHART_COLORS.grey
-            },
-            {
-                label: 'Other',
-                data: [0, 2, 0, 1, 2, 3, 1, 12, 24, 6, 12],
-                borderColor: CHART_COLORS.yellow,
-                backgroundColor: CHART_COLORS.yellow
-            },
-            {
-                label: 'Prescriptions',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-                borderColor: CHART_COLORS.purple,
-                backgroundColor: CHART_COLORS.purple
-            },
-            {
-                label: 'Shopping',
-                data: [1, 2, 5, 1, 1, 0, 1, 0, 0, 0, 0],
-                borderColor: CHART_COLORS.green,
-                backgroundColor: CHART_COLORS.green
-            }
-        ]
-    };
-
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            indexAxis: 'y',
-            // Elements options apply to all of the options unless overridden in a dataset
-            // In this case, we are setting the border of each horizontal bar to be 2px wide
-            elements: {
-                bar: {
-                    borderWidth: 2,
-                }
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'right',
-                },
-                title: {
-                    display: true,
-                    text: 'Count of support activity by month'
-                }
-            }
-        },
-    };
-
-    const actions = [
-        {
-            name: 'Randomize',
-            handler(chart) {
-                chart.data.datasets.forEach(dataset => {
-                    dataset.data = Utils.numbers({ count: chart.data.labels.length, min: -100, max: 100 });
-                });
-                chart.update();
-            }
-        },
-        {
-            name: 'Add Dataset',
-            handler(chart) {
-                const data = chart.data;
-                const dsColor = Utils.namedColor(chart.data.datasets.length);
-                const newDataset = {
-                    label: 'Dataset ' + (data.datasets.length + 1),
-                    backgroundColor: Utils.transparentize(dsColor, 0.5),
-                    borderColor: dsColor,
-                    borderWidth: 1,
-                    data: Utils.numbers({ count: data.labels.length, min: -100, max: 100 }),
-                };
-                chart.data.datasets.push(newDataset);
-                chart.update();
-            }
-        },
-        {
-            name: 'Add Data',
-            handler(chart) {
-                const data = chart.data;
-                if (data.datasets.length > 0) {
-                    data.labels = Utils.months({ count: data.labels.length + 1 });
-
-                    for (let index = 0; index < data.datasets.length; ++index) {
-                        data.datasets[index].data.push(Utils.rand(-100, 100));
-                    }
-
-                    chart.update();
-                }
-            }
-        },
-        {
-            name: 'Remove Dataset',
-            handler(chart) {
-                chart.data.datasets.pop();
-                chart.update();
-            }
-        },
-        {
-            name: 'Remove Data',
-            handler(chart) {
-                chart.data.labels.splice(-1, 1); // remove the label first
-
-                chart.data.datasets.forEach(dataset => {
-                    dataset.data.pop();
-                });
-
-                chart.update();
-            }
-        }
-    ];
-</script>
-
-<div id="chartHolder">
-    <canvas id="myChart"></canvas>
-    <textarea rows="10" cols="100" id="chartdata"></textarea>
-    <textarea rows="10" cols="100" id="chartlabel"></textarea>
-</div>
-<script>
-
     const colours = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
-    var datasets = [];
+    //var datasets = [];
     const chartdata = @Html.Raw(Json.Serialize(@Model.Data));
     const chartlabels = @Html.Raw(Json.Serialize(@Model.Labels));
-    chartdata.forEach(myFunction);
+    const reportTitle = @Html.Raw(Json.Serialize(@Model.Title));
+    const xAxisName = @Html.Raw(Json.Serialize(@Model.XAxisName));
+    const yAxisName = @Html.Raw(Json.Serialize(@Model.YAxisName));
+    const chartType = @Html.Raw(Json.Serialize(@Model.ChartType));
 
-    function myFunction(item, index) {
-        const car = { label: item.label, data: item.data, borderColor: colours[index], backgroundColor:colours[index] };
-        datasets.push(car);
-    }
+    console.log("title:" + reportTitle);
+    console.log("xAxis:" + xAxisName);
+    console.log("yAxis:" + yAxisName);
+    console.log("chartType:" + chartType);
 
-    document.getElementById('chartdata').value = JSON.stringify(datasets);
-    document.getElementById('chartlabel').value = chartlabels;
+    const datasets = [];
+
+    chartdata.forEach(function (item, index) {
+        datasets.push(
+            {
+                label: item.label,
+                data: item.dataItems,
+                backgroundColor: colours[index],
+            });
+        //console.log(index);
+        ///console.log(item.label);
+        //console.log(item.data);
+    });
+    console.log(datasets);
+
+    //for (const element of chartdata)
+    //{    
+    //    datasets.push(
+    //        {
+    //            label: element.label,
+    //            data: element.data,
+    //            backgroundColor: CHART_COLORS.red
+    //        });
+    //}
+
+
+    const data = {
+        labels: chartlabels,
+        datasets: datasets
+            //{
+            //    label: 'Dataset 1',
+            //    data: [50, -25, -30, 80, 70, 60, 50],
+            //    backgroundColor: CHART_COLORS.red,
+            //},
+            //{
+            //    label: 'Dataset 2',
+            //    data: [50, -25, -30, 80, 70, 60, 50],
+            //    backgroundColor: CHART_COLORS.blue,
+            //},
+            //{
+            //    label: 'Dataset 3',
+            //    data: [50, -25, -30, 80, 70, 60, 50],
+            //    backgroundColor: CHART_COLORS.green,
+            //},
+        //]
+    };
+
+    //for (const element of chartdata) { // You can use `let` instead of `const` if you like
+    //    console.log(element.label);
+    //}
+
+    
+
+   // chartdata.forEach(myFunction);
+
+//    function myFunction(item, index) {
+//        console.log("index:" + index);
+////        const car = { label: item.label, data: item.data, borderColor: colours[index], backgroundColor:colours[index] };
+////        datasets.push(car);
+//    }
+
+    const config = {
+        type: chartType,
+        data: data,
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: reportTitle
+                },
+            },
+            responsive: true,
+            scales: {
+                yAxes: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: yAxisName,
+                        font: {
+                            size: 15
+                        }
+                    }
+                },
+                xAxes: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: xAxisName,
+                        font: {
+                            size: 15
+                        }
+                    }
+                },
+            }
+        }
+    };
+
+    //alert(typeof (chartlabels));
+
+    //alert(chartlabels);
+//    chartdata.forEach(myFunction);
+
+//    function myFunction(item, index) {
+//        const car = { label: item.label, data: item.data, borderColor: colours[index], backgroundColor:colours[index] };
+//        datasets.push(car);
+//    }
+
+//    document.getElementById('chartdata').value = JSON.stringify(datasets);
+ //   document.getElementById('chartlabel').value = chartlabels;
+
+//    //alert(chartlabels);
+//    //alert(labels);
+
+//    var ctx = document.getElementById('myChart2').getContext('2d');
+//    var chart = new Chart(ctx, {
+//        type: 'bar',
+//        data: {
+//            labels: labels,
+//            datasets: [{ "label": "Errands", "data": "[0,0,0,0,0,0,0,1,0,0,0]", "borderColor": "rgb(255, 99, 132)", "backgroundColor": "rgb(255, 99, 132)" }, { "label": "Face Covering", "data": "[0,0,0,0,0,0,0,1,0,0,0]", "borderColor": "rgb(255, 159, 64)", backgroundColor: "rgb(255, 159, 64)" }, { label: 'Friendly Chat', data: [2,0,0,0,0,0,0,7,0,0,0], borderColor: 'rgb(255, 205, 86)', backgroundColor: 'rgb(255, 205, 86)' }, { "label": "Other", "data": "[0,2,0,1,2,3,1,12,24,6,12]", "borderColor": "rgb(75, 192, 192)", "backgroundColor": "rgb(75, 192, 192)" }, { "label": "Prescriptions", "data": "[0,0,0,0,0,0,0,0,0,1,0]", "borderColor": "rgb(54, 162, 235)", "backgroundColor": "rgb(54, 162, 235)" }, { "label": "Shopping", "data": "[1,2,5,1,1,0,1,0,0,0,0]", "borderColor": "rgb(153, 102, 255)", "backgroundColor": "rgb(153, 102, 255)" }]
+//        },
+//        options: {
+//            indexAxis: 'y',
+//            // Elements options apply to all of the options unless overridden in a dataset
+//            // In this case, we are setting the border of each horizontal bar to be 2px wide
+//            elements: {
+//                bar: {
+//                    borderWidth: 2,
+//                }
+//            },
+//            responsive: true,
+//            plugins: {
+//                legend: {
+//                    position: 'right',
+//                },
+//                title: {
+//                    display: true,
+//                    text: 'Count of support activity by month'
+//                }
+//            }
+//        }
+
+//    });
 
     const myChart = new Chart(
 document.getElementById('myChart'),

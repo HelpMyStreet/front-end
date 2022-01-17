@@ -28,32 +28,27 @@ namespace HelpMyStreetFE.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync(string groupKey, CancellationToken cancellationToken)
         {
-            var viewModel = new ReportViewModel();
+            ChartModel chartModel = await _reportRepository.GetReportData(groupKey);
 
-            IEnumerable<ReportDataModel> data = await _reportRepository.GetReportData(groupKey);
+            ReportViewModel viewModel = new ReportViewModel(chartModel);
 
-            var xAxis = data.OrderBy(x=> x.XAxis)
-                .Select(x => x.XAxis)
-                .Distinct()
-                .ToList();
-
-            var labels = data.OrderBy(x => x.XAxis)
+            var labels = chartModel.ReportDataModels.OrderBy(x => x.XAxis)
                 .Select(x => x.Label)
                 .Distinct()
                 .ToList();
 
-            viewModel.Labels = string.Join<string>(",", xAxis);
             viewModel.Data = new List<ReportItemModel>();
             labels.ForEach(item =>
             {
-                var dataList = data.Where(x => x.Label == item).Select(x => x.Count.ToString()).ToList();
+                var dataList = chartModel.ReportDataModels.Where(x => x.Label == item).Select(x => x.Count).ToList();
                 viewModel.Data.Add(new ReportItemModel()
                 {
                     Label = item,
-                    Data = $"[{string.Join<string>(',', dataList)}]"
+                    DataItems = dataList,
+                    //Data = $"[{string.Join<string>(',', dataList)}]"
                 });
             });
-            
+
 
             return View("Report", viewModel);
         }

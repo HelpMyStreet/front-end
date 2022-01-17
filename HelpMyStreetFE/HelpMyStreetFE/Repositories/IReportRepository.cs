@@ -10,6 +10,6 @@ namespace HelpMyStreetFE.Repositories
 {
     public interface IReportRepository
     {
-        Task<IEnumerable<ReportDataModel>> GetReportData(string groupKey);
+        Task<ChartModel> GetReportData(string groupKey);
     }
 }
