@@ -13,31 +13,13 @@
     <canvas id="myChart"></canvas>
 </div>
 <script>
-
-    const CHART_COLORS = {
-        red: 'rgb(255, 99, 132)',
-        orange: 'rgb(255, 159, 64)',
-        yellow: 'rgb(255, 205, 86)',
-        green: 'rgb(75, 192, 192)',
-        blue: 'rgb(54, 162, 235)',
-        purple: 'rgb(153, 102, 255)',
-        grey: 'rgb(201, 203, 207)'
-    };
-
-    const colours = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];
-    //var datasets = [];
+    const colours = ['rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)', 'rgb(201, 203, 207)'];    
     const chartdata = @Html.Raw(Json.Serialize(@Model.Data));
     const chartlabels = @Html.Raw(Json.Serialize(@Model.Labels));
     const reportTitle = @Html.Raw(Json.Serialize(@Model.Title));
     const xAxisName = @Html.Raw(Json.Serialize(@Model.XAxisName));
     const yAxisName = @Html.Raw(Json.Serialize(@Model.YAxisName));
-    const chartType = @Html.Raw(Json.Serialize(@Model.ChartType));
-
-    console.log("title:" + reportTitle);
-    console.log("xAxis:" + xAxisName);
-    console.log("yAxis:" + yAxisName);
-    console.log("chartType:" + chartType);
-
+    const chartType = @Html.Raw(Json.Serialize(@Model.ChartType));    
     const datasets = [];
 
     chartdata.forEach(function (item, index) {
@@ -47,57 +29,19 @@
                 data: item.dataItems,
                 backgroundColor: colours[index],
             });
-        //console.log(index);
-        ///console.log(item.label);
-        //console.log(item.data);
     });
+    /*
+    console.log("title:" + reportTitle);
+    console.log("xAxis:" + xAxisName);
+    console.log("yAxis:" + yAxisName);
+    console.log("chartType:" + chartType);
     console.log(datasets);
-
-    //for (const element of chartdata)
-    //{    
-    //    datasets.push(
-    //        {
-    //            label: element.label,
-    //            data: element.data,
-    //            backgroundColor: CHART_COLORS.red
-    //        });
-    //}
-
-
+    */
+    
     const data = {
         labels: chartlabels,
         datasets: datasets
-            //{
-            //    label: 'Dataset 1',
-            //    data: [50, -25, -30, 80, 70, 60, 50],
-            //    backgroundColor: CHART_COLORS.red,
-            //},
-            //{
-            //    label: 'Dataset 2',
-            //    data: [50, -25, -30, 80, 70, 60, 50],
-            //    backgroundColor: CHART_COLORS.blue,
-            //},
-            //{
-            //    label: 'Dataset 3',
-            //    data: [50, -25, -30, 80, 70, 60, 50],
-            //    backgroundColor: CHART_COLORS.green,
-            //},
-        //]
     };
-
-    //for (const element of chartdata) { // You can use `let` instead of `const` if you like
-    //    console.log(element.label);
-    //}
-
-    
-
-   // chartdata.forEach(myFunction);
-
-//    function myFunction(item, index) {
-//        console.log("index:" + index);
-////        const car = { label: item.label, data: item.data, borderColor: colours[index], backgroundColor:colours[index] };
-////        datasets.push(car);
-//    }
 
     const config = {
         type: chartType,
@@ -134,52 +78,6 @@
             }
         }
     };
-
-    //alert(typeof (chartlabels));
-
-    //alert(chartlabels);
-//    chartdata.forEach(myFunction);
-
-//    function myFunction(item, index) {
-//        const car = { label: item.label, data: item.data, borderColor: colours[index], backgroundColor:colours[index] };
-//        datasets.push(car);
-//    }
-
-//    document.getElementById('chartdata').value = JSON.stringify(datasets);
- //   document.getElementById('chartlabel').value = chartlabels;
-
-//    //alert(chartlabels);
-//    //alert(labels);
-
-//    var ctx = document.getElementById('myChart2').getContext('2d');
-//    var chart = new Chart(ctx, {
-//        type: 'bar',
-//        data: {
-//            labels: labels,
-//            datasets: [{ "label": "Errands", "data": "[0,0,0,0,0,0,0,1,0,0,0]", "borderColor": "rgb(255, 99, 132)", "backgroundColor": "rgb(255, 99, 132)" }, { "label": "Face Covering", "data": "[0,0,0,0,0,0,0,1,0,0,0]", "borderColor": "rgb(255, 159, 64)", backgroundColor: "rgb(255, 159, 64)" }, { label: 'Friendly Chat', data: [2,0,0,0,0,0,0,7,0,0,0], borderColor: 'rgb(255, 205, 86)', backgroundColor: 'rgb(255, 205, 86)' }, { "label": "Other", "data": "[0,2,0,1,2,3,1,12,24,6,12]", "borderColor": "rgb(75, 192, 192)", "backgroundColor": "rgb(75, 192, 192)" }, { "label": "Prescriptions", "data": "[0,0,0,0,0,0,0,0,0,1,0]", "borderColor": "rgb(54, 162, 235)", "backgroundColor": "rgb(54, 162, 235)" }, { "label": "Shopping", "data": "[1,2,5,1,1,0,1,0,0,0,0]", "borderColor": "rgb(153, 102, 255)", "backgroundColor": "rgb(153, 102, 255)" }]
-//        },
-//        options: {
-//            indexAxis: 'y',
-//            // Elements options apply to all of the options unless overridden in a dataset
-//            // In this case, we are setting the border of each horizontal bar to be 2px wide
-//            elements: {
-//                bar: {
-//                    borderWidth: 2,
-//                }
-//            },
-//            responsive: true,
-//            plugins: {
-//                legend: {
-//                    position: 'right',
-//                },
-//                title: {
-//                    display: true,
-//                    text: 'Count of support activity by month'
-//                }
-//            }
-//        }
-
-//    });
 
     const myChart = new Chart(
 document.getElementById('myChart'),
