@@ -440,7 +440,15 @@ namespace HelpMyStreetFE.Controllers
         {
             var group = await _groupService.GetGroupByKey(groupKey, cancellationToken);
             var user = await _authService.GetCurrentUser(cancellationToken);
+            if (!_userService.GetRegistrationIsComplete(user))
+            {
+                return Redirect(REGISTRATION_URL);
+            }
             var viewModel = await GetAccountViewModel(user, cancellationToken);
+            if (!await _groupMemberService.GetUserHasRole(user.ID, group.GroupId, GroupRoles.ShowCharts, true, cancellationToken))
+            {
+                return Redirect(PROFILE_URL);
+            }
 
             viewModel.CurrentPage = MenuPage.Reports;
             viewModel.CurrentGroup = viewModel.UserGroups.Where(a => a.GroupKey == groupKey).FirstOrDefault();
