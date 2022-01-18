@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Services
 {
