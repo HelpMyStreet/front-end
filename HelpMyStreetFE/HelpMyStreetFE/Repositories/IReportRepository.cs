@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Contracts;
 using HelpMyStreetFE.Models.Account.Report;
+using HelpMyStreet.Contracts.ReportService;
+using System.Threading;
 
 namespace HelpMyStreetFE.Repositories
 {
     public interface IReportRepository
     {
-        Task<ChartModel> GetReportData(string groupKey);
+        Task<Chart> GetChart(Charts chart, int groupId, CancellationToken cancellationToken);
     }
 }

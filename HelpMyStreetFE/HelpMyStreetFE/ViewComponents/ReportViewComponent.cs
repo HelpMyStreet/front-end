@@ -1,4 +1,5 @@
-﻿using HelpMyStreet.Utils.Enums;
+﻿using HelpMyStreet.Contracts.ReportService;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account;
@@ -26,13 +27,13 @@ namespace HelpMyStreetFE.ViewComponents
             _reportRepository = reportRepository;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string groupKey, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(int groupId, Charts chart, CancellationToken cancellationToken)
         {
-            ChartModel chartModel = await _reportRepository.GetReportData(groupKey);
-
+            Chart chartModel = await _reportRepository.GetChart(chart, groupId, cancellationToken);
+            
             ReportViewModel viewModel = new ReportViewModel(chartModel);
 
-            var labels = chartModel.ReportDataModels.OrderBy(x => x.XAxis)
+            var labels = chartModel.ChartItems.OrderBy(x => x.XAxis)
                 .Select(x => x.Label)
                 .Distinct()
                 .ToList();
@@ -40,12 +41,11 @@ namespace HelpMyStreetFE.ViewComponents
             viewModel.Data = new List<ReportItemModel>();
             labels.ForEach(item =>
             {
-                var dataList = chartModel.ReportDataModels.Where(x => x.Label == item).Select(x => x.Count).ToList();
+                var dataList = chartModel.ChartItems.Where(x => x.Label == item).Select(x => x.Count).ToList();
                 viewModel.Data.Add(new ReportItemModel()
                 {
                     Label = item,
                     DataItems = dataList,
-                    //Data = $"[{string.Join<string>(',', dataList)}]"
                 });
             });
 

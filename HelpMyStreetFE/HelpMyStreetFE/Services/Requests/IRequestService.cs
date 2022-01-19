@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
 using HelpMyStreet.Contracts.RequestService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Account.Jobs;
 
@@ -11,6 +13,7 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestService
     {
+        Task<Chart> GetChart(Charts chart, int groupId);
         Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
         Task<IEnumerable<JobBasic>> GetAllJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);

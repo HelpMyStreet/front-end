@@ -13,6 +13,7 @@ using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -355,6 +356,11 @@ namespace HelpMyStreetFE.Services.Requests
         public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
         {
             return await _requestHelpRepository.GetNewsTickerMessages(groupId);
+        }
+
+        public async Task<Chart> GetChart(Charts chart, int groupId)
+        {
+            return await _requestHelpRepository.GetChart(chart, groupId);
         }
     }
 }

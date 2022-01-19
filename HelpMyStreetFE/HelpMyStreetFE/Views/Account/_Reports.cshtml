@@ -10,7 +10,7 @@
     <div class="">
         @await Component.InvokeAsync("Report", new
    {
-       GroupId = Model.CurrentGroup.GroupId
+       groupId = Model.CurrentGroup.GroupId, chart = HelpMyStreet.Utils.Enums.Charts.ActivitiesByMonth
    })
     </div>
 
