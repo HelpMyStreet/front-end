@@ -2,16 +2,17 @@
 
 @model AccountViewModel
 
-<div class="user-profile profile-panel p-md">
-    <header class="profile-panel__header">
-        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Reports</h3>
-    </header>
+    <div class="user-profile profile-panel p-md">
+        <header class="profile-panel__header">
+            <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Reports</h3>
+        </header>
 
-    <div class="">
-        @await Component.InvokeAsync("Report", new
-   {
-       groupId = Model.CurrentGroup.GroupId, chart = HelpMyStreet.Utils.Enums.Charts.ActivitiesByMonth
-   })
+        <div class="">
+            @await Component.InvokeAsync("Report", new
+       {
+           groupId = Model.CurrentGroup.GroupId,
+           chart = HelpMyStreet.Utils.Enums.Charts.ActivitiesByMonth
+       })
+        </div>
+
     </div>
-
-</div>

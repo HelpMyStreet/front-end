@@ -80,4 +80,8 @@
     <Folder Include="Views\Shared\Components\ViewLocationPopup\" />
     <Folder Include="wwwroot\img\community\ageUK\midmersey\carousel1\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\report.js" />
+  </ItemGroup>
 </Project>
