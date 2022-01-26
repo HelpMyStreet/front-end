@@ -15,6 +15,9 @@ using System.Collections.Generic;
 using HelpMyStreet.Utils.Models;
 using Microsoft.AspNetCore.Http;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
+using HelpMyStreet.Contracts.ReportService.Request;
+using HelpMyStreet.Contracts.ReportService.Response;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -341,6 +344,26 @@ namespace HelpMyStreetFE.Repositories
                 return deserializedResponse.Content.Messages;
             }
             throw new Exception($"Bad response from GetNewsTicker for groupId {groupId}");
+        }
+
+        public async Task<Chart> GetChart(Charts chart, int groupId)
+        {
+            var request = new GetChartRequest
+            {
+                Chart = new ChartRequest()
+                {
+                    Chart = chart
+                },
+                GroupId = groupId
+            };
+
+            var response = await PostAsync<BaseRequestHelpResponse<GetChartResponse>>($"/api/GetChart", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Chart;
+            }
+            return null;
         }
     }
 }

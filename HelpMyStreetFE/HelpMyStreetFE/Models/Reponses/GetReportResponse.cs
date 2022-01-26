@@ -22,20 +22,27 @@ namespace HelpMyStreetFE.Models.Reponses
     {
         private Dictionary<int, string> COLOURS = new Dictionary<int, string>()
         {
-            {1, "rgb(255, 99, 132)" },
-            {2, "rgb(255, 159, 64)" },
-            {3, "rgb(255, 205, 86)" },
-            {4, "rgb(75, 192, 192)" },
-            {5, "rgb(54, 162, 235)" },
-            {6, "rgb(153, 102, 255)"},
-            {7, "rgb(201, 203, 207)" },
-            {8, "rgb(255, 99, 132)" },
-            {9, "rgb(255, 159, 64)" },
-            {10, "rgb(255, 205, 86)" },
-            {11, "rgb(75, 192, 192)" },
-            {12, "rgb(54, 162, 235)" },
-            {13, "rgb(153, 102, 255)"},
-            {14, "rgb(201, 203, 207)" }
+            {1, "rgb(246, 112, 25)" },
+            {2, "rgb(77, 201, 246)" },
+            {3, "rgb(172, 194, 54)" },
+            {4, "rgb(245, 55, 148)" },
+            {5, "rgb(255, 255, 0)" },
+            {6, "rgb(166, 166, 166)" },
+
+            {7, "rgb(255, 99, 132)" },
+            {8, "rgb(255, 159, 64)" },
+            {9, "rgb(255, 205, 86)" },
+            {10, "rgb(75, 192, 192)" },
+            {11, "rgb(54, 162, 235)" },
+            {12, "rgb(153, 102, 255)"},
+            {13, "rgb(201, 203, 207)" },
+            {14, "rgb(255, 99, 132)" },
+            {15, "rgb(255, 159, 64)" },
+            {16, "rgb(255, 205, 86)" },
+            {17, "rgb(75, 192, 192)" },
+            {18, "rgb(54, 162, 235)" },
+            {19, "rgb(153, 102, 255)"},
+            {20, "rgb(201, 203, 207)" }
         };
 
         public string type { get; set; }
@@ -56,53 +63,79 @@ namespace HelpMyStreetFE.Models.Reponses
             labels.ForEach(item =>
             {
                 var dataList = chart.ChartItems.Where(x => x.Label == item).Select(x => x.Count).ToList();
+                List<string> backgroundColor = new List<string>();
+
+                if(chart.ChartType == HelpMyStreet.Utils.Enums.ChartTypes.Pie)
+                {
+                    for(int i = 1; i<= dataList.Count; i++ )
+                    {
+                        backgroundColor.Add(COLOURS[i]);                        
+                    }                    
+                }
+                else
+                {
+                    backgroundColor.Add(COLOURS[index]);
+                }
+
                 datasets.Add(new Dataset
                 {
                     label = item,
                     data = dataList.ToArray(),
-                    backgroundColor = COLOURS[index]
+                    backgroundColor = backgroundColor.ToArray()
                 });
                 index++;
             });
 
             data = new Data() { labels = chart.Labels.ToArray(), datasets = datasets.ToArray() };
             options = new Options();
-            options.plugins = new Plugins();
+            options.plugins = new Plugins()
+            {
+               title = new Title()
+               {
+                   display = true,
+                   text = chart.Title
+               },
+               legend = new Legend()
+               {
+                   position = "right"
+               }
+            };
             options.scales = new Scales();
-
-            options.plugins.title = new Title()
-            {
-                display = true,
-                text = chart.Title
-            };
             options.responsive = true;
-            options.scales.yAxes = new Yaxes()
+            if (chart.ChartType != HelpMyStreet.Utils.Enums.ChartTypes.Pie)
             {
-                stacked = true,
-                title = new Title1()
+                options.scales.yAxes = new Yaxes()
                 {
-                    display = true,
-                    text = chart.YAxisName,
-                    font = new Font
+                    stacked = true,
+                    title = new Title1()
                     {
-                        size = 15
+                        display = true,
+                        text = chart.YAxisName,
+                        font = new Font
+                        {
+                            size = 15
+                        }
                     }
-                }
-            };
+                };
 
-            options.scales.xAxes = new Xaxes
+            }
+
+            if (chart.ChartType != HelpMyStreet.Utils.Enums.ChartTypes.Pie)
             {
-                stacked = true,
-                title = new Title2
+                options.scales.xAxes = new Xaxes
                 {
-                    display = true,
-                    text = chart.XAxisName,
-                    font = new Font1
+                    stacked = true,
+                    title = new Title2
                     {
-                        size = 15
+                        display = true,
+                        text = chart.XAxisName,
+                        font = new Font1
+                        {
+                            size = 15
+                        }
                     }
-                }
-            };
+                };
+            }
         }
 
     }
@@ -117,7 +150,7 @@ namespace HelpMyStreetFE.Models.Reponses
     {
         public string label { get; set; }
         public int[] data { get; set; }
-        public string backgroundColor { get; set; }
+        public string[] backgroundColor { get; set; }
     }
 
     public class Options
@@ -130,6 +163,12 @@ namespace HelpMyStreetFE.Models.Reponses
     public class Plugins
     {
         public Title title { get; set; }
+        public Legend legend { get; set; }
+    }
+
+    public class Legend
+    {
+        public string position { get; set; }
     }
 
     public class Title
