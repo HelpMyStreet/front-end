@@ -11,12 +11,6 @@ export function InitialiseReports() {
                 const dateFrom = $(this).data("datefrom");
                 const dateTo = $(this).data("dateto");
 
-                console.log(chart);
-                console.log(groupId);
-                console.log(chartType);
-                console.log(dateFrom);
-                console.log(dateTo);
-
                 let reportdata;
               
                 let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
