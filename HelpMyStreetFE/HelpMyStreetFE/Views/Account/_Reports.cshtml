@@ -17,7 +17,7 @@
          </div>*@
 
         <div class="mt-xl">
-            <h3>Request volume by due date and recent status</h3>
+            <h5 class="report_title">Request volume by due date and recent status</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
@@ -29,7 +29,7 @@
         </div>
 
         <div class="mt-xl">
-            <h3>Request volume by activity type</h3>
+            <h5 class="report_title">Request volume by activity type</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
@@ -41,7 +41,7 @@
         </div>
 
         <div class="mt-xl">
-            <h3>Recently active volunteers by volume of accepted requests (activity from the last 14 days)</h3>
+            <h5 class="report_title">Recently active volunteers by volume of accepted requests (activity from the last 14 days)</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
@@ -53,7 +53,7 @@
         </div>
 
        <div class="mt-xl">
-           <h3>New volume users by type</h3>
+           <h5 class="report_title">New volume users by type</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
