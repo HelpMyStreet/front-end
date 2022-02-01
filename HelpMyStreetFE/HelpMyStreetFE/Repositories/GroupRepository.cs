@@ -346,7 +346,7 @@ namespace HelpMyStreetFE.Repositories
             throw new Exception($"Bad response from GetNewsTicker for groupId {groupId}");
         }
 
-        public async Task<Chart> GetChart(Charts chart, int groupId)
+        public async Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo)
         {
             var request = new GetChartRequest
             {
@@ -354,7 +354,9 @@ namespace HelpMyStreetFE.Repositories
                 {
                     Chart = chart
                 },
-                GroupId = groupId
+                GroupId = groupId,
+                DateFrom = dateFrom,
+                DateTo = dateTo
             };
 
             var response = await PostAsync<BaseRequestHelpResponse<GetChartResponse>>($"/api/GetChart", request);

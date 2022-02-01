@@ -33,6 +33,6 @@ namespace HelpMyStreetFE.Repositories
         Task<List<Location>> GetUserLocations(int userId);
         Task<GetRegistrationFormSupportActivitiesResponse> GetRegistrationFormSupportActivies(RegistrationFormVariant registrationFormVariant);
         Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
-        Task<Chart> GetChart(Charts chart, int groupId);
+        Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo);
     }
 }

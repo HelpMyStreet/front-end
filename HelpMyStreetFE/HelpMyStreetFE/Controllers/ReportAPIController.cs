@@ -14,6 +14,8 @@ using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.Enums;
 using System.Threading;
 using HelpMyStreet.Contracts.ReportService;
+using Newtonsoft.Json;
+using System;
 
 namespace HelpMyStreetFE.Controllers
 {
@@ -28,10 +30,14 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("getReport")]
-        public async Task<ActionResult<GetReportResponse>> GetReport(Charts chart,int groupId, CancellationToken cancellationToken)
+        public async Task<ActionResult<GetReportResponse>> GetReport(Charts chart,int groupId, ChartTypes chartType, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
         {
-            Chart chartModel = await _reportRepository.GetChart(chart, groupId, cancellationToken);        
-            GetReportResponse getReportResponse = new GetReportResponse(chartModel);
+            //TODO check user is authorised for this particular group
+            Chart chartModel = await _reportRepository.GetChart(chart, groupId, dateFrom, dateTo, cancellationToken);        
+            GetReportResponse getReportResponse = new GetReportResponse(chartModel, chartType);
+
+            var json = JsonConvert.SerializeObject(getReportResponse);
+
             return getReportResponse;            
         }
 

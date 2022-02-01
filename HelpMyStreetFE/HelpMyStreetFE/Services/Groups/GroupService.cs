@@ -197,9 +197,9 @@ namespace HelpMyStreetFE.Services.Groups
             return await _groupRepository.GetNewsTickerMessages(groupId);
         }
 
-        public async Task<Chart> GetChart(Charts chart, int groupId)
+        public async Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo)
         {
-            return await _groupRepository.GetChart(chart, groupId);
+            return await _groupRepository.GetChart(chart, groupId, dateFrom, dateTo);
         }
     }
 }

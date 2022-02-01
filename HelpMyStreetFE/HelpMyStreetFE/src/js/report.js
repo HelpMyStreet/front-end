@@ -7,10 +7,19 @@ export function InitialiseReports() {
                 console.log("In function");
                 const chart = $(this).data("chart");
                 const groupId = $(this).data("group");
+                const chartType = $(this).data("type");
+                const dateFrom = $(this).data("datefrom");
+                const dateTo = $(this).data("dateto");
+
+                console.log(chart);
+                console.log(groupId);
+                console.log(chartType);
+                console.log(dateFrom);
+                console.log(dateTo);
 
                 let reportdata;
               
-                let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId;
+                let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
                 console.log(endpoint);
                 const content = await hmsFetch(endpoint);
                 if (content.fetchResponse == fetchResponses.SUCCESS) {

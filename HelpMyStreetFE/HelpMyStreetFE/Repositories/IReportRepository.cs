@@ -12,6 +12,6 @@ namespace HelpMyStreetFE.Repositories
 {
     public interface IReportRepository
     {
-        Task<Chart> GetChart(Charts chart, int groupId, CancellationToken cancellationToken);
+        Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken);
     }
 }

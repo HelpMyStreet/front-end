@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Contracts.ReportService;
+using HelpMyStreet.Utils.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace HelpMyStreetFE.Models.Reponses
         [DataMember(Name = "reportData")]
         [JsonPropertyName("reportData")]
         public ReportData GetReportData { get; set; }
-        public GetReportResponse(Chart chart)
+        public GetReportResponse(Chart chart, ChartTypes chartType)
         {
-            GetReportData = new ReportData(chart);
+            GetReportData = new ReportData(chart, chartType);
         }
     }
     public class ReportData
@@ -49,12 +50,12 @@ namespace HelpMyStreetFE.Models.Reponses
         public Data data { get; set; }
         public Options options { get; set; }
 
-        public ReportData(Chart chart)
+        public ReportData(Chart chart, ChartTypes chartType)
         {
-            type = chart.ChartType.ToString().ToLower();
+            type = chartType.ToString().ToLower();
 
-            var labels = chart.ChartItems.OrderBy(x => x.XAxis)
-                .Select(x => x.Label)
+            var labels = chart.DataPoints.OrderBy(x => x.XAxis)
+                .Select(x => x.Series)
                 .Distinct()
                 .ToList();
 
@@ -62,10 +63,10 @@ namespace HelpMyStreetFE.Models.Reponses
             int index = 1;
             labels.ForEach(item =>
             {
-                var dataList = chart.ChartItems.Where(x => x.Label == item).Select(x => x.Count).ToList();
+                var dataList = chart.DataPoints.Where(x => x.Series == item).OrderBy(o=> o.XAxis).Select(x => (int) x.Value).ToList();                
                 List<string> backgroundColor = new List<string>();
 
-                if(chart.ChartType == HelpMyStreet.Utils.Enums.ChartTypes.Pie)
+                if(chartType == ChartTypes.Pie)
                 {
                     for(int i = 1; i<= dataList.Count; i++ )
                     {
@@ -92,8 +93,8 @@ namespace HelpMyStreetFE.Models.Reponses
             {
                title = new Title()
                {
-                   display = true,
-                   text = chart.Title
+                   display = false,
+                  // text = chart.Title
                },
                legend = new Legend()
                {
@@ -102,7 +103,7 @@ namespace HelpMyStreetFE.Models.Reponses
             };
             options.scales = new Scales();
             options.responsive = true;
-            if (chart.ChartType != HelpMyStreet.Utils.Enums.ChartTypes.Pie)
+            if (chartType != ChartTypes.Pie)
             {
                 options.scales.yAxes = new Yaxes()
                 {
@@ -120,7 +121,7 @@ namespace HelpMyStreetFE.Models.Reponses
 
             }
 
-            if (chart.ChartType != HelpMyStreet.Utils.Enums.ChartTypes.Pie)
+            if (chartType != ChartTypes.Pie)
             {
                 options.scales.xAxes = new Xaxes
                 {

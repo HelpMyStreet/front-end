@@ -38,6 +38,6 @@ namespace HelpMyStreetFE.Repositories
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
         Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request);
         Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
-        Task<Chart> GetChart(Charts chart, int groupId);
+        Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo);
     }
 }

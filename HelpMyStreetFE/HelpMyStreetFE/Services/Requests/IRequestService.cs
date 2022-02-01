@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestService
     {
-        Task<Chart> GetChart(Charts chart, int groupId);
+        Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo);
         Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
         Task<IEnumerable<JobBasic>> GetAllJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
         Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken);
