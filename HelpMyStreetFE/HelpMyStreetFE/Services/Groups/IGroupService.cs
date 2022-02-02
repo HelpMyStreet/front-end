@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
+using System;
 
 namespace HelpMyStreetFE.Services.Groups
 {
     public interface IGroupService
     {
+        Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo);
         Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
         Task<List<Group>> GetGroupsWithMapDetails(MapLocation mapLocation, CancellationToken cancellationToken);
         Task<int> GetGroupIdByKey(string groupKey, CancellationToken cancellationToken);

@@ -184,6 +184,7 @@ namespace HelpMyStreetFE
             services.AddSingleton<IUserLocationService, UserLocationService>();
             services.AddSingleton<INewsTickersService, NewsTickersService>();
             services.AddSingleton<IPartnerService, PartnerService>();
+            services.AddSingleton<IReportRepository, ReportRepository>();
             services.AddHttpContextAccessor();
 
             // cache
@@ -412,16 +413,6 @@ namespace HelpMyStreetFE
                     name: "apexpcnbankstaff",
                     pattern: "apexpcnbankstaff",
                     defaults: new { controller = "Community", action = "Index", groupKey = "apex-pcn-bank-staff" });
-
-                endpoints.MapControllerRoute(
-                    name: "meadows-community-helpers",
-                    pattern: "meadows-community-helpers",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
-
-                endpoints.MapControllerRoute(
-                    name: "meadows",
-                    pattern: "meadows",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "meadows-community-helpers" });
 
                 endpoints.MapControllerRoute(
                     name: "southwell",

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Cache;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
 
