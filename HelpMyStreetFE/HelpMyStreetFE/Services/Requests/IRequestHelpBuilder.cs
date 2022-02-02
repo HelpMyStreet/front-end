@@ -13,7 +13,7 @@ namespace HelpMyStreetFE.Services.Requests
     {
         RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage);
         RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage);
-        RequestHelpViewModel GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupId, string source);   
+        RequestHelpViewModel GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupId, string source, string language);   
         Task<List<RequestHelpQuestion>> GetQuestionsForTask(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity, int groupId);
     }
 }

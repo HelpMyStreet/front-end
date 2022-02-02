@@ -159,7 +159,9 @@ namespace HelpMyStreetFE.Controllers
                     var detailStage = (RequestHelpDetailStageViewModel)requestHelp.Steps.Where(x => x is RequestHelpDetailStageViewModel).FirstOrDefault();
                     var user = await _authService.GetCurrentUser(cancellationToken);
 
-                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, user, cancellationToken);
+                    string language = requestHelp.Language;
+
+                    var response = await _requestUpdatingService.LogRequestAsync(requestStage, detailStage, requestHelp.ReferringGroupID, requestHelp.Source, language, user, cancellationToken);
                     if (response.Equals(Fulfillable.Accepted_ManualReferral))
                     {
                         return RedirectToRoute("request-help/success", new
@@ -191,7 +193,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
 
-        public async Task<IActionResult> RequestHelp(string referringGroup, string source, CancellationToken cancellationToken)
+        public async Task<IActionResult> RequestHelp(string referringGroup, string source, string language, CancellationToken cancellationToken)
         {
             _logger.LogInformation("request-help");
 
@@ -220,7 +222,7 @@ namespace HelpMyStreetFE.Controllers
                 return await ChildGroupSelector(referringGroupId, cancellationToken);
             }
 
-            var model = _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupId, source);
+            var model = _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupId, source, language);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
             SupportActivities? selectedTask = requestStage.Tasks.Where(t => t.IsSelected).FirstOrDefault()?.SupportActivity;

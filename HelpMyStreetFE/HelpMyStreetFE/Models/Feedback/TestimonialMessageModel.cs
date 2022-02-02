@@ -16,5 +16,21 @@ namespace HelpMyStreetFE.Models.Feedback
         public FeedbackMessageType Type { get; set; }
         public string GroupKey { get; set; }
         public bool B2BFeedback { get; set; }
+
+        private string language;
+        public string Language
+        {
+            get {
+                if (string.IsNullOrEmpty(language))
+                {
+                    return "English";
+                }
+                else
+                {
+                    return language;
+                }
+            }
+            set { language = value; }
+        }
     }
 }

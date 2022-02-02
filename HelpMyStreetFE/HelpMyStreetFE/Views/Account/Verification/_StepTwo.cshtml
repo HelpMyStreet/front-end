@@ -1,28 +1,48 @@
 ﻿@using HelpMyStreetFE.Models.Yoti;
+@model YotiOptions
 
 
 <div class="row">
-    <div class="sm8">
+    <div class="sm12">
+        <div class="auth-error">
+            <div class="verification-step__text">
+                <p class="verification-step__text__header--small">Oops. Sorry, something didn’t work!<p>
+                    <div class="verification-step__text__copy">
+                        <ul>
+                            <li>Please check the Yoti app has taken a clear picture of your details on your Passport or Driving Licence.</li>
+                            <li>Please check that your details taken from the documents in the Yoti app are correct.</li>
+                            <li>Please then try again by scanning the QR Code</li>
+                        </ul>
+                    </div>
+                <p>Still having problems? Please let us know by sending us a message to <a href="mailto:support@helpmystreet.org">support@helpmystreet.org</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="sm7">
+        <div class="verification-step__yoti__auth__desktop">
+            <p class="verification-step__text__header--small">Open the Yoti app and scan the QR code on this page to verify your identity</p>
+        </div>
+        <div class="verification-step__yoti__auth__mobile">
+            <p class="verification-step__text__header--small">
+                Click the ‘Use Yoti’ button below to verify your identity
+            </p>
+        </div>
         <div class="verification-step__text">
-            <partial name="_StepCounter" model='new StepCounterViewModel { Step = 2, Description = "Follow the instructions in the Yoti app to upload your passport or Driving License" }'>
-                <p class="verification-step__text__header--small">You will need to have an ID in your name (either Passport or Driving Licence)
-<p>
-                    <partial name="_YotiInstructions" />
+            <p class="verification-step__text__copy verification-step__yoti__auth__desktop">Follow the instructions in the app to register your ID and verify your HelpMyStreet account</p>
+            <p class="verification-step__text__copy verification-step__yoti__auth__mobile">Follow the instructions in the app to register your ID and verify your HelpMyStreet account</p>
         </div>
     </div>
-    <div class="sm4">
-        <div class="verification-step__img-wrapper">
-            <img src="~/img/phone-screen-yoti.png" />
+    <div class="sm5">
+        <div class="yoti__auth__button" id="@Model.DomId"></div>
+        <div class="text-center verification-step__yoti__auth__desktop">
+            <a id="reload-yoti">Can't see QR code?</a>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="sm6">
-
-    </div>
-
-</div>
 
 
 <partial name="_NextPrevButtons" />

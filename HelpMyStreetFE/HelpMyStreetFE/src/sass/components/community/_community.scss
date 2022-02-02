@@ -16,6 +16,15 @@
         img {
             width: 100%;
         }
+
+        &.crop-when-oversize {
+            display: block;
+
+            img {
+                width: 1248px;
+                max-width: initial;
+            }
+        }
     }
 
     .north-muskham-banner {
@@ -146,6 +155,90 @@
             font-weight: bold;
             font-size: 1.5rem;
             line-height: 2rem;
+        }
+    }
+
+    .flag-panel-container {
+
+        .flag-panel-toggle {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            span {
+                margin-right: 1.5rem;
+            }
+
+            img {
+                width: 5rem;
+                border-radius: 5px;
+            }
+        }
+
+        .flag-panel {
+            display: none;
+
+            .flag-panel-inner {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                .flag-container {
+                    margin: 0.5rem 0.25rem;
+
+                    a {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        color: $black;
+
+                        &:hover {
+                            color: $green;
+                            transition: color 0.1s;
+
+                            img {
+                                border-color: $green;
+                            }
+                        }
+                    }
+
+                    img {
+                        width: 8rem;
+                        height: 4.5rem;
+                        border-radius: 10px;
+                        border: 2px solid $background-main;
+                        transition: border-color 0.1s;
+                    }
+
+                    &.selected {
+                        img {
+                            border-color: $green;
+                        }
+
+                        a {
+                            color: $green;
+                        }
+                    }
+                }
+            }
+        }
+
+        @media screen and (min-width: $med-screen) {
+            padding-left: 2rem;
+            padding-right: 2rem;
+
+            .flag-panel-toggle {
+                display: none;
+            }
+
+            .flag-panel {
+                display: block;
+
+                .flag-panel-inner {
+                    justify-content: space-around;
+                    flex-wrap: nowrap;
+                }
+            }
         }
     }
 }

@@ -304,14 +304,18 @@ namespace HelpMyStreetFE
                 endpoints.MapControllerRoute(
                     name: "request-help",
                     pattern: "request-help",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", referringGroup = "", source = "" });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", referringGroup = "", source = "", language = "English" });
                 endpoints.MapControllerRoute(
                     name: "request-help/group",
                     pattern: "request-help/{referringGroup}",
-                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "" });
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", source = "", language = "English" });
                 endpoints.MapControllerRoute(
                     name: "request-help/group/source",
                     pattern: "request-help/{referringGroup}/{source}",
+                    defaults: new { controller = "RequestHelp", action = "RequestHelp", language="English" });
+                endpoints.MapControllerRoute(
+                    name: "request-help/group/source/language",
+                    pattern: "request-help/{referringGroup}/{source}/{language}",
                     defaults: new { controller = "RequestHelp", action = "RequestHelp" });
                 endpoints.MapControllerRoute(
                     name: "request-help/success",
@@ -423,6 +427,16 @@ namespace HelpMyStreetFE
                     name: "southwell",
                     pattern: "southwell",
                     defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });
+
+                endpoints.MapControllerRoute(
+                   name: "boston",
+                   pattern: "boston",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "boston" });
+
+                endpoints.MapControllerRoute(
+                   name: "boston",
+                   pattern: "boston/{language}",
+                   defaults: new { controller = "Community", action = "Index", groupKey = "boston" });
 
                 endpoints.MapControllerRoute(
                    name: "registration",
