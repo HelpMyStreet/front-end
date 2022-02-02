@@ -1,0 +1,216 @@
+﻿@using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+        <div class="community-banner crop-when-oversize">
+            <img src="~/img/community/bostongns/banner.png" alt="Boston" />
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker mt-lg mb-lg">
+        <div class="container">
+            <partial name="_FlagPanelSlider" model="Model" />
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000 text-center">
+                        <h2 class="mb0 mt-md">Bem-vindo ao Boston Good Neighbour Scheme</h2>
+                    </header>
+
+                    <p class='mt-sm mb-s'>
+                        Os Good Neighbour Schemes (Programas de Boa Vizinhança) são organizados por voluntários locais que prestam apoio diário a outros residentes que possam precisar de ajuda de forma regular ou ocasional. Para os residentes mais idosos, este apoio pode permitir-lhes viver de forma independente na sua própria residência e comunidade durante mais tempo e reduzir os sentimentos de isolamento e solidão.
+                    </p>
+
+                    <p class='mt-sm mb-xs'>
+                        Aqui em Boston, podemos ajudar das seguintes formas:
+                    </p>
+
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Comprando produtos essenciais</li>
+                        <li>Fazendo recados na zona local</li>
+                        <li>Apoio prático</li>
+                        <li>Uma conversa amigável</li>
+                        <li>Qualquer outra coisa, é só perguntar!</li>
+                    </ul>
+
+                    @*<div class="row sm6 text-center justify-center mb-sm">
+                            <p class="mt-sm mb-sm pl-md pr-md">
+                                If you or someone you know needs help, complete our quick and easy online form.
+                            </p>
+                            <partial name="_RequestHelpButton" model="Model" />
+                        </div>*@
+
+                    <div class="row sm6 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            Para declarar o seu interesse em se registar como voluntário comunitário e encontrar oportunidades perto de si, inscreva-se hoje
+                        </p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Good Neighbour Schemes - Ajudando a sua comunidade</h2>
+                    <div class="outer-container outer-container--darker">
+                        <partial name="_CommunityVolunteersSlider" model="Model" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">O que é um Good Neighbour Scheme?</h2>
+                    <p>Good Neighbour Schemes são projetos comunitários organizados e concretizados por grupos de voluntários locais. Embora possam beneficiar toda a comunidade, visam ajudar principalmente as pessoas mais idosas, portadoras de deficiência, vulneráveis, frágeis ou isoladas. Os mais necessitados recebem ajuda de forma gratuita, embora seja geralmente cobrada uma taxa razoável pela quilometragem do transporte.</p>
+                    <p><strong>Como pode ajudar?</strong></p>
+                    <p>Os Good Neighbour Schemes respondem às necessidades da população local, oferecendo ajuda com atividades como, por exemplo:</p>
+                    <ul>
+                        <li>Criar laços de amizade, fazer visitas ao domicílio, fazer companhia, disponibilizar alguém com quem ir a eventos sociais</li>
+                        <li>Passear o cão e cuidar de animais de estimação durante as férias ou por motivos de doença</li>
+                        <li>Fazer compras e recados</li>
+                        <li>Preencher formulários, escrever cartas, ler e ajudar a utilizar o computador e a Internet</li>
+                        <li>Jardinagem</li>
+                        <li>Dar boleia para o consultório do médico de família, clínica, hospital, centro de dia, e outros compromissos</li>
+                        <li>Tarefas domésticas, incluindo a sintonização de televisões, troca de lâmpadas e alarmes de fumo</li>
+                        <li>Mover mobiliário, tirar e pendurar cortinas e quadros</li>
+                    </ul>
+                    <p>Trata-se de residentes locais que ajudam os seus vizinhos a desfrutar de uma melhor qualidade de vida. Os Good Neighbour Schemes ajudam a criar um ambiente onde as pessoas se sentem seguras e protegidas, pois têm uma relação genuína umas com as outras.</p>
+                    <p><strong>Como posso pedir ajuda?</strong></p>
+                    <p>De momento, estamos focados no recrutamento de voluntários. Assim que pudermos, iremos publicar um formulário de requerimento online que poderá preencher para solicitar ajuda para si ou em nome de outra pessoa (com a sua autorização) com residência na zona de Boston. O formulário de requerimento estará disponível nesta página, por isso esteja atento a este espaço!</p>
+                    <p><strong>Como me posso tornar num Good Neighbour (Bom Vizinho)?</strong></p>
+                    <p>Se quiser disponibilizar o seu tempo para apoiar os seus vizinhos, inscreva-se e junte-se ao nosso grupo hoje mesmo, clicando num dos botões verdes nesta página. Uma vez efetuado o registo, poderá ver os pedidos em aberto na sua zona. Pode aceitar quantos pedidos quiser, conforme lhe convier. Estamos gratos por cada contribuição.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @*<div class="flex sm6">
+                        <div class="card flex m-sm">
+                            <h2>How can we help?</h2>
+                            <p class="mt-sm mb-md">
+                                We&rsquo;ve got volunteers all ready and waiting to help you! Use the buttons on this page to request help today.
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId/ /@Model.Language" class="btn cta btn--request-help fill cta--orange  ">Request Help</a>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Seja voluntário connosco!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Junte-se a nós para ajudar os seus vizinhos. Diga-nos apenas quando, onde e como pode ajudar. Pode optar por ajudar um pouco ou muito! Estamos gratos por cada contribuição.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Obrigado por fazer parte de Boston e arredores. Clique abaixo para ver os pedidos de ajuda.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Ligações úteis</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div id="resources" class="sm12 community-useful-links mb-lg">
+                    <p><a href="https://www.mybostonuk.com/">Boston Borough Council (Conselho Municipal de Boston)</a> - A página inicial do seu conselho local</p>
+                    <p><a href="https://www.lincsymca.co.uk/communities/">Página da Comunidade YMCA</a> - Saiba mais sobre os projetos comunitários apoiados pela YMCA Lincolnshire</p>
+                    <p><a href="https://www.mybostonuk.com/ehcprogramme/">Programa Empowering Healthy Communities (Habilitando Comunidades Saudáveis)</a> - Saiba mais sobre a iniciativa de saúde e bem-estar do Boston Borough Council destinada a apoiar os residentes durante e após a pandemia da Covid-19.</p>
+                    <p><a href="http://www.lincolnshirecvs.org.uk/">Lincolnshire Community and Voluntary Service – LCVS (Serviço Comunitário e de Voluntários do Lincolnshire)</a> - Sirva-se dos recursos do LCVS para tirar o máximo partido do serviço de voluntariado</p>
+                    <h5>Outras formas de receber apoio em Boston:</h5>
+                    <p><a href="https://www.ageuk.org.uk/lincolnsouthlincolnshire/">Age UK Lincoln & South Lincolnshire</a> - Obtenha apoio para pessoas idosas em Lincoln e no Lincolnshire</p>
+                    <p><a href="https://boston.foodbank.org.uk/">Boston Foodbank (Banco Alimentar de Boston)</a> - Saiba como obter ajuda do banco alimentar de Boston</p>
+                    <p><a href="https://centrepoint-outreach.com/">Centrepoint Outreach</a> - Apoiar as pessoas sem abrigo, solitárias e vulneráveis </p>
+                    <p><a href="https://www.citizensadvice.org.uk/local/mid-lincolnshire/">Citizens Advice Mid Lincolnshire</a> - Aconselhamento gratuito, confidencial e imparcial</p>
+                    <p><a href="https://www.wellbeinglincs.org/">Wellbeing Lincs</a> - Wellbeing Lincs é um serviço disponível em todo o condado que pode oferecer um maior apoio especializado e um plano de apoio pessoal.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey, language = "Portugese" })
+    </div>
+
+    <div class="outer-container outer-container--darker mb-md">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
+
+    @*<div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>*@
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @*<div class="flex sm6">
+                        <div class="card flex m-sm">
+                            <h2>How can we help?</h2>
+                            <p class="mt-sm mb-md">
+                                We&rsquo;ve got volunteers all ready and waiting to help you! Use the buttons on this page to request help today.
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId/ /@Model.Language" class="btn cta btn--request-help fill cta--orange  ">Request Help</a>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Seja voluntário connosco!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Junte-se a nós para ajudar os seus vizinhos. Diga-nos apenas quando, onde e como pode ajudar. Pode optar por ajudar um pouco ou muito! Estamos gratos por cada contribuição.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Obrigado por fazer parte de Boston e arredores. Clique abaixo para ver os pedidos de ajuda.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

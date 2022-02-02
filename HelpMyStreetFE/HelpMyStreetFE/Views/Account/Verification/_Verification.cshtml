@@ -20,16 +20,13 @@
             <article class="profile">
                 <div id="landing" class="verification-step @(Model.StartAtStep == 0 ? "active" : "") ">
                     <partial name="_VerificationLanding" model="Model" />
-                </div> 
+                </div>
                 <div id="step-one" class="verification-step @(Model.StartAtStep == 1 ? "active" : "") ">
                     <partial name="_StepOne" />
                 </div>
                 <div id="step-two" class="verification-step @(Model.StartAtStep == 2 ? "active" : "") ">
-                    <partial name="_StepTwo" />
+                    <partial name="_StepTwo" for="YotiOptions" />
                 </div>
-                <div  id="step-three" class="verification-step @(Model.StartAtStep == 3 ? "active" : "") ">
-                    <partial name="_StepThree" for="YotiOptions" />
-                </div>            
             </article>            
         </article>
     </div>

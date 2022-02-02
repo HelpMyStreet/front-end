@@ -12,16 +12,16 @@
     "not dead"
   ],
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/plugin-proposal-class-properties": "^7.14.5",
-    "@babel/preset-env": "^7.14.7",
-    "babel-loader": "^8.2.2",
+    "@babel/core": "^7.16.0",
+    "@babel/plugin-proposal-class-properties": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "babel-loader": "^8.2.3",
     "css-loader": "^3.6.0",
-    "eslint": "^7.29.0",
+    "eslint": "^7.32.0",
     "file-loader": "^6.2.0",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
-    "regenerator-runtime": "^0.13.7",
+    "regenerator-runtime": "^0.13.9",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.3.0",
     "terser-webpack-plugin": "^3.1.0",
@@ -29,12 +29,12 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.14.6",
-    "core-js": "^3.15.1",
+    "@babel/runtime": "^7.16.3",
+    "core-js": "^3.19.2",
     "firebase": "^7.24.0",
     "isomorphic-fetch": "^3.0.0",
     "jquery-ajax-unobtrusive": "^3.2.6",
     "slick-carousel": "^1.8.1",
-    "ua-parser-js": "^0.7.24"
+    "ua-parser-js": "^0.7.31"
   }
 }

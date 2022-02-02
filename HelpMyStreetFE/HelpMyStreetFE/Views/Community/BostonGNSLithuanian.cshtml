@@ -1,0 +1,216 @@
+﻿@using HelpMyStreetFE.Models.Community;
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+        <div class="community-banner crop-when-oversize">
+            <img src="~/img/community/bostongns/banner.png" alt="Boston" />
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker mt-lg mb-lg">
+        <div class="container">
+            <partial name="_FlagPanelSlider" model="Model" />
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000 text-center">
+                        <h2 class="mb0 mt-md">Sveiki atvykę į Bostono geros kaimynystės programą</h2>
+                    </header>
+
+                    <p class='mt-sm mb-s'>
+                        Geros kaimynystės programas vykdo vietos savanoriai, teikiantys kasdienę paramą kitiems gyventojams, kuriems pagalbos gali prireikti retkarčiais arba reguliariai. Vyresnio amžiaus žmonėms ši parama gali padėti ilgiau gyventi savarankiškai savo namuose ir bendruomenėse bei sumažinti atsiskyrimo ir vienatvės jausmą.
+                    </p>
+
+                    <p class='mt-sm mb-xs'>
+                        Čia, Bostone, galime padėti visiems:
+                    </p>
+
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Pasirūpinant būtiniausiomis prekėmis</li>
+                        <li>Atliekant smulkias užduotis netoliese</li>
+                        <li>Teikiant praktinę paramą</li>
+                        <li>Palaikant draugišką pokalbį</li>
+                        <li>Ir kitais klausimais, tik paprašykite!</li>
+                    </ul>
+
+                    @*<div class="row sm6 text-center justify-center mb-sm">
+                            <p class="mt-sm mb-sm pl-md pr-md">
+                                If you or someone you know needs help, complete our quick and easy online form.
+                            </p>
+                            <partial name="_RequestHelpButton" model="Model" />
+                        </div>*@
+
+                    <div class="row sm6 text-center justify-center mb-md">
+                        <p class="mt-sm mb-sm pl-md pr-md">
+                            Jei norite užsiregistruoti kaip bendruomenės savanoris ir sužinoti apie atitinkamas galimybes jūsų vietovėje, užsiregistruokite arba prisijunkite šiandien
+                        </p>
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Geros kaimynystės programos – pagalba jūsų bendruomenei</h2>
+                    <div class="outer-container outer-container--darker">
+                        <partial name="_CommunityVolunteersSlider" model="Model" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row">
+                <div class="sm12">
+                    <h2 class="mb15 mt-lg text-center">Kas yra geros kaimynystės programa?</h2>
+                    <p>Geros kaimynystės programos – tai bendruomenės projektai, kuriuos vykdo ir įgyvendina vietos savanorių grupės. Nors šie projektai gali būti naudingi visai bendruomenei, visų pirma jie yra skirti pagyvenusiems, neįgaliems, pažeidžiamiems, silpniems ar atskirtiems žmonėms. Pagalba tiems, kuriems jos reikia, teikiama nemokamai, nors paprastai imamas pagrįstas mokestis už nuvažiuotus kilometrus.</p>
+                    <p><strong>Kuo galite padėti?</strong></p>
+                    <p>Geros kaimynystės programos tenkina vietos gyventojų poreikius ir padeda vykdyti tokią veiklą kaip:</p>
+                    <ul>
+                        <li>Draugiškų ryšių užmezgimas, apsilankymai namuose, kompanijos palaikymas, galimybė su kuo nors nueiti į socialinius renginius</li>
+                        <li>Šunų vedžiojimas ir augintinių priežiūra atostogų ar ligos metu</li>
+                        <li>Reikalų tvarkymas ir apsipirkimas</li>
+                        <li>Formų pildymas, laiškų rašymas, skaitymas, pagalba naudojantis kompiuteriu ir internetu</li>
+                        <li>Sodininkystės darbai</li>
+                        <li>Nuvežimas pas šeimos gydytoją, į kliniką, ligoninę, dienos centrą, kitus vizitus</li>
+                        <li>Namų ruošos darbai, įskaitant televizoriaus derinimą, lempučių ir dūmų signalizacijos keitimą</li>
+                        <li>Baldų perstatymas, užuolaidų ir paveikslų nuėmimas ir pakabinimas</li>
+                    </ul>
+                    <p>Vietos gyventojai padeda savo kaimynams džiaugtis geresne gyvenimo kokybe. Geros kaimynystės programos padeda kurti aplinką, kurioje žmonės jaučiasi saugūs, nes juos sieja nuoširdus tarpusavio ryšys.</p>
+                    <p><strong>Kaip paprašyti pagalbos?</strong></p>
+                    <p>Šiuo metu daugiausia dėmesio skiriame savanorių suradimui. Kai tik galėsime, pradėsime naudoti internetinę paraiškos formą, kurią galėsite užpildyti ir paprašyti pagalbos sau arba kitam asmeniui (jam leidus), jei jis/ji gyvena Bostono apylinkėje. Prašymo formą bus galima rasti šiame puslapyje, tad stebėkite jį!</p>
+                    <p><strong>Kaip tapti geru kaimynu?</strong></p>
+                    <p>Jei norėtumėte skirti savo laiko ir padėti jūsų kaimynams, užsiregistruokite ir prisijunkite prie mūsų grupės jau šiandien, spustelėję vieną iš šiame puslapyje esančių žalių mygtukų. Užsiregistravę galėsite matyti pateiktus prašymus savo vietovėje. Galite priimti tiek prašymų, kiek norite – esame dėkingi už bet kokią pagalbą.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @*<div class="flex sm6">
+                        <div class="card flex m-sm">
+                            <h2>How can we help?</h2>
+                            <p class="mt-sm mb-md">
+                                We&rsquo;ve got volunteers all ready and waiting to help you! Use the buttons on this page to request help today.
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId/ /@Model.Language" class="btn cta btn--request-help fill cta--orange  ">Request Help</a>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Tapkite mūsų programos savanoriu!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Prisijunkite prie mūsų ir padėkite savo kaimynams. Tiesiog praneškite mums, kada, kur ir kaip galite padėti. Padėkite tiek, kiek galite. Esame dėkingi už bet kokią pagalbą.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Dėkojame, kad esate Bostono ir jo apylinkės dalis. Spustelėkite toliau, jei norite peržiūrėti pagalbos prašymus.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <div class="container ">
+            <div class="row justify-center">
+                <h2 class="text-center mt-lg">Naudingos nuorodos</h2>
+            </div>
+            <div class="row flex justify-center">
+                <div id="resources" class="sm12 community-useful-links mb-lg">
+                    <p><a href="https://www.mybostonuk.com/">Bostono rajono taryba</a> - Jūsų vietos tarybos tinklalapis</p>
+                    <p><a href="https://www.lincsymca.co.uk/communities/">„YMCA“ bendruomenės puslapis</a> - Sužinokite daugiau apie bendruomenės projektus, kuriuos remia „YMCA Lincolnshire“</p>
+                    <p><a href="https://www.mybostonuk.com/ehcprogramme/">Sveikų bendruomenių įgalinimo programa</a> - Sužinokite daugiau apie Bostono rajono tarybos sveikatos ir gerovės iniciatyvą, skirtą padėti gyventojams Covid-19 pandemijos metu ir po jos.</p>
+                    <p><a href="http://www.lincolnshirecvs.org.uk/">Linkolnšyro bendruomenės ir savanorių tarnyba</a> - Naudokitės „LCVS“ ištekliais, kurie padės jums gauti kuo daugiau naudos iš savanoriškos veiklos</p>
+                    <h5>Kiti būdai gauti pagalbą Bostone:</h5>
+                    <p><a href="https://www.ageuk.org.uk/lincolnsouthlincolnshire/">„Age UK“ Linkolne ir Pietų Linkolnšyre</a> - Pagalba vyresnio amžiaus žmonėms Linkolne ir Linkolnšyre</p>
+                    <p><a href="https://boston.foodbank.org.uk/">Bostono maisto bankas</a> - Sužinokite, kaip gauti Bostono maisto banko pagalbą</p>
+                    <p><a href="https://centrepoint-outreach.com/">„Centrepoint Outreach“ </a> - Pagalba benamiams, vienišiems ir pažeidžiamiems žmonėms</p>
+                    <p><a href="https://www.citizensadvice.org.uk/local/mid-lincolnshire/">„Citizens Advice” centriniame Linkolnšyre</a> - Nemokamos, konfidencialios ir nešališkos konsultacijos</p>
+                    <p><a href="https://www.wellbeinglincs.org/">„Wellbeing Lincs“</a> - „Wellbeing Lincs“ – tai visoje grafystėje veikianti tarnyba, kuri gali teikti labiau specializuotą pagalbą ir sudaryti asmeninį pagalbos planą.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-md mb-lg">
+        @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey, language = "Lithuanian" })
+    </div>
+
+    <div class="outer-container outer-container--darker mb-md">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>
+
+    @*<div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>*@
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+
+                @*<div class="flex sm6">
+                        <div class="card flex m-sm">
+                            <h2>How can we help?</h2>
+                            <p class="mt-sm mb-md">
+                                We&rsquo;ve got volunteers all ready and waiting to help you! Use the buttons on this page to request help today.
+                            </p>
+
+                            <div class="" style="text-align: center">
+                                <a href="/request-help/@Model.EncodedGroupId/ /@Model.Language" class="btn cta btn--request-help fill cta--orange  ">Request Help</a>
+                            </div>
+
+                        </div>
+                    </div>*@
+
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Tapkite mūsų programos savanoriu!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Prisijunkite prie mūsų ir padėkite savo kaimynams. Tiesiog praneškite mums, kada, kur ir kaip galite padėti. Padėkite tiek, kiek galite. Esame dėkingi už bet kokią pagalbą.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Dėkojame, kad esate Bostono ir jo apylinkės dalis. Spustelėkite toliau, jei norite peržiūrėti pagalbos prašymus.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

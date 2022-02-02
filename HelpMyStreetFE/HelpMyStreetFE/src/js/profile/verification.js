@@ -8,7 +8,7 @@ export function initialiseVerification(isVerified) {
         updateQueryStringParam("u", initObj.userId);
     }
     if ($("#verification-panel").is(":visible")) {
-        var maxStep = 3;
+        var maxStep = 2;
 
         $('#reload-yoti').click(function () {
             $(".yoti__auth__button").hide(); 
@@ -102,9 +102,6 @@ function _getStepNumber(stepId) {
         case "step-two":
             return 2;
             break;
-        case "step-three":
-            return 3;
-            break;
         default:
             return 0;
     }
@@ -127,9 +124,6 @@ function _setActive(stepNumber) {
             break;
         case 2:
             $('#step-two').addClass("active");
-            break;
-        case 3:
-            $('#step-three').addClass("active");
             if (isMobile) {
                 $('.verification-step__yoti__auth__desktop').css("display", "none");
                 $('#reload-yoti').hide();
