@@ -21,29 +21,28 @@ namespace HelpMyStreetFE.Models.Reponses
     }
     public class ReportData
     {
-        private Dictionary<int, string> COLOURS = new Dictionary<int, string>()
+
+        private string GetColour(int index)
         {
+            int colourIndex = index % 12;
+            return COLOURS[colourIndex];
+        }
+
+        private readonly Dictionary<int, string> COLOURS = new Dictionary<int, string>()
+        {
+            {0, "rgb(201, 203, 207)"},
             {1, "rgb(246, 112, 25)" },
             {2, "rgb(77, 201, 246)" },
             {3, "rgb(172, 194, 54)" },
             {4, "rgb(245, 55, 148)" },
             {5, "rgb(255, 255, 0)" },
             {6, "rgb(166, 166, 166)" },
-
             {7, "rgb(255, 99, 132)" },
             {8, "rgb(255, 159, 64)" },
             {9, "rgb(255, 205, 86)" },
             {10, "rgb(75, 192, 192)" },
             {11, "rgb(54, 162, 235)" },
-            {12, "rgb(153, 102, 255)"},
-            {13, "rgb(201, 203, 207)" },
-            {14, "rgb(255, 99, 132)" },
-            {15, "rgb(255, 159, 64)" },
-            {16, "rgb(255, 205, 86)" },
-            {17, "rgb(75, 192, 192)" },
-            {18, "rgb(54, 162, 235)" },
-            {19, "rgb(153, 102, 255)"},
-            {20, "rgb(201, 203, 207)" }
+            {12, "rgb(153, 102, 255)"}
         };
 
         public string type { get; set; }
@@ -70,12 +69,12 @@ namespace HelpMyStreetFE.Models.Reponses
                 {
                     for(int i = 1; i<= dataList.Count; i++ )
                     {
-                        backgroundColor.Add(COLOURS[i]);                        
+                        backgroundColor.Add(GetColour(i));                        
                     }                    
                 }
                 else
                 {
-                    backgroundColor.Add(COLOURS[index]);
+                    backgroundColor.Add(GetColour(index));
                 }
 
                 datasets.Add(new Dataset
