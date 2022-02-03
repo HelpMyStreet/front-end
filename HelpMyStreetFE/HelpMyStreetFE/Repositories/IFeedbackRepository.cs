@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Utils.Models;
 
 namespace HelpMyStreetFE.Repositories
 {

@@ -47,6 +47,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
                 Groups.BostonGNS => GetBostonGNS(language),
+                Groups.ArroweParkHospital => GetArroweParkHospital(),
                 _ => null,
             };
 
@@ -759,6 +760,12 @@ namespace HelpMyStreetFE.Repositories
                 },
             };
 
+            return communityViewModel;
+        }
+
+        private CommunityViewModel GetArroweParkHospital()
+        {
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("aph", "ArroweParkHospital");
             return communityViewModel;
         }
 

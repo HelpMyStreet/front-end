@@ -1,0 +1,99 @@
+@using HelpMyStreetFE.Models.Community; 
+@using HelpMyStreetFE.Models.Feedback;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+    <div class="container">
+        <div class="community-banner">
+            <img src="~/img/community/arroweparkhospital/banner.png" alt="Arrowe Park Hospital" />
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center justify-center content-page pad-md">
+                    <header class="mw1000 text-center">
+                        <h2 class="mb0 mt-md">Sign up to pick up requests from the Going</h2>
+                        <h2 class="mb-sm">Home Team at Arrowe Park Hospital</h2>
+                    </header>
+
+                    <p class='mt-sm mb-s'>
+                        You can find requests for:
+                    </p>
+                    <ul class='tick-list mt-xs mb-sm ml-sm'>
+                        <li>Meal preparation visits</li>
+                        <li>Medication check-ins</li>
+                        <li>Wellbeing visits</li>
+                    </ul>
+
+                    <p class='mt-sm mb-s'>
+                        You will need to have your ID and role-specific background checks completed on the system before you can start accepting requests.
+                    </p>
+
+                    <div class="row sm12 text-center justify-center mb-sm">
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md card">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+
+                        <h2>How can we help?</h2>
+                        <p class="mt-sm mb-md">
+                            If there’s something you think we could help with, please get in touch. We have a team of friendly ID-checked volunteers ready and waiting to help you!
+                        </p>
+                        <p class="mt-sm mb-md">
+                            To request help, call us on 029 22 400030.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex sm6">
+                    <div class="card flex m-sm">
+                        <h2>Volunteer with us!</h2>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            If you are able to make a minimum commitment of six months and would like to join us as a volunteer, sign up or log in below. We’ll then get in touch with everything you need to know to get started.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Thanks for being part of @(Model.CommunityName)  Click below to view help requests.
+                        </p>
+
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<div class="outer-container outer-container--darker mb-md">
+        <partial name="_PhotoSlider" model="Model.CarouselImages.First()" />
+    </div>*@
+
+
+</div>

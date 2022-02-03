@@ -1,4 +1,5 @@
 ﻿using HelpMyStreet.Contracts;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Home;
 using System.Collections.Generic;
 
