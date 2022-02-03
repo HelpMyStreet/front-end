@@ -399,7 +399,7 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.BreakfastVisit},
                     new TasksViewModel { SupportActivity = SupportActivities.LunchVisit},
-                    new TasksViewModel { SupportActivity = SupportActivities.MealtimeCompanion},
+                    new TasksViewModel { SupportActivity = SupportActivities.MedicationCheckIn},
                     new TasksViewModel { SupportActivity = SupportActivities.WellBeingVisit},
                     new TasksViewModel { SupportActivity = SupportActivities.Other}
                 });
