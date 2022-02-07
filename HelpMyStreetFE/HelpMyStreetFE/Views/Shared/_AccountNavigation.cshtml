@@ -130,7 +130,7 @@
                         @if (userGroup.UserRoles.Contains(GroupRoles.ShowCharts))
                         {
                             <li class="account__nav__item">
-                                <a href=@($"/account/g/{userGroup.GroupKey}/reports") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.Reports ? "selected" : string.Empty)">Reports</a>
+                                <a href=@($"/account/g/{userGroup.GroupKey}/reports") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey && Model.CurrentPage == MenuPage.Reports ? "selected" : string.Empty)">Activity Viewer</a>
                             </li>
                         }
                         </ul>

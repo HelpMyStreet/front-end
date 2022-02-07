@@ -4,20 +4,21 @@
 
     <div class="user-profile profile-panel p-md">
         <header class="profile-panel__header">
-            <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Reports</h3>
+            <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Activity Viewer</h3>
         </header>
 
+        <h5>Requests</h5>
         <div class="mt-xl">
-            <h5 class="report_title">Request volume by due date and recent status</h5>
+            <h5 class="report_title">Number of requests due each month split by current job status</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
            chart = HelpMyStreet.Utils.Enums.Charts.RequestVolumeByDueDateAndRecentStatus,
            chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-           dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
+           dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-12):yyyy-MM-01}",
            dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
        })
-        </div>
+        @*</div>
 
         <div class="mt-xl">
             <h5 class="report_title">Request volume by activity type</h5>
@@ -43,8 +44,9 @@
        })
         </div>
 
-       <div class="mt-xl">
-           <h5 class="report_title">New volume users by type</h5>
+        <h5>Users</h5>
+        <div class="mt-xl">
+            <h5 class="report_title">New volume users by type</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
@@ -52,6 +54,6 @@
            chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
            dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
            dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
-       })
+       })*@
         </div>
     </div>

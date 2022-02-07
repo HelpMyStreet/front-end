@@ -42,7 +42,7 @@ namespace HelpMyStreetFE.Controllers
             }
 
             Chart chartModel = await _reportRepository.GetChart(chart, groupId, dateFrom, dateTo, cancellationToken);        
-            GetReportResponse getReportResponse = new GetReportResponse(chartModel, chartType);
+            GetReportResponse getReportResponse = new GetReportResponse(chart, chartModel, chartType);
 
             var json = JsonConvert.SerializeObject(getReportResponse);
 
