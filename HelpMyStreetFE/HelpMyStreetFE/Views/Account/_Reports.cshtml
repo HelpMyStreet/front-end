@@ -18,42 +18,42 @@
            dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-12):yyyy-MM-01}",
            dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
        })
-        @*</div>
+        </div>
 
         <div class="mt-xl">
-            <h5 class="report_title">Request volume by activity type</h5>
+            <h5 class="report_title">Number of requests submitted each month by activity type</h5>
             @await Component.InvokeAsync("Report", new
        {
            groupId = Model.CurrentGroup.GroupId,
            chart = HelpMyStreet.Utils.Enums.Charts.RequestVolumeByActivityType,
            chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-           dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
+           dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-12):yyyy-MM-01}",
            dateTo = $"{DateTime.UtcNow:yyyy-MM-dd}"
        })
         </div>
+        @*
+             <div class="mt-xl">
+                 <h5 class="report_title">Recently active volunteers by volume of accepted requests (activity from the last 14 days)</h5>
+                 @await Component.InvokeAsync("Report", new
+            {
+                groupId = Model.CurrentGroup.GroupId,
+                chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
+                chartType = HelpMyStreet.Utils.Enums.ChartTypes.Pie,
+                dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
+                dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
+            })
+             </div>
 
-        <div class="mt-xl">
-            <h5 class="report_title">Recently active volunteers by volume of accepted requests (activity from the last 14 days)</h5>
-            @await Component.InvokeAsync("Report", new
-       {
-           groupId = Model.CurrentGroup.GroupId,
-           chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
-           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Pie,
-           dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
-           dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
-       })
-        </div>
-
-        <h5>Users</h5>
-        <div class="mt-xl">
-            <h5 class="report_title">New volume users by type</h5>
-            @await Component.InvokeAsync("Report", new
-       {
-           groupId = Model.CurrentGroup.GroupId,
-           chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersByType,
-           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-           dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
-           dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
-       })*@
-        </div>
+              <h5>Users</h5>
+              <div class="mt-xl">
+                  <h5 class="report_title">New volume users by type</h5>
+                  @await Component.InvokeAsync("Report", new
+             {
+                 groupId = Model.CurrentGroup.GroupId,
+                 chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersByType,
+                 chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+                 dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-13):yyyy-MM-dd}",
+                 dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
+             })
+        </div>*@
     </div>
