@@ -45,20 +45,6 @@ namespace HelpMyStreetFE.Helpers
             }
         }
 
-        public static string ConvertToFriendlyLabel (this string xAxis)
-        {
-            DateTime dt;
-
-            try
-            {
-                dt = DateTime.Parse(xAxis);
-                return $"{dt: MMM} '{dt:yy}";
-            }
-            catch(FormatException exc)
-            {
-                return xAxis;
-            }
-        }
 
         public static bool ShowXAxisName(this Charts chart)
         {

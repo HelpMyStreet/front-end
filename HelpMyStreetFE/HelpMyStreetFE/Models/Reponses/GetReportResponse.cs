@@ -60,33 +60,14 @@ namespace HelpMyStreetFE.Models.Reponses
         public Data data { get; set; }
         public Options options { get; set; }
 
-        private IEnumerable<string> GetLabels(Chart chartModel)
-        {
-            return chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
-                    .Select(x => x.Value.XAxis)
-                    .Distinct();
-        }
-
         public ReportData(Charts charts, Chart chartModel, ChartTypes chartType)
         {
             type = chartType.ToString().ToLower();
 
-            //var labels = chartModel.DataPoints.OrderBy(x => x.XAxis)
-            //var labels = chartModel.DataPoints.OrderBy(x => x.XAxis)
-            //    .Select(x => x.Series)
-            //    .Distinct()
-            //    .ToList();
-
-            var labels = chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
-                .Select(x => x.Value.Series)
-                .Distinct()
-                .ToList();
-
             List<Dataset> datasets = new List<Dataset>();
             int index = 1;
-            labels.ForEach(item =>
+            chartModel.LegendItems.ToList().ForEach(item =>
             {
-                //var dataList = chartModel.DataPoints.Where(x => x.Series == item).OrderBy(o=> o.XAxis).Select(x => (int) x.Value).ToList();                
                 var dataList = chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
                      .Where(x => x.Value.Series == item)
                      .Select(x => (int)x.Value.Value)
@@ -114,17 +95,15 @@ namespace HelpMyStreetFE.Models.Reponses
                 });
                 index++;
             });
-
-            //data = new Data() { labels = chartModel.Labels.Select(x => x.ConvertToFriendlyLabel()).ToArray(), datasets = datasets.ToArray() };
-            data = new Data() { labels = GetLabels(chartModel).Select(x => x.ConvertToFriendlyLabel()).ToArray(), datasets = datasets.ToArray() };
+            
+            data = new Data() { labels = chartModel.XAxisValues.ToArray(), datasets = datasets.ToArray() };
             options = new Options();
             options.indexAxis = charts.IndexAxis();
             options.plugins = new Plugins()
             {
                title = new Title()
                {
-                   display = false,
-                  // text = chart.Title
+                   display = false                  
                },
                legend = new Legend()
                {
