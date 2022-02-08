@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Models.Reponses
 
             if(string.IsNullOrEmpty(colour))
             {
-                int colourIndex = index % 12;
+                int colourIndex = index % 10;
                 colour =  COLOURS[colourIndex];
             }
             return colour;            
@@ -43,31 +43,42 @@ namespace HelpMyStreetFE.Models.Reponses
 
         private readonly Dictionary<int, string> COLOURS = new Dictionary<int, string>()
         {
-            {0, "rgb(201, 203, 207)"},
-            {1, "rgb(246, 112, 25)" },
-            {2, "rgb(77, 201, 246)" },
-            {3, "rgb(172, 194, 54)" },
-            {4, "rgb(245, 55, 148)" },
-            {5, "rgb(255, 255, 0)" },
-            {6, "rgb(166, 166, 166)" },
-            {7, "rgb(255, 99, 132)" },
-            {8, "rgb(255, 159, 64)" },
-            {9, "rgb(255, 205, 86)" },
-            {10, "rgb(75, 192, 192)" },
-            {11, "rgb(54, 162, 235)" },
-            {12, "rgb(153, 102, 255)"}
+            {0, ChartHelpers.RED},
+            {1, ChartHelpers.ORANGE },
+            {2, ChartHelpers.BLUE },
+            {3, ChartHelpers.GREEN },
+            {4, ChartHelpers.PINK },
+            {5, ChartHelpers.YELLOW },
+            {6, ChartHelpers.GREY },
+            {7,  ChartHelpers.MAROON },
+            {8, ChartHelpers.DUCK_EGG},
+            {9, ChartHelpers.LIGHT_BLUE },
+            {10, ChartHelpers.PURPLE}
         };
 
         public string type { get; set; }
         public Data data { get; set; }
         public Options options { get; set; }
 
+        private IEnumerable<string> GetLabels(Chart chartModel)
+        {
+            return chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
+                    .Select(x => x.Value.XAxis)
+                    .Distinct();
+        }
+
         public ReportData(Charts charts, Chart chartModel, ChartTypes chartType)
         {
             type = chartType.ToString().ToLower();
 
-            var labels = chartModel.DataPoints.OrderBy(x => x.XAxis)
-                .Select(x => x.Series)
+            //var labels = chartModel.DataPoints.OrderBy(x => x.XAxis)
+            //var labels = chartModel.DataPoints.OrderBy(x => x.XAxis)
+            //    .Select(x => x.Series)
+            //    .Distinct()
+            //    .ToList();
+
+            var labels = chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
+                .Select(x => x.Value.Series)
                 .Distinct()
                 .ToList();
 
@@ -75,15 +86,20 @@ namespace HelpMyStreetFE.Models.Reponses
             int index = 1;
             labels.ForEach(item =>
             {
-                var dataList = chartModel.DataPoints.Where(x => x.Series == item).OrderBy(o=> o.XAxis).Select(x => (int) x.Value).ToList();                
+                //var dataList = chartModel.DataPoints.Where(x => x.Series == item).OrderBy(o=> o.XAxis).Select(x => (int) x.Value).ToList();                
+                var dataList = chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
+                     .Where(x => x.Value.Series == item)
+                     .Select(x => (int)x.Value.Value)
+                     .ToList();
+
                 List<string> backgroundColor = new List<string>();
 
-                if(chartType == ChartTypes.Pie)
+                if (chartType == ChartTypes.Pie)
                 {
-                    for(int i = 1; i<= dataList.Count; i++ )
+                    for (int i = 1; i <= dataList.Count; i++)
                     {
-                        backgroundColor.Add(GetColour(charts, i, item));                        
-                    }                    
+                        backgroundColor.Add(GetColour(charts, i, item));
+                    }
                 }
                 else
                 {
@@ -99,8 +115,10 @@ namespace HelpMyStreetFE.Models.Reponses
                 index++;
             });
 
-            data = new Data() { labels = chartModel.Labels.Select(x => x.ConvertToFriendlyLabel()).ToArray(), datasets = datasets.ToArray() };
+            //data = new Data() { labels = chartModel.Labels.Select(x => x.ConvertToFriendlyLabel()).ToArray(), datasets = datasets.ToArray() };
+            data = new Data() { labels = GetLabels(chartModel).Select(x => x.ConvertToFriendlyLabel()).ToArray(), datasets = datasets.ToArray() };
             options = new Options();
+            options.indexAxis = charts.IndexAxis();
             options.plugins = new Plugins()
             {
                title = new Title()
@@ -110,7 +128,8 @@ namespace HelpMyStreetFE.Models.Reponses
                },
                legend = new Legend()
                {
-                   position = "top"
+                   position = "top",
+                   display = charts.ShowLegend()
                }
             };
             options.scales = new Scales();
@@ -121,7 +140,7 @@ namespace HelpMyStreetFE.Models.Reponses
                 {
                     grid = new Grid()
                     {
-                        display = true
+                        display = charts.GridLinesYAxis()
                     },
                     stacked = true,
                     title = new Title1()
@@ -141,9 +160,13 @@ namespace HelpMyStreetFE.Models.Reponses
             {
                 options.scales.xAxes = new Xaxes
                 {
+                    ticks = new Ticks()
+                    {
+                        stepSize = 1
+                    },
                     grid = new Grid()
                     {
-                        display = false
+                        display = charts.GridLinesXAxis()
                     },
                     stacked = true,
                     title = new Title2
@@ -176,6 +199,7 @@ namespace HelpMyStreetFE.Models.Reponses
 
     public class Options
     {
+        public string indexAxis { get; set; }
         public Plugins plugins { get; set; }
         public bool responsive { get; set; }
         public Scales scales { get; set; }
@@ -190,6 +214,7 @@ namespace HelpMyStreetFE.Models.Reponses
     public class Legend
     {
         public string position { get; set; }
+        public bool display { get; set; }
     }
 
     public class Title
@@ -234,6 +259,11 @@ namespace HelpMyStreetFE.Models.Reponses
         public bool stacked { get; set; }
         public Title2 title { get; set; }
         public Grid grid { get; set; }
+        public Ticks ticks { get; set; }
+    }
+    public class Ticks
+    {
+        public int stepSize { get; set; }
     }
 
     public class Title2
