@@ -46,14 +46,14 @@ namespace HelpMyStreetFE.Models.Reponses
             {0, ChartHelpers.RED},
             {1, ChartHelpers.ORANGE },
             {2, ChartHelpers.BLUE },
-            {3, ChartHelpers.GREEN },
-            {4, ChartHelpers.PINK },
-            {5, ChartHelpers.YELLOW },
-            {6, ChartHelpers.GREY },
-            {7,  ChartHelpers.MAROON },
+            {3, ChartHelpers.PURPLE },
+            {4, ChartHelpers.LIGHT_BLUE },
+            {5, ChartHelpers.GREEN },
+            {6, ChartHelpers.PINK },
+            {7, ChartHelpers.MAROON },
             {8, ChartHelpers.DUCK_EGG},
-            {9, ChartHelpers.LIGHT_BLUE },
-            {10, ChartHelpers.PURPLE}
+            {9, ChartHelpers.GREY },
+            {10, ChartHelpers.DARK_BLUE}
         };
 
         public string type { get; set; }
