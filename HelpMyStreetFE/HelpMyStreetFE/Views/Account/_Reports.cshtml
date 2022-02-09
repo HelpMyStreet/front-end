@@ -8,13 +8,12 @@
 
 <div class="user-profile profile-panel p-md">
     <header class="profile-panel__header">
-        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Activity Viewer</h3>
+        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName Request Activity</h3>
     </header>
-
-    <h5>Requests</h5>
-    <div class="mt-xl">
+    
+    <div class="mt-lg">
         <h5 class="report_title">Number of requests due each month split by current job status</h5>
-        <h6>@filterMessage</h6>
+        <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
    {
        groupId = Model.CurrentGroup.GroupId,
@@ -27,7 +26,7 @@
 
     <div class="mt-xl">
         <h5 class="report_title">Number of requests due each month by activity type</h5>
-        <h6>@filterMessage</h6>
+        <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
    {
        groupId = Model.CurrentGroup.GroupId,
@@ -37,11 +36,14 @@
        dateTo = $"{DateTime.UtcNow:yyyy-MM-dd}"
    })
     </div>
-
-    <h5>Users</h5>
-    <div class="mt-xl">
+</div>
+<div class="user-profile profile-panel p-md mt-xl">
+    <header class="profile-panel__header">
+        <h3 class="profile-panel__title">@Model.CurrentGroup.GroupName User Activity</h3>
+    </header>    
+    <div class="mt-lg">
         <h5 class="report_title">Number of registered users at month end</h5>
-        <h6>@filterMessage</h6>
+        <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
         {
             groupId = Model.CurrentGroup.GroupId,
