@@ -1,4 +1,7 @@
 ﻿using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
+using HelpMyStreet.Contracts.ReportService.Request;
+using HelpMyStreet.Contracts.ReportService.Response;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Contracts.Shared;
@@ -397,6 +400,28 @@ namespace HelpMyStreetFE.Repositories
                 return deserializedResponse.Content.Messages;
             }
             throw new Exception($"Bad response from GetNewsTicker for groupId {groupId}");
+        }
+
+        public async Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo)
+        {
+            var request = new GetChartRequest
+            {
+                Chart = new HelpMyStreet.Contracts.GroupService.Request.ChartRequest()
+                {
+                    Chart = chart
+                },
+                GroupId = groupId,
+                DateFrom = dateFrom,
+                DateTo = dateTo
+            };
+
+            var response = await PostAsync<BaseRequestHelpResponse<GetChartResponse>>($"/api/GetChart", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Chart;
+            }
+            return null;
         }
     }
 }

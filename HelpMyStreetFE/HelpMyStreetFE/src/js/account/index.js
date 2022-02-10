@@ -2,13 +2,14 @@ import login from "./login";
 import notification from "./notification";
 import { hmsFetch, fetchResponses } from "../shared/hmsFetch";
 import { getInactivityState, INACTIVITY_STATES } from "../shared/inactivity-monitor";
+import { InitialiseReports} from "../report.js"
 
 export default { login, notification };
 
 $(document).ready(function () {
     initialiseAccountNavExpanders();
     initialiseNavBadges();
-
+    InitialiseReports();
 
 });
 

@@ -3,6 +3,7 @@ using HelpMyStreet.Contracts.FeedbackService.Request;
 using HelpMyStreet.Contracts.FeedbackService.Response;
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Utils.Enums;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Feedback;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

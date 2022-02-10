@@ -10,6 +10,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Contracts.GroupService.Response;
 using HelpMyStreetFE.Models.RequestHelp;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
 
 namespace HelpMyStreetFE.Services.Groups
 {
@@ -194,6 +195,11 @@ namespace HelpMyStreetFE.Services.Groups
         public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId)
         {
             return await _groupRepository.GetNewsTickerMessages(groupId);
+        }
+
+        public async Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo)
+        {
+            return await _groupRepository.GetChart(chart, groupId, dateFrom, dateTo);
         }
     }
 }

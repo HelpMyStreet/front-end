@@ -24,6 +24,7 @@
         MenuPage.GroupRequests => $"{Model.CurrentGroup.GroupName} Requests",
         MenuPage.GroupVolunteers => $"{Model.CurrentGroup.GroupName} Volunteer List",
         MenuPage.GroupShifts => $"{Model.CurrentGroup.GroupName} Shifts",
+        MenuPage.Reports => $"{Model.CurrentGroup.GroupName} Reports",
         _ => "My Profile"
     };
 }
@@ -59,6 +60,9 @@
             case MenuPage.GroupVolunteers:
                 <partial name="_GroupVolunteers" for="@Model" />
                 break;
+            case MenuPage.Reports:
+                <partial name="_Reports" for="@Model" />
+                break;
             default:
                 <div>
                     <partial name="_Verification" for="VerificationViewModel" />
@@ -66,6 +70,7 @@
                     {
                         <partial name="_UserData" for="@Model.PageModel" />
                     }
+                    <h1>Hello</h1>
                 </div>
                 break;
         }
