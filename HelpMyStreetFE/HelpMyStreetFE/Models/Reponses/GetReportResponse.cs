@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Models.Reponses
 
             if(string.IsNullOrEmpty(colour))
             {
-                int colourIndex = index % 10;
+                int colourIndex = index % 8;
                 colour =  COLOURS[colourIndex];
             }
             return colour;            
@@ -45,15 +45,13 @@ namespace HelpMyStreetFE.Models.Reponses
         {
             {0, ChartHelpers.RED},
             {1, ChartHelpers.ORANGE },
-            {2, ChartHelpers.BLUE },
-            {3, ChartHelpers.PURPLE },
-            {4, ChartHelpers.LIGHT_BLUE },
-            {5, ChartHelpers.GREEN },
-            {6, ChartHelpers.PINK },
-            {7, ChartHelpers.MAROON },
-            {8, ChartHelpers.DUCK_EGG},
-            {9, ChartHelpers.GREY },
-            {10, ChartHelpers.DARK_BLUE}
+            {2, ChartHelpers.YELLOW },
+            {3, ChartHelpers.GREEN },
+            {4, ChartHelpers.BLUE },
+            {5, ChartHelpers.PURPLE },
+            {6, ChartHelpers.GREY },
+            {7, ChartHelpers.DUCK_EGG},
+            {8, ChartHelpers.DARK_BLUE}
         };
 
         public string type { get; set; }

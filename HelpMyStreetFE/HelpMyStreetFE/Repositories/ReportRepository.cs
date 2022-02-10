@@ -56,7 +56,7 @@ namespace HelpMyStreetFE.Repositories
                     otherDataPoints.Add(new DataPoint()
                     {
                         XAxis = item,
-                        Series = "Other",
+                        Series = "Others",
                         Value = chartData.DataPoints.Where(x => x.XAxis == item && !ExplicitLegendItems.Contains(x.Series)).Sum(x => x.Value)
                     });
                 });
