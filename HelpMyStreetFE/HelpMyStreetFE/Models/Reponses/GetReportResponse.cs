@@ -45,9 +45,9 @@ namespace HelpMyStreetFE.Models.Reponses
         {
             {0, ChartHelpers.RED},
             {1, ChartHelpers.ORANGE },
-            {2, ChartHelpers.YELLOW },
+            {2, ChartHelpers.BLUE },
             {3, ChartHelpers.GREEN },
-            {4, ChartHelpers.BLUE },
+            {4, ChartHelpers.YELLOW },
             {5, ChartHelpers.PURPLE },
             {6, ChartHelpers.GREY },
             {7, ChartHelpers.DUCK_EGG},

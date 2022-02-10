@@ -61,7 +61,7 @@
             groupId = Model.CurrentGroup.GroupId,
             chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
             chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-            dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-12):yyyy-MM-01}",
+            dateFrom = $"{DateTime.UtcNow.Date.AddDays(-14):yyyy-MM-dd}",
             dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
         })
     </div>
