@@ -3,6 +3,7 @@
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreetFE.Models.Community;
+@using HelpMyStreet.Utils.Extensions;
 
 <nav class="account__nav">
     <ul class="account__nav__list m-0 p-0">
@@ -62,8 +63,9 @@
         </li>
         @foreach (var userGroup in Model.UserGroups)
         {
-            var adminRoles = new List<GroupRoles> { GroupRoles.TaskAdmin, GroupRoles.UserAdmin, GroupRoles.UserAdmin_ReadOnly, GroupRoles.RequestSubmitter };
-            @if (userGroup.UserRoles.Any(userRole => adminRoles.Contains(userRole)))
+            var adminRoleCount = userGroup.UserRoles.Count(x => x.IsAdmin());
+
+            @if (adminRoleCount>0)
             {
                 <li class="account__nav__item submenu__container">
                     <a href=@($"/account/g/{userGroup.GroupKey}") class="@(Model.CurrentGroup?.GroupKey == userGroup.GroupKey ? "selected" : string.Empty)">
