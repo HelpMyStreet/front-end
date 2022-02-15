@@ -25,20 +25,20 @@ namespace HelpMyStreetFE.Models.Reponses
 
         private string GetColour(Charts chart, int index, string label)
         {
-            string colour = string.Empty; 
+            string colour = string.Empty;
             var colourChart = chart.ColourChart();
 
-            if(colourChart!=null)
+            if (colourChart != null)
             {
                 colourChart.TryGetValue(label, out colour);
             }
 
-            if(string.IsNullOrEmpty(colour))
+            if (string.IsNullOrEmpty(colour))
             {
                 int colourIndex = index % 8;
-                colour =  COLOURS[colourIndex];
+                colour = COLOURS[colourIndex];
             }
-            return colour;            
+            return colour;
         }
 
         private readonly Dictionary<int, string> COLOURS = new Dictionary<int, string>()
@@ -68,22 +68,20 @@ namespace HelpMyStreetFE.Models.Reponses
             {
                 var dataList = chartModel.DataPoints.Select((Value, Index) => (Value, Index)).OrderBy(x => x.Index)
                      .Where(x => x.Value.Series == item)
-                     .Select(x => (int)x.Value.Value)
-                     .ToList();
+                     .Select(x => new DataObject()
+                     {
+                         x = index,
+                         y = (int)x.Value.Value,
+                         child = x.Value.Children?.Select(x => new Child()
+                         {
+                             text = x.ChildName,
+                             val = (int)x.Value
+                         }).ToArray()
+                     })
+                     .ToArray();
 
                 List<string> backgroundColor = new List<string>();
-
-                if (chartType == ChartTypes.Pie)
-                {
-                    for (int i = 1; i <= dataList.Count; i++)
-                    {
-                        backgroundColor.Add(GetColour(charts, i, item));
-                    }
-                }
-                else
-                {
-                    backgroundColor.Add(GetColour(charts, index, item));
-                }
+                backgroundColor.Add(GetColour(charts, index, item));
 
                 datasets.Add(new Dataset
                 {
@@ -93,22 +91,22 @@ namespace HelpMyStreetFE.Models.Reponses
                 });
                 index++;
             });
-            
+
             data = new Data() { labels = chartModel.XAxisValues.ToArray(), datasets = datasets.ToArray() };
             options = new Options();
             options.indexAxis = charts.IndexAxis();
             options.plugins = new Plugins()
             {
-               title = new Title()
-               {
-                   display = false                  
-               },
-               legend = new Legend()
-               {
-                   position = "top",
-                   display = charts.ShowLegend()
-               }
-            };
+                title = new Title()
+                {
+                    display = false
+                },
+                legend = new Legend()
+                {
+                    position = "top",
+                    display = charts.ShowLegend()
+                }
+            };            
             options.scales = new Scales();
             options.responsive = true;
             if (chartType != ChartTypes.Pie)
@@ -170,8 +168,23 @@ namespace HelpMyStreetFE.Models.Reponses
     public class Dataset
     {
         public string label { get; set; }
-        public int[] data { get; set; }
+        //public int[] data { get; set; }
+
+        public DataObject[] data { get; set; }
         public string[] backgroundColor { get; set; }
+    }
+    public class DataObject
+    {
+        public int x { get; set; }
+        public int y { get; set; }
+        public Child[] child { get; set; }
+
+    }
+
+    public class Child
+    {
+        public string text { get; set; }
+        public int val { get; set; }
     }
 
     public class Options

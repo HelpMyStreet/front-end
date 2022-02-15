@@ -1,10 +1,8 @@
 ﻿using HelpMyStreet.Contracts.ReportService;
 using HelpMyStreet.Utils.Enums;
-using HelpMyStreetFE.Models.Account.Report;
-using HelpMyStreetFE.Models.Feedback;
+using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Services.Groups;
 using HelpMyStreetFE.Services.Requests;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +22,7 @@ namespace HelpMyStreetFE.Repositories
             _groupService = groupService;
         }
 
-        private async Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo)
+        private async Task<Chart> GetChartAndAdddOthersIfNecessary(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo)
         {
             var chartData = await _requestService.GetChart(chart, groupId, dateFrom, dateTo);
 
@@ -72,13 +70,77 @@ namespace HelpMyStreetFE.Repositories
 
             return chartData;
         }
+
+        private SupportActivityCategory GetCategory(string supportActivity)
+        {
+            var activity = Enum.GetValues(typeof(SupportActivities)).Cast<SupportActivities>()
+                 .ToList()
+                 .FirstOrDefault(x => x.FriendlyNameShort() == supportActivity);
+
+            if(activity !=null)
+            {
+                return activity.Category();
+            }
+            else
+            {
+                throw new Exception($"Unable to retrieve category from { supportActivity}");
+            }
+        }
+
+
+        private async Task<Chart> GetActivitiesByDateGroupByCategoryIfNecessary(int groupId, DateTime dateFrom, DateTime dateTo)
+        {
+            var chartData = await _requestService.GetChart(Charts.RequestVolumeByActivityType, groupId, dateFrom, dateTo);
+
+            var series = chartData.DataPoints.Select(x => x.Series).Distinct().ToList();
+
+            if(series.Count>5)
+            {
+                List<DataPoint> newDataPoints = new List<DataPoint>();
+
+                var categories = Enum.GetValues(typeof(SupportActivityCategory)).Cast<SupportActivityCategory>()
+                 .ToList();
+
+                chartData.DataPoints
+                    .Select(x => x.XAxis)
+                    .Distinct()
+                    .ToList()
+                    .ForEach(item =>
+                    {
+                        categories.ForEach(legend =>
+                        {
+                            var children = chartData.DataPoints
+                                .Where(x => GetCategory(x.Series) == legend && x.XAxis == item && x.Value>0)
+                                .Select(x => new DataPointChild()
+                                {
+                                    ChildName = x.Series,
+                                    Value = x.Value
+                                })
+                                .ToList();
+
+                            newDataPoints.Add(new DataPoint()
+                            {
+                                XAxis = item,
+                                Series = legend.ToString(),
+                                Value = children.Sum(x=> x.Value),
+                                Children = children
+                            });
+                        });
+                    });
+                chartData.DataPoints = newDataPoints;
+            }
+ 
+            return chartData;
+        }
         public async Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
         {
             switch (chart)
             {
-                case Charts.ActivitiesByMonth:                
+                case Charts.ActivitiesByMonth:
+                    return await GetChartAndAdddOthersIfNecessary(chart, groupId, dateFrom, dateTo);
                 case Charts.RequestVolumeByActivityType:
-                    return await GetChart(chart, groupId, dateFrom, dateTo);
+                    var data = await GetActivitiesByDateGroupByCategoryIfNecessary(groupId, dateFrom, dateTo);
+                    return data;
                 case Charts.RequestVolumeByDueDateAndRecentStatus:
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return await _requestService.GetChart(chart, groupId, dateFrom, dateTo);
