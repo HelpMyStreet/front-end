@@ -35,7 +35,7 @@ namespace HelpMyStreetFE.Helpers
                         {"Overdue", PINK },
                         {"Cancelled", GREY }
 
-                    };
+                    };                
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return new Dictionary<string, string>()
                     {
@@ -61,6 +61,7 @@ namespace HelpMyStreetFE.Helpers
         {
             switch(chart)
             {
+                case Charts.TotalGroupUsersByType:
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return "y";
                 default:
@@ -72,6 +73,7 @@ namespace HelpMyStreetFE.Helpers
         {
             switch (chart)
             {
+                case Charts.TotalGroupUsersByType:
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return false;
                 default:
@@ -83,6 +85,7 @@ namespace HelpMyStreetFE.Helpers
         {
             switch (chart)
             {
+                case Charts.TotalGroupUsersByType:
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return true;
                 default:
@@ -94,6 +97,7 @@ namespace HelpMyStreetFE.Helpers
         {
             switch (chart)
             {
+                case Charts.TotalGroupUsersByType:
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return false;
                 default:

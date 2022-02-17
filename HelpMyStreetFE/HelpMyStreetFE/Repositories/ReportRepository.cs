@@ -84,6 +84,8 @@ namespace HelpMyStreetFE.Repositories
                     return await _requestService.GetChart(chart, groupId, dateFrom, dateTo);
                 case Charts.VolumeOfUsersByType:
                     return await _groupService.GetChart(chart, groupId, dateFrom, dateTo);
+                case Charts.TotalGroupUsersByType:
+                    return await _groupService.GetChart(chart, groupId, dateFrom, dateTo);
                 default:
                     throw new Exception($"unknown chart {chart}");
             }
