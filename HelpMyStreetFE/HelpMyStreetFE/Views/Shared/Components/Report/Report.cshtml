@@ -1,12 +1,13 @@
 @model HelpMyStreetFE.Models.Account.Report.ReportViewModel
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div>
-    <div class="chart-container" 
-         data-chart="@Model.Chart" 
-         data-group="@Model.GroupId" 
-         data-type="@Model.ChartType" 
-         data-datefrom="@Model.DateFrom" 
+    <div class="chart-container"
+         data-chart="@Model.Chart"
+         data-group="@Model.GroupId"
+         data-type="@Model.ChartType"
+         data-datefrom="@Model.DateFrom"
          data-dateto="@Model.DateTo">
         <canvas class="chart"></canvas>
     </div>
