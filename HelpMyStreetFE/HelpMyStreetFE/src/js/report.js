@@ -16,11 +16,9 @@ export function InitialiseReports() {
                     let endpoint = '/api/ReportAPI/getDataTable?chart=' + chart + '&groupId=' + groupId + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
                     console.log(endpoint);
                     const content = await hmsFetch(endpoint);
-                    console.log("content=" + content.fetchResponse);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;
-                        console.log(thisPayload);
-                        $(this).find(".test").replaceWith('<div class="test">' + thisPayload + '</div>');                        
+                        $(this).find(".datatable").replaceWith('<div class="datatable">' + thisPayload + '</div>');                        
                         
                     } else {
                         return [];
@@ -28,7 +26,7 @@ export function InitialiseReports() {
                 }
                 else {
                     let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
-                    //console.log(endpoint);
+                    console.log(endpoint);
                     const content = await hmsFetch(endpoint);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;
