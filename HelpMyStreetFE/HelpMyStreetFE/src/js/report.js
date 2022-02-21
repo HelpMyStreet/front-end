@@ -14,23 +14,21 @@ export function InitialiseReports() {
 
                 if (chartType == "DataTable") {
                     let endpoint = '/api/ReportAPI/getDataTable?chart=' + chart + '&groupId=' + groupId + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+                    console.log(endpoint);
                     const content = await hmsFetch(endpoint);
                     console.log("content=" + content.fetchResponse);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;
                         console.log(thisPayload);
-                        reportdata = thisPayload;
+                        $(this).find(".test").replaceWith('<div class="test">' + thisPayload + '</div>');                        
                         
                     } else {
                         return [];
-                    }
-
-                    $(this).find(".test").replaceWith('<div class="test">' + reportdata + '</div>');
-
+                    }                  
                 }
                 else {
                     let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
-                    console.log(endpoint);
+                    //console.log(endpoint);
                     const content = await hmsFetch(endpoint);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;

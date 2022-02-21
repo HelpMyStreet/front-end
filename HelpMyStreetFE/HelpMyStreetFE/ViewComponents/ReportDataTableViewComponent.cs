@@ -11,7 +11,7 @@ namespace HelpMyStreetFE.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync(int groupId, Charts chart, ChartTypes chartType, string dateFrom, string dateTo, CancellationToken cancellationToken)
         {
-            ReportViewModel viewModel = new ReportViewModel()
+            DataTableViewModel viewModel = new DataTableViewModel()
             {
                 Chart = chart,
                 GroupId = groupId,

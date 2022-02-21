@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReportAPIController : ControllerBase
+    public class ReportAPIController : Controller
     {
         private readonly IReportRepository _reportRepository;
         private readonly IAuthService _authService;
@@ -50,7 +50,7 @@ namespace HelpMyStreetFE.Controllers
         }
 
         [HttpGet("getDataTable")]
-        public async Task<ActionResult<string>> GetDataTable(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetDataTable(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
         {
             var user = await _authService.GetCurrentUser(cancellationToken);
 
@@ -65,9 +65,8 @@ namespace HelpMyStreetFE.Controllers
             }
 
             Chart chartModel = await _reportRepository.GetChart(chart, groupId, dateFrom, dateTo, cancellationToken);
-            //GetReportResponse getReportResponse = new GetReportResponse(chart, chartModel, chartType);
-
-            return JsonConvert.SerializeObject(chartModel);
+            
+            return ViewComponent("PopulatedDataTable", new { chartModel.DataPoints });
         }
 
     }
