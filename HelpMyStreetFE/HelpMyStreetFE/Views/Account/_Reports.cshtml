@@ -43,7 +43,7 @@
     </header>
 
     <div class="mt-lg">
-        <h5 class="report_title">Total number of users</h5>
+        <h5 class="mb-md">Count of current users by user type</h5>
         @await Component.InvokeAsync("Report", new
         {
             groupId = Model.CurrentGroup.GroupId,
@@ -55,7 +55,7 @@
     </div>
 
     <div class="mt-lg">
-        <h5 class="report_title">Number of registered users at month end</h5>
+        <h5>Count of new users by month</h5>
         <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
         {
@@ -65,17 +65,29 @@
             dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-12):yyyy-MM-01}",
             dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
         })
-    </div>
 
-    <div class="mt-xl">
-        <h5 class="report_title">Number of volunteers accepting requests in the last 14 days</h5>
-        @await Component.InvokeAsync("Report", new
-        {
-            groupId = Model.CurrentGroup.GroupId,
-            chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
-            chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-            dateFrom = $"{DateTime.UtcNow.Date.AddDays(-14):yyyy-MM-dd}",
-            dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
-        })
+        <div class="mt-lg">
+            <h5>Count of users leaving by month</h5>
+            <p>@filterMessage</p>
+            @await Component.InvokeAsync("Report", new
+            {
+                groupId = Model.CurrentGroup.GroupId,
+                chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersLeavingByMonth,
+                chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+                dateFrom = $"{DateTime.UtcNow.Date.AddMonths(-12):yyyy-MM-01}",
+                dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
+            })
+        </div>
+
+        <div class="mt-xl">
+            <h5 class="report_title">Number of volunteers accepting requests in the last 14 days</h5>
+            @await Component.InvokeAsync("Report", new
+            {
+                groupId = Model.CurrentGroup.GroupId,
+                chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
+                chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+                dateFrom = $"{DateTime.UtcNow.Date.AddDays(-14):yyyy-MM-dd}",
+                dateTo = $"{DateTime.UtcNow.Date:yyyy-MM-dd}"
+            })
+        </div>
     </div>
-</div>

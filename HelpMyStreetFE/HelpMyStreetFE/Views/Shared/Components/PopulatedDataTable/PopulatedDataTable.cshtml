@@ -1,22 +1,20 @@
 ﻿@using HelpMyStreet.Contracts.ReportService;
 @model HelpMyStreetFE.Models.Account.Report.PopulatedDataTableViewModel
 
-<div class="test">
-    @if (Model.DataPoints.Count > 0)
-    {
-        <div class="rTable">
-            <div class="rTableRow">
-                <div class="rTableHead"><strong>Type</strong></div>
-                <div class="rTableHead"><span style="font-weight: bold;">Count</span></div>
-            </div>
-            @foreach (DataPoint dp in Model.DataPoints)
-            {
-                <div class="rTableRow">
-                    <div class="rTableCell">@dp.XAxis</div>
-                    <div class="rTableCell">@dp.Value </div>
-                </div>
-            }
+@if (Model.DataPoints.Count > 0)
+{
+    <div class="rTable">
+        <div class="rTableRow">
+            <div class="rTableHead"><strong>User type</strong></div>
+            <div class="rTableHead"><span style="font-weight: bold;">Users</span></div>
         </div>
-    }
-</div>
+        @foreach (DataPoint dp in Model.DataPoints)
+        {
+            <div class="rTableRow">
+                <div class="rTableCell">@dp.XAxis</div>
+                <div class="rTableCell">@dp.Value </div>
+            </div>
+        }
+    </div>
+}
 

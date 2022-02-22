@@ -18,7 +18,7 @@ export function InitialiseReports() {
                     const content = await hmsFetch(endpoint);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;
-                        $(this).find(".datatable").replaceWith('<div class="datatable">' + thisPayload + '</div>');                        
+                        $(this).find(".datatable").replaceWith('<div ctslass="datatable">' + thisPayload + '</div>');                        
                         
                     } else {
                         return [];
