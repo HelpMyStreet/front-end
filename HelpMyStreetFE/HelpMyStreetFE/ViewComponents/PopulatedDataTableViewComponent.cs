@@ -11,11 +11,11 @@ namespace HelpMyStreetFE.ViewComponents
 {
     public class PopulatedDataTableViewComponent : ViewComponent
     {
-        public async Task<IViewComponentResult> InvokeAsync(List<DataPoint> dataPoints, CancellationToken cancellationToken)
+        public async Task<IViewComponentResult> InvokeAsync(Chart chart, CancellationToken cancellationToken)
         {
             PopulatedDataTableViewModel viewModel = new PopulatedDataTableViewModel()
             {
-                DataPoints = dataPoints
+                Chart = chart
             };            
             return View("PopulatedDataTable", viewModel);
         }

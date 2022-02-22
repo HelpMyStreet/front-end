@@ -66,7 +66,7 @@ namespace HelpMyStreetFE.Controllers
 
             Chart chartModel = await _reportRepository.GetChart(chart, groupId, dateFrom, dateTo, cancellationToken);
             
-            return ViewComponent("PopulatedDataTable", new { chartModel.DataPoints });
+            return ViewComponent("PopulatedDataTable", new { chart = chartModel });
         }
 
     }

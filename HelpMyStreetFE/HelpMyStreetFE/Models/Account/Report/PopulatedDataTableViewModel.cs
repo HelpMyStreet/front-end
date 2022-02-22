@@ -10,6 +10,6 @@ namespace HelpMyStreetFE.Models.Account.Report
 {
     public class PopulatedDataTableViewModel
     {
-        public List<DataPoint> DataPoints { get; set; }
+        public Chart Chart { get; set; }
     }
 }
