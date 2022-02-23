@@ -4,7 +4,6 @@ export function InitialiseReports() {
     $(".chart-container").each
         (
             async function () {
-                console.log("In function");
                 const chart = $(this).data("chart");
                 const groupId = $(this).data("group");
                 const chartType = $(this).data("type");
@@ -12,17 +11,33 @@ export function InitialiseReports() {
                 const dateTo = $(this).data("dateto");
 
                 let reportdata;
-              
-                let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
-                console.log(endpoint);
-                const content = await hmsFetch(endpoint);
-                if (content.fetchResponse == fetchResponses.SUCCESS) {
-                    let thisPayload = await content.fetchPayload;
-                    reportdata = thisPayload.reportData;
-                } else {
-                    return [];
+
+                if (chartType == "DataTable") {
+                    let endpoint = '/api/ReportAPI/getDataTable?chart=' + chart + '&groupId=' + groupId + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+                    const content = await hmsFetch(endpoint);
+                    if (content.fetchResponse == fetchResponses.SUCCESS) {
+                        let thisPayload = await content.fetchPayload;
+                        $(this).addClass("datatable")
+                            .html(thisPayload);
+                        
+                    } else {
+                        return [];
+                    }                  
                 }
-                new Chart($(this).find("canvas"),reportdata);
+                else {
+                    let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+                    const content = await hmsFetch(endpoint);
+                    if (content.fetchResponse == fetchResponses.SUCCESS) {
+                        let thisPayload = await content.fetchPayload;
+                        reportdata = thisPayload.reportData;
+                    } else {
+                        return [];
+                    }
+
+                    var ctx = document.createElement("canvas");
+                    $(this).append(ctx);
+                    return new Chart(ctx, reportdata);
+                }
             }
         )
 }
