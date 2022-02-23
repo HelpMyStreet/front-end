@@ -115,6 +115,10 @@ namespace HelpMyStreetFE.Models.Reponses
             {
                 options.scales.yAxes = new Yaxes()
                 {
+                    ticks = new Ticks()
+                    {
+                        precision = 0
+                    },
                     grid = new Grid()
                     {
                         display = charts.GridLinesYAxis()
@@ -139,7 +143,7 @@ namespace HelpMyStreetFE.Models.Reponses
                 {
                     ticks = new Ticks()
                     {
-                        stepSize = 1
+                        precision = 0
                     },
                     grid = new Grid()
                     {
@@ -211,6 +215,7 @@ namespace HelpMyStreetFE.Models.Reponses
         public bool stacked { get; set; }
         public Title1 title { get; set; }
         public Grid grid { get; set; }
+        public Ticks ticks { get; set; }
     }
 
     public class Grid
@@ -240,7 +245,7 @@ namespace HelpMyStreetFE.Models.Reponses
     }
     public class Ticks
     {
-        public int stepSize { get; set; }
+        public int precision { get; set; }
     }
 
     public class Title2
