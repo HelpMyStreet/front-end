@@ -1,20 +1,24 @@
 ﻿@using HelpMyStreet.Contracts.ReportService;
-@model HelpMyStreetFE.Models.Account.Report.PopulatedDataTableViewModel
+@model HelpMyStreet.Contracts.ReportService.Chart;
 
-@if (Model.Chart.DataPoints.Count > 0)
+@if (Model.DataPoints.Count > 0)
 {
-    <div class="rTable">
-        <div class="rTableRow">
-            <div class="rTableHead"><strong>@Model.Chart.XAxisName</strong></div>
-            <div class="rTableHead"><span style="font-weight: bold;">@Model.Chart.YAxisName</span></div>
+    <div class="dataTable">
+        <div class="dataTableRow">
+            <div class="dataTableHead">@Model.XAxisName</div>
+            <div class="dataTableHead">@Model.YAxisName</div>
         </div>
-        @foreach (DataPoint dp in Model.Chart.DataPoints)
+        @foreach (DataPoint dp in Model.DataPoints)
         {
-            <div class="rTableRow">
-                <div class="rTableCell">@dp.XAxis</div>
-                <div class="rTableCell">@dp.Value </div>
+            <div class="dataTableRow">
+                <div class="dataTableCell">@dp.XAxis</div>
+                <div class="dataTableCell">@dp.Value </div>
             </div>
         }
     </div>
+}
+else
+{
+    <p>No information to display</p>
 }
 

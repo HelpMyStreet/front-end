@@ -14,11 +14,11 @@ export function InitialiseReports() {
 
                 if (chartType == "DataTable") {
                     let endpoint = '/api/ReportAPI/getDataTable?chart=' + chart + '&groupId=' + groupId + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
-                    console.log(endpoint);
                     const content = await hmsFetch(endpoint);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;
-                        $(this).find(".datatable").replaceWith('<div ctslass="datatable">' + thisPayload + '</div>');                        
+                        $(this).addClass("datatable")
+                            .html(thisPayload);
                         
                     } else {
                         return [];
@@ -26,7 +26,6 @@ export function InitialiseReports() {
                 }
                 else {
                     let endpoint = '/api/ReportAPI/getReport?chart=' + chart + '&groupId=' + groupId + '&chartType=' + chartType + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo;
-                    console.log(endpoint);
                     const content = await hmsFetch(endpoint);
                     if (content.fetchResponse == fetchResponses.SUCCESS) {
                         let thisPayload = await content.fetchPayload;
@@ -34,7 +33,10 @@ export function InitialiseReports() {
                     } else {
                         return [];
                     }
-                    new Chart($(this).find("canvas"), reportdata);
+
+                    var ctx = document.createElement("canvas");
+                    $(this).append(ctx);
+                    return new Chart(ctx, reportdata);
                 }
             }
         )

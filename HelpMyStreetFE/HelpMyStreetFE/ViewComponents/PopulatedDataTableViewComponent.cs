@@ -13,11 +13,7 @@ namespace HelpMyStreetFE.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync(Chart chart, CancellationToken cancellationToken)
         {
-            PopulatedDataTableViewModel viewModel = new PopulatedDataTableViewModel()
-            {
-                Chart = chart
-            };            
-            return View("PopulatedDataTable", viewModel);
+            return View("PopulatedDataTable", chart);
         }
     }
 }
