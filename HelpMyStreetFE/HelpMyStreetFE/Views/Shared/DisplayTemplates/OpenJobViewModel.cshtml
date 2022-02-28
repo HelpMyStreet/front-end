@@ -87,7 +87,7 @@
                     <img src="~/img/icons/@Model.Item.First().SupportActivity.Icon()" />
                 }
                 <span>
-                    @Model.Item.First().SupportActivity.FriendlyNameShort()
+                    @Model.Item.First().GetSupportActivityName
                 </span>
             </span>
             @if (!string.IsNullOrWhiteSpace(Model.Item.First().Reference))
