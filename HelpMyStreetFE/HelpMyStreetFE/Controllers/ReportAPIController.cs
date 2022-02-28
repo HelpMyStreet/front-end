@@ -14,7 +14,7 @@ namespace HelpMyStreetFE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReportAPIController : ControllerBase
+    public class ReportAPIController : Controller
     {
         private readonly IReportRepository _reportRepository;
         private readonly IAuthService _authService;
@@ -47,6 +47,26 @@ namespace HelpMyStreetFE.Controllers
             var json = JsonConvert.SerializeObject(getReportResponse);
 
             return getReportResponse;            
+        }
+
+        [HttpGet("getDataTable")]
+        public async Task<ActionResult> GetDataTable(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo, CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(cancellationToken);
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            if (!await _groupMemberService.GetUserHasRole(user.ID, groupId, GroupRoles.ShowCharts, true, cancellationToken))
+            {
+                throw new UnauthorizedAccessException("user does not have permission to view charts");
+            }
+
+            Chart chartModel = await _reportRepository.GetChart(chart, groupId, dateFrom, dateTo, cancellationToken);
+            
+            return ViewComponent("PopulatedDataTable", new { chart = chartModel });
         }
 
     }
