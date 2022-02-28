@@ -85,11 +85,7 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
 }
 
 var updateOptionsForActivity = function (supportActivity) {
-    if (supportActivity === 'FaceMask') {
-        $('#requestorFor_1').parent().show(); // myself
-        $('#requestorFor_2').parent().show(); // someone else
-        $('#requestorFor_3').parent().show(); // onbehalf of organisation
-    } else if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSupport') {
+if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSupport') {
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().hide(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
@@ -100,7 +96,7 @@ var updateOptionsForActivity = function (supportActivity) {
     } else {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
-        $('#requestorFor_3').parent().hide(); // onbehalf of organisation
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
     }
 }
 
