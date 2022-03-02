@@ -118,7 +118,7 @@
                 </span>
             }
 
-            @foreach (var activityResult in Model.Item.JobSummaries.Select(a => new { a.SupportActivity, a.GetSupportActivityName } ).Distinct())
+            @foreach (var activityResult in Model.Item.JobBasics.Select(a => new { a.SupportActivity, a.GetSupportActivityName } ).Distinct())
             {
                 {
                     <span class="job__info__activity__title @activityResult.SupportActivity.Class()">

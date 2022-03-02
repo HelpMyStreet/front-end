@@ -1,0 +1,31 @@
+﻿@using HelpMyStreet.Utils.Extensions;
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
+
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+    var pageType = isShift ? "Shifts" : "Requests";
+}
+
+<div class="popup__content wide">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Accept this @(isShift ? "shift" : "request for help")?</div>
+        <div class="popup__content__text">
+            <p>If you click to apply to help with this, the request will be sent to the administrators of <strong>@Model.ReferringGroup</strong>. Once this request accepted by the administrator it will appear on your “My @pageType” page and you’ll be able to view more information to help you complete it.</p>
+
+            <p>This <strong>@Model.JobBasic.SupportActivity.FriendlyNameShort()</strong> @requestType is managed by <strong>@Model.ReferringGroup</strong>. When you accept this @requestType your details will become visible to their administrator(s), who may use these details to contact you about this @requestType.</p>
+
+            <div class="volunteer-instructions">
+                <h5>Volunteer Instructions</h5>
+                <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
+            </div>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t accept this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Apply" }' />
+        </div>
+    </div>
+</div>
+

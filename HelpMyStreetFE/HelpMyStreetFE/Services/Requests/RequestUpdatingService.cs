@@ -174,6 +174,7 @@ namespace HelpMyStreetFE.Services.Requests
         {
             UpdateJobStatusOutcome? outcome = status switch
             {
+                JobStatuses.AppliedFor => await UpdateJobStatusToAppliedForAsync(jobID, createdByUserId, volunteerUserId.Value, cancellationToken),
                 JobStatuses.Accepted => await _requestHelpRepository.UpdateJobStatusToAcceptedAsync(jobID, createdByUserId, volunteerUserId.Value),
                 JobStatuses.InProgress => await UpdateJobStatusToInProgressAsync(jobID, createdByUserId, volunteerUserId.Value, cancellationToken),
                 JobStatuses.Done => await _requestHelpRepository.UpdateJobStatusToDoneAsync(jobID, createdByUserId),
@@ -204,6 +205,19 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 RequestType.Shift => await _requestHelpRepository.PutUpdateShiftStatusToAccepted(job.RequestID, job.SupportActivity, createdByUserId, volunteerUserId),
                 RequestType.Task => await _requestHelpRepository.UpdateJobStatusToInProgressAsync(jobId, createdByUserId, volunteerUserId),
+                _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
+            };
+
+            return outcome;
+        }
+
+        private async Task<UpdateJobStatusOutcome?> UpdateJobStatusToAppliedForAsync(int jobId, int createdByUserId, int volunteerUserId, CancellationToken cancellationToken)
+        {
+            var job = await _jobCachingService.GetJobBasicAsync(jobId, cancellationToken);
+
+            UpdateJobStatusOutcome? outcome = job.RequestType switch
+            {
+                RequestType.Task => await _requestHelpRepository.UpdateJobStatusToAppliedForAsync(jobId, createdByUserId, volunteerUserId),
                 _ => throw new ArgumentException(message: $"Invalid RequestType value: {job.RequestType}", paramName: nameof(job.RequestType)),
             };
 
