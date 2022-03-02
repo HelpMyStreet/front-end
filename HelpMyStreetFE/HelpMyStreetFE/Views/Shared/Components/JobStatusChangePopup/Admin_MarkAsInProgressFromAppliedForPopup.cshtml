@@ -1,0 +1,23 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+}
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Mark as In Progress?</div>
+        <div class="popup__content__text">
+            <p>Have you checked the volunteer's details to help with this request?</p>            
+            <p>It will now appear on the “My @(isShift ? "Shifts" : "Requests")” page of the volunteer who asked to help.</p>
+            <p>If you need to set it right back to “Open”, you can do that from this page by exiting and returning to it, finding the @requestType again (which will now be marked as “In Progress”) and using the “Mark as Open” button.
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t update this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
+        </div>
+    </div>
+</div>
+
+
+
