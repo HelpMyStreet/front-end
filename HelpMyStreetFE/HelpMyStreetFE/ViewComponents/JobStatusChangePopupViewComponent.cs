@@ -68,7 +68,7 @@ namespace HelpMyStreetFE.ViewComponents
 
                 return (job?.JobStatus, targetStatus, userIsAdmin, userIsAllocatedToTask) switch
                 {
-                    (JobStatuses.Open, JobStatuses.AppliedFor, _, _   ) => await ApplyRequestIfCredentialsSatisfied(vm, user, cancellationToken),
+                    (JobStatuses.Open, JobStatuses.AppliedFor, _, _   ) => await ApplyForRequestIfCredentialsSatisfied(vm, user, cancellationToken),
                     (JobStatuses.Open, JobStatuses.InProgress, _, _   ) => await AcceptRequestIfCredentialsSatisfied(vm, user, cancellationToken),
                     (JobStatuses.InProgress, JobStatuses.Done, _, true) => View("MarkAsCompletePopup", vm),
                     (JobStatuses.Accepted,   JobStatuses.Open, _, true) => View("CantDoPopup", vm),
@@ -102,7 +102,7 @@ namespace HelpMyStreetFE.ViewComponents
             }
         }
 
-        private async Task<IViewComponentResult> ApplyRequestIfCredentialsSatisfied(JobStatusChangePopupViewModel vm, User user, CancellationToken cancellationToken)
+        private async Task<IViewComponentResult> ApplyForRequestIfCredentialsSatisfied(JobStatusChangePopupViewModel vm, User user, CancellationToken cancellationToken)
         {
             var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobBasic.ReferringGroupID, vm.JobBasic.SupportActivity, user.ID, user.ID, cancellationToken);
 

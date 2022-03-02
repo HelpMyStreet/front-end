@@ -48,7 +48,7 @@ namespace HelpMyStreetFE.Helpers
                 JobStatuses.Accepted => $"Accepted by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.InProgress => $"In Progress with {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.Done => $"Completed by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
-               JobStatuses.AppliedFor => $"Applied For By {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                JobStatuses.AppliedFor => $"Applied For by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 _ => jobStatus.FriendlyName()
             };
         }
