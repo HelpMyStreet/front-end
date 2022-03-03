@@ -132,7 +132,9 @@
                         <dt>Email Address</dt>
                         <dd><a href="mailto:@volunteer.User.UserPersonalDetails.EmailAddress">@volunteer.User.UserPersonalDetails.EmailAddress</a></dd>
                         <dt>@(volunteer.User.UserPersonalDetails.PhoneNumbers().Count() > 1 ? "Phone numbers" : "Phone number")</dt>
-                        <dd>@string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())</dd>
+                        <dd>@string.Join(" / ", volunteer.User.UserPersonalDetails.PhoneNumbers())</dd>  
+                        <dt>Training And Experiences</dt>
+                        <dd>@Html.DisplayFor(x => volunteer.User.Biography)</dd>
                     </dl>
                     <dl class="sm6">
                         <dt>Volunteering Radius</dt>
