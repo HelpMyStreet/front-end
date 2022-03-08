@@ -2,6 +2,7 @@
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Contracts.UserService.Request;
 using HelpMyStreet.Contracts.UserService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Models.Reponses;
@@ -187,7 +188,7 @@ namespace HelpMyStreetFE.Repositories
             }
         }
 
-        public async Task<bool> AddBiography(int userId, string details)
+        public async Task<UpdateBiographyOutcome> AddBiography(int userId, string details)
         {
             var request = new PostAddBiographyRequest()
             {
@@ -199,7 +200,7 @@ namespace HelpMyStreetFE.Repositories
 
             if (response.HasContent && response.IsSuccessful)
             {
-                return response.Content.Success;
+                return response.Content.Outcome;
             }
             else
             {

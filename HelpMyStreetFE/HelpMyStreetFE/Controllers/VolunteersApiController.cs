@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts.GroupService.Request;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Utils;
 using HelpMyStreetFE.Helpers;
 using HelpMyStreetFE.Models.Account.Volunteers;
@@ -94,8 +95,10 @@ namespace HelpMyStreetFE.Controllers
 
             switch (outcome)
             {
-                case true:
+                case UpdateBiographyOutcome.Success:
                     return answer.ToHtmlSafeStringWithLineBreaks();
+                case UpdateBiographyOutcome.BadRequest:
+                    return StatusCode((int)HttpStatusCode.BadRequest);
                 default:
                     return StatusCode(500);
             }

@@ -10,7 +10,7 @@ namespace HelpMyStreetFE.Services.Users
 {
     public interface IUserService
     {
-        Task<bool> AddBiography(int userId, string details);
+        Task<UpdateBiographyOutcome> AddBiography(int userId, string details);
         Task<int> CreateUserAsync(string email, string authId, int referringGroupId, string source);
         Task<int> UpdateUserAsync(User user, CancellationToken cancellationToken);
         Task<User> GetUserByAuthId(string authId);

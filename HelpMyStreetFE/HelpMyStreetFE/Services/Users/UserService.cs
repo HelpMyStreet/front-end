@@ -171,7 +171,7 @@ namespace HelpMyStreetFE.Services.Users
             return await _userRepository.GetUserByAuthId(authId);
         }
 
-        public async Task<bool> AddBiography(int userId, string details)
+        public async Task<UpdateBiographyOutcome> AddBiography(int userId, string details)
         {
             _logger.LogInformation($"adding biography for user {userId}");
             var result =  await _userRepository.AddBiography(userId, details);
