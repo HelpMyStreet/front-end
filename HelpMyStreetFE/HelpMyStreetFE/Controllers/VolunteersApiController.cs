@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HelpMyStreet.Contracts.GroupService.Request;
@@ -20,11 +21,13 @@ namespace HelpMyStreetFE.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IGroupMemberService _groupMemberService;
+        private readonly IUserService _userService;
 
-        public VolunteersApiController(IAuthService authService, IGroupMemberService groupMemberService)
+        public VolunteersApiController(IAuthService authService, IGroupMemberService groupMemberService, IUserService userService)
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _groupMemberService = groupMemberService ?? throw new ArgumentNullException(nameof(groupMemberService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [AuthorizeAttributeNoRedirect]
@@ -73,6 +76,29 @@ namespace HelpMyStreetFE.Controllers
             };
 
             return await _groupMemberService.PutGroupMemberCredentials(putGroupMemberCredentialsRequest);
+        }
+
+        [AuthorizeAttributeNoRedirect]
+        [HttpPost("update-biography")]
+        public async Task<ActionResult<string>> UpdateBiography([FromBody] Dictionary<string, string> body, CancellationToken cancellationToken)
+        {
+            var user = await _authService.GetCurrentUser(cancellationToken);
+            string answer = body["Biography"];
+
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("No user in session");
+            }
+
+            var outcome = await _userService.AddBiography(user.ID, answer);
+
+            switch (outcome)
+            {
+                case true:
+                    return answer.ToHtmlSafeStringWithLineBreaks();
+                default:
+                    return StatusCode(500);
+            }
         }
     }
 }

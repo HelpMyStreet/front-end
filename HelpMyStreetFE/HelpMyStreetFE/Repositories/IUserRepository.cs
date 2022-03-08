@@ -7,6 +7,7 @@ namespace HelpMyStreetFE.Repositories
 {
     public interface IUserRepository
     {
+        Task<bool> AddBiography(int userId, string details);
         Task<int> CreateUser(string email, string authId, int referringGroupId, string source);
         Task<int> CreateUserStepThree(RegistrationStepThree data);
         Task<int> CreateUserStepTwo(RegistrationStepTwo data);

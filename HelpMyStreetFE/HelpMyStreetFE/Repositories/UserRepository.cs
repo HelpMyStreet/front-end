@@ -186,5 +186,25 @@ namespace HelpMyStreetFE.Repositories
                 throw new Exception($"Unsuccessful response from GetVolunteerCoordinates.  Errors: {response.Errors}");
             }
         }
+
+        public async Task<bool> AddBiography(int userId, string details)
+        {
+            var request = new PostAddBiographyRequest()
+            {
+                UserId = userId,
+                Details = details
+            };
+
+            var response = await PostAsync<ResponseWrapper<PostAddBiographyResponse, UserServiceErrorCode>>("/api/postAddBiography", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Success;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from PostAddBiography.  Errors: {response.Errors}");
+            }
+        }
     }
 }

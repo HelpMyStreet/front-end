@@ -4,7 +4,7 @@
     var notProvidedText = "None Provided";
 }
 
-    <article class="user-profile profile-panel p-md">
+    <article class="user-profile profile-panel p-md mt-md">
         <header class="profile-panel__header">
             <h3 class="profile-panel__title">My Details</h3>
         </header>
@@ -49,23 +49,5 @@
                     <dd>@(string.IsNullOrEmpty(Model.DateOfBirth) ? notProvidedText : Model.DateOfBirth)</dd>
                 </div>
             </dl> 
-        </article>
-    </article>
-    <article class="user-profile profile-panel p-md">
-        <header class="profile-panel__header">
-            <h3 class="profile-panel__title">
-                My Training & Experience
-            </h3>
-        </header>
-        <article class="profile">
-            <dl>
-                <div>
-                    <dt class="flex">
-                        Use this section to tell volunteer organisations about your training, experience and why you&rsquo;d like to volunteer. This information will be made visible to group administrators for any groups you join on HelpMyStreet.
-                    </dt>
-                    <br />
-                    <dd>@(string.IsNullOrEmpty(Model.Biography) ? notProvidedText : Model.Biography)</dd>                    
-                </div>
-            </dl>            
         </article>
     </article>
