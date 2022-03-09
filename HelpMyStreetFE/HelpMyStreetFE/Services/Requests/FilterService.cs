@@ -292,6 +292,7 @@ namespace HelpMyStreetFE.Services.Requests
                 JobStatuses = new List<FilterField<JobStatuses>>
                 {
                     new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.AppliedFor, IsSelected = true },
                     new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                 },
                 OrderBy = new List<OrderByField>

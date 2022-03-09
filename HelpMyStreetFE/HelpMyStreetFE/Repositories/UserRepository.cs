@@ -2,6 +2,7 @@
 using HelpMyStreet.Contracts.Shared;
 using HelpMyStreet.Contracts.UserService.Request;
 using HelpMyStreet.Contracts.UserService.Response;
+using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.Registration;
 using HelpMyStreetFE.Models.Reponses;
@@ -184,6 +185,26 @@ namespace HelpMyStreetFE.Repositories
             else
             {
                 throw new Exception($"Unsuccessful response from GetVolunteerCoordinates.  Errors: {response.Errors}");
+            }
+        }
+
+        public async Task<UpdateBiographyOutcome> AddBiography(int userId, string details)
+        {
+            var request = new PostAddBiographyRequest()
+            {
+                UserId = userId,
+                Details = details
+            };
+
+            var response = await PostAsync<ResponseWrapper<PostAddBiographyResponse, UserServiceErrorCode>>("/api/postAddBiography", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.Outcome;
+            }
+            else
+            {
+                throw new Exception($"Unsuccessful response from PostAddBiography.  Errors: {response.Errors}");
             }
         }
     }

@@ -35,6 +35,10 @@
             width: 65rem;
         }
 
+        &.apply {
+            border: 8px solid $dark-blue;
+        }
+
         &.warning {
             border-color: $orange
         }

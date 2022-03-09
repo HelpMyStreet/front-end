@@ -1,0 +1,26 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+}
+<div class="popup__content">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Mark as Open?</div>
+        <div class="popup__content__text">
+            <p>Have you decided that the volunteer who applied to help with this @requestType is unable to complete it?</p>
+            <p>We can return it to the “Open @(isShift ? "Shifts" : "Requests")” list so that other volunteers can accept it.</p>
+            <p>
+                If there’s a problem with the @requestType (e.g. incorrect contact details) please let us know:
+                <a href="mailto:support@helpmystreet.org">support@helpmystreet.org</a>
+            </p>
+            <p>The volunteer will receive a notification to say that their application has not been successful.</p>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t release this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm" }' />
+        </div>
+    </div>
+</div>
+
+
