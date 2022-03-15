@@ -1,4 +1,4 @@
-﻿export function loadQuestions(supportActivity, successCallback) {
+export function loadQuestions(supportActivity, successCallback) {
     $('button#btnNext').addClass('disabled prevent-submit');
 
     var qRequest = {
@@ -42,7 +42,6 @@ export function validateQuestions () {
         if (type == "radio") {
             errorField = $(this).closest(".input").find(".error");
         }
-        errorField.hide();
         var isRequired = $(this).attr("data-required");
 
         var val = $(this).val();
@@ -55,6 +54,7 @@ export function validateQuestions () {
                 errorField.text($(this).attr("data-val-message")).show();
             } else {
                 validQuestions.push(true);
+                errorField.hide();
             }
         } else {
             validQuestions.push(true);
