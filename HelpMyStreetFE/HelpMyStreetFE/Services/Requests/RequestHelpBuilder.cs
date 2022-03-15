@@ -455,8 +455,7 @@ namespace HelpMyStreetFE.Services.Requests
                 PlaceholderText = x.PlaceholderText,
                 SubText = x.SubText,
                 Location = x.Location,
-                AdditionalData = x.AddtitonalData,
-                MaxLength = x.MaxLength(),
+                AdditionalData = x.AddtitonalData
             }).ToList();
 
 

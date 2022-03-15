@@ -26,15 +26,6 @@ namespace HelpMyStreetFE.Helpers
             };
         }
 
-        public static int? MaxLength(this Question question)
-        {
-            return question.Id switch
-            {
-                (int)Questions.SelectActivity => 30,
-                _ => null
-            };
-        }
-
         public static string DataValidationMessage(this RequestHelpQuestion question)
         {
             return question.ID switch
