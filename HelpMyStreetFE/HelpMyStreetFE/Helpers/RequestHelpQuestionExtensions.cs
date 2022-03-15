@@ -1,5 +1,4 @@
 ﻿using HelpMyStreet.Utils.Enums;
-using HelpMyStreet.Utils.Models;
 using HelpMyStreetFE.Models.RequestHelp;
 
 namespace HelpMyStreetFE.Helpers
