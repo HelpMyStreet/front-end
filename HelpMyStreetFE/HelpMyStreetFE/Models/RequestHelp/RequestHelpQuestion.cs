@@ -27,7 +27,7 @@ namespace HelpMyStreetFE.Models.RequestHelp
                 {
                     QuestionType.Radio => "Please select from one of the available options",
                     QuestionType.Number => "Please enter a number",
-                    QuestionType.Text => MaxLength.HasValue ? $"Please enter a string between 0 and {MaxLength.Value} characters" : "Please enter a value",
+                    QuestionType.Text => MaxLength.HasValue ? $"Please enter a string between 1 and {MaxLength.Value} characters" : "Please enter a value",
                     QuestionType.MultiLineText => "Please enter a value",
                     QuestionType.LabelOnly => "This shouldn't happen",
                     _ => "Please enter a value"

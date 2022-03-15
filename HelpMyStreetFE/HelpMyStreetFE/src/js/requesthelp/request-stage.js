@@ -23,7 +23,7 @@ var validateForm = function () {
         buttonLoad($("#btnNext"));
         const valid = validateFormData($(this), {
             "currentStep.SelectedTask": (v) => v !== "" || "Please select at least one task type",
-            "currentStep.Questions.[20].Model": (v) => (v.length>0 && v.length <= 30)  || "Please enter an activity between 0 and 30 characters",
+            "currentStep.Questions.[20].Model": (v) => (v.length>0 && v.length <= 30)  || "Please enter an activity between 1 and 30 characters",
             "currentStep.SelectedRequestor": (v) => v !== "" || "Please select from one of the available options",
             "currentStep.SelectedFrequency": (v) => v !== "" || "Please tell us how often the help is needed",
             "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",
