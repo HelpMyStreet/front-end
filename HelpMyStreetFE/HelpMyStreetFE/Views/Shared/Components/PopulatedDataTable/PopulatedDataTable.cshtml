@@ -1,0 +1,24 @@
+﻿@using HelpMyStreet.Contracts.ReportService;
+@model HelpMyStreet.Contracts.ReportService.Chart;
+
+@if (Model.DataPoints.Count > 0)
+{
+    <div class="dataTable">
+        <div class="dataTableRow">
+            <div class="dataTableHead">@Model.XAxisName</div>
+            <div class="dataTableHead">@Model.YAxisName</div>
+        </div>
+        @foreach (DataPoint dp in Model.DataPoints)
+        {
+            <div class="dataTableRow">
+                <div class="dataTableCell">@dp.XAxis</div>
+                <div class="dataTableCell">@dp.Value </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No information to display</p>
+}
+

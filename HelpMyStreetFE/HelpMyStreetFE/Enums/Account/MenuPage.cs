@@ -16,5 +16,6 @@ namespace HelpMyStreetFE.Enums.Account
         OpenShifts = 7,
         MyShifts = 8,
         GroupShifts = 9,
+        Reports = 12
     }
 }
