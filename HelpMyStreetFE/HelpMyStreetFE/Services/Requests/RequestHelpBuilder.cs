@@ -84,7 +84,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.Soutwell_Public => "Request Help from Southwell Torpedos",
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => "Request Help from Age UK Mid Mersey",
                 RequestHelpFormVariant.BostonGNS_Public => "Request Help from Boston Good Neighbour Scheme",
-                RequestHelpFormVariant.BostonGNS_RequestSubmitter => "Request Help from Boston Good Neighbour Scheme",
+                RequestHelpFormVariant.BostonGNS_RequestSubmitter => "Request Help from Boston Good Neighbour Scheme",                
                 _ => "What type of help are you looking for?"
             };
         }
@@ -391,7 +391,7 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Other},
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport}
                 });
-            }
+            }            
             else
             {
                 tasks.AddRange(new List<TasksViewModel>

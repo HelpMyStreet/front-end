@@ -34,7 +34,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.PracticalSupport => "practical.svg",
                 SupportActivities.InPersonBefriending => "befriending.svg",
                 SupportActivities.BankStaffVaccinator => "vaccination.svg",
-                SupportActivities.SkillShare => "puzzle-piece.svg",
+                SupportActivities.SkillShare => "puzzle-piece.svg",                
                 _ => "question-mark.svg"
             };
         }
