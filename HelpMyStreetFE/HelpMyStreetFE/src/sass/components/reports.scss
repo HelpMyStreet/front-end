@@ -1,0 +1,19 @@
+﻿.dataTable {
+    display: table;
+    width: 100%;
+}
+
+.dataTableRow {
+    display: table-row;
+}
+
+.dataTableHead {
+    font-weight: bold;
+}
+
+.dataTableCell, .dataTableHead {
+    display: table-cell;
+    padding: 3px 10px;
+    border: 1px solid $gray-8;    
+}
+

@@ -6,6 +6,7 @@ using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
 using System;
 using HelpMyStreet.Contracts;
+using HelpMyStreet.Contracts.ReportService;
 
 namespace HelpMyStreetFE.Repositories
 {
@@ -32,10 +33,12 @@ namespace HelpMyStreetFE.Repositories
         Task<GetQuestionsByActivtiesResponse> GetQuestionsByActivity(GetQuestionsByActivitiesRequest request);
         Task<IEnumerable<ShiftJob>> GetUserShiftJobsByFilter(GetUserShiftJobsByFilterRequest request);
         Task<IEnumerable<RequestSummary>> GetRequestsByFilter(GetRequestsByFilterRequest request);
+        Task<IEnumerable<int>> GetRequestIDsForGroup(GetRequestIDsForGroupRequest request);
         Task<IEnumerable<RequestSummary>> GetShiftRequestsByFilter(GetShiftRequestsByFilterRequest request);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToDone(int requestId, int createdByUserId);
         Task<UpdateJobStatusOutcome?> PutUpdateRequestStatusToCancelled(int requestId, int createdByUserId);
         Task<LogRequestEventResponse> LogEventRequest(LogRequestEventRequest request);
         Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId);
+        Task<Chart> GetChart(Charts chart, int groupId, DateTime dateFrom, DateTime dateTo);
     }
 }
