@@ -526,7 +526,7 @@ namespace HelpMyStreetFE.Services.Requests
                 vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true, HideForAppointmentActivities = true });
                 if (includeWhenConvenient)
                 {
-                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "When convenient", Days = 30, HideForRepeatRequests = true, HideForAppointmentActivities = true });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "Within 30 days", Days = 30, HideForRepeatRequests = true, HideForAppointmentActivities = true });
                 }
             }
 
