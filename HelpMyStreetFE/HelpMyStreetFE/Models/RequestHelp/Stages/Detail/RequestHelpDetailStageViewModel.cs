@@ -18,6 +18,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Detail
         public RequestorType Type { get; set; }
         public QuestionsViewModel Questions { get; set; }
         public bool ShowRequestorFields { get; set; }
+        public bool RecipientPostcodeRequired { get; set; }
         public bool FullRecipientAddressRequired { get; set; }
         public bool NeedBothNames { get; set; }
     }    

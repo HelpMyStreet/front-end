@@ -48,7 +48,8 @@ namespace HelpMyStreetFE.Services.Requests
                     new RequestHelpDetailStageViewModel()
                     {
                         ShowRequestorFields = !requestHelpJourney.RequestorDefinedByGroup,
-                        FullRecipientAddressRequired = true,
+                        RecipientPostcodeRequired = GetRecipientAddressRequired(requestHelpFormVariant),
+                        FullRecipientAddressRequired = GetRecipientAddressRequired(requestHelpFormVariant),
                     },
                     new RequestHelpReviewStageViewModel(),
                 }
@@ -109,6 +110,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => "If you need help from Age UK Mid Mersey, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.BostonGNS_Public => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
+                RequestHelpFormVariant.UkraineRefugees_RequestSubmitter => "People across the country are volunteering to provide help and support to their neighbours communities. Use this form to request help from registered volunteers.",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
             };
         }
@@ -391,7 +393,11 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Other},
                     new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport}
                 });
-            }            
+            }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.UkraineRefugees_RequestSubmitter)
+            {
+                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Accommodation, IsSelected = true });
+            }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
@@ -498,6 +504,8 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }),
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }),
 
+                RequestHelpFormVariant.UkraineRefugees_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP }),
+
                 _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
             };
         }
@@ -542,20 +550,28 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
                 RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.Organisation }),
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
+                RequestHelpFormVariant.UkraineRefugees_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf }),
                 _ => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf, RequestorType.Organisation }),
             };
         }
 
         private List<FrequencyViewModel> GetFrequencies(RequestHelpFormVariant variant)
         {
-            return new List<FrequencyViewModel>
+            if (variant == RequestHelpFormVariant.UkraineRefugees_RequestSubmitter)
             {
-                new FrequencyViewModel(Frequency.Once, false),
-                new FrequencyViewModel(Frequency.Daily, true),
-                new FrequencyViewModel(Frequency.Weekly, true),
-                new FrequencyViewModel(Frequency.Fortnightly, true),
-                new FrequencyViewModel(Frequency.EveryFourWeeks, true)
-            };
+                return new List<FrequencyViewModel> { new FrequencyViewModel(Frequency.Once, false) };
+            }
+            else
+            {
+                return new List<FrequencyViewModel>
+                {
+                    new FrequencyViewModel(Frequency.Once, false),
+                    new FrequencyViewModel(Frequency.Daily, true),
+                    new FrequencyViewModel(Frequency.Weekly, true),
+                    new FrequencyViewModel(Frequency.Fortnightly, true),
+                    new FrequencyViewModel(Frequency.EveryFourWeeks, true)
+                };
+            }
         }
 
         private List<RequestorViewModel> GetRequestorViewModels(List<RequestorType> requestorTypes)
@@ -605,6 +621,18 @@ namespace HelpMyStreetFE.Services.Requests
             }
 
             return vms;
+        }
+
+        private bool GetRecipientAddressRequired(RequestHelpFormVariant variant)
+        {
+            if (variant == RequestHelpFormVariant.UkraineRefugees_RequestSubmitter)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }
