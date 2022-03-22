@@ -34,7 +34,8 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.PracticalSupport => "practical.svg",
                 SupportActivities.InPersonBefriending => "befriending.svg",
                 SupportActivities.BankStaffVaccinator => "vaccination.svg",
-                SupportActivities.SkillShare => "puzzle-piece.svg",                
+                SupportActivities.SkillShare => "puzzle-piece.svg",
+                SupportActivities.Accommodation => "accommodation.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -62,6 +63,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.PracticalSupport => "blue",
                 SupportActivities.InPersonBefriending => "light-purple",
                 SupportActivities.BankStaffVaccinator => "dark-blue",
+                SupportActivities.Accommodation => "dark-blue",
                 _ => "dark-blue",
             };
         }
