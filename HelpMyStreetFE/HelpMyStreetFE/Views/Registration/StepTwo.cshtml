@@ -19,6 +19,7 @@
         <div class="row justify-center mt72">
             <div class="sm8 pad-sm-md">
                 <h2>Your details</h2>
+                <p>Please enter your name and date of birth as it appears on your identity documents, to confirm you&rsquo;re over 18 and to help us verify your ID.</p>
                 @if (Context.Request.Query["failure"] == "error")
                 {
                     <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
@@ -41,7 +42,6 @@
                 <div class="input sm8 pad-sm-md">
                     <label for="datepicker">
                         Date of birth
-                        <span class="sub-text">We use this to confirm you&rsquo;re over 18 and to help us verify your ID</span>
                     </label>
                     <input name="dob" type="text" id="datepicker"  placeholder="e.g. 11/12/1994" autocomplete="off" />
                     <span id="datepicker-error" class="error"></span>
