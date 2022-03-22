@@ -466,7 +466,7 @@ namespace HelpMyStreetFE.Services.Requests
                     AddressLine1 = detailStage.Recipient.AddressLine1,
                     AddressLine2 = detailStage.Recipient.AddressLine2,
                     Locality = detailStage.Recipient.Town,
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode),
+                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode ?? "NG1 6DQ"), // Temporary hack to allow refugee requests without postcodes
                 }
             };
         }
