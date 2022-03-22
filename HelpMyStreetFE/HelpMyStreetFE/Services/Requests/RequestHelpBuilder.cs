@@ -452,7 +452,7 @@ namespace HelpMyStreetFE.Services.Requests
             return requestHelpQuestions;
         }
 
-        public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage)
+        public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage, string alternativePostcode)
         {
             return new RequestPersonalDetails
             {
@@ -466,7 +466,7 @@ namespace HelpMyStreetFE.Services.Requests
                     AddressLine1 = detailStage.Recipient.AddressLine1,
                     AddressLine2 = detailStage.Recipient.AddressLine2,
                     Locality = detailStage.Recipient.Town,
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode ?? "NG1 6DQ"), // Temporary hack to allow refugee requests without postcodes
+                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode ?? alternativePostcode),
                 }
             };
         }
