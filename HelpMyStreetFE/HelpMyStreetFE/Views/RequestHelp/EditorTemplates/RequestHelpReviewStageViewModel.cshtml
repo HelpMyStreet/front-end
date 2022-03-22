@@ -169,7 +169,10 @@
                             <div><strong>Name:</strong> @recipient.Firstname  @recipient.Lastname </div>
                             @if (string.IsNullOrEmpty(recipient.AddressLine1))
                             {
-                                <div><strong>Postcode:</strong> @recipient.Postcode </div>
+                                if (!string.IsNullOrEmpty(recipient.Postcode))
+                                {
+                                    <div><strong>Postcode:</strong> @recipient.Postcode </div>
+                                }
                             }
                             else
                             {
