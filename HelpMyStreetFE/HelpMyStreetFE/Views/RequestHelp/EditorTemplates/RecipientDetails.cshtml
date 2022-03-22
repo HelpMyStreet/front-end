@@ -1,4 +1,4 @@
-﻿@model HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RecipientDetails
+@model HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RecipientDetails
 
 
 
@@ -23,12 +23,12 @@
         <div class="row">
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_MobileNumber">@prefix mobile number</label>
-                @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_validationgroup = "recipient-phone", data_required = "False" })
+                @Html.TextBoxFor(x => x.MobileNumber, new { pattern = "[+0-9 ]*", data_validationgroup = "recipient-phone", data_required = "False" })
                 <span class="error"></span>
             </div>
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_AlternatePhoneNumber">@prefix  alternative phone number</label>
-                @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_validationgroup = "recipient-phone", data_required = "False" })
+                @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { pattern = "[+0-9 ]*", data_validationgroup = "recipient-phone", data_required = "False" })
                 <span class="error"></span>
             </div>
         </div>
