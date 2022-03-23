@@ -116,7 +116,21 @@
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
                 <div class="flex sm6">
-                    <partial name="_VolunteerWithUsCard" model="Model" />
+                    <div class="card flex m-sm">
+                        <h2>Volunteer with us!</h2>
+                        <p class="mt-sm-md mb-sm show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Join us to volunteer as a UK host for individuals and families fleeing Ukraine.
+                        </p>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            If you can offer suitable accommodation for six months or more, sign up now to see who you can help.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Thanks for being part of @Model.CommunityName.  Click below to view current help requests.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
