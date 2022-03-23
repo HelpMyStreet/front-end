@@ -56,8 +56,8 @@
 
 @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails) || !string.IsNullOrEmpty(jobSummary.RecipientOrganisation) || questionsToDisplay?.Count() > 0)
 {
-    <div class="job__expander">
-        <h4>Request Details<span></span></h4>
+    <div class="job__expander open">
+        <h4 class="open">Request Details<span></span></h4>
         <div class="job__expander__content">
             @if (!string.IsNullOrEmpty(Model.GroupSupportActivityInstructions.ActivityDetails)) { 
             <div class="row">

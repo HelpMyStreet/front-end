@@ -645,6 +645,12 @@
             }
         }
 
+        &.open {
+            > .job__expander__content {
+                display: block;
+            }
+        }
+
         dl {
             dt {
                 font-weight: bold;
