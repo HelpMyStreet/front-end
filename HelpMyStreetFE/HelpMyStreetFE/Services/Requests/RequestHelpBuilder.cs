@@ -454,6 +454,16 @@ namespace HelpMyStreetFE.Services.Requests
 
         public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage, string alternativePostcode)
         {
+            string postcode;
+            try
+            {
+                postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode ?? alternativePostcode);
+            }
+            catch
+            {
+                throw new Exception($"Invalid recipient postcode {detailStage.Recipient.Postcode ?? alternativePostcode}");
+            }
+
             return new RequestPersonalDetails
             {
                 FirstName = detailStage.Recipient.Firstname,
@@ -466,13 +476,23 @@ namespace HelpMyStreetFE.Services.Requests
                     AddressLine1 = detailStage.Recipient.AddressLine1,
                     AddressLine2 = detailStage.Recipient.AddressLine2,
                     Locality = detailStage.Recipient.Town,
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode ?? alternativePostcode),
+                    Postcode = postcode,
                 }
             };
         }
 
         public RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage)
         {
+            string postcode;
+            try
+            {
+                postcode = PostcodeFormatter.FormatPostcode(detailStage.Requestor.Postcode);
+            }
+            catch
+            {
+                throw new Exception($"Invalid requestor postcode {detailStage.Requestor.Postcode}");
+            }
+
             return new RequestPersonalDetails
             {
                 FirstName = detailStage.Requestor.Firstname,
@@ -482,7 +502,7 @@ namespace HelpMyStreetFE.Services.Requests
                 EmailAddress = detailStage.Requestor.Email,
                 Address = new Address
                 {
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Requestor.Postcode),
+                    Postcode = postcode,
                 }
             };
         }

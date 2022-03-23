@@ -33,6 +33,8 @@ namespace HelpMyStreetFE.Models.Account.Jobs
                 JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode}",
                 JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode.Split(" ")[0]}",
                 ShiftJob _ => $"{Location.LocationDetails.Name}",
+                RequestSummary rs when rs.RequestType == RequestType.Shift => Location.LocationDetails.Name,
+                RequestSummary rs when rs.JobBasics.First().SupportActivity == SupportActivities.Accommodation => "",
                 RequestSummary _ => postCode,
                 _ => "",
             };

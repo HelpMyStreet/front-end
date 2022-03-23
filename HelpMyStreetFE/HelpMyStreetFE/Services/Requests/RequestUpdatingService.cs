@@ -72,7 +72,7 @@ namespace HelpMyStreetFE.Services.Requests
                 var preferredLocationQuestion = requestStage.Questions.Questions.FirstOrDefault(q => q.ID == (int)Questions.PreferredLocation);
                 if (preferredLocationQuestion != null)
                 {
-                    alternativePostcode = MapRegionToPostcode(preferredLocationQuestion.Model);
+                    alternativePostcode = preferredLocationQuestion.Model;
                 }
 
                 recipient = _requestHelpBuilder.MapRecipient(detailStage, alternativePostcode);
@@ -220,25 +220,6 @@ namespace HelpMyStreetFE.Services.Requests
         private string GetAnswerToQuestion(RequestHelpQuestion q)
         {
             return q.InputType == QuestionType.Radio ? q.AdditionalData.Where(a => a.Key == q.Model).FirstOrDefault()?.Value ?? "" : q.Model;
-        }
-
-        private string MapRegionToPostcode(string region)
-        {
-            return region switch
-            {
-                "North East (England)" => "DH1 1AB",
-                "North West (England)" => "M1 1AD",
-                "Yorkshire and The Humber" => "YO1 0ET",
-                "East Midlands (England)" => "NG1 6DQ",
-                "West Midlands (England)" => "B1 1QU",
-                "East of England" => "CB8 0AA",
-                "London" => "SW1A 1AA",
-                "South East (England)" => "RH10 0AG",
-                "South West (England)" => "BA1 0AA",
-                "Scotland" => "PH1 1AA",
-                "Wales" => "SY23 1AB",
-                _ => throw new Exception($"No postcode mapped for region {region}")
-            };
         }
     }
 }

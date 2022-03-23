@@ -89,11 +89,16 @@
 
         label {
             display: block;
-            font-weight: 600;
             position: relative;
             font-size: 1.2em;
             top: 0;
             margin-bottom: 10px;
+
+            p {
+                font-size: inherit;
+                line-height: inherit;
+                margin: 0;
+            }
         }
 
         textarea {
