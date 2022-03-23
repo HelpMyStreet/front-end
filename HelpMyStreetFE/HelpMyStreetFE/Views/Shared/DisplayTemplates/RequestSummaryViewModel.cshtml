@@ -18,20 +18,6 @@
 
     var className = "";
     JobSummary nextTaskDue = null;
-    var location = "";
-
-    if (Model.Location?.LocationDetails?.Name != null ){
-        
-        location = Model.Location.LocationDetails.Name;
-    }
-    else if (admin)
-    {
-        location = Model.Item.PostCode;
-    }
-    else
-    {
-        location = $"{Model.Item.PostCode.Split(" ").First()}, ({Model.Item.DistanceInMiles?.ToString("0.0")} miles away)";
-    }
 
     if (Model.Item.JobSummaries.Exists(j => j.JobStatus.Incomplete()))
     {
@@ -144,7 +130,7 @@
                 [@Model.Item.HMSReference]
             </span>
             <span class="job__info__activity__location">
-                @location
+                @Model.ListLocalityDescription
             </span>
 
             @if (Model.Item.Shift != null)
