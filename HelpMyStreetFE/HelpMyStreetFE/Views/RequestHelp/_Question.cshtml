@@ -1,4 +1,5 @@
-﻿@model HelpMyStreetFE.Models.RequestHelp.RequestHelpQuestion
+﻿@using Westwind.AspNetCore.Markdown;
+@model HelpMyStreetFE.Models.RequestHelp.RequestHelpQuestion
 @using HelpMyStreet.Utils.Enums;
 @using HelpMyStreetFE.Helpers;
 
@@ -29,7 +30,7 @@
                     <span class="input--radio__radio">
                         <span class="input--radio__radio__inner"></span>
                     </span>
-                    @radio.Value
+                    @Markdown.ParseHtmlString(radio.Value)
                 </label>
             </div>
         }
