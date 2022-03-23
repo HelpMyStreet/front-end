@@ -203,39 +203,23 @@ namespace HelpMyStreetFE.Services.Requests
 
         private SortAndFilterSet GetOpenRequestsDefaultSortAndFilterSet(User user)
         {
+            var supportActivities = Enum.GetValues(typeof(SupportActivities))
+                .Cast<SupportActivities>()
+                .Where(sa => sa.IncludeInDefaultSortAndFilterSet());
+
+            var supportActivitiesFilterSet = supportActivities
+                .Select(sa => new FilterField<SupportActivities>
+                {
+                    Value = sa,
+                    IsSelected = user.SupportActivities.Contains(sa)
+                })
+                .OrderBy(ff => ff.Value == SupportActivities.Other)
+                .ThenByDescending(ff => ff.IsSelected)
+                .ThenBy(ff => ff.Value.FriendlyNameShort());
+
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                SupportActivities = new List<FilterField<SupportActivities>>
-                    {
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Shopping, IsSelected = user.SupportActivities.Contains(SupportActivities.Shopping) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.FaceMask, IsSelected = user.SupportActivities.Contains(SupportActivities.FaceMask) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.WellbeingPackage, IsSelected = user.SupportActivities.Contains(SupportActivities.WellbeingPackage) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.CheckingIn, IsSelected = user.SupportActivities.Contains(SupportActivities.CheckingIn) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.CollectingPrescriptions, IsSelected = user.SupportActivities.Contains(SupportActivities.CollectingPrescriptions) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Errands, IsSelected = user.SupportActivities.Contains(SupportActivities.Errands) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealPreparation, IsSelected = user.SupportActivities.Contains(SupportActivities.MealPreparation) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Friendly, IsSelected = user.SupportActivities.Contains(SupportActivities.PhoneCalls_Friendly) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.HomeworkSupport, IsSelected = user.SupportActivities.Contains(SupportActivities.HomeworkSupport) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.DogWalking, IsSelected = user.SupportActivities.Contains(SupportActivities.DogWalking) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.ColdWeatherArmy, IsSelected = user.SupportActivities.Contains(SupportActivities.ColdWeatherArmy) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Transport, IsSelected = user.SupportActivities.Contains(SupportActivities.Transport) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealsToYourDoor, IsSelected = user.SupportActivities.Contains(SupportActivities.MealsToYourDoor) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealtimeCompanion, IsSelected = user.SupportActivities.Contains(SupportActivities.MealtimeCompanion) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.EmergencySupport, IsSelected = user.SupportActivities.Contains(SupportActivities.EmergencySupport) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.VolunteerSupport, IsSelected = user.SupportActivities.Contains(SupportActivities.VolunteerSupport) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Covid19Help, IsSelected = user.SupportActivities.Contains(SupportActivities.Covid19Help) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.BinDayAssistance, IsSelected = user.SupportActivities.Contains(SupportActivities.BinDayAssistance) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.DigitalSupport, IsSelected = user.SupportActivities.Contains(SupportActivities.DigitalSupport) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.InPersonBefriending, IsSelected = user.SupportActivities.Contains(SupportActivities.InPersonBefriending) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.PracticalSupport, IsSelected = user.SupportActivities.Contains(SupportActivities.PracticalSupport) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.SkillShare, IsSelected = user.SupportActivities.Contains(SupportActivities.SkillShare) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Accommodation, IsSelected = user.SupportActivities.Contains(SupportActivities.Accommodation) },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = user.SupportActivities.Contains(SupportActivities.Other) },
-
-                        // The following are not currently on any request help form
-                        //new FilterField<SupportActivities>() { Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true },
-                        //new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Anxious, IsSelected = true },
-                    },
+                SupportActivities = supportActivitiesFilterSet,
                 DueInNextXDays = new List<FilterField<int>>
                     {
                         new FilterField<int> { Value = 1, Label = "Today" },
