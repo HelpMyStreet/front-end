@@ -249,6 +249,16 @@ namespace HelpMyStreetFE.Services.Requests
                 new FilterField<int> { Value = 999, Label = "Show all"},
             };
 
+            filterSet.MaxGroupSize = new List<FilterField<int>>
+            {
+                new FilterField<int> { Value = 1, Label = "1" },
+                new FilterField<int> { Value = 2, Label = "2" },
+                new FilterField<int> { Value = 3, Label = "3" },
+                new FilterField<int> { Value = 4, Label = "4" },
+                new FilterField<int> { Value = 5, Label = "5" },
+                new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true},
+            };
+
             return filterSet;
         }
 
@@ -349,8 +359,8 @@ namespace HelpMyStreetFE.Services.Requests
                     && (jfr.MaxDistanceInMiles == null || js.First().DistanceInMiles <= jfr.MaxDistanceInMiles)
                     && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.ToUKFromUTCTime().Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
                     && (jfr.RequestedAfter == null || js.First().DateRequested.ToUKFromUTCTime().Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date);
-
+                    && (jfr.RequestedBefore == null || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date)
+                    && (jfr.MaxGroupSize == null || js.First().GroupSize() <= jfr.MaxGroupSize));
 
             return jfr.OrderBy switch
             {
