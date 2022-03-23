@@ -11,6 +11,9 @@ namespace HelpMyStreetFE.Helpers
             {
                 (int)Questions.FaceMask_Amount => "small-width",
                 (int)Questions.NumberOfSlots => "small-width",
+                (int)Questions.GroupSizeAdults => "small-width",
+                (int)Questions.GroupSizeChildren => "small-width",
+                (int)Questions.GroupSizePets => "small-width",
                 _ => ""
             };
         }
