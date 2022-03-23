@@ -16,7 +16,7 @@
 
     <div class="outer-container">
         <div class="community-banner">
-            <img src="/img/community/ukraine/banner.png" alt="Ukrainian flag with person" />
+            <img src="/img/community/ukraine/help-ukraine.png" alt="Ukrainian flag with person" />
         </div>
     </div>
 
@@ -41,7 +41,7 @@
                         To get started, sign up or log in below.
                     </p>
 
-                    <div class="row sm12 text-center justify-center mb-md">
+                    <div class="row sm12 text-center justify-center mt-md mb-md">
                         <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
                     </div>
                 </div>
@@ -56,7 +56,7 @@
 
     <div class="outer-container outer-container--darker">
         <div class="container">
-            <div class="row flex justify-center">
+            <div class="row justify-center">
                 <h2 class="mb15 mt-lg text-center">What do I need to do as a sponsor / host?</h2>
             </div>
             <div class="row">
@@ -84,7 +84,7 @@
 
     <div class="outer-container">
         <div class="container">
-            <div class="row flex justify-center">
+            <div class="row justify-center">
                 <h2 class="mb15 mt-lg text-center">What happens after I sign-up?</h2>
             </div>
             <div class="row">
@@ -116,7 +116,21 @@
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
                 <div class="flex sm6">
-                    <partial name="_VolunteerWithUsCard" model="Model" />
+                    <div class="card flex m-sm">
+                        <h2>Volunteer with us!</h2>
+                        <p class="mt-sm-md mb-sm show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            Join us to volunteer as a UK host for individuals and families fleeing Ukraine.
+                        </p>
+                        <p class="mt-sm mb-md show-to-non-members @(Model.IsGroupMember ? "dnone" : "")">
+                            If you can offer suitable accommodation for six months or more, sign up now to see who you can help.
+                        </p>
+                        <p class="mt-sm mb-md show-to-members @(Model.IsGroupMember ? "" : "dnone")">
+                            Thanks for being part of @Model.CommunityName.  Click below to view current help requests.
+                        </p>
+                        <div class="card__buttons">
+                            <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
