@@ -1,0 +1,124 @@
+@using HelpMyStreetFE.Models.Feedback;
+@using HelpMyStreetFE.Models.Community;
+
+@model CommunityViewModel;
+
+@{
+    ViewData["Title"] = Model.CommunityName;
+    ViewData["HMSLogoViewModel"] = new HMSLogoViewModel() { LinkEntireLogo = false, PrimaryText = Model.CommunityName, PrimaryMobileText = Model.CommunityShortName, ShowSecondaryText = true };
+}
+
+@section Scripts {
+    <script src="/community.js" asp-append-version="true"></script>
+}
+
+<div class="community" data-group-id="@Model.EncodedGroupId">
+
+    <div class="outer-container">
+        <div class="community-banner">
+            <img src="/img/community/ukraine/banner.png" alt="Ukrainian flag with person" />
+        </div>
+    </div>
+
+    <div class="outer-container mt-sm-md">
+        <div class="container">
+            <div class="row flex hero mb-lg">
+                <div class="row sm6 align-center content-page">
+                    <header class="mw1000">
+                        <h2 class="mb0 mt-md">We can help you find a match in Ukraine</h2>
+                    </header>
+
+                    <p class='mt-sm mb-xs'>
+                        If you want to offer a home to people fleeing Ukraine, you can become a &lsquo;sponsor&rsquo; as part of the Homes for Ukraine scheme.
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        Use this service to register your interest in becoming a sponsor by telling us what accommodation you have available.
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        There are spare rooms and homes being offered all over the country.
+                    </p>
+                    <p class='mt-sm mb-xs'>
+                        To get started, sign up or log in below.
+                    </p>
+
+                    <div class="row sm12 text-center justify-center mb-md">
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = false }" />
+                    </div>
+                </div>
+
+                <div class="sm6 pl-md">
+                    <div class="text-right commmunity-map-container map static-map" id="map" data-latitude="@Model.Map_CentreLatitude" data-longitude="@Model.Map_CentreLongitude" data-zoom="@Model.Map_ZoomLevel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container outer-container--darker">
+        <div class="container">
+            <div class="row flex justify-center">
+                <h2 class="mb15 mt-lg text-center">What do I need to do as a sponsor / host?</h2>
+            </div>
+            <div class="row">
+                <div class="sm12">
+                    <div>
+                        <p>
+                            Individual sponsors in the UK can be of any nationality, with any immigration status, providing they have at least 6 months&rsquo; leave to remain in the UK,
+                            so that they can provide at least six months&rsquo; accommodation. They can live in any part of the UK.
+                        </p>
+                        <p>
+                            To ensure a safe and suitable environment for people arriving from Ukraine we&rsquo;re going to be carrying out checks (background and in-person) on you as a
+                            sponsor, your family and the accommodation that you will provide.
+                        </p>
+                        <p>
+                            For example, the accommodation should be safe and free from health hazards, be heated and give your guests adequate access to bathroom and kitchen
+                            facilities. We&rsquo;ll also be doing checks on those arriving from Ukraine.
+                        </p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="outer-container">
+        <div class="container">
+            <div class="row flex justify-center">
+                <h2 class="mb15 mt-lg text-center">What happens after I sign-up?</h2>
+            </div>
+            <div class="row">
+                <div class="sm12">
+                    <div>
+                        <p>
+                            You will need to verify your identity with our partner, Yoti. You will need a valid passport or driving licence, and a suitable smart phone. You can
+                            find more information in our FAQs.
+                        </p>
+                        <p>
+                            Our host coordinators will also need to complete some additional checks to make sure your accommodation and situation are suitable. Once these checks
+                            are complete you will be able to search a list of open requests to find one that best fits your circumstances. If a match is made and approved by our
+                            host coordinators, we&rsquo;ll connect you to the people needing help so you can start the visa application.
+                        </p>
+                    </div>
+                    <div class="mb-md"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container">
+        <div class="container inner-container--no-side-padding">
+            <div class="row hero flex text-center justify-center">
+                <div class="flex sm6">
+                    <partial name="_VolunteerWithUsCard" model="Model" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

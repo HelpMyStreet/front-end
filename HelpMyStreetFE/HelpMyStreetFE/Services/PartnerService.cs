@@ -27,7 +27,7 @@ namespace HelpMyStreetFE.Services
             partners.Add(new Partner() { Group = HMSEnums.Groups.Southwell, GroupKey = "southwell"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.AgeUKMidMersey, GroupKey = "ageuk-midmersey"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.BostonGNS, GroupKey = "boston" });
-
+            partners.Add(new Partner() { Group = HMSEnums.Groups.UkraineRefugees, GroupKey = "help-ukraine" });
 
             return partners;
         }

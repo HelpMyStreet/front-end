@@ -4,6 +4,7 @@
 
 @{ 
     var prefix = ViewData["Prefix"] is string ? (string)ViewData["Prefix"] : "";
+    var postcodeRequired = ViewData["PostcodeRequired"] is bool ? (bool)ViewData["PostcodeRequired"] : true;
     var fullAddressRequired = ViewData["FullAddressRequired"] is bool ? (bool)ViewData["FullAddressRequired"] : true;
     var bothNamesRequired = ViewData["BothNamesRequired"] is bool ? (bool)ViewData["BothNamesRequired"] : true;
 }
@@ -23,12 +24,12 @@
         <div class="row">
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_MobileNumber">@prefix mobile number</label>
-                @Html.TextBoxFor(x => x.MobileNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_validationgroup = "recipient-phone", data_required = "False" })
+                @Html.TextBoxFor(x => x.MobileNumber, new { pattern = "[+0-9 ]*", data_validationgroup = "recipient-phone", data_required = "False" })
                 <span class="error"></span>
             </div>
             <div class="input sm6 pad-md">
                 <label for="currentStep_Recipient_AlternatePhoneNumber">@prefix  alternative phone number</label>
-                @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { inputmode = "numeric", pattern = "[0-9]*", data_validationgroup = "recipient-phone", data_required = "False" })
+                @Html.TextBoxFor(x => x.AlternatePhoneNumber, new { pattern = "[+0-9 ]*", data_validationgroup = "recipient-phone", data_required = "False" })
                 <span class="error"></span>
             </div>
         </div>
@@ -53,7 +54,7 @@
                     <a class="input__link manual_entry">Or enter <span class="lowercase">@prefix</span> address manually</a>
                 </div>
             }
-            else
+            else if (postcodeRequired)
             {
                 <div class="input sm6 pad-md">
                     <label id="currentStep_Requestor_Postcode">@prefix postcode</label>
