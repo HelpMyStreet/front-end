@@ -17,7 +17,7 @@
         <input type="text" placeholder="@Model.PlaceholderText" data-id="@Model.ID" class="question @Model.Class()" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" value="@Model.Model" name="@name">
         break;
     case QuestionType.Number:
-        <input type="number" min="1" max="@Model.Max()" placeholder="@Model.PlaceholderText" data-id="@Model.ID" class="question @Model.Class()" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" value="@Model.Model" name="@name">
+        <input type="number" min="0" max="@Model.Max()" placeholder="@Model.PlaceholderText" data-id="@Model.ID" class="question @Model.Class()" data-required="@Model.Required" data-val-message="@Model.DataValidationMessage" value="@Model.Model" name="@name">
         break;
     case QuestionType.Radio:
         var singleOption = Model.AdditionalData.Count == 1;
