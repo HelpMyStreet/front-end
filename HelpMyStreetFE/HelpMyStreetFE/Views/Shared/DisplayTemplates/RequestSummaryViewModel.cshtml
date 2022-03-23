@@ -120,7 +120,7 @@
                     var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity)).Select(x => x.Reference).Distinct().Where(rf => rf != null);
                     if (references.Count() > 0)
                     {
-                        <span class="job__info__activity__title @activity.Class()">
+                        <span class="job__info__activity__location">
                             @($"{string.Join(", ", references)}")
                         </span>
                     }
