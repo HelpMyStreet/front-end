@@ -8,7 +8,10 @@
 
 @if (!MaskAddress)
 {
-    <span>@Model.AddressLine1, </span>
+    @if (!String.IsNullOrEmpty(Model.AddressLine1))
+    {
+        <span>@Model.AddressLine1, </span>
+    }
     @if (!String.IsNullOrEmpty(Model.AddressLine2))
     {
         <span>@Model.AddressLine2, </span>
@@ -19,7 +22,7 @@
     }
     @if (!String.IsNullOrEmpty(Model.Locality))
     {
-        <span>@Model.Locality.ToTitleCase(), </span>
+        <span>@($"{Model.Locality.ToTitleCase()}{(!String.IsNullOrEmpty(Model.Postcode) ? ", " : "")}")</span>
     }
 }
 @if (!String.IsNullOrEmpty(Model.Postcode))
