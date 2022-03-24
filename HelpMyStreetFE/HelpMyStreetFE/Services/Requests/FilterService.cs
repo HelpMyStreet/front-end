@@ -251,11 +251,11 @@ namespace HelpMyStreetFE.Services.Requests
 
             filterSet.MaxGroupSize = new List<FilterField<int>>
             {
-                new FilterField<int> { Value = 1, Label = "1" },
-                new FilterField<int> { Value = 2, Label = "2" },
-                new FilterField<int> { Value = 3, Label = "3" },
-                new FilterField<int> { Value = 4, Label = "4" },
-                new FilterField<int> { Value = 5, Label = "5" },
+                new FilterField<int> { Value = 1, Label = "1 person only" },
+                new FilterField<int> { Value = 2, Label = "Up to 2" },
+                new FilterField<int> { Value = 3, Label = "Up to 3" },
+                new FilterField<int> { Value = 4, Label = "Up to 4" },
+                new FilterField<int> { Value = 5, Label = "Up to 5" },
                 new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true},
             };
 
