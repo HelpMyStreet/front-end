@@ -11,7 +11,7 @@ namespace HelpMyStreetFE.Services.Requests
 {
     public interface IRequestHelpBuilder
     {
-        RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage);
+        RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage, string alternativePostcode);
         RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage);
         RequestHelpViewModel GetSteps(RequestHelpJourney requestHelpJourney, int referringGroupId, string source, string language);   
         Task<List<RequestHelpQuestion>> GetQuestionsForTask(RequestHelpFormVariant requestHelpFormVariant, RequestHelpFormStage requestHelpFormStage, SupportActivities supportActivity, int groupId);

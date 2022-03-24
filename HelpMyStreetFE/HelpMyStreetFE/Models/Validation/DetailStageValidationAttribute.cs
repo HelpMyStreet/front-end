@@ -68,8 +68,11 @@ namespace HelpMyStreetFE.Models.Validation
                 {
                     if (string.IsNullOrEmpty(vm.Recipient.AddressLine1)) errors.Add("Recipient's Address Line 1 must be supplied");
                     if (string.IsNullOrEmpty(vm.Recipient.Town)) errors.Add("Recipient's Town must be supplied");
-                }   
-                if (string.IsNullOrEmpty(vm.Recipient.Postcode)) errors.Add("Recipient's postcode must be supplied");
+                }
+                if (vm.RecipientPostcodeRequired)
+                {
+                    if (string.IsNullOrEmpty(vm.Recipient.Postcode)) errors.Add("Recipient's postcode must be supplied");
+                }
             }
 
         }

@@ -62,8 +62,7 @@ namespace HelpMyStreetFE.Controllers
 
             string destination = jobLocation?.JobSet switch
             {
-                JobSet.UserOpenRequests_MatchingCriteria => $"/account/open-requests/j/{encodedJobId}",
-                JobSet.UserOpenRequests_NotMatchingCriteria => $"/account/open-requests/j/{encodedJobId}",
+                JobSet.UserOpenRequests => $"/account/open-requests/j/{encodedJobId}",
                 JobSet.UserMyRequests => $"/account/my-requests/j/{encodedJobId}",
                 JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/j/{encodedJobId}",
                 JobSet.UserOpenShifts => $"/account/open-shifts/j/{encodedJobId}",
@@ -93,8 +92,7 @@ namespace HelpMyStreetFE.Controllers
 
             string destination = jobLocation?.JobSet switch
             {
-                JobSet.UserOpenRequests_MatchingCriteria => $"/account/open-requests/r/{encodedRequestId}",
-                JobSet.UserOpenRequests_NotMatchingCriteria => $"/account/open-requests/r/{encodedRequestId}",
+                JobSet.UserOpenRequests => $"/account/open-requests/r/{encodedRequestId}",
                 JobSet.UserMyRequests => $"/account/my-requests/r/{encodedRequestId}",
                 JobSet.GroupRequests => $"/account/g/{jobLocation.GroupKey}/requests/r/{encodedRequestId}",
                 JobSet.UserOpenShifts => $"/account/open-shifts/r/{encodedRequestId}",

@@ -68,7 +68,14 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (detailStage != null)
             {
-                recipient = _requestHelpBuilder.MapRecipient(detailStage);
+                string alternativePostcode = null;
+                var preferredLocationQuestion = requestStage.Questions.Questions.FirstOrDefault(q => q.ID == (int)Questions.PreferredLocation);
+                if (preferredLocationQuestion != null)
+                {
+                    alternativePostcode = preferredLocationQuestion.Model;
+                }
+
+                recipient = _requestHelpBuilder.MapRecipient(detailStage, alternativePostcode);
                 if (detailStage.ShowRequestorFields)
                 {
                     requestor = detailStage.Type == RequestorType.Myself ? recipient : _requestHelpBuilder.MapRequestor(detailStage);

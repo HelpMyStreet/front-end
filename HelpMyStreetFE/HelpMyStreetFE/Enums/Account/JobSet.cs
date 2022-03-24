@@ -3,8 +3,7 @@
     public enum JobSet
     {
         GroupRequests = 0,
-        UserOpenRequests_MatchingCriteria = 1,
-        UserOpenRequests_NotMatchingCriteria = 2,
+        UserOpenRequests = 1,
         UserMyRequests = 8,
 
         GroupShifts = 5,

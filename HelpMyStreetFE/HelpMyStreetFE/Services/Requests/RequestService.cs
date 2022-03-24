@@ -71,23 +71,6 @@ namespace HelpMyStreetFE.Services.Requests
             }
         }
 
-
-        public OpenJobsViewModel SplitOpenJobs(User user, IEnumerable<IEnumerable<JobSummary>> jobs)
-        {
-            if (jobs == null)
-            {
-                return null;
-            }
-
-            var (criteriaJobs, otherJobs) = jobs.Split(x => user.SupportActivities.Contains(x.First().SupportActivity) && x.First().DistanceInMiles <= user.SupportRadiusMiles);
-
-            return new OpenJobsViewModel
-            {
-                CriteriaJobs = criteriaJobs,
-                OtherJobs = otherJobs,
-            };
-        }
-
         public async Task<IEnumerable<JobSummary>> GetJobsForUserAsync(int userId, bool waitForData, CancellationToken cancellationToken)
         {
             var userRequestIDs = await _requestListCachingService.GetUserRequestsAsync(userId, waitForData, cancellationToken);

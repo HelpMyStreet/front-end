@@ -20,6 +20,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public DateTime? RequestedBefore { get; set; }
         public IEnumerable<Location> Locations { get; set; }
         public IEnumerable<PartOfDay> PartsOfDay { get; set; }
+        public int? MaxGroupSize { get; set; }
 
         public OrderBy OrderBy { get; set; }
         public int? HighlightJobId { get; set; }
@@ -53,6 +54,10 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             if (filterSet.PartOfDay != null)
             {
                 PartsOfDay = filterSet.PartOfDay.Where(a => a.IsSelected).Select(a => a.Value);
+            }
+            if (filterSet.MaxGroupSize != null)
+            {
+                MaxGroupSize = filterSet.MaxGroupSize.Where(a => a.IsSelected).First().Value;
             }
             if (filterSet.OrderBy != null)
             {

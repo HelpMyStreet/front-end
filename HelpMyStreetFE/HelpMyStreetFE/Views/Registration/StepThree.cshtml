@@ -34,7 +34,7 @@
 
         <div class="row justify-center mt72">
             <div class="sm8">
-                <h2>Volunteers</h2>
+                <h2>How can you help?</h2>
                 @if (Context.Request.Query["failure"] == "error")
         {
                     <p class="orange">There has been an error submitting your details. Please check your entries and try again.</p>
@@ -46,13 +46,11 @@
             <div class="row justify-center">
                 <div class="sm8">
                     <p>
-                        HelpMyStreet will always try to match volunteers to requests that are appropriate for them. We will use the
-                        helping preferences you provide on this page to decide which notifications will be most helpful to you. If
-                        you sign up for activities that can be done from home (e.g. phone-based support), completed with local services
-                        (e.g. posting out homemade face coverings), or require travel to local hubs or facilities, you may see and be
-                        notified of requests that come from further afield.
+                        HelpMyStreet will use the helping preferences you provide on this page to decide which notifications will
+                        be most helpful to you. We may also show you requests in your profile that we think may be of interest, 
+                        for example requests that are nearby or can be completed from home.
                     </p>
-                    <h5>I can help people by:</h5>
+                    <h5>Activities I am interested in:</h5>
                     <p>(Please tick as many as you like)</p>
                     <span class="error" id="volunteer-error">Please select at least one option</span>
                     @foreach (var option in Model.ActivityDetails)
@@ -70,7 +68,8 @@
                     }
                 </div>
                 <div class="sm8 mt40">
-                    <h5>I can travel to perform tasks that are:</h5>
+                    <h5>I am happy to travel:</h5>
+                    <p>If you need to travel to complete a request &ndash; for example to deliver someone&rsquo;s shopping &ndash; tell us how far you&rsquo;re happy to travel.</p>
                     <span class="error" id="distance-error">Please select an option</span>
                     @foreach (var option in distanceOptions)
                     {
