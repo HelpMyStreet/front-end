@@ -73,8 +73,7 @@ namespace HelpMyStreetFE.ViewComponents
                     viewModel = await InvokeAsync_Requests(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
 
-                case (RequestType.Task, JobSet.UserOpenRequests_MatchingCriteria):
-                case (RequestType.Task, JobSet.UserOpenRequests_NotMatchingCriteria):
+                case (RequestType.Task, JobSet.UserOpenRequests):
                     viewName = "OpenJobList";
                     viewModel = await InvokeAsync_OpenJobs(user, jobFilterRequest, hideFilterPanelCallback, noJobsCallback, cancellationToken);
                     break;
@@ -94,12 +93,7 @@ namespace HelpMyStreetFE.ViewComponents
         {
             var jobListViewModel = new ListViewModel<JobViewModel<IEnumerable<JobDetail>>>();
 
-            IEnumerable<IEnumerable<JobSummary>> jobs = jobFilterRequest.JobSet switch
-            {
-                JobSet.UserOpenRequests_MatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetDedupedOpenJobsForUserFromRepo(user, true, cancellationToken))?.CriteriaJobs,
-                JobSet.UserOpenRequests_NotMatchingCriteria => _requestService.SplitOpenJobs(user, await _requestService.GetDedupedOpenJobsForUserFromRepo(user, true, cancellationToken))?.OtherJobs,
-                _ => throw new ArgumentException(message: $"Unexpected JobSet value: {jobFilterRequest.JobSet}", paramName: nameof(jobFilterRequest.JobSet))
-            };
+            IEnumerable<IEnumerable<JobSummary>> jobs = await _requestService.GetDedupedOpenJobsForUserFromRepo(user, true, cancellationToken);
 
             if (jobs == null)
             {

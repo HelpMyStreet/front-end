@@ -73,8 +73,7 @@ namespace HelpMyStreetFE.ViewComponents
 
             string viewName = (jobSet, toPrint) switch
             {
-                (JobSet.UserOpenRequests_MatchingCriteria, false) => "JobDetail_OpenRequests",
-                (JobSet.UserOpenRequests_NotMatchingCriteria, false) => "JobDetail_OpenRequests",
+                (JobSet.UserOpenRequests, false) => "JobDetail_OpenRequests",
                 (JobSet.UserMyRequests, false) => "JobDetail_MyRequests",
                 (JobSet.UserMyRequests, true) => "JobDetail_Print",
                 (JobSet.UserOpenShifts, false) => "JobDetail_OpenShifts",

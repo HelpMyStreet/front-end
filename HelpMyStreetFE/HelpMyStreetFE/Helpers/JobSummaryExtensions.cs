@@ -69,5 +69,13 @@ namespace HelpMyStreetFE.Helpers
 
             return score;
         }
+
+        public static int GroupSize(this JobSummary job)
+        {
+            var numberOfAdults = int.Parse(job.Questions.FirstOrDefault(q => q.Id == (int)Questions.GroupSizeAdults)?.Answer ?? "0");
+            var numberOfChildren = int.Parse(job.Questions.FirstOrDefault(q => q.Id == (int)Questions.GroupSizeChildren)?.Answer ?? "0");
+
+            return numberOfAdults + numberOfChildren;
+        }
     }
 }

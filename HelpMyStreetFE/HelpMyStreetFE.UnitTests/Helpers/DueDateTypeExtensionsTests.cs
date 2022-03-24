@@ -11,7 +11,7 @@ using HelpMyStreetFE.Services;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreetFE.Helpers;
 
-namespace HelpMyStreetFE.UnitTests.Services
+namespace HelpMyStreetFE.UnitTests.Helpers
 {
     class DueDateTypeExtensionsTests
     {

@@ -67,7 +67,7 @@ namespace HelpMyStreetFE.Services.Requests
             }
             else if (job.JobStatus == JobStatuses.Open)
             {
-                return new JobLocation { JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
+                return new JobLocation { JobSet = (job.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests : JobSet.UserOpenShifts) };
             }
 
             return null;
@@ -109,7 +109,7 @@ namespace HelpMyStreetFE.Services.Requests
             }
             else if (request.JobBasics.JobStatusDictionary().ContainsKey(JobStatuses.Open))
             {
-                return new JobLocation { JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests_MatchingCriteria : JobSet.UserOpenShifts) };
+                return new JobLocation { JobSet = (request.RequestType.Equals(RequestType.Task) ? JobSet.UserOpenRequests : JobSet.UserOpenShifts) };
             }
 
             return null;
