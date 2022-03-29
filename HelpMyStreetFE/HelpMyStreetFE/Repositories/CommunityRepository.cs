@@ -950,7 +950,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetHelpUkraine()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("help-ukraine", "HelpUkraine");
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("help-ukraine", "HelpUkraine", false, true);
 
             return communityViewModel;
         }
