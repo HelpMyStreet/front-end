@@ -19,11 +19,11 @@
 
     var distanceOptions = new Dictionary<double, string>
     {
-    { 0, "On my street only" },
-    { 0.5, "Within 1/2 mile" },
+    { 0, "I'd prefer not to travel" },
     { 1, "Within 1 mile" },
-    { 3, "Within 3 miles" },
-    { 0.1, "Other - please tell us the distance in miles" }
+    { 5, "Within 5 miles" },
+    { 10, "Within 10 miles" },
+    { 30, "Within 30 miles" },
     };
         }
 
@@ -86,13 +86,6 @@
                     }
                 </div>
 
-                <div class="sm8 ">
-                    <div class="input input--radio mt-md ">
-                        <input name="custom_distance" step=".01" class="dnone" type="number" placeholder="e.g. 10" />
-                        <span class="error" id="custom_distance-error">Please enter a number of miles (up to a maximum of 20)</span>
-                    </div>
-                </div>
-                
                 <div class="sm8">
                     <div class="controls">
                         <button class="btn large cta fill" id="submit_button" type="submit">
