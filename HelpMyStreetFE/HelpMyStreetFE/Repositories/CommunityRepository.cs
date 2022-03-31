@@ -47,7 +47,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
                 Groups.BostonGNS => GetBostonGNS(language),
-                Groups.UkraineRefugees => GetHelpUkraine(),
+                //Groups.UkraineRefugees => GetHelpUkraine(),
                 _ => null,
             };
 
