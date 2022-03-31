@@ -33,9 +33,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	  <PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.935" />
-	  <PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.935" />
-	  <PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.935" />  
+	  <PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.936" />
+	  <PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.936" />
+	  <PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.936" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
