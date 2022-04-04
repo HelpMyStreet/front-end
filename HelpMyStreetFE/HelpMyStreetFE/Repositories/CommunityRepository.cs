@@ -47,7 +47,7 @@ namespace HelpMyStreetFE.Repositories
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
                 Groups.BostonGNS => GetBostonGNS(language),
-                Groups.UkraineRefugees => GetHelpUkraine(),
+                //Groups.UkraineRefugees => GetHelpUkraine(),
                 _ => null,
             };
 
@@ -950,7 +950,7 @@ namespace HelpMyStreetFE.Repositories
 
         private CommunityViewModel GetHelpUkraine()
         {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("help-ukraine", "HelpUkraine");
+            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("help-ukraine", "HelpUkraine", false, true);
 
             return communityViewModel;
         }

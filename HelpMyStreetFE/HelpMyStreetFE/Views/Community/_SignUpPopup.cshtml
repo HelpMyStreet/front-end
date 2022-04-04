@@ -6,7 +6,7 @@
     <partial name="_PopupCloseButton" />
     <div class="popup__content__wrapper">
         <div class="popup__content__header">Join @Model.FriendlyName</div>
-        <div>
+        <div class="popup__content__text">
             @if (!String.IsNullOrEmpty(Model.JoinGroupPopUpDetail))
             {
                 @Markdown.ParseHtmlString(Model.JoinGroupPopUpDetail);

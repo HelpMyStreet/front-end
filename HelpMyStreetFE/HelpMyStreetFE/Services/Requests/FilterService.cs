@@ -240,22 +240,41 @@ namespace HelpMyStreetFE.Services.Requests
                     .Insert(0, new FilterField<SupportActivities>() { Value = SupportActivities.CommunityConnector, IsSelected = true });
             }
 
-            filterSet.MaxDistanceInMiles = new List<FilterField<int>>
+            var distances = new List<FilterField<int>>
             {
-                new FilterField<int> { Value = 0, Label = "My street only" },
+                new FilterField<int> { Value = 0, Label = "I'd prefer not to travel" },
                 new FilterField<int> { Value = 1, Label = "Within 1 mile" },
                 new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                new FilterField<int> { Value = 10, Label = "Within 10 miles", IsSelected = true },
+                new FilterField<int> { Value = 10, Label = "Within 10 miles" },
                 new FilterField<int> { Value = 999, Label = "Show all"},
             };
 
+            int userSupportRadius = Convert.ToInt32(Math.Ceiling(user.SupportRadiusMiles ?? 0));
+            var chosenDistance =  distances.FirstOrDefault(ff => ff.Value == userSupportRadius);
+
+            if (chosenDistance != null)
+            {
+                chosenDistance.IsSelected = true;
+            }
+            else
+            {
+                distances.Add(new FilterField<int>
+                {
+                    Value = userSupportRadius,
+                    Label = $"Within {userSupportRadius} miles",
+                    IsSelected = true,
+                });
+            }
+
+            filterSet.MaxDistanceInMiles = distances.OrderBy(ff => ff.Value);
+
             filterSet.MaxGroupSize = new List<FilterField<int>>
             {
-                new FilterField<int> { Value = 1, Label = "1" },
-                new FilterField<int> { Value = 2, Label = "2" },
-                new FilterField<int> { Value = 3, Label = "3" },
-                new FilterField<int> { Value = 4, Label = "4" },
-                new FilterField<int> { Value = 5, Label = "5" },
+                new FilterField<int> { Value = 1, Label = "1 person only" },
+                new FilterField<int> { Value = 2, Label = "Up to 2" },
+                new FilterField<int> { Value = 3, Label = "Up to 3" },
+                new FilterField<int> { Value = 4, Label = "Up to 4" },
+                new FilterField<int> { Value = 5, Label = "Up to 5" },
                 new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true},
             };
 
