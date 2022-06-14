@@ -268,16 +268,6 @@ namespace HelpMyStreetFE.Services.Requests
 
             filterSet.MaxDistanceInMiles = distances.OrderBy(ff => ff.Value);
 
-            filterSet.MaxGroupSize = new List<FilterField<int>>
-            {
-                new FilterField<int> { Value = 1, Label = "1 person only" },
-                new FilterField<int> { Value = 2, Label = "Up to 2" },
-                new FilterField<int> { Value = 3, Label = "Up to 3" },
-                new FilterField<int> { Value = 4, Label = "Up to 4" },
-                new FilterField<int> { Value = 5, Label = "Up to 5" },
-                new FilterField<int> { Value = 999, Label = "Show all", IsSelected = true},
-            };
-
             return filterSet;
         }
 
@@ -376,10 +366,9 @@ namespace HelpMyStreetFE.Services.Requests
                 js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.SupportActivities == null || js.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
                     && (jfr.MaxDistanceInMiles == null || js.First().DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.ToUKFromUTCTime().Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
+                    && (jfr.DueInNextXDays == null || js.Any(j => j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.ToUKFromUTCTime().Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
                     && (jfr.RequestedAfter == null || js.First().DateRequested.ToUKFromUTCTime().Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date)
-                    && (jfr.MaxGroupSize == null || js.First().GroupSize() <= jfr.MaxGroupSize));
+                    && (jfr.RequestedBefore == null || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date));
 
             return jfr.OrderBy switch
             {

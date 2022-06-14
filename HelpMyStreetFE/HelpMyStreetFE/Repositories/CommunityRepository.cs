@@ -47,7 +47,6 @@ namespace HelpMyStreetFE.Repositories
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
                 Groups.BostonGNS => GetBostonGNS(language),
-                //Groups.UkraineRefugees => GetHelpUkraine(),
                 _ => null,
             };
 
@@ -944,13 +943,6 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/carousel3/E.png",
                 }
             };
-
-            return communityViewModel;
-        }
-
-        private CommunityViewModel GetHelpUkraine()
-        {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("help-ukraine", "HelpUkraine", false, true);
 
             return communityViewModel;
         }
