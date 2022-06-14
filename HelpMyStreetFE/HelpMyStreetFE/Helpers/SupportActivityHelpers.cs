@@ -94,7 +94,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.InPersonBefriending => true,
                 SupportActivities.PracticalSupport => true,
                 SupportActivities.SkillShare => true,
-                SupportActivities.Accommodation => true,
+                SupportActivities.Accommodation => false,
                 SupportActivities.Other => true,
 
                 SupportActivities.CommunityConnector => false,
