@@ -142,7 +142,7 @@
                         <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyNameShort()))</dd>
                     </dl>
                     <dl class="sm12">
-                        <dt>Training And Experiences</dt>
+                        <dt>Training and Experience</dt>
                         <dd>
                             @Html.Raw(string.IsNullOrWhiteSpace(volunteer.User.Biography) ? "Not supplied" : volunteer.User.Biography.ToHtmlSafeStringWithLineBreaks())
                         </dd>

@@ -31,7 +31,7 @@
   "dependencies": {
     "@babel/runtime": "^7.16.3",
     "chart.js": "^3.7.0",
-    "core-js": "^3.19.2",
+    "core-js": "^3.23.1",
     "firebase": "^7.24.0",
     "isomorphic-fetch": "^3.0.0",
     "jquery-ajax-unobtrusive": "^3.2.6",
