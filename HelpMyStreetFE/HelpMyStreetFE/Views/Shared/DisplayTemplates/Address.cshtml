@@ -3,26 +3,46 @@
 
 @{
     var MaskAddress = ViewData["MaskAddress"] != null & ViewData["MaskAddress"] is bool ? (bool)ViewData["MaskAddress"] : false;
+
+    var addressComponents = new List<string>();
+
+    if (!MaskAddress)
+    {
+        if (!String.IsNullOrEmpty(Model.AddressLine1))
+        {
+            addressComponents.Add(@Model.AddressLine1);
+        }
+        if (!String.IsNullOrEmpty(Model.AddressLine2))
+        {
+            addressComponents.Add(@Model.AddressLine2);
+        }
+        if (!String.IsNullOrEmpty(Model.AddressLine3))
+        {
+            addressComponents.Add(@Model.AddressLine3);
+        }
+        if (!String.IsNullOrEmpty(Model.Locality))
+        {
+            addressComponents.Add(Model.Locality.ToTitleCase());
+        }
+    }
+
+    if (!String.IsNullOrEmpty(Model.Postcode))
+    {
+        addressComponents.Add(Model.Postcode);
+    }
 }
 
 
-@if (!MaskAddress)
+
+@foreach (var item in addressComponents)
 {
-    <span>@Model.AddressLine1, </span>
-    @if (!String.IsNullOrEmpty(Model.AddressLine2))
+    @if (addressComponents.IndexOf(item) != addressComponents.Count - 1)
     {
-        <span>@Model.AddressLine2, </span>
+        //another item exists so add a comma
+        <span>@item, </span>
     }
-    @if (!String.IsNullOrEmpty(Model.AddressLine3))
+    else
     {
-        <span>@Model.AddressLine3, </span>
+        <span>@item</span>
     }
-    @if (!String.IsNullOrEmpty(Model.Locality))
-    {
-        <span>@Model.Locality.ToTitleCase(), </span>
-    }
-}
-@if (!String.IsNullOrEmpty(Model.Postcode))
-{
-    <span>@Model.Postcode</span>
 }
