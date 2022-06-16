@@ -65,7 +65,7 @@
             <span class="job__info__activity__title @Model.Item.SupportActivity.Class()">
                 @if (Model.Item.SupportActivity != SupportActivities.Other)
                 {
-                    <img src="~/img/icons/@Model.Item.SupportActivity.Icon()" />
+                    <img src="~/img/icons/@Model.Item.SupportActivity.Icon()" alt="@Model.Item.SupportActivity.FriendlyNameShort()" />
                 }
                 <span>
                     @Model.Item.SupportActivity.FriendlyNameShort()

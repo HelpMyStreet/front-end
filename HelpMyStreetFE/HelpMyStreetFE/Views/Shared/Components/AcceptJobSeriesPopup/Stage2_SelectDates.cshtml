@@ -42,7 +42,7 @@
                                 <span class="job__info__activity__title @job.SupportActivity.Class()">
                                     @if (job.SupportActivity != SupportActivities.Other)
                                     {
-                                        <img src="~/img/icons/@job.SupportActivity.Icon()" />
+                                        <img src="~/img/icons/@job.SupportActivity.Icon()" alt="@job.SupportActivity.FriendlyNameShort()" />
                                     }
                                     <span>
                                         @job.SupportActivity.FriendlyNameShort()
