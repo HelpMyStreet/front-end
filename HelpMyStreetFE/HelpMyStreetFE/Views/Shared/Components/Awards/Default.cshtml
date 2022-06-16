@@ -46,7 +46,7 @@
                     @foreach (var a in Model.CurrentAward.CompletedJobs.OrderBy(a => a.Key.Equals(SupportActivities.Other)).ThenByDescending(a => a.Value))
                     {
                         <div class="completed-task-summary @a.Key.Class()">
-                            <img src="~/img/icons/@a.Key.Icon()" />
+                            <img src="~/img/icons/@a.Key.Icon()" alt="@a.Key.FriendlyNameShort()" />
                             @a.Key.PerfectTense(a.Value)
                         </div>
                     }
