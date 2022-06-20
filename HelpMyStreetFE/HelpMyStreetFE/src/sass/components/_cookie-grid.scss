@@ -2,7 +2,7 @@
     overflow: auto;
     display: grid;
     grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
-    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cConsent ConsentProviderName pConsent eConsent";
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cConsent ConsentProviderName pConsent eConsent" "Marketing cMarketing MarketingProviderName pMarketingOne eMarketingOne";
     border-top: 1px solid black;
     border-left: 1px solid black;
 
