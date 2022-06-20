@@ -13,6 +13,7 @@ using HelpMyStreetFE.Models.RequestHelp.Stages.Detail;
 using HelpMyStreetFE.Models.RequestHelp.Stages.Request;
 using HelpMyStreetFE.Repositories;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -125,6 +126,7 @@ namespace HelpMyStreetFE.Services.Requests
                 }
             };
 
+            var json = JsonConvert.SerializeObject(request);
 
             var response = await _requestHelpRepository.PostRequestForHelpAsync(request);
             if (response != null)

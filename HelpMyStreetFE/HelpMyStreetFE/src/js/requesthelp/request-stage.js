@@ -64,7 +64,7 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
     } else if (type === 'frequency') {
         if (value === '') {
             $('.request-help form').attr('selected-repeat', '');
-        } else if (value === 'Once') {
+        } else if (value === 'Once' || value ==='Ongoing') {
             $('.request-help form').attr('selected-repeat', 'false');
             $('.occurrences-question input').attr('data-required', 'False');
         } else {

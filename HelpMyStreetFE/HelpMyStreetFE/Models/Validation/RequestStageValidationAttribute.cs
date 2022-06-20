@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Models.Validation
                 else
                 {
                     var selectedFrequency = vm.Frequencies.Where(x => x.IsSelected).First();
-                    if (!selectedFrequency.Frequency.Equals(Frequency.Once))
+                    if (!selectedFrequency.Frequency.Equals(Frequency.Once) && !selectedFrequency.Frequency.Equals(Frequency.Ongoing))
                     {
                         var occurrences = vm.Occurrences;
                         if (occurrences == null || occurrences > selectedFrequency.Frequency.MaxOccurrences())

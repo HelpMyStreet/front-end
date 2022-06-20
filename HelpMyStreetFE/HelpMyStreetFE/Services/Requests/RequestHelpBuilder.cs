@@ -570,7 +570,8 @@ namespace HelpMyStreetFE.Services.Requests
                 new FrequencyViewModel(Frequency.Daily, true),
                 new FrequencyViewModel(Frequency.Weekly, true),
                 new FrequencyViewModel(Frequency.Fortnightly, true),
-                new FrequencyViewModel(Frequency.EveryFourWeeks, true)
+                new FrequencyViewModel(Frequency.EveryFourWeeks, true),
+                new FrequencyViewModel(Frequency.Ongoing,true)
             };
         }
 
