@@ -143,9 +143,12 @@ namespace HelpMyStreetFE.Services.Users
         public async Task<Models.Account.UserDetails> GetUserDetails(User user, CancellationToken cancellationToken)
         {
             var userDetails = new Models.Account.UserDetails(user);
-            var locations = await _groupService.GetUserLocations(user.ID);
 
-            userDetails.ShiftsEnabled = locations.Count() > 0;
+            if (GetRegistrationIsComplete(user))
+            {
+                var locations = await _groupService.GetUserLocations(user.ID);
+                userDetails.ShiftsEnabled = locations.Count() > 0;
+            }
 
             return userDetails;
         }
