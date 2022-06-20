@@ -2,7 +2,7 @@
     overflow: auto;
     display: grid;
     grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
-    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cConsent ConsentProviderName pConsent eConsent" "Marketing cMarketing MarketingProviderName pMarketingOne eMarketingOne";
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cConsent ConsentProviderName pConsent eConsent" "Marketing cMarketingOne MarketingProviderName pMarketingOne eMarketingOne" "Marketing cMarketingTwo MarketingProviderName pMarketingTwo eMarketingTwo" "Marketing cMarketingThree MarketingProviderName pMarketingThree eMarketingThree";
     border-top: 1px solid black;
     border-left: 1px solid black;
 
@@ -46,6 +46,14 @@
 
     .Neccesary {
         grid-area: Neccesary;
+    }
+
+    .Marketing {
+        grid-area: Marketing;
+    }
+
+    .MarketingProviderName {
+        grid-area: MarketingProviderName;
     }
 
     .cAntiForgery {
@@ -98,5 +106,29 @@
 
     .cCookieControl {
         grid-area: cCookieControl;
+    }
+
+    .pMarketingOne {
+        grid-area: pMarketingOne;
+    }
+
+    .pMarketingTwo {
+        grid-area: pMarketingTwo;
+    }
+
+    .pMarketingThree {
+        grid-area: pMarketingThree;
+    }
+
+    .eMarketingOne {
+        grid-area: eMarketingOne;
+    }
+
+    .eMarketingTwo {
+        grid-area: eMarketingTwo;
+    }
+
+    .eMarketingThree {
+        grid-area: eMarketingThree;
     }
 }
