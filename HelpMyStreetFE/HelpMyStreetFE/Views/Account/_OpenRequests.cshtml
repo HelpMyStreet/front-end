@@ -5,53 +5,22 @@
 @model AccountViewModel
 
 @{
-    bool NoCriteriaJobsToDisplay = false;
-    bool NoNonCriteriaJobsToDisplay = false;
+    bool NoJobsToDisplay = false;
 
-    var criteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new
+    var jobsList = await Component.InvokeAsync("JobFilterPanel", new
     {
         jobFilterViewModel = new JobFilterViewModel()
         {
             ListViewComponent = "JobList",
-            PanelId = "criteria-requests",
-            JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_MatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId, HighlightRequestId = Model.HighlightRequestId },
-            EmptyJobSetCallback = new Action(() => NoCriteriaJobsToDisplay = true),
-        }
-    });
-
-    var nonCriteriaJobsList = await Component.InvokeAsync("JobFilterPanel", new
-    {
-        jobFilterViewModel = new JobFilterViewModel()
-        {
-            ListViewComponent = "JobList",
-            PanelId = "non-criteria-requests",
-            JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId, HighlightRequestId = Model.HighlightRequestId },
-            User = @Model.UserDetails.User,
-            EmptyJobSetCallback = (() => NoNonCriteriaJobsToDisplay = true)
+            PanelId = "open-requests",
+            JobFilterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests, ResultsToShow = 20, ResultsToShowIncrement = 20, HighlightJobId = Model.HighlightJobId, HighlightRequestId = Model.HighlightRequestId },
+            EmptyJobSetCallback = new Action(() => NoJobsToDisplay = true),
         }
     });
 
 }
 
 <div class="verification-panel">
-
-    @if (Model.UserDetails.ShiftsEnabled)
-    {
-        <div class="notification__card mb-md" data-notificationId="">
-            <div class="notification__icon__wrapper">
-                <img class="notification__icon" src="~/img/icons/vaccination.svg" />
-            </div>
-            <div class="notification__content">
-                <div class="notification__title">COVID-19 Vaccination Support</div>
-                <div class="notification__message notification__message__smaller">
-                    HelpMyStreet are proudly supporting the COVID-19 vaccination programme - take a look at your
-                    <a href="/account/open-shifts">Open Shifts</a>
-                    page to find volunteering opportunities near you!
-                </div>
-            </div>
-        </div>
-    }
-
     <div class="user-profile profile-panel p-md">
         <header class="profile-panel__header">
             <h3 class="profile-panel__title">Open Requests</h3>
@@ -59,7 +28,7 @@
 
         <div class="profile">
 
-            @if (NoCriteriaJobsToDisplay && NoNonCriteriaJobsToDisplay)
+            @if (NoJobsToDisplay)
             {
                 <div class="profile__empty">
                     <p class="profile__empty__title">Everyone's taken care of!</p>
@@ -75,35 +44,8 @@
                 <h6>Requests meeting the criteria you set when you signed up</h6>
 
                 <div class="job-filter-panel">
-                    @criteriaJobsList
+                    @jobsList
                 </div>
-
-                @if (NoCriteriaJobsToDisplay)
-                {
-                    <div class="profile__empty">
-                        <p class="profile__empty__text--left">
-                            There are no open requests at present which meet the criteria you specified when you signed up
-                        </p>
-                    </div>
-                }
-
-
-                <h6 class="mt-lg">Other requests you may be interested in</h6>
-
-                @if (NoNonCriteriaJobsToDisplay)
-                {
-                    <div class="profile__empty">
-                        <p class="profile__empty__text--left">
-                            There are no further open requests nearby at present
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <div class="job-filter-panel">
-                        @nonCriteriaJobsList
-                    </div>
-                }
             }
         </div>
     </div>

@@ -48,7 +48,8 @@ namespace HelpMyStreetFE.Services.Requests
                     new RequestHelpDetailStageViewModel()
                     {
                         ShowRequestorFields = !requestHelpJourney.RequestorDefinedByGroup,
-                        FullRecipientAddressRequired = true,
+                        RecipientPostcodeRequired = GetRecipientAddressRequired(requestHelpFormVariant),
+                        FullRecipientAddressRequired = GetRecipientAddressRequired(requestHelpFormVariant),
                     },
                     new RequestHelpReviewStageViewModel(),
                 }
@@ -461,8 +462,18 @@ namespace HelpMyStreetFE.Services.Requests
             return requestHelpQuestions;
         }
 
-        public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage)
+        public RequestPersonalDetails MapRecipient(RequestHelpDetailStageViewModel detailStage, string alternativePostcode)
         {
+            string postcode;
+            try
+            {
+                postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode ?? alternativePostcode);
+            }
+            catch
+            {
+                throw new Exception($"Invalid recipient postcode {detailStage.Recipient.Postcode ?? alternativePostcode}");
+            }
+
             return new RequestPersonalDetails
             {
                 FirstName = detailStage.Recipient.Firstname,
@@ -475,13 +486,23 @@ namespace HelpMyStreetFE.Services.Requests
                     AddressLine1 = detailStage.Recipient.AddressLine1,
                     AddressLine2 = detailStage.Recipient.AddressLine2,
                     Locality = detailStage.Recipient.Town,
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Recipient.Postcode),
+                    Postcode = postcode,
                 }
             };
         }
 
         public RequestPersonalDetails MapRequestor(RequestHelpDetailStageViewModel detailStage)
         {
+            string postcode;
+            try
+            {
+                postcode = PostcodeFormatter.FormatPostcode(detailStage.Requestor.Postcode);
+            }
+            catch
+            {
+                throw new Exception($"Invalid requestor postcode {detailStage.Requestor.Postcode}");
+            }
+
             return new RequestPersonalDetails
             {
                 FirstName = detailStage.Requestor.Firstname,
@@ -491,7 +512,7 @@ namespace HelpMyStreetFE.Services.Requests
                 EmailAddress = detailStage.Requestor.Email,
                 Address = new Address
                 {
-                    Postcode = PostcodeFormatter.FormatPostcode(detailStage.Requestor.Postcode),
+                    Postcode = postcode,
                 }
             };
         }
@@ -500,25 +521,25 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return variant switch
             {
-                RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }),
-                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
-                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
-                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
-                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
-                RequestHelpFormVariant.AgeConnectsCardiff_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }),
-                RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
-                RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
+                RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, true),
+                RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.MeadowsCommunityHelpers_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeConnectsCardiff_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeConnectsCardiff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),
+                RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),
 
-                RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }),
-                RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }),
-                RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }),
+                RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
+                RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
+                RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
 
-                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }),
+                _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),
             };
         }
 
 
-        private List<RequestHelpTimeViewModel> GetRequestHelpTimeViewModels(List<DueDateType> dueDateTypes)
+        private List<RequestHelpTimeViewModel> GetRequestHelpTimeViewModels(List<DueDateType> dueDateTypes, bool includeWhenConvenient)
         {
             var vms = new List<RequestHelpTimeViewModel>();
 
@@ -531,7 +552,10 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true, HideForAppointmentActivities = true });
                 vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true, HideForAppointmentActivities = true });
-                vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "When convenient", Days = 30, HideForRepeatRequests = true, HideForAppointmentActivities = true });
+                if (includeWhenConvenient)
+                {
+                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "Within 30 days", Days = 30, HideForRepeatRequests = true, HideForAppointmentActivities = true });
+                }
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
@@ -621,6 +645,11 @@ namespace HelpMyStreetFE.Services.Requests
             }
 
             return vms;
+        }
+
+        private bool GetRecipientAddressRequired(RequestHelpFormVariant variant)
+        {
+            return true;
         }
     }
 }

@@ -54,12 +54,23 @@
         }
 
         &__text {
+            @include copy-sz-md;
+
             p, p *, ol, ol *, ul, ul *, label, textarea {
                 @include copy-sz-md;
             }
 
             p {
                 margin-bottom: 2rem;
+            }
+
+            ul {
+                padding-left: 2rem;
+
+                li {
+                    text-align: left;
+                    padding: 0 1rem 0 0.5rem;
+                }
             }
 
             > .loading-spinner {

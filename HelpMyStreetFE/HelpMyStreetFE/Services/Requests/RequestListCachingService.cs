@@ -104,12 +104,11 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<IEnumerable<int>> GetGroupRequestsFromRepo(int groupId)
         {
-            var requests = await _requestHelpRepository.GetRequestsByFilter(new GetRequestsByFilterRequest()
+            return await _requestHelpRepository.GetRequestIDsForGroup(new GetRequestIDsForGroupRequest
             {
-                ReferringGroupID = groupId,
+                GroupID = groupId,
                 IncludeChildGroups = true,
             });
-            return requests.Select(r => r.RequestID);
         }
 
         private async Task<IEnumerable<int>> GetUserOpenJobsFromRepo(User user)

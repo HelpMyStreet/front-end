@@ -93,14 +93,14 @@ var  runAdditionalValidation = async function (form) {
 
     let mobile = form.find("input[name='currentStep.Recipient.MobileNumber']");
     let alt = form.find("input[name='currentStep.Recipient.AlternatePhoneNumber']");
-    var v1 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07", true);
+    var v1 = validatePhoneNumber(mobile, "Please enter a valid mobile number", true);
     var v2 = validatePhoneNumber(alt, "Please enter a valid alternative number");
 
     var mobileRequestor = form.find("input[name='currentStep.Requestor.MobileNumber']");
     var altRequestor = form.find("input[name='currentStep.Requestor.AlternatePhoneNumber']");
 
     if (mobileRequestor.length > 0) {
-        var v3 = validatePhoneNumber(mobileRequestor, "Please enter a valid mobile number starting with 07", true);
+        var v3 = validatePhoneNumber(mobileRequestor, "Please enter a valid mobile number", true);
         var v4 = validatePhoneNumber(altRequestor, "Please enter a valid alternative number");
         return (v1 && v2 && v3 && v4);
     }

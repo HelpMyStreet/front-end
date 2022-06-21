@@ -32,8 +32,7 @@ namespace HelpMyStreetFE.Services.Requests
             return jobSet switch
             {
                 JobSet.GroupRequests => GetGroupRequestsDefaultSortAndFilterSet(jobStatuses),
-                JobSet.UserOpenRequests_MatchingCriteria => GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet(),
-                JobSet.UserOpenRequests_NotMatchingCriteria => GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(user),
+                JobSet.UserOpenRequests => GetOpenRequestsDefaultSortAndFilterSet(user),
                 JobSet.UserMyRequests => GetMyRequestsDefaultSortAndFilterSet(),
 
                 JobSet.GroupShifts => await GetGroupShiftsFilterSet(groupId.Value, user, jobStatuses, cancellationToken),
@@ -205,54 +204,25 @@ namespace HelpMyStreetFE.Services.Requests
             return filterSet;
         }
 
-        private SortAndFilterSet GetOpenRequestsMatchingCriteriaDefaultSortAndFilterSet()
+        private SortAndFilterSet GetOpenRequestsDefaultSortAndFilterSet(User user)
         {
+            var supportActivities = Enum.GetValues(typeof(SupportActivities))
+                .Cast<SupportActivities>()
+                .Where(sa => sa.IncludeInDefaultSortAndFilterSet());
+
+            var supportActivitiesFilterSet = supportActivities
+                .Select(sa => new FilterField<SupportActivities>
+                {
+                    Value = sa,
+                    IsSelected = user.SupportActivities.Contains(sa)
+                })
+                .OrderBy(ff => ff.Value == SupportActivities.Other)
+                .ThenByDescending(ff => ff.IsSelected)
+                .ThenBy(ff => ff.Value.FriendlyNameShort());
+
             SortAndFilterSet filterSet = new SortAndFilterSet
             {
-                OrderBy = new List<OrderByField>
-                    {
-                        new OrderByField() { Value = OrderBy.DateDue_Ascending, Label = "Help needed soonest", IsSelected = true },
-                        new OrderByField() { Value = OrderBy.Distance_Ascending, Label = "Closest to my address" },
-                    },
-            };
-
-            return filterSet;
-        }
-
-        private SortAndFilterSet GetOpenRequestsNotMatchingCriteriaDefaultSortAndFilterSet(User user)
-        {
-            SortAndFilterSet filterSet = new SortAndFilterSet
-            {
-                SupportActivities = new List<FilterField<SupportActivities>>
-                    {
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Shopping, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.FaceMask, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.WellbeingPackage, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.CheckingIn, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.CollectingPrescriptions, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Errands, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealPreparation, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Friendly, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.HomeworkSupport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.DogWalking, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.ColdWeatherArmy, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Transport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealsToYourDoor, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.MealtimeCompanion, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.EmergencySupport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.VolunteerSupport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Covid19Help, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.BinDayAssistance, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.DigitalSupport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.InPersonBefriending, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.PracticalSupport, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.SkillShare, IsSelected = true },
-                        new FilterField<SupportActivities>() { Value = SupportActivities.Other, IsSelected = true },
-
-                        // The following are not currently on any request help form
-                        //new FilterField<SupportActivities>() { Value = SupportActivities.MedicalAppointmentTransport, IsSelected = true },
-                        //new FilterField<SupportActivities>() { Value = SupportActivities.PhoneCalls_Anxious, IsSelected = true },
-                    },
+                SupportActivities = supportActivitiesFilterSet,
                 DueInNextXDays = new List<FilterField<int>>
                     {
                         new FilterField<int> { Value = 1, Label = "Today" },
@@ -273,14 +243,33 @@ namespace HelpMyStreetFE.Services.Requests
                     .Insert(0, new FilterField<SupportActivities>() { Value = SupportActivities.CommunityConnector, IsSelected = true });
             }
 
-            filterSet.MaxDistanceInMiles = new List<FilterField<int>>
+            var distances = new List<FilterField<int>>
             {
-                new FilterField<int> { Value = 0, Label = "My street only" },
+                new FilterField<int> { Value = 0, Label = "I'd prefer not to travel" },
                 new FilterField<int> { Value = 1, Label = "Within 1 mile" },
                 new FilterField<int> { Value = 5, Label = "Within 5 miles" },
-                new FilterField<int> { Value = 10, Label = "Within 10 miles", IsSelected = true },
+                new FilterField<int> { Value = 10, Label = "Within 10 miles" },
                 new FilterField<int> { Value = 999, Label = "Show all"},
             };
+
+            int userSupportRadius = Convert.ToInt32(Math.Ceiling(user.SupportRadiusMiles ?? 0));
+            var chosenDistance =  distances.FirstOrDefault(ff => ff.Value == userSupportRadius);
+
+            if (chosenDistance != null)
+            {
+                chosenDistance.IsSelected = true;
+            }
+            else
+            {
+                distances.Add(new FilterField<int>
+                {
+                    Value = userSupportRadius,
+                    Label = $"Within {userSupportRadius} miles",
+                    IsSelected = true,
+                });
+            }
+
+            filterSet.MaxDistanceInMiles = distances.OrderBy(ff => ff.Value);
 
             return filterSet;
         }
@@ -381,10 +370,9 @@ namespace HelpMyStreetFE.Services.Requests
                 js => (jfr.JobStatuses == null || js.Where(js => jfr.JobStatuses.Contains(js.JobStatus)).Count() > 0)
                     && (jfr.SupportActivities == null || js.Where(j => jfr.SupportActivities.Contains(j.SupportActivity)).Count() > 0)
                     && (jfr.MaxDistanceInMiles == null || js.First().DistanceInMiles <= jfr.MaxDistanceInMiles)
-                    && (jfr.DueInNextXDays == null || js.Any(j =>  j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.ToUKFromUTCTime().Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
+                    && (jfr.DueInNextXDays == null || js.Any(j => j.JobStatus.Equals(JobStatuses.Open) && j.DueDate.ToUKFromUTCTime().Date <= DateTime.Now.Date.AddDays(jfr.DueInNextXDays.Value)))
                     && (jfr.RequestedAfter == null || js.First().DateRequested.ToUKFromUTCTime().Date >= jfr.RequestedAfter?.Date)
-                    && (jfr.RequestedBefore == null) || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date);
-
+                    && (jfr.RequestedBefore == null || js.First().DateRequested.ToUKFromUTCTime().Date <= jfr.RequestedBefore?.Date));
 
             return jfr.OrderBy switch
             {

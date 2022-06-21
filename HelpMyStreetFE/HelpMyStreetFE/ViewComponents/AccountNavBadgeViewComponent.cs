@@ -106,8 +106,8 @@ namespace HelpMyStreetFE.ViewComponents
                 return null;
             }
             
-            var filterSet = await _filterService.GetDefaultSortAndFilterSet(JobSet.UserOpenRequests_NotMatchingCriteria, null, new List<JobStatuses> { JobStatuses.Open }, user, cancellationToken);
-            var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests_NotMatchingCriteria, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
+            var filterSet = await _filterService.GetDefaultSortAndFilterSet(JobSet.UserOpenRequests, null, new List<JobStatuses> { JobStatuses.Open }, user, cancellationToken);
+            var filterRequest = new JobFilterRequest() { JobSet = JobSet.UserOpenRequests, ResultsToShow = 1000, ResultsToShowIncrement = 20 };
             filterRequest.UpdateFromFilterSet(filterSet);
 
             return await _filterService.SortAndFilterOpenJobs(openRequests, filterRequest, cancellationToken);

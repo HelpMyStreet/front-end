@@ -14,8 +14,7 @@ namespace HelpMyStreetFE.Helpers
             return jobSet switch
             {
                 JobSet.GroupRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
-                JobSet.UserOpenRequests_MatchingCriteria => HelpMyStreet.Utils.Enums.RequestType.Task,
-                JobSet.UserOpenRequests_NotMatchingCriteria => HelpMyStreet.Utils.Enums.RequestType.Task,
+                JobSet.UserOpenRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
                 JobSet.UserMyRequests => HelpMyStreet.Utils.Enums.RequestType.Task,
 
                 JobSet.UserMyShifts => HelpMyStreet.Utils.Enums.RequestType.Shift,
@@ -33,8 +32,7 @@ namespace HelpMyStreetFE.Helpers
                 JobSet.GroupRequests => true,
                 JobSet.GroupShifts => true,
 
-                JobSet.UserOpenRequests_MatchingCriteria => false,
-                JobSet.UserOpenRequests_NotMatchingCriteria => false,
+                JobSet.UserOpenRequests => false,
                 JobSet.UserMyRequests => false,
 
                 JobSet.UserMyShifts => false,
@@ -48,8 +46,7 @@ namespace HelpMyStreetFE.Helpers
         {
             return jobSet switch
             {
-                JobSet.UserOpenRequests_MatchingCriteria => false,
-                JobSet.UserOpenRequests_NotMatchingCriteria => false,
+                JobSet.UserOpenRequests => false,
                 JobSet.UserOpenShifts => false,
 
                 JobSet.GroupRequests => true,

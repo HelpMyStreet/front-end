@@ -9,11 +9,11 @@
 {
     case RequestorType.Myself:
         <h2>Your details</h2>
-        @Html.EditorFor(x => x.Recipient, new { Prefix = "Your", FullAddressRequired = Model.FullRecipientAddressRequired, BothNamesRequired = Model.NeedBothNames });
+        @Html.EditorFor(x => x.Recipient, new { Prefix = "Your", PostcodeRequired = Model.RecipientPostcodeRequired, FullAddressRequired = Model.FullRecipientAddressRequired, BothNamesRequired = Model.NeedBothNames });
         break;
     case RequestorType.OnBehalf:
         <h2>Details for the person who needs the help</h2>
-        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", FullAddressRequired = Model.FullRecipientAddressRequired, BothNamesRequired = Model.NeedBothNames })
+        @Html.EditorFor(x => x.Recipient, new { Prefix = "Their", PostcodeRequired = Model.RecipientPostcodeRequired, FullAddressRequired = Model.FullRecipientAddressRequired, BothNamesRequired = Model.NeedBothNames })
         if (Model.ShowRequestorFields)
         {
             <hr class="input--separator" />
@@ -30,7 +30,7 @@
                 <span class="error"></span>
             </div>
         </div>
-        @Html.EditorFor(x => x.Recipient, "RecipientDetails_Organisation", new { FullAddressRequired = Model.FullRecipientAddressRequired });
+        @Html.EditorFor(x => x.Recipient, "RecipientDetails_Organisation", new { PostcodeRequired = Model.RecipientPostcodeRequired, FullAddressRequired = Model.FullRecipientAddressRequired });
         if (Model.ShowRequestorFields)
         {
             <hr class="input--separator" />

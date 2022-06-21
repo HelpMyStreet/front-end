@@ -184,11 +184,6 @@ namespace HelpMyStreetFE.Controllers
                 return Redirect(correctPage);
             }
 
-            if(form.HasCustomDistance)
-            {
-                form.VolunteerDistance = form.CustomDistance;
-            }
-
             var registrationFormVariant = await GetRegistrationJourney(user.ID, cancellationToken);
 
             try

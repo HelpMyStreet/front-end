@@ -1,4 +1,4 @@
-﻿using HelpMyStreet.Utils.Models;
+using HelpMyStreet.Utils.Models;
 using HelpMyStreet.Utils.Enums;
 using HelpMyStreet.Utils.Extensions;
 using HelpMyStreetFE.Models.Account;
@@ -27,12 +27,15 @@ namespace HelpMyStreetFE.Models.Account.Jobs
 
             return Item switch
             {
-                IEnumerable<JobDetail> jd => $"{postCode.Split(" ")[0]}, {distance.ToString("0.#")} miles away",
+                IEnumerable<JobDetail> jds when (jds.First().SupportActivity.AddressIsArbitrary()) => "",
+                IEnumerable<JobDetail> _ => $"{postCode.Split(" ")[0]}, {distance:0.#} miles away",
                 JobSummary js when js.JobStatus == JobStatuses.Open || js.JobStatus == JobStatuses.New => $"{postCode.Split(" ")[0]}, {distance.ToString("0.#")} miles away",
                 JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode}",
                 JobSummary js when (js.JobStatus == JobStatuses.InProgress || js.JobStatus == JobStatuses.Accepted) && !js.SupportActivity.PersonalDetailsComponent(RequestRoles.Recipient).Contains(PersonalDetailsComponent.Postcode) => $"{postCode.Split(" ")[0]}",
-                ShiftJob sj => $"{Location.LocationDetails.Name}",
-                RequestSummary rs => postCode,
+                ShiftJob _ => $"{Location.LocationDetails.Name}",
+                RequestSummary rs when rs.RequestType == RequestType.Shift => Location.LocationDetails.Name,
+                RequestSummary rs when rs.JobBasics.First().SupportActivity.AddressIsArbitrary() => "",
+                RequestSummary _ => postCode,
                 _ => "",
             };
         }

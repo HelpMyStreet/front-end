@@ -28,7 +28,6 @@ namespace HelpMyStreetFE.Services
             partners.Add(new Partner() { Group = HMSEnums.Groups.AgeUKMidMersey, GroupKey = "ageuk-midmersey"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.BostonGNS, GroupKey = "boston" });
 
-
             return partners;
         }
     }

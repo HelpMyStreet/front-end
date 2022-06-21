@@ -84,7 +84,10 @@ export function validateEmail(email) {
 export function validatePhoneNumber(phoneNumberEl, errorMessage, mobileNumber = false) {
     var phoneNumber = phoneNumberEl.val();
     if (phoneNumber == "") return true;
-    var valid = ((phoneNumber.replace(" ", "").length === 10 || phoneNumber.replace(" ", "").length === 11) && phoneNumber[0] === "0" && (!mobileNumber || phoneNumber[1] === "7"));
+
+    var regex = /^\+?(?:[0-9] ?){6,14}[0-9]$/;
+    var valid = regex.test(phoneNumber);
+
     if (valid == false) {
         phoneNumberEl.find("~ .error").show();
         phoneNumberEl.find("~ .error").text(errorMessage);

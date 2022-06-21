@@ -35,6 +35,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.InPersonBefriending => "befriending.svg",
                 SupportActivities.BankStaffVaccinator => "vaccination.svg",
                 SupportActivities.SkillShare => "puzzle-piece.svg",
+                SupportActivities.Accommodation => "accommodation.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -62,7 +63,49 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.PracticalSupport => "blue",
                 SupportActivities.InPersonBefriending => "light-purple",
                 SupportActivities.BankStaffVaccinator => "dark-blue",
+                SupportActivities.Accommodation => "dark-blue",
                 _ => "dark-blue",
+            };
+        }
+
+        public static bool IncludeInDefaultSortAndFilterSet(this SupportActivities activity)
+        {
+            return activity switch
+            {
+                SupportActivities.Shopping => true,
+                SupportActivities.FaceMask => true,
+                SupportActivities.WellbeingPackage => true,
+                SupportActivities.CheckingIn => true,
+                SupportActivities.CollectingPrescriptions => true,
+                SupportActivities.Errands => true,
+                SupportActivities.MealPreparation => true,
+                SupportActivities.PhoneCalls_Friendly => true,
+                SupportActivities.HomeworkSupport => true,
+                SupportActivities.DogWalking => true,
+                SupportActivities.ColdWeatherArmy => true,
+                SupportActivities.Transport => true,
+                SupportActivities.MealsToYourDoor => true,
+                SupportActivities.MealtimeCompanion => true,
+                SupportActivities.EmergencySupport => true,
+                SupportActivities.VolunteerSupport => true,
+                SupportActivities.Covid19Help => true,
+                SupportActivities.BinDayAssistance => true,
+                SupportActivities.DigitalSupport => true,
+                SupportActivities.InPersonBefriending => true,
+                SupportActivities.PracticalSupport => true,
+                SupportActivities.SkillShare => true,
+                SupportActivities.Accommodation => false,
+                SupportActivities.Other => true,
+
+                SupportActivities.CommunityConnector => false,
+                SupportActivities.VaccineSupport => false,
+                SupportActivities.BankStaffVaccinator => false,
+
+                SupportActivities.MedicalAppointmentTransport => false,
+                SupportActivities.PhoneCalls_Anxious => false,
+                SupportActivities.VolunteerInduction => false,
+
+                _ => throw new ArgumentException(message: $"Unexpected SupportActivities value: {activity}", paramName: nameof(activity))
             };
         }
     }

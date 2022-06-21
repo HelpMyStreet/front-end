@@ -271,6 +271,17 @@ namespace HelpMyStreetFE.Repositories
             return null;
         }
 
+        public async Task<IEnumerable<int>> GetRequestIDsForGroup(GetRequestIDsForGroupRequest request)
+        {
+            var response = await PostAsync<BaseRequestHelpResponse<GetRequestIDsForGroupResponse>>($"/api/GetRequestIDsForGroup", request);
+
+            if (response.HasContent && response.IsSuccessful)
+            {
+                return response.Content.RequestIds;
+            }
+            return null;
+        }
+
         public async Task<GetRequestDetailsResponse> GetRequestDetailsAsync(int requestId, int userId)
         {
             var response = await GetAsync<BaseRequestHelpResponse<GetRequestDetailsResponse>>($"/api/GetRequestDetails?requestId={requestId}&authorisedByUserId={userId}");

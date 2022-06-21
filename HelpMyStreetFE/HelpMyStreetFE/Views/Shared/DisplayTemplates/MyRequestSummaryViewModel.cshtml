@@ -106,8 +106,8 @@
             }
             @if (!string.IsNullOrWhiteSpace(Model.Item.JobSummaries.First().Reference))
             {
-                <span class="job__info__activity__title @Model.Item.JobBasics.First().SupportActivity.Class()">
-                    @($"Group Ref: {Model.Item.JobSummaries.First().Reference}")
+                <span class="job__info__activity__location">
+                    @($"{Model.Item.JobSummaries.First().Reference}")
                 </span>
             }
             <span class="job__info__activity__location">
