@@ -17,7 +17,7 @@ namespace HelpMyStreetFE.Helpers
                 DueDateType.On => true,
                 DueDateType.SpecificStartTime => true,
                 DueDateType.SpecificStartAndEndTimes => true,
-                DueDateType.OpenUntil => false,
+                DueDateType.OpenUntil => true,
                 _ => throw new ArgumentException($"Unexpected DueDateType value: {dueDateType}", nameof(dueDateType))
             };
         }
