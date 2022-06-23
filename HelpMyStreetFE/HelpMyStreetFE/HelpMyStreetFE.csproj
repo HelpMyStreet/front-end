@@ -33,9 +33,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.950" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.950" />
-	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.950" />  
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.955" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.955" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.955" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
@@ -59,6 +59,7 @@
     <Folder Include="wwwroot\img\community\ageUK\kent\northwest\carousel\" />
     <Folder Include="wwwroot\img\community\bostongns\carousel\" />
     <Folder Include="wwwroot\img\community\bostongns\flags\" />
+    <Folder Include="wwwroot\img\community\lincolnshirevolunteers\" />
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />

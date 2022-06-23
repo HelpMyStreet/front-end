@@ -36,6 +36,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.BankStaffVaccinator => "vaccination.svg",
                 SupportActivities.SkillShare => "puzzle-piece.svg",
                 SupportActivities.Accommodation => "accommodation.svg",
+                SupportActivities.AdvertisingRoles=> "advertisingroles.svg",
                 _ => "question-mark.svg"
             };
         }
@@ -104,6 +105,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.MedicalAppointmentTransport => false,
                 SupportActivities.PhoneCalls_Anxious => false,
                 SupportActivities.VolunteerInduction => false,
+                SupportActivities.AdvertisingRoles => true,
 
                 _ => throw new ArgumentException(message: $"Unexpected SupportActivities value: {activity}", paramName: nameof(activity))
             };
