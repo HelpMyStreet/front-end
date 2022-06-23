@@ -110,5 +110,15 @@ namespace HelpMyStreetFE.Helpers
                 _ => throw new ArgumentException(message: $"Unexpected SupportActivities value: {activity}", paramName: nameof(activity))
             };
         }
+
+        public static bool ShowIcon(this SupportActivities activity)
+        {
+            return activity switch
+            {
+                SupportActivities.Other => false,
+                SupportActivities.AdvertisingRoles => false,
+                _ => true
+            };
+        }
     }
 }
