@@ -14,6 +14,7 @@ using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Contracts.RequestService.Request;
 using HelpMyStreet.Contracts;
 using HelpMyStreet.Contracts.ReportService;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -291,7 +292,10 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
         {
-            List<EnrichedStatusHistory> eHist = history.Select(h => new EnrichedStatusHistory(h)).ToList();
+            List<EnrichedStatusHistory> eHist = history
+                .OrderBy(o => o.StatusDate)
+                .ThenBy(o=> o.JobStatus.UsualOrderOfProgression())
+                .Select(h => new EnrichedStatusHistory(h)).ToList();
 
             int latestVolunteerId = -1;
 
