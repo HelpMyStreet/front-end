@@ -37,7 +37,8 @@
                 new RequestActivityViewModel{ Activity = SupportActivities.BankStaffVaccinator, Description = "Finding registered vaccinators", MultiVolunteer = true },
                 new RequestActivityViewModel{ Activity = SupportActivities.SkillShare, Description = "Finding volunteers to share their skills and interests"},
                 new RequestActivityViewModel{ Activity = SupportActivities.Accommodation, Description = "A room / property to provide short-term support"},
-       };
+                new RequestActivityViewModel{ Activity = SupportActivities.AdvertisingRoles, Description = "Find volunteers to fill open voluntary roles", MultiVolunteer = true},    
+    };
 
 
     var activity = activities.Where(x => x.Activity == Model.SupportActivity).First();

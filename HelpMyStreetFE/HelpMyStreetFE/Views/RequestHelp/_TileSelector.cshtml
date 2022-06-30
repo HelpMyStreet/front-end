@@ -3,8 +3,10 @@
 @model TileSelectorViewModel;
 
 <div class="sm12 input tile-selector">
+    @if (Model.TileVMs.Count() > 0)
+    {
     <label for="@Model.FieldName.Replace('.', '_')">@Html.Raw(Model.Label)</label>
-
+    }
     <div class="tiles">
         <div class="input">
             <input class="tile-selector__value" type="hidden" id="@Model.FieldName.Replace('.', '_')" name="@Model.FieldName" value="@Model.TileVMs.Where(x => x.IsSelected).FirstOrDefault()?.Value" />

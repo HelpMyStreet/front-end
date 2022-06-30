@@ -94,7 +94,13 @@ if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSuppor
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
-    } else {
+    }
+    else if (supportActivity === 'AdvertisingRoles') {
+        $('#requestorFor_1').parent().hide(); // myself
+        $('#requestorFor_2').parent().hide(); // someone else
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
+    }
+    else {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
