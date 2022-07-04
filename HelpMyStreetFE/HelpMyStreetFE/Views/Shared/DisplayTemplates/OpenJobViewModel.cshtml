@@ -45,7 +45,6 @@
 
 <div class="job @className mb-sm-md" id="@id" request-id="@requestId" data-job-status="@JobStatuses.Open" data-role="@role">
     <div class="job__info">
-
         <div class="job__info__col1">
             @if (Model.Item.Any(j => j.IsHealthCritical))
             {
@@ -82,12 +81,12 @@
                 </span>
             }
             <span class="job__info__activity__title @Model.Item.First().SupportActivity.Class()">
-                @if (Model.Item.First().SupportActivity != SupportActivities.Other)
+                @if (Model.Item.First().SupportActivity.ShowIcon())
                 {
                     <img src="~/img/icons/@Model.Item.First().SupportActivity.Icon()" />
                 }
                 <span>
-                    @Model.Item.First().SupportActivity.FriendlyNameShort()
+                    @Model.Item.First().GetSupportActivityName
                 </span>
             </span>
             @if (!string.IsNullOrWhiteSpace(Model.Item.First().Reference))

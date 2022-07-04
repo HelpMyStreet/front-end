@@ -663,23 +663,7 @@ namespace HelpMyStreetFE.Repositories
         private CommunityViewModel GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuklsl", "AgeUKLSL");
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
-            {
-                new CommunityVolunteer()
-                {
-                    Name = "Nicki Lee",
-                    Role = "Senior Volunteer Coordinator",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/lsl/NL_cropped.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Amanda Wilson",
-                    Role = "Engagement Coordinator",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
-                },
-            };
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>();
 
             var carouselPath = "/img/community/ageUK/lsl/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>

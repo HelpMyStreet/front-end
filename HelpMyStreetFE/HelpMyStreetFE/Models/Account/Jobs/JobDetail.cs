@@ -1,6 +1,7 @@
 ﻿using HelpMyStreet.Contracts.RequestService.Response;
 using HelpMyStreet.Utils.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HelpMyStreetFE.Models.Account.Jobs
 {
@@ -34,6 +35,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             this.SupportActivity = jobSummary.SupportActivity;
             this.SuppressRecipientPersonalDetail = jobSummary.SuppressRecipientPersonalDetail;
             this.VolunteerUserID = jobSummary.VolunteerUserID;
+            this.SpecificSupportActivity = jobSummary.SpecificSupportActivity;
         }
 
         public JobDetail(JobBasic jobBasic)
@@ -53,6 +55,7 @@ namespace HelpMyStreetFE.Models.Account.Jobs
             this.SupportActivity = jobBasic.SupportActivity;
             this.SuppressRecipientPersonalDetail = jobBasic.SuppressRecipientPersonalDetail;
             this.VolunteerUserID = jobBasic.VolunteerUserID;
+            this.SpecificSupportActivity = jobBasic.SpecificSupportActivity;
         }
 
         public RequestSummary RequestSummary { get; set; }
@@ -60,5 +63,20 @@ namespace HelpMyStreetFE.Models.Account.Jobs
         public RequestPersonalDetails Recipient { get; set; }
         public List<EnrichedStatusHistory> JobStatusHistory { get; set; }
         public User CurrentVolunteer { get; set; }
+        public bool RequiresApplicationToAccept
+        {
+            get
+            {
+                var requiresApplicationToAcceptQuestion =  this.Questions.Where(q => q.Id == (int)HelpMyStreet.Utils.Enums.Questions.RequiresApplicationToAccept).FirstOrDefault();
+                if(requiresApplicationToAcceptQuestion==null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return requiresApplicationToAcceptQuestion.Answer == "Yes";
+                }
+            }
+        }
     }
 }

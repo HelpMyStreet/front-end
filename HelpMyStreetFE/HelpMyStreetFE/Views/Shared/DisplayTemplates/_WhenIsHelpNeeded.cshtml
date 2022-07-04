@@ -154,6 +154,10 @@ else
                 <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
             </dd>
         }
+        else if (Model.DueDateType == DueDateType.OpenUntil)
+        {
+            <dd>This request is open until <strong>@Html.Raw(dueDate.FormatDate(DateTimeFormat.ShortDateFormat))</strong></dd>
+        }
         else
         {
             <dd>You can complete this request <strong title="@dueDate.FriendlyFutureDate()">any time on or before @Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong></dd>

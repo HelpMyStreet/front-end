@@ -162,9 +162,11 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         new FilterField<JobStatuses>() { Value = JobStatuses.New },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Open },
+                        new FilterField<JobStatuses>() { Value = JobStatuses.AppliedFor},
                         new FilterField<JobStatuses>() { Value = JobStatuses.InProgress },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                         new FilterField<JobStatuses>() { Value = JobStatuses.Cancelled },
+
                     },
                 OrderBy = new List<OrderByField>
                     {
@@ -187,6 +189,7 @@ namespace HelpMyStreetFE.Services.Requests
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.New).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.Open).First().IsSelected = true;
                 filterSet.JobStatuses.Where(js => js.Value == JobStatuses.InProgress).First().IsSelected = true;
+                filterSet.JobStatuses.Where(js => js.Value == JobStatuses.AppliedFor).First().IsSelected = true;
             }
 
             if (jobStatuses.Count() > 0 && jobStatuses.All(s => s.Complete()))
@@ -278,6 +281,7 @@ namespace HelpMyStreetFE.Services.Requests
                 JobStatuses = new List<FilterField<JobStatuses>>
                 {
                     new FilterField<JobStatuses>() { Value = JobStatuses.InProgress, IsSelected = true },
+                    new FilterField<JobStatuses>() { Value = JobStatuses.AppliedFor, IsSelected = true },
                     new FilterField<JobStatuses>() { Value = JobStatuses.Done },
                 },
                 OrderBy = new List<OrderByField>

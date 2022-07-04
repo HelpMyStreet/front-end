@@ -23,6 +23,7 @@ var validateForm = function () {
         buttonLoad($("#btnNext"));
         const valid = validateFormData($(this), {
             "currentStep.SelectedTask": (v) => v !== "" || "Please select at least one task type",
+            "currentStep.Questions.[20].Model": (v) => (v.length>0 && v.length <= 30)  || "Please enter an activity between 1 and 30 characters",
             "currentStep.SelectedRequestor": (v) => v !== "" || "Please select from one of the available options",
             "currentStep.SelectedFrequency": (v) => v !== "" || "Please tell us how often the help is needed",
             "currentStep.SelectedTimeFrame.Id": (v) => v !== "" || "Please tell us when you need this to be done by",
@@ -85,11 +86,7 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
 }
 
 var updateOptionsForActivity = function (supportActivity) {
-    if (supportActivity === 'FaceMask') {
-        $('#requestorFor_1').parent().show(); // myself
-        $('#requestorFor_2').parent().show(); // someone else
-        $('#requestorFor_3').parent().show(); // onbehalf of organisation
-    } else if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSupport') {
+if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSupport') {
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().hide(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
@@ -100,7 +97,7 @@ var updateOptionsForActivity = function (supportActivity) {
     } else {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
-        $('#requestorFor_3').parent().hide(); // onbehalf of organisation
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
     }
 }
 
