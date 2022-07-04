@@ -1,0 +1,51 @@
+﻿.editable-biography {
+    .answer-content {
+        display: inline-block;
+    }
+
+    a.edit img {
+        width: 1.5rem;
+        vertical-align: text-bottom;
+    }
+
+    form {
+        display: none;
+        margin-bottom: 0.25rem;
+
+        .input {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .textarea {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+
+            @media (min-width: $sm-med-screen) {
+                flex-direction: row;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 0.5rem;
+
+                @media (min-width: $sm-med-screen) {
+                    width: 13rem;
+                    margin-left: 1rem;
+                    margin-right: 1rem;
+                }
+
+                .loading-spinner {
+                    width: auto;
+                    margin: auto;
+                }
+            }
+        }
+    }
+}

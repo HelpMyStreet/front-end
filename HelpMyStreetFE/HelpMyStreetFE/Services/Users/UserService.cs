@@ -59,15 +59,8 @@ namespace HelpMyStreetFE.Services.Users
 
             user = await _userRepository.GetUser(id);
 
-            if (GetRegistrationIsComplete(user))
-            {
-                // Don't put users into the cache until registration is complete
-                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
-                {
-                    return user;
-                }, $"{CACHE_KEY_PREFIX}-user-{id}", cancellationToken);
-            }
-
+            await RefreshCacheIfRegistrationIsComplete(id, user, cancellationToken);
+;
             return user;
         }
 
@@ -179,6 +172,29 @@ namespace HelpMyStreetFE.Services.Users
         public async Task<User> GetUserByAuthId(string authId)
         {
             return await _userRepository.GetUserByAuthId(authId);
+        }
+
+        public async Task<UpdateBiographyOutcome> AddBiography(int userId, string details)
+        {
+            _logger.LogInformation($"adding biography for user {userId}");
+            var result =  await _userRepository.AddBiography(userId, details);
+
+            var user =  await _userRepository.GetUser(userId);
+
+            await RefreshCacheIfRegistrationIsComplete(userId, user, CancellationToken.None);
+            return result;
+        }
+
+        private async Task RefreshCacheIfRegistrationIsComplete(int id, User user, CancellationToken cancellationToken)
+        {
+            if (GetRegistrationIsComplete(user))
+            {
+                // Don't put users into the cache until registration is complete
+                await _memDistCache.RefreshDataAsync(async (cancellationToken) =>
+                {
+                    return user;
+                }, $"{CACHE_KEY_PREFIX}-user-{id}", cancellationToken);
+            }
         }
     }
 }

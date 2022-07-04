@@ -20,6 +20,14 @@
             <span class="text">Mark as Open</span>
         </button>
         break;
+    case JobStatuses.AppliedFor:
+        <button class="btn cta cta--dark-blue trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.InProgress" data-target-user="@(Model.VolunteerUserID.HasValue ? Base64Utils.Base64Encode(Model.VolunteerUserID.Value) : "")" >
+            <span class="text">Accept</span>
+        </button>
+        <button class="btn cta--dark-blue-border trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.Open">
+            <span class="text">Mark as Open</span>
+        </button>
+        break;
     case JobStatuses.InProgress:
         <button class="btn cta trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.Done">
             <span class="text">Mark as Done</span>

@@ -66,7 +66,6 @@
             <span class="job__info__col1__status toggle-on-status-change">
                 <partial name="_RequestStatus" model="@Model.Item.JobBasics" />
             </span>
-
             @if (Model.Item.JobSummaries.Exists(j => j.IsHealthCritical && j.JobStatus.Incomplete()))
             {
                 <span class="job__info__col1__criticality">
@@ -104,24 +103,24 @@
                 </span>
             }
 
-            @foreach (SupportActivities activity in Model.Item.JobBasics.Select(a => a.SupportActivity).Distinct())
+            @foreach (var activityResult in Model.Item.JobBasics.Select(a => new { a.SupportActivity, a.GetSupportActivityName } ).Distinct())
             {
                 {
-                    <span class="job__info__activity__title @activity.Class()">
-                        @if (activity != SupportActivities.Other)
+                    <span class="job__info__activity__title @activityResult.SupportActivity.Class()">
+                        @if (activityResult.SupportActivity.ShowIcon())
                         {
-                            <img src="~/img/icons/@activity.Icon()" alt="@activity.FriendlyNameShort()" />
+                            <img src="~/img/icons/@activityResult.SupportActivity.Icon()" alt="@activityResult.SupportActivity.FriendlyNameShort()" />
                         }
                         <span>
-                            @activity.FriendlyNameShort()
+                            @activityResult.GetSupportActivityName
                         </span>
                     </span>
 
-                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activity)).Select(x => x.Reference).Distinct().Where(rf => rf != null);
+                    var references = Model.Item.JobSummaries.Where(j => j.SupportActivity.Equals(activityResult.SupportActivity)).Select(x => x.Reference).Distinct().Where(rf => rf != null);
                     if (references.Count() > 0)
                     {
-                        <span class="job__info__activity__location">
-                            @($"{string.Join(", ", references)}")
+                        <span class="job__info__activity__title @activityResult.SupportActivity.Class()">
+                            @($"({string.Join(", ", references)})")
                         </span>
                     }
                 }

@@ -2,7 +2,7 @@
     overflow: auto;
     display: grid;
     grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
-    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cCookieControlPrefs ProviderName pCookieControlPrefs eCookieControlPrefs" "Neccesary cOptOutStats ProviderName pOptOutStats eOptOutStats" "Statistics c_ga tppGoogle tp_ga te_ga" "Statistics c_gat tppGoogle tp_gat te_gat" "Statistics c_gid tppGoogle tp_gid te_gid" "Statistics c_jSessionId tpp_NewRelic tp_jSessionId te_jSessionId" "Statistics c_nreum tpp_NewRelic tp_nreum te_nreum" "Statistics tc_hjid tpp_Hotjar tp_hjid te_hjid" "Statistics tc_hjRecordingLastActivity tpp_Hotjar tp_hjRecordingLastActivity te_hjRecordingLastActivity" "Statistics tc_hjTLDTest tpp_Hotjar PurposeSix te_hjTLDTest" "Statistics tc_hjIncludedInSample tpp_Hotjar tp_hjIncludedInSample te_hjIncludedInSample" "Statistics tc_hjRecordingEnabled tpp_Hotjar tp_hjRecordingEnabled te_hjRecordingEnabled";
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cConsent ConsentProviderName pConsent eConsent" "Marketing cMarketingOne MarketingProviderName pMarketingOne eMarketingOne" "Marketing cMarketingTwo MarketingProviderName pMarketingTwo eMarketingTwo" "Marketing cMarketingThree MarketingProviderName pMarketingThree eMarketingThree";
     border-top: 1px solid black;
     border-left: 1px solid black;
 
@@ -48,6 +48,14 @@
         grid-area: Neccesary;
     }
 
+    .Marketing {
+        grid-area: Marketing;
+    }
+
+    .MarketingProviderName {
+        grid-area: MarketingProviderName;
+    }
+
     .cAntiForgery {
         grid-area: cAntiForgery;
     }
@@ -59,6 +67,11 @@
             display: contents;
         }
     }
+
+    .ConsentProviderName {
+        grid-area: ConsentProviderName;
+    }
+
 
     .pAntiForgery {
         grid-area: pAntiForgery;
@@ -72,14 +85,6 @@
         grid-area: pCookieControl;
     }
 
-    .pCookieControlPrefs {
-        grid-area: pCookieControlPrefs;
-    }
-
-    eCookieControlPrefs {
-        grid-area: eCookieControlPrefs;
-    }
-
     .pOptOutStats {
         grid-area: pOptOutStats;
     }
@@ -87,11 +92,6 @@
     .eOptOutStats {
         grid-area: eOptOutStats;
     }
-
-    eCookieControlPrefs {
-        grid-area: eCookieControlPrefs;
-    }
-
 
     .eAntiForgery {
         grid-area: eAntiForgery;
@@ -113,160 +113,27 @@
         grid-area: cCookieControl;
     }
 
-
-    .cCookieControlPrefs {
-        grid-area: cCookieControlPrefs;
+    .pMarketingOne {
+        grid-area: pMarketingOne;
     }
 
-    .cOptOutStats {
-        grid-area: cOptOutStats;
+    .pMarketingTwo {
+        grid-area: pMarketingTwo;
     }
 
-    .Statistics {
-        grid-area: Statistics;
+    .pMarketingThree {
+        grid-area: pMarketingThree;
     }
 
-    .c_ga {
-        grid-area: c_ga;
+    .eMarketingOne {
+        grid-area: eMarketingOne;
     }
 
-    .c_jSessionId {
-        grid-area: c_jSessionId;
+    .eMarketingTwo {
+        grid-area: eMarketingTwo;
     }
 
-    .c_nreum {
-        grid-area: c_nreum;
-    }
-
-    .ThirdPartyCookie2 {
-        grid-area: ThirdPartyCookie2;
-    }
-
-    .ThirdParticyCookie3 {
-        grid-area: ThirdParticyCookie3;
-    }
-
-    .tc_hjid {
-        grid-area: tc_hjid;
-    }
-
-    .tc_hjRecordingLastActivity {
-        grid-area: tc_hjRecordingLastActivity;
-    }
-
-    .ThirdParticyCookie6 {
-        grid-area: ThirdParticyCookie6;
-    }
-
-    .tc_hjIncludedInSample {
-        grid-area: tc_hjIncludedInSample;
-    }
-
-    .tc_hjRecordingEnabled {
-        grid-area: tc_hjRecordingEnabled;
-    }
-
-    .tppGoogle {
-        grid-area: tppGoogle;
-
-        a {
-            display: contents;
-        }
-    }
-
-    .tpp_Hotjar {
-        grid-area: tpp_Hotjar;
-
-        a {
-            display: contents;
-        }
-    }
-
-    .tpp_NewRelic {
-        grid-area: tpp_NewRelic;
-
-        a {
-            display: contents;
-        }
-    }
-
-    .tp_ga {
-        grid-area: tp_ga;
-    }
-
-    .tp_gat {
-        grid-area: tp_gat;
-    }
-
-    .tp_gid {
-        grid-area: tp_gid;
-    }
-
-    .tp_jSessionId {
-        grid-area: tp_jSessionId;
-    }
-
-    .tp_nreum {
-        grid-area: tp_nreum;
-    }
-
-    .tp_hjid {
-        grid-area: tp_hjid;
-    }
-
-    .tp_hjRecordingLastActivity {
-        grid-area: tp_hjRecordingLastActivity;
-    }
-
-    .tp_hjTLDTest {
-        grid-area: PurposeSix;
-    }
-
-    .tp_hjIncludedInSample {
-        grid-area: tp_hjIncludedInSample;
-    }
-
-    .tp_hjRecordingEnabled {
-        grid-area: tp_hjRecordingEnabled;
-    }
-
-    .te_ga {
-        grid-area: te_ga;
-    }
-
-    .te_gat {
-        grid-area: te_gat;
-    }
-
-    .te_gid {
-        grid-area: te_gid;
-    }
-
-    .te_jSessionId {
-        grid-area: te_jSessionId;
-    }
-
-    .te_nreum {
-        grid-area: te_nreum;
-    }
-
-    .te_hjid {
-        grid-area: te_hjid;
-    }
-
-    .te_hjRecordingLastActivity {
-        grid-area: te_hjRecordingLastActivity;
-    }
-
-    .te_hjTLDTest {
-        grid-area: te_hjTLDTest;
-    }
-
-    .te_hjIncludedInSample {
-        grid-area: te_hjIncludedInSample;
-    }
-
-    .te_hjRecordingEnabled {
-        grid-area: te_hjRecordingEnabled;
+    .eMarketingThree {
+        grid-area: eMarketingThree;
     }
 }

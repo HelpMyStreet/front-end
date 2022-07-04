@@ -68,6 +68,7 @@ namespace HelpMyStreetFE.ViewComponents
 
                 return (job?.JobStatus, targetStatus, userIsAdmin, userIsAllocatedToTask) switch
                 {
+                    (JobStatuses.Open, JobStatuses.AppliedFor, _, _   ) => await ApplyForRequestIfCredentialsSatisfied(vm, user, cancellationToken),
                     (JobStatuses.Open, JobStatuses.InProgress, _, _   ) => await AcceptRequestIfCredentialsSatisfied(vm, user, cancellationToken),
                     (JobStatuses.InProgress, JobStatuses.Done, _, true) => View("MarkAsCompletePopup", vm),
                     (JobStatuses.Accepted,   JobStatuses.Open, _, true) => View("CantDoPopup", vm),
@@ -78,6 +79,8 @@ namespace HelpMyStreetFE.ViewComponents
                     (JobStatuses.InProgress, JobStatuses.Done, true, false) => View("Admin_MarkAsCompletePopup", vm),
                     (JobStatuses.Accepted,   JobStatuses.Open, true, false) => View("Admin_MarkAsOpenPopup", vm),
                     (JobStatuses.InProgress, JobStatuses.Open, true, false) => View("Admin_MarkAsOpenPopup", vm),
+                    (JobStatuses.AppliedFor, JobStatuses.Open, true, _) => View("Admin_MarkAsOpenPopupFromAppliedFor", vm),
+                    (JobStatuses.AppliedFor, JobStatuses.InProgress, true, _) => View("Admin_MarkAsInProgressFromAppliedForPopup", vm),
                     (_,                 JobStatuses.Cancelled, true, _    ) => View("Admin_CancelJobPopup", vm),
 
                     _ => throw new Exception($"Unhandled status/admin combination for job {jobId}, user {user.ID}: {job.JobStatus} -> {targetStatus} / admin:{userIsAdmin} / allocated to task:{userIsAllocatedToTask}")
@@ -97,6 +100,21 @@ namespace HelpMyStreetFE.ViewComponents
             else
             {
                 return View("AcceptRequestPopup", vm);
+            }
+        }
+
+        private async Task<IViewComponentResult> ApplyForRequestIfCredentialsSatisfied(JobStatusChangePopupViewModel vm, User user, CancellationToken cancellationToken)
+        {
+            var credentials = await _groupMemberService.GetAnnotatedGroupActivityCredentials(vm.JobBasic.ReferringGroupID, vm.JobBasic.SupportActivity, user.ID, user.ID, cancellationToken);
+
+            if (!credentials.AreSatisfied)
+            {
+                vm.AnnotatedGroupActivityCredentialSets = credentials;
+                return View("CredentialsRequiredPopup", vm);
+            }
+            else
+            {
+                return View("ApplyRequestPopup", vm);
             }
         }
 

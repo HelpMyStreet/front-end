@@ -1,0 +1,54 @@
+@model HelpMyStreetFE.Models.Account.UserDetails;
+@using HelpMyStreetFE.Helpers;
+
+@{
+    var biographyQuestion = new HelpMyStreetFE.Models.Account.Biography
+    {
+        Details = Model.Biography
+    };
+}
+
+
+<article class="user-profile profile-panel p-md mt-md">
+    <header class="profile-panel__header">
+        <h3 class="profile-panel__title">
+            My Training & Experience
+        </h3>
+    </header>
+    <article class="training">
+        <dl>
+            <div>
+                <dt class="flex mt-md">
+                    Use this section to tell volunteer organisations about your training, experience and why you&rsquo;d like to volunteer. This information will be made visible to group administrators for any groups you join on HelpMyStreet.
+                </dt>
+                <br />
+                <dd class="editable-biography">
+                    <div class="answer">
+                        <div class="training__answer-content">
+                            @Html.Raw(string.IsNullOrWhiteSpace(Model.Biography) ? "Not supplied" : Model.Biography.ToHtmlSafeStringWithLineBreaks())
+                        </div>
+                        <a href="#" class="edit ml-xs"><img src="~/img/icons/edit.png" alt="Edit" title="Edit" /></a>
+                    </div>
+                    <form method="post">
+                        <div class="input">
+                            <partial name="_Biography" model="biographyQuestion" />
+                        </div>
+
+                        <div class="buttons">
+                            <button class="btn cta--dark-blue-border save-changes" type="submit">
+                                <span class="text">Save changes</span>
+                                <div class="loader"><partial name="_LoadingSpinner" model='new LoadingSpinnerViewModel { Text = "Saving", ShowDarkSpinner = true }' /></div>
+                            </button>
+
+                            <button class="btn cta--orange-border cancel-editing" type="reset">
+                                <span class="text">Cancel editing</span>
+                            </button>
+                        </div>
+                    </form>
+
+                </dd>
+
+            </div>
+        </dl>
+    </article>
+</article>
