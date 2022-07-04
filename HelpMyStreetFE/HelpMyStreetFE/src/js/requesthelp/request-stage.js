@@ -62,6 +62,7 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
             });
         }
     } else if (type === 'frequency') {
+        //alert(value);
         if (value === '') {
             $('.request-help form').attr('selected-repeat', '');
         } else if (value === 'Once') {

@@ -3,7 +3,7 @@
 @model TileSelectorViewModel;
 
 <div class="sm12 input tile-selector">
-    @if (Model.TileVMs.Count() > 0)
+    @if (Model.TileVMs.Count() > 1)
     {
     <label for="@Model.FieldName.Replace('.', '_')">@Html.Raw(Model.Label)</label>
     }

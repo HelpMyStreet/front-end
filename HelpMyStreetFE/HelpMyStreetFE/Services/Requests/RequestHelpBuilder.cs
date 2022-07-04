@@ -527,7 +527,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
                 RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
-                RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.On },true),
+                RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On, DueDateType.OpenUntil },true),
                 _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),
             };
         }
@@ -562,6 +562,11 @@ namespace HelpMyStreetFE.Services.Requests
                 vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForPostalActivities = true });
             }
 
+            if (dueDateTypes.Contains(DueDateType.OpenUntil))
+            {
+                vms.Add(new RequestHelpTimeViewModel() { ID = 11, Description = "Opportunity Start Date", DueDateType = DueDateType.OpenUntil, HideForPostalActivities = true });
+            }
+
             return vms;
         }
         private List<RequestorViewModel> GetRequestorViewModels(RequestHelpFormVariant variant)
@@ -582,24 +587,25 @@ namespace HelpMyStreetFE.Services.Requests
 
         private List<FrequencyViewModel> GetFrequencies(RequestHelpFormVariant variant)
         {
-            if (variant == RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter)
-            {
-                return new List<FrequencyViewModel>()
-                {
-                    new FrequencyViewModel(Frequency.Once, false)
-                };
-            }
-            else
-            {
+            //if (variant == RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter)
+            //{
+            //    return new List<FrequencyViewModel>()
+            //    {
+            //        new FrequencyViewModel(Frequency.Once, false)
+            //    };
+            //}
+            //else
+            //{
                 return new List<FrequencyViewModel>
                 {
                     new FrequencyViewModel(Frequency.Once, false),
                     new FrequencyViewModel(Frequency.Daily, true),
                     new FrequencyViewModel(Frequency.Weekly, true),
                     new FrequencyViewModel(Frequency.Fortnightly, true),
-                    new FrequencyViewModel(Frequency.EveryFourWeeks, true)
+                    new FrequencyViewModel(Frequency.EveryFourWeeks, true),
+                    new FrequencyViewModel(Frequency.Ongoing, true)
                 };
-            }
+            //}
         }
 
         private List<RequestorViewModel> GetRequestorViewModels(List<RequestorType> requestorTypes)

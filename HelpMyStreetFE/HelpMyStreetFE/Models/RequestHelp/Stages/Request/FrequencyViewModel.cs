@@ -21,7 +21,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public Frequency Frequency { get; private set; }
 
         public bool HideForFaceCoverings { set { if (value) HideTileWhen.Add(new Tuple<string, string>("activity", "FaceMask")); } }
-        
+
         public int ID
         {
             get

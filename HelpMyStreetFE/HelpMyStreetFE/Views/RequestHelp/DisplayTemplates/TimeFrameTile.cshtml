@@ -46,7 +46,17 @@
                 </div>
             </div>
         }
+        @if (Model.DueDateType.HasEndDate())
+        {
+            <label class="mt-lg">When does the opportunity close?</label>
 
+            <div class="tiles__tile__content__header pt-xs">Opportunity End Date</div>
+            <div class="on-selected">
+                <input name="currentStep.SelectedTimeFrame.EndDate" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                <span id="dateselectionError" class="error"></span>
+            </div>
+        }
     </div>
+    
 </div>
 
