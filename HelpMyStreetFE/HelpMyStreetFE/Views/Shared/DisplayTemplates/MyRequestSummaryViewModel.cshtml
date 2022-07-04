@@ -97,7 +97,7 @@
                 <span class="job__info__activity__title @activityDetails.SupportActivity.Class()">
                     @if (activityDetails.SupportActivity != SupportActivities.Other)
                     {
-                        <img src="~/img/icons/@activityDetails.SupportActivity.Icon()" />
+                        <img src="~/img/icons/@activityDetails.SupportActivity.Icon()" alt="@activityDetails.SupportActivity.FriendlyNameShort()" />
                     }
                     <span>
                         @activityDetails.GetSupportActivityName

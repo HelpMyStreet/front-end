@@ -60,7 +60,7 @@
             }
             @if (!string.IsNullOrEmpty(activity.Activity.Icon()))
             {
-                <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Activity.Icon()" /> </div>
+                <div class="tiles__tile__content__icon"><img src="~/img/icons/@activity.Activity.Icon()" alt="@Model.Description" /> </div>
             }
             else
             {
