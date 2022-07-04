@@ -28,22 +28,29 @@ namespace HelpMyStreetFE.Services
         }
         public async Task<IEnumerable<NewsTickerMessage>> GetNewsTickerMessages(int? groupId, CancellationToken cancellationToken)
         {
-            var result = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+            try
             {
+                var result = await _memDistCache.GetCachedDataAsync(async (cancellationToken) =>
+                {
                 
-                IEnumerable<NewsTickerMessage> groupServiceMessages = await _groupService.GetNewsTickerMessages(groupId);
+                    IEnumerable<NewsTickerMessage> groupServiceMessages = await _groupService.GetNewsTickerMessages(groupId);
 
-                IEnumerable<NewsTickerMessage> requestServiceMessages = await _requestService.GetNewsTickerMessages(groupId);
+                    IEnumerable<NewsTickerMessage> requestServiceMessages = await _requestService.GetNewsTickerMessages(groupId);
 
-                IEnumerable<NewsTickerMessage> feedbackServiceMessages = await _feedbackService.GetNewsTickerMessages(groupId);
+                    IEnumerable<NewsTickerMessage> feedbackServiceMessages = await _feedbackService.GetNewsTickerMessages(groupId);
 
-                return groupServiceMessages
-                    .Concat(requestServiceMessages)
-                    .Concat(feedbackServiceMessages);
-            }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, NotInCacheBehaviour.WaitForData);
+                    return groupServiceMessages
+                        .Concat(requestServiceMessages)
+                        .Concat(feedbackServiceMessages);
+                }, $"{CACHE_KEY_PREFIX}-group-{groupId}", RefreshBehaviour.DontWaitForFreshData, cancellationToken, NotInCacheBehaviour.WaitForData);
 
-
-            return result;
+                return result;
+            }
+            catch
+            {
+                // Don't break page if news ticker messages are missing
+                return new List<NewsTickerMessage>();
+            }
         }
     }
 }
