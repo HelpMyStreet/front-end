@@ -79,41 +79,41 @@ a {
   }
 }
 
-h1 {
+h1, .h1 {
   @include title-sz-1;
   color: $dark-blue;
   letter-spacing: 1px;
   font-weight: bold;
 }
 
-h2 {
+h2, .h2 {
   @extend h1;
   @include title-sz-2;
   letter-spacing: 0.5px;
   margin: 0 0 0px;
 }
 
-h3 {
+h3, .h3 {
   @extend h2;
   @include title-sz-3;
   color: black;
   letter-spacing: 0.5px;
 }
 
-h4 {
+h4, .h4 {
   @extend h2;
   @include title-sz-4;
   color: black;
   margin: 15px 0;
 }
 
-h5 {
+h5, .h5 {
   @extend h2;
   @include title-sz-5;
   color: $black;
 }
 
-h6 {
+h6, .h6 {
   @extend h4;
   @include title-sz-6;
   margin-bottom: 0;

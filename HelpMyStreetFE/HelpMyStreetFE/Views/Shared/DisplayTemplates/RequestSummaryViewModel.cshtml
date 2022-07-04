@@ -109,7 +109,7 @@
                     <span class="job__info__activity__title @activityResult.SupportActivity.Class()">
                         @if (activityResult.SupportActivity.ShowIcon())
                         {
-                            <img src="~/img/icons/@activityResult.SupportActivity.Icon()" />
+                            <img src="~/img/icons/@activityResult.SupportActivity.Icon()" alt="@activityResult.SupportActivity.FriendlyNameShort()" />
                         }
                         <span>
                             @activityResult.GetSupportActivityName
