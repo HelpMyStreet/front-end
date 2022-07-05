@@ -606,6 +606,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.Organisation }),
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
                 RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf, RequestorType.Organisation }),
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
                 _ => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf }),
             };
         }
