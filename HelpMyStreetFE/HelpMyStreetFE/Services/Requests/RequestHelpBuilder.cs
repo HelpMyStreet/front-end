@@ -40,6 +40,7 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
                         IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
+                        PageHeadingClass = GetHelpRequestPageHeadingClass(requestHelpFormVariant),
                         Tasks = GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = GetRequestorViewModels(requestHelpFormVariant),
                         Frequencies = GetFrequencies(requestHelpFormVariant),
@@ -87,6 +88,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.BostonGNS_Public => "Request Help from Boston Good Neighbour Scheme",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "Request Help from Boston Good Neighbour Scheme",
                 RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => "Request help from Lincolnshire Volunteers",
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "DEMO Request Form",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -112,7 +114,17 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.BostonGNS_Public => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
                 RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => "If you need help from Lincolnshire Volunteers, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "Requests made through **this form** will be available within the Sandbox area of HelpMyStreet **for demonstration and testing purposes only** and will not trigger notifications to general users of HelpMyStreet.\r\n\r\n**Please ensure you can see this message whenever you wish to submit a DEMO / test request.**",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
+            };
+        }
+
+        private string GetHelpRequestPageHeadingClass(RequestHelpFormVariant requestHelpFormVariant)
+        {
+            return requestHelpFormVariant switch
+            {
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "sandbox-warning p-sm-md mt-sm",
+                _ => ""
             };
         }
 
