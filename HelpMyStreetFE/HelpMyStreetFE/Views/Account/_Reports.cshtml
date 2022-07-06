@@ -5,7 +5,8 @@
 @{
     string filterMessage = "To include / exclude a category click on the label(s) above the chart";
     DateTime date = DateTime.UtcNow.Date;
-    var dateFrom = DateTime.UtcNow.Date.AddMonths(-12);
+    var twelveMonthsAgo = DateTime.UtcNow.Date.AddMonths(-12);
+    var dateFrom = new DateTime(twelveMonthsAgo.Year, twelveMonthsAgo.Month, 1);
     var firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
     var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 }
