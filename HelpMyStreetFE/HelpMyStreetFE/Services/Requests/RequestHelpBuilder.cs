@@ -426,9 +426,9 @@ namespace HelpMyStreetFE.Services.Requests
                 tasks.AddRange(new List<TasksViewModel>
                 {
                     new TasksViewModel { SupportActivity = SupportActivities.NHSTransport },
-                    new TasksViewModel { SupportActivity = SupportActivities.NHSSteward },
                     new TasksViewModel { SupportActivity = SupportActivities.NHSCheckInAndChat },
                     new TasksViewModel { SupportActivity = SupportActivities.NHSCheckInAndChatPlus },
+                    new TasksViewModel { SupportActivity = SupportActivities.NHSSteward },
                     new TasksViewModel { SupportActivity = SupportActivities.EmergencySupport },                    
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
