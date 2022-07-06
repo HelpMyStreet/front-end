@@ -163,6 +163,18 @@
         }
     }
 
+    form[selected-activity="Other"] {
+        *[hide-tile-when*="activity:Other"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="AdvertisingRoles"] {
+        *[hide-tile-when*="activity:AdvertisingRoles"] {
+            display: none;
+        }
+    }
+
     *[show-tile-when*="repeats:true"] {
         display: none;
     }
