@@ -1,4 +1,4 @@
-@using HelpMyStreetFE.Models.Account;
+﻿@using HelpMyStreetFE.Models.Account;
 
 @model AccountViewModel
 
@@ -20,26 +20,26 @@
         <h5 class="report_title">Number of requests due each month split by current job status</h5>
         <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
-   {
-       groupId = Model.CurrentGroup.GroupId,
-       chart = HelpMyStreet.Utils.Enums.Charts.RequestVolumeByDueDateAndRecentStatus,
-       chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-       dateFrom = $"{dateFrom:yyyy-MM-dd}",
-       dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
-   })
+       {
+           groupId = Model.CurrentGroup.GroupId,
+           chart = HelpMyStreet.Utils.Enums.Charts.RequestVolumeByDueDateAndRecentStatus,
+           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+           dateFrom = $"{dateFrom:yyyy-MM-dd}",
+           dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
+       })
     </div>
 
     <div class="mt-xl">
         <h5 class="report_title">Number of requests due each month by activity type</h5>
         <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
-   {
-       groupId = Model.CurrentGroup.GroupId,
-       chart = HelpMyStreet.Utils.Enums.Charts.RequestVolumeByActivityType,
-       chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-       dateFrom = $"{dateFrom:yyyy-MM-dd}",
-       dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
-   })
+       {
+           groupId = Model.CurrentGroup.GroupId,
+           chart = HelpMyStreet.Utils.Enums.Charts.RequestVolumeByActivityType,
+           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+           dateFrom = $"{dateFrom:yyyy-MM-dd}",
+           dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
+       })
     </div>
 </div>
 <div class="user-profile profile-panel p-md mt-xl">
@@ -50,50 +50,50 @@
     <div class="mt-lg">
         <h5 class="mb-md">Count of current users by user type</h5>
         @await Component.InvokeAsync("Report", new
-   {
-       groupId = Model.CurrentGroup.GroupId,
-       chart = HelpMyStreet.Utils.Enums.Charts.TotalGroupUsersByType,
-       chartType = HelpMyStreet.Utils.Enums.ChartTypes.DataTable,
-       dateFrom = $"{dateFrom:yyyy-MM-dd}",
-       dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
-   })
+       {
+           groupId = Model.CurrentGroup.GroupId,
+           chart = HelpMyStreet.Utils.Enums.Charts.TotalGroupUsersByType,
+           chartType = HelpMyStreet.Utils.Enums.ChartTypes.DataTable,
+           dateFrom = $"{dateFrom:yyyy-MM-dd}",
+           dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
+       })
     </div>
 
     <div class="mt-lg">
         <h5>Count of new users by month</h5>
         <p>@filterMessage</p>
         @await Component.InvokeAsync("Report", new
-   {
-       groupId = Model.CurrentGroup.GroupId,
-       chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersByType,
-       chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-       dateFrom = $"{dateFrom:yyyy-MM-dd}",
-       dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
-   })
+       {
+           groupId = Model.CurrentGroup.GroupId,
+           chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersByType,
+           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+           dateFrom = $"{dateFrom:yyyy-MM-dd}",
+           dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
+       })
 
         <div class="mt-lg">
             <h5>Count of users leaving by month</h5>
             <p>@filterMessage</p>
             @await Component.InvokeAsync("Report", new
-       {
-           groupId = Model.CurrentGroup.GroupId,
-           chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersLeavingByMonth,
-           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-           dateFrom = $"{dateFrom:yyyy-MM-dd}",
-           dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
-       })
+           {
+               groupId = Model.CurrentGroup.GroupId,
+               chart = HelpMyStreet.Utils.Enums.Charts.VolumeOfUsersLeavingByMonth,
+               chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+               dateFrom = $"{dateFrom:yyyy-MM-dd}",
+               dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
+           })
         </div>
 
         <div class="mt-xl">
             <h5 class="report_title">Number of volunteers accepting requests in the last 14 days</h5>
             @await Component.InvokeAsync("Report", new
-       {
-           groupId = Model.CurrentGroup.GroupId,
-           chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
-           chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
-           dateFrom = $"{DateTime.UtcNow.Date.AddDays(-14):yyyy-MM-dd}",
-           dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
-       })
+           {
+               groupId = Model.CurrentGroup.GroupId,
+               chart = HelpMyStreet.Utils.Enums.Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests,
+               chartType = HelpMyStreet.Utils.Enums.ChartTypes.Bar,
+               dateFrom = $"{DateTime.UtcNow.Date.AddDays(-14):yyyy-MM-dd}",
+               dateTo = $"{lastDayOfMonth:yyyy-MM-dd}"
+           })
         </div>
     </div>
 </div>
