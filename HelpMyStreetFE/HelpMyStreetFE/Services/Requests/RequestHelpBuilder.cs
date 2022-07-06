@@ -613,14 +613,14 @@ namespace HelpMyStreetFE.Services.Requests
 
         private List<FrequencyViewModel> GetFrequencies(RequestHelpFormVariant variant)
         {
-                return new List<FrequencyViewModel>
-                {
-                    new FrequencyViewModel(Frequency.Once, null),
-                    new FrequencyViewModel(Frequency.Daily, new List<SupportActivities>{SupportActivities.FaceMask}),
-                    new FrequencyViewModel(Frequency.Weekly, new List<SupportActivities>{SupportActivities.FaceMask}),
-                    new FrequencyViewModel(Frequency.Fortnightly, new List<SupportActivities>{SupportActivities.FaceMask}),
-                    new FrequencyViewModel(Frequency.EveryFourWeeks, new List<SupportActivities>{SupportActivities.FaceMask}),
-                };
+            return new List<FrequencyViewModel>
+            {
+                new FrequencyViewModel(Frequency.Once, null),
+                new FrequencyViewModel(Frequency.Daily, new List<SupportActivities>{SupportActivities.FaceMask}),
+                new FrequencyViewModel(Frequency.Weekly, new List<SupportActivities>{SupportActivities.FaceMask}),
+                new FrequencyViewModel(Frequency.Fortnightly, new List<SupportActivities>{SupportActivities.FaceMask}),
+                new FrequencyViewModel(Frequency.EveryFourWeeks, new List<SupportActivities>{SupportActivities.FaceMask}),
+            };
         }
 
         private List<RequestorViewModel> GetRequestorViewModels(List<RequestorType> requestorTypes)
