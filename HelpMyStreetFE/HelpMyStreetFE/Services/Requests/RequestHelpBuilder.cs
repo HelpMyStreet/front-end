@@ -569,27 +569,27 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (dueDateTypes.Contains(DueDateType.ASAP))
             {
-                vms.Add(new RequestHelpTimeViewModel { ID = 10, DueDateType = DueDateType.ASAP, Description = "As soon as possible", HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles } });
+                vms.Add(new RequestHelpTimeViewModel { ID = 10, DueDateType = DueDateType.ASAP, Description = "As soon as possible", HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
             }
 
             if (dueDateTypes.Contains(DueDateType.Before))
             {
-                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles } });
-                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles } });
+                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
+                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
                 if (includeWhenConvenient)
                 {
-                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "Within 30 days", Days = 30, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles } });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "Within 30 days", Days = 30, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
                 }
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.AdvertisingRoles } });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
             }
 
             if (dueDateTypes.Contains(DueDateType.SpecificStartAndEndTimes))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.AdvertisingRoles } });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.AdvertisingRoles, SupportActivities.NHSCheckInAndChat, SupportActivities.NHSCheckInAndChatPlus, SupportActivities.NHSTransport, SupportActivities.EmergencySupport } });
             }
 
             return vms;
