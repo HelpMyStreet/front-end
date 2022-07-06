@@ -587,25 +587,29 @@ namespace HelpMyStreetFE.Services.Requests
 
         private List<FrequencyViewModel> GetFrequencies(RequestHelpFormVariant variant)
         {
-            //if (variant == RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter)
-            //{
-            //    return new List<FrequencyViewModel>()
-            //    {
-            //        new FrequencyViewModel(Frequency.Once, false)
-            //    };
-            //}
-            //else
-            //{
+            if (variant == RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter)
+            {
+                return new List<FrequencyViewModel>()
+                {
+                    new FrequencyViewModel(Frequency.Once, new List<SupportActivities>{SupportActivities.AdvertisingRoles}),
+                    new FrequencyViewModel(Frequency.Daily, new List<SupportActivities>{SupportActivities.AdvertisingRoles}),
+                    new FrequencyViewModel(Frequency.Weekly, new List<SupportActivities>{SupportActivities.AdvertisingRoles}),
+                    new FrequencyViewModel(Frequency.Fortnightly, new List<SupportActivities>{SupportActivities.AdvertisingRoles}),
+                    new FrequencyViewModel(Frequency.EveryFourWeeks, new List<SupportActivities>{SupportActivities.AdvertisingRoles}),
+                    new FrequencyViewModel(Frequency.Ongoing, new List<SupportActivities>{SupportActivities.Other})
+                };
+            }
+            else
+            {
                 return new List<FrequencyViewModel>
                 {
-                    new FrequencyViewModel(Frequency.Once, false),
-                    new FrequencyViewModel(Frequency.Daily, true),
-                    new FrequencyViewModel(Frequency.Weekly, true),
-                    new FrequencyViewModel(Frequency.Fortnightly, true),
-                    new FrequencyViewModel(Frequency.EveryFourWeeks, true),
-                    new FrequencyViewModel(Frequency.Ongoing, true)
+                    new FrequencyViewModel(Frequency.Once, null),
+                    new FrequencyViewModel(Frequency.Daily, new List<SupportActivities>{SupportActivities.FaceMask}),
+                    new FrequencyViewModel(Frequency.Weekly, new List<SupportActivities>{SupportActivities.FaceMask}),
+                    new FrequencyViewModel(Frequency.Fortnightly, new List<SupportActivities>{SupportActivities.FaceMask}),
+                    new FrequencyViewModel(Frequency.EveryFourWeeks, new List<SupportActivities>{SupportActivities.FaceMask}),
                 };
-            //}
+            }
         }
 
         private List<RequestorViewModel> GetRequestorViewModels(List<RequestorType> requestorTypes)
