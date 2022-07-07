@@ -4,16 +4,14 @@ export const dateValidationSchemes = {
     FUTURE_DATES_6M: "Permit only dates in next 6 months",
 }
 
-export function datepickerLoad(id, errorId, dateValidationScheme = dateValidationSchemes.OVER_18) {
-    let datepicker = document.getElementById(id);
+export function datepickerLoad(datePickerEl, errorEl, dateValidationScheme = dateValidationSchemes.OVER_18) {
 
-
-    datepicker.addEventListener("focusout", function (e) {
-      validateDate(this.value, errorId, dateValidationScheme);
+    datePickerEl.on("focusout", function (e) {
+        validateDate(this.value, errorEl, dateValidationScheme);
     });
-
+    
      // event listner to add slashes whilst entering input
-    datepicker.addEventListener('input', function (e) {        
+    datePickerEl.on('input', function (e) {        
         var input = this.value;
         if (/\D\/$/.test(input)) input = input.substr(0, input.length - 3);
         var values = input.split('/').map(function (v) {
@@ -31,7 +29,7 @@ export function datepickerLoad(id, errorId, dateValidationScheme = dateValidatio
 
 }
 
-export function validateDate(val, errorId, dateValidationScheme = dateValidationSchemes.OVER_18) {
+export function validateDate(val, errorEl, dateValidationScheme = dateValidationSchemes.OVER_18) {
     var regexFormatString = RegExp(/^(([0-9])|([0-2][0-9])|([3][0-1]))\ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\ \d{4}$/);
     var regex = RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/);
     let stringDate = regexFormatString.test(val);
@@ -39,32 +37,32 @@ export function validateDate(val, errorId, dateValidationScheme = dateValidation
         val = val.replace(/\s/g, '');
     }
     if (regex.test(val) == false && stringDate == false) {
-        $('#' + errorId).show();
-        $('#' + errorId).text("Please enter a valid date in the format DD / MM / YYYY");
+        errorEl.show();
+        errorEl.text("Please enter a valid date in the format DD / MM / YYYY");
         return false;
     } else {
-        $('#' + errorId).hide();
+        errorEl.hide();
         if (!stringDate) {
             var dateParts = val.split("/");
             var dateObject = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
             if (dateValidationScheme == dateValidationSchemes.OVER_18) {
                 var age = _calculateAge(dateObject);
                 if (age < 18) {
-                    $('#' + errorId).show();
-                    $('#' + errorId).text("You must be at least 18 years old to create an account");
+                    errorEl.show();
+                    errorEl.text("You must be at least 18 years old to create an account");
                     return false;
                 }
             } else if (dateValidationScheme == dateValidationSchemes.FUTURE_DATES || dateValidationScheme == dateValidationSchemes.FUTURE_DATES_6M) {
                 if (dateObject < new Date().setHours(0, 0, 0, 0)) {
-                    $('#' + errorId).show();
-                    $('#' + errorId).text("Please enter a date in the future");
+                    errorEl.show();
+                    errorEl.text("Please enter a date in the future");
                     return false;
                 }
             }
             if (dateValidationScheme == dateValidationSchemes.FUTURE_DATES_6M) {
                 if (dateObject > new Date().setMonth((new Date()).getMonth() + 6)) {
-                    $('#' + errorId).show();
-                    $('#' + errorId).text("Please enter a date in the next 6 months");
+                    errorEl.show();
+                    errorEl.text("Please enter a date in the next 6 months");
                     return false;
                 }
             }

@@ -18,9 +18,9 @@
             <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
             @if (Model.DueDateType.HasDate())
             {
-                <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
-                    <span id="dateselectionError" class="error"></span>
+                <div id="start-date-field-container" class="on-selected">
+                    <input name="currentStep.SelectedTimeFrame.Date" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                    <span class="dateselectionError error"></span>
                 </div>
             }
         </div>
@@ -50,9 +50,9 @@
         {
             <div class="tiles__tile__content sm4">
                 <div class="tiles__tile__content__header pt-xs">Open until</div>
-                <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.EndDate" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
-                    <span id="dateselectionError" class="error"></span>
+                <div id="end-date-field-container" class="on-selected">
+                    <input name="currentStep.SelectedTimeFrame.EndDate" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                    <span class="dateselectionError error"></span>
                 </div>
             </div>
         }

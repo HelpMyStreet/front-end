@@ -11,9 +11,10 @@ export function intialiseRequestStage() {
 
     trackEvent("Request form", "View 0.request", "", 0);
 
-    if ($('#datepicker').length > 0) {
-        datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
-    }
+    $('input.datepicker').each(function () {
+        $(this).addClass('yes');
+        datepickerLoad($(this), $(this).parent().find('.dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
+    });
 }
 
 
@@ -110,10 +111,10 @@ if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSuppor
 
 function validateDateIfNecessary() {
     if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
-        return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
+        return validateDate($('#start-date-field-container input').val(), $('#start-date-field-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
     } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "7") {
         let valid = true;
-        if (!validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M)) {
+        if (!validateDate($('#start-date-field-container input').val(), $('#start-date-field-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M)) {
             valid = false;
         }
         if ($('input[name="currentStep.SelectedTimeFrame.StartTime"]').val() == "") {

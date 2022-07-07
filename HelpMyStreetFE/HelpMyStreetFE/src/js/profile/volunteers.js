@@ -35,7 +35,7 @@ var initialiseAddCredentialLinks = function () {
     };
 
     popup = await showServerSidePopup(url, settings);
-    datepickerLoad('datepicker', 'datepicker-error', dateValidationSchemes.FUTURE_DATES);
+    datepickerLoad($('#datepicker'), $('#datepicker-error'), dateValidationSchemes.FUTURE_DATES);
   });
 };
 
@@ -81,7 +81,7 @@ var validateCredentialForm = function (form) {
     $('#datepicker-error').text('Please select an option or enter a date').show();
     return false;
   }
-  if (dateValue !== 'Null' && !validateDate(dateValue, 'datepicker', 'datepicker-error', dateValidationSchemes.FUTURE_DATES)) {
+  if (dateValue !== 'Null' && !validateDate(dateValue, $('#datepicker-error'), dateValidationSchemes.FUTURE_DATES)) {
     return false;
   }
   return valid;
