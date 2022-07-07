@@ -589,7 +589,7 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (dueDateTypes.Contains(DueDateType.OpenUntil))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 11, Description = "Opportunity Start Date", DueDateType = DueDateType.OpenUntil, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.Other } });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 11, Description = "Opportunity start date", DueDateType = DueDateType.OpenUntil, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.Other } });
             }
 
             return vms;
