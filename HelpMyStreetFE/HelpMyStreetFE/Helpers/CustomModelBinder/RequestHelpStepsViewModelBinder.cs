@@ -148,14 +148,6 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     }
                     if (time.DueDateType.HasEndDate())
                     {
-                        //if(DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndDate").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime x))
-                        //{
-                        //    int a = 1;
-                        //}
-                        //else
-                        //{
-                        //    int b = 2;
-                        //}
                         DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndDate").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime endDate);
                         time.EndTime = endDate;
                     }
