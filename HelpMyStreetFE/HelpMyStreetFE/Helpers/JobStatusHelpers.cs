@@ -81,6 +81,8 @@ namespace HelpMyStreetFE.Helpers
                 JobStatuses.InProgress => 40,
                 JobStatuses.Done => 50,
                 JobStatuses.Cancelled => 100,
+                JobStatuses.Approved => 200,
+                JobStatuses.Rejected => 300,
                 _ => throw new ArgumentException(message: $"Unexpected JobStatuses value: {jobStatus}", paramName: nameof(jobStatus))
             };
         }

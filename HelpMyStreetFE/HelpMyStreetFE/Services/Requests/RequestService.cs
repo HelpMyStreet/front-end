@@ -293,11 +293,13 @@ namespace HelpMyStreetFE.Services.Requests
         private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
         {
             List<EnrichedStatusHistory> eHist = history
+                .Where(x=> x.JobStatusChangeReasonCode == JobStatusChangeReasonCodes.UserChange)
                 .OrderBy(o => o.StatusDate)
                 .ThenBy(o=> o.JobStatus.UsualOrderOfProgression())
                 .Select(h => new EnrichedStatusHistory(h)).ToList();
 
-            int latestVolunteerId = -1;
+
+            int latestCreatedById = -1;
 
             for (int i = 0; i < eHist.Count; i++)
             {
@@ -307,10 +309,10 @@ namespace HelpMyStreetFE.Services.Requests
                         eHist[i].JobStatusDescription = "Created";
                         break;
                     case JobStatuses.Open:
-                        if (latestVolunteerId > 0)
+                        if (latestCreatedById > 0)
                         {
                             eHist[i].JobStatusDescription = "Released";
-                            eHist[i].StatusHistory.VolunteerUserID = latestVolunteerId;
+                            eHist[i].StatusHistory.CreatedByUserID = latestCreatedById;
                         }
                         else if (i == 0)
                         {
@@ -326,13 +328,13 @@ namespace HelpMyStreetFE.Services.Requests
                         break;
                 }
 
-                if ((eHist[i].StatusHistory.VolunteerUserID ?? -1) > 0)
+                if ((eHist[i].StatusHistory.CreatedByUserID ?? -1) > 0)
                 {
-                    latestVolunteerId = eHist[i].StatusHistory.VolunteerUserID.Value;
+                    latestCreatedById = eHist[i].StatusHistory.CreatedByUserID.Value;
 
                     if (ShowNames)
                     {
-                        eHist[i].VolunteerUser = await _userService.GetUserAsync(eHist[i].StatusHistory.VolunteerUserID.Value, cancellationToken);
+                        eHist[i].ChangeMadeByUser = await _userService.GetUserAsync(eHist[i].StatusHistory.CreatedByUserID.Value, cancellationToken);
                     }
                 }
             }
