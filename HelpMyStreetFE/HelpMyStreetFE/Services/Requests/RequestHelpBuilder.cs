@@ -40,6 +40,7 @@ namespace HelpMyStreetFE.Services.Requests
                     {
                         PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
                         IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
+                        PageHeadingClass = GetHelpRequestPageHeadingClass(requestHelpFormVariant),
                         Tasks = GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = GetRequestorViewModels(requestHelpFormVariant),
                         Frequencies = GetFrequencies(requestHelpFormVariant),
@@ -87,6 +88,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.BostonGNS_Public => "Request Help from Boston Good Neighbour Scheme",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "Request Help from Boston Good Neighbour Scheme",
                 RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => "Request help from Lincolnshire Volunteers",
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "DEMO Request Form",
                 _ => "What type of help are you looking for?"
             };
         }
@@ -112,7 +114,17 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.BostonGNS_Public => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
                 RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => "If you need help from Lincolnshire Volunteers, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "Requests made through **this form** will be available within the Sandbox area of HelpMyStreet **for demonstration and testing purposes only** and will not trigger notifications to general users of HelpMyStreet.\r\n\r\n**Please ensure you can see this message whenever you wish to submit a DEMO / test request.**",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
+            };
+        }
+
+        private string GetHelpRequestPageHeadingClass(RequestHelpFormVariant requestHelpFormVariant)
+        {
+            return requestHelpFormVariant switch
+            {
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "sandbox-warning p-sm-md mt-sm",
+                _ => ""
             };
         }
 
@@ -409,6 +421,18 @@ namespace HelpMyStreetFE.Services.Requests
                     new TasksViewModel { SupportActivity = SupportActivities.Other },
                  });
             }
+            else if (requestHelpFormVariant == RequestHelpFormVariant.NHSVRDemo_RequestSubmitter)
+            {
+                tasks.AddRange(new List<TasksViewModel>
+                {
+                    new TasksViewModel { SupportActivity = SupportActivities.NHSTransport },
+                    new TasksViewModel { SupportActivity = SupportActivities.NHSCheckInAndChat },
+                    new TasksViewModel { SupportActivity = SupportActivities.NHSCheckInAndChatPlus },
+                    new TasksViewModel { SupportActivity = SupportActivities.NHSSteward },
+                    new TasksViewModel { SupportActivity = SupportActivities.EmergencySupport },                    
+                    new TasksViewModel { SupportActivity = SupportActivities.Other },
+                 });
+            }
             else
             {
                 tasks.AddRange(new List<TasksViewModel>
@@ -533,7 +557,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.LincolnshireVolunteers => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
                 RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.SpecificStartAndEndTimes }, false),
                 RequestHelpFormVariant.Sandbox_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
-
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.SpecificStartAndEndTimes }, true),
                 _ => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),
             };
         }
@@ -545,27 +569,27 @@ namespace HelpMyStreetFE.Services.Requests
 
             if (dueDateTypes.Contains(DueDateType.ASAP))
             {
-                vms.Add(new RequestHelpTimeViewModel { ID = 10, DueDateType = DueDateType.ASAP, Description = "As soon as possible", HideForPostalActivities = true, HideForAppointmentActivities = true });
+                vms.Add(new RequestHelpTimeViewModel { ID = 10, DueDateType = DueDateType.ASAP, Description = "As soon as possible", HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
             }
 
             if (dueDateTypes.Contains(DueDateType.Before))
             {
-                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true, HideForAppointmentActivities = true });
-                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true, HideForAppointmentActivities = true });
+                vms.Add(new RequestHelpTimeViewModel { ID = 3, DueDateType = DueDateType.Before, Description = "Within a week", Days = 7, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
+                vms.Add(new RequestHelpTimeViewModel { ID = 8, DueDateType = DueDateType.Before, Description = "Within 2 weeks", Days = 14, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
                 if (includeWhenConvenient)
                 {
-                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "Within 30 days", Days = 30, HideForRepeatRequests = true, HideForAppointmentActivities = true });
+                    vms.Add(new RequestHelpTimeViewModel { ID = 4, DueDateType = DueDateType.Before, Description = "Within 30 days", Days = 30, HideForRepeatRequests = true, HideForSupportActivities = new List<SupportActivities> { SupportActivities.VaccineSupport, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
                 }
             }
 
             if (dueDateTypes.Contains(DueDateType.On))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On, HideForPostalActivities = true });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 6, Description = "On a specific date", DueDateType = DueDateType.On, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.AdvertisingRoles, SupportActivities.NHSSteward } });
             }
 
             if (dueDateTypes.Contains(DueDateType.SpecificStartAndEndTimes))
             {
-                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForPostalActivities = true });
+                vms.Add(new RequestHelpTimeViewModel() { ID = 7, Description = "On a specific date", DueDateType = DueDateType.SpecificStartAndEndTimes, HideForSupportActivities = new List<SupportActivities> { SupportActivities.FaceMask, SupportActivities.AdvertisingRoles, SupportActivities.NHSCheckInAndChat, SupportActivities.NHSCheckInAndChatPlus, SupportActivities.NHSTransport, SupportActivities.EmergencySupport } });
             }
 
             return vms;
@@ -582,6 +606,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.ApexBankStaff_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.Organisation }),
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
                 RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf, RequestorType.Organisation }),
+                RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => GetRequestorViewModels(new List<RequestorType> { RequestorType.OnBehalf, RequestorType.Organisation }),
                 _ => GetRequestorViewModels(new List<RequestorType> { RequestorType.Myself, RequestorType.OnBehalf }),
             };
         }
@@ -590,11 +615,11 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return new List<FrequencyViewModel>
             {
-                new FrequencyViewModel(Frequency.Once, false),
-                new FrequencyViewModel(Frequency.Daily, true),
-                new FrequencyViewModel(Frequency.Weekly, true),
-                new FrequencyViewModel(Frequency.Fortnightly, true),
-                new FrequencyViewModel(Frequency.EveryFourWeeks, true)
+                new FrequencyViewModel(Frequency.Once, null),
+                new FrequencyViewModel(Frequency.Daily, new List<SupportActivities>{SupportActivities.FaceMask}),
+                new FrequencyViewModel(Frequency.Weekly, new List<SupportActivities>{SupportActivities.FaceMask}),
+                new FrequencyViewModel(Frequency.Fortnightly, new List<SupportActivities>{SupportActivities.FaceMask}),
+                new FrequencyViewModel(Frequency.EveryFourWeeks, new List<SupportActivities>{SupportActivities.FaceMask}),
             };
         }
 

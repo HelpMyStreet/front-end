@@ -10,18 +10,20 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
 {
     public class FrequencyViewModel : BasicTileViewModel
     {
-        public FrequencyViewModel(Frequency frequency, bool hideForFaceCoverings)
+        public FrequencyViewModel(Frequency frequency, List<SupportActivities> hideForSupportActivities)
         {
             DataType = "frequency";
             Frequency = frequency;
             Description = frequency.FriendlyName();
-            HideForFaceCoverings = hideForFaceCoverings;
+
+            if (hideForSupportActivities != null)
+            {
+                hideForSupportActivities.ForEach(sa => HideTileWhen.Add(new Tuple<string, string>("activity", sa.ToString())));
+            }
         }
 
         public Frequency Frequency { get; private set; }
 
-        public bool HideForFaceCoverings { set { if (value) HideTileWhen.Add(new Tuple<string, string>("activity", "FaceMask")); } }
-        
         public int ID
         {
             get
