@@ -11,9 +11,11 @@ export function intialiseRequestStage() {
 
     trackEvent("Request form", "View 0.request", "", 0);
 
-    $('input.datepicker').each(function () {
-        $(this).addClass('yes');
+    $('.start-date-container input.datepicker').each(function () {
         datepickerLoad($(this), $(this).parent().find('.dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
+    });
+    $('.end-date-container input.datepicker').each(function () {
+        datepickerLoad($(this), $(this).parent().find('.dateselectionError'), dateValidationSchemes.FUTURE_DATES);
     });
 }
 
@@ -111,7 +113,7 @@ if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSuppor
 
 function validateDateIfNecessary() {
     if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
-        return validateDate($('#start-date-field-container input').val(), $('#start-date-field-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
+        return validateDate($('#time_6 start-date-container input').val(), $('#time_6 start-date-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
     } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "7") {
         let valid = true;
         if (!validateDate($('#start-date-field-container input').val(), $('#start-date-field-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M)) {
@@ -125,9 +127,12 @@ function validateDateIfNecessary() {
         if ($('input[name="currentStep.SelectedTimeFrame.EndTime"]').val() == "") {
             $('#endtimeselectionError').show().text("Please enter an end time");
             $('input[name="currentStep.SelectedTimeFrame.EndTime"]').on('blur', function () { $('#endtimeselectionError').hide(); });
-          valid = false;
+            valid = false;
         }
         return valid;
+    } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "11") {
+        return validateDate($('#time_11 start-date-container input').val(), $('#time_11 start-date-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M)
+            && validateDate($('#time_11 end-date-container input').val(), $('#time_11 end-date-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES);
     } else {
         return true;
     }
