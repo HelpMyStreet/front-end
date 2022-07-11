@@ -24,7 +24,7 @@
         recipient.AlternatePhoneNumber = string.IsNullOrEmpty(recipient.AlternatePhoneNumber) ? "None Provided" : recipient.AlternatePhoneNumber;
     }
 
-    var repeatRequest = Model.FrequencyRequested.Frequency != Frequency.Once;
+    var repeatRequest = Model.FrequencyRequested.Frequency != Frequency.Once && Model.FrequencyRequested.Frequency != Frequency.Ongoing;
 }
 <input type="hidden" name="ReviewStep" class="model" value='@Json.Serialize(Model)' />
 @Html.Hidden("FormStage", RequestHelpFormStage.Review)
@@ -78,6 +78,10 @@
                             <div class="tiles__tile__content__description">on @Html.Raw(endTime.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
                         }
                         <div class="tiles__tile__content__description">(duration @Model.TimeRequested.DurationString)</div>
+                    }
+                    @if (Model.TimeRequested.DueDateType.HasEndDate())
+                    {
+                        <div class="tiles__tile__content__description">Open until @Html.Raw(Model.TimeRequested.EndTime.Value.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
                     }
                 </div>
             </div>
