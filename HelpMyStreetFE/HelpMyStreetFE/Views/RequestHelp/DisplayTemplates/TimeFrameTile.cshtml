@@ -51,7 +51,7 @@
             <div class="tiles__tile__content sm4">
                 <div class="tiles__tile__content__header pt-xs">Open until</div>
                 <div class="end-date-container on-selected">
-                    <input name="currentStep.SelectedTimeFrame.EndDate" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                    <input name="currentStep.SelectedTimeFrame.EndDate" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.EndTime.HasValue && Model.EndTime.Value != DateTime.MinValue ? Model.EndTime.Value.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
                     <span class="dateselectionError error"></span>
                 </div>
             </div>
