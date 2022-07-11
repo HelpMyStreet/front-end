@@ -19,7 +19,7 @@
             @if (Model.DueDateType.HasDate())
             {
                 <div class="start-date-container on-selected">
-                    <input name="currentStep.SelectedTimeFrame.Date" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                    <input name="currentStep.SelectedTimeFrame[@Model.ID].Date" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
                     <span class="dateselectionError error"></span>
                 </div>
             }
