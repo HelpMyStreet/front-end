@@ -102,11 +102,11 @@
                                             <span>
                                                 @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
                                             </span>
-                                            @if (statusChange.VolunteerUser != null)
+                                            @if (statusChange.ChangeMadeByUser != null)
                                             {
                                                 <span>
                                                     @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
-                                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                                    @statusChange.ChangeMadeByUser.UserPersonalDetails.FullName()
                                                 </span>
                                             }
                                         </dd>

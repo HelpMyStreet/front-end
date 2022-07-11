@@ -33,9 +33,7 @@ namespace HelpMyStreetFE.Helpers
                         {"Accepted", YELLOW },
                         {"Done", GREEN },
                         {"Overdue", PINK },
-                        {"Cancelled", GREY },
-                        {"Applied For", DARK_BLUE }
-
+                        {"Cancelled", GREY }
                     };                
                 case Charts.RecentlyActiveVolunteersByVolumeOfAcceptedRequests:
                     return new Dictionary<string, string>()

@@ -160,11 +160,11 @@
                     {
                         <dt>
                             @statusChange.JobStatusDescription
-                            @if (statusChange.VolunteerUser != null)
+                            @if (statusChange.ChangeMadeByUser != null)
                             {
                                 <span class="context">
                                     @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
-                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                    @statusChange.ChangeMadeByUser.UserPersonalDetails.FullName()
                                 </span>
                             }
                         </dt>
