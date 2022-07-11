@@ -8,7 +8,7 @@
     todaysDate = todaysDate.ToLocalTime();
     var stringDate = todaysDate.AddDays(7).ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT);
 
-    var widthClass = "sm" + (1 + (Model.DueDateType.HasStartTime() ? 1 : 0) + (Model.DueDateType.HasEndTime() ? 1 : 0)) * 4;
+    var widthClass = "sm" + (1 + (Model.DueDateType.HasStartTime() ? 1 : 0) + (Model.DueDateType.HasEndTime() ? 1 : 0) + (Model.DueDateType.HasEndDate() ? 1 : 0)) * 4;
 }
 
 <div class="@widthClass" hide-tile-when="@Model.HideTileWhenAttribute">
@@ -18,9 +18,9 @@
             <div class="tiles__tile__content__header pt-xs">@Model.Description</div>
             @if (Model.DueDateType.HasDate())
             {
-                <div class="on-selected">
-                    <input name="currentStep.SelectedTimeFrame.Date" type="text" id="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
-                    <span id="dateselectionError" class="error"></span>
+                <div class="start-date-container on-selected">
+                    <input name="currentStep.SelectedTimeFrame.Date" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                    <span class="dateselectionError error"></span>
                 </div>
             }
         </div>
@@ -46,7 +46,17 @@
                 </div>
             </div>
         }
-
+        @if (Model.DueDateType.HasEndDate())
+        {
+            <div class="tiles__tile__content sm4">
+                <div class="tiles__tile__content__header pt-xs">Open until</div>
+                <div class="end-date-container on-selected">
+                    <input name="currentStep.SelectedTimeFrame.EndDate" type="text" class="datepicker" placeholder="e.g. @(stringDate)" autocomplete="off" value="@(Model.StartTime != DateTime.MinValue ? Model.StartTime.ToString(DatePickerHelpers.DATE_PICKER_DATE_FORMAT) : "")" />
+                    <span class="dateselectionError error"></span>
+                </div>
+            </div>
+        }
     </div>
+    
 </div>
 

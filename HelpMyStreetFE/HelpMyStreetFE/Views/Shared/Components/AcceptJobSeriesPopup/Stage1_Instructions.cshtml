@@ -14,7 +14,7 @@
         <div class="popup__content__header">Accept one or more @(isShift ? "shifts" : "requests for help")?</div>
         <div class="popup__content__text">
             <p>
-                This <strong>@Model.OpenJobsForUser.First().SupportActivity.FriendlyNameShort()</strong> @requestType series is managed by <strong>@Model.ReferringGroup</strong>. 
+                This <strong>@Model.OpenJobsForUser.First().GetSupportActivityName</strong> @requestType series is managed by <strong>@Model.ReferringGroup</strong>. 
                 When you accept a @requestType in this series your details will become visible to their administrator(s), who may use these details to contact you about this @requestType.
             </p>
 
