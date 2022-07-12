@@ -158,16 +158,27 @@
                 <dl class="highlight-last">
                     @foreach (var statusChange in Model.JobDetail.Item.JobStatusHistory)
                     {
-                        <dt>
-                            @statusChange.JobStatusDescription
-                            @if (statusChange.ChangeMadeByUser != null)
+                    <dt>
+                        @statusChange.JobStatusDescription
+                        @if (statusChange.ChangeMadeByUser != null)
+                        {
+                            @if (statusChange.StatusHistory.JobStatus == JobStatuses.InProgress)
                             {
                                 <span class="context">
-                                    @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
+                                    with
+                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="context">
+                                    by
                                     @statusChange.ChangeMadeByUser.UserPersonalDetails.FullName()
                                 </span>
                             }
-                        </dt>
+
+                        }
+                    </dt>
                         <dd>
                             @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
                         </dd>

@@ -81,7 +81,7 @@
                     }
                     @if (Model.TimeRequested.DueDateType.HasEndDate())
                     {
-                        <div class="tiles__tile__content__description">Open until @Html.Raw(Model.TimeRequested.EndTime.Value.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
+                        <div class="tiles__tile__content__description">Open until @Html.Raw(Model.TimeRequested.EndTime.Value.FormatDate(DateTimeFormat.LongDateTimeHTMLFormatWithYear, false))</div>
                     }
                 </div>
             </div>
