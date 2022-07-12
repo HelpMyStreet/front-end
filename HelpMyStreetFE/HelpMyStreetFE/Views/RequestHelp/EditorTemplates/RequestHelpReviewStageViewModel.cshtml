@@ -75,7 +75,7 @@
                         <div class="tiles__tile__content__description">Ending at @endTime.FormatDate(DateTimeFormat.TimeFormat, false)</div>
                         @if (endTime != Model.TimeRequested.StartTime.Date)
                         {
-                            <div class="tiles__tile__content__description">on @Html.Raw(endTime.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</div>
+                            <div class="tiles__tile__content__description">on @Html.Raw(endTime.FormatDate(DateTimeFormat.LongDateTimeHTMLFormatWithYear, false))</div>
                         }
                         <div class="tiles__tile__content__description">(duration @Model.TimeRequested.DurationString)</div>
                     }
