@@ -294,12 +294,10 @@ namespace HelpMyStreetFE.Services.Requests
         private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
         {
             List<EnrichedStatusHistory> eHist = history
-                .Where(x=> x.JobStatusChangeReasonCode == JobStatusChangeReasonCodes.UserChange)
+                .Where(x => x.JobStatusChangeReasonCode == JobStatusChangeReasonCodes.UserChange)
                 .OrderBy(o => o.StatusDate)
-                .ThenBy(o=> o.JobStatus.UsualOrderOfProgression())
+                .ThenBy(o => o.JobStatus.UsualOrderOfProgression())
                 .Select(h => new EnrichedStatusHistory(h)).ToList();
-
-            var json = JsonConvert.SerializeObject(eHist);
 
             int latestVolunteerId = -1;
 
@@ -348,8 +346,6 @@ namespace HelpMyStreetFE.Services.Requests
                     }
                 }
             }
-
-            var json2 = JsonConvert.SerializeObject(eHist);
 
             return eHist;
         }
