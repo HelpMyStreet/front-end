@@ -11,9 +11,12 @@ export function intialiseRequestStage() {
 
     trackEvent("Request form", "View 0.request", "", 0);
 
-    if ($('#datepicker').length > 0) {
-        datepickerLoad('datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
-    }
+    $('.start-date-container input.datepicker').each(function () {
+        datepickerLoad($(this), $(this).parent().find('.dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
+    });
+    $('.end-date-container input.datepicker').each(function () {
+        datepickerLoad($(this), $(this).parent().find('.dateselectionError'), dateValidationSchemes.FUTURE_DATES);
+    });
 }
 
 
@@ -64,7 +67,7 @@ var onTileSelected = function (type, value, triggeredByUserAction) {
     } else if (type === 'frequency') {
         if (value === '') {
             $('.request-help form').attr('selected-repeat', '');
-        } else if (value === 'Once') {
+        } else if (value === 'Once' || value === 'Ongoing') {
             $('.request-help form').attr('selected-repeat', 'false');
             $('.occurrences-question input').attr('data-required', 'False');
         } else {
@@ -94,7 +97,13 @@ if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSuppor
         $('#requestorFor_1').parent().hide(); // myself
         $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
-    } else {
+    }
+    else if (supportActivity === 'AdvertisingRoles') {
+        $('#requestorFor_1').parent().hide(); // myself
+        $('#requestorFor_2').parent().hide(); // someone else
+        $('#requestorFor_3').parent().show(); // onbehalf of organisation
+    }
+    else {
         $('#requestorFor_1').parent().show(); // myself
         $('#requestorFor_2').parent().show(); // someone else
         $('#requestorFor_3').parent().show(); // onbehalf of organisation
@@ -103,10 +112,10 @@ if (supportActivity === 'VolunteerSupport' || supportActivity === 'VaccineSuppor
 
 function validateDateIfNecessary() {
     if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "6") {
-        return validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M);
+        return validateDate($('#time_6 start-date-container input').val(), $('#time_6 start-date-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M);
     } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "7") {
         let valid = true;
-        if (!validateDate($('#datepicker').val(), 'datepicker', 'dateselectionError', dateValidationSchemes.FUTURE_DATES_6M)) {
+        if (!validateDate($('#start-date-field-container input').val(), $('#start-date-field-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M)) {
             valid = false;
         }
         if ($('input[name="currentStep.SelectedTimeFrame.StartTime"]').val() == "") {
@@ -117,9 +126,12 @@ function validateDateIfNecessary() {
         if ($('input[name="currentStep.SelectedTimeFrame.EndTime"]').val() == "") {
             $('#endtimeselectionError').show().text("Please enter an end time");
             $('input[name="currentStep.SelectedTimeFrame.EndTime"]').on('blur', function () { $('#endtimeselectionError').hide(); });
-          valid = false;
+            valid = false;
         }
         return valid;
+    } else if ($('input[name="currentStep.SelectedTimeFrame.Id"]').val() == "11") {
+        return validateDate($('#time_11 start-date-container input').val(), $('#time_11 start-date-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES_6M)
+            && validateDate($('#time_11 end-date-container input').val(), $('#time_11 end-date-container .dateselectionError'), dateValidationSchemes.FUTURE_DATES);
     } else {
         return true;
     }

@@ -145,6 +145,10 @@ else
                 the person who requested the help would prefer it on this date.
             </dd>
         }
+        else if (Model.DueDateType == DueDateType.OpenUntil)
+        {
+            <dd>This request is open between <strong>@Html.Raw(notBeforeDate.Value.FormatDate(DateTimeFormat.LongDateHTMLFormat, false))</strong> and <strong>@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateTimeHTMLFormatWithYear, false))</strong>.</dd>
+        }
         else if (notBeforeDate.HasValue && notBeforeDate.Value.ToUKFromUTCTime().Date > today)
         {
             <dd>
@@ -153,10 +157,6 @@ else
                 and
                 <strong title="@dueDate.FriendlyFutureDate()">@Html.Raw(dueDate.FormatDate(DateTimeFormat.LongDateHTMLFormat))</strong>
             </dd>
-        }
-        else if (Model.DueDateType == DueDateType.OpenUntil)
-        {
-            <dd>This request is open until <strong>@Html.Raw(dueDate.FormatDate(DateTimeFormat.ShortDateFormat))</strong></dd>
         }
         else
         {

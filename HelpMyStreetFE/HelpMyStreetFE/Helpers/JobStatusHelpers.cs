@@ -75,8 +75,10 @@ namespace HelpMyStreetFE.Helpers
             return jobStatus switch
             {
                 JobStatuses.New => 10,
+                JobStatuses.Rejected => 15,
                 JobStatuses.Open => 20,
                 JobStatuses.AppliedFor => 25,
+                JobStatuses.Approved => 27,
                 JobStatuses.Accepted => 30,
                 JobStatuses.InProgress => 40,
                 JobStatuses.Done => 50,

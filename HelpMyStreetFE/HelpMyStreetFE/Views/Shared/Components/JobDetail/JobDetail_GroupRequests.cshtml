@@ -155,24 +155,7 @@
     <div class="job__expander__content">
         <div class="row">
             <div class="sm12">
-                <dl class="highlight-last">
-                    @foreach (var statusChange in Model.JobDetail.Item.JobStatusHistory)
-                    {
-                        <dt>
-                            @statusChange.JobStatusDescription
-                            @if (statusChange.VolunteerUser != null)
-                            {
-                                <span class="context">
-                                    @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
-                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
-                                </span>
-                            }
-                        </dt>
-                        <dd>
-                            @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
-                        </dd>
-                    }
-                </dl>
+                <partial name="_JobStatusHistory" model="Model.JobDetail.Item.JobStatusHistory" />
             </div>
         </div>
     </div>

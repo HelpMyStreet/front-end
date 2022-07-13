@@ -1,0 +1,33 @@
+﻿@using HelpMyStreetFE.Models.Account.Jobs;
+@using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreet.Utils.Enums;
+
+@model List<EnrichedStatusHistory>
+
+<dl class="highlight-last">
+    @foreach (var statusChange in Model)
+    {
+        <dt>
+            @statusChange.JobStatusDescription
+        </dt>
+        <dd>
+            <span>
+                @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
+            </span>
+            @if (statusChange.StatusHistory.JobStatus == JobStatuses.InProgress)
+            {
+                <span>
+                    with
+                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
+                </span>
+            }
+            else
+            {
+                <span>
+                    by
+                    @statusChange.ChangeMadeByUser.UserPersonalDetails.FullName()
+                </span>
+            }                                            
+        </dd>
+    }
+</dl>
