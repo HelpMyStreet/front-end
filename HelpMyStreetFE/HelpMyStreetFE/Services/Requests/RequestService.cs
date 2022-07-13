@@ -12,10 +12,8 @@ using System.Threading;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Contracts.RequestService.Request;
-using HelpMyStreet.Contracts;
 using HelpMyStreet.Contracts.ReportService;
 using HelpMyStreetFE.Helpers;
-using Newtonsoft.Json;
 
 namespace HelpMyStreetFE.Services.Requests
 {
