@@ -38,8 +38,8 @@ namespace HelpMyStreetFE.Services.Requests
                 {
                     new RequestHelpRequestStageViewModel
                     {
-                        PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant),
-                        IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant),
+                        PageHeading = GetHelpRequestPageTitle(requestHelpFormVariant, referringGroupID),
+                        IntoText = GetHelpRequestPageIntroText(requestHelpFormVariant, referringGroupID),
                         PageHeadingClass = GetHelpRequestPageHeadingClass(requestHelpFormVariant),
                         Tasks = GetRequestHelpTasks(requestHelpFormVariant),
                         Requestors = GetRequestorViewModels(requestHelpFormVariant),
@@ -64,7 +64,37 @@ namespace HelpMyStreetFE.Services.Requests
             return model;
         }
 
-        private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant)
+        private string GetLincolnshirePageTitle(int referringGroupId)
+        {
+            switch(referringGroupId)
+            {
+                case (int)HelpMyStreet.Utils.Enums.Groups.LincolnshireVolunteers:
+                    return "Request help from Lincolnshire Volunteers";
+                case (int)HelpMyStreet.Utils.Enums.Groups.LincolnshireLCVS:
+                    return "Request help as Lincolnshire VCS (LCVS)";
+                case (int)HelpMyStreet.Utils.Enums.Groups.LincolnshireVCS:
+                    return "Request help as Lincolnshire CVS (CVS)";
+                default:
+                    throw new ArgumentException($"Unexpected ReferringGroup value: {referringGroupId}", nameof(referringGroupId));
+            }
+        }
+
+        private string GetLincolnshirePageIntroText(int referringGroupId)
+        {
+            switch (referringGroupId)
+            {
+                case (int)HelpMyStreet.Utils.Enums.Groups.LincolnshireVolunteers:
+                    return "If you would like to request help from Lincolnshire Volunteers, complete this form to make your request visible to our pool of volunteers.\r\n\r\nIf you would like to log a request as one of our partner organisations (e.g. VCS, LCVS, PCNs etc.) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.";
+                case (int)HelpMyStreet.Utils.Enums.Groups.LincolnshireLCVS:
+                    return "If you would like to request help as Lincolnshire VCS (LCVS), complete this form to make your request visible to the pool of Lincolnshire Volunteers.\r\n\r\nIf you would like to log a request as another partner organisations or the 'parent group' (Lincolnshire Volunteers) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.";
+                case (int)HelpMyStreet.Utils.Enums.Groups.LincolnshireVCS:
+                    return "If you would like to request help as Lincolnshire CVS (CVS), complete this form to make your request visible to the pool of Lincolnshire Volunteers.\r\n\r\nIf you would like to log a request as another partner organisations or the 'parent group' (Lincolnshire Volunteers) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.";
+                default:
+                    throw new ArgumentException($"Unexpected ReferringGroup value: {referringGroupId}", nameof(referringGroupId));
+            }
+        }
+
+        private string GetHelpRequestPageTitle(RequestHelpFormVariant requestHelpFormVariant, int referringGroupId)
         {
             return requestHelpFormVariant switch
             {
@@ -87,13 +117,13 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => "Request Help from Age UK Mid Mersey",
                 RequestHelpFormVariant.BostonGNS_Public => "Request Help from Boston Good Neighbour Scheme",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "Request Help from Boston Good Neighbour Scheme",
-                RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => "Request help from Lincolnshire Volunteers",
+                RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => GetLincolnshirePageTitle(referringGroupId),
                 RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "DEMO Request Form",
                 _ => "What type of help are you looking for?"
             };
         }
 
-        private string GetHelpRequestPageIntroText(RequestHelpFormVariant requestHelpFormVariant)
+        private string GetHelpRequestPageIntroText(RequestHelpFormVariant requestHelpFormVariant, int referringGroupId)
         {
             return requestHelpFormVariant switch
             {
@@ -113,7 +143,7 @@ namespace HelpMyStreetFE.Services.Requests
                 RequestHelpFormVariant.AgeUKMidMersey_RequestSubmitter => "If you need help from Age UK Mid Mersey, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.BostonGNS_Public => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
                 RequestHelpFormVariant.BostonGNS_RequestSubmitter => "If you need help in Boston complete this form to let us know what you need.\r\n\r\nPlease remember, Good Neighbour Schemes do not replace the work/services provided by Adult Social Care or other professional care agencies and should not be seen as a free or cheap way to do skilled tasks that require the use of qualified trades people. No tasks are undertaken that require certified qualification such as electrical, gas or plumbing work. Such work is normally beyond the scope of Good Neighbour Schemes and their insurance cover.",
-                RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => "If you would like to request help from Lincolnshire Volunteers, complete this form to make your request visible to our pool of volunteers.\r\n\r\nIf you would like to log a request as one of our partner organisations (e.g. VCS, LCVS, PCNs etc.) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.",
+                RequestHelpFormVariant.LincolnshireVolunteersRequests_RequestSubmitter => GetLincolnshirePageIntroText(referringGroupId),
                 RequestHelpFormVariant.NHSVRDemo_RequestSubmitter => "Requests made through **this form** will be available within the Sandbox area of HelpMyStreet **for demonstration and testing purposes only** and will not trigger notifications to general users of HelpMyStreet.\r\n\r\n**Please ensure you can see this message whenever you wish to submit a DEMO / test request.**",
                 _ => "People across the country are helping their neighbours and community to stay safe. Whatever you need, we have people who can help."
             };
