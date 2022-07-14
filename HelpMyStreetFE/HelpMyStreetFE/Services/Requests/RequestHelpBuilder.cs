@@ -70,7 +70,7 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 HelpMyStreet.Utils.Enums.Groups.LincolnshireVolunteers => "Request help from Lincolnshire Volunteers",
                 HelpMyStreet.Utils.Enums.Groups.LincolnshireLCVS => "Request help as Lincolnshire VCS (LCVS)",
-                HelpMyStreet.Utils.Enums.Groups.LincolnshireVCS => "Request help as Lincolnshire CVS (CVS)",
+                HelpMyStreet.Utils.Enums.Groups.LincolnshireVCS => "Request help as Lincolnshire VCS (VCS)",
                 _ => throw new ArgumentException($"Unexpected ReferringGroup value: {referringGroupId}", nameof(referringGroupId))
             };
         }
@@ -81,7 +81,7 @@ namespace HelpMyStreetFE.Services.Requests
             {
                 HelpMyStreet.Utils.Enums.Groups.LincolnshireVolunteers => "If you would like to request help from Lincolnshire Volunteers, complete this form to make your request visible to our pool of volunteers.\r\n\r\nIf you would like to log a request as one of our partner organisations (e.g. VCS, LCVS, PCNs etc.) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.",
                 HelpMyStreet.Utils.Enums.Groups.LincolnshireLCVS => "If you would like to request help as Lincolnshire VCS (LCVS), complete this form to make your request visible to the pool of Lincolnshire Volunteers.\r\n\r\nIf you would like to log a request as another partner organisations or the 'parent group' (Lincolnshire Volunteers) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.",
-                HelpMyStreet.Utils.Enums.Groups.LincolnshireVCS => "If you would like to request help as Lincolnshire VCS (LCVS), complete this form to make your request visible to the pool of Lincolnshire Volunteers.\r\n\r\nIf you would like to log a request as another partner organisations or the 'parent group' (Lincolnshire Volunteers) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.",
+                HelpMyStreet.Utils.Enums.Groups.LincolnshireVCS => "If you would like to request help as Lincolnshire VCS (VCS), complete this form to make your request visible to the pool of Lincolnshire Volunteers.\r\n\r\nIf you would like to log a request as another partner organisations or the 'parent group' (Lincolnshire Volunteers) please use the relevant request form or email mailto:contact@helpmystreet.org if you require access.",
                 _ => throw new ArgumentException($"Unexpected ReferringGroup value: {referringGroupId}", nameof(referringGroupId))
             };
         }
