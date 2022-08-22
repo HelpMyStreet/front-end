@@ -252,14 +252,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Local Volunteer",
                     Location = "",
                     ImageLocation = "/img/community/ageUK/notts/balderton/eunice-ray.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Carlton Roberts",
-                    Role = "Local Volunteer",
-                    Location = "",
-                    ImageLocation = "/img/community/ageUK/notts/balderton/carlton-roberts.jpg"
-                },
+                }
             };
 
             var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
