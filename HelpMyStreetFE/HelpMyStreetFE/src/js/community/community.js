@@ -3,6 +3,7 @@ import { hmsFetch, fetchResponses } from "../shared/hmsFetch.js";
 import { hidePopup, showServerSidePopup } from "../shared/popup";
 import { enableMaps, drawMap } from "../shared/maps";
 import { initialiseNewsTicker } from "../components/news-ticker"
+import { initialiseGenericExpanders } from "../ui/generic-expander";
 
 async function initialiseMaps(){
     var options = {
@@ -23,6 +24,7 @@ async function initialiseMaps(){
 }
 
 $(document).ready(function () {
+    initialiseGenericExpanders();
     initialiseSliders();
     initialiseNewsTicker();
     enableMaps().then(() => initialiseMaps());

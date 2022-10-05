@@ -9,11 +9,11 @@
         <div class="volunteer">
             @if (volunteer.LogoHyperLink.Length > 0)
             {
-                <a href="@volunteer.LogoHyperLink" target="_blank"><img class="slide @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" /></a>
+                <a href="@volunteer.LogoHyperLink" target="_blank"><img class="slide @(volunteer.ShowSmallLogo ? "small" : "") @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" /></a>
             }
             else
             {
-                <img class="slide small @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+                <img class="slide @(volunteer.ShowSmallLogo ? "small" : "") @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
             }
 
             @if (volunteer.Name != null)
@@ -26,3 +26,4 @@
         }
     </div>
 </div>
+
