@@ -8,5 +8,6 @@
         public bool IsLogo { get; set; } = false;
         public string ImageLocation { get; set; }
         public string LogoHyperLink { get; set; }
+        public bool ShowSmallLogo { get; set; } = false;
     }
 }

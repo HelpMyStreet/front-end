@@ -1,19 +1,29 @@
-﻿.generic-expander {
-  &__content {
-    display: none;
-  }
+﻿@import "../mixins/chevron";
 
-  &__controls {
-    &:not(.open) {
-      .close {
+.generic-expander {
+    &__content {
         display: none;
-      }
     }
+    &__controls {
+        &:not(.open) {
+            .close {
+                display: none;
+            }
+            .arrow {
+                @include arrow( 8px, 3px, $dark-blue, down, $white);
+                float: right;
+                margin-top: 10px;
+            }
+        }
 
-    &.open {
-      .open {
-        display: none;
-      }
+        &.open {
+            .open {
+                display: none;
+            }
+            .arrow {
+                @include arrow( 8px, 3px, $dark-blue, up, $white);
+                float: right;
+            }
+        }
     }
-  }
 }

@@ -33,8 +33,13 @@
                 box-shadow: 2px 3px 13px 5px rgba(0,0,0,0.1);
 
                 &.logo {
-                   object-fit: contain;
-                   padding: 1rem;
+                    object-fit: contain;
+                    padding: 1rem;
+                }
+
+                &.small {
+                    width: 200px;
+                    height: 100px;
                 }
             }
         }

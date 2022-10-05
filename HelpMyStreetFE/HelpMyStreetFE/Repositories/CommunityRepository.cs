@@ -386,7 +386,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg",
-                    LogoHyperLink = "http://www.lincolnshirecvs.org.uk/"
+                    LogoHyperLink = "http://www.lincolnshirecvs.org.uk/",
+                    ShowSmallLogo = true
 
                 },
                 new CommunityVolunteer()
@@ -396,7 +397,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png",
-                    LogoHyperLink = "https://voluntarycentreservices.org.uk/"
+                    LogoHyperLink = "https://voluntarycentreservices.org.uk/",
+                    ShowSmallLogo = true
 
                 },
                 new CommunityVolunteer()
@@ -406,7 +408,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png",
-                    LogoHyperLink = "https://lvet.co.uk/"
+                    LogoHyperLink = "https://lvet.co.uk/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -415,7 +418,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png",
-                    LogoHyperLink = "https://www.ageuk.org.uk/lincolnsouthlincolnshire/"
+                    LogoHyperLink = "https://www.ageuk.org.uk/lincolnsouthlincolnshire/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -424,7 +428,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg",
-                    LogoHyperLink = "https://lincolnshireresilienceforum.org/"
+                    LogoHyperLink = "https://lincolnshireresilienceforum.org/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -433,7 +438,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg",
-                    LogoHyperLink = "https://www.lincolnshire.nhs.uk/"
+                    LogoHyperLink = "https://www.lincolnshire.nhs.uk/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -442,7 +448,8 @@ namespace HelpMyStreetFE.Repositories
                     Location = "",
                     IsLogo = true,
                     ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png",
-                    LogoHyperLink = "https://www.lincolnshire.gov.uk/"
+                    LogoHyperLink = "https://www.lincolnshire.gov.uk/",
+                    ShowSmallLogo = true
                 },
             };
 
