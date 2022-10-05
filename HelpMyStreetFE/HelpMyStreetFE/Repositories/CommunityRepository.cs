@@ -385,7 +385,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg",
+                    LogoHyperLink = "http://www.lincolnshirecvs.org.uk/"
+
                 },
                 new CommunityVolunteer()
                 {
@@ -393,7 +395,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png",
+                    LogoHyperLink = "https://voluntarycentreservices.org.uk/"
+
                 },
                 new CommunityVolunteer()
                 {
@@ -401,7 +405,8 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png",
+                    LogoHyperLink = "https://lvet.co.uk/"
                 },
                 new CommunityVolunteer()
                 {
@@ -409,7 +414,8 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png",
+                    LogoHyperLink = "https://www.ageuk.org.uk/lincolnsouthlincolnshire/"
                 },
                 new CommunityVolunteer()
                 {
@@ -417,7 +423,8 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg",
+                    LogoHyperLink = "https://lincolnshireresilienceforum.org/"
                 },
                 new CommunityVolunteer()
                 {
@@ -425,7 +432,8 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg",
+                    LogoHyperLink = "https://www.lincolnshire.nhs.uk/"
                 },
                 new CommunityVolunteer()
                 {
@@ -433,7 +441,8 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png",
+                    LogoHyperLink = "https://www.lincolnshire.gov.uk/"
                 },
             };
 

@@ -18,11 +18,6 @@
         <div class="community-banner">
             <img src="~/img/community/vacc/lincolnshirevolunteers/banner.png" alt="Lincolnshire Volunteers" />
         </div>
-        <div class="vaccination-banner pt-sm pb-sm mb-sm-md">
-            <div class="vaccination-banner__inner pt-xs pb-xs">
-                We&rsquo;re supporting the COVID-19 vaccination programme - Find out more below
-            </div>
-        </div>
     </div>
 
     <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
@@ -30,21 +25,36 @@
     <div class="outer-container mt-sm-md">
         <div class="container">
             <div class="row flex hero mb-lg">
-                <div class="row sm4 align-center justify-center text-center content-page mr-md">
+                <div class="row sm4 align-center justify-center content-page mr-md">
 
                     <h2 class="mb0 mt-md">Welcome to Lincolnshire Volunteers</h2>
 
-                    <p class='row sm12 text-center justify-center mb-sm'>
-                        Lincolnshire Volunteers has been set up to support our community through times of need. Our ambition is to have our own network of community volunteers who can be called upon when they are needed.
-                    </p><p class="row sm12 text-center justify-center mb-sm ">
-                        Our main priority at the moment is to find volunteers to support our local programme for COVID-19 vaccinations. Find out more about the roles below.
+                    <p class='row sm12 mb-sm'>
+                        Volunteering has been at the forefront of the Covid-19 recovery and continues to demonstrate the importance of volunteering and the community spirit that exists within our communities.
+                    </p>
+                    <p class='row sm12 mb-sm'>
+                        The Lincolnshire Volunteers Programme builds upon the momentum that has developed around volunteering, creating a lasting legacy for Lincolnshire. Our aim is to see Lincolnshire as a county where community matters, with volunteering at its heart and where everybody&rsquo;s contribution is valuable.
+                    </p>
+                    <p class='row sm12 mb-sm'>
+                        The programme provides a wide range of enriching volunteering opportunities, alongside a robust level of coordination, training and ongoing support for volunteers.
+                    </p>
+                    <p class="row sm12 mb-sm ">
+                        Volunteering opportunities can include:
+                        <ul class='tick-list mt-xs mb-sm compact-list'>
+                            <li>Volunteering in response to emergency situations</li>
+                            <li>Volunteering at one off events and activities</li>
+                            <li>Volunteering to support vulnerable individuals and communities</li>
+                            <li>Volunteering and getting involved with local with projects</li>
+                            <li>Micro-volunteering</li>
+                        </ul>
+
+                    </p>
+                    <p class="row sm12 mb-sm ">
+                        The programme will also provide Lincolnshire organisations with a simple and effective recruitment and deployment process to enable a flexible team of volunteers to access opportunities efficiently.
                     </p>
 
-
-                    <div class="row sm12 text-center justify-center mb-md">
-                        <p class="mt-sm mb-lg pl-md pr-md">
-                            To register your interest as a community volunteer and find opportunities near you, sign up today
-                        </p>
+                    <div class="row sm12 mb-md">
+                        <strong>To register your interest as a community volunteer and find opportunities near you, sign up today</strong>
                         <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
                     </div>
                 </div>
@@ -66,27 +76,19 @@
                         <div class="outer-container outer-container--darker">
                             <partial name="_CommunityVolunteersSlider" model="Model" />
                         </div>
-                        <p><strong>About the COVID-19 Vaccination Programme support opportunities</strong></p>
                         <p>
-                            There are a number of locations spread across the county that have already been designated to deliver vaccinations. As the centres continue to invite people in for their vaccinations, they will need volunteers to help support the smooth running of the sites and be a friendly, supportive face and voice to the people who attend for their vaccinations.
-                        </p>
-                        <p>
-                            As a volunteer you will be provided with appropriate PPE (protective wear) and training, and could be undertaking tasks such as:
+                            <strong>Beyond COVID, we would like to build and maintain a team of volunteers who can support their communities. Examples of volunteering opportunities could include:</strong>
                             <ul>
-                                <li>guiding cars into the car park</li>
-                                <li>helping people find their way around the site</li>
-                                <li>screening (questioning) people on arrival to check that they do not have any Covid-19 symptoms</li>
-                                <li>making sure people are ready for their vaccination and know what to do</li>
+                                <li>Responding to emergency situations with the Lincolnshire Resilience Forum &lsquo;Ready for Anything&rsquo; Programme.</li>
+                                <li>Helping to tackle local issues like loneliness and isolation through tasks such as befriending calls, shopping and prescription collections or a chat and a cuppa with someone in need.</li>
+                                <li>Supporting neighbours who need a little extra help with tasks such as gardening or moving the bin in and out on bin day.</li>
+                                <li> Helping out with one-off events such as marshaling at races or setting up stalls.</li>
+                                <li>Taking part in micro-volunteering events like creating cards for care home residents or knitting hats for premature babies.</li>
+                                <li>Supporting organisations and services to deliver their vital work within our local communities including health and social care, local amenities and charities.</li>
                             </ul>
-                        <p>
-                            If you're an approachable and caring person, sign up now to view open shifts and offer your support to help us deliver a fast and effective vaccination programme. Please note, there is no minimum commitment for volunteers, but you will be expected to turn up on time and stay for the whole shift for any shifts you choose to accept.
                         </p>
                         <p>
-                            <strong>Our vision for community volunteers</strong>
-
-                        </p>
-                        <p>
-                            Beyond COVID, we would also like to build a maintain a team of volunteers who can support their communities in other ways, for example, to help local communities affected by flooding, or to tackle local issues like loneliness and isolation. There are lots of opportunities to help which we hope to build into this platform over time, so please don't hesitate to register your interest by signing up today.
+                            There are lots of opportunities to help which we hope to build into this platform over time, so please don't hesitate to register your interest by signing up today.
                         </p>
                     </div>
                     <div class="mb-md"></div>
@@ -95,19 +97,7 @@
         </div>
     </div>
 
-
-    <div class="outer-container">
-        <div class="container inner-container--no-side-padding">
-            <div class="row hero flex text-center justify-center">
-                <div class="flex sm6">
-                    <partial name="_VolunteerWithUsCard" model="Model" />
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="outer-container outer-container--darker">
+    <div class="outer-container outer-container">
         <div class="container ">
             <div class="row justify-center">
                 <h2 class="text-center mt-lg">
@@ -117,7 +107,10 @@
             <div class="row flex justify-center">
                 <div class="sm12 community-useful-links mb-lg">
                     <p>
-                        This section provides links to some of the training opportunities available for volunteers in Lincolnshire. These resources cover a range of topics and provide a good learning opportunity for people currently volunteering or hoping to volunteer in their community. Take a look below to see if there is something for you.
+                        The Lincolnshire Volunteers Programme provides access to a wide range of training and learning opportunities for volunteers. Volunteering is a great way to gain practical experience across a vast number of sectors. We believe strongly in giving volunteers the opportunity to upskill and gain training qualifications alongside the benefit of the practical experience that they develop through the act of volunteering. Volunteers can access training even when they aren&rsquo;t  actively volunteering, allowing them to expand their knowledge base whilst they wait for the correct opportunities to come along. Volunteers who register with Help My Street have the opportunity to showcase their training and experience within their personal profiles.
+                    </p>
+                    <p>
+                        You can find information about available training below.
                     </p>
                     <h6 class="mt-md">Volunteer Centres Lincolnshire Free Online Training</h6>
 
@@ -156,6 +149,83 @@
         </div>
     </div>
 
+    <div class="outer-container outer-container--darker">
+        <partial name="_AboutHelpMyStreet" />
+    </div>
+
+    <div class="outer-container mt-md">
+        <div class="container pt-md pb-md">
+            <div class="how-to-use row justify-center card">
+                <div id="sign-up-helper-content" class="sm6 tabcontent active flex flex-column">
+                    <h2 class="tab-content-title green">How to volunteer with HelpMyStreet</h2>
+                    <p class="tab-content-p1">
+                        Help as much or as little as you like with our easy to use platform. We show you where help is needed near you so you can help in a way that&rsquo;s right for you.
+                    </p>
+                    <div class="row">
+                        <div class="sm1"><span class="fab circle">1</span></div>
+                        <div class="sm9 pad-md">
+                            <p class="h4">
+                                Register with us
+                            </p>
+                            <p>
+                                Sign up or log in using the green button below.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sm1"><span class="fab circle">2</span></div>
+                        <div class="sm9 pad-md">
+                            <p class="h4">
+                                Verify your ID
+                            </p>
+                            <p>
+                                Verifying your ID is quick and easy and lets us know you&rsquo;re a real person! All you need is valid photo ID and a mobile device.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sm1"><span class="fab circle">3</span></div>
+                        <div class="sm9 pad-md">
+                            <p class="h4">
+                                Find and accept requests for help
+                            </p>
+                            <p>
+                                Browse open requests in your profile and accept the ones you can help with.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sm1"><span class="fab circle">4</span></div>
+                        <div class="sm9 pad-md">
+                            <p class="h4">
+                                Help those in need
+                            </p>
+                            <p>
+                                Get in touch and let them know when you&rsquo;ll be there to help!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="sm1"><span class="fab circle">5</span></div>
+                        <div class="sm9 pad-md">
+                            <p class="h4">
+                                Come back for more!
+                            </p>
+                            <p>
+                                Don&rsquo;t forget to keep checking back for new requests near you!
+                            </p>
+                        </div>
+                    </div>
+                    <p>Find out more by checking out our <a href="/questions">FAQs</a></p>
+                    <div class="text-center">
+                        <partial name="_SignUpLogInJoinLeaveButtons" model="new SignUpLogInJoinLeaveViewModel { CommunityViewModel = Model, ShowLeaveButton = true }" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="outer-container outer-container">
         <div class="container ">
             <div class="row justify-center">
@@ -164,18 +234,14 @@
             <div class="row flex justify-center">
                 <div class="sm12 community-useful-links mb-lg">
                     <h6>Useful Information</h6>
-                    <p><a href="/pdf/lincs-vaccination-support/lincs-vaccination-support-role-description.pdf">Volunteer role description and useful information (APEX PCN / Ruston Sports & Social Club)</a></p>
-                    <p><a href="/pdf/lincs-vaccination-support/outdoor-volunteer-role-description-pcn-four-counties.pdf">Volunteer role description and useful information (Four Counties PCN / St. Mary&rsquo;s Surgery, Stamford)</a></p>
-                    <p><a href="/pdf/lincs-vaccination-support/lateral-flow-testing-for-vaccination-support-volunteers.pdf">A guide for self-testing for coronavirus</a> - Information about lateral flow testing for vaccination support volunteers</p>
-
                     <p><a href="https://lincolnshire.connecttosupport.org">Connect to Support Lincolnshire</a> - An online information and advice library, community directory and marketplace for adults in Lincolnshire</p>
 
                     <h6>Our Partners</h6>
                     <p><a href="http://www.lincolnshirecvs.org.uk/">Lincolnshire Community and Voluntary Service</a> - Find out more about the Lincolnshire CVS</p>
                     <p><a href="https://voluntarycentreservices.org.uk/">Voluntary Centre Services</a> - Find out more about Voluntary Centre Services in West Lincolnshire</p>
-                    <p><a href="https://lincsvoluntarysectorportal.org.uk/">VET</a> - Find out more about the Voluntary Executive Team for Lincolnshire; a partnership of voluntary organisations and statutory stakeholders who have chosen to work together to further opportunities for the voluntary sector in Lincolnshire.</p>
+                    <p><a href="https://lvet.co.uk/"> Voluntary Engagement Team Lincolnshire</a> - Find out more about the Voluntary Executive Team for Lincolnshire; a partnership of voluntary organisations and statutory stakeholders who have chosen to work together to further opportunities for the voluntary sector in Lincolnshire.</p>
                     <p><a href="https://www.ageuk.org.uk/lincolnsouthlincolnshire/">Age UK Lincoln & South Lincolnshire</a> - Helping older people in Lincoln and Lincolnshire</p>
-                    <p><a href="https://www.facebook.com/lincsresilientcommunities/">Lincolnshire's Resilience Forum</a> - Facebook page for Lincolnshire's Resilience Forum</p>
+                    <p><a href="https://lincolnshireresilienceforum.org/">Lincolnshire's Resilience Forum</a> - Find out more about Lincolnshire's Resilience Forum</p>
                     <p><a href="https://www.lincolnshire.nhs.uk/">Lincolnshire NHS</a> - Find out more about Lincolnshire NHS</p>
                     <p><a href="https://www.lincolnshire.gov.uk/">Lincolnshire County Council</a> - Find out more about the county council</p>
                 </div>
@@ -188,13 +254,7 @@
         @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Group, groupKey = Model.Group.GroupKey })
     </div>
 
-
-
-    <div class="outer-container outer-container--darker">
-        <partial name="_AboutHelpMyStreet" />
-    </div>
-
-    <div class="outer-container">
+    <div class="outer-container--darker">
         <div class="container inner-container--no-side-padding">
             <div class="row hero flex text-center justify-center">
 
