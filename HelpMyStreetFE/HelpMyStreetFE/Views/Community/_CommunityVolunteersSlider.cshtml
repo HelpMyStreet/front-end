@@ -7,7 +7,7 @@
         @foreach (var volunteer in Model.CommunityVolunteers)
         {
         <div class="volunteer">
-            @if (volunteer.LogoHyperLink.Length > 0)
+            @if (volunteer.LogoHyperLink?.Length > 0)
             {
                 <a href="@volunteer.LogoHyperLink" target="_blank"><img class="slide @(volunteer.ShowSmallLogo ? "small" : "") @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" /></a>
             }
