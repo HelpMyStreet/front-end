@@ -27,7 +27,7 @@
     </Steps>
   </DeploymentTransformation>
 
-	<Targets>
+	<Targets>	
 		<Target name="Edge">
 			<DeploymentTransformationSteps>
 				<EnvironmentVariable variable="Test_Browser" value="Edge" />
@@ -47,6 +47,20 @@
 		<Target name="Safari">
 			<DeploymentTransformationSteps>
 				<EnvironmentVariable variable="Test_Browser" value="Safari" />
+			</DeploymentTransformationSteps>
+		</Target>
+
+		<Target name="Android">
+			<Filter>!tagmatch:Desktop</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="Android" />
+			</DeploymentTransformationSteps>
+		</Target>
+
+		<Target name="IOS">
+			<Filter>!tagmatch:Desktop</Filter>
+			<DeploymentTransformationSteps>
+				<EnvironmentVariable variable="Test_Browser" value="IOS" />
 			</DeploymentTransformationSteps>
 		</Target>
 	</Targets>
