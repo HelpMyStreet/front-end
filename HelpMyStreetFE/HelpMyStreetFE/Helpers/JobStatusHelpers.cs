@@ -48,7 +48,7 @@ namespace HelpMyStreetFE.Helpers
                 JobStatuses.Accepted => $"Accepted by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.InProgress => $"In Progress with {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.Done => $"Completed by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
-                JobStatuses.AppliedFor => $"Applied For by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                JobStatuses.AppliedFor => $"Enquired by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 _ => jobStatus.FriendlyName()
             };
         }
@@ -64,8 +64,8 @@ namespace HelpMyStreetFE.Helpers
                 (JobStatuses.InProgress, false) => $"Accepted by another volunteeer",
                 (JobStatuses.Done, true) => $"Completed",
                 (JobStatuses.Done, false) => $"Completed by another volunteer",
-                (JobStatuses.AppliedFor, true) => $"Applied for",
-                (JobStatuses.AppliedFor, false) => $"Applied for by another volunteeer",
+                (JobStatuses.AppliedFor, true) => $"Enquired",
+                (JobStatuses.AppliedFor, false) => $"Enquired by another volunteeer",
                 _ => jobStatus.FriendlyName()
             };
         }
