@@ -16,7 +16,7 @@
         @if (Model.Item.RequiresApplicationToAccept)
         {
             <button class="btn cta @(Model.UserHasRequiredCredentials ? "cta--dark-blue" : "cta--dark-blue-border") trigger-status-update-popup toggle-on-status-change" data-target-state="@JobStatuses.AppliedFor">
-                <span class="text">Apply</span>
+                <span class="text">Enquire</span>
             </button>
         }
         else
