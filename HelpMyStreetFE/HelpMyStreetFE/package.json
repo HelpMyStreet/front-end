@@ -36,6 +36,6 @@
     "isomorphic-fetch": "^3.0.0",
     "jquery-ajax-unobtrusive": "^3.2.6",
     "slick-carousel": "^1.8.1",
-    "ua-parser-js": "^0.7.31"
+    "ua-parser-js": "^0.7.33"
   }
 }
