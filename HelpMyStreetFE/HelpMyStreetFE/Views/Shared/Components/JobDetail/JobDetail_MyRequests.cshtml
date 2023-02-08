@@ -46,18 +46,7 @@
             <div class="row">
                 <div class="sm12">
                     <dl>
-                        <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />
-                        @if (showDuplicateJobs)
-                        {
-                            var filled = Model.DuplicateJobs.Count() - Model.DuplicateJobs.UnfilledJobs().Count();
-
-                            <dt>How many volunteers are needed?</dt>
-                            <dd>
-                                This help request requires <strong>@Model.DuplicateJobs.Count()</strong> volunteers.
-                                <strong>@filled</strong> @(filled == 1 ? "place has" : "places have") been filled
-                                (<strong>@Model.DuplicateJobs.UnfilledJobs().Count()</strong> remaining).
-                            </dd>
-                        }
+                        <partial name="_WhenIsHelpNeeded" model="@Model.JobDetail.Item" />                        
                         @if (showQuestions)
                         {
                             @foreach (var q in questionsToDisplay.Select(q => new QuestionViewModel(jobDetails, q)))
