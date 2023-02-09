@@ -76,26 +76,7 @@
                         {
                             <div class="sm5 space-filler toggle-on-status-change add-line-before">
                                 <h5>Slot Status History</h5>
-                                <dl class="highlight-last">
-                                    @foreach (var statusChange in jobDetails.JobStatusHistory)
-                                    {
-                                        <dt>
-                                            @statusChange.JobStatusDescription
-                                        </dt>
-                                        <dd>
-                                            <span>
-                                                @statusChange.StatusHistory.StatusDate.FormatDate(DateTimeFormat.ShortDateTimeFormat)
-                                            </span>
-                                            @if (statusChange.VolunteerUser != null)
-                                            {
-                                                <span>
-                                                    @(statusChange.StatusHistory.JobStatus == JobStatuses.InProgress ? "with" : "by")
-                                                    @statusChange.VolunteerUser.UserPersonalDetails.FullName()
-                                                </span>
-                                            }
-                                        </dd>
-                                    }
-                                </dl>
+                                <partial name="_JobStatusHistory" model="jobDetails.JobStatusHistory" />
                             </div>
                         }
                     </div>

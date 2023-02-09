@@ -43,5 +43,6 @@ namespace HelpMyStreetFE.Models.Account
         public string MobileNumber { get { return User?.UserPersonalDetails?.MobilePhone ?? "Not Set"; } }
         public string OtherNumber { get { return User?.UserPersonalDetails?.OtherPhone ?? "Not Set"; } }
         public string DateOfBirth { get { return User?.UserPersonalDetails?.DateOfBirth?.FormatDate(DateTimeFormat.ShortDateFormat, false) ?? "Not Set"; } }
+        public string Biography { get { return User?.Biography ?? "Not Supplied"; } }
     }
 }

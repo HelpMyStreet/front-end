@@ -17,6 +17,7 @@ namespace HelpMyStreetFE.Helpers
                 DueDateType.On => true,
                 DueDateType.SpecificStartTime => true,
                 DueDateType.SpecificStartAndEndTimes => true,
+                DueDateType.OpenUntil => true,
                 _ => throw new ArgumentException($"Unexpected DueDateType value: {dueDateType}", nameof(dueDateType))
             };
         }
@@ -30,6 +31,7 @@ namespace HelpMyStreetFE.Helpers
                 DueDateType.On => false,
                 DueDateType.SpecificStartTime => true,
                 DueDateType.SpecificStartAndEndTimes => true,
+                DueDateType.OpenUntil => false,
                 _ => throw new ArgumentException($"Unexpected DueDateType value: {dueDateType}", nameof(dueDateType))
             };
         }
@@ -43,6 +45,21 @@ namespace HelpMyStreetFE.Helpers
                 DueDateType.On => false,
                 DueDateType.SpecificStartTime => false,
                 DueDateType.SpecificStartAndEndTimes => true,
+                DueDateType.OpenUntil => false,
+                _ => throw new ArgumentException($"Unexpected DueDateType value: {dueDateType}", nameof(dueDateType))
+            };
+        }
+
+        public static bool HasEndDate(this DueDateType dueDateType)
+        {
+            return dueDateType switch
+            {
+                DueDateType.ASAP => false,
+                DueDateType.Before => false,
+                DueDateType.On => false,
+                DueDateType.SpecificStartTime => false,
+                DueDateType.SpecificStartAndEndTimes => false,
+                DueDateType.OpenUntil => true,
                 _ => throw new ArgumentException($"Unexpected DueDateType value: {dueDateType}", nameof(dueDateType))
             };
         }

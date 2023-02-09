@@ -163,6 +163,48 @@
         }
     }
 
+    form[selected-activity="Other"] {
+        *[hide-tile-when*="activity:Other"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="AdvertisingRoles"] {
+        *[hide-tile-when*="activity:AdvertisingRoles"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="NHSCheckInAndChat"] {
+        *[hide-tile-when*="activity:NHSCheckInAndChat"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="NHSCheckInAndChatPlus"] {
+        *[hide-tile-when*="activity:NHSCheckInAndChatPlus"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="NHSTransport"] {
+        *[hide-tile-when*="activity:NHSTransport"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="NHSSteward"] {
+        *[hide-tile-when*="activity:NHSSteward"] {
+            display: none;
+        }
+    }
+
+    form[selected-activity="EmergencySupport"] {
+        *[hide-tile-when*="activity:EmergencySupport"] {
+            display: none;
+        }
+    }
+
     *[show-tile-when*="repeats:true"] {
         display: none;
     }
@@ -182,4 +224,8 @@
             display: none;
         }
     }
+}
+
+.sandbox-warning {
+    background-color: yellow;
 }

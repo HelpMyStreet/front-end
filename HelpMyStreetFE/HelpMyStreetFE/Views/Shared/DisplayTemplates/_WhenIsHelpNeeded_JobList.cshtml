@@ -16,7 +16,7 @@
     <span class="due-date" title="@((nextJobDue.DueDateType == DueDateType.On ? "On " : "On or before ") + nextJobDue.DueDate.FormatDate(DateTimeFormat.ShortDateFormat))">
         @if (allDates.Count() == 1)
         {
-            <span>Due @nextJobDue.DueDate.FriendlyFutureDate()</span>
+        <span>@nextJobDue.DueDate.JobDueDate(nextJobDue.DueDateType)</span>
         }
         else if (nextJobDueIsFirst)
         {

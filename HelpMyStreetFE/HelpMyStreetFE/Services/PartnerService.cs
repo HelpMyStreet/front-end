@@ -23,11 +23,9 @@ namespace HelpMyStreetFE.Services
             partners.Add(new Partner() { Group = HMSEnums.Groups.AgeUKSouthKentCoast, GroupKey = "ageuk-southkentcoast"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.LincolnshireVolunteers, GroupKey = "lincs-volunteers"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.AgeUKFavershamAndSittingbourne, GroupKey = "ageuk-favershamandsittingbourne"});
-            partners.Add(new Partner() { Group = HMSEnums.Groups.AgeConnectsCardiff, GroupKey = "ageconnects-cardiff"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.Southwell, GroupKey = "southwell"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.AgeUKMidMersey, GroupKey = "ageuk-midmersey"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.BostonGNS, GroupKey = "boston" });
-            partners.Add(new Partner() { Group = HMSEnums.Groups.UkraineRefugees, GroupKey = "help-ukraine" });
 
             return partners;
         }

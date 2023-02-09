@@ -20,6 +20,7 @@ namespace HelpMyStreetFE.Helpers
                 JobStatuses.InProgress => "inprogress.svg",
                 JobStatuses.Done => "complete.svg",
                 JobStatuses.Cancelled => "cancelled.svg",
+                JobStatuses.AppliedFor => "appliedfor.svg",
                 _ => throw new ArgumentException(message: $"Unexpected JobStatuses value: {jobStatus}", paramName: nameof(jobStatus))
             };
         }
@@ -34,7 +35,8 @@ namespace HelpMyStreetFE.Helpers
                 JobStatuses.InProgress => "in-progress",
                 JobStatuses.Done => "done",
                 JobStatuses.Cancelled => "cancelled",
-                _ => throw new ArgumentException(message: $"Unexpected JobStatuses value: {jobStatus}", paramName: nameof(jobStatus))
+                JobStatuses.AppliedFor => "applied-for",
+               _ => throw new ArgumentException(message: $"Unexpected JobStatuses value: {jobStatus}", paramName: nameof(jobStatus))
             };
         }
 
@@ -46,6 +48,7 @@ namespace HelpMyStreetFE.Helpers
                 JobStatuses.Accepted => $"Accepted by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.InProgress => $"In Progress with {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 JobStatuses.Done => $"Completed by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
+                JobStatuses.AppliedFor => $"Enquired about by {userPersonalDetails?.FirstName} {userPersonalDetails?.LastName}",
                 _ => jobStatus.FriendlyName()
             };
         }
@@ -61,6 +64,8 @@ namespace HelpMyStreetFE.Helpers
                 (JobStatuses.InProgress, false) => $"Accepted by another volunteeer",
                 (JobStatuses.Done, true) => $"Completed",
                 (JobStatuses.Done, false) => $"Completed by another volunteer",
+                (JobStatuses.AppliedFor, true) => $"Enquired",
+                (JobStatuses.AppliedFor, false) => $"Enquired about by another volunteeer",
                 _ => jobStatus.FriendlyName()
             };
         }
@@ -70,7 +75,10 @@ namespace HelpMyStreetFE.Helpers
             return jobStatus switch
             {
                 JobStatuses.New => 10,
+                JobStatuses.Rejected => 15,
                 JobStatuses.Open => 20,
+                JobStatuses.AppliedFor => 25,
+                JobStatuses.Approved => 27,
                 JobStatuses.Accepted => 30,
                 JobStatuses.InProgress => 40,
                 JobStatuses.Done => 50,

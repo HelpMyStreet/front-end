@@ -1,0 +1,22 @@
+﻿@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel;
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+}
+<div class="popup__content apply">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Accept this volunteer’s request to help?</div>
+        <div class="popup__content__text">
+            <p>A volunteer has made an enquiry about this opportunity. It is now time to refer the volunteer to the host organisation so that they can contact the volunteer to discuss the next steps of the process. If you are happy that the referral can be made, please complete this referral prior to clicking ‘Confirm’.</p>
+            <p>If for any reason referring the volunteer to the host organisation is not possible at this time, please close this pop-up and select ‘Mark as Open’. This will make the opportunity available to another volunteer. We will automatically email the volunteer to let them know that they have not been referred for this opportunity at the current time. If you want to get in touch with the volunteer to discuss the opportunity referral, we suggest that you do this before marking the request as open – you can find their details by expanding the ‘Contact Details’ section.</p>
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t update this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Confirm", CssClass="cta--dark-blue" }' />
+        </div>
+    </div>
+</div>
+
+
+

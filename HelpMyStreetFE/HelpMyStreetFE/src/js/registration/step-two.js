@@ -17,7 +17,7 @@ export function initialiseStepTwo() {
     trackEvent("Registration flow", "Click Manual entry");
  });
 
-  datepickerLoad('datepicker', 'datepicker-error', dateValidationSchemes.OVER_18);
+  datepickerLoad($('#datepicker'), $('#datepicker-error'), dateValidationSchemes.OVER_18);
   $("#address_finder").on("click", async function (evt) {
     evt.preventDefault();
     buttonLoad($(this));
@@ -155,7 +155,7 @@ var runAdditionalValidation = async function(form) {
     let mobile = form.find("input[name='mobile_number']");
     let alt = form.find("input[name='alt_number']");         
 
-    var v1 = validateDate(dob.val(), dob.attr('id'), $(dob).find('~ .error').attr('id'), dateValidationSchemes.OVER_18);
+    var v1 = validateDate(dob.val(), $(dob).find('~ .error'), dateValidationSchemes.OVER_18);
     var v2 = validatePhoneNumber(mobile, "Please enter a valid mobile number starting with 07", true);
     var v3 = validatePhoneNumber(alt, "Please enter a valid alternative number");
     return (v1 && v2 && v3);

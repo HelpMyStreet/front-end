@@ -12,8 +12,8 @@ using System.Threading;
 using HelpMyStreetFE.Services.Users;
 using HelpMyStreet.Utils.EqualityComparers;
 using HelpMyStreet.Contracts.RequestService.Request;
-using HelpMyStreet.Contracts;
 using HelpMyStreet.Contracts.ReportService;
+using HelpMyStreetFE.Helpers;
 
 namespace HelpMyStreetFE.Services.Requests
 {
@@ -291,7 +291,11 @@ namespace HelpMyStreetFE.Services.Requests
 
         private async Task<List<EnrichedStatusHistory>> EnrichStatusHistory(List<StatusHistory> history, bool ShowNames, CancellationToken cancellationToken)
         {
-            List<EnrichedStatusHistory> eHist = history.Select(h => new EnrichedStatusHistory(h)).ToList();
+            List<EnrichedStatusHistory> eHist = history
+                .Where(x => x.JobStatusChangeReasonCode == JobStatusChangeReasonCodes.UserChange)
+                .OrderBy(o => o.StatusDate)
+                .ThenBy(o => o.JobStatus.UsualOrderOfProgression())
+                .Select(h => new EnrichedStatusHistory(h)).ToList();
 
             int latestVolunteerId = -1;
 
@@ -320,6 +324,14 @@ namespace HelpMyStreetFE.Services.Requests
                     default:
                         eHist[i].JobStatusDescription = eHist[i].StatusHistory.JobStatus.FriendlyName();
                         break;
+                }
+
+                if ((eHist[i].StatusHistory.CreatedByUserID ?? -1) > 0)
+                {                    
+                    if (ShowNames)
+                    {
+                        eHist[i].ChangeMadeByUser = await _userService.GetUserAsync(eHist[i].StatusHistory.CreatedByUserID.Value, cancellationToken);
+                    }
                 }
 
                 if ((eHist[i].StatusHistory.VolunteerUserID ?? -1) > 0)

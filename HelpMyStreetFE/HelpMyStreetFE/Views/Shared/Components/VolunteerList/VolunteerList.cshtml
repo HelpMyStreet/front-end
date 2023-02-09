@@ -1,5 +1,6 @@
 @using HelpMyStreet.Utils.Utils;
 @using HelpMyStreet.Utils.Extensions;
+@using HelpMyStreetFE.Helpers;
 
 @model HelpMyStreetFE.Models.Account.Volunteers.VolunteerListViewModel
 
@@ -89,7 +90,7 @@
                 }
                 else
                 {
-                    if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin 
+                    if (credential.GroupCredential.CredentialVerifiedBy == HelpMyStreet.Utils.Enums.CredentialVerifiedBy.GroupAdmin
                             && volunteer.User.ID != Model.UserId && Model.UserHasEditRights)
                     {
                         <a href="#" title="Add @credential.GroupCredential.Name" class="add-credential"
@@ -139,6 +140,12 @@
                         <dd>@volunteer.User.SupportRadiusMiles miles</dd>
                         <dt>Selected Activities</dt>
                         <dd>@string.Join(", ", volunteer.User.SupportActivities.Select(a => a.FriendlyNameShort()))</dd>
+                    </dl>
+                    <dl class="sm12">
+                        <dt>Training and Experience</dt>
+                        <dd>
+                            @Html.Raw(string.IsNullOrWhiteSpace(volunteer.User.Biography) ? "Not supplied" : volunteer.User.Biography.ToHtmlSafeStringWithLineBreaks())
+                        </dd>
                     </dl>
                 </div>
             </div>

@@ -135,7 +135,7 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                 time.IsSelected = true;
                 if (time.DueDateType.HasDate())
                 {
-                    DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime date);
+                    DateTime.TryParseExact(bindingContext.ValueProvider.GetValue($"currentStep.SelectedTimeFrame[{time.ID}].Date").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime date);
                     time.StartTime = date;
                     if (time.DueDateType.HasStartTime())
                     {
@@ -145,6 +145,11 @@ namespace HelpMyStreetFE.Helpers.CustomModelBinder
                     {
                         var endDate = ParseTime(date, bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndTime").ToString());
                         time.EndTime = time.StartTime < endDate ? endDate : endDate.AddDays(1);
+                    }
+                    if (time.DueDateType.HasEndDate())
+                    {
+                        DateTime.TryParseExact(bindingContext.ValueProvider.GetValue("currentStep.SelectedTimeFrame.EndDate").ToString(), DatePickerHelpers.DATE_PICKER_DATE_FORMAT, new CultureInfo("en-GB"), DateTimeStyles.None, out DateTime endDate);
+                        time.EndTime = endDate;
                     }
                 }
             }

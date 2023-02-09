@@ -28,7 +28,6 @@ export function intialiseCookieConsent() {
         message: ' We use cookies to help make our website usable and to understand how visitors interact with us. More information can be found in our <a href="/privacy-policy" target="_blank">Privacy Policy</a>. <br /> You can change or disable cookies at any time by changing your browser settings.',
         expires: 365,
         delay: 0,
-        moreInfoLabel: '',
         acceptBtnLabel: 'Accept All Cookies',
         cookieTypesTitle: 'Select cookies to accept:',
         cookieTypes: [

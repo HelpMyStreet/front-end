@@ -92,15 +92,15 @@
             </span>
         </div>
         <div class="job__info__activity">
-            @foreach (SupportActivities activity in Model.Item.JobBasics.Select(a => a.SupportActivity).Distinct())
+            @foreach (var activityDetails in Model.Item.JobBasics.Select(a => new { a.SupportActivity, a.GetSupportActivityName }).Distinct())
             {
-                <span class="job__info__activity__title @activity.Class()">
-                    @if (activity != SupportActivities.Other)
+                <span class="job__info__activity__title @activityDetails.SupportActivity.Class()">
+                    @if (activityDetails.SupportActivity != SupportActivities.Other)
                     {
-                        <img src="~/img/icons/@activity.Icon()" />
+                        <img src="~/img/icons/@activityDetails.SupportActivity.Icon()" alt="@activityDetails.SupportActivity.FriendlyNameShort()" />
                     }
                     <span>
-                        @activity.FriendlyNameShort()
+                        @activityDetails.GetSupportActivityName
                     </span>
                 </span>
             }

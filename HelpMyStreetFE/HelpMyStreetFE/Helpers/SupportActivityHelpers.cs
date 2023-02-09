@@ -36,6 +36,12 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.BankStaffVaccinator => "vaccination.svg",
                 SupportActivities.SkillShare => "puzzle-piece.svg",
                 SupportActivities.Accommodation => "accommodation.svg",
+                SupportActivities.AdvertisingRoles=> "advertisingroles.svg",
+                SupportActivities.NHSCheckInAndChat => "check-in-and-chat.svg",
+                SupportActivities.NHSCheckInAndChatPlus => "check-in-and-chat-plus.svg",
+                SupportActivities.NHSSteward => "NHS Steward Volunteers.png",
+                SupportActivities.NHSTransport => "NHS Transport Volunteer.png",
+
                 _ => "question-mark.svg"
             };
         }
@@ -64,6 +70,11 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.InPersonBefriending => "light-purple",
                 SupportActivities.BankStaffVaccinator => "dark-blue",
                 SupportActivities.Accommodation => "dark-blue",
+                SupportActivities.NHSCheckInAndChat => "nhs-blue",
+                SupportActivities.NHSCheckInAndChatPlus => "nhs-blue",
+                SupportActivities.NHSSteward => "nhs-blue",
+                SupportActivities.NHSTransport => "nhs-blue",
+
                 _ => "dark-blue",
             };
         }
@@ -94,7 +105,7 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.InPersonBefriending => true,
                 SupportActivities.PracticalSupport => true,
                 SupportActivities.SkillShare => true,
-                SupportActivities.Accommodation => true,
+                SupportActivities.Accommodation => false,
                 SupportActivities.Other => true,
 
                 SupportActivities.CommunityConnector => false,
@@ -104,8 +115,24 @@ namespace HelpMyStreetFE.Helpers
                 SupportActivities.MedicalAppointmentTransport => false,
                 SupportActivities.PhoneCalls_Anxious => false,
                 SupportActivities.VolunteerInduction => false,
+                SupportActivities.AdvertisingRoles => true,
+
+                SupportActivities.NHSCheckInAndChat => true,
+                SupportActivities.NHSCheckInAndChatPlus => true,
+                SupportActivities.NHSSteward => true,
+                SupportActivities.NHSTransport => true,
 
                 _ => throw new ArgumentException(message: $"Unexpected SupportActivities value: {activity}", paramName: nameof(activity))
+            };
+        }
+
+        public static bool ShowIcon(this SupportActivities activity)
+        {
+            return activity switch
+            {
+                SupportActivities.Other => false,
+                SupportActivities.AdvertisingRoles => false,
+                _ => true
             };
         }
     }

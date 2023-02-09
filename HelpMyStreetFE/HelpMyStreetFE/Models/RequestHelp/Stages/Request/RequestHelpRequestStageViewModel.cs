@@ -12,6 +12,7 @@ namespace HelpMyStreetFE.Models.RequestHelp.Stages.Request
         public Guid RequestGuid { get; set; }
         public string PageHeading { get; set; }
         public string IntoText { get; set; }
+        public string PageHeadingClass { get; set; }
         public IEnumerable<TasksViewModel> Tasks { get; set; }
         public IEnumerable<RequestorViewModel> Requestors { get; set; }
         public QuestionsViewModel Questions { get; set; } = new QuestionsViewModel();

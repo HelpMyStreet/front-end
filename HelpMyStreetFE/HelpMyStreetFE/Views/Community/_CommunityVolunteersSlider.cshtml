@@ -7,7 +7,15 @@
         @foreach (var volunteer in Model.CommunityVolunteers)
         {
         <div class="volunteer">
-            <img class="slide @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+            @if (volunteer.LogoHyperLink?.Length > 0)
+            {
+                <a href="@volunteer.LogoHyperLink" target="_blank"><img class="slide @(volunteer.ShowSmallLogo ? "small" : "") @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" /></a>
+            }
+            else
+            {
+                <img class="slide @(volunteer.ShowSmallLogo ? "small" : "") @(volunteer.IsLogo ? "logo" : "")" src="@volunteer.ImageLocation" alt="@volunteer.Name" />
+            }
+
             @if (volunteer.Name != null)
             {<p class="bold mt-sm mb-xs">@volunteer.Name</p>}
             @if (volunteer.Role != null)
@@ -18,3 +26,4 @@
         }
     </div>
 </div>
+

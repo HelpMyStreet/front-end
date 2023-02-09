@@ -33,9 +33,9 @@
 
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="2.0.0" />
-	  <PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.936" />
-	  <PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.936" />
-	  <PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.936" />  
+	<PackageReference Include="HelpMyStreet.CoreV3.Cache" Version="1.1.976" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Contracts" Version="1.1.976" />
+	<PackageReference Include="HelpMyStreet.CoreV3.Utils" Version="1.1.976" />  
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
@@ -47,7 +47,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.9" />
 	  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="NewRelic.Agent" Version="8.34.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Polly.Caching.Memory" Version="3.0.2" />
     <PackageReference Include="Polly.Contrib.DuplicateRequestCollapser" Version="0.2.1" />
 	<PackageReference Include="Polly" Version="7.2.1" />
@@ -59,6 +59,7 @@
     <Folder Include="wwwroot\img\community\ageUK\kent\northwest\carousel\" />
     <Folder Include="wwwroot\img\community\bostongns\carousel\" />
     <Folder Include="wwwroot\img\community\bostongns\flags\" />
+    <Folder Include="wwwroot\img\community\lincolnshirevolunteers\" />
     <Folder Include="wwwroot\img\community\tankersley\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\" />
     <Folder Include="wwwroot\img\community\fortheloveofscrubs\carousel1\" />

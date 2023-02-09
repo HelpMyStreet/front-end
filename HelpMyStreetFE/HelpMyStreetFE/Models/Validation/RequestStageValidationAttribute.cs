@@ -39,7 +39,7 @@ namespace HelpMyStreetFE.Models.Validation
                     if (selectedTimeframe.DueDateType.HasDate())
                     {
                         if (selectedTimeframe.StartTime.Equals(DateTime.MinValue)) errors.Add("A date must be specified");
-                        if (selectedTimeframe.DueDateType.HasEndTime())
+                        if (selectedTimeframe.DueDateType.HasEndTime() || selectedTimeframe.DueDateType.HasEndDate())
                         {
                             if (selectedTimeframe.EndTime.Equals(DateTime.MinValue)) errors.Add("An end time must be specified");
                         }
@@ -53,7 +53,7 @@ namespace HelpMyStreetFE.Models.Validation
                 else
                 {
                     var selectedFrequency = vm.Frequencies.Where(x => x.IsSelected).First();
-                    if (!selectedFrequency.Frequency.Equals(Frequency.Once))
+                    if (!selectedFrequency.Frequency.Equals(Frequency.Once) && !selectedFrequency.Frequency.Equals(Frequency.Ongoing))
                     {
                         var occurrences = vm.Occurrences;
                         if (occurrences == null || occurrences > selectedFrequency.Frequency.MaxOccurrences())

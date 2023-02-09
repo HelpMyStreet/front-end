@@ -16,7 +16,7 @@
     var encodedJobID = Base64Utils.Base64Encode(jobSummary.JobID);
 }
 
-<h4>@jobSummary.SupportActivity.FriendlyNameShort()</h4>
+<h4>@jobSummary.GetSupportActivityName</h4>
 @if (!String.IsNullOrEmpty(jobSummary.RecipientOrganisation))
 {
     <h4>Group Name: @jobSummary.RecipientOrganisation </h4>

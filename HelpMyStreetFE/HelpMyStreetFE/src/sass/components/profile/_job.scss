@@ -761,6 +761,11 @@
             @include circleHover;
         }
 
+        &.applied-for {
+            stroke: $blue;
+            @include circleHover;
+        }
+
         &.dots {
             stroke: $white;
             stroke-width: 0.18rem;

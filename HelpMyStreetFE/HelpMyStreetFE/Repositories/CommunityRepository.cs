@@ -47,7 +47,6 @@ namespace HelpMyStreetFE.Repositories
                 Groups.ApexBankStaff => GetApexBankStaff(),
                 Groups.AgeUKMidMersey => GetAgeUKMidMersey(),
                 Groups.BostonGNS => GetBostonGNS(language),
-                //Groups.UkraineRefugees => GetHelpUkraine(),
                 _ => null,
             };
 
@@ -253,14 +252,7 @@ namespace HelpMyStreetFE.Repositories
                     Role = "Local Volunteer",
                     Location = "",
                     ImageLocation = "/img/community/ageUK/notts/balderton/eunice-ray.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Carlton Roberts",
-                    Role = "Local Volunteer",
-                    Location = "",
-                    ImageLocation = "/img/community/ageUK/notts/balderton/carlton-roberts.jpg"
-                },
+                }
             };
 
             var carouselPath = "/img/community/ageUK/notts/balderton/carousel1";
@@ -393,7 +385,10 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/LCVS-Master-New.jpg",
+                    LogoHyperLink = "http://www.lincolnshirecvs.org.uk/",
+                    ShowSmallLogo = true
+
                 },
                 new CommunityVolunteer()
                 {
@@ -401,7 +396,10 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-vcs-logo-new-site.png",
+                    LogoHyperLink = "https://voluntarycentreservices.org.uk/",
+                    ShowSmallLogo = true
+
                 },
                 new CommunityVolunteer()
                 {
@@ -409,7 +407,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/cropped-VET_Logo.png",
+                    LogoHyperLink = "https://lvet.co.uk/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -417,7 +417,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/age-uk-lincoln--south-lincolnshire-logo-rgb.png",
+                    LogoHyperLink = "https://www.ageuk.org.uk/lincolnsouthlincolnshire/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -425,7 +427,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/lrf-logo.jpg",
+                    LogoHyperLink = "https://lincolnshireresilienceforum.org/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -433,7 +437,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/nhs-lincolnshire.jpg",
+                    LogoHyperLink = "https://www.lincolnshire.nhs.uk/",
+                    ShowSmallLogo = true
                 },
                 new CommunityVolunteer()
                 {
@@ -441,7 +447,9 @@ namespace HelpMyStreetFE.Repositories
                     Role = "",
                     Location = "",
                     IsLogo = true,
-                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png"
+                    ImageLocation = "/img/community/vacc/lincolnshirevolunteers/Lincolnshire-LOGO.png",
+                    LogoHyperLink = "https://www.lincolnshire.gov.uk/",
+                    ShowSmallLogo = true
                 },
             };
 
@@ -664,23 +672,7 @@ namespace HelpMyStreetFE.Repositories
         private CommunityViewModel GetAgeUKLSL()
         {
             CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ageuklsl", "AgeUKLSL");
-            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>()
-            {
-                new CommunityVolunteer()
-                {
-                    Name = "Nicki Lee",
-                    Role = "Senior Volunteer Coordinator",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/lsl/NL_cropped.jpg"
-                },
-                new CommunityVolunteer()
-                {
-                    Name = "Amanda Wilson",
-                    Role = "Engagement Coordinator",
-                    Location = "Lincoln & South Lincolnshire",
-                    ImageLocation = "/img/community/ageuk/lsl/AW_cropped.jpg"
-                },
-            };
+            communityViewModel.CommunityVolunteers = new List<CommunityVolunteer>();
 
             var carouselPath = "/img/community/ageUK/lsl/carousel1";
             communityViewModel.CarouselImages = new List<List<string>>
@@ -944,13 +936,6 @@ namespace HelpMyStreetFE.Repositories
                     $"{carouselPath}/carousel3/E.png",
                 }
             };
-
-            return communityViewModel;
-        }
-
-        private CommunityViewModel GetHelpUkraine()
-        {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("help-ukraine", "HelpUkraine", false, true);
 
             return communityViewModel;
         }

@@ -1,0 +1,31 @@
+﻿@using HelpMyStreet.Utils.Extensions;
+
+@model HelpMyStreetFE.Models.Account.Jobs.JobStatusChangePopupViewModel
+
+@{
+    var isShift = Model.RequestType == HelpMyStreet.Utils.Enums.RequestType.Shift;
+    var requestType = isShift ? "shift" : "request";
+    var pageType = isShift ? "Shifts" : "Requests";
+}
+
+<div class="popup__content wide apply">
+    <partial name="_PopupCloseButton" />
+    <div class="popup__content__wrapper">
+        <div class="popup__content__header">Enquire about this opportunity?</div>
+        <div class="popup__content__text">
+            <p>If you click to enquire about this volunteering opportunity it will appear on your "My Requests" page. Someone will be in touch with you shortly and you'll receive an email update from HelpMyStreet when your enquiry has been processed.</p>
+            <p>All the information you need to complete the request will be available on your "My Requests" page once you have been assigned the role.</p>
+            <p>This <strong>@Model.JobBasic.GetSupportActivityName</strong> request is managed by <strong>@Model.ReferringGroup</strong>. A member of the team will be in touch to discuss your application.</p> 
+            <div class="volunteer-instructions">
+                <h5>Volunteer Instructions</h5>
+                <partial name="_GroupSupportActivityInstructions" model="Model.GroupSupportActivityInstructions" />
+            </div>
+        
+        </div>
+        <div class="popup__content__buttons">
+            <p class="error dnone">Oops, we couldn’t accept this @requestType at the moment.</p>
+            <partial name="_PopupAcceptButton" model='new PopupButtonModel { ButtonText = "Enquire", CssClass = "cta--dark-blue" }' />
+        </div>
+    </div>
+</div>
+

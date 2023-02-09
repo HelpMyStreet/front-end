@@ -7,16 +7,17 @@ import { trackPageView } from "../shared/tracking-helper";
 
 
 $(() => {
-    switch (stepIndex) {
-        case 0:
+    const stepType = $('input[name="StepType"]').val();
+    switch (stepType) {
+        case 'HelpMyStreetFE.Models.RequestHelp.Stages.Request.RequestHelpRequestStageViewModel':
             intialiseRequestStage();
             trackPageView('/request-help/0.request');
             break;
-        case 1:
+        case 'HelpMyStreetFE.Models.RequestHelp.Stages.Detail.RequestHelpDetailStageViewModel':
             initaliseDetailStage();
             trackPageView('/request-help/1.details');
             break;
-        case 2:
+        case 'HelpMyStreetFE.Models.RequestHelp.Stages.Review.RequestHelpReviewStageViewModel':
             intialiseReviewStage();
             trackPageView('/request-help/2.review');
             break;

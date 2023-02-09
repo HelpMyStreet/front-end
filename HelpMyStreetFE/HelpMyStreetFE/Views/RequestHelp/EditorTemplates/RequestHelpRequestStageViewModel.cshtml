@@ -6,10 +6,13 @@
 @Html.Hidden("FormStage", RequestHelpFormStage.Request)
 @Html.HiddenFor(m => m.RequestGuid)
 <input type="hidden" name="selectAction" />
-<h2>@Model.PageHeading</h2>
-<div class="row">
-    <div class="sm12">
-        @Markdown.ParseHtmlString(Model.IntoText)
+
+<div class="@Model.PageHeadingClass">
+    <h2>@Model.PageHeading</h2>
+    <div class="row">
+        <div class="sm12">
+            @Markdown.ParseHtmlString(Model.IntoText)
+        </div>
     </div>
 </div>
 
@@ -69,7 +72,6 @@ else
     }
     <partial name="_TileSelector" model='@timeSelectorViewModel' />
 </div>
-
 <div class="row occurrences-question" show-tile-when="repeats:true">
     <div class="sm12 input">
         <label>
