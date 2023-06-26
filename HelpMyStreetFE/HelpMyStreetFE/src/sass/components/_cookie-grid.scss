@@ -2,7 +2,17 @@
     overflow: auto;
     display: grid;
     grid-template-columns: 0.8fr 0.5fr 1.5fr 2fr 2fr;
-    grid-template-areas: "Type Cookie Provider Purpose Expiry" "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" "Neccesary cCookieControl ProviderName pCookieControl eCookieControl" "Neccesary cConsent ConsentProviderName pConsent eConsent" "Marketing cMarketingOne MarketingProviderName pMarketingOne eMarketingOne" "Marketing cMarketingTwo MarketingProviderName pMarketingTwo eMarketingTwo" "Marketing cMarketingThree MarketingProviderName pMarketingThree eMarketingThree";
+    grid-template-areas: "Type Cookie Provider Purpose Expiry" 
+        "Neccesary cAntiForgery ProviderName pAntiForgery eAntiForgery" 
+        "Neccesary cArrfinity ProviderName pArrfinity eArrfinity" 
+        "Neccesary cConsent ConsentProviderName pConsent eConsent" 
+        "Preferences cPreferences PreferencesProviderName pPreferences ePreferences" 
+        "Marketing cMarketingOne MarketingProviderName pMarketingOne eMarketingOne" 
+        "Marketing cMarketingTwo MarketingProviderName pMarketingTwo eMarketingTwo" 
+        "Marketing cMarketingThree MarketingProviderName pMarketingThree eMarketingThree"
+        "Marketing cMarketingFour MarketingProviderName pMarketingFour eMarketingFour"
+        "Marketing cMarketingFive MarketingProviderName pMarketingFive eMarketingFive"
+    ;
     border-top: 1px solid black;
     border-left: 1px solid black;
 
@@ -125,6 +135,14 @@
         grid-area: pMarketingThree;
     }
 
+    .pMarketingFour {
+        grid-area: pMarketingFour;
+    }
+
+    .pMarketingFive {
+        grid-area: pMarketingFive;
+    }
+
     .eMarketingOne {
         grid-area: eMarketingOne;
     }
@@ -135,5 +153,45 @@
 
     .eMarketingThree {
         grid-area: eMarketingThree;
+    }
+
+    .eMarketingFour {
+        grid-area: eMarketingFour;
+    }
+
+    .eMarketingFive {
+        grid-area: eMarketingFive;
+    }
+
+    .Preferences {
+        grid-area: Preferences;
+    }
+
+    .cPreferences {
+        grid-area: cPreferences;
+    }
+
+    .pPreferences {
+        grid-area: pPreferences;
+    }
+
+    .PreferencesProviderName {
+        grid-area: PreferencesProviderName;
+    }
+
+    .ePreferences {
+        grid-area: ePreferences;
+    }
+
+    .cConsent {
+        grid-area: cConsent;
+    }
+
+    .pConsent {
+        grid-area: pConsent;
+    }
+
+    .eConsent {
+        grid-area: eConsent;
     }
 }
