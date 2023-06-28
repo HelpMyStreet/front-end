@@ -243,9 +243,6 @@ namespace HelpMyStreetFE.Controllers
 
             string message = requestHelpFormVariant switch
             {
-                RequestHelpFormVariant.FtLOS => @"<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>
-                                                    <p>For the Love of Scrubs ask for a small donation of £3 - £4 per face covering to cover the cost of materials and help support their communities. Without donations they aren’t able to continue their good work.</p>
-                                                    <p>If you are able to donate, you can do so on their Go Fund Me page <a href='https://www.gofundme.com/f/for-the-love-of-scrubs-face-coverings\' target=\'_blank\'>here</a>.<p>",
                 RequestHelpFormVariant.Ruddington => @"<p>Your request has been received and we're looking for a volunteer who can help, as soon as we find someone we’ll let you know by email. Please be aware that we cannot guarantee help, but we’ll do our best to find a volunteer near you.</p>",
                 _ => @"<p>Your request has been received and we are looking for a volunteer who can help. Someone should get in touch shortly.</p>"
             };

@@ -89,23 +89,5 @@ namespace HelpMyStreetFE.Controllers
             
             return View(communityViewModel.View, communityViewModel);
         }
-
-        public async Task<IActionResult> FaceCoverings(CancellationToken cancellationToken)
-        {
-            var encodedGenericGroupId = Base64Utils.Base64Encode((int)Groups.Generic);
-
-            FaceCoveringsViewModel faceCoveringsViewModel = new FaceCoveringsViewModel()
-            {
-                GenericSignUpURL = $"/login/{encodedGenericGroupId}/face-masks",
-                RequestHelpURL = $"/request-help/{encodedGenericGroupId}/face-masks",
-            };
-
-            return View(faceCoveringsViewModel);
-        }
-
-        public async Task<IActionResult> FaceMasks(CancellationToken cancellationToken)
-        {
-            return Redirect("/face-coverings");
-        }
     }
 }

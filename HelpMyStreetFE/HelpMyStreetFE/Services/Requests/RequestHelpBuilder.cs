@@ -90,7 +90,6 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return requestHelpFormVariant switch
             {
-                RequestHelpFormVariant.FtLOS => "How can For the Love of Scrubs help?",
                 RequestHelpFormVariant.Ruddington => "Request help from Ruddington Community Response Team",
                 RequestHelpFormVariant.AgeUKNottsBalderton => "Request help from Balderton Community Support",
                 RequestHelpFormVariant.AgeUKNottsNorthMuskham => "Request help from North Muskham Community Support",
@@ -119,7 +118,6 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return requestHelpFormVariant switch
             {
-                RequestHelpFormVariant.FtLOS => "We have volunteers across the country donating their time and skills to help us beat coronavirus. If you need reusable fabric face coverings, we can help.",
                 RequestHelpFormVariant.AgeUKWirral => string.Empty,
                 RequestHelpFormVariant.AgeUKSouthKentCoast_Public => "If you need help from Age UK South Kent Coast, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
                 RequestHelpFormVariant.AgeUKSouthKentCoast_RequestSubmitter => "If you need help from Age UK South Kent Coast, complete this form to let us know what you need. We'll give you a call back within two working days to let you know how we can help.",
@@ -161,10 +159,6 @@ namespace HelpMyStreetFE.Services.Requests
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Errands });
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.VolunteerSupport });
                 tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.Other });
-            }
-            else if (requestHelpFormVariant == RequestHelpFormVariant.FtLOS)
-            {
-                tasks.Add(new TasksViewModel { SupportActivity = SupportActivities.FaceMask, IsSelected = true });
             }
             else if (requestHelpFormVariant == RequestHelpFormVariant.Ruddington)
             {
@@ -561,7 +555,6 @@ namespace HelpMyStreetFE.Services.Requests
         {
             return variant switch
             {
-                RequestHelpFormVariant.FtLOS => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before }, true),
                 RequestHelpFormVariant.AgeUKSouthKentCoast_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
                 RequestHelpFormVariant.AgeUKFavershamAndSittingbourne_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.Before, DueDateType.On }, true),
                 RequestHelpFormVariant.AgeUKNorthWestKent_Public => GetRequestHelpTimeViewModels(new List<DueDateType> { DueDateType.ASAP, DueDateType.Before, DueDateType.On }, true),

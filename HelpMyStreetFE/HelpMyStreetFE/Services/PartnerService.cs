@@ -11,8 +11,6 @@ namespace HelpMyStreetFE.Services
         public async Task<IEnumerable<Partner>> GetPartners()
         {
             List<Partner> partners = new List<Partner>();
-
-            partners.Add(new Partner() { Group = HMSEnums.Groups.FTLOS, GroupKey = "ftlos"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.AgeUKLSL, GroupKey = "ageuklsl"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.Tankersley, GroupKey = "tankersley"});
             partners.Add(new Partner() { Group = HMSEnums.Groups.Ruddington, GroupKey = "ruddington"});

@@ -390,21 +390,6 @@ namespace HelpMyStreetFE
                    defaults: new { controller = "Community", action = "Index", groupKey = "ageconnects-cardiff" });
 
                 endpoints.MapControllerRoute(
-                   name: "face-coverings",
-                   pattern: "face-coverings",
-                   defaults: new { controller = "Community", action = "FaceCoverings" });
-
-                endpoints.MapControllerRoute(
-                   name: "face-masks",
-                   pattern: "face-masks",
-                   defaults: new { controller = "Community", action = "FaceMasks" });
-
-                endpoints.MapControllerRoute(
-                    name: "fortheloveofscrubs",
-                    pattern: "for-the-love-of-scrubs",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "ftlos" });
-
-                endpoints.MapControllerRoute(
                     name: "lincolnshirevolunteers",
                     pattern: "lincolnshirevolunteers",
                     defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });

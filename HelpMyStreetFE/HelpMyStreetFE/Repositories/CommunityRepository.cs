@@ -34,7 +34,6 @@ namespace HelpMyStreetFE.Repositories
                 Groups.Ruddington => GetRuddington(),
                 Groups.AgeUKLSL => GetAgeUKLSL(),
                 Groups.AgeUKWirral => await GetAgeUKWirral(cancellationToken),
-                Groups.FTLOS => GetFtLOS(),
                 Groups.AgeUKNottsBalderton => GetBalderton(),
                 Groups.AgeUKNottsNorthMuskham => GetNorthMuskham(),
                 Groups.AgeUKSouthKentCoast => GetSouthKentCoast(),
@@ -903,41 +902,6 @@ namespace HelpMyStreetFE.Repositories
         private string GetTranslationForCommunityVolunteer(Dictionary<Tuple<string, string>, string> dict, string language, string key)
         {
             return dict.GetValueOrDefault(new Tuple<string, string>(language, key), key);
-        }
-
-        private CommunityViewModel GetFtLOS()
-        {
-            CommunityViewModel communityViewModel = GetCommunityViewModelByKey("ftlos", "ForTheLoveOfScrubs");
-            var carouselPath = "/img/community/fortheloveofscrubs";
-            communityViewModel.CarouselImages = new List<List<string>>
-            {
-                new List<string>
-                {
-                    $"{carouselPath}/carousel1/1.jpeg",
-                    $"{carouselPath}/carousel1/2.jpeg",
-                    $"{carouselPath}/carousel1/3.jpeg",
-                    $"{carouselPath}/carousel1/4.jpeg",
-                    $"{carouselPath}/carousel1/5.jpeg",
-                },
-                new List<string>
-                {
-                    $"{carouselPath}/carousel2/1.jpeg",
-                    $"{carouselPath}/carousel2/2.jpeg",
-                    $"{carouselPath}/carousel2/3.jpeg",
-                    $"{carouselPath}/carousel2/4.jpeg",
-                    $"{carouselPath}/carousel2/5.jpeg",
-                },
-                new List<string>
-                {
-                    $"{carouselPath}/carousel3/A.png",
-                    $"{carouselPath}/carousel3/B.png",
-                    $"{carouselPath}/carousel3/C.png",
-                    $"{carouselPath}/carousel3/D.png",
-                    $"{carouselPath}/carousel3/E.png",
-                }
-            };
-
-            return communityViewModel;
         }
     }
 }
