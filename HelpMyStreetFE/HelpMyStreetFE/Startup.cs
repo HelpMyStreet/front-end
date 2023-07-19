@@ -335,84 +335,19 @@ namespace HelpMyStreetFE
                     defaults: new { controller = "Community", action = "Index" });
 
                 endpoints.MapControllerRoute(
-                    name: "Tankersley",
-                    pattern: "tankersley",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "tankersley" });
-
-                endpoints.MapControllerRoute(
-                    name: "Balderton",
-                    pattern: "balderton",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "balderton" });
-
-                endpoints.MapControllerRoute(
                     name: "Ruddington",
                     pattern: "ruddington",
                     defaults: new { controller = "Community", action = "Index", groupKey = "ruddington" });
 
                 endpoints.MapControllerRoute(
-                    name: "ageuklsl",
-                    pattern: "ageuklsl",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuklsl" });
-
-                endpoints.MapControllerRoute(
                     name: "ageukwirral",
                     pattern: "ageukwirral",
                     defaults: new { controller = "Community", action = "Index", groupKey = "ageukwirral" });
-
-                endpoints.MapControllerRoute(
-                    name: "north-muskham",
-                    pattern: "north-muskham",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "north-muskham" });
-
-                endpoints.MapControllerRoute(
-                    name: "southkentcoast",
-                    pattern: "southkentcoast",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-southkentcoast" });
-
-                endpoints.MapControllerRoute(
-                   name: "favershamandsittingbourne",
-                   pattern: "favershamandsittingbourne",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-favershamandsittingbourne" });
-
-                endpoints.MapControllerRoute(
-                   name: "ageukmidmersey",
-                   pattern: "ageukmidmersey",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuk-midmersey" });
-
-                endpoints.MapControllerRoute(
-                   name: "northwestkent",
-                   pattern: "northwestkent",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "ageuknwkent" });
-
-                endpoints.MapControllerRoute(
-                   name: "ageconnects-cardiff",
-                   pattern: "ageconnects-cardiff",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "ageconnects-cardiff" });
-
-                endpoints.MapControllerRoute(
-                    name: "lincolnshirevolunteers",
-                    pattern: "lincolnshirevolunteers",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "lincs-volunteers" });
-
-                endpoints.MapControllerRoute(
-                    name: "apexpcnbankstaff",
-                    pattern: "apexpcnbankstaff",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "apex-pcn-bank-staff" });
-
+                
                 endpoints.MapControllerRoute(
                     name: "southwell",
                     pattern: "southwell",
-                    defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });
-
-                endpoints.MapControllerRoute(
-                   name: "boston",
-                   pattern: "boston",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "boston" });
-
-                endpoints.MapControllerRoute(
-                   name: "boston",
-                   pattern: "boston/{language}",
-                   defaults: new { controller = "Community", action = "Index", groupKey = "boston" });
+                    defaults: new { controller = "Community", action = "Index", groupKey = "southwell" });                
 
                 endpoints.MapControllerRoute(
                    name: "registration",

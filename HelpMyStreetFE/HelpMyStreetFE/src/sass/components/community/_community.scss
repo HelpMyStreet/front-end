@@ -27,41 +27,6 @@
         }
     }
 
-    .north-muskham-banner {
-        img {
-            max-height: 12rem;
-            margin-bottom: 1rem;
-
-            @media screen and (min-width: $med-screen) {
-                margin-bottom: 0;
-            }
-        }
-
-        .right-column {
-            align-content: center;
-
-            h2 {
-                color: $black;
-
-                &.proud {
-                    font-weight: normal;
-                    margin-top: 0.75rem;
-                    margin-bottom: 2rem;
-                    font-size: 1.4rem;
-                }
-            }
-
-            p {
-                &.partnership {
-                    color: $gray-8;
-                    width: 100%;
-                    text-align: right;
-                    margin: 0;
-                }
-            }
-        }
-    }
-
     .southwell-banner {
         background-color: #ff4b4f;
 
