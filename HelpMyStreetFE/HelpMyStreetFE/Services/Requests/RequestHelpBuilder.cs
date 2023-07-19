@@ -55,12 +55,6 @@ namespace HelpMyStreetFE.Services.Requests
                     new RequestHelpReviewStageViewModel(),
                 }
             };
-
-            if (requestHelpFormVariant == RequestHelpFormVariant.Mansfield_CVS)
-            {
-                model.Steps.Remove(model.Steps.Where(x => x is RequestHelpDetailStageViewModel).First());
-            }
-
             return model;
         }
 

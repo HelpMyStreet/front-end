@@ -217,11 +217,6 @@ namespace HelpMyStreetFE.Controllers
                 }
             }
 
-            if (requestHelpJourney.RequestHelpFormVariant == RequestHelpFormVariant.ChildGroupSelector)
-            {
-                return await ChildGroupSelector(referringGroupId, cancellationToken);
-            }
-
             var model = _requestHelpBuilder.GetSteps(requestHelpJourney, referringGroupId, source, language);
             var requestStage = (RequestHelpRequestStageViewModel)model.Steps.Where(x => x is RequestHelpRequestStageViewModel).First();
 
