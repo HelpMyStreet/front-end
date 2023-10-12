@@ -6,19 +6,6 @@
             display: none;
         }
     </style>
-    <!-- Google Tag Manager -->
-    <script>
-        (function (w, d, s, l, i) {
-            w[l] = w[l] || []; w[l].push({
-                'gtm.start':
-                    new Date().getTime(), event: 'gtm.js'
-            }); var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-MBCLBXV');
-
-    </script>
-    <!-- End Google Tag Manager -->
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -52,51 +39,8 @@
     <partial name="_Popup" />
     @RenderBody()
 
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="sm6">
-                    <img class="logo" src="~/img/logos/HelpMyStreet_logo.svg" alt="Help My Street Logo" />
-                    <p>
-                        Help My Street is a not-for-profit Community Interest Company,
-                        registered in England and Wales, Company Number 12534175.
-                        Help My Street CIC is registered with the Information Commissioner’s Office.
-                    </p>
-                </div>
-                <div class="sm2">&nbsp;</div>
-                <div class="sm4">
-                    Brought to you by
-                    <div class="partner-logos">
-                        <ul class="text-center">
-                            <li>
-                                <img src="~/img/logos/Factor50_logo.png" alt="Factor 50 Logo" />
-                            </li>
-                            <li>
-                                <img src="~/img/logos/Yoti_logo.svg" alt="YOTI Logo" />
-                            </li>
-                            <li>
-                                <img src="~/img/logos/experian_logo.svg" alt="Experian Logo" />
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="sm12">
-                    <p>
-                        <span class="black bold">&copy; HelpMyStreet CIC. All Right Reserved.</span>
-                        <a href="/privacy-policy" class="ml-sm">Privacy Policy</a>
-                        <a href="/terms-conditions" class="ml-sm">Terms &amp; Conditions</a>
-                        <a href="/about-us" class="ml-sm">About Us</a>
-                        <a href="/contact-us" class="ml-sm">Contact Us</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/GDPRCookie/jquery.ihavecookies.custom.min.js"></script>
     <script src="~/main.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

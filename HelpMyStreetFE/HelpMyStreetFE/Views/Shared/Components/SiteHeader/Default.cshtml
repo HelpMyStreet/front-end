@@ -1,70 +1,9 @@
 @model SiteHeaderViewModel;
 
     <header>
-        @if (!Model.isLoggedIn && !Model.loginPage)
-        {
-            <div class="outer-container outer-container--darker">
-                <div class="container-fluid page-header-login align-center">
-                    <div class="page-header-login__sign-in">
-                        @await Component.InvokeAsync("HeaderLogin")
-                    </div>
-                </div>
-            </div>
-        }    
         <div class="outer-container nav-holder">
             <div class="container-fluid page-header @(Model.isLoggedIn ? "" : "logged-out") align-center">
                 <partial name="_HMSLogo" model="@ViewData["HMSLogoViewModel"] != null ? @ViewData["HMSLogoViewModel"] : new HMSLogoViewModel()" />
-                <div class="page-header__nav">
-                    <partial name="_SiteNavigation" />
-                </div>
-        
-            <div id="profile-header-account" class="page-header__account__header collapsed @(Model.isLoggedIn ? "" : "logged-out")">
-                <div class="page-header__account__header__wrapper">
-                    @if (Model.isLoggedIn)
-                    {
-                    <div class="page-header__account__header__wrapper__user-details">
-                        <div class="page-header__account__header__user">@Model.AccountVM.UserDetails.Initials </div>
-                        <span class="mobile">
-                            @Model.AccountVM.UserDetails.FirstName  @Model.AccountVM.UserDetails.Initials[1] <br />
-                                <span class="subtext">Volunteer</span>
-                        </span>
-                        <span class="desktop">Profile</span>
-                    </div>
-                    }
-                <div id="profile-dropdown" class="page-header__account__header__dropdown dnone">
-                    @if (Model.isLoggedIn)
-                    {
-                        <div class="page-header__account__header__dropdown__navigation m-0">
-                            <partial name="_accountNavigation" for="@Model.AccountVM" />
-                        </div>
-                    }
-                    <div id="sitenavCollapsed" class="page-header__account__header__dropdown dnone page-header__account__header__dropdown__navigation">
-                        <partial name="_SiteNavigation" />
-                    </div>
-                    @if (Model.isLoggedIn)
-                    {
-                        <div class="profile-dropdown-logout  page-header__account__header__dropdown__navigation m-0">
-                            <nav class="account__nav">
-                                <ul class="account__nav__list m-0 p-0">
-                                    <li class="account__nav__item"><a href="@Url.Action("Logout", "Auth")">Log Out</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    }
-                    </div>
-                </div>
-                
-            </div>
-            
-
-                <div class="page-header__toggle">
-                    <button id="site-nav-toggle" class="page-header__btn--menu-toggle">
-                        <svg xmlns="" viewBox="0 0 100 100" class="toggle-icon" width="32" height="32">
-                            <path d="M25,25 L75,25 M25,50 L75,50 M25,75 L75,75" class="lines burger" stroke-linecap="round" />
-                            <path d="M30,30 L70,70 M30,70 L70,30" class="lines cross" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                </div>
             </div>
         </div>
     </header>

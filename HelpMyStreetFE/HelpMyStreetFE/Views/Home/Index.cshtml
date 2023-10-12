@@ -6,23 +6,6 @@
     <script src="~/homepage.js" asp-append-version="true"></script>
     <script src="~/stickynav.js" asp-append-version="true"></script>
 }
-@if (!Model.isLoggedIn)
-{
-    <div class="sticky-nav" id="sticky-nav">
-        <div class="row sm12 justify-center">
-            <div class="flex row">
-                <div class="sm6 mr-sm">
-                    <a href="/login" class="btn cta small mb-sm mt-sm btn--sign-up fill">Sign Up or Log In</a>
-                    <span>  </span>
-
-                </div>
-                <div class="sm6">
-                    <span>  </span>
-                    <a href="/request-help" class="btn cta small mb-sm mt-sm fill cta--orange">Request Help</a>
-                </div>
-            </div>
-        </div>
-    </div>}
 <div class="outer-container homepage-banner-container">
     <div class="homepage-banner-image">
         <h1>
@@ -32,110 +15,21 @@
     <partial name="_NewsTicker" model="Model.NewsTickerMessages" />
 </div>
 
-<div class="outer-container">
-    <div class="container">
-        <div class="mt-lg mb-xl">
-            @await Component.InvokeAsync("Partners")
-        </div>
-    </div>
-</div>
-
-<div class="outer-container outer-container--darker">
-    <div class="container">
-        <div class="row hero flex sm12 mt-lg mb-lg pb-lg content-page">
-
-            <div class="homepage-we-help row sm8 align-center">
-                <p class="row sm12 mt-sm mb-xs bold">
-                    We help organisations to connect neighbours in need with people who can help<br>
-                </p>
-
-                <p class="row sm12 mt-sm mb-xs">
-                    We have a range of partners all over the country, and here are some of the things they are helping with:<br>
-                </p>
-                <div class="row sm12">
-                    <ul class="tick-list mt-xs mb-sm compact-list">
-                        <li><strong>Everyday tasks</strong> like collecting shopping</li>
-                        <li><strong>Strenuous activities</strong> like moving furniture or mowing the lawn</li>
-                        <li><strong>Practical support</strong> like filling in forms or setting up your Wi-Fi</li>
-                        <li><strong>Tackling loneliness</strong> with friendly phone calls or a check-in</li>
-                        <li><strong>Assistance</strong> getting to and from essential appointments</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row sm4 homepage-cta-cards">
-                <div class="row sm6 card mt-lg p-sm-md">
-                    <div class="row sm12 text-center justify-center">
-                        <p class="mt-0 mb-sm bold orange">Request help today</p>
-                        <a href="/request-help" class="btn cta fill cta--orange wide square">Request Help</a>
-                    </div>
-                </div>
-
-                <div class="row sm6 card mt-md p-sm-md">
-                    <div class="row sm12 text-center justify-center">
-                        <p class="mt-0 mb-sm bold green">Help your neighbours</p>
-                        @if (!Model.isLoggedIn)
-                        {
-                            <a href="/login/" class="btn cta btn--sign-up fill wide square">Sign Up or Log In</a> 
-                        }
-                        else
-                        {
-                            <a href="/account" class="btn cta btn--sign-up fill wide square">View Open Requests</a>
-                        }
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="outer-container">
-    <div class="container">
-        <div class="homepage-map" id="street-map">
-            <h2 class="mb-sm pt-md">Check for <span class="orange">volunteers</span> and <span class="blue">organisations</span> near you!</h2>
-            <input id="pac-input" class="controls" type="text" placeholder="Type your town, city, street or postcode...">
-            <div id="your-location">
-                <button title="Your location">
-                    <div id="your-location-image"></div>
-                </button>
-            </div>
-            <div class="row sm12 map homepage-map" id="map">
-            </div>
-            <div class="row sm12">
-                <p class="mb-md mt-sm">Would you like to see your organisation on the map? <a href="mailto:contact@helpmystreet.org">Email us</a></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="outer-container outer-container--darker">
-    <div class="container pt-md">
-        <div class="mt-md pb-lg">
-             @await Component.InvokeAsync("Testimonials", new { feedbackMessageType = FeedbackMessageType.Other, numberToShow = 12, language = "English" })
-        </div>
-    </div>
-</div>
-
 <div class="outer-container mt-md">
     <div class="container pt-md pb-md">
-        <div class="how-to-use row justify-center card">
-            <partial name="_HowToUse" model=@Model.isLoggedIn />
+        <div class="row justify-center card">
+            <p class="row sm12 mt-sm mb-xs bold">
+                HelpMyStreet has now closed.  We would like to thank everybody who offered their time
+                as a volunteer and the organisations who partnered with us to make volunteering safer.
+            </p>
+            <p class="row sm12 mt-sm mb-xs bold">
+                Best wishes,
+            </p>
+            <p class="row sm12 mt-sm mb-xs bold">
+                The HelpMyStreet Team
+            </p>
         </div>
     </div>
 </div>
 
-<div class="outer-container mt-lg outer-container--darker">
-    <div class="container">
-        <partial name="_AboutHelpMyStreet" />
-    </div>
-</div>
 
-
-<div class="outer-container">
-    <div class="container pt-sm">
-        <div class="row pt-lg mt-xl justify-center">
-            <div class="sm6 mb-md text-center justify-center"><a href="https://www.gov.uk/government/news/40m-boost-for-cutting-edge-start-ups" target="_blank"><img src="~/img/logos/UKRI_IUK_Logo.png" alt="Innovate UK Logo" width="350" /></a></div>
-            <div class="sm6 text-center justify-center"><a href="https://www.youtube.com/watch?v=o7JxjkuJG4A" target="_blank"><img src="~/img/logos/BBC_Radio_logo.png" alt="BBC Radio Logo" width="190" /></a></div>
-        </div>
-    </div>
-</div>
