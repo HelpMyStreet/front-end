@@ -14,30 +14,4 @@ import { buttonLoad, buttonUnload } from "./shared/btn";
 
 $(function () {
     $('.no-fouc').removeClass('no-fouc');
-    if (typeof configuration !== 'undefined') {
-        firebase.init(JSON.parse(configuration.firebase));
-    }
-
-    window.account = account;
-
-    intialiseCookieConsent();
-    intialiseForgottonForm(firebase, account);
-    $(".login-form").submit(function (event) {
-        event.preventDefault();
-        buttonLoad($(this).find("button"));
-        const email = $("#email").val();
-        const password = $("#password").val();
-        account.login.login(email, password);
-    });
-
-    $("#sign-up").click(function(event) {
-        event.preventDefault();
-        const email = $("#email").val();
-        let destination = $(this).attr('href');
-        if (email) {
-            destination = `${destination}?email=${email}`;
-        }
-        window.location.href = destination;
-    });
-
 });
