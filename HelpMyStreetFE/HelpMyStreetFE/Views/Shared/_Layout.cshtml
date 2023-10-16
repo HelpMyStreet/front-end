@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
     <link  defer href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css" rel="stylesheet" />
-    <script defer src="https://www.yoti.com/share/client/"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="~/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="~/favicon-16x16.png">
@@ -28,15 +27,7 @@
 
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBCLBXV"
-                height="0" width="0" style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <div id="overlay"></div>
-    <!-- End Google Tag Manager (noscript) -->
     @await Component.InvokeAsync("SiteHeader")
-    <partial name="_Popup" />
     @RenderBody()
 
     <footer>
