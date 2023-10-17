@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="42.521"
+   height="51.743515"
+   viewBox="0 0 42.521 51.743514"
+   version="1.1"
+   id="svg288"
+   sodipodi:docname="HelpMyStreet_BrandMarque_Transparent.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata292">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3024"
+     inkscape:window-height="1198"
+     id="namedview290"
+     showgrid="false"
+     inkscape:zoom="4.3238434"
+     inkscape:cx="139.34162"
+     inkscape:cy="25.8745"
+     inkscape:window-x="4269"
+     inkscape:window-y="347"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g286" />
+  <defs
+     id="defs240">
+    <style
+       id="style227">.a{fill:none;}.b{fill:#1d1d1b;}.b,.d{fill-rule:evenodd;}.c{clip-path:url(#a);}.d{fill:url(#b);}.e{clip-path:url(#c);}</style>
+    <clipPath
+       id="a">
+      <path
+         class="a"
+         d="m 388.023,217.788 h 31.542 v 31.542 h -4.711 a 4.731,4.731 0 0 0 -4.726,4.726 v 2.5 l -7.469,-6.151 a 4.734,4.734 0 0 0 -3,-1.079 h -11.636 z m -0.763,-5.49 a 4.732,4.732 0 0 0 -4.726,4.726 v 33.069 a 4.732,4.732 0 0 0 4.726,4.726 h 12.12 l 10.172,8.377 a 3.708,3.708 0 0 0 6.065,-2.863 v -5.514 h 4.712 a 4.731,4.731 0 0 0 4.726,-4.726 v -33.069 a 4.732,4.732 0 0 0 -4.726,-4.726 z"
+         transform="translate(-382.533,-212.298)"
+         id="path229" />
+    </clipPath>
+    <linearGradient
+       id="b"
+       y1="0.5"
+       x2="0.15099999"
+       y2="0.5"
+       gradientUnits="objectBoundingBox">
+      <stop
+         offset="0"
+         stop-color="#ff1f05"
+         id="stop232" />
+      <stop
+         offset="1"
+         stop-color="#ff8e12"
+         id="stop234" />
+    </linearGradient>
+    <clipPath
+       id="c">
+      <path
+         class="a"
+         d="m 417.66,233.173 v 7.256 h -6.316 v -7.256 h -4.934 v 19.315 h 4.934 v -7.726 h 6.316 v 7.726 h 4.934 v -19.315 z"
+         transform="translate(-406.41,-233.173)"
+         id="path237" />
+    </clipPath>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#b"
+       id="linearGradient1183"
+       gradientUnits="userSpaceOnUse"
+       y1="61.181831"
+       x2="18.208789"
+       y2="61.181831"
+       gradientTransform="scale(2.3302482,0.42913884)"
+       x1="0" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#b"
+       id="linearGradient1185"
+       gradientUnits="userSpaceOnUse"
+       y1="61.181831"
+       x2="18.208789"
+       y2="61.181831"
+       gradientTransform="scale(2.3302482,0.42913884)"
+       x1="0" />
+  </defs>
+  <g
+     transform="translate(-0.001,-115.38)"
+     id="g286">
+    <g
+       transform="translate(0,115.38)"
+       id="g278"
+       style="opacity:1">
+      <g
+         class="c"
+         clip-path="url(#a)"
+         id="g276">
+        <path
+           class="d"
+           d="M 0,52.13 H 281 V 0.381 H 0 Z"
+           transform="translate(0,-0.381)"
+           id="path274"
+           style="fill:url(#linearGradient1183)" />
+      </g>
+    </g>
+    <g
+       transform="translate(13.216,128.575)"
+       id="g284">
+      <g
+         class="e"
+         clip-path="url(#c)"
+         id="g282">
+        <path
+           class="d"
+           d="M 0,52.13 H 281 V 0.381 H 0 Z"
+           transform="translate(-13.216,-12.597)"
+           id="path280"
+           style="fill:url(#linearGradient1185)" />
+      </g>
+    </g>
+  </g>
+</svg>
